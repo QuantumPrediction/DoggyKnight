@@ -276,7 +276,7 @@ func _show_results() -> void:
 	_results_grade_label.text = tr("UI_GRADE_%d" % grade)
 	_results_score_label.text = _format_score(score)
 	var lines: PackedStringArray = []
-	if rewards.has("vigor"):
+	if int(rewards.get("vigor", 0)) > 0:
 		lines.append(tr("MINIGAME_REWARD_VIGOR") % int(rewards["vigor"]))
 	if rewards.has("satisfaction"):
 		lines.append(tr("MINIGAME_REWARD_SATISFACTION") % int(rewards["satisfaction"]))

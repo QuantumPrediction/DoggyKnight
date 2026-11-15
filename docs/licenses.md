@@ -59,3 +59,15 @@ SOFTWARE.
 ## 音效
 
 (C12 記錄。)
+
+## 建置範本與平台程式庫(D 線)
+
+匯出時由 Godot 的匯出範本與 Android 建置範本(Gradle)放進安裝檔的程式庫。不是遊戲素材,但會隨 App 一起發布。
+
+| 素材 | 用在哪裡 | 來源網址 | 授權 | 是否允許商用 | 需要在遊戲內列出 | 核對人與日期 |
+| --- | --- | --- | --- | --- | --- | --- |
+| Godot 4.7.2 匯出範本(Android、iOS) | 所有安裝檔 | https://godotengine.org | MIT(內含的第三方元件見 `Engine.get_license_info()`) | 是 | 是(與引擎相同,C10 畫面已涵蓋) | D 線,2026-11-15 |
+| AndroidX(fragment、core-splashscreen、documentfile)與 Kotlin 標準程式庫 | Android AAB(Gradle 建置) | https://developer.android.com/jetpack/androidx 、https://kotlinlang.org | Apache 2.0 | 是 | 建議在製作名單加一行「本 App 使用 AndroidX 與 Kotlin(Apache License 2.0)」 | D 線,2026-11-15 |
+| MoltenVK(Godot iOS 範本內附) | iOS 建置 | https://github.com/KhronosGroup/MoltenVK | Apache 2.0 | 是 | 建議同上一併列出 | D 線,2026-11-15 |
+
+D 線的營地、小遊戲與圖示全部由程式繪製(本專案原創),沒有使用外部圖像或音效。
