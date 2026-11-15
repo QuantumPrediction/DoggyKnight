@@ -181,7 +181,11 @@ func test_results_have_exactly_the_contract_keys() -> void:
 	assert_eq(result["level_name"], "LEVEL_1_1", "翻譯鍵")
 	assert_eq(result["victory"], true)
 	assert_true(result["time_sec"] is float and result["time_sec"] > 0.0)
-	assert_eq(result["kills"], 21, "1-1 一共 21 隻稻草人兵")
+	var expected_kills := 0
+	for wave: WaveData in (load("res://data/levels/level_1_1.tres") as LevelData).waves:
+		for entry: SpawnEntry in wave.spawns:
+			expected_kills += entry.count
+	assert_eq(result["kills"], expected_kills, "1-1 的稻草人兵全部被擊倒")
 	assert_true(result["tricks"] is Array)
 	assert_eq((result["tricks"] as Array).size(), 2, "21 點經驗 → 升兩級 → 兩個把戲")
 	assert_eq(result["hero_level"], 3)

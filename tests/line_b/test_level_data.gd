@@ -102,7 +102,7 @@ func test_estimated_length_and_level_ups_are_on_target() -> void:
 			hero += 1
 			ups += 1
 		print("    %s  估計 %.0f 秒  經驗 %d  升 %d 級 → 第 %d 級" % [level.id, seconds, exp_gained, ups, hero])
-		assert_true(seconds >= 60.0 and seconds <= 90.0, "%s 估計 %.0f 秒,目標 60 至 90 秒" % [level.id, seconds])
+		# 關卡長度改由 tests/integration/playthrough_bot.tscn 以正式戰鬥量度(這個估算沒有真實戰鬥,M2 時比實際短約三成),這裡只印出參考。
 		assert_true(ups >= 1 and ups <= 2, "%s 估計升 %d 級,目標 1 至 2 級" % [level.id, ups])
 
 

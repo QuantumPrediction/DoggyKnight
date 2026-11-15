@@ -17,6 +17,7 @@ const SAVE_PATH: String = "user://playthrough_bot_save.json"
 const TIMEOUT_MS: int = 600000
 const ATTACK_DISTANCE: float = 22.0
 const DANGER_DISTANCE: float = 42.0
+const BOSS_DANGER_DISTANCE: float = 110.0
 
 var flow: FlowMain
 var shots_dir: String = ""
@@ -128,8 +129,14 @@ func _steer() -> void:
 			continue
 		var distance := enemy.global_position.distance_to(player.global_position)
 		var telegraph: Variant = enemy.get(&"_telegraph")
-		if telegraph != null and is_instance_valid(telegraph) and distance < DANGER_DISTANCE:
-			danger += (player.global_position - enemy.global_position).normalized() * (DANGER_DISTANCE - distance)
+		var is_boss := enemy is BlackKnightBoss
+		var reach := BOSS_DANGER_DISTANCE if is_boss else DANGER_DISTANCE
+		if telegraph != null and is_instance_valid(telegraph) and distance < reach:
+			var away := (player.global_position - enemy.global_position).normalized()
+			danger += away * (reach - distance)
+			if is_boss:
+				# 頭目的衝鋒是直線:往側面閃比往後退有效。
+				danger += away.orthogonal() * reach
 		var targetable: bool = enemy.call(&"is_targetable") if enemy.has_method(&"is_targetable") else true
 		if targetable and distance < nearest_distance:
 			nearest_distance = distance

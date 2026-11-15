@@ -7,7 +7,7 @@ func test_enemy_data_files_match_dev_plan() -> void:
 		&"scarecrow": [25, 8, 28.0, 1, "ENEMY_SCARECROW"],
 		&"scarecrow_elite": [75, 10, 26.0, 3, "ENEMY_SCARECROW_ELITE"],
 		&"crow": [12, 6, 140.0, 1, "ENEMY_CROW"],
-		&"black_knight": [450, 18, 40.0, 20, "ENEMY_BLACK_KNIGHT"],
+		&"black_knight": [700, 18, 40.0, 20, "ENEMY_BLACK_KNIGHT"],   # M2 整合調整:450 → 700(450 時試玩 22 秒就打完)
 	}
 	for id: StringName in expected:
 		var data := load("res://data/enemies/%s.tres" % id) as EnemyData
@@ -153,10 +153,11 @@ func test_boss_enters_phase_two_at_half_hp() -> void:
 	var boss := spawn(&"black_knight", Vector2(90, 120)) as BlackKnightBoss
 	assert_eq(phases.count, 1, "出場時發 boss_phase_changed(1)")
 	assert_eq(phases.last_args(), [1])
-	boss.take_damage(224)
-	assert_eq(boss.boss_phase, 1, "226/450 還在第一階段")
+	var half := boss.max_hp / 2
+	boss.take_damage(half - 1)
+	assert_eq(boss.boss_phase, 1, "剛過一半還在第一階段")
 	boss.take_damage(1)
-	assert_eq(boss.boss_phase, 2, "225/450 = 50% 進入第二階段")
+	assert_eq(boss.boss_phase, 2, "剩一半(50%)進入第二階段")
 	assert_eq(phases.count, 2)
 	assert_eq(phases.last_args(), [2])
 	boss.take_damage(50)
