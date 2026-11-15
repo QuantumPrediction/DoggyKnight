@@ -234,6 +234,10 @@ func _compute_score() -> int:
 	return floori(pulled_px / maxf(_cfg.px_per_score, 0.001))
 
 
+func _countdown_center() -> Vector2:
+	return Vector2(_paper_rect.get_center().x, minf(_swipe_zone.position.y + 128.0, _swipe_zone.end.y - 26.0))
+
+
 func _format_score(value: int) -> String:
 	return tr("MINIGAME_SCROLL_LENGTH") % value
 
@@ -323,7 +327,7 @@ func _ink_mistake() -> void:
 	_still_time = 0.0
 	Sfx.play(&"ink")
 	var bar := _time_bar_rect()
-	_add_floater("-%.1f" % _cfg.ink_penalty_sec, bar.end + Vector2(-8, 8), Color("ff6b5a"))
+	_add_floater("-%.1f" % _cfg.ink_penalty_sec, Vector2(bar.get_center().x - 8.0, bar.end.y + 12.0), Color("ff6b5a"))
 
 
 func _play_goldie(animation: StringName) -> void:
@@ -459,6 +463,10 @@ func _draw_blot(center: Vector2, index: int) -> void:
 
 func _draw_front() -> void:
 	var bite := Vector2(_paper_rect.position.x, _bite_y)
+	# 咬住的位置:橫跨紙面的一排齒印,墨水漬碰到這條線就要停手
+	var line_color := Color("ff6b5a") if ink_state == Ink.STOP else Color("8a6a4a")
+	for x in range(int(_paper_rect.position.x) + 3, int(_paper_rect.end.x) - 2, 4):
+		_front.draw_rect(Rect2(x, _bite_y - 1, 2, 2), line_color)
 	# 嘴巴咬住紙邊:深色的嘴與兩顆白牙
 	_front.draw_rect(Rect2(bite + Vector2(-4, -3), Vector2(7, 6)), Color("5a2a1a"))
 	_front.draw_rect(Rect2(bite + Vector2(-2, -3), Vector2(2, 2)), MinigameUi.WHITE)
@@ -529,14 +537,14 @@ func _draw_hint() -> void:
 	var x := _paper_rect.get_center().x + 6.0
 	var cycle := 0.9
 	var t := fmod(_anim_time, cycle) / cycle
-	var travel := minf(70.0, zone.size.y - 30.0)
+	var travel := minf(70.0, zone.size.y - 60.0)
 	var down := t < 0.7
 	var progress := t / 0.7 if down else 1.0 - (t - 0.7) / 0.3
-	var tip := Vector2(x, zone.position.y + 14.0 + travel * progress)
+	var tip := Vector2(x, zone.position.y + 26.0 + travel * progress)
 	var alpha := 1.0 if down else 0.5
 	if down:
 		# 手指劃過的軌跡
-		_front.draw_line(Vector2(x, zone.position.y + 10.0), tip, Color(1, 1, 1, 0.35), 2.0)
+		_front.draw_line(Vector2(x, zone.position.y + 16.0), tip, Color(1, 1, 1, 0.35), 2.0)
 	MinigameUi.draw_hand(_front, tip, down, alpha)
 	for i in 3:
 		var on := int(_anim_time * 6.0) % 3 == i

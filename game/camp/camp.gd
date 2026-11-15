@@ -339,7 +339,7 @@ func _draw_night(screen: Vector2) -> void:
 		var size := 2.0 if i % 7 == 0 else 1.0
 		_backdrop.draw_rect(Rect2(star.round(), Vector2(size, size)), Color(1, 1, 0.85, 0.3 + 0.6 * twinkle))
 	# 月亮
-	var moon := Vector2(screen.x - 28.0, 22.0 + SafeArea.get_safe_rect().position.y + 24.0)
+	var moon := Vector2(screen.x - 22.0, SafeArea.get_safe_rect().position.y + 14.0)
 	_backdrop.draw_circle(moon, 9.0, Color("fff3c4"))
 	_backdrop.draw_circle(moon + Vector2(4, -2), 8.0, config.sky_top_color.lerp(config.sky_bottom_color, 0.3))
 	# 遠山與地面
@@ -424,8 +424,8 @@ func _draw_front() -> void:
 	if last_grade >= 0 and _menu.visible:
 		var button_rect := Rect2(_menu.position + _minigame_button.position, _minigame_button.size)
 		for i in 3:
-			var star_at := Vector2(button_rect.end.x + 8.0, button_rect.position.y + 5.0 + i * 8.0)
-			MinigameUi.draw_star(_front, star_at, 3.5, i < last_grade)
+			var star_at := Vector2(button_rect.end.x - 26.0 + i * 10.0, button_rect.position.y - 1.0)
+			MinigameUi.draw_star(_front, star_at, 4.0, i < last_grade)
 
 
 func _draw_bar(at: Vector2, ratio: float, color: Color) -> void:

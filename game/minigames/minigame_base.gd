@@ -241,6 +241,11 @@ func _format_score(value: int) -> String:
 	return str(value)
 
 
+## 倒數數字的中心(畫面邏輯像素)。
+func _countdown_center() -> Vector2:
+	return SafeArea.get_safe_rect().get_center()
+
+
 ## 計時條的位置(畫面邏輯像素)。
 func _time_bar_rect() -> Rect2:
 	var safe := SafeArea.get_safe_rect()
@@ -345,7 +350,7 @@ func _layout_overlay() -> void:
 	var safe := SafeArea.get_safe_rect()
 	var center := safe.get_center()
 	_countdown_label.size = Vector2(80, 48)
-	_countdown_label.position = (center - _countdown_label.size * 0.5).round()
+	_countdown_label.position = (_countdown_center() - _countdown_label.size * 0.5).round()
 	_pause_box.size = Vector2(safe.size.x - 16, 0)
 	_pause_box.position = Vector2(safe.position.x + 8, center.y + 16).round()
 	_results_box.size = Vector2(_results_panel_rect().size.x - 8, 0)
@@ -386,7 +391,7 @@ func _draw_overlay() -> void:
 			var center := SafeArea.get_safe_rect().get_center()
 			MinigameUi.draw_pause_icon(_overlay, center - Vector2(0, 12), MinigameUi.WHITE)
 			var press := fmod(_clock, 1.0) < 0.3
-			MinigameUi.draw_hand(_overlay, center + Vector2(10, 58), press)
+			MinigameUi.draw_hand(_overlay, center + Vector2(2, 80), press)
 		State.RESULTS:
 			var screen := SafeArea.get_screen_size()
 			_overlay.draw_rect(Rect2(Vector2.ZERO, screen), Color(0, 0, 0, 0.45))
@@ -401,7 +406,7 @@ func _draw_overlay() -> void:
 				MinigameUi.draw_star(_overlay, Vector2(panel.get_center().x + (i - 1) * 24, star_y), 9.0, filled)
 			if _state_time >= config.results_min_sec:
 				var press := fmod(_clock, 1.0) < 0.3
-				MinigameUi.draw_hand(_overlay, Vector2(panel.end.x - 14, panel.end.y + 14), press)
+				MinigameUi.draw_hand(_overlay, Vector2(panel.end.x - 14, panel.end.y + 18), press)
 		_:
 			pass
 

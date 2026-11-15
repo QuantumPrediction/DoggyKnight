@@ -81,24 +81,24 @@ static func _box(fill: Color, border: Color, shift: int = 0) -> StyleBoxFlat:
 	return box
 
 
-## 一隻指著下方的手(手指尖在 tip)。pressed:按下時手指稍微壓扁。
-static func draw_hand(ci: CanvasItem, tip: Vector2, pressed: bool, alpha: float = 1.0) -> void:
+## 一隻指著下方的手(手指尖在 tip)。pressed:按下時手指稍微壓扁。scale:整數倍放大。
+static func draw_hand(ci: CanvasItem, tip: Vector2, pressed: bool, alpha: float = 1.0, scale: float = 2.0) -> void:
 	var white := Color(WHITE, alpha)
 	var edge := Color(INK, alpha)
-	var p := tip.round()
-	var finger_h := 5.0 if pressed else 7.0
+	ci.draw_set_transform(tip.round(), 0.0, Vector2(scale, scale))
+	var finger_h := 4.0 if pressed else 6.0
 	# 食指
-	ci.draw_rect(Rect2(p + Vector2(-2, -finger_h - 1), Vector2(5, finger_h + 2)), edge)
-	ci.draw_rect(Rect2(p + Vector2(-1, -finger_h), Vector2(3, finger_h)), white)
-	# 手掌
-	var palm := Rect2(p + Vector2(-4, -finger_h - 9), Vector2(10, 10))
+	ci.draw_rect(Rect2(Vector2(-2, -finger_h - 1), Vector2(4, finger_h + 2)), edge)
+	ci.draw_rect(Rect2(Vector2(-1, -finger_h), Vector2(2, finger_h)), white)
+	# 手掌與其他手指(握起來)
+	var palm := Rect2(Vector2(-3, -finger_h - 7), Vector2(8, 7))
 	ci.draw_rect(palm.grow(1), edge)
 	ci.draw_rect(palm, white)
-	# 其他指節
-	for i in 3:
-		ci.draw_rect(Rect2(palm.position + Vector2(2 + i * 3, 9), Vector2(1, 1)), edge)
+	for i in 2:
+		ci.draw_rect(Rect2(palm.position + Vector2(3 + i * 2, 6), Vector2(1, 1)), edge)
+	ci.draw_set_transform_matrix(Transform2D.IDENTITY)
 	if pressed:
-		ci.draw_arc(p + Vector2(0.5, 1), 4.0, 0.0, TAU, 12, Color(WHITE, alpha * 0.8), 1.0)
+		ci.draw_arc(tip.round() + Vector2(0, 1), 3.0 * scale, 0.0, TAU, 16, Color(WHITE, alpha * 0.8), 1.0)
 
 
 ## 向下的箭頭(提示滑動方向)。
