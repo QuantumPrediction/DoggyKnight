@@ -298,6 +298,7 @@ func reset_run() -> void
 - 音效:任何線呼叫 `Sfx.play(&"<id>")`。固定的 id:`swing`、`hit`、`hurt`、`enemy_down`、`pickup`、`level_up`、`bark`、`boss_warning`、`ultimate`、`clear`、`fail`、`ui_tap`、`scroll`、`ink`。音效檔是 `assets/sfx/<id>.wav`(C 線);找不到檔案時安靜略過。
 - 特效:`assets/fx/<名稱>/<名稱>_frames.tres`,動畫名稱 `default`。固定的名稱:`slash`(揮劍弧光)、`hit_spark`(命中火花)、`exp_orb`(經驗珠)、`ultimate_slash`(必殺技)、`dizzy_stars`(暈眩星星)、`dust`(腳步塵)。預警圈與預警線由 A 線用程式畫(紅色半透明,填滿表示即將命中)。
 - 場地背景:`assets/backgrounds/<名稱>.tscn`,根節點 `Node2D`,在世界座標畫出 `Layout.ARENA_RECT` 的地面與周圍至少 (-10,-60) 至 (190,380) 的延伸區。固定的名稱:`sword_stone`(1-1,石中劍)、`meadow`(1-2 至 1-5)、`bridge`(1-6,石橋)。
+- 把戲圖示:`assets/icons/tricks/<把戲 id>.png`(16×16,C 線)。B 線的把戲資料檔直接引用這個路徑。
 - 文字:`i18n/strings.csv`(鍵, zh_TW)。新增鍵時用自己的前綴:A 線 `ENEMY_`、`COMPANION_`;B 線 `LEVEL_`、`TRICK_`;C 線 `UI_`;D 線 `CAMP_`、`MINIGAME_`。
 - 所有佔位資源(特效、背景、音效 Autoload)已由整合工作階段放好;C 線原地替換,路徑與名稱不變。
 

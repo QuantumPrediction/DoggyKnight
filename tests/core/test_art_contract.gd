@@ -76,3 +76,9 @@ func test_sfx_api() -> void:
 	assert_true(Sfx.has_method(&"play"), "Sfx.play(id)")
 	Sfx.play(&"swing")       # 沒有音效檔時要安靜略過,不可出錯
 	Sfx.play(&"not_a_sound")
+
+
+func test_trick_icons_exist() -> void:
+	for trick in ["sit", "wag", "fetch", "shake", "spin", "bark"]:
+		var path := "res://assets/icons/tricks/%s.png" % trick
+		assert_true(ResourceLoader.exists(path), path)
