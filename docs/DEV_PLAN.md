@@ -98,7 +98,7 @@
 
 | 路徑 | 擁有者 | 內容 |
 | --- | --- | --- |
-| `project.godot`、`core/`、`CLAUDE.md`、`docs/DEV_PLAN.md`、`docs/STORE_RELEASE.md`、`tools/run_tests.sh` | Phase 0 / 整合 | 專案設定、事件匯流排、全域狀態、資料類別、手機生命週期。**四條線一律不得修改** |
+| `project.godot`、`core/`、`CLAUDE.md`、`docs/DEV_PLAN.md`、`docs/STORE_RELEASE.md`、`tools/run_tests.sh`、`tools/placeholders/`、`tests/framework/`、`tests/core/`、`tests/phase0/`、`.gitignore` | Phase 0 / 整合 | 專案設定、事件匯流排、全域狀態、資料類別、手機生命週期、畫面適配、測試框架與合約測試。**四條線一律不得修改** |
 | `game/actors/`、`game/combat/`、`data/enemies/`、`data/companions/`、`tests/line_a/` | A 線 | 角色、敵人、同伴、戰鬥 |
 | `game/flow/`、`game/progression/`、`data/levels/`、`data/tricks/`、`tests/line_b/` | B 線 | 關卡流程、波次、經驗、把戲、存檔、暫停 |
 | `assets/`、`ui/`、`tools/pixel/`、`tests/line_c/` | C 線 | 像素圖、動畫、介面、字型、音效、App 圖示 |
@@ -229,7 +229,10 @@ func reset_run() -> void
 
 - **生命週期**(`core/app_lifecycle.gd`,Autoload,Phase 0 實作):把系統通知(應用程式暫停、失去焦點、返回鍵請求)轉成 4.1 的 `app_backgrounded`、`app_foregrounded`、`back_requested`。專案設定要讓返回鍵**不會**直接退出遊戲。
 - **誰處理甚麼**:B 線收到 `app_backgrounded` 時暫停戰鬥並存檔。收到 `back_requested` 時:關卡中就打開暫停選單;已在暫停選單就繼續;在標題畫面就詢問是否離開(只限 Android;iOS 沒有返回鍵,也不應自行關閉 App)。
-- **安全區**(`core/safe_area.gd`,Phase 0 實作):提供 `get_safe_rect() -> Rect2`,傳回以遊戲邏輯座標表示的安全區域。C 線的 HUD 與按鈕據此排列;桌面測試時傳回整個畫面,並提供模擬瀏海的開關。
+- **安全區**(`core/safe_area.gd`,class `SafeArea`,Phase 0 實作):提供 `get_safe_rect() -> Rect2`,傳回以遊戲邏輯座標表示的安全區域。C 線的 HUD 與按鈕據此排列;桌面測試時傳回整個畫面,並提供模擬瀏海的開關(`SafeArea.simulate_notch`)。另有 `get_game_rect()`(置中的 180×320 遊戲區)與 `get_screen_size()`。
+- **畫面適配**(`core/screen_fit.gd`,Autoload `ScreenFit`,Phase 0 實作):視窗大小改變時,把畫面設為「視窗 ÷ 整數倍數」。結果:任何手機都是整數倍放大,畫面寬至少 180、高至少 320 邏輯像素,黑邊少於一個邏輯像素。例:1080×2400 的手機是 180×400;iPhone 15 是 196×426。
+- **座標約定**:遊戲區佔世界座標 (0,0) 至 (180,320)。戰鬥場地與營地等場景用 `Camera2D`,把視角中心放在 `SafeArea.GAME_CENTER`,遊戲區就會置中;延伸出來的地方要有場地背景(4.6)。介面放在 `CanvasLayer`,用 `get_safe_rect()` 排列。碰撞圖層的位元遮罩用 `core/layers.gd` 的 `Layers` 常數。
+- **模擬事件**:沙盒與測試要模擬切到背景或返回鍵時,呼叫 `AppLifecycle.simulate_background()`、`simulate_foreground()`、`simulate_back()`。桌面上按 Esc 等同 Android 返回鍵。
 - **平台服務**:廣告、內購、分析一律只經 `platform/` 的介面呼叫(D7)。原型只有空實作,不得連網。
 
 ---
@@ -413,7 +416,7 @@ func reset_run() -> void
 - [ ] D2 小遊戲「拉扯王室卷軸」:金毛咬住卷軸一端,玩家快速向下滑動把卷軸拉出來,15 秒內拉得越長分數越高;卷軸上會經過墨水漬,滑到要停一下否則扣時間。結束時金毛被卷軸纏住。向下滑動的範圍不要碰到螢幕最底的系統手勢區(否則會誤觸回到主畫面)。
 - [ ] D3 評分與獎勵:依長度給 0 至 3 級評價;回復活力(25% / 50% / 75% / 100%),提高滿意度,並設定 `next_level_bonus`(0 / 5% / 10% / 15% 攻擊加成)。發出 `minigame_finished`。
 - [ ] D4 小遊戲框架:`game/minigames/` 內做一個共同基底(開始、計時、結束、回報),讓第二個小遊戲(圓桌盛宴大胃王)日後可以直接加入。小遊戲中切到背景時計時要暫停。**原型不做大胃王。**
-- [ ] D5 觸控與螢幕適配:不同長寬比的手機(16:9 到 20:9,以及較寬的 iPhone)都保持整數倍放大,並向外延伸填滿畫面(第 2 節);處理瀏海與安全區;鎖定直向;iOS 隱藏狀態列、靜音鍵開著時不發聲;高更新率手機鎖 60 FPS。把需要的專案設定寫成申請,交整合工作階段套用。
+- [ ] D5 觸控與螢幕適配:不同長寬比的手機(16:9 到 20:9,以及較寬的 iPhone)都保持整數倍放大,並向外延伸填滿畫面(第 2 節;縮放計算已由 Phase 0 的 `ScreenFit` 處理,D 線負責在各種比例與實機上驗證);處理瀏海與安全區;鎖定直向;iOS 隱藏狀態列、靜音鍵開著時不發聲;高更新率手機鎖 60 FPS。把需要的專案設定寫成申請,交整合工作階段套用。
 - [ ] D6 Android 匯出:建立 Android 匯出設定,用 Gradle 建置。產出 AAB(上傳 Google Play)與除錯版 APK(實機測試)。target API 要符合 Google Play 現行要求(2026-08-31 起是 API 36),並確認支援 16 KB 記憶體分頁。寫 `export/README.md`:建置步驟、上傳金鑰(upload key)怎樣產生和備份、Play 應用程式簽署(Play App Signing)、怎樣上傳到「內部測試」。需要擁有人在本機安裝或提供的東西(Android SDK、JDK、金鑰、Play Console 帳號)逐項列清楚。
 - [ ] D7 平台介面預留:`platform/` 內定義廣告、內購、分析三個介面的空實作(只印出記錄,不連網)。之後接真實外掛時不需改動遊戲程式。在 `platform/README.md` 註明:日後接真實服務時,商店的隱私問卷要重填;若目標玩家包含兒童,只能用符合 Google Play 家庭政策的服務。
 - [ ] D8 最基本的遊玩記錄:每關的用時、勝負、所選把戲,寫到本機記錄檔,供 M3 調整難度。不含任何裝置識別碼,不上傳。
