@@ -1,10 +1,17 @@
 # 《金毛騎士》原型開發計劃(給 Claude Code)
 
-版本:v2,2026-11-15。工作名稱《金毛騎士》,repo:`DoggyKnight`。
+版本:v2.1,2026-11-15。工作名稱《金毛騎士》,repo:`DoggyKnight`。
 
 **最終目標:一款在 App Store(iOS)與 Google Play(Android)上架的手機遊戲。** 原型本身不公開上架,但從第一天起就按手機與商店的要求來做,避免日後返工。
 
-這份文件是四個 Claude Code 工作階段(下稱「線」)同時開發的唯一依據。每條線開工前必須讀完第 1 至 5 節,以及自己那一線的章節。商店規定、費用與送審清單集中在 `docs/STORE_RELEASE.md`(D 線與整合工作階段必讀)。
+這份文件是四個 Claude Code 工作階段(下稱「線」)同時開發的唯一依據。每條線開工前必須讀完第 1 至 5 節(包括 4.9 整合約定),以及自己那一線的章節。商店規定、費用與送審清單集中在 `docs/STORE_RELEASE.md`(D 線與整合工作階段必讀)。
+
+### v2.1 變更摘要(整合約定,相對 v2)
+
+- 合約補充(已由擁有人授權整合工作階段決定):`exp_collected`、`ultimate_requested` 兩個訊號;`LevelData` 加 `companions`、`background`;資料的名稱欄位改存翻譯鍵;金毛基準數值移到 A 線的 `data/player/`。
+- 新增 4.9「整合約定」:場地、同伴、畫面、營地、音效、特效、背景、版面、暫停與數值套用的固定做法。四條線都必讀。
+- 新增共用目錄 `i18n/`(文字)與 C 線的 `Sfx` 音效 Autoload。
+- 詳細記錄:`docs/requests/20261115-INT-v2.1-integration-contract.md`。
 
 ### v2 變更摘要(相對 v1)
 
@@ -99,13 +106,14 @@
 | 路徑 | 擁有者 | 內容 |
 | --- | --- | --- |
 | `project.godot`、`core/`、`CLAUDE.md`、`docs/DEV_PLAN.md`、`docs/STORE_RELEASE.md`、`tools/run_tests.sh`、`tools/placeholders/`、`tests/framework/`、`tests/core/`、`tests/phase0/`、`.gitignore` | Phase 0 / 整合 | 專案設定、事件匯流排、全域狀態、資料類別、手機生命週期、畫面適配、測試框架與合約測試。**四條線一律不得修改** |
-| `game/actors/`、`game/combat/`、`data/enemies/`、`data/companions/`、`tests/line_a/` | A 線 | 角色、敵人、同伴、戰鬥 |
+| `game/actors/`、`game/combat/`、`data/enemies/`、`data/companions/`、`data/player/`、`tests/line_a/` | A 線 | 角色、敵人、同伴、戰鬥、金毛基準數值 |
 | `game/flow/`、`game/progression/`、`data/levels/`、`data/tricks/`、`tests/line_b/` | B 線 | 關卡流程、波次、經驗、把戲、存檔、暫停 |
 | `assets/`、`ui/`、`tools/pixel/`、`tests/line_c/` | C 線 | 像素圖、動畫、介面、字型、音效、App 圖示 |
 | `game/camp/`、`game/minigames/`、`platform/`、`export/`、`export_presets.cfg`、`android/`、`store/`、`tests/line_d/` | D 線 | 營地、小遊戲、手機建置、商店素材草稿 |
 | `docs/status/LINE_X.md` | 各線自己 | 進度報告 |
 | `docs/requests/` | 任何線可新增檔案 | 合約變更申請 |
 | `docs/licenses.md` | 任何線可新增條目(只加不刪) | 外部素材與授權記錄 |
+| `i18n/strings.csv` | 任何線可新增條目(只加不刪);C 線可修改文字 | 全部介面與資料文字(翻譯鍵 → 繁體中文) |
 
 Godot 特有的衝突點:
 
@@ -132,6 +140,7 @@ signal loyalty_changed(current: float, maximum: float)
 signal ultimate_used()
 signal player_downed()                      # 活力歸零,金毛趴下睡著
 signal boss_phase_changed(phase: int)
+signal exp_collected(amount: int)          # 拾取經驗珠(原始值;exp_mult 由 B 線套用)
 
 # 流程與成長(B 線發出)
 signal level_started(level_id: StringName)
@@ -145,7 +154,8 @@ signal trick_offered(options: Array)        # Array[TrickData]
 signal trick_chosen(trick_id: StringName)   # 由 C 線的選擇介面發出
 signal game_paused(paused: bool)            # B 線發出;C 線的暫停畫面聽這個
 
-# 暫停選單(C 線發出)
+# 介面(C 線發出)
+signal ultimate_requested()                 # HUD 的必殺技按鈕被按下;A 線執行後發 ultimate_used
 signal resume_requested()                   # 暫停畫面的「繼續」
 signal quit_to_title_requested()            # 暫停畫面的「回標題」
 
@@ -182,8 +192,10 @@ func reset_run() -> void
 - `EnemyData`:`id`、`display_name`、`scene: PackedScene`、`max_hp`、`contact_damage`、`move_speed`、`exp_value`。
 - `CompanionData`:`id`、`display_name`、`scene`、`role`。
 - `TrickData`:`id`、`display_name`、`description`、`icon`、`stat_modifiers: Dictionary`、`is_ability: bool`。
-- `LevelData`:`id`、`display_name`、`waves: Array[WaveData]`、`is_boss: bool`、`arena_scene`。
+- `LevelData`:`id`、`display_name`、`waves: Array[WaveData]`、`is_boss: bool`、`arena_scene`、`companions: Array[StringName]`、`background: PackedScene`。
 - `WaveData`:`spawns: Array[SpawnEntry]`(`enemy_id`、`count`、`delay`)。
+- 所有 `display_name`、`description` 存**翻譯鍵**(例如 `ENEMY_SCARECROW`、`TRICK_SIT_DESC`),文字在 `i18n/strings.csv`,介面用 `tr()` 顯示。
+- 金毛的基準數值:`data/player/goldie_base_stats.tres`(A 線擁有);`GameState.reset_run()` 會複製一份到 `player_stats`。
 
 ### 4.4 場景與介面合約
 
@@ -192,11 +204,16 @@ func reset_run() -> void
 | 主角 | `game/actors/player/player.tscn` | 根節點 `CharacterBody2D`,在群組 `player`;提供 `take_damage(amount: int)`、`heal(amount: int)` |
 | 同伴 | `game/actors/companions/bulldog.tscn` | 群組 `companion` |
 | 敵人 | 由 `EnemyData.scene` 指定 | 群組 `enemy`;提供 `setup(data: EnemyData)`、`take_damage(amount: int)` |
-| 戰鬥場地 | `game/combat/arena.tscn` | 提供 `spawn_enemy(enemy_id: StringName, at: Vector2) -> Node`、`get_spawn_points() -> Array[Vector2]`、`clear() -> void` |
+| 戰鬥場地 | `game/combat/arena.tscn` | 提供 `spawn_enemy(enemy_id: StringName, at: Vector2) -> Node`、`get_spawn_points() -> Array[Vector2]`、`clear() -> void`;另加(v2.1)`spawn_companion(companion_id: StringName) -> Node`、`set_background(scene: PackedScene) -> void`、`get_player() -> Node2D` |
 | HUD | `ui/hud/hud.tscn` | 只聽 EventBus,不讀取任何戰鬥節點;位置依安全區排列 |
 | 把戲選擇 | `ui/trick_choice/trick_choice.tscn` | 聽 `trick_offered`,玩家選擇後發出 `trick_chosen` |
 | 暫停畫面 | `ui/pause/pause.tscn` | 聽 `game_paused`;按鈕發出 `resume_requested`、`quit_to_title_requested`;音效開關直接改 `GameState.sound_on` |
 | 營地 | `game/camp/camp.tscn` | 進入時發 `camp_entered`,離開時發 `camp_left` |
+| 標題 | `ui/screens/title.tscn` | 見 4.9 |
+| 過關結算 | `ui/screens/results.tscn` | 見 4.9 |
+| 失敗結算 | `ui/screens/failure.tscn` | 見 4.9 |
+| 製作名單與授權 | `ui/screens/credits.tscn` | 見 4.9 |
+| 音效 | `ui/audio/sfx.gd`(Autoload `Sfx`) | 見 4.9 |
 
 ### 4.5 碰撞圖層與角色代號
 
@@ -234,6 +251,59 @@ func reset_run() -> void
 - **座標約定**:遊戲區佔世界座標 (0,0) 至 (180,320)。戰鬥場地與營地等場景用 `Camera2D`,把視角中心放在 `SafeArea.GAME_CENTER`,遊戲區就會置中;延伸出來的地方要有場地背景(4.6)。介面放在 `CanvasLayer`,用 `get_safe_rect()` 排列。碰撞圖層的位元遮罩用 `core/layers.gd` 的 `Layers` 常數。
 - **模擬事件**:沙盒與測試要模擬切到背景或返回鍵時,呼叫 `AppLifecycle.simulate_background()`、`simulate_foreground()`、`simulate_back()`。桌面上按 Esc 等同 Android 返回鍵。
 - **平台服務**:廣告、內購、分析一律只經 `platform/` 的介面呼叫(D7)。原型只有空實作,不得連網。
+
+### 4.9 整合約定(v2.1,四條線必讀)
+
+這些是接線時的固定做法。開發時對方還沒完成,就照這裡做替身。
+
+**一關的組成(B 線組裝,A 線提供零件)**
+
+1. B 線的關卡流程實例化 `LevelData.arena_scene`(預設 `game/combat/arena.tscn`),呼叫 `set_background(LevelData.background)`,再為 `LevelData.companions` 的每個代號呼叫 `spawn_companion()`。
+2. `arena.tscn` 本身包含:地面與邊界、置中的 `Camera2D`(4.8)、主角(放在 `Layout.PLAYER_START`)。`get_player()` 傳回主角。
+3. `spawn_enemy(id, at)` 讀取 `data/enemies/<id>.tres`;`spawn_companion(id)` 讀取 `data/companions/<id>.tres`。精英稻草人兵是獨立資料 `scarecrow_elite`(生命 75,A 線擁有),頭目是 `black_knight`。
+4. 「場上敵人清空」以群組 `enemy` 的節點數為準(頭目召喚的小怪也算)。敵人死亡時,**立即**離開 `enemy` 群組,然後才播倒下動畫。
+5. 版面:`core/layout.gd`。戰鬥區 `Layout.ARENA_RECT`(11×14 格),HUD 在其上方,必殺技按鈕在戰鬥區右下角、安全區之內。
+
+**數值由誰套用**
+
+- 傷害:A 線計算。金毛攻擊力 = `player_stats.attack_damage × (1 + GameState.next_level_bonus)`;受到的傷害 × `player_stats.damage_taken_mult`。
+- 活力:A 線讀寫 `GameState.vigor`,每次改變發 `vigor_changed`;主角進場時也發一次,讓 HUD 有初始值。活力跨關保留(營地小遊戲會回復);B 線在新遊戲與重試時把活力設為上限。
+- 經驗:A 線在拾取經驗珠時發 `exp_collected(原始值)`;B 線乘上 `player_stats.exp_mult` 後累計。
+- `next_level_bonus`:D 線在小遊戲結束時設定;B 線在下一關**過關**後歸零(失敗重試時保留)。
+- 把戲:數值類由 B 線改 `player_stats`(相加:`{"move_speed": 0.15}` 表示 +15%,以基準值計算);能力類由 A 線聽 `trick_chosen`,每多選一次就多疊一層。新遊戲時 B 線呼叫 `GameState.reset_run()`,A 線在主角進場時依 `GameState.active_tricks` 重建能力。
+
+**暫停**
+
+- B 線用 `get_tree().paused` 暫停。升級選把戲與暫停選單都會暫停,但只有暫停選單發 `game_paused`。
+- C 線的暫停畫面、把戲選擇介面、HUD 的根節點設 `process_mode = PROCESS_MODE_ALWAYS`。A 線的節點維持預設(會被暫停)。
+- 金毛倒下(`player_downed`)後,B 線等約 1 秒再發 `level_failed` 並顯示失敗結算;按「再試一次」後 2 秒內要回到戰鬥。
+
+**介面場景(C 線製作,B 線實例化)**
+
+- 每個介面場景的根節點是 `Control`(全螢幕錨點)。B 線把它們放在自己的 `CanvasLayer` 之下:HUD 第 10 層、把戲選擇與暫停第 20 層、結算與標題第 30 層。
+- `ui/screens/title.tscn`:方法 `setup(has_save: bool)`;訊號 `new_game_pressed`、`continue_pressed`、`credits_pressed`。在 Android 上收到 `back_requested` 時由 B 線詢問是否離開。
+- `ui/screens/results.tscn`:方法 `setup(result: Dictionary)`;訊號 `continue_pressed`。
+- `ui/screens/failure.tscn`:方法 `setup(result: Dictionary)`;訊號 `retry_pressed`、`title_pressed`。
+- `ui/screens/credits.tscn`:訊號 `closed`。內容用 `Engine.get_license_text()` 等(見 `docs/licenses.md`)。
+- `result` 的鍵(B 線提供):`level_id: StringName`、`level_name: String`(翻譯鍵)、`victory: bool`、`time_sec: float`、`kills: int`、`tricks: Array`(這一關新學的把戲 id)、`hero_level: int`、`next_is_camp: bool`、`is_final: bool`(打敗黑騎士)。
+- HUD 的必殺技按鈕在 `loyalty_changed` 的 current ≥ maximum 時出現,按下發 `ultimate_requested`。
+
+**營地(D 線製作,B 線實例化)**
+
+- B 線在第 2、4 關過關結算之後實例化 `game/camp/camp.tscn`,加到流程根節點之下;營地自己負責畫面(用 `SafeArea` 排版)。收到 `camp_left` 後,B 線移除營地並進入下一關。
+- 小遊戲結束時,D 線直接更新 `GameState.vigor`(依評價回復)、`satisfaction`、`next_level_bonus`,再發 `minigame_finished`。
+
+**音效、特效、背景、文字**
+
+- 音效:任何線呼叫 `Sfx.play(&"<id>")`。固定的 id:`swing`、`hit`、`hurt`、`enemy_down`、`pickup`、`level_up`、`bark`、`boss_warning`、`ultimate`、`clear`、`fail`、`ui_tap`、`scroll`、`ink`。音效檔是 `assets/sfx/<id>.wav`(C 線);找不到檔案時安靜略過。
+- 特效:`assets/fx/<名稱>/<名稱>_frames.tres`,動畫名稱 `default`。固定的名稱:`slash`(揮劍弧光)、`hit_spark`(命中火花)、`exp_orb`(經驗珠)、`ultimate_slash`(必殺技)、`dizzy_stars`(暈眩星星)、`dust`(腳步塵)。預警圈與預警線由 A 線用程式畫(紅色半透明,填滿表示即將命中)。
+- 場地背景:`assets/backgrounds/<名稱>.tscn`,根節點 `Node2D`,在世界座標畫出 `Layout.ARENA_RECT` 的地面與周圍至少 (-10,-60) 至 (190,380) 的延伸區。固定的名稱:`sword_stone`(1-1,石中劍)、`meadow`(1-2 至 1-5)、`bridge`(1-6,石橋)。
+- 文字:`i18n/strings.csv`(鍵, zh_TW)。新增鍵時用自己的前綴:A 線 `ENEMY_`、`COMPANION_`;B 線 `LEVEL_`、`TRICK_`;C 線 `UI_`;D 線 `CAMP_`、`MINIGAME_`。
+- 所有佔位資源(特效、背景、音效 Autoload)已由整合工作階段放好;C 線原地替換,路徑與名稱不變。
+
+**主場景**
+
+- B 線建立 `game/flow/main.tscn`(開機後顯示標題)。整合時由整合工作階段把它設為主場景。
 
 ---
 

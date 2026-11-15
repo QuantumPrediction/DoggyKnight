@@ -37,6 +37,18 @@ func test_collision_layer_names() -> void:
 
 
 func test_autoloads() -> void:
-	for autoload in ["EventBus", "GameState", "AppLifecycle", "ScreenFit"]:
+	for autoload in ["EventBus", "GameState", "AppLifecycle", "ScreenFit", "Sfx"]:
 		assert_true(ProjectSettings.has_setting("autoload/%s" % autoload), "Autoload %s" % autoload)
 		assert_not_null(get_tree().root.get_node_or_null(autoload), "Autoload %s 已載入" % autoload)
+
+
+func test_traditional_chinese_strings() -> void:
+	assert_eq(TranslationServer.get_locale(), "zh_TW")
+	assert_eq(tr("GAME_TITLE"), "金毛騎士", "i18n/strings.csv 已載入")
+	assert_eq(tr("UI_WAVE") % [1, 3], "第 1/3 波", "格式字串")
+
+
+func test_layout_constants() -> void:
+	assert_eq(Layout.ARENA_RECT.size, Vector2(11 * Layout.TILE, 14 * Layout.TILE), "11×14 格")
+	assert_true(Rect2(Vector2.ZERO, SafeArea.GAME_SIZE).encloses(Layout.ARENA_RECT), "場地在遊戲區內")
+	assert_true(Layout.ARENA_RECT.has_point(Layout.PLAYER_START))

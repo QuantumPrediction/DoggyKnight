@@ -3,7 +3,7 @@ extends Node
 ##
 ## 凍結的合約:四條線可以讀寫這些欄位,但不得修改這個檔案。
 
-const BASE_STATS: StatBlock = preload("res://core/data/goldie_base_stats.tres")
+const BASE_STATS: StatBlock = preload("res://data/player/goldie_base_stats.tres")
 
 var player_stats: StatBlock       # 金毛目前數值(含把戲加成)
 var vigor: int                    # 活力(生命值)
@@ -18,6 +18,8 @@ var sound_on: bool = true         # 音效開關,隨存檔保存
 
 
 func _ready() -> void:
+	# 原型只有繁體中文(DEV_PLAN 第 10 節);字串在 i18n/strings.csv。
+	TranslationServer.set_locale("zh_TW")
 	reset_run()
 
 

@@ -14,6 +14,7 @@ signal loyalty_changed(current: float, maximum: float)
 signal ultimate_used()
 signal player_downed()                      # 活力歸零,金毛趴下睡著
 signal boss_phase_changed(phase: int)
+signal exp_collected(amount: int)          # 拾取經驗珠(原始值;exp_mult 由 B 線套用)
 
 # 流程與成長(B 線發出)
 signal level_started(level_id: StringName)
@@ -27,7 +28,8 @@ signal trick_offered(options: Array)        # Array[TrickData]
 signal trick_chosen(trick_id: StringName)   # 由 C 線的選擇介面發出
 signal game_paused(paused: bool)            # B 線發出;C 線暫停畫面聽這個
 
-# 暫停選單(C 線發出)
+# 介面(C 線發出)
+signal ultimate_requested()                 # HUD 的必殺技按鈕被按下;A 線執行後發 ultimate_used
 signal resume_requested()                   # 暫停畫面的「繼續」
 signal quit_to_title_requested()            # 暫停畫面的「回標題」
 

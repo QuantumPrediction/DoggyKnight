@@ -1,0 +1,32 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/fx/slash/slash.png" id="1_sheet"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_0"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_1"]
+atlas = ExtResource("1_sheet")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_2"]
+atlas = ExtResource("1_sheet")
+region = Rect2(48, 0, 24, 24)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_2")
+}],
+"loop": false,
+"name": &"default",
+"speed": 18.0
+}]

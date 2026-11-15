@@ -23,6 +23,7 @@ EventBus="*res://core/event_bus.gd"
 GameState="*res://core/game_state.gd"
 AppLifecycle="*res://core/app_lifecycle.gd"
 ScreenFit="*res://core/screen_fit.gd"
+Sfx="*res://ui/audio/sfx.gd"
 
 [display]
 
@@ -46,6 +47,11 @@ back={
 [input_devices]
 
 pointing/emulate_touch_from_mouse=true
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://i18n/strings.zh_TW.translation")
+locale/fallback="zh_TW"
 
 [layer_names]
 

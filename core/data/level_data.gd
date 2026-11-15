@@ -1,9 +1,12 @@
 class_name LevelData
 extends Resource
-## 關卡資料(DEV_PLAN 4.3)。B 線在 data/levels/ 放 .tres。
+## 關卡資料(DEV_PLAN 4.3、4.9)。B 線在 data/levels/ 放 .tres。
+## display_name 存翻譯鍵(例如 "LEVEL_1_1"),介面用 tr() 顯示。
 
 @export var id: StringName
 @export var display_name: String
 @export var waves: Array[WaveData] = []
 @export var is_boss: bool = false
 @export var arena_scene: PackedScene
+@export var companions: Array[StringName] = []   ## 這一關開始時加入的同伴,例如 [&"bulldog"]
+@export var background: PackedScene              ## 場地背景(assets/backgrounds/*.tscn)
