@@ -254,11 +254,16 @@ def monochrome(fg: Canvas) -> Canvas:
 def scenic(w: int, h: int, horizon: int, seed_x: int = 0) -> Canvas:
     """Sky, clouds, a distant castle and a meadow (opaque)."""
     c = Canvas(w, h, rgba("sky"))
-    for y in range(horizon // 3):
+    for y in range(horizon):
+        t = y / horizon
         for x in range(w):
-            c.set(x, y, "sky_l")
-    for (cx, cy, r) in [(30 + seed_x, 14, 7), (40 + seed_x, 12, 9), (52 + seed_x, 15, 6),
-                        (w - 60, 22, 6), (w - 50, 19, 8), (w - 40, 22, 6)]:
+            if t < 0.3 or (t < 0.45 and (x + y) % 2 == 0) or (t < 0.55 and (x + y) % 4 == 0):
+                c.set(x, y, "sky_l")
+    clouds = [(0.12, 0.10, 7), (0.2, 0.08, 9), (0.28, 0.11, 6), (0.7, 0.2, 6), (0.78, 0.17, 8),
+              (0.86, 0.2, 6), (0.45, 0.42, 5), (0.52, 0.4, 7)]
+    for (fx, fy, r) in clouds:
+        cx, cy = int(fx * w) + seed_x % 7, int(fy * horizon)
+        c.ellipse(cx, cy + 1, r * 1.4, r * 0.8, "sky_l")
         c.ellipse(cx, cy, r * 1.4, r * 0.8, "white")
     # distant castle silhouette (Camelot)
     base = horizon - 2
@@ -305,7 +310,23 @@ def splash_image(goldie_frame: Canvas) -> Canvas:
     return c.scaled(4)
 
 
-def write_all(goldie_frame: Canvas, bulldog_frame: Canvas, sword_stone: Canvas) -> None:
+def title_background(sword_stone: Canvas, tree: Canvas, bush: Canvas) -> Canvas:
+    """304x512 title illustration; its centre lines up with the centre of the screen."""
+    c = scenic(304, 512, 300, seed_x=40)
+    for x, y in ((-10, 270), (250, 262), (24, 290), (220, 296)):
+        c.blit(tree, x, y)
+    for x, y in ((60, 330), (214, 336), (30, 420), (250, 430), (120, 470)):
+        c.blit(bush, x, y)
+    c.blit(sword_stone, 160, 282)
+    for (x, y) in ((156, 276), (182, 280), (172, 270)):
+        c.set(x, y, "white")
+        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            c.set(x + dx, y + dy, "yellow")
+    return c
+
+
+def write_all(goldie_frame: Canvas, bulldog_frame: Canvas, sword_stone: Canvas,
+              tree: Canvas | None = None, bush: Canvas | None = None) -> None:
     master = icon_master()
     master.save(res_path("res://assets/app_icon/icon_master_32.png"), opaque=True)
     master.scaled(8).save(res_path("res://assets/app_icon/icon.png"), opaque=True)
@@ -318,5 +339,7 @@ def write_all(goldie_frame: Canvas, bulldog_frame: Canvas, sword_stone: Canvas) 
     feature_graphic(goldie_frame, bulldog_frame, sword_stone).save(
         res_path("res://assets/app_icon/feature_graphic_1024x500.png"), opaque=True)
     splash_image(goldie_frame).save(res_path("res://assets/app_icon/splash.png"), opaque=True)
+    if tree is not None and bush is not None:
+        title_background(sword_stone, tree, bush).save(res_path("res://assets/ui/title_bg.png"), opaque=True)
     logo(1).save(res_path("res://assets/ui/logo.png"))
     logo(2).save(res_path("res://assets/ui/logo_2x.png"))

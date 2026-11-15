@@ -361,3 +361,123 @@ def write_all() -> list[str]:
     ultimate_button(False).save(res_path("res://assets/ui/ultimate_normal.png"))
     ultimate_button(True).save(res_path("res://assets/ui/ultimate_pressed.png"))
     return out
+
+
+# --------------------------------------------------------------------------
+# ui/theme/main_theme.tres (generated so its colours always match the palette)
+# --------------------------------------------------------------------------
+
+def _col(name: str, alpha: float = 1.0) -> str:
+    from palette import rgba
+    r, g, b, _ = rgba(name)
+    return "Color(%.4f, %.4f, %.4f, %.2f)" % (r / 255, g / 255, b / 255, alpha)
+
+
+def theme_tres() -> str:
+    tex = [
+        ("button_normal", 4, (6, 3, 6, 5)), ("button_pressed", 4, (6, 4, 6, 4)),
+        ("button_disabled", 4, (6, 3, 6, 5)), ("button_alt_normal", 4, (6, 3, 6, 5)),
+        ("button_alt_pressed", 4, (6, 4, 6, 4)), ("panel", 5, (8, 7, 8, 7)),
+        ("panel_dark", 5, (6, 5, 6, 5)), ("card_normal", 5, (6, 5, 6, 5)), ("card_pressed", 5, (6, 6, 6, 4)),
+        ("ribbon", 6, (10, 3, 10, 4)),
+    ]
+    lines = ['[gd_resource type="Theme" format=3]', "",
+             '[ext_resource type="FontFile" path="res://assets/fonts/Cubic_11.ttf" id="1_font"]']
+    for i, (name, _, _) in enumerate(tex):
+        lines.append('[ext_resource type="Texture2D" path="res://assets/ui/%s.png" id="%d_%s"]' % (name, i + 2, name))
+    for i, (name, m, (cl, ct, cr, cb)) in enumerate(tex):
+        lines += ["", '[sub_resource type="StyleBoxTexture" id="Style_%s"]' % name,
+                  'content_margin_left = %.1f' % cl, 'content_margin_top = %.1f' % ct,
+                  'content_margin_right = %.1f' % cr, 'content_margin_bottom = %.1f' % cb,
+                  'texture = ExtResource("%d_%s")' % (i + 2, name)]
+        if name == "ribbon":
+            lines += ["texture_margin_left = 8.0", "texture_margin_top = 4.0",
+                      "texture_margin_right = 8.0", "texture_margin_bottom = 5.0"]
+        else:
+            lines += ["texture_margin_left = %.1f" % m, "texture_margin_top = %.1f" % m,
+                      "texture_margin_right = %.1f" % m, "texture_margin_bottom = %.1f" % m]
+    lines += ["", '[sub_resource type="StyleBoxEmpty" id="Style_empty"]']
+    lines += ["", '[sub_resource type="StyleBoxFlat" id="Style_scroll"]', "bg_color = %s" % _col("plum", 0.6),
+              "content_margin_left = 2.0", "content_margin_right = 2.0", "anti_aliasing = false"]
+    lines += ["", '[sub_resource type="StyleBoxFlat" id="Style_grabber"]', "bg_color = %s" % _col("gold"),
+              "content_margin_left = 2.0", "content_margin_right = 2.0", "anti_aliasing = false"]
+    ink = _col("ink")
+    r = ["", "[resource]",
+         'default_font = ExtResource("1_font")',
+         "default_font_size = 12",
+         # Buttons (gold): touch only, so hover looks the same as normal
+         "Button/colors/font_color = %s" % ink,
+         "Button/colors/font_hover_color = %s" % ink,
+         "Button/colors/font_pressed_color = %s" % ink,
+         "Button/colors/font_hover_pressed_color = %s" % ink,
+         "Button/colors/font_focus_color = %s" % ink,
+         "Button/colors/font_disabled_color = %s" % _col("stone_d"),
+         "Button/constants/h_separation = 3",
+         'Button/styles/normal = SubResource("Style_button_normal")',
+         'Button/styles/hover = SubResource("Style_button_normal")',
+         'Button/styles/pressed = SubResource("Style_button_pressed")',
+         'Button/styles/hover_pressed = SubResource("Style_button_pressed")',
+         'Button/styles/disabled = SubResource("Style_button_disabled")',
+         'Button/styles/focus = SubResource("Style_empty")',
+         # Blue secondary buttons
+         'ButtonAlt/base_type = &"Button"',
+         "ButtonAlt/colors/font_color = %s" % _col("white"),
+         "ButtonAlt/colors/font_hover_color = %s" % _col("white"),
+         "ButtonAlt/colors/font_pressed_color = %s" % _col("white"),
+         "ButtonAlt/colors/font_hover_pressed_color = %s" % _col("white"),
+         "ButtonAlt/colors/font_focus_color = %s" % _col("white"),
+         "ButtonAlt/colors/font_shadow_color = %s" % _col("water_d"),
+         "ButtonAlt/constants/shadow_offset_x = 1",
+         "ButtonAlt/constants/shadow_offset_y = 1",
+         'ButtonAlt/styles/normal = SubResource("Style_button_alt_normal")',
+         'ButtonAlt/styles/hover = SubResource("Style_button_alt_normal")',
+         'ButtonAlt/styles/pressed = SubResource("Style_button_alt_pressed")',
+         'ButtonAlt/styles/hover_pressed = SubResource("Style_button_alt_pressed")',
+         # Trick cards
+         'CardButton/base_type = &"Button"',
+         'CardButton/styles/normal = SubResource("Style_card_normal")',
+         'CardButton/styles/hover = SubResource("Style_card_normal")',
+         'CardButton/styles/pressed = SubResource("Style_card_pressed")',
+         'CardButton/styles/hover_pressed = SubResource("Style_card_pressed")',
+         'CardButton/styles/disabled = SubResource("Style_card_normal")',
+         # Labels: dark text on parchment by default
+         "Label/colors/font_color = %s" % ink,
+         "Label/constants/line_spacing = 1",
+         # Light text with a pixel shadow, for text over the game or dark panels
+         'LabelLight/base_type = &"Label"',
+         "LabelLight/colors/font_color = %s" % _col("white"),
+         "LabelLight/colors/font_shadow_color = %s" % ink,
+         "LabelLight/constants/shadow_offset_x = 1",
+         "LabelLight/constants/shadow_offset_y = 1",
+         # Big title text: twice the font's native size, still pixel exact
+         'LabelTitle/base_type = &"Label"',
+         "LabelTitle/colors/font_color = %s" % _col("yellow"),
+         "LabelTitle/colors/font_shadow_color = %s" % ink,
+         "LabelTitle/colors/font_outline_color = %s" % ink,
+         "LabelTitle/constants/outline_size = 4",
+         "LabelTitle/constants/shadow_offset_x = 0",
+         "LabelTitle/constants/shadow_offset_y = 2",
+         "LabelTitle/font_sizes/font_size = 24",
+         # Brown secondary text on parchment
+         'LabelSoft/base_type = &"Label"',
+         "LabelSoft/colors/font_color = %s" % _col("brown"),
+         # Panels
+         'PanelContainer/styles/panel = SubResource("Style_panel")',
+         'Panel/styles/panel = SubResource("Style_panel")',
+         'PanelDark/base_type = &"PanelContainer"',
+         'PanelDark/styles/panel = SubResource("Style_panel_dark")',
+         'Ribbon/base_type = &"PanelContainer"',
+         'Ribbon/styles/panel = SubResource("Style_ribbon")',
+         # Thin pixel scroll bar
+         "VScrollBar/styles/scroll = SubResource(\"Style_scroll\")",
+         "VScrollBar/styles/grabber = SubResource(\"Style_grabber\")",
+         "VScrollBar/styles/grabber_highlight = SubResource(\"Style_grabber\")",
+         "VScrollBar/styles/grabber_pressed = SubResource(\"Style_grabber\")",
+         'ScrollContainer/styles/panel = SubResource("Style_empty")',
+         ""]
+    return "\n".join(lines + r)
+
+
+def write_theme() -> None:
+    from pixel import write_text
+    write_text(res_path("res://ui/theme/main_theme.tres"), theme_tres())

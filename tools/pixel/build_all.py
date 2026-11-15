@@ -19,6 +19,8 @@ What it writes (paths are the contracts of DEV_PLAN 4.6 / 4.9 — never rename t
   assets/app_icon/*.png                           app icons, store graphics, boot splash
   assets/sfx/<id>.wav                             the 14 sound effects
   ui/theme/palette_colors.gd                      the palette as GDScript constants
+  ui/theme/main_theme.tres                        the UI theme (font, buttons, panels)
+  ui/screens/ofl_text.gd                          the font licence text for the credits screen
 
 Files whose content did not change are left untouched, so re-running is cheap and
 produces no git noise.
@@ -68,6 +70,26 @@ def write_palette() -> None:
     write_text(res_path("res://ui/theme/palette_colors.gd"), "\n".join(lines) + "\n")
 
 
+def write_ofl_text() -> None:
+    """Copies assets/fonts/OFL.txt into a GDScript constant for the credits screen
+    (plain .txt files are not exported with the game, scripts always are)."""
+    path = res_path("res://assets/fonts/OFL.txt")
+    if not os.path.exists(path):
+        return
+    with open(path, encoding="utf-8") as f:
+        text = f.read().replace("\r\n", "\n").strip()
+    esc = text.replace("\\", "\\\\").replace('"', '\\"')
+    lines = [
+        "extends RefCounted",
+        "## 俐方體11號(Cubic 11)的授權全文,由 tools/pixel/build_all.py 從 assets/fonts/OFL.txt 複製。",
+        "## 製作名單畫面顯示這段文字(SIL OFL 要求隨字型附上授權)。請勿手改。",
+        "",
+        'const TEXT: String = "%s"' % esc.replace("\n", "\\n"),
+        "",
+    ]
+    write_text(res_path("res://ui/screens/ofl_text.gd"), "\n".join(lines))
+
+
 def main() -> None:
     preview_dir = None
     if "--preview" in sys.argv:
@@ -85,11 +107,14 @@ def main() -> None:
         build_sheet("res://assets/fx/%s" % name, name, anims, size)
         sheets["fx_" + name] = anims
     art_ui.write_all()
+    art_ui.write_theme()
     art_world.write_all()
     goldie_idle = sheets["goldie"][0].frames[0]
     bulldog_idle = sheets["bulldog"][0].frames[0]
-    art_brand.write_all(goldie_idle, bulldog_idle, art_world.prop(art_world.SWORD_STONE))
+    art_brand.write_all(goldie_idle, bulldog_idle, art_world.prop(art_world.SWORD_STONE),
+                        art_world.prop(art_world.TREE), art_world.prop(art_world.BUSH))
     sfx_gen.write_all()
+    write_ofl_text()
 
     if preview_dir:
         for code, anims in sheets.items():
