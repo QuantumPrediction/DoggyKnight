@@ -61,3 +61,13 @@ func test_mobile_power_and_ios_settings() -> void:
 	assert_eq(_setting("display/window/ios/hide_status_bar"), true)
 	assert_eq(_setting("display/window/ios/hide_home_indicator"), true)
 	assert_eq(_setting("display/window/ios/suppress_ui_gesture"), true)
+
+
+func test_boot_main_scene_splash_and_theme() -> void:
+	assert_eq(_setting("application/run/main_scene"), "res://game/flow/main.tscn", "開機進入正式流程")
+	assert_eq(_setting("application/boot_splash/image"), "res://assets/app_icon/splash.png")
+	assert_eq(_setting("application/boot_splash/use_filter"), false, "啟動畫面像素不模糊")
+	assert_eq(_setting("gui/theme/custom"), "res://ui/theme/main_theme.tres", "全域像素字主題")
+	assert_true(ResourceLoader.exists("res://game/flow/main.tscn"))
+	assert_true(ResourceLoader.exists("res://assets/app_icon/splash.png"))
+	assert_true(ResourceLoader.exists("res://ui/theme/main_theme.tres"))
