@@ -37,7 +37,7 @@
 - GDScript,全部加型別標註。
 - 直向鎖定;遊戲區 180×320,整數倍放大,向外延伸填滿螢幕,像素不平滑。座標約定見 `core/safe_area.gd` 開頭的說明。
 - 測試指令:`tools/run_tests.sh`(全部);`tools/run_tests.sh line_a`(只跑路徑含 `line_a` 的測試)。測試檔命名 `test_*.gd`,`extends TestCase`,範例在 `tests/core/test_example.gd`。
-- 執行遊戲:`godot --path .`(目前的主場景是 Phase 0 的拖曳示範 `tests/phase0/drag_demo.tscn`)。
+- 執行遊戲:`godot --path .`(主場景是 B 線的正式流程 `game/flow/main.tscn`)。從頭到尾自動試玩:`godot --headless --path . res://tests/integration/playthrough_bot.tscn`。整合狀況見 `docs/integration_report.md`。
 - 雲端工作階段沒有 Godot 時,這樣安裝:
 
   ```bash

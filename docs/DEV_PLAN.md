@@ -337,6 +337,8 @@ func reset_run() -> void
 | M3 實機打磨 | Android 實機(經 Google Play 內部或封閉測試安裝);iPhone 實機(經 TestFlight,已具備條件時);手感調整、修錯 | 第 1 節的「完成定義」全部打勾 |
 | M4 上架準備 | 擁有人決定繼續之後:補足上架內容、商店頁面、隱私權政策、內容分級、送審 | 見第 14 節與 `docs/STORE_RELEASE.md` |
 
+**目前進度(2026-11-15):** M0、M1、M2 已完成;M3 進行中(Android 除錯版 APK 已建好,還沒有實機試玩)。詳見 `docs/integration_report.md`。
+
 時間無法準確預估。請以里程碑為準,不要以日期為準;每個里程碑完成後由擁有人試玩再決定是否繼續。
 
 ---
