@@ -1,6 +1,6 @@
 extends Control
 ## 過關結算的替身。正式版:ui/screens/results.tscn(C 線)。
-##   setup(result: Dictionary);訊號 continue_pressed。result 的鍵見 DEV_PLAN 4.9。
+##   setup(result: Dictionary);出現時播 Sfx clear;訊號 continue_pressed。result 的鍵見 DEV_PLAN 4.9。
 
 signal continue_pressed()
 
@@ -19,6 +19,7 @@ func _ready() -> void:
 
 func setup(data: Dictionary) -> void:
 	result = data
+	Sfx.play(&"clear")      # 與 C 線的正式畫面相同:畫面出現時自己播音效
 	var final: bool = data.get("is_final", false)
 	StubUI.add_label(_column, "THE END" if final else "CLEAR!", StubUI.ACCENT, 16)
 	StubUI.add_label(_column, "Level %s" % data.get("level_id", ""))

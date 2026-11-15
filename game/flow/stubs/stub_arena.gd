@@ -119,7 +119,7 @@ func debug_kill_all() -> int:
 
 
 func debug_down_player() -> void:
-	_player.call(&"take_damage", 100000)
+	_player.call(&"force_down")
 
 
 func get_enemy_nodes() -> Array[Node]:

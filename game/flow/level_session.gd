@@ -9,10 +9,10 @@ extends Node
 ##   4. 發 EventBus.level_started,開始波次。
 ## 進行中:記錄擊倒數(enemy_died)與用時(只在遊戲沒有暫停時累計)。
 ## 結束:
-##   - 最後一波清空 → 發 level_completed、播 Sfx clear、發本地訊號 cleared;
+##   - 最後一波清空 → 發 level_completed、發本地訊號 cleared;
 ##     再等 results_delay 秒(讓經驗珠飛完)→ 發 finished(true)。
-##   - 收到 player_downed → 停止生成敵人;等 failure_delay 秒 → 發 level_failed、播 Sfx fail、
-##     發 finished(false)。
+##   - 收到 player_downed → 停止生成敵人;等 failure_delay 秒 → 發 level_failed、發 finished(false)。
+## 音效 clear / fail 由結算畫面自己播(C 線的 results / failure 畫面出現時播放),這裡不播,避免重複。
 ## 計時都在 _process 裡做,遊戲暫停(選把戲、暫停選單、切到背景)時不會走。
 
 signal cleared()
@@ -61,6 +61,8 @@ func start(progression: RunProgression) -> void:
 		push_error("LevelSession: 無法建立場地")
 		return
 	arena.name = "Arena"
+	if arena is Node2D:
+		(arena as Node2D).position = Vector2.ZERO     # 場地在世界原點(相機、邊界、主角都在場地內)
 	add_child(arena)
 	if level.background != null:
 		FlowParts.call_if_present(arena, &"set_background", [level.background])
@@ -119,7 +121,6 @@ func _process(delta: float) -> void:
 			if _countdown <= 0.0:
 				state = State.OVER
 				EventBus.level_failed.emit(level.id)
-				Sfx.play(&"fail")
 				finished.emit(false)
 
 
@@ -134,7 +135,6 @@ func _on_all_waves_cleared() -> void:
 	state = State.WON
 	_countdown = difficulty.results_delay
 	EventBus.level_completed.emit(level.id)
-	Sfx.play(&"clear")
 	cleared.emit()
 
 

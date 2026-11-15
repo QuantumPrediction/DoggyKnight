@@ -76,6 +76,12 @@ func take_damage(amount: int) -> void:
 		_fall_asleep()
 
 
+## 測試與沙盒用:不理會無敵時間,直接把活力打到 0。
+func force_down() -> void:
+	_invulnerable = 0.0
+	take_damage(GameState.vigor * 1000 + 1000)
+
+
 func heal(amount: int) -> void:
 	GameState.vigor = mini(GameState.player_stats.max_vigor, GameState.vigor + amount)
 	EventBus.vigor_changed.emit(GameState.vigor, GameState.player_stats.max_vigor)

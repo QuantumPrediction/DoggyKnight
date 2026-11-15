@@ -2,7 +2,8 @@ extends Node2D
 ## 敵人的替身(只給 B 線的替身場地用)。正式版由 data/enemies/<id>.tres 的 scene 指定(A 線)。
 ##
 ## - 群組 "enemy";提供 setup(data: EnemyData)、take_damage(amount)。
-## - 朝金毛走過去,碰到就造成接觸傷害;敵人之間互相推開,不會疊成一點。
+## - 朝金毛走過去;走到身邊後先預警 WINDUP 秒(變紅),再揮一下造成 contact_damage,
+##   然後休息 SWING_COOLDOWN 秒。預警期間走開就打不中。敵人之間互相推開,不會疊成一點。
 ## - 被點一下(場地處理)或被金毛打到生命歸零就倒下:立即離開 "enemy" 群組,
 ##   發 enemy_died,然後(替身直接代替經驗珠被拾取)發 exp_collected,縮小消失。
 ## - 黑騎士替身:每隔幾秒召喚兩隻稻草人兵(也算在 "enemy" 群組內),生命過半發 boss_phase_changed(2)。
@@ -18,6 +19,10 @@ const STAND_IN_STATS: Dictionary = {
 			"summon_every": 10.0},
 }
 const SEPARATION: float = 30.0
+const WINDUP: float = 0.4               ## 揮擊前的預警(DEV_PLAN A5 的 0.4 秒)
+const SWING_COOLDOWN: float = 1.6       ## 兩次揮擊之間
+const REACH: float = 6.0                ## 身體邊緣以外還打得到的距離
+const WARN_TINT: Color = Color(1.6, 0.5, 0.5)
 const BOSS_SUMMON: StringName = &"scarecrow"
 
 var enemy_id: StringName = &"scarecrow"
@@ -36,6 +41,8 @@ var _summon_timer: float = 0.0
 var _phase: int = 1
 var _flash: float = 0.0
 var _base_tint: Color = Color.WHITE
+var _windup: float = -1.0               # < 0:沒有在預警
+var _swing_cooldown: float = 0.0
 
 
 ## 替身場地呼叫:先用替身數值,再用 A 線的 EnemyData(若存在)覆蓋。
@@ -108,28 +115,51 @@ func _physics_process(delta: float) -> void:
 	if dead:
 		return
 	var player := _player()
-	if player != null and not bool(player.get(&"downed")):
+	var awake := player != null and not bool(player.get(&"downed"))
+	if awake:
 		var to_player := player.global_position - global_position
-		var push := _separation()
-		var step := to_player.normalized() * move_speed + push
-		global_position += step * delta
+		var reach := radius + 7.0 + REACH
 		if to_player.x != 0.0 and _sprite != null:
 			_sprite.flip_h = to_player.x < 0.0
-		if to_player.length() <= radius + 7.0 and player.has_method(&"take_damage"):
-			player.call(&"take_damage", contact_damage)
+		if _windup < 0.0:
+			# 走近,但停在身邊,不疊在金毛身上
+			var dir := to_player.normalized() if to_player.length() > radius + 7.0 else Vector2.ZERO
+			global_position += (dir * move_speed + _separation()) * delta
+		_update_swing(delta, player, to_player.length() <= reach)
 	var bounds := Layout.ARENA_RECT.grow(-radius * 0.5)
 	global_position = global_position.clamp(bounds.position, bounds.end)
-	if _summon_every > 0.0:
+	if _summon_every > 0.0 and awake:
 		_summon_timer -= delta
 		if _summon_timer <= 0.0:
 			_summon_timer = _summon_every
 			_summon()
-	if _flash > 0.0:
-		_flash -= delta
-		if _sprite != null:
-			_sprite.modulate = Color(3, 3, 3) if _flash > 0.0 else _base_tint
+	if _sprite != null:
+		if _flash > 0.0:
+			_flash -= delta
+			_sprite.modulate = Color(3, 3, 3)
+		elif _windup >= 0.0:
+			_sprite.modulate = WARN_TINT
+		else:
+			_sprite.modulate = _base_tint
 	if hp < max_hp:
 		queue_redraw()
+
+
+## 正在預警(即將揮擊)嗎?
+func is_winding_up() -> bool:
+	return _windup >= 0.0 and not dead
+
+
+func _update_swing(delta: float, player: Node2D, in_reach: bool) -> void:
+	_swing_cooldown -= delta
+	if _windup >= 0.0:
+		_windup -= delta
+		if _windup < 0.0:
+			_swing_cooldown = SWING_COOLDOWN
+			if in_reach and player.has_method(&"take_damage"):
+				player.call(&"take_damage", contact_damage)
+	elif in_reach and _swing_cooldown <= 0.0:
+		_windup = WINDUP
 
 
 func _draw() -> void:

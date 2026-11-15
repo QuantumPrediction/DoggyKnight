@@ -35,6 +35,20 @@ func test_level_uses_layers_10_and_20_and_emits_level_started() -> void:
 	assert_eq(GameState.vigor, GameState.player_stats.max_vigor, "新遊戲活力全滿")
 
 
+func test_hud_exists_before_the_player_enters() -> void:
+	make_flow()
+	await wait_frames(1)
+	var hud_ready_when_player_entered := [false]
+	var on_vigor := func(_current: int, _maximum: int) -> void:
+		var hud := flow.get_hud()
+		hud_ready_when_player_entered[0] = hud != null and hud.is_inside_tree() and flow.get_session() != null
+	EventBus.vigor_changed.connect(on_vigor)
+	assert_true(await start_new_game())
+	EventBus.vigor_changed.disconnect(on_vigor)
+	assert_true(hud_ready_when_player_entered[0], "主角進場發 vigor_changed 時,HUD 已在場景樹內")
+	assert_eq((flow.get_arena() as Node2D).global_position, Vector2.ZERO, "場地在世界原點")
+
+
 func test_backgrounding_during_a_level_pauses_and_saves() -> void:
 	make_flow()
 	await wait_frames(1)
