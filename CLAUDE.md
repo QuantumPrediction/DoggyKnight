@@ -44,4 +44,5 @@
   mkdir -p /opt/godot && cd /opt/godot && curl -sSL -o godot.zip https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip && unzip -q godot.zip && rm godot.zip && ln -sf /opt/godot/Godot_v4.7.2-stable_linux.x86_64 /usr/local/bin/godot
   ```
 
+- 需要建置 Android 版時:先執行 `tools/install_android_tooling.sh`(安裝匯出範本與 Android SDK,需要 dl.google.com 與 github.com 的網絡權限),再照 `export/README.md`。
 - 需要截圖時:`xvfb-run -a godot --path . --rendering-driver opengl3`(雲端環境有 Xvfb 與軟體 OpenGL)。注意 Xvfb 沒有視窗管理員,改變視窗大小時要同時設定 `get_tree().root.size`。
