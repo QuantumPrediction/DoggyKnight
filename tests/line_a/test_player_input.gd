@@ -131,3 +131,25 @@ func test_ultimate_needs_full_loyalty() -> void:
 	assert_false(far.is_dead(), "範圍外的不受影響")
 	EventBus.ultimate_requested.emit()
 	assert_eq(used.count, 1, "不能連放")
+
+
+func test_real_touch_events_through_the_viewport() -> void:
+	make_arena()
+	var layer := CanvasLayer.new()
+	layer.layer = 10
+	add_child(layer)
+	var button := Button.new()
+	button.position = Vector2(140, 260)
+	button.size = Vector2(28, 28)
+	button.add_to_group(TouchJoystick.BLOCKER_GROUP)
+	layer.add_child(button)
+	var joystick := player.joystick
+	get_viewport().push_input(_touch(0, Vector2(150, 270), true), true)
+	assert_false(joystick.is_active(), "按在按鈕上:搖桿不出現")
+	get_viewport().push_input(_touch(0, Vector2(150, 270), false), true)
+	get_viewport().push_input(_touch(0, Vector2(60, 200), true), true)
+	assert_true(joystick.is_active(), "按在空地上:搖桿出現(經 _unhandled_input)")
+	get_viewport().push_input(_drag(0, Vector2(60, 170)), true)
+	assert_eq(joystick.get_vector(), Vector2.UP)
+	get_viewport().push_input(_touch(0, Vector2(60, 170), false), true)
+	assert_false(joystick.is_active())

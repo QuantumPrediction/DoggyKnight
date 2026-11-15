@@ -167,8 +167,9 @@ func hit(amount: int, from_position: Vector2, knockback_speed: float) -> void:
 		apply_knockback(from_position, knockback_speed)
 
 
+## 擊退。正在出招(已經預警)時不會被擊退,讓看得到的預警一定會出手;吠叫的暈眩仍可打斷。
 func apply_knockback(from_position: Vector2, speed: float) -> void:
-	if knockback_mult <= 0.0 or speed <= 0.0 or state == State.DYING:
+	if knockback_mult <= 0.0 or speed <= 0.0 or state == State.DYING or _is_committed():
 		return
 	var dir := global_position - from_position
 	if dir.length() < 0.01:
@@ -541,3 +542,8 @@ func _on_died() -> void:
 
 func _uses_separation() -> bool:
 	return true
+
+
+## 正在出招(預警中或揮擊中)。這時不會被擊退。
+func _is_committed() -> bool:
+	return false

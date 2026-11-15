@@ -93,6 +93,10 @@ func _swing() -> void:
 			deg_to_rad(attack_half_angle_deg), data.contact_damage)
 
 
+func _is_committed() -> bool:
+	return phase == Phase.TELEGRAPH or phase == Phase.SWING
+
+
 func _cancel_attack() -> void:
 	super()
 	if phase == Phase.TELEGRAPH or phase == Phase.SWING:

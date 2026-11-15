@@ -210,3 +210,17 @@ func test_boss_moves_are_telegraphed() -> void:
 	var hit := await wait_until(func() -> bool: return damaged.count > 0, 40)
 	assert_true(hit, "站在圈內會被重劈打中")
 	assert_eq(damaged.last_args(), [22])
+
+
+func test_telegraphing_scarecrow_is_not_knocked_back() -> void:
+	make_arena()
+	player.set_physics_process(false)
+	var scarecrow := spawn(&"scarecrow", player.global_position + Vector2(30, 0)) as ScarecrowEnemy
+	await wait_until(func() -> bool: return scarecrow.phase == ScarecrowEnemy.Phase.TELEGRAPH, 90)
+	var pos := scarecrow.global_position
+	scarecrow.hit(1, player.global_position, 110.0)
+	await wait_physics(6)
+	assert_true(scarecrow.global_position.distance_to(pos) < 0.5, "已經預警的攻擊不會被一般攻擊打斷")
+	scarecrow.stun(0.5)
+	assert_ne(scarecrow.phase, ScarecrowEnemy.Phase.TELEGRAPH, "吠叫的暈眩可以打斷")
+	assert_null(scarecrow._telegraph)

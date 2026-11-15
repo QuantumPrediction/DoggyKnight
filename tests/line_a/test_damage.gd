@@ -122,3 +122,16 @@ func test_swings_build_loyalty() -> void:
 	await wait_until(func() -> bool: return loyalty.count > 0, 60)
 	assert_almost_eq(player.loyalty, player.tuning.loyalty_per_hit, 0.001)
 	assert_eq(loyalty.last_args(), [player.tuning.loyalty_per_hit, player.tuning.loyalty_max])
+
+
+func test_revive_wakes_the_player_up() -> void:
+	make_arena()
+	GameState.vigor = 1
+	player.take_damage(5)
+	assert_true(player.is_downed())
+	var vigor := watch_signal(EventBus.vigor_changed)
+	player.revive()
+	assert_false(player.is_downed())
+	assert_eq(GameState.vigor, 100)
+	assert_eq(vigor.last_args(), [100, 100])
+	assert_true(player.joystick.enabled)

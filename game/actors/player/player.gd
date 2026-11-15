@@ -132,6 +132,24 @@ func is_downed() -> bool:
 	return _downed
 
 
+## 叫醒睡著的金毛(給流程或沙盒用;一般重試是重新建立場地)。活力為 0 時回到上限。
+func revive() -> void:
+	if not _downed:
+		return
+	_downed = false
+	if _dizzy != null and is_instance_valid(_dizzy):
+		_dizzy.queue_free()
+	_dizzy = null
+	if joystick != null:
+		joystick.enabled = true
+	if GameState.vigor <= 0:
+		GameState.vigor = GameState.player_stats.max_vigor
+	invuln_left = tuning.invuln_time
+	_blink_left = tuning.invuln_time
+	_play(&"idle")
+	_emit_vigor()
+
+
 # --- 移動輸入 ------------------------------------------------------------------
 
 ## 目前的移動方向(長度 0 或 1)。

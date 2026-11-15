@@ -171,6 +171,10 @@ func _on_damaged(_amount: int) -> void:
 		_land()
 
 
+func _is_committed() -> bool:
+	return phase == Phase.TELEGRAPH
+
+
 func _uses_separation() -> bool:
 	return phase == Phase.TO_EDGE or phase == Phase.CIRCLE or phase == Phase.RECOVER
 
