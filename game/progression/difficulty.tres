@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="DifficultyData" format=3]
+
+[ext_resource type="Script" path="res://game/progression/difficulty_data.gd" id="1_diff"]
+
+[resource]
+script = ExtResource("1_diff")
+exp_first_level_up = 5
+exp_step_per_level = 3
+trick_offer_count = 3
+trick_pool = Array[StringName]([&"sit", &"wag", &"fetch", &"shake", &"spin", &"bark"])
+min_damage_taken_mult = 0.2
+first_wave_delay = 1.5
+inter_wave_delay = 2.5
+spawn_spacing = 0.5
+spawn_jitter = 6.0
+min_spawn_distance = 48.0
+results_delay = 1.5
+failure_delay = 1.0
