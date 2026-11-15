@@ -94,14 +94,14 @@ func emit_exp_changed() -> void:
 	EventBus.exp_changed.emit(_exp.current(), _exp.needed())
 
 
-## 關卡開始時的快照,失敗重試時還原(數值、把戲、等級、經驗、下一關加成)。
+## 關卡開始時的快照,失敗重試時還原(數值、把戲、等級、經驗)。
+## next_level_bonus 不在快照內:重試時保持原值(DEV_PLAN 4.9:失敗重試時保留)。
 func take_snapshot() -> Dictionary:
 	return {
 		"stats": GameState.player_stats.duplicate(),
 		"tricks": GameState.active_tricks.duplicate(),
 		"hero_level": GameState.hero_level,
 		"exp_centi": _exp.get_centi(),
-		"next_level_bonus": GameState.next_level_bonus,
 	}
 
 
@@ -110,7 +110,6 @@ func restore_snapshot(snapshot: Dictionary) -> void:
 	GameState.player_stats = (snapshot["stats"] as StatBlock).duplicate() as StatBlock
 	GameState.active_tricks.assign(snapshot["tricks"] as Array)
 	GameState.hero_level = snapshot["hero_level"]
-	GameState.next_level_bonus = snapshot["next_level_bonus"]
 	_exp.set_state(GameState.hero_level, snapshot["exp_centi"])
 
 

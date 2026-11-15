@@ -72,7 +72,8 @@ func read() -> Dictionary:
 	if not FileAccess.file_exists(path):
 		return {}
 	var text := FileAccess.get_file_as_string(path)
-	var parsed: Variant = JSON.parse_string(text)
+	var json := JSON.new()
+	var parsed: Variant = json.data if json.parse(text) == OK else null
 	if not parsed is Dictionary:
 		push_warning("SaveStore: 存檔內容無效,當作沒有存檔")
 		return {}
