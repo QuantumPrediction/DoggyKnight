@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="MinigameGrading" format=3]
+
+[ext_resource type="Script" path="res://game/minigames/minigame_grading.gd" id="1_grading"]
+
+[resource]
+script = ExtResource("1_grading")
+grade_thresholds = Array[int]([80, 160, 240])
+vigor_restore_ratio = Array[float]([0.25, 0.5, 0.75, 1.0])
+satisfaction_gain = Array[int]([5, 10, 20, 30])
+next_level_bonus = Array[float]([0.0, 0.05, 0.1, 0.15])
