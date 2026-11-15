@@ -30,3 +30,6 @@
 Thumbs.db
 *.tmp
 *~
+
+# Claude Code 工作階段的暫存工作副本
+/.claude/worktrees/
