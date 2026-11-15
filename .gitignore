@@ -1,0 +1,29 @@
+# Godot 4 的快取與匯入結果(會自動重建)。
+# 這個資料夾也存放匯出密碼(.godot/export_credentials.cfg),絕對不能提交。
+.godot/
+
+# Android 建置範本(由 Godot 編輯器「安裝 Android 建置範本」產生)。
+# D 線若需要修改範本內容,請提出申請,由整合工作階段調整這一行。
+/android/
+
+# 匯出產生的安裝檔與建置輸出
+*.apk
+*.aab
+*.ipa
+*.idsig
+/export/build/
+
+# 金鑰、憑證與描述檔(DEV_PLAN 第 3 節:一律不得提交)
+*.keystore
+*.jks
+*.p12
+*.p8
+*.cer
+*.mobileprovision
+*.provisionprofile
+
+# 作業系統與編輯器雜檔
+.DS_Store
+Thumbs.db
+*.tmp
+*~

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="StatBlock" format=3]
+
+[ext_resource type="Script" path="res://core/data/stat_block.gd" id="1_stat"]
+
+[resource]
+script = ExtResource("1_stat")
+max_vigor = 100
+move_speed = 70.0
+attack_damage = 10
+attack_interval = 0.5
+attack_range = 28.0
+damage_taken_mult = 1.0
+pickup_radius = 24.0
+exp_mult = 1.0
