@@ -20,7 +20,8 @@ var _accept_at: float = 0.0
 
 func _ready() -> void:
 	UiKit.setup_root(self)
-	mouse_filter = Control.MOUSE_FILTER_STOP
+	# 根節點不攔觸控;打開時由半透明底色(dim)擋住後面的點擊,隱藏時完全不影響 A 線的搖桿。
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(UiKit.dim())
 	_box = Control.new()
 	_box.mouse_filter = Control.MOUSE_FILTER_IGNORE

@@ -75,9 +75,14 @@ static func setup_root(root: Control, always_process: bool = true) -> void:
 
 
 static func tap_sound() -> void:
+	play_sfx(&"ui_tap")
+
+
+## 播放音效(經 Sfx Autoload;節點還沒加入場景時也可以呼叫)。
+static func play_sfx(id: StringName) -> void:
 	var sfx := _autoload(&"Sfx")
 	if sfx != null:
-		sfx.call(&"play", &"ui_tap")
+		sfx.call(&"play", id)
 
 
 ## 遊戲區在畫面上的位置(邏輯像素);介面依安全區排列,但不超出這個寬度太多。

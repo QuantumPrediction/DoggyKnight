@@ -25,6 +25,7 @@ func test_root_contract() -> void:
 	assert_eq(ui.process_mode, Node.PROCESS_MODE_ALWAYS)
 	assert_eq(ui.anchor_right, 1.0)
 	assert_eq(ui.anchor_bottom, 1.0)
+	assert_eq(ui.mouse_filter, Control.MOUSE_FILTER_IGNORE, "根節點不攔觸控(隱藏時不擋 A 線搖桿)")
 	assert_false(ui.visible)
 
 

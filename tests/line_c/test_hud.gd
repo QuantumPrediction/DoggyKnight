@@ -120,3 +120,22 @@ func test_layout_stays_inside_safe_area_on_many_phones() -> void:
 		var pause: Control = hud.get("pause_button")
 		var bar: Control = hud.get("vigor_bar")
 		assert_true(pause.position.x - (bar.position.x + bar.size.x) >= 4.0, "按鈕與數值條之間至少 4 像素")
+
+
+func _touch_catchers(node: Node, out: Array[Control]) -> void:
+	for c in node.get_children():
+		if c is Control:
+			var ctl := c as Control
+			if ctl.is_visible_in_tree() and ctl.mouse_filter != Control.MOUSE_FILTER_IGNORE:
+				out.append(ctl)
+		_touch_catchers(c, out)
+
+
+func test_only_blocker_buttons_catch_touches() -> void:
+	EventBus.loyalty_changed.emit(100.0, 100.0)
+	EventBus.wave_started.emit(1, 3)
+	var catchers: Array[Control] = []
+	_touch_catchers(hud, catchers)
+	assert_eq(catchers.size(), 2, "只有暫停與必殺技兩個按鈕會攔觸控:%s" % [catchers])
+	for c in catchers:
+		assert_true(c.is_in_group(&"ui_touch_blocker"), "%s 在 ui_touch_blocker 群組" % c.name)

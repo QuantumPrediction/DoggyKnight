@@ -133,12 +133,14 @@ func _character_page(spec: Array) -> void:
 func _fx_page() -> void:
 	_backdrop(PaletteColors.FOREST)
 	_title.text = "fx + icons(%d/%d)" % [page + 1, _pages.size()]
-	var g := _grid(3)
+	var g := _grid(2)
 	for fx in FX:
 		var box := UiKit.sprite_box("res://assets/fx/%s/%s_frames.tres" % [fx, fx], &"default", 1 if fx == "ultimate_slash" else 2)
 		g.add_child(_cell(box, fx))
-	var icons := HBoxContainer.new()
-	icons.add_theme_constant_override(&"separation", 4)
+	var icons := GridContainer.new()
+	icons.columns = 3
+	icons.add_theme_constant_override(&"h_separation", 4)
+	icons.add_theme_constant_override(&"v_separation", 4)
 	for t in TRICKS:
 		icons.add_child(UiKit.texture_rect(load("res://assets/icons/tricks/%s.png" % t) as Texture2D, 1))
 	g.add_child(_cell(icons, "tricks"))

@@ -65,9 +65,7 @@ func setup(result: Dictionary) -> void:
 	_result = result
 	if is_node_ready():
 		_apply()
-	var sfx := get_node_or_null(^"/root/Sfx")
-	if sfx != null:
-		sfx.call(&"play", &"fail")
+	UiKit.play_sfx(&"fail")
 
 
 func _stat_row(grid: GridContainer, title: String) -> Label:

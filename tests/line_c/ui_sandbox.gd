@@ -3,7 +3,7 @@ extends Node
 ## 並暫代 B 線處理暫停、繼續、回標題,暫代 A 線處理必殺技。
 ##
 ## 執行:godot --path . res://tests/line_c/ui_sandbox.tscn
-## 按左上「工具」打開/收起按鈕面板。Esc = Android 返回鍵(打開/關閉暫停選單)。
+## 按左上「工具」打開按鈕面板,選一個動作後面板自動收起。Esc = Android 返回鍵(打開/關閉暫停選單)。
 ## 這是開發工具,文字不翻譯。
 
 const TRICK_IDS: Array[String] = ["sit", "wag", "fetch", "shake", "spin", "bark"]
@@ -119,6 +119,8 @@ func _build_tools() -> void:
 	for a: Array in actions:
 		var b := UiKit.button(a[0], &"", Vector2(80, 24))
 		b.pressed.connect(a[1])
+		# 按下後收起面板,才看得到效果;再按「工具」打開。
+		b.pressed.connect(func() -> void: panel.visible = false)
 		grid.add_child(b)
 	status_label = UiKit.label("", &"LabelLight", HORIZONTAL_ALIGNMENT_LEFT)
 	root.add_child(status_label)
