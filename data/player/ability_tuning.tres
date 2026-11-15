@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="AbilityTuning" format=3]
+
+[ext_resource type="Script" path="res://game/combat/abilities/ability_tuning.gd" id="1_tuning"]
+
+[resource]
+script = ExtResource("1_tuning")
+shake_every = 4
+shake_every_min = 2
+shake_multiplier = 2.0
+shake_multiplier_per_extra_stack = 0.5
+spin_cooldown = 6.0
+spin_cooldown_stack_mult = 0.8
+spin_cooldown_min = 2.5
+spin_radius = 34.0
+spin_radius_per_stack = 6.0
+spin_damage_mult = 1.0
+spin_knockback_speed = 120.0
+bark_cooldown = 8.0
+bark_cooldown_stack_mult = 0.85
+bark_cooldown_min = 4.0
+bark_radius = 48.0
+bark_radius_per_stack = 8.0
+bark_stun_time = 1.5
+bark_stun_per_stack = 0.5
