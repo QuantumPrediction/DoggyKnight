@@ -260,6 +260,44 @@ BANNER = [
     "P....P",
 ]
 
+def big_sword_stone() -> Canvas:
+    """The sword in the stone for level 1-1 (34x34), a mossy boulder with a shining sword."""
+    c = Canvas(34, 34)
+    c.ellipse(17, 25, 15.5, 8, "stone")
+    c.ellipse(14, 23, 11, 5.5, "stone_l")
+    c.ellipse(20, 28, 12, 4, "stone")
+    for x in range(3, 31):
+        for y in range(27, 34):
+            if c.opaque(x, y) and y >= 31 - abs(x - 17) // 6:
+                c.set(x, y, "stone_d")
+    for (x, y) in [(8, 21), (9, 20), (10, 20), (24, 21), (25, 22), (6, 24), (27, 25), (11, 19)]:
+        c.set(x, y, "leaf")
+    for (x, y) in [(9, 21), (25, 21), (7, 24), (26, 25)]:
+        c.set(x, y, "leaf_d")
+    c.line(22, 25, 24, 28, "stone_d")
+    c.line(10, 27, 12, 29, "stone_d")
+    sword = Canvas(34, 34)
+    for y in range(6, 23):
+        sword.set(16, y, "white" if y < 12 else "steel_l")
+        sword.set(17, y, "steel")
+    sword.hline(12, 21, 5, "yellow")
+    sword.set(16, 5, "gold_d")
+    sword.set(17, 5, "gold_d")
+    for y in range(2, 5):
+        sword.set(16, y, "brown")
+        sword.set(17, y, "brown_d")
+    sword.set(16, 1, "yellow")
+    sword.set(17, 1, "yellow")
+    sword.set(16, 0, "white")
+    sword.outline_all()
+    c.outline_all()
+    c.blit(sword, 0, 0)
+    for y in range(20, 23):
+        c.set(15, y, "stone_d")
+        c.set(18, y, "stone_d")
+    return c
+
+
 def prop(grid: list[str], outline: bool = True) -> Canvas:
     w = max(len(r) for r in grid) + 2
     h = len(grid) + 2
@@ -358,8 +396,8 @@ def sword_stone(tiles: dict[str, Canvas]) -> Canvas:
         b.put(BUSH, x, y)
     # the sword in the stone: centred above the arena, just under where the HUD ends
     sx, sy = b.world_to_img(90, 56)
-    b.put(SWORD_STONE, sx - 10, sy - 14)
-    for (x, y) in ((sx - 14, sy - 10), (sx + 12, sy - 6), (sx - 8, sy + 2), (sx + 16, sy + 4)):
+    b.put(big_sword_stone(), sx - 17, sy - 18)
+    for (x, y) in ((sx - 16, sy - 14), (sx + 14, sy - 10), (sx - 12, sy + 4), (sx + 18, sy + 2)):
         b.img.set(x, y, "white")
         for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
             b.img.set(x + dx, y + dy, "yellow")
