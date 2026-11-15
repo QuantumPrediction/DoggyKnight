@@ -368,7 +368,7 @@ func _add_ui(path: String, layer: CanvasLayer) -> Node:
 
 
 func _free_node(node: Variant) -> void:
-	if node is Node and is_instance_valid(node):
+	if is_instance_valid(node) and node is Node:
 		var n := node as Node
 		if n.get_parent() != null:
 			n.get_parent().remove_child(n)
