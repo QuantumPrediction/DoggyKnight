@@ -1,0 +1,278 @@
+class_name BulldogCompanion
+extends CharacterBody2D
+## 貝德維爾的鬥牛犬(A8)。合約(DEV_PLAN 4.4):群組 "companion"。
+##
+## - 平時跟在金毛身邊;金毛附近有敵人時,走向離自己最近的敵人,貼近後舉盾("guard" 動畫)。
+## - 舉盾時:挑釁範圍內的敵人改打牠(敵人看 is_taunting() 與 taunt_radius),受到的傷害減 80%,
+##   每隔一段時間用盾撞一下(6 點傷害)。
+## - 牠不會倒下:累積受到一定傷害後暈眩 3 秒(冒星星、不挑釁),然後自己站起來。
+## - 離金毛太遠時一定先回到金毛身邊。
+
+enum Mode { FOLLOW, APPROACH, GUARD, DAZED }
+
+const COMPANION_GROUP: StringName = &"companion"
+const ENEMY_GROUP: StringName = &"enemy"
+const PLAYER_GROUP: StringName = &"player"
+const GUARD_COLOR := Color(0.55, 0.8, 1.0, 0.6)
+
+@export_group("移動")
+@export var move_speed: float = 55.0
+@export var sprint_mult: float = 1.6             ## 離目標很遠時跑快一點
+@export var sprint_distance: float = 48.0
+@export var follow_distance: float = 16.0
+@export var accel: float = 700.0
+@export var body_radius: float = 7.0
+@export_group("舉盾")
+@export var engage_radius: float = 72.0          ## 只理會金毛附近這個範圍內的敵人
+@export var leash_radius: float = 100.0          ## 離金毛超過這個距離就先回去
+@export var guard_distance: float = 5.0          ## 與敵人身體之間的距離小於這個就舉盾
+@export var guard_min_time: float = 0.6
+@export var taunt_radius: float = 44.0
+@export var guard_reduction: float = 0.8
+@export_group("盾撞")
+@export var bump_damage: int = 6
+@export var bump_interval: float = 0.9
+@export var bump_reach: float = 8.0
+@export var bump_knockback: float = 70.0
+@export_group("暈眩")
+@export var daze_threshold: float = 24.0         ## 累積受到這麼多傷害就暈眩
+@export var daze_time: float = 3.0
+@export var hurt_anim_time: float = 0.2
+
+var data: CompanionData
+var companion_id: StringName = &"bulldog"
+var mode: Mode = Mode.FOLLOW
+var daze_meter: float = 0.0
+var damage_taken_total: int = 0
+var times_dazed: int = 0
+var bumps: int = 0
+var facing: Vector2 = Vector2.RIGHT
+var sprite: AnimatedSprite2D
+
+var _target_enemy: Node2D
+var _mode_time: float = 0.0
+var _bump_timer: float = 0.0
+var _daze_left: float = 0.0
+var _hurt_left: float = 0.0
+var _bump_anim_left: float = 0.0
+var _dizzy: Node2D
+var _frame_size: Vector2 = Vector2(24, 24)
+var _arena_margin: Vector2 = Vector2(7, 7)
+var _age: float = 0.0
+
+
+func setup(p_data: CompanionData) -> void:
+	data = p_data
+	if data != null and data.id != &"":
+		companion_id = data.id
+
+
+func _ready() -> void:
+	add_to_group(COMPANION_GROUP)
+	sprite = $Sprite as AnimatedSprite2D
+	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
+	collision_layer = Layers.COMPANION
+	collision_mask = Layers.ARENA
+	var frames := sprite.sprite_frames
+	if frames != null and frames.has_animation(&"idle") and frames.get_frame_count(&"idle") > 0:
+		_frame_size = frames.get_frame_texture(&"idle", 0).get_size()
+	_arena_margin = CombatMath.sprite_margin(_frame_size, body_radius)
+	_play(&"idle")
+
+
+func _physics_process(delta: float) -> void:
+	_age += delta
+	_mode_time += delta
+	_hurt_left = maxf(0.0, _hurt_left - delta)
+	_bump_anim_left = maxf(0.0, _bump_anim_left - delta)
+	var player := get_tree().get_first_node_in_group(PLAYER_GROUP) as Node2D
+	var desired := Vector2.ZERO
+	if mode == Mode.DAZED:
+		_daze_left -= delta
+		if _daze_left <= 0.0:
+			_recover()
+	else:
+		_think(player)
+		desired = _act(delta, player)
+	velocity = velocity.move_toward(desired, accel * delta)
+	move_and_slide()
+	global_position = CombatMath.clamp_to_bounds(global_position, _arena_margin)
+	_update_animation()
+	if mode == Mode.GUARD:
+		queue_redraw()
+
+
+# --- 合約與狀態 -------------------------------------------------------------------
+
+func take_damage(amount: int) -> void:
+	if amount <= 0 or mode == Mode.DAZED:
+		return
+	var reduced := float(amount) * (1.0 - guard_reduction) if mode == Mode.GUARD else float(amount)
+	var final := maxi(1, roundi(reduced))
+	damage_taken_total += final
+	daze_meter += final
+	_hurt_left = hurt_anim_time
+	CombatFx.spawn(self, &"hit_spark", global_position + Vector2(0, -_frame_size.y * 0.3), 0.0,
+			Vector2.ONE * 0.8, GUARD_COLOR if mode == Mode.GUARD else Color(1.0, 0.95, 0.55))
+	if daze_meter >= daze_threshold:
+		_daze()
+
+
+func is_taunting() -> bool:
+	return mode == Mode.GUARD
+
+
+func is_dazed() -> bool:
+	return mode == Mode.DAZED
+
+
+func _daze() -> void:
+	_set_mode(Mode.DAZED)
+	_daze_left = daze_time
+	daze_meter = 0.0
+	times_dazed += 1
+	_target_enemy = null
+	if _dizzy == null:
+		_dizzy = CombatFx.attach(self, &"dizzy_stars", Vector2(0, -_frame_size.y * 0.55))
+	queue_redraw()
+
+
+func _recover() -> void:
+	_set_mode(Mode.FOLLOW)
+	if _dizzy != null and is_instance_valid(_dizzy):
+		_dizzy.queue_free()
+	_dizzy = null
+
+
+func _set_mode(new_mode: Mode) -> void:
+	if mode == new_mode:
+		return
+	mode = new_mode
+	_mode_time = 0.0
+	if new_mode == Mode.GUARD:
+		_bump_timer = bump_interval * 0.5
+	queue_redraw()
+
+
+# --- 判斷與行動 -------------------------------------------------------------------
+
+func _think(player: Node2D) -> void:
+	if player != null and global_position.distance_to(player.global_position) > leash_radius:
+		_target_enemy = null
+		_set_mode(Mode.FOLLOW)
+		return
+	if mode == Mode.GUARD and _mode_time < guard_min_time and _is_valid_enemy(_target_enemy):
+		return
+	var enemy := _pick_enemy(player)
+	if enemy == null:
+		_target_enemy = null
+		_set_mode(Mode.FOLLOW)
+		return
+	_target_enemy = enemy
+	var gap := _gap_to(enemy)
+	if gap <= guard_distance or (mode == Mode.GUARD and gap <= guard_distance + 8.0):
+		_set_mode(Mode.GUARD)
+	else:
+		_set_mode(Mode.APPROACH)
+
+
+func _act(delta: float, player: Node2D) -> Vector2:
+	match mode:
+		Mode.APPROACH:
+			var to_enemy := _target_enemy.global_position - global_position
+			facing = to_enemy.normalized()
+			return facing * move_speed * (sprint_mult if to_enemy.length() > sprint_distance else 1.0)
+		Mode.GUARD:
+			facing = (_target_enemy.global_position - global_position).normalized()
+			_bump_timer += delta
+			if _bump_timer >= bump_interval and _gap_to(_target_enemy) <= bump_reach:
+				_bump()
+			return Vector2.ZERO
+		_:
+			if player == null:
+				return Vector2.ZERO
+			var to_player := player.global_position - global_position
+			var dist := to_player.length()
+			if dist <= follow_distance + 4.0:
+				return Vector2.ZERO
+			facing = to_player / dist
+			return facing * move_speed * (sprint_mult if dist > sprint_distance else 1.0)
+
+
+func _bump() -> void:
+	_bump_timer = 0.0
+	bumps += 1
+	_bump_anim_left = 0.2
+	_play(&"attack", true)
+	if _target_enemy.has_method(&"hit"):
+		_target_enemy.call(&"hit", bump_damage, global_position, bump_knockback)
+	else:
+		_target_enemy.call(&"take_damage", bump_damage)
+	CombatFx.spawn(self, &"hit_spark", global_position.lerp(_target_enemy.global_position, 0.5), randf() * TAU,
+			Vector2.ONE * 0.8)
+
+
+func _pick_enemy(player: Node2D) -> Node2D:
+	var center := player.global_position if player != null else global_position
+	var best: Node2D = null
+	var best_distance := INF
+	for node in get_tree().get_nodes_in_group(ENEMY_GROUP):
+		var enemy := node as Node2D
+		if not _is_valid_enemy(enemy) or center.distance_to(enemy.global_position) > engage_radius:
+			continue
+		var d := global_position.distance_to(enemy.global_position)
+		if d < best_distance:
+			best = enemy
+			best_distance = d
+	return best
+
+
+func _is_valid_enemy(enemy: Node2D) -> bool:
+	if enemy == null or not is_instance_valid(enemy) or not enemy.is_inside_tree() or not enemy.is_in_group(ENEMY_GROUP):
+		return false
+	return not enemy.has_method(&"is_targetable") or bool(enemy.call(&"is_targetable"))
+
+
+func _gap_to(enemy: Node2D) -> float:
+	var r: Variant = enemy.get(&"body_radius")
+	return global_position.distance_to(enemy.global_position) - body_radius - (float(r) if r != null else 6.0)
+
+
+# --- 表現 -----------------------------------------------------------------------
+
+func _update_animation() -> void:
+	if absf(facing.x) > 0.05:
+		sprite.flip_h = facing.x < 0.0
+	if mode == Mode.DAZED or _hurt_left > 0.0:
+		_play(&"hurt")
+	elif _bump_anim_left > 0.0:
+		pass
+	elif mode == Mode.GUARD:
+		_play(&"guard")
+	elif velocity.length() > 4.0:
+		_play(&"run")
+	else:
+		_play(&"idle")
+
+
+func _play(anim: StringName, restart: bool = false) -> void:
+	var frames := sprite.sprite_frames
+	if frames == null or not frames.has_animation(anim):
+		return
+	if sprite.animation != anim or restart:
+		sprite.play(anim)
+		if restart:
+			sprite.set_frame_and_progress(0, 0.0)
+	elif not sprite.is_playing() and frames.get_animation_loop(anim):
+		sprite.play(anim)
+
+
+func _draw() -> void:
+	var w := _frame_size.x * 0.32
+	draw_set_transform(Vector2(0, _frame_size.y * 0.42), 0.0, Vector2(1.0, 0.4))
+	draw_circle(Vector2.ZERO, w, Color(0, 0, 0, 0.25))
+	if mode == Mode.GUARD:
+		# 舉盾時腳下有一圈淡藍色的光,表示「我在擋」。
+		var pulse := 0.5 + 0.5 * sin(_age * 8.0)
+		draw_arc(Vector2.ZERO, w + 4.0 + pulse * 2.0, 0.0, TAU, 20, Color(GUARD_COLOR, 0.35 + 0.3 * pulse), 1.5)
+	draw_set_transform(Vector2.ZERO)
