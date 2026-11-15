@@ -52,3 +52,12 @@ func test_layout_constants() -> void:
 	assert_eq(Layout.ARENA_RECT.size, Vector2(11 * Layout.TILE, 14 * Layout.TILE), "11×14 格")
 	assert_true(Rect2(Vector2.ZERO, SafeArea.GAME_SIZE).encloses(Layout.ARENA_RECT), "場地在遊戲區內")
 	assert_true(Layout.ARENA_RECT.has_point(Layout.PLAYER_START))
+
+
+func test_mobile_power_and_ios_settings() -> void:
+	assert_eq(_setting("application/run/max_fps"), 60, "高更新率手機鎖 60 FPS")
+	assert_eq(_setting("display/window/ios/allow_high_refresh_rate"), false)
+	assert_eq(_setting("audio/general/ios/session_category"), 0, "Ambient:靜音鍵打開時不發聲")
+	assert_eq(_setting("display/window/ios/hide_status_bar"), true)
+	assert_eq(_setting("display/window/ios/hide_home_indicator"), true)
+	assert_eq(_setting("display/window/ios/suppress_ui_gesture"), true)

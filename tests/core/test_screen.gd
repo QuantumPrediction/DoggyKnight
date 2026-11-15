@@ -73,3 +73,16 @@ func test_simulated_notch_on_desktop() -> void:
 	var notched := SafeArea.get_safe_rect()
 	assert_almost_eq(notched.position.y, full.position.y + SafeArea.SIMULATED_TOP_INSET)
 	assert_almost_eq(notched.end.y, full.end.y - SafeArea.SIMULATED_BOTTOM_INSET)
+
+
+func test_refits_when_window_shrinks_without_size_changed() -> void:
+	var root := get_tree().root
+	var original := root.size
+	root.size = Vector2i(392, 852)
+	await wait_frames(2)
+	assert_eq(SafeArea.get_screen_size(), Vector2(196, 426))
+	root.size = Vector2i(368, 798)
+	await wait_frames(2)
+	assert_eq(SafeArea.get_screen_size(), Vector2(184, 399), "縮小後重新適配")
+	root.size = original
+	await wait_frames(2)

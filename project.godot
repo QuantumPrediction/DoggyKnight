@@ -16,6 +16,11 @@ run/main_scene="res://tests/phase0/drag_demo.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://assets/app_icon/icon.png"
 config/quit_on_go_back=false
+run/max_fps=60
+
+[audio]
+
+general/ios/session_category=0
 
 [autoload]
 
@@ -35,6 +40,11 @@ window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 window/stretch/scale_mode="integer"
 window/handheld/orientation=1
+window/vsync/vsync_mode=1
+window/ios/allow_high_refresh_rate=false
+window/ios/hide_status_bar=true
+window/ios/hide_home_indicator=true
+window/ios/suppress_ui_gesture=true
 
 [input]
 
