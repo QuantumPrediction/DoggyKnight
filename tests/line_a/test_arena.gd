@@ -76,7 +76,8 @@ func test_set_background_replaces_the_ground() -> void:
 	assert_eq(arena.background.get_child_count(), 1, "預設背景")
 	arena.set_background(load("res://assets/backgrounds/bridge.tscn") as PackedScene)
 	assert_eq(arena.background.get_child_count(), 1)
-	assert_eq(arena.background.get_child(0).get(&"variant"), "bridge")
+	# 背景由 C 線原地替換,不能依賴背景場景內部的屬性;只核對載入的是哪一個場景。
+	assert_eq(arena.background.get_child(0).scene_file_path, "res://assets/backgrounds/bridge.tscn")
 	arena.set_background(null)
 	assert_eq(arena.background.get_child_count(), 0)
 
