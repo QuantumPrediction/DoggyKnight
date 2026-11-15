@@ -6,8 +6,8 @@ extends Resource
 ## 數值怎樣套用(相加還是相乘)由 B 線決定並寫進 B 線的測試。
 
 @export var id: StringName
-@export var display_name: String
-@export var description: String
+@export var display_name: String              ## 翻譯鍵,例如 "TRICK_SIT_NAME";介面用 tr() 顯示
+@export var description: String               ## 翻譯鍵,例如 "TRICK_SIT_DESC"
 @export var icon: Texture2D
 @export var stat_modifiers: Dictionary = {}
 @export var is_ability: bool = false

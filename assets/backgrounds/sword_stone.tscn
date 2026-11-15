@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/backgrounds/sword_stone.png" id="1_bg"]
+
+[node name="Background" type="Node2D"]
+
+[node name="Image" type="Sprite2D" parent="."]
+texture = ExtResource("1_bg")
+centered = false
+position = Vector2(-62, -88)

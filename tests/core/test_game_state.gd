@@ -58,7 +58,7 @@ func test_data_classes_have_contract_fields() -> void:
 		EnemyData: ["id", "display_name", "scene", "max_hp", "contact_damage", "move_speed", "exp_value"],
 		CompanionData: ["id", "display_name", "scene", "role"],
 		TrickData: ["id", "display_name", "description", "icon", "stat_modifiers", "is_ability"],
-		LevelData: ["id", "display_name", "waves", "is_boss", "arena_scene"],
+		LevelData: ["id", "display_name", "waves", "is_boss", "arena_scene", "companions", "background"],
 		WaveData: ["spawns"],
 		SpawnEntry: ["enemy_id", "count", "delay"],
 	}

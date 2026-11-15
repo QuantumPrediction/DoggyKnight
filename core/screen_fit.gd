@@ -11,10 +11,20 @@ extends Node
 const BASE_SIZE: Vector2i = Vector2i(180, 320)
 
 
+var _last_window_px: Vector2i = Vector2i.ZERO
+
+
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	get_tree().root.size_changed.connect(_refit)
 	_refit()
+
+
+# 視窗縮小時,若 Godot 算出的可見大小剛好不變,size_changed 不會發出
+# (例如 392×852 → 368×798)。所以每格也比對視窗的實體大小。
+func _process(_delta: float) -> void:
+	if get_tree().root.size != _last_window_px:
+		_refit()
 
 
 ## 視窗(實體像素)對應的整數放大倍數。
@@ -33,6 +43,7 @@ static func compute_viewport_size(window_px: Vector2i) -> Vector2i:
 func _refit() -> void:
 	var root := get_tree().root
 	var window_px := root.size
+	_last_window_px = window_px
 	if window_px.x <= 0 or window_px.y <= 0:
 		return
 	var target := compute_viewport_size(window_px)

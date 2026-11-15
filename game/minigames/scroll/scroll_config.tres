@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="ScrollMinigameConfig" format=3]
+
+[ext_resource type="Script" path="res://game/minigames/scroll/scroll_minigame_config.gd" id="1_config"]
+[ext_resource type="Resource" path="res://game/minigames/scroll/scroll_grading.tres" id="2_grading"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/goldie/goldie_frames.tres" id="3_goldie"]
+
+[resource]
+script = ExtResource("1_config")
+minigame_id = &"scroll"
+grading = ExtResource("2_grading")
+duration_sec = 15.0
+countdown_sec = 3.0
+results_delay_sec = 1.2
+results_min_sec = 1.0
+results_auto_close_sec = 0.0
+resume_on_foreground = false
+time_warning_sec = 3.0
+pull_ratio = 0.6
+max_pull_per_event = 24.0
+px_per_score = 10.0
+scroll_sfx_every_px = 36.0
+ink_first_at = 260.0
+ink_gap_min = 280.0
+ink_gap_max = 480.0
+ink_still_sec = 0.45
+ink_swipe_tolerance_px = 4.0
+ink_penalty_sec = 1.5
+ink_pass_sec = 0.3
+ink_warn_px = 44.0
+ink_size = 10.0
+ink_face_sec = 1.2
+rng_seed = 0
+swipe_zone_bottom_margin = 24.0
+paper_width = 52.0
+hint_swipes_to_hide = 2
+hint_idle_sec = 1.5
+goldie_frames = ExtResource("3_goldie")
+goldie_animation = &"idle"
+goldie_tangled_animation = &"idle"
+goldie_scale = 2.0

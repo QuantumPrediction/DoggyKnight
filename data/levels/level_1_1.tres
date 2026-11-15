@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="LevelData" format=3]
+
+[ext_resource type="Script" path="res://core/data/level_data.gd" id="1_level"]
+[ext_resource type="Script" path="res://core/data/wave_data.gd" id="2_wave"]
+[ext_resource type="Script" path="res://core/data/spawn_entry.gd" id="3_spawn"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/sword_stone.tscn" id="4_bg"]
+
+[sub_resource type="Resource" id="wave1_spawn1"]
+script = ExtResource("3_spawn")
+enemy_id = &"scarecrow"
+count = 3
+delay = 0.0
+
+[sub_resource type="Resource" id="wave1_spawn2"]
+script = ExtResource("3_spawn")
+enemy_id = &"scarecrow"
+count = 3
+delay = 7.0
+
+[sub_resource type="Resource" id="wave1_spawn3"]
+script = ExtResource("3_spawn")
+enemy_id = &"scarecrow"
+count = 2
+delay = 13.0
+
+[sub_resource type="Resource" id="wave1"]
+script = ExtResource("2_wave")
+spawns = Array[ExtResource("3_spawn")]([SubResource("wave1_spawn1"), SubResource("wave1_spawn2"), SubResource("wave1_spawn3")])
+
+[sub_resource type="Resource" id="wave2_spawn1"]
+script = ExtResource("3_spawn")
+enemy_id = &"scarecrow"
+count = 3
+delay = 0.0
+
+[sub_resource type="Resource" id="wave2_spawn2"]
+script = ExtResource("3_spawn")
+enemy_id = &"scarecrow"
+count = 3
+delay = 8.0
+
+[sub_resource type="Resource" id="wave2_spawn3"]
+script = ExtResource("3_spawn")
+enemy_id = &"scarecrow"
+count = 2
+delay = 14.0
+
+[sub_resource type="Resource" id="wave2"]
+script = ExtResource("2_wave")
+spawns = Array[ExtResource("3_spawn")]([SubResource("wave2_spawn1"), SubResource("wave2_spawn2"), SubResource("wave2_spawn3")])
+
+[resource]
+script = ExtResource("1_level")
+id = &"1-1"
+display_name = "LEVEL_1_1"
+waves = Array[ExtResource("2_wave")]([SubResource("wave1"), SubResource("wave2")])
+is_boss = false
+companions = Array[StringName]([])
+background = ExtResource("4_bg")

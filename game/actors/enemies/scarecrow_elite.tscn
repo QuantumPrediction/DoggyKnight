@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://game/actors/enemies/scarecrow.tscn" id="1_base"]
+
+[node name="ScarecrowElite" instance=ExtResource("1_base")]
+body_radius = 8.0
+visual_scale = 1.3333
+tint = Color(1, 0.62, 0.55, 1)
+knockback_mult = 0.35
+separation_radius = 21.0
+max_exp_orbs = 3
+attack_trigger_range = 15.0
+attack_radius = 18.0
+attack_half_angle_deg = 70.0
+recover_time = 0.6

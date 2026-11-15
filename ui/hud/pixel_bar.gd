@@ -1,0 +1,94 @@
+class_name PixelBar
+extends Control
+## HUD 用的像素數值條(C8):深色外框、底色、填色與一列亮邊。
+## 數值變少時留下一段白色「殘影」慢慢縮短,讓玩家看得出剛才少了多少。
+
+@export var fill_color: Color = PaletteColors.RED
+@export var fill_light: Color = PaletteColors.PINK
+@export var empty_color: Color = PaletteColors.PLUM
+@export var trail_color: Color = PaletteColors.WHITE
+## 填滿時閃爍(忠誠度條用)。
+@export var flash_when_full: bool = false
+
+const FILL_SPEED: float = 4.0     # 每秒追上的比例
+const TRAIL_DELAY: float = 0.35
+const TRAIL_SPEED: float = 1.2
+
+var value: float = 1.0
+var max_value: float = 1.0
+
+var _shown: float = 1.0
+var _trail: float = 1.0
+var _trail_wait: float = 0.0
+var _time: float = 0.0
+
+
+func _ready() -> void:
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+
+func set_values(current: float, maximum: float) -> void:
+	max_value = maxf(maximum, 0.0001)
+	value = clampf(current, 0.0, max_value)
+	var r := ratio()
+	if r < _shown:
+		_trail = maxf(_trail, _shown)
+		_trail_wait = TRAIL_DELAY
+	queue_redraw()
+
+
+## 立刻顯示目前數值(不播動畫),例如剛進場時。
+func snap_to_value() -> void:
+	_shown = ratio()
+	_trail = _shown
+	queue_redraw()
+
+
+func ratio() -> float:
+	return value / max_value
+
+
+func is_full() -> bool:
+	return value >= max_value
+
+
+func _process(delta: float) -> void:
+	_time += delta
+	var target := ratio()
+	var changed := false
+	if not is_equal_approx(_shown, target):
+		_shown = move_toward(_shown, target, maxf(FILL_SPEED * delta * absf(target - _shown), delta * 0.5))
+		changed = true
+	if _trail_wait > 0.0:
+		_trail_wait -= delta
+	elif _trail > _shown:
+		_trail = move_toward(_trail, _shown, TRAIL_SPEED * delta)
+		changed = true
+	if flash_when_full and is_full():
+		changed = true
+	if changed:
+		queue_redraw()
+
+
+func _draw() -> void:
+	var w := floorf(size.x)
+	var h := floorf(size.y)
+	if w < 3 or h < 3:
+		return
+	# frame with clipped corners
+	draw_rect(Rect2(1, 0, w - 2, h), PaletteColors.INK)
+	draw_rect(Rect2(0, 1, w, h - 2), PaletteColors.INK)
+	var inner := Rect2(1, 1, w - 2, h - 2)
+	draw_rect(inner, empty_color)
+	var trail_w := floorf(inner.size.x * _trail)
+	if trail_w > 0.0 and _trail > _shown:
+		draw_rect(Rect2(inner.position, Vector2(trail_w, inner.size.y)), trail_color)
+	var fill_w := floorf(inner.size.x * _shown)
+	if fill_w > 0.0:
+		var col := fill_color
+		var light := fill_light
+		if flash_when_full and is_full() and fmod(_time, 0.5) < 0.25:
+			col = PaletteColors.YELLOW
+			light = PaletteColors.WHITE
+		draw_rect(Rect2(inner.position, Vector2(fill_w, inner.size.y)), col)
+		draw_rect(Rect2(inner.position, Vector2(fill_w, 1)), light)

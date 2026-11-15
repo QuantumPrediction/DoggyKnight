@@ -37,6 +37,37 @@ func test_collision_layer_names() -> void:
 
 
 func test_autoloads() -> void:
-	for autoload in ["EventBus", "GameState", "AppLifecycle", "ScreenFit"]:
+	for autoload in ["EventBus", "GameState", "AppLifecycle", "ScreenFit", "Sfx", "PlayLog"]:
 		assert_true(ProjectSettings.has_setting("autoload/%s" % autoload), "Autoload %s" % autoload)
 		assert_not_null(get_tree().root.get_node_or_null(autoload), "Autoload %s 已載入" % autoload)
+
+
+func test_traditional_chinese_strings() -> void:
+	assert_eq(TranslationServer.get_locale(), "zh_TW")
+	assert_eq(tr("GAME_TITLE"), "金毛騎士", "i18n/strings.csv 已載入")
+	assert_eq(tr("UI_WAVE") % [1, 3], "第 1/3 波", "格式字串")
+
+
+func test_layout_constants() -> void:
+	assert_eq(Layout.ARENA_RECT.size, Vector2(11 * Layout.TILE, 14 * Layout.TILE), "11×14 格")
+	assert_true(Rect2(Vector2.ZERO, SafeArea.GAME_SIZE).encloses(Layout.ARENA_RECT), "場地在遊戲區內")
+	assert_true(Layout.ARENA_RECT.has_point(Layout.PLAYER_START))
+
+
+func test_mobile_power_and_ios_settings() -> void:
+	assert_eq(_setting("application/run/max_fps"), 60, "高更新率手機鎖 60 FPS")
+	assert_eq(_setting("display/window/ios/allow_high_refresh_rate"), false)
+	assert_eq(_setting("audio/general/ios/session_category"), 0, "Ambient:靜音鍵打開時不發聲")
+	assert_eq(_setting("display/window/ios/hide_status_bar"), true)
+	assert_eq(_setting("display/window/ios/hide_home_indicator"), true)
+	assert_eq(_setting("display/window/ios/suppress_ui_gesture"), true)
+
+
+func test_boot_main_scene_splash_and_theme() -> void:
+	assert_eq(_setting("application/run/main_scene"), "res://game/flow/main.tscn", "開機進入正式流程")
+	assert_eq(_setting("application/boot_splash/image"), "res://assets/app_icon/splash.png")
+	assert_eq(_setting("application/boot_splash/use_filter"), false, "啟動畫面像素不模糊")
+	assert_eq(_setting("gui/theme/custom"), "res://ui/theme/main_theme.tres", "全域像素字主題")
+	assert_true(ResourceLoader.exists("res://game/flow/main.tscn"))
+	assert_true(ResourceLoader.exists("res://assets/app_icon/splash.png"))
+	assert_true(ResourceLoader.exists("res://ui/theme/main_theme.tres"))

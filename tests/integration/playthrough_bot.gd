@@ -1,0 +1,214 @@
+extends Node
+## 整合試玩機器人(擁有者:整合工作階段)。不是自動化測試,而是 M2/M3 的工具。
+##
+## 用「全部正式零件」(A 線戰鬥、B 線流程、C 線介面、D 線營地)從標題玩到打敗黑騎士:
+## 走向最近的敵人、停下自動攻擊、看到預警就閃開;升級時點第一張把戲卡;
+## 忠誠度滿就按必殺技按鈕;營地裡玩一次卷軸小遊戲再繼續冒險。
+## 每關印出用時、擊倒數、等級、把戲與剩餘活力,最後印出總結。
+##
+## 執行(headless,約 2 至 3 分鐘):
+##   godot --headless --path . res://tests/integration/playthrough_bot.tscn
+## 加截圖(需要畫面):
+##   xvfb-run -a godot --path . --rendering-driver opengl3 --audio-driver Dummy \
+##     res://tests/integration/playthrough_bot.tscn -- --shots=/tmp/playthrough_shots
+## 其他參數:--speed=4(倍速,預設 4)、--seed=7
+
+const SAVE_PATH: String = "user://playthrough_bot_save.json"
+const TIMEOUT_MS: int = 600000
+const ATTACK_DISTANCE: float = 22.0
+const DANGER_DISTANCE: float = 42.0
+const BOSS_DANGER_DISTANCE: float = 110.0
+
+var flow: FlowMain
+var shots_dir: String = ""
+var speed: float = 4.0
+var rng_seed: int = 7
+
+var _downs: int = 0
+var _ultimates: int = 0
+var _level_lines: PackedStringArray = []
+var _shot_flags: Dictionary = {}
+var _level_clock: float = 0.0
+
+
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--shots="):
+			shots_dir = arg.trim_prefix("--shots=")
+		elif arg.begins_with("--speed="):
+			speed = float(arg.trim_prefix("--speed="))
+		elif arg.begins_with("--seed="):
+			rng_seed = int(arg.trim_prefix("--seed="))
+	if not shots_dir.is_empty():
+		DirAccess.make_dir_recursive_absolute(shots_dir)
+	_run()
+
+
+func _run() -> void:
+	SaveStore.new(SAVE_PATH).delete()
+	flow = (load("res://game/flow/main.tscn") as PackedScene).instantiate() as FlowMain
+	flow.save_path = SAVE_PATH
+	flow.use_stand_ins = false
+	flow.rng_seed = rng_seed
+	add_child(flow)
+	EventBus.player_downed.connect(func() -> void: _downs += 1)
+	EventBus.ultimate_used.connect(func() -> void: _ultimates += 1)
+	EventBus.level_started.connect(func(_id: StringName) -> void: _level_clock = 0.0)
+	await _frames(10)
+	await _shot("00_title")
+	flow.get_screen().emit_signal(&"new_game_pressed")
+	Engine.time_scale = speed
+	var started := Time.get_ticks_msec()
+	var finished := false
+	while Time.get_ticks_msec() - started < TIMEOUT_MS:
+		await get_tree().process_frame
+		match flow.state:
+			FlowMain.State.LEVEL:
+				_level_clock += get_process_delta_time()
+				await _play_level()
+			FlowMain.State.RESULTS:
+				await _on_results()
+			FlowMain.State.FAILURE:
+				var r := flow.get_last_result()
+				_level_lines.append("%s  失敗 %5.1f 秒  擊倒 %2d" % [r["level_id"], r["time_sec"], r["kills"]])
+				await _shot("fail_%s" % r["level_id"])
+				flow.get_screen().emit_signal(&"retry_pressed")
+				await _frames(5)
+			FlowMain.State.CAMP:
+				await _play_camp()
+			FlowMain.State.TITLE:
+				finished = true
+				break
+	Engine.time_scale = 1.0
+	print("\n== 試玩結果 ==")
+	for line in _level_lines:
+		print(line)
+	print("倒下 %d 次;必殺技 %d 次;最後活力 %d" % [_downs, _ultimates, GameState.vigor])
+	print("PLAYTHROUGH %s" % ("COMPLETE" if finished else "TIMEOUT"))
+	SaveStore.new(SAVE_PATH).delete()
+	get_tree().quit(0 if finished else 1)
+
+
+func _play_level() -> void:
+	if flow.is_pause_open():
+		return
+	if flow.is_choice_open():
+		await _shot_once("trick_choice", "02_trick_choice")
+		var choice := flow.get_trick_choice()
+		if choice != null and choice.visible:
+			choice.call(&"choose", 0)
+		return
+	var level_id := String(flow.get_session().level.id) if flow.get_session() != null else ""
+	if _level_clock > 6.0:
+		await _shot_once("level_" + level_id, "01_level_%s" % level_id)
+	_press_ultimate_if_ready()
+	_steer()
+
+
+func _press_ultimate_if_ready() -> void:
+	var hud := flow.get_hud()
+	if hud == null:
+		return
+	var button: BaseButton = hud.get(&"ultimate_button")
+	if button != null and button.visible and not button.disabled:
+		button.pressed.emit()
+
+
+func _steer() -> void:
+	var arena := flow.get_arena()
+	var player := arena.call(&"get_player") as Node2D if arena != null else null
+	if player == null or not player.has_method(&"set_move_override"):
+		return
+	var nearest: Node2D = null
+	var nearest_distance := INF
+	var danger := Vector2.ZERO
+	for node in get_tree().get_nodes_in_group(&"enemy"):
+		var enemy := node as Node2D
+		if enemy == null or not is_instance_valid(enemy):
+			continue
+		var distance := enemy.global_position.distance_to(player.global_position)
+		var telegraph: Variant = enemy.get(&"_telegraph")
+		var is_boss := enemy is BlackKnightBoss
+		var reach := BOSS_DANGER_DISTANCE if is_boss else DANGER_DISTANCE
+		if telegraph != null and is_instance_valid(telegraph) and distance < reach:
+			var away := (player.global_position - enemy.global_position).normalized()
+			danger += away * (reach - distance)
+			if is_boss:
+				# 頭目的衝鋒是直線:往側面閃比往後退有效。
+				danger += away.orthogonal() * reach
+		var targetable: bool = enemy.call(&"is_targetable") if enemy.has_method(&"is_targetable") else true
+		if targetable and distance < nearest_distance:
+			nearest_distance = distance
+			nearest = enemy
+	var direction := Vector2.ZERO
+	if danger != Vector2.ZERO:
+		direction = danger.normalized()
+		var ahead := player.global_position + direction * 14.0
+		if not Layout.ARENA_RECT.grow(-14.0).has_point(ahead):
+			direction = (direction + (Layout.ARENA_RECT.get_center() - player.global_position).normalized()).normalized()
+	elif nearest != null and nearest_distance > ATTACK_DISTANCE:
+		direction = (nearest.global_position - player.global_position).normalized()
+	player.call(&"set_move_override", direction)
+
+
+func _on_results() -> void:
+	var r := flow.get_last_result()
+	_level_lines.append("%s  %5.1f 秒  擊倒 %2d  等級 %2d  把戲 %s  活力 %d" % [
+			r["level_id"], r["time_sec"], r["kills"], r["hero_level"], r["tricks"], GameState.vigor])
+	await _frames(20)
+	await _shot("03_results_%s" % r["level_id"])
+	flow.get_screen().emit_signal(&"continue_pressed")
+	await _frames(5)
+
+
+func _play_camp() -> void:
+	var camp := flow.get_camp()
+	if camp == null:
+		return
+	await _frames(20)
+	await _shot_once("camp_%d" % flow.get_level_index(), "04_camp_%d" % flow.get_level_index())
+	camp.call(&"open_minigame")
+	await _frames(5)
+	var minigame := camp.call(&"get_minigame") as MinigameBase
+	var swipe_timer := 0.0
+	var shot_taken := false
+	while minigame != null and is_instance_valid(minigame) and minigame.state != MinigameBase.State.CLOSED:
+		await get_tree().process_frame
+		if minigame.state == MinigameBase.State.PLAYING:
+			swipe_timer -= get_process_delta_time()
+			var scroll := minigame as ScrollMinigame
+			if swipe_timer <= 0.0 and scroll.ink_state == ScrollMinigame.Ink.NONE:
+				swipe_timer = 0.22
+				scroll.simulate_swipe(70.0)
+			if not shot_taken and minigame.play_elapsed > 4.0:
+				shot_taken = true
+				await _shot("05_minigame")
+		elif minigame.state == MinigameBase.State.RESULTS and minigame.get_state_time() > 1.3:
+			await _shot_once("minigame_results", "06_minigame_results")
+			minigame.close()
+	_level_lines.append("營地:小遊戲完成,活力 %d,下一關加成 %.0f%%" % [GameState.vigor, GameState.next_level_bonus * 100.0])
+	await _frames(10)
+	camp.call(&"leave_camp")
+	await _frames(5)
+
+
+func _shot_once(flag: String, file_name: String) -> void:
+	if _shot_flags.has(flag):
+		return
+	_shot_flags[flag] = true
+	await _shot(file_name)
+
+
+func _shot(file_name: String) -> void:
+	if shots_dir.is_empty() or DisplayServer.get_name() == "headless":
+		return
+	await RenderingServer.frame_post_draw
+	var image := get_viewport().get_texture().get_image()
+	image.resize(image.get_width() * 3, image.get_height() * 3, Image.INTERPOLATE_NEAREST)
+	image.save_png(shots_dir.path_join(file_name + ".png"))
+
+
+func _frames(count: int) -> void:
+	for i in count:
+		await get_tree().process_frame

@@ -3,7 +3,7 @@ extends Resource
 ## 敵人資料(DEV_PLAN 4.3)。A 線在 data/enemies/ 放 .tres。
 
 @export var id: StringName
-@export var display_name: String
+@export var display_name: String              ## 翻譯鍵,例如 "ENEMY_SCARECROW";介面用 tr() 顯示
 @export var scene: PackedScene
 @export var max_hp: int = 10
 @export var contact_damage: int = 5

@@ -6,6 +6,9 @@
 # D 線若需要修改範本內容,請提出申請,由整合工作階段調整這一行。
 /android/
 
+# 由 i18n/strings.csv 匯入時自動產生的翻譯檔
+*.translation
+
 # 匯出產生的安裝檔與建置輸出
 *.apk
 *.aab
@@ -27,3 +30,6 @@
 Thumbs.db
 *.tmp
 *~
+
+# Claude Code 工作階段的暫存工作副本
+/.claude/worktrees/

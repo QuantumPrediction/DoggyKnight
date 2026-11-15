@@ -91,9 +91,22 @@ const ICON_COLORS: Dictionary = {
 }
 
 
+## 特效佔位(DEV_PLAN 4.9):[格子大小, 格數, 每秒格數, 是否循環, 顏色, 形狀]
+const FX: Dictionary = {
+	"slash": [24, 3, 18.0, false, Color(1, 1, 1, 0.85), "arc"],
+	"hit_spark": [12, 3, 18.0, false, Color("fff3a0"), "star"],
+	"exp_orb": [8, 2, 4.0, true, Color("7fe0ff"), "circle"],
+	"ultimate_slash": [64, 4, 14.0, false, Color(1, 0.95, 0.6, 0.8), "arc"],
+	"dizzy_stars": [12, 4, 8.0, true, Color("ffe066"), "star"],
+	"dust": [8, 3, 12.0, false, Color(0.9, 0.85, 0.7, 0.8), "circle"],
+}
+
+
 func _initialize() -> void:
 	for id: String in CHARACTERS:
 		_make_character(id, CHARACTERS[id])
+	for fx_name: String in FX:
+		_make_fx(fx_name, FX[fx_name])
 	_make_icon()
 	print("Placeholders written.")
 	quit(0)
@@ -161,6 +174,37 @@ func _write_frames(id: String, dir: String, png_path: String, size: int, anims: 
 	var file := FileAccess.open(path, FileAccess.WRITE)
 	file.store_string("\n".join(lines))
 	file.close()
+
+
+func _make_fx(fx_name: String, spec: Array) -> void:
+	var size: int = spec[0]
+	var frame_count: int = spec[1]
+	var color: Color = spec[4]
+	var shape: String = spec[5]
+	var sheet := Image.create(size * frame_count, size, false, Image.FORMAT_RGBA8)
+	sheet.fill(Color(0, 0, 0, 0))
+	var center := Vector2(size, size) * 0.5
+	for frame in frame_count:
+		var t := float(frame + 1) / frame_count
+		for y in size:
+			for x in size:
+				var p := Vector2(x + 0.5, y + 0.5) - center
+				var r := p.length() / (size * 0.5)
+				var on := false
+				match shape:
+					"circle":
+						on = r <= 0.55 + 0.35 * t
+					"star":
+						on = (absf(p.x) < 1.0 or absf(p.y) < 1.0) and r <= 0.4 + 0.6 * t
+					"arc":
+						on = r >= 0.55 and r <= 0.95 and p.x >= -size * 0.1 and atan2(p.y, p.x) <= -PI * 0.6 + PI * 1.2 * t
+				if on:
+					sheet.set_pixel(frame * size + x, y, color)
+	var dir := "res://assets/fx/%s" % fx_name
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(dir))
+	var png_path := "%s/%s.png" % [dir, fx_name]
+	sheet.save_png(ProjectSettings.globalize_path(png_path))
+	_write_frames(fx_name, dir, png_path, size, [["default", frame_count, spec[2], spec[3], color]])
 
 
 func _make_icon() -> void:
