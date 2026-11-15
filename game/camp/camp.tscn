@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/camp/camp.gd" id="1_camp"]
+[ext_resource type="Resource" path="res://game/camp/camp_config.tres" id="2_config"]
+
+[node name="Camp" type="Node"]
+script = ExtResource("1_camp")
+config = ExtResource("2_config")

@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="CampConfig" format=3]
+
+[ext_resource type="Script" path="res://game/camp/camp_config.gd" id="1_config"]
+[ext_resource type="PackedScene" path="res://game/minigames/scroll/scroll_minigame.tscn" id="2_minigame"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/goldie/goldie_frames.tres" id="3_goldie"]
+
+[resource]
+script = ExtResource("1_config")
+canvas_layer = 15
+minigame_scene = ExtResource("2_minigame")
+minigame_plays_per_visit = 1
+toast_sec = 1.6
+button_size = Vector2(132, 26)
+button_gap = 6
+menu_bottom_margin = 20.0
+title_font_size = 14
+button_font_size = 11
+small_font_size = 9
+goldie_frames = ExtResource("3_goldie")
+goldie_animation = &"sleep"
+goldie_scale = 2.0
+tail_wags_per_sec = 2.5
