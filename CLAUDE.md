@@ -32,8 +32,16 @@
 ## 技術
 
 - 平台:Android(Google Play,AAB)與 iOS(App Store,只支援 iPhone)。商店的版本要求見 `docs/STORE_RELEASE.md`。
-- 引擎:Godot 4(確切版本:__由 Phase 0 填寫,建議 4.7.x__)。四條線不得升級;只有整合工作階段可在擁有人同意下,為符合商店新規定而升級。
-- 算繪器:__由 Phase 0 填寫,建議 Compatibility__。
+- 引擎:**Godot 4.7.2 stable**(`4.7.2.stable.official.ed1daf0bf`)。四條線不得升級;只有整合工作階段可在擁有人同意下,為符合商店新規定而升級。已核對:此版本的 Android 建置預設 target API 36、min API 24、NDK r29(支援 16 KB 分頁)。
+- 算繪器:**Compatibility**(`gl_compatibility`,桌面與手機相同)。
 - GDScript,全部加型別標註。
-- 直向鎖定;遊戲區 180×320,整數倍放大,向外延伸填滿螢幕,像素不平滑。
-- 測試指令:__由 Phase 0 填寫__。
+- 直向鎖定;遊戲區 180×320,整數倍放大,向外延伸填滿螢幕,像素不平滑。座標約定見 `core/safe_area.gd` 開頭的說明。
+- 測試指令:`tools/run_tests.sh`(全部);`tools/run_tests.sh line_a`(只跑路徑含 `line_a` 的測試)。測試檔命名 `test_*.gd`,`extends TestCase`,範例在 `tests/core/test_example.gd`。
+- 執行遊戲:`godot --path .`(目前的主場景是 Phase 0 的拖曳示範 `tests/phase0/drag_demo.tscn`)。
+- 雲端工作階段沒有 Godot 時,這樣安裝:
+
+  ```bash
+  mkdir -p /opt/godot && cd /opt/godot && curl -sSL -o godot.zip https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip && unzip -q godot.zip && rm godot.zip && ln -sf /opt/godot/Godot_v4.7.2-stable_linux.x86_64 /usr/local/bin/godot
+  ```
+
+- 需要截圖時:`xvfb-run -a godot --path . --rendering-driver opengl3`(雲端環境有 Xvfb 與軟體 OpenGL)。注意 Xvfb 沒有視窗管理員,改變視窗大小時要同時設定 `get_tree().root.size`。
