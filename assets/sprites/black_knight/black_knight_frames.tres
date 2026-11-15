@@ -77,7 +77,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
-"speed": 3.0
+"speed": 2.5
 }, {
 "frames": [{
 "duration": 1.0,
@@ -94,21 +94,21 @@ animations = [{
 }],
 "loop": true,
 "name": &"run",
-"speed": 8.0
+"speed": 7.0
 }, {
 "frames": [{
-"duration": 1.0,
+"duration": 1.5,
 "texture": SubResource("AtlasTexture_attack_0")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_attack_1")
 }, {
-"duration": 1.0,
+"duration": 1.5,
 "texture": SubResource("AtlasTexture_attack_2")
 }],
 "loop": false,
 "name": &"attack",
-"speed": 10.0
+"speed": 9.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -130,18 +130,18 @@ animations = [{
 "speed": 10.0
 }, {
 "frames": [{
-"duration": 1.0,
+"duration": 2.0,
 "texture": SubResource("AtlasTexture_slam_0")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_slam_1")
 }, {
-"duration": 1.0,
+"duration": 2.0,
 "texture": SubResource("AtlasTexture_slam_2")
 }],
 "loop": false,
 "name": &"slam",
-"speed": 10.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
