@@ -1,7 +1,7 @@
 # 手機專案設定:iOS 靜音鍵、狀態列、60 FPS
 
 - 提出:D 線,2026-11-15
-- 狀態:待決定
+- 狀態:已完成
 
 ## 要改甚麼
 
@@ -59,4 +59,4 @@ func test_mobile_power_and_ios_settings() -> void:
 
 ## 結果
 
-(由整合工作階段填寫)
+已完成(2026-11-15,整合):全部設定已寫入 `project.godot`,`tests/core/test_project_settings.gd` 已加入檢查。

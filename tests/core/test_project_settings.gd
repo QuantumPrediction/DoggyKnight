@@ -37,7 +37,7 @@ func test_collision_layer_names() -> void:
 
 
 func test_autoloads() -> void:
-	for autoload in ["EventBus", "GameState", "AppLifecycle", "ScreenFit", "Sfx"]:
+	for autoload in ["EventBus", "GameState", "AppLifecycle", "ScreenFit", "Sfx", "PlayLog"]:
 		assert_true(ProjectSettings.has_setting("autoload/%s" % autoload), "Autoload %s" % autoload)
 		assert_not_null(get_tree().root.get_node_or_null(autoload), "Autoload %s 已載入" % autoload)
 
