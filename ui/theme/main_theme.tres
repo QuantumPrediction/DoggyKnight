@@ -1,0 +1,201 @@
+[gd_resource type="Theme" format=3]
+
+[ext_resource type="FontFile" path="res://assets/fonts/Cubic_11.ttf" id="1_font"]
+[ext_resource type="Texture2D" path="res://assets/ui/button_normal.png" id="2_button_normal"]
+[ext_resource type="Texture2D" path="res://assets/ui/button_pressed.png" id="3_button_pressed"]
+[ext_resource type="Texture2D" path="res://assets/ui/button_disabled.png" id="4_button_disabled"]
+[ext_resource type="Texture2D" path="res://assets/ui/button_alt_normal.png" id="5_button_alt_normal"]
+[ext_resource type="Texture2D" path="res://assets/ui/button_alt_pressed.png" id="6_button_alt_pressed"]
+[ext_resource type="Texture2D" path="res://assets/ui/panel.png" id="7_panel"]
+[ext_resource type="Texture2D" path="res://assets/ui/panel_dark.png" id="8_panel_dark"]
+[ext_resource type="Texture2D" path="res://assets/ui/card_normal.png" id="9_card_normal"]
+[ext_resource type="Texture2D" path="res://assets/ui/card_pressed.png" id="10_card_pressed"]
+[ext_resource type="Texture2D" path="res://assets/ui/ribbon.png" id="11_ribbon"]
+
+[sub_resource type="StyleBoxTexture" id="Style_button_normal"]
+content_margin_left = 6.0
+content_margin_top = 3.0
+content_margin_right = 6.0
+content_margin_bottom = 5.0
+texture = ExtResource("2_button_normal")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="Style_button_pressed"]
+content_margin_left = 6.0
+content_margin_top = 4.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+texture = ExtResource("3_button_pressed")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="Style_button_disabled"]
+content_margin_left = 6.0
+content_margin_top = 3.0
+content_margin_right = 6.0
+content_margin_bottom = 5.0
+texture = ExtResource("4_button_disabled")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="Style_button_alt_normal"]
+content_margin_left = 6.0
+content_margin_top = 3.0
+content_margin_right = 6.0
+content_margin_bottom = 5.0
+texture = ExtResource("5_button_alt_normal")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="Style_button_alt_pressed"]
+content_margin_left = 6.0
+content_margin_top = 4.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+texture = ExtResource("6_button_alt_pressed")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="Style_panel"]
+content_margin_left = 8.0
+content_margin_top = 7.0
+content_margin_right = 8.0
+content_margin_bottom = 7.0
+texture = ExtResource("7_panel")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="Style_panel_dark"]
+content_margin_left = 6.0
+content_margin_top = 5.0
+content_margin_right = 6.0
+content_margin_bottom = 5.0
+texture = ExtResource("8_panel_dark")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="Style_card_normal"]
+content_margin_left = 6.0
+content_margin_top = 5.0
+content_margin_right = 6.0
+content_margin_bottom = 5.0
+texture = ExtResource("9_card_normal")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="Style_card_pressed"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+texture = ExtResource("10_card_pressed")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="Style_ribbon"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+texture = ExtResource("11_ribbon")
+texture_margin_left = 8.0
+texture_margin_top = 4.0
+texture_margin_right = 8.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxEmpty" id="Style_empty"]
+
+[sub_resource type="StyleBoxFlat" id="Style_scroll"]
+bg_color = Color(0.2941, 0.1843, 0.3412, 0.60)
+content_margin_left = 2.0
+content_margin_right = 2.0
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="Style_grabber"]
+bg_color = Color(0.9020, 0.6824, 0.3608, 1.00)
+content_margin_left = 2.0
+content_margin_right = 2.0
+anti_aliasing = false
+
+[resource]
+default_font = ExtResource("1_font")
+default_font_size = 12
+Button/colors/font_color = Color(0.1647, 0.1059, 0.1765, 1.00)
+Button/colors/font_hover_color = Color(0.1647, 0.1059, 0.1765, 1.00)
+Button/colors/font_pressed_color = Color(0.1647, 0.1059, 0.1765, 1.00)
+Button/colors/font_hover_pressed_color = Color(0.1647, 0.1059, 0.1765, 1.00)
+Button/colors/font_focus_color = Color(0.1647, 0.1059, 0.1765, 1.00)
+Button/colors/font_disabled_color = Color(0.4784, 0.4353, 0.4471, 1.00)
+Button/constants/h_separation = 3
+Button/styles/normal = SubResource("Style_button_normal")
+Button/styles/hover = SubResource("Style_button_normal")
+Button/styles/pressed = SubResource("Style_button_pressed")
+Button/styles/hover_pressed = SubResource("Style_button_pressed")
+Button/styles/disabled = SubResource("Style_button_disabled")
+Button/styles/focus = SubResource("Style_empty")
+ButtonAlt/base_type = &"Button"
+ButtonAlt/colors/font_color = Color(1.0000, 0.9804, 0.9412, 1.00)
+ButtonAlt/colors/font_hover_color = Color(1.0000, 0.9804, 0.9412, 1.00)
+ButtonAlt/colors/font_pressed_color = Color(1.0000, 0.9804, 0.9412, 1.00)
+ButtonAlt/colors/font_hover_pressed_color = Color(1.0000, 0.9804, 0.9412, 1.00)
+ButtonAlt/colors/font_focus_color = Color(1.0000, 0.9804, 0.9412, 1.00)
+ButtonAlt/colors/font_shadow_color = Color(0.1725, 0.3529, 0.6275, 1.00)
+ButtonAlt/constants/shadow_offset_x = 1
+ButtonAlt/constants/shadow_offset_y = 1
+ButtonAlt/styles/normal = SubResource("Style_button_alt_normal")
+ButtonAlt/styles/hover = SubResource("Style_button_alt_normal")
+ButtonAlt/styles/pressed = SubResource("Style_button_alt_pressed")
+ButtonAlt/styles/hover_pressed = SubResource("Style_button_alt_pressed")
+CardButton/base_type = &"Button"
+CardButton/styles/normal = SubResource("Style_card_normal")
+CardButton/styles/hover = SubResource("Style_card_normal")
+CardButton/styles/pressed = SubResource("Style_card_pressed")
+CardButton/styles/hover_pressed = SubResource("Style_card_pressed")
+CardButton/styles/disabled = SubResource("Style_card_normal")
+Label/colors/font_color = Color(0.1647, 0.1059, 0.1765, 1.00)
+Label/constants/line_spacing = 1
+LabelLight/base_type = &"Label"
+LabelLight/colors/font_color = Color(1.0000, 0.9804, 0.9412, 1.00)
+LabelLight/colors/font_shadow_color = Color(0.1647, 0.1059, 0.1765, 1.00)
+LabelLight/constants/shadow_offset_x = 1
+LabelLight/constants/shadow_offset_y = 1
+LabelTitle/base_type = &"Label"
+LabelTitle/colors/font_color = Color(1.0000, 0.8784, 0.4000, 1.00)
+LabelTitle/colors/font_shadow_color = Color(0.1647, 0.1059, 0.1765, 1.00)
+LabelTitle/colors/font_outline_color = Color(0.1647, 0.1059, 0.1765, 1.00)
+LabelTitle/constants/outline_size = 4
+LabelTitle/constants/shadow_offset_x = 0
+LabelTitle/constants/shadow_offset_y = 2
+LabelTitle/font_sizes/font_size = 24
+LabelSoft/base_type = &"Label"
+LabelSoft/colors/font_color = Color(0.5412, 0.3216, 0.1961, 1.00)
+PanelContainer/styles/panel = SubResource("Style_panel")
+Panel/styles/panel = SubResource("Style_panel")
+PanelDark/base_type = &"PanelContainer"
+PanelDark/styles/panel = SubResource("Style_panel_dark")
+Ribbon/base_type = &"PanelContainer"
+Ribbon/styles/panel = SubResource("Style_ribbon")
+VScrollBar/styles/scroll = SubResource("Style_scroll")
+VScrollBar/styles/grabber = SubResource("Style_grabber")
+VScrollBar/styles/grabber_highlight = SubResource("Style_grabber")
+VScrollBar/styles/grabber_pressed = SubResource("Style_grabber")
+ScrollContainer/styles/panel = SubResource("Style_empty")
