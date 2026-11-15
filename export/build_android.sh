@@ -107,7 +107,11 @@ verify() {
 		fi
 	done
 	if command -v python3 >/dev/null 2>&1; then
-		python3 -I export/tools/check_16k.py "$OUT_DIR"/*.apk "$OUT_DIR"/*.aab 2>/dev/null || echo "有 64 位元程式庫不支援 16 KB 分頁" >&2
+		packages=()
+		for f in "$OUT_DIR"/*.apk "$OUT_DIR"/*.aab; do [ -f "$f" ] && packages+=("$f"); done
+		if [ "${#packages[@]}" -gt 0 ]; then
+			python3 -I export/tools/check_16k.py "${packages[@]}" || echo "有 64 位元程式庫不支援 16 KB 分頁" >&2
+		fi
 	fi
 	for aab in "$OUT_DIR"/*.aab; do
 		[ -f "$aab" ] || continue

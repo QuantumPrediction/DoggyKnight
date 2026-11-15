@@ -96,7 +96,7 @@ func test_icons_exist() -> void:
 func test_store_builds_exclude_tests() -> void:
 	for preset_name in ["Android", "Android AAB", "iOS"]:
 		var exclude: String = _cfg.get_value(_section_of(preset_name), "exclude_filter", "")
-		assert_true(exclude.contains("tests/line_d/*"), "%s 不打包測試場景" % preset_name)
+		assert_true(exclude.contains("tests/*") or exclude.contains("tests/line_d/*"), "%s 不打包測試場景" % preset_name)
 		assert_true(exclude.contains("tools/*"))
 	var sandbox_exclude: String = _cfg.get_value(_section_of("Android Sandbox"), "exclude_filter", "")
 	assert_false(sandbox_exclude.contains("tests/line_d/*"), "沙盒 APK 要包含 D 線的測試場景")
