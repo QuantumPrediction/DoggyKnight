@@ -55,6 +55,7 @@ SOFTWARE.
 | 素材 | 用在哪裡 | 來源網址 | 授權 | 是否允許商用 | 需要在遊戲內列出 | 核對人與日期 |
 | --- | --- | --- | --- | --- | --- | --- |
 | 佔位圖(純色方塊)與佔位 App 圖示 | `assets/sprites/`、`assets/app_icon/` | 本專案以 `tools/placeholders/make_placeholders.gd` 生成 | 本專案原創 | 是 | 否 | Phase 0,2026-11-15 |
+| 程式繪製的預警圈與預警線、震波圓環、黑騎士盔甲碎片與頭盔、閃白著色器 | `game/combat/`、`game/actors/enemies/` | 本專案程式碼即時繪製,沒有使用外部素材 | 本專案原創 | 是 | 否 | A 線,2026-11-15 |
 
 ## 音效
 

@@ -322,6 +322,11 @@ func _clear_summon_marks() -> void:
 	_summon_marks.clear()
 
 
+## 衝鋒與重劈預警時不被小怪推開,地上的預警才會準確。
+func _uses_separation() -> bool:
+	return not (phase in [Phase.CHARGE_TELL, Phase.CHARGE, Phase.SLAM_TELL, Phase.SUMMON_TELL])
+
+
 # --- 第二階段與倒下 ----------------------------------------------------------------
 
 func _on_damaged(_amount: int) -> void:
