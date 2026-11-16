@@ -87,3 +87,13 @@ D 線的營地、小遊戲與圖示全部由程式繪製(本專案原創),沒有
 | 新背景(麥田、農場、烏鴉森林)與重畫的三個背景、背景動畫圖層、粒子特效圖、標題風景、雲、星星、切入畫面頭像、教學手指、狗掌印轉場 | `assets/backgrounds/`、`assets/fx/particles/`、`assets/ui/`、`ui/transition/` | 本專案以 `tools/pixel/` 程式繪製;調色盤增加 8 個氣氛色(共 40 色) | 本專案原創 | 是 | 否 | C 線,2026-11-16 |
 
 D 線 M3(2026-11-16):營地新增的金毛像素圖(`game/camp/art/`,由 `game/camp/art/make_camp_art.py` 以程式畫出,顏色取自 C 線的調色盤)、營火、夜空、城堡剪影、螢火蟲與小遊戲的所有演出,全部是本專案原創,沒有使用外部素材。
+
+## v2.3(故事與深化,C 線新增)
+
+| 素材 | 用在哪裡 | 來源網址 | 授權 | 是否允許商用 | 需要在遊戲內列出 | 核對人與日期 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 16 張對白頭像(金毛、貝德維爾、梅林、黑騎士、摩根娜剪影、稻草人隊長、烏鴉),依 `docs/STORY.md` 第 3 節原創設計(梅林是西施犬法師,沒有貓頭鷹;摩根娜只有紫色剪影;不模仿任何電影或動畫版本) | `assets/portraits/` | 本專案以 `tools/pixel/art_portraits.py` 程式繪製 | 本專案原創 | 是 | 否 | C 線,2026-11-16 |
+| 8 張繪本插畫(開場、結局、第二章預告) | `assets/story/` | 本專案以 `tools/pixel/art_story.py` 程式繪製(角色用遊戲本身的像素圖) | 本專案原創 | 是 | 否 | C 線,2026-11-16 |
+| 新角色與投射物(稻草人弓兵、空盔甲兵、稻草人隊長、梅林;箭、劍氣、乾草叉)、對白框與繪本框、困難標記 | `assets/sprites/`、`assets/fx/`、`assets/ui/` | 本專案以 `tools/pixel/art_cast.py`、`art_ui.py` 程式繪製 | 本專案原創 | 是 | 否 | C 線,2026-11-16 |
+| 光暈精靈、前景剪影、暗角、雨幕、角色投影、閃電 | `assets/fx/lights/`、`assets/backgrounds/` | 本專案以 `tools/pixel/art_light.py` 程式繪製;投影與閃電由 `assets/backgrounds/*.gd` 即時繪製 | 本專案原創 | 是 | 否 | C 線,2026-11-16 |
+| 6 個新音效(talk、page_turn、arrow_shot、husk_clank、captain_shout、magic)與故事音樂 `story`(旋律原創) | `assets/sfx/`、`assets/music/` | 本專案以 `tools/pixel/sfx_gen.py`、`music_gen.py` 程式合成 | 本專案原創 | 是 | 否 | C 線,2026-11-16 |
