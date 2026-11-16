@@ -121,7 +121,7 @@ D 線的測試(`tests/line_d/test_export_presets.gd`)會檢查 `export_presets.c
 **每次上傳新版本之前**:把「Android AAB」(和「Android」)的 **Version → Code** 加 1(例如 1 → 2)。Google Play 不接受相同或較小的版本號。
 **Version → Name**(例如 0.1.0)是給人看的,可以自己決定。
 
-這個 AAB 已經符合 Google Play 2026 年的要求(✅ 已檢查):target API 36、min API 24、arm64-v8a 的原生程式庫支援 16 KB 記憶體分頁、不要求任何權限。
+這個 AAB 已經符合 Google Play 2026 年的要求(✅ 已檢查):target API 36、min API 24、arm64-v8a 的原生程式庫支援 16 KB 記憶體分頁、只要求震動權限(VIBRATE)。
 
 ---
 
