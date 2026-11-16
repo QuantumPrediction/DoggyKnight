@@ -13,6 +13,9 @@ extends Control
 ##
 ## 座標:根節點是全螢幕的 Control(放在營地的 CanvasLayer 之下),
 ## 本地座標 = 畫面的邏輯像素;用 SafeArea 排版。
+##
+## 演出(DEV_PLAN 15 DP2):倒數是會彈出的大數字(每秒 countdown 音效),開始時顯示 _go_text();
+## 時間到時手機震一下(medium);評價畫面的星星逐顆亮起(star 音效與閃光),分數由 0 數上去。
 
 signal state_changed(new_state: State)
 ## 評價出爐:獎勵已套用、EventBus.minigame_finished 已發出。
@@ -45,7 +48,14 @@ var _results_box: VBoxContainer
 var _results_grade_label: Label
 var _results_score_label: Label
 var _results_reward_label: Label
+var _results_extra_label: Label
+var _go_label: Label
 var _clock: float = 0.0
+var _last_count: int = -1
+var _count_pop: float = 0.0
+var _go_left: float = 0.0
+var _stars_lit: int = 0
+var _star_pop: Array[float] = [0.0, 0.0, 0.0]
 
 
 func _ready() -> void:
@@ -78,6 +88,9 @@ func start() -> void:
 	score = 0
 	grade = 0
 	rewards = {}
+	_last_count = -1
+	_go_left = 0.0
+	_stars_lit = 0
 	_on_reset()
 	if countdown_left > 0.0:
 		_set_state(State.COUNTDOWN)
@@ -90,10 +103,16 @@ func start() -> void:
 func step(delta: float) -> void:
 	_clock += delta
 	_state_time += delta
+	if state != State.PAUSED:
+		_count_pop = maxf(0.0, _count_pop - delta)
+		_go_left = maxf(0.0, _go_left - delta)
+		for i in _star_pop.size():
+			_star_pop[i] = maxf(0.0, _star_pop[i] - delta)
 	match state:
 		State.COUNTDOWN:
 			countdown_left -= delta
 			_on_countdown_process(delta)
+			_tick_countdown()
 			if countdown_left <= 0.0:
 				countdown_left = 0.0
 				_begin_play()
@@ -109,6 +128,7 @@ func step(delta: float) -> void:
 				_show_results()
 		State.RESULTS:
 			_on_results_process(delta)
+			_tick_results()
 			if config.results_auto_close_sec > 0.0 and _state_time >= config.results_auto_close_sec:
 				close()
 		_:
@@ -241,6 +261,16 @@ func _format_score(value: int) -> String:
 	return str(value)
 
 
+## 開始時彈出的字(例如「拉!」)。空字串表示不顯示。
+func _go_text() -> String:
+	return ""
+
+
+## 評價畫面上、分數下面的額外說明(例如「完美停住 ×3」)。
+func _result_extra_lines() -> PackedStringArray:
+	return PackedStringArray()
+
+
 ## 倒數數字的中心(畫面邏輯像素)。
 func _countdown_center() -> Vector2:
 	return SafeArea.get_safe_rect().get_center()
@@ -256,7 +286,46 @@ func _time_bar_rect() -> Rect2:
 
 func _begin_play() -> void:
 	_set_state(State.PLAYING)
+	if _go_text() != "":
+		_go_left = 0.7
+		_go_label.text = _go_text()
+		Sfx.play(&"whoosh")
 	_on_play_started()
+
+
+## 倒數每換一個數字:countdown 音效,數字彈出來。
+func _tick_countdown() -> void:
+	var count := maxi(1, ceili(countdown_left))
+	if count != _last_count:
+		_last_count = count
+		_count_pop = 0.3
+		Sfx.play(&"countdown")
+
+
+## 評價畫面的星星逐顆亮起。
+func _tick_results() -> void:
+	var target := mini(grade, int(_state_time / maxf(config.results_star_interval_sec, 0.01)))
+	while _stars_lit < target:
+		_star_pop[_stars_lit] = 0.35
+		_stars_lit += 1
+		Sfx.play(&"star")
+		_spawn_star_fx(_star_center(_stars_lit - 1))
+		if _stars_lit == grade and grade == config.grading.max_grade():
+			Haptics.play(&"light")
+
+
+func _star_center(index: int) -> Vector2:
+	var panel := _results_panel_rect()
+	return Vector2(panel.get_center().x + (index - 1) * 26, panel.position.y + 22)
+
+
+func _spawn_star_fx(at: Vector2) -> void:
+	if config.star_fx == null:
+		return
+	var fx := config.star_fx.instantiate()
+	if fx is Node2D:
+		(fx as Node2D).position = at.round()
+	_overlay.add_child(fx)
 
 
 func _end_play() -> void:
@@ -267,6 +336,7 @@ func _end_play() -> void:
 		rewards = config.grading.apply_rewards(grade, target)
 	EventBus.minigame_finished.emit(config.minigame_id, score, grade)
 	finished.emit(score, grade)
+	Haptics.play(&"medium")
 	_set_state(State.ENDING)
 	_on_play_ended(score, grade)
 
@@ -283,6 +353,9 @@ func _show_results() -> void:
 	if rewards.has("bonus") and float(rewards["bonus"]) > 0.0:
 		lines.append(tr("MINIGAME_REWARD_BONUS") % roundi(float(rewards["bonus"]) * 100.0))
 	_results_reward_label.text = "\n".join(lines)
+	_results_extra_label.text = "\n".join(_result_extra_lines())
+	_results_extra_label.visible = _results_extra_label.text != ""
+	_stars_lit = 0
 	Sfx.play(&"clear" if grade > 0 else &"ui_tap")
 
 
@@ -317,15 +390,22 @@ func _build_overlay() -> void:
 	_overlay.draw.connect(_draw_overlay)
 	add_child(_overlay)
 
-	_countdown_label = MinigameUi.make_label("", 32)
+	_countdown_label = MinigameUi.make_label("", MinigameUi.FONT_XL, Color("ffe066"))
 	_countdown_label.name = "Countdown"
+	_countdown_label.add_theme_constant_override(&"outline_size", 6)
 	_overlay.add_child(_countdown_label)
+
+	_go_label = MinigameUi.make_label("", MinigameUi.FONT_XL, Color("ffe066"))
+	_go_label.name = "Go"
+	_go_label.add_theme_constant_override(&"outline_size", 6)
+	_go_label.visible = false
+	_overlay.add_child(_go_label)
 
 	_pause_box = VBoxContainer.new()
 	_pause_box.name = "PauseBox"
 	_pause_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_pause_box.add_child(MinigameUi.make_label(tr("UI_PAUSED"), 14))
-	_pause_box.add_child(MinigameUi.make_label(tr("MINIGAME_TAP_TO_CONTINUE"), 9))
+	_pause_box.add_child(MinigameUi.make_label(tr("UI_PAUSED"), MinigameUi.FONT_L))
+	_pause_box.add_child(MinigameUi.make_label(tr("MINIGAME_TAP_TO_CONTINUE"), MinigameUi.FONT_S))
 	_overlay.add_child(_pause_box)
 
 	_results_box = VBoxContainer.new()
@@ -333,14 +413,16 @@ func _build_overlay() -> void:
 	_results_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_results_box.add_theme_constant_override(&"separation", 2)
 	var star_space := Control.new()
-	star_space.custom_minimum_size = Vector2(0, 26)
+	star_space.custom_minimum_size = Vector2(0, 34)
 	star_space.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_results_box.add_child(star_space)
-	_results_grade_label = MinigameUi.make_label("", 16, MinigameUi.STAR_ON)
+	_results_grade_label = MinigameUi.make_title("")
 	_results_box.add_child(_results_grade_label)
-	_results_score_label = MinigameUi.make_label("", 12)
+	_results_score_label = MinigameUi.make_label("", MinigameUi.FONT_S)
 	_results_box.add_child(_results_score_label)
-	_results_reward_label = MinigameUi.make_label("", 9)
+	_results_extra_label = MinigameUi.make_label("", MinigameUi.FONT_S, Color("ffe066"))
+	_results_box.add_child(_results_extra_label)
+	_results_reward_label = MinigameUi.make_label("", MinigameUi.FONT_S)
 	_results_box.add_child(_results_reward_label)
 	_overlay.add_child(_results_box)
 	_update_overlay()
@@ -351,6 +433,10 @@ func _layout_overlay() -> void:
 	var center := safe.get_center()
 	_countdown_label.size = Vector2(80, 48)
 	_countdown_label.position = (_countdown_center() - _countdown_label.size * 0.5).round()
+	_countdown_label.pivot_offset = _countdown_label.size * 0.5
+	_go_label.size = Vector2(120, 48)
+	_go_label.position = (_countdown_center() - _go_label.size * 0.5).round()
+	_go_label.pivot_offset = _go_label.size * 0.5
 	_pause_box.size = Vector2(safe.size.x - 16, 0)
 	_pause_box.position = Vector2(safe.position.x + 8, center.y + 16).round()
 	_results_box.size = Vector2(_results_panel_rect().size.x - 8, 0)
@@ -359,7 +445,7 @@ func _layout_overlay() -> void:
 
 func _results_panel_rect() -> Rect2:
 	var safe := SafeArea.get_safe_rect()
-	var panel_size := Vector2(minf(152.0, safe.size.x - 12.0), 136.0)
+	var panel_size := Vector2(minf(160.0, safe.size.x - 12.0), 168.0)
 	return Rect2((safe.get_center() - panel_size * 0.5).round(), panel_size)
 
 
@@ -369,9 +455,30 @@ func _update_overlay() -> void:
 	_countdown_label.visible = state == State.COUNTDOWN
 	if state == State.COUNTDOWN:
 		_countdown_label.text = str(maxi(1, ceili(countdown_left)))
+		# 每個數字出現時從大縮回來
+		var pop := _count_pop / 0.3
+		_countdown_label.scale = Vector2.ONE * (1.0 + 0.6 * pop * pop)
+	_go_label.visible = _go_left > 0.0 and state == State.PLAYING
+	if _go_label.visible:
+		var t := 1.0 - _go_left / 0.7
+		_go_label.scale = Vector2.ONE * (1.6 - 0.6 * minf(1.0, t * 4.0) + 0.15 * maxf(0.0, t - 0.5))
+		_go_label.modulate.a = clampf(_go_left / 0.25, 0.0, 1.0)
 	_pause_box.visible = state == State.PAUSED
 	_results_box.visible = state == State.RESULTS
+	if state == State.RESULTS:
+		# 文字在星星亮完之後才淡入;分數由 0 數上去
+		var reveal := clampf((_state_time - config.results_star_interval_sec * grade) / 0.3, 0.0, 1.0)
+		_results_grade_label.modulate.a = reveal
+		_results_reward_label.modulate.a = clampf(reveal * 2.0 - 1.0, 0.0, 1.0)
+		_results_extra_label.modulate.a = reveal
+		_results_score_label.text = _format_score(roundi(score * clampf(_state_time / 0.6, 0.0, 1.0)))
+		_results_box.position.y = roundf(_results_panel_rect().position.y + 8.0 + _panel_rise())
 	_overlay.queue_redraw()
+
+
+## 評價面板從下面彈上來的位移。
+func _panel_rise() -> float:
+	return roundf(pow(1.0 - clampf(_state_time / 0.25, 0.0, 1.0), 2.0) * 24.0)
 
 
 func _draw_overlay() -> void:
@@ -384,7 +491,8 @@ func _draw_overlay() -> void:
 			# 倒數數字後面的圓,每秒縮小一次。
 			var frac := countdown_left - floorf(countdown_left)
 			var center := _countdown_label.position + _countdown_label.size * 0.5
-			_overlay.draw_circle(center, 14.0 + frac * 8.0, Color(MinigameUi.INK, 0.45))
+			_overlay.draw_circle(center, 20.0 + frac * 6.0, Color(MinigameUi.INK, 0.55))
+			_overlay.draw_arc(center, 22.0 + frac * 6.0, -PI / 2.0, -PI / 2.0 + TAU * frac, 32, Color("ffe066"), 2.0)
 		State.PAUSED:
 			var screen := SafeArea.get_screen_size()
 			_overlay.draw_rect(Rect2(Vector2.ZERO, screen), Color(0, 0, 0, 0.55))
@@ -394,16 +502,25 @@ func _draw_overlay() -> void:
 			MinigameUi.draw_hand(_overlay, center + Vector2(2, 80), press)
 		State.RESULTS:
 			var screen := SafeArea.get_screen_size()
-			_overlay.draw_rect(Rect2(Vector2.ZERO, screen), Color(0, 0, 0, 0.45))
+			var dim := clampf(_state_time / 0.25, 0.0, 1.0)
+			_overlay.draw_rect(Rect2(Vector2.ZERO, screen), Color(0, 0, 0, 0.5 * dim))
 			var panel := _results_panel_rect()
+			var rise := _panel_rise()
+			panel.position.y += rise
+			_overlay.draw_rect(Rect2(panel.position + Vector2(2, 3), panel.size), Color(0, 0, 0, 0.35))
 			_overlay.draw_rect(panel.grow(1), MinigameUi.INK)
 			_overlay.draw_rect(panel, Color("3b2f4f"))
 			_overlay.draw_rect(Rect2(panel.position, Vector2(panel.size.x, 2)), Color("6b5a8a"))
-			var star_y := panel.position.y + 18
+			_overlay.draw_rect(Rect2(panel.position + Vector2(0, panel.size.y - 2), Vector2(panel.size.x, 2)), Color("2a2040"))
+			# 星星的底座,星星逐顆亮起時彈一下
+			var inner := Rect2(panel.position + Vector2(10, 6), Vector2(panel.size.x - 20, 32))
+			_overlay.draw_rect(inner, Color(MinigameUi.INK, 0.6))
 			for i in 3:
-				var appear := _state_time >= 0.25 * (i + 1)
-				var filled := i < grade and appear
-				MinigameUi.draw_star(_overlay, Vector2(panel.get_center().x + (i - 1) * 24, star_y), 9.0, filled)
+				var center := _star_center(i) + Vector2(0, rise)
+				var lit := i < _stars_lit
+				var pop := _star_pop[i] / 0.35
+				var radius := 10.0 + (4.0 * sin(pop * PI) if lit else 0.0)
+				MinigameUi.draw_star(_overlay, center, radius, lit)
 			if _state_time >= config.results_min_sec:
 				var press := fmod(_clock, 1.0) < 0.3
 				MinigameUi.draw_hand(_overlay, Vector2(panel.end.x - 14, panel.end.y + 18), press)

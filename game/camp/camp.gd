@@ -243,6 +243,14 @@ func tap_bulldog() -> void:
 	Haptics.play(&"light")
 
 
+## 跳過進場動畫(選單滑入、淡入)。測試與截圖用。
+func finish_intro() -> void:
+	_intro = 10.0
+	_animate_menu()
+	if _fade != null:
+		_fade.visible = false
+
+
 ## 立刻放一顆流星(截圖用)。
 func spawn_shooting_star() -> void:
 	_sky.spawn_meteor()
