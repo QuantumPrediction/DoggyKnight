@@ -397,14 +397,15 @@ func test_level_completed_makes_goldie_and_bulldog_cheer() -> void:
 	enemy.set_physics_process(false)
 	await wait_physics(40)
 	assert_eq(player.swing_count, swings, "過關後不再攻擊")
-	var goldie_hopped := false
-	var dog_hopped := false
+	var goldie_cheered := false
+	var dog_cheered := false
 	for i in 90:
 		await get_tree().physics_frame
-		goldie_hopped = goldie_hopped or player.sprite.position.y < -0.5
-		dog_hopped = dog_hopped or dog.sprite.position.y < -0.5
-	assert_true(goldie_hopped, "金毛原地跳起來")
-	assert_true(dog_hopped, "鬥牛犬跳起來")
+		# 有 victory 動畫(C 線)就播動畫,沒有的話原地跳。
+		goldie_cheered = goldie_cheered or player.sprite.position.y < -0.5 or player.sprite.animation == &"victory"
+		dog_cheered = dog_cheered or dog.sprite.position.y < -0.5 or dog.sprite.animation == &"victory"
+	assert_true(goldie_cheered, "金毛歡呼(victory 動畫或原地跳)")
+	assert_true(dog_cheered, "鬥牛犬歡呼")
 
 
 func test_bulldog_says_woof_when_guarding() -> void:

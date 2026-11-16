@@ -325,7 +325,10 @@ func _update_animation() -> void:
 func _update_bounce(delta: float) -> void:
 	var y := 0.0
 	var squash := Vector2.ONE
-	if celebrating and velocity.length() <= 4.0 and mode != Mode.DAZED:
+	var has_victory := sprite.sprite_frames != null and sprite.sprite_frames.has_animation(&"victory")
+	if celebrating and has_victory:
+		pass        # victory 動畫(C 線)自己有跳躍,不再另外跳。
+	elif celebrating and velocity.length() <= 4.0 and mode != Mode.DAZED:
 		_cheer_left -= delta
 		if _cheer_left <= 0.0 and _cheer_t < 0.0:
 			_cheer_t = 0.0
