@@ -343,8 +343,162 @@ def ultimate_button(pressed: bool) -> Canvas:
     return c
 
 
+HUD_ICONS.update({
+    "icon_boss": [          # the black knight's helm with its glowing visor
+        "..iii..",
+        ".iZZzi.",
+        "iZzzzzi",
+        "iOYOYOi",
+        "izzzzzi",
+        ".izzzi.",
+        "..iii..",
+    ],
+    "icon_music_on": [
+        "...www.",
+        "...w.ww",
+        "...w..w",
+        "...w...",
+        ".www...",
+        "wwww...",
+        ".ww....",
+    ],
+    "icon_music_off": [
+        "...ttt.",
+        "...t.tt",
+        "R..t..R",
+        ".R.t.R.",
+        ".ttRt..",
+        "ttRtR..",
+        ".R...R.",
+    ],
+    "icon_vibrate_on": [
+        "w.ttt.w",
+        "w.tSt.w",
+        ".wtSt w",
+        "w.tSt.w",
+        "w.tSt.w",
+        "..ttt..",
+        "...t...",
+    ],
+    "icon_vibrate_off": [
+        "R.ttt..",
+        ".RtSt..",
+        "..RSt..",
+        "..tRt..",
+        "..tSR..",
+        "..ttt R",
+        "...t...",
+    ],
+})
+L["i"] = "iron"
+
+
+def star_icon(size: int, filled: bool) -> Canvas:
+    """Five-pointed star for the results screen (filled gold or an empty socket)."""
+    c = Canvas(size, size)
+    cx, cy = size / 2, size / 2 + size * 0.04
+    r_out, r_in = size * 0.47, size * 0.2
+    pts = []
+    for k in range(10):
+        a = -math.pi / 2 + k * math.pi / 5
+        r = r_out if k % 2 == 0 else r_in
+        pts.append((cx + math.cos(a) * r, cy + math.sin(a) * r))
+
+    def inside(px: float, py: float) -> bool:
+        n = len(pts)
+        hit = False
+        for i in range(n):
+            x1, y1 = pts[i]
+            x2, y2 = pts[(i + 1) % n]
+            if (y1 > py) != (y2 > py) and px < (x2 - x1) * (py - y1) / (y2 - y1) + x1:
+                hit = not hit
+        return hit
+
+    for y in range(size):
+        for x in range(size):
+            if inside(x + 0.5, y + 0.5):
+                if filled:
+                    light = (x + 0.5 - cx) * -0.6 + (y + 0.5 - cy) * -0.8
+                    col = "yellow" if light > size * 0.08 else ("gold_l" if light > -size * 0.12 else "gold")
+                    c.set(x, y, col)
+                else:
+                    c.set(x, y, "plum")
+    if filled:
+        c.set(int(cx - size * 0.12), int(cy - size * 0.16), "white")
+        c.set(int(cx - size * 0.12), int(cy - size * 0.16) + 1, "cream")
+        c.outline_all("brown_d")
+    else:
+        c.outline_all("ink")
+    return c
+
+
+def finger_pointer(pressed: bool) -> Canvas:
+    """A friendly white glove pointing up (tutorial). 16x20; pressed = squashed a bit."""
+    grid = [
+        "....ww......",
+        "...wwww.....",
+        "...wwww.....",
+        "...wwww.....",
+        "...wwwwww...",
+        "...wwwwwwww.",
+        ".w.wwwwwwwww",
+        "wwwwwwwwwwww",
+        "wwwwwwwwwwwk",
+        ".wwwwwwwwwwk",
+        "..wwwwwwwwk.",
+        "...wwwwwwk..",
+        "...wwwwwwk..",
+        "...RRRRRRr..",
+        "...RRRRRRr..",
+    ]
+    if pressed:
+        grid = grid[:5] + grid[6:]
+    c = Canvas(16, 20)
+    c.stamp(grid, 2, 2 if not pressed else 3, {"w": "white", "k": "stone_l", "R": "red", "r": "red_d"})
+    return c
+
+
+def cutin_portrait() -> Canvas:
+    """Goldie's determined face for the ultimate cut-in (64x64, from the app icon portrait)."""
+    import art_brand
+    face = art_brand.icon_character()
+    # determined brows over both eyes
+    for (x, y) in ((10, 10), (11, 10), (12, 10), (13, 11), (21, 10), (20, 10), (19, 10), (18, 11)):
+        face.set(x, y, "brown_d")
+    return face.scaled(2)
+
+
+def hud_plate() -> Canvas:
+    """Translucent dark plate behind the HUD bars (9-slice, margins 4)."""
+    return framed(12, 12, "ink@200", None, "ink@120", corner=3)
+
+
+def combo_burst() -> Canvas:
+    """Spiky burst behind the combo number (32x24)."""
+    c = Canvas(34, 26)
+    cx, cy = 17, 13
+    for y in range(26):
+        for x in range(34):
+            a = math.atan2(y + 0.5 - cy, (x + 0.5 - cx) * 0.75)
+            r = math.hypot((x + 0.5 - cx) * 0.75, y + 0.5 - cy)
+            spike = 9.5 + 2.6 * (1 if int((a + math.pi) / (2 * math.pi) * 14) % 2 == 0 else -0.4)
+            if r < spike:
+                c.set(x, y, "orange" if r > spike - 2.2 else "yellow")
+    c.outline_all("red_d")
+    return c
+
+
 def write_all() -> list[str]:
     out = []
+    star_icon(16, True).save(res_path("res://assets/ui/star_full.png"))
+    star_icon(16, False).save(res_path("res://assets/ui/star_empty.png"))
+    star_icon(26, True).save(res_path("res://assets/ui/star_big_full.png"))
+    star_icon(26, False).save(res_path("res://assets/ui/star_big_empty.png"))
+    finger_pointer(False).save(res_path("res://assets/ui/finger.png"))
+    finger_pointer(True).save(res_path("res://assets/ui/finger_pressed.png"))
+    cutin_portrait().save(res_path("res://assets/ui/cutin_goldie.png"))
+    hud_plate().save(res_path("res://assets/ui/hud_plate.png"))
+    combo_burst().save(res_path("res://assets/ui/combo_burst.png"))
     for tid in TRICK_IDS:
         p = res_path("res://assets/icons/tricks/%s.png" % tid)
         trick_icon(tid).save(p)
@@ -379,18 +533,19 @@ def theme_tres() -> str:
         ("button_disabled", 4, (6, 3, 6, 5)), ("button_alt_normal", 4, (6, 3, 6, 5)),
         ("button_alt_pressed", 4, (6, 4, 6, 4)), ("panel", 5, (8, 7, 8, 7)),
         ("panel_dark", 5, (6, 5, 6, 5)), ("card_normal", 5, (6, 5, 6, 5)), ("card_pressed", 5, (6, 6, 6, 4)),
-        ("ribbon", 6, (10, 3, 10, 4)),
+        ("ribbon", 6, (10, 3, 10, 4)), ("ribbon_big", 6, (16, 6, 16, 8)),
     ]
     lines = ['[gd_resource type="Theme" format=3]', "",
              '[ext_resource type="FontFile" path="res://assets/fonts/Cubic_11.ttf" id="1_font"]']
     for i, (name, _, _) in enumerate(tex):
-        lines.append('[ext_resource type="Texture2D" path="res://assets/ui/%s.png" id="%d_%s"]' % (name, i + 2, name))
+        png = "ribbon" if name == "ribbon_big" else name
+        lines.append('[ext_resource type="Texture2D" path="res://assets/ui/%s.png" id="%d_%s"]' % (png, i + 2, name))
     for i, (name, m, (cl, ct, cr, cb)) in enumerate(tex):
         lines += ["", '[sub_resource type="StyleBoxTexture" id="Style_%s"]' % name,
                   'content_margin_left = %.1f' % cl, 'content_margin_top = %.1f' % ct,
                   'content_margin_right = %.1f' % cr, 'content_margin_bottom = %.1f' % cb,
                   'texture = ExtResource("%d_%s")' % (i + 2, name)]
-        if name == "ribbon":
+        if name in ("ribbon", "ribbon_big"):
             lines += ["texture_margin_left = 8.0", "texture_margin_top = 4.0",
                       "texture_margin_right = 8.0", "texture_margin_bottom = 5.0"]
         else:
@@ -458,6 +613,20 @@ def theme_tres() -> str:
          "LabelTitle/constants/shadow_offset_x = 0",
          "LabelTitle/constants/shadow_offset_y = 2",
          "LabelTitle/font_sizes/font_size = 24",
+         # Pop-up numbers and words over the game ("等級 3!"): yellow with a thick outline
+         'LabelPop/base_type = &"Label"',
+         "LabelPop/colors/font_color = %s" % _col("yellow"),
+         "LabelPop/colors/font_outline_color = %s" % ink,
+         "LabelPop/constants/outline_size = 4",
+         # Big white title text with outline (celebration, cut-in)
+         'LabelBig/base_type = &"Label"',
+         "LabelBig/colors/font_color = %s" % _col("white"),
+         "LabelBig/colors/font_outline_color = %s" % ink,
+         "LabelBig/colors/font_shadow_color = %s" % ink,
+         "LabelBig/constants/outline_size = 4",
+         "LabelBig/constants/shadow_offset_x = 0",
+         "LabelBig/constants/shadow_offset_y = 2",
+         "LabelBig/font_sizes/font_size = 24",
          # Brown secondary text on parchment
          'LabelSoft/base_type = &"Label"',
          "LabelSoft/colors/font_color = %s" % _col("brown"),
@@ -468,6 +637,8 @@ def theme_tres() -> str:
          'PanelDark/styles/panel = SubResource("Style_panel_dark")',
          'Ribbon/base_type = &"PanelContainer"',
          'Ribbon/styles/panel = SubResource("Style_ribbon")',
+         'RibbonBig/base_type = &"PanelContainer"',
+         'RibbonBig/styles/panel = SubResource("Style_ribbon_big")',
          # Thin pixel scroll bar
          "VScrollBar/styles/scroll = SubResource(\"Style_scroll\")",
          "VScrollBar/styles/grabber = SubResource(\"Style_grabber\")",

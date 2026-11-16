@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="HudConfig" format=3]
+
+[ext_resource type="Script" path="res://ui/hud/hud_config.gd" id="1_cfg"]
+
+[resource]
+script = ExtResource("1_cfg")
+title_card_time = 1.6
+celebration_time = 1.9
+cut_in_time = 0.6
+combo_min_show = 2
+combo_tiers = Array[int]([5, 10, 20])
+low_vigor_ratio = 0.3
+heartbeat_rate = 1.6
+level_pop_time = 1.1

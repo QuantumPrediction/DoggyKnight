@@ -1,6 +1,6 @@
 class_name PaletteColors
 extends RefCounted
-## 全遊戲共用的 32 色調色盤(由 tools/pixel/build_all.py 自動產生,請勿手改)。
+## 全遊戲共用的 40 色調色盤(由 tools/pixel/build_all.py 自動產生,請勿手改)。
 ## 介面程式用這些常數,讓顏色與像素圖一致。
 
 const INK: Color = Color("2a1b2d")

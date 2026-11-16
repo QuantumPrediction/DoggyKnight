@@ -169,13 +169,198 @@ def dust() -> list[Anim]:
     return [Anim("default", [f0, f1, f2], 12.0, False)]
 
 
+# --------------------------------------------------------------------------
+# v2.2 (CP3): richer versions with more frames, white-hot cores and dithered fades
+# --------------------------------------------------------------------------
+
+BAYER4 = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]]
+
+
+def _bayer(x: int, y: int) -> float:
+    return (BAYER4[y % 4][x % 4] + 0.5) / 16.0
+
+
+def smear(size: int, a0: float, a1: float, r_out: float, thick: float, colors: list[str], tail: float = 0.4,
+          fade: float = 0.0, head_round: bool = True) -> Canvas:
+    """Sword-trail arc from a0 to a1 (degrees): thickest near the head (a1), dithered tail, optional overall fade."""
+    c = Canvas(size, size)
+    cx = cy = size / 2
+    for y in range(size):
+        for x in range(size):
+            r, a = _polar(cx, cy, x, y)
+            if a1 > 180 and a < a0:
+                a += 360
+            if not (a0 <= a <= a1):
+                continue
+            t = (a - a0) / max(1e-6, a1 - a0)
+            k = min(1.0, t / 0.85) if head_round else t
+            w = thick * (0.2 + 0.8 * math.sin(math.pi * 0.5 * k) ** 0.8)
+            if head_round and t > 0.85:
+                w *= math.sqrt(max(0.0, 1 - ((t - 0.85) / 0.15) ** 2))
+            if not (r_out - w <= r <= r_out):
+                continue
+            if t < tail and _bayer(x, y) > (t / tail) ** 1.4:
+                continue
+            if fade > 0 and _bayer(x, y) < fade:
+                continue
+            depth = (r_out - r) / max(1e-6, w)
+            idx = min(len(colors) - 1, int(depth * len(colors)))
+            c.set(x, y, colors[idx])
+    return c
+
+
+def _plus(c: Canvas, x: int, y: int, core: str = "white", arm: str = "yellow", r: int = 1) -> None:
+    c.set(x, y, core)
+    for d in range(1, r + 1):
+        for dx, dy in ((d, 0), (-d, 0), (0, d), (0, -d)):
+            c.set(x + dx, y + dy, arm)
+
+
+def slash_v2() -> list[Anim]:
+    s = 32
+    f0 = smear(s, -85, -25, 14, 3, ["white", "sky_l"], tail=0.5)
+    f1 = smear(s, -85, 70, 14, 7, ["white", "white", "sky_l", "sky"], tail=0.45)
+    f2 = smear(s, -40, 85, 14, 5, ["sky_l", "white", "sky_l", "sky"], tail=0.6, fade=0.25)
+    for (x, y) in ((27, 23), (24, 28)):
+        _plus(f2, x, y, "white", "sky_l")
+    f3 = smear(s, 0, 88, 14, 3, ["sky_l", "sky"], tail=0.7, fade=0.6)
+    for (x, y) in ((28, 20), (22, 29), (29, 26)):
+        f3.set(x, y, "white")
+    return [Anim("default", [f0, f1, f2, f3], 22.0, False, [0.8, 1.2, 1.0, 1.0])]
+
+
+def hit_spark_v2() -> list[Anim]:
+    s = 16
+    f0 = Canvas(s, s)
+    f0.ellipse(8, 8, 3.2, 3.2, "yellow")
+    f0.ellipse(8, 8, 2.2, 2.2, "white")
+    f1 = Canvas(s, s)
+    for k in range(8):
+        ang = math.pi * k / 4
+        ln = 7 if k % 2 == 0 else 4
+        for d in range(1, ln + 1):
+            f1.set(int(round(8 + math.cos(ang) * d - 0.5)), int(round(8 + math.sin(ang) * d - 0.5)),
+                   "white" if d < ln * 0.5 else "yellow")
+    f1.ellipse(8, 8, 1.6, 1.6, "white")
+    f2 = Canvas(s, s)
+    for k in range(8):
+        ang = math.pi * k / 4 + 0.2
+        ln = 7 if k % 2 == 0 else 5
+        for d in range(ln - 2, ln + 1):
+            f2.set(int(round(8 + math.cos(ang) * d - 0.5)), int(round(8 + math.sin(ang) * d - 0.5)),
+                   "yellow" if d < ln else "orange")
+    f3 = Canvas(s, s)
+    for (x, y) in ((1, 7), (14, 8), (8, 1), (7, 14), (3, 3), (12, 12)):
+        f3.set(x, y, "orange" if (x + y) % 3 else "yellow")
+    return [Anim("default", [f0, f1, f2, f3], 20.0, False, [0.8, 1.0, 1.0, 1.0])]
+
+
+def exp_orb_v2() -> list[Anim]:
+    """12x12: a glowing blue orb with a soft halo, a twinkle that circles it and a short trail."""
+    frames = []
+    orbit = [(9, 2), (10, 6), (8, 9), (3, 9), (1, 5), (3, 2)]
+    for i in range(6):
+        c = Canvas(12, 12)
+        bob = [0, 0, 1, 1, 1, 0][i]
+        cx, cy = 6, 5 + bob
+        c.ellipse(cx, cy, 5, 5, "sky_l@70")
+        c.ellipse(cx, cy, 4, 4, "sky_l@110")
+        c.set(cx - 1, cy + 4, "sky@120")
+        c.set(cx, cy + 5, "sky@80")
+        c.set(cx, cy + 4, "sky_l@140")
+        orb = Canvas(12, 12)
+        orb.ellipse(cx, cy, 3, 3, "sky")
+        orb.ellipse(cx - 0.4, cy - 0.4, 2, 2, "sky_l")
+        orb.set(cx - 2, cy - 2, "white")
+        orb.set(cx - 1, cy - 2, "white")
+        orb.set(cx - 2, cy - 1, "white")
+        orb.set(cx + 1, cy + 1, "water")
+        orb.set(cx + 2, cy, "water")
+        orb.outline_all("water_d")
+        c.blit(orb, 0, 0)
+        ox, oy = orbit[i]
+        c.set(ox, oy + bob, "white")
+        frames.append(c)
+    return [Anim("default", frames, 9.0, True)]
+
+
+def ultimate_slash_v2() -> list[Anim]:
+    s = 64
+    gold = ["white", "yellow", "gold_l", "orange"]
+    frames = []
+    f = Canvas(s, s)
+    for k in range(8):
+        ang = math.pi * k / 4
+        for d in range(5, 13 if k % 2 == 0 else 9):
+            f.set(int(32 + math.cos(ang) * d), int(32 + math.sin(ang) * d), "white" if d < 9 else "yellow")
+    f.ellipse(32, 32, 6, 6, "yellow")
+    f.ellipse(32, 32, 4, 4, "white")
+    frames.append(f)
+    f = smear(s, -180, -20, 29, 10, gold, tail=0.35)
+    f.ellipse(32, 32, 3, 3, "yellow")
+    frames.append(f)
+    f = smear(s, -180, 130, 29, 11, gold, tail=0.25)
+    frames.append(f)
+    f = crescent(s, -180, 180, 29, 9, gold, uniform=True)
+    for k in range(12):
+        ang = 2 * math.pi * k / 12
+        for d in range(30, 34 if k % 2 else 36):
+            f.set(int(32 + math.cos(ang) * d), int(32 + math.sin(ang) * d), "yellow" if d < 33 else "gold_l")
+    frames.append(f)
+    f = crescent(s, -180, 180, 31, 5, ["white", "yellow", "gold_l"], uniform=True)
+    for y in range(s):
+        for x in range(s):
+            if f.opaque(x, y) and _bayer(x, y) < 0.35:
+                f.set(x, y, None)
+    frames.append(f)
+    f = Canvas(s, s)
+    for k in range(12):
+        ang = 2 * math.pi * k / 12 + 0.2
+        _plus(f, int(32 + math.cos(ang) * 28), int(32 + math.sin(ang) * 28), "white", "yellow")
+    frames.append(f)
+    return [Anim("default", frames, 16.0, False, [1.5, 1.0, 1.0, 1.5, 1.5, 2.0])]
+
+
+def dizzy_stars_v2() -> list[Anim]:
+    frames = []
+    for i in range(6):
+        c = Canvas(16, 10)
+        pts = []
+        for k in range(3):
+            ang = 2 * math.pi * (k / 3 + i / 18)
+            x = 8 + math.cos(ang) * 6
+            y = 5 + math.sin(ang) * 2.5
+            pts.append((math.sin(ang), int(round(x)) - 2, int(round(y)) - 1))
+        for depth, x, y in sorted(pts):
+            col = "yellow" if depth > -0.2 else "gold_l"
+            c.stamp(STAR5, x, y, {"Y": col, "w": "white" if depth > -0.2 else "yellow"}, outline=None)
+        frames.append(c)
+    return [Anim("default", frames, 12.0, True)]
+
+
+def dust_v2() -> list[Anim]:
+    f0 = Canvas(8, 8)
+    f0.ellipse(4, 5.5, 2.2, 1.6, "white")
+    f1 = Canvas(8, 8)
+    f1.ellipse(2.8, 5, 2.4, 2, "stone_l")
+    f1.ellipse(5.4, 4.6, 2.2, 1.9, "white")
+    f1.set(4, 3, "white")
+    f2 = Canvas(8, 8)
+    f2.ellipse(2.4, 4.4, 2.2, 1.8, "stone_l@200")
+    f2.ellipse(6, 3.5, 1.8, 1.6, "white@200")
+    f3 = Canvas(8, 8)
+    for (x, y) in ((1, 4), (3, 3), (6, 2), (2, 5)):
+        f3.set(x, y, "stone_l@150")
+    return [Anim("default", [f0, f1, f2, f3], 14.0, False)]
+
+
 ALL = {
-    "slash": (slash, (32, 32)),
-    "hit_spark": (hit_spark, (16, 16)),
-    "exp_orb": (exp_orb, (8, 8)),
-    "ultimate_slash": (ultimate_slash, (64, 64)),
-    "dizzy_stars": (dizzy_stars, (16, 10)),
-    "dust": (dust, (8, 8)),
+    "slash": (slash_v2, (32, 32)),
+    "hit_spark": (hit_spark_v2, (16, 16)),
+    "exp_orb": (exp_orb_v2, (12, 12)),
+    "ultimate_slash": (ultimate_slash_v2, (64, 64)),
+    "dizzy_stars": (dizzy_stars_v2, (16, 10)),
+    "dust": (dust_v2, (8, 8)),
 }
 
 assert rgba("white")

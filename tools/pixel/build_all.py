@@ -13,6 +13,7 @@ What it writes (paths are the contracts of DEV_PLAN 4.6 / 4.9 — never rename t
   assets/palette.png                              the 40-colour palette
   assets/sprites/<code>/<code>.png + _frames.tres  goldie, bulldog, scarecrow, crow, black_knight
   assets/fx/<name>/<name>.png + _frames.tres       slash, hit_spark, exp_orb, ultimate_slash, dizzy_stars, dust
+  assets/fx/particles/<name>.tscn + tex/*.png     11 one-shot CPUParticles2D effects (DEV_PLAN 4.10)
   assets/icons/tricks/<id>.png                    sit, wag, fetch, shake, spin, bark (16x16)
   assets/tiles/chapter1_tiles.png                 16x16 tile set
   assets/backgrounds/<name>.png + .tscn           sword_stone, wheat_field, meadow, farm_fence, crow_forest, bridge
@@ -41,6 +42,7 @@ import art_brand  # noqa: E402
 import art_enemies  # noqa: E402
 import art_fx  # noqa: E402
 import art_heroes  # noqa: E402
+import art_particles  # noqa: E402
 import art_ui  # noqa: E402
 import art_world  # noqa: E402
 import music_gen  # noqa: E402
@@ -110,6 +112,7 @@ def main() -> None:
         anims = fn()
         build_sheet("res://assets/fx/%s" % name, name, anims, size)
         sheets["fx_" + name] = anims
+    art_particles.write_all()
     art_ui.write_all()
     art_ui.write_theme()
     art_world.write_all()

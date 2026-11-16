@@ -48,7 +48,8 @@ func test_ui_keys_use_the_ui_prefix_or_shared_keys() -> void:
 	for path in _scripts("res://ui"):
 		for m in re.search_all(FileAccess.get_file_as_string(path)):
 			var key := m.get_string(1)
-			assert_true(key.begins_with("UI_") or key == "CHAPTER_1" or key == "GAME_TITLE",
+			# 共用鍵:章節名、遊戲名,以及頭目血條用的 A 線敵人名稱(DEV_PLAN 4.10 指定)
+			assert_true(key.begins_with("UI_") or key in ["CHAPTER_1", "GAME_TITLE", "ENEMY_BLACK_KNIGHT"],
 					"%s:C 線新增的鍵要用 UI_ 前綴(%s)" % [path, key])
 
 
