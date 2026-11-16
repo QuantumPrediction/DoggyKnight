@@ -371,8 +371,7 @@ func _on_ultimate_used() -> void:
 
 
 func _on_pause_pressed() -> void:
-	Haptics.play(&"light")
-	AppLifecycle.simulate_back()
+	AppLifecycle.simulate_back()      # 按鍵音與輕震由 UiKit.button 處理
 
 
 func _on_player_damaged(_amount: int) -> void:
