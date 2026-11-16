@@ -1,6 +1,8 @@
 extends Control
-## 標題畫面的替身。正式版:ui/screens/title.tscn(C 線)。介面完全相同(DEV_PLAN 4.9):
+## 標題畫面的替身。正式版:ui/screens/title.tscn(C 線)。介面完全相同(DEV_PLAN 4.9、4.11):
 ##   setup(has_save: bool);訊號 new_game_pressed、continue_pressed、credits_pressed。
+##   v2.3:GameState.chapter_cleared 時多一個「Hard」按鈕;按下「New Game」/「Hard」先設定
+##   GameState.difficulty(normal / hard)才發 new_game_pressed。
 
 signal new_game_pressed()
 signal continue_pressed()
@@ -9,6 +11,7 @@ signal credits_pressed()
 const StubUI := preload("res://game/flow/stubs/stub_ui.gd")
 
 var _continue_button: Button
+var _hard_button: Button
 
 
 func _ready() -> void:
@@ -18,7 +21,9 @@ func _ready() -> void:
 	var column := StubUI.add_column(self)
 	StubUI.add_label(column, "GOLDEN KNIGHT", StubUI.ACCENT, 16)
 	StubUI.add_label(column, "(stand-in title)", Color(1, 1, 1, 0.6))
-	StubUI.add_button(column, "New Game", new_game_pressed.emit)
+	StubUI.add_button(column, "New Game", _new_game.bind(&"normal"))
+	_hard_button = StubUI.add_button(column, "New Game (Hard)", _new_game.bind(&"hard"))
+	_hard_button.visible = GameState.chapter_cleared
 	_continue_button = StubUI.add_button(column, "Continue", continue_pressed.emit)
 	_continue_button.visible = false
 	StubUI.add_button(column, "Credits", credits_pressed.emit)
@@ -26,3 +31,13 @@ func _ready() -> void:
 
 func setup(has_save: bool) -> void:
 	_continue_button.visible = has_save
+	_hard_button.visible = GameState.chapter_cleared
+
+
+func _process(_delta: float) -> void:
+	_hard_button.visible = GameState.chapter_cleared     # 沙盒可以隨時切換
+
+
+func _new_game(mode: StringName) -> void:
+	GameState.difficulty = mode if GameState.chapter_cleared else &"normal"
+	new_game_pressed.emit()

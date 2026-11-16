@@ -2,15 +2,31 @@ class_name FlowMain
 extends Node
 ## 整個遊戲的流程(B1、B7、B8、B9;M3 打磨 BP1 至 BP6)。game/flow/main.tscn 的根節點;開機後顯示標題。
 ##
-## 流程:標題 → 關卡 →(升級選把戲)→ 過關結算 →(1-2、1-4 之後)營地 → 下一關
-##       金毛倒下 → 失敗結算 → 再試一次(立即回到戰鬥)或回標題
-##       打敗黑騎士(1-6)→ 結算(is_final = true)→ 回標題
+## 流程:標題 →(新遊戲:開場繪本 prologue)→ 關卡 →(升級選把戲)→ 過關結算 →(1-2、1-4 之後)營地 → 下一關
+##       金毛倒下 → 失敗結算 → 再試一次(立即回到戰鬥,不重播對白)或回標題
+##       打敗黑騎士(1-6)→ 結局對白 → 結算(is_final = true)→ 第二章預告 teaser → 回標題
 ## 所有畫面切換都在這個檔案裡,而且都經過轉場(_go:蓋住 → 換畫面 → 露出;見 FlowTransition)。
 ## 過關與失敗的結算畫面直接疊在場地上(不蓋住),讓慶祝與結算連成一氣。
 ##
-## 一關的開始(BP1):轉場蓋住時組裝場地(LevelSession.build),畫面露出後才發 level_started
-## (LevelSession.begin),HUD 播標題卡;intro_duration 秒之後第一波。1-1 第一次玩時,第一波開始時
-## 加入教學提示(BP4,第 20 層,不暫停遊戲、不吃掉觸控)。
+## 一關的開始(BP1、BS2):轉場蓋住時組裝場地(LevelSession.build)→ 畫面露出 → 開打前的對白
+## (LevelData.story_before;重試時不播)→ 發 level_started(LevelSession.begin),HUD 播標題卡 →
+## intro_duration 秒之後第一波。所以 HUD 的關卡標題卡一定在對白之後才出現。1-1 第一次玩時,
+## 第一波開始時加入教學提示(BP4,第 20 層,不暫停遊戲、不吃掉觸控)。
+## 一關的結束:過關慶祝(results_delay 秒)→ 過關後的對白(story_after)→ 結算畫面。
+##
+## 故事(v2.3,BS2,docs/STORY.md 第 8 節):對白框(ui/dialogue/dialogue_box.tscn,第 40 層)在開機時加一次;
+## 不存在時略過全部故事。對白播放期間 state = STORY:場地停止運作(World 的 process_mode = DISABLED,
+## 敵人、金毛、計時都停住),返回鍵無效,切到背景只存檔(對白本身會等玩家點)。
+##   新遊戲:prologue(整頁繪本,背景是 StoryBackdrop)→ 1-1 場地 → l1_before → 標題卡 → 第一波。
+##   每關:場地出現 → story_before → 標題卡 → 波次;過關慶祝 → story_after → 結算。
+##   重試同一關不播 story_before;「繼續冒險」播該關的 story_before。營地的 camp1、camp2 由 D 線播。
+##   1-6:慶祝 → l6_after(結局)→ 結算(第一章完)→ teaser → 回標題。
+##   打敗黑騎士時 GameState.chapter_cleared = true 並立即存檔(結局播到一半 App 被關掉也不會遺失)。
+## 每段對白播完都存檔(GameState.story_seen 由對白框記錄)。
+##
+## 難度(v2.3,BS4):標題畫面在 new_game_pressed 之前設定 GameState.difficulty(只有 chapter_cleared
+## 時才可能是 hard,否則一律 normal)。這一輪的難度隨存檔保存,「繼續冒險」沿用;困難模式的最佳星數
+## 存在 best_stars["<關卡 id>:hard"];結算資料多一個 difficulty。
 ##
 ## 節點(在 _ready 以程式建立):
 ##   Main(本節點,PROCESS_MODE_ALWAYS:暫停時仍要處理返回鍵與畫面切換)
@@ -30,6 +46,8 @@ extends Node
 ##
 ## 音樂(BP5,DEV_PLAN 4.10):標題 title;每關開始 field(頭目關 boss);過關 victory
 ## (打完第一章 chapter_clear);失敗 fail。營地的 camp 由 D 線自己播。
+## v2.3:開場繪本、結局、預告播 story;1-4 稻草人隊長那一波開始時改播 boss;
+## 一般關卡過關後的對白播回該關的曲子(field / boss,勝利短曲用 story_music_fade 秒淡出)。
 ##
 ## 星級(BP3):過關時依 StarRating 計算,最佳星數寫進 GameState.best_stars 並立即存檔。
 ##
@@ -39,7 +57,12 @@ extends Node
 signal state_changed(new_state: State)
 
 ## SWITCHING:轉場中(舊畫面不再接受按鈕,新畫面還沒出現)。
-enum State { BOOT, TITLE, LEVEL, RESULTS, FAILURE, CAMP, SWITCHING }
+## STORY(v2.3):正在播對白(開場繪本、關卡前後、結局、預告);場地停止運作。
+enum State { BOOT, TITLE, LEVEL, RESULTS, FAILURE, CAMP, SWITCHING, STORY }
+
+const NORMAL: StringName = &"normal"
+const HARD: StringName = &"hard"
+const STORY_MUSIC: StringName = &"story"
 
 const DEFAULT_CHAPTER: String = "res://data/levels/chapter_1.tres"
 const DEFAULT_DIFFICULTY: String = "res://game/progression/difficulty.tres"
@@ -80,6 +103,17 @@ var _switch_serial: int = 0
 var _switching: bool = false
 var _session_waiting: bool = false
 var _pause_when_ready: bool = false
+## 這一輪冒險的難度(存檔;「繼續冒險」時寫回 GameState.difficulty)。
+var _run_difficulty: StringName = NORMAL
+## 這一關開打前要先播 story_before(新的一關、繼續冒險;重試時為 false)。
+var _story_before_pending: bool = false
+## 轉場露出後要播的整頁故事(開場繪本、預告),與播完之後要做的事。
+var _page_story: DialogueScript
+var _page_story_then: Callable = Callable()
+var _story_playing: bool = false
+var _story_id: StringName = &""
+## 每次開始播對白、或離開目前畫面時 +1;播完時不一樣就表示已被打斷(不再繼續原本的步驟)。
+var _story_serial: int = 0
 
 var _world: Node
 var _camp_holder: Node
@@ -96,6 +130,7 @@ var _screen: Node
 var _credits: Node
 var _quit_dialog: Node
 var _camp: Node
+var _dialogue_box: Node
 
 
 func _ready() -> void:
@@ -125,6 +160,8 @@ func _ready() -> void:
 	transition.name = "TransitionHost"
 	add_child(transition)
 	transition.setup(FlowParts.optional_scene(FlowParts.TRANSITION, use_stand_ins), difficulty)
+
+	_add_dialogue_box()
 
 	save_store = SaveStore.new(save_path)
 	_load_save()
@@ -238,6 +275,32 @@ func is_level_running() -> bool:
 	return state == State.LEVEL and _session != null and _session.is_playing()
 
 
+## 對白框(沒有時為 null:略過全部故事)。
+func get_dialogue_box() -> Node:
+	return _dialogue_box
+
+
+## 正在播對白(state == STORY)。
+func is_story_playing() -> bool:
+	return _story_playing
+
+
+## 正在播的段落 id(沒有在播時為 &"")。
+func get_story_id() -> StringName:
+	return _story_id
+
+
+## 這一輪冒險的難度(&"normal" 或 &"hard")。
+func get_run_difficulty() -> StringName:
+	return _run_difficulty
+
+
+## 這段對白能不能播(有內容,而且有對白框)。
+func can_play_story(script: DialogueScript) -> bool:
+	return script != null and not script.lines.is_empty() and _dialogue_box != null \
+			and is_instance_valid(_dialogue_box) and _dialogue_box.has_method(&"play")
+
+
 # --- 存檔 ---
 
 func save_now() -> bool:
@@ -250,6 +313,9 @@ func save_now() -> bool:
 		"tutorial_done": GameState.tutorial_done,
 		"best_stars": GameState.best_stars,
 		"camp_pending": _camp_pending and _reached_level > 0,
+		"difficulty": String(_run_difficulty),
+		"chapter_cleared": GameState.chapter_cleared,
+		"story_seen": GameState.story_seen,
 	})
 
 
@@ -267,6 +333,13 @@ func _load_save() -> void:
 	GameState.haptics_on = data["haptics_on"]
 	GameState.tutorial_done = data["tutorial_done"]
 	GameState.best_stars = (data["best_stars"] as Dictionary).duplicate()
+	GameState.chapter_cleared = data["chapter_cleared"]
+	_run_difficulty = HARD if data["difficulty"] == "hard" else NORMAL
+	GameState.difficulty = _run_difficulty      # 標題的難度選擇預設 = 上一輪的難度
+	var seen := {}
+	for id: String in (data["story_seen"] as Dictionary):
+		seen[StringName(id)] = true
+	GameState.story_seen = seen
 
 
 # --- 畫面切換 ---
@@ -282,12 +355,22 @@ func show_title() -> void:
 	_music(&"play", [&"title"])
 
 
-## 新遊戲:重設這一輪(數值、把戲、等級、活力、下一關加成),從第 1 關開始。
+## 新遊戲:重設這一輪(數值、把戲、等級、活力、下一關加成),播開場繪本,從第 1 關開始。
+## 難度用標題畫面設定的 GameState.difficulty(還沒打完第一章時一律 normal)。
+## 舊的進度立即作廢(開場繪本播到一半 App 被關掉,也不會「繼續」舊的那一輪)。
 func start_new_game() -> void:
 	GameState.reset_run()
 	progression.reset_run()
+	if GameState.difficulty != HARD or not GameState.chapter_cleared:
+		GameState.difficulty = NORMAL
+	_run_difficulty = GameState.difficulty
 	_camp_pending = false
-	_start_level(0)
+	if can_play_story(chapter.prologue):
+		_reached_level = 0
+		save_now()
+		_show_page_story(chapter.prologue, _go.bind(_start_level.bind(0, true)))
+	else:
+		_start_level(0)
 
 
 ## 繼續:從存檔的關卡開始全新的一輪(DEV_PLAN B9:存檔只記到達的關卡)。
@@ -296,6 +379,7 @@ func continue_game() -> void:
 	var index := _reached_level
 	GameState.reset_run()
 	progression.reset_run()
+	GameState.difficulty = _run_difficulty         # 沿用存檔那一輪的難度
 	if _camp_pending and index > 0 and chapter.has_camp_after(index - 1):
 		_level_index = index - 1
 		_enter_camp()
@@ -305,14 +389,15 @@ func continue_game() -> void:
 	_start_level(index)
 
 
-## 失敗後再試一次:還原這一關開始時的快照,活力補滿,立即重新開始。
+## 失敗後再試一次:還原這一關開始時的快照,活力補滿,立即重新開始(不重播開打前的對白)。
 func retry_level() -> void:
 	progression.restore_snapshot(_snapshot)
 	GameState.vigor = GameState.player_stats.max_vigor
-	_start_level(_level_index)
+	_start_level(_level_index, false)
 
 
-func _start_level(index: int) -> void:
+## 開始第 index 關。with_story = false(重試)時不播 story_before。
+func _start_level(index: int, with_story: bool = true) -> void:
 	var level := chapter.get_level(index)
 	if level == null:
 		push_error("FlowMain: 沒有第 %d 關" % index)
@@ -336,13 +421,16 @@ func _start_level(index: int) -> void:
 	_session.name = "LevelSession"
 	_session.setup(level, index, difficulty, FlowParts.arena_for(level, use_stand_ins), _spawn_rng)
 	_session.arriving = _arriving_companions(index)
+	_session.difficulty_mode = _run_difficulty
 	_session.cleared.connect(_on_level_cleared)
 	_session.finished.connect(_on_level_finished)
 	_session.intro_finished.connect(_on_intro_finished)
+	_session.boss_wave_started.connect(_on_boss_wave_started)
 	_world.add_child(_session)
 	_session.build()
+	_story_before_pending = with_story
 	_set_state(State.LEVEL)
-	_music(&"play", [&"boss" if level.is_boss else &"field"])
+	_music(&"play", [_level_track(level)])
 	if _switching:
 		_session_waiting = true        # 轉場露出畫面之後才開始(_go)
 	else:
@@ -360,11 +448,26 @@ func _arriving_companions(index: int) -> Array[StringName]:
 	return result
 
 
-## 發 level_started、開始開場倒數。
+## (先播開打前的對白)發 level_started、開始開場倒數。
 func _begin_level() -> void:
 	_session_waiting = false
-	if state == State.LEVEL and _session != null and is_instance_valid(_session):
-		_session.begin(progression)
+	if state != State.LEVEL or _session == null or not is_instance_valid(_session):
+		return
+	var session := _session
+	var story: DialogueScript = session.level.story_before if _story_before_pending else null
+	_story_before_pending = false
+	if can_play_story(story):
+		_set_state(State.STORY)
+		_freeze_world(true)
+		if not await _play_story(story) or session != _session or state != State.STORY:
+			return
+		_freeze_world(false)
+		_set_state(State.LEVEL)
+	session.begin(progression)
+
+
+func _on_boss_wave_started(_index: int) -> void:
+	_music(&"play", [&"boss"])
 
 
 func _on_intro_finished() -> void:
@@ -377,6 +480,8 @@ func _on_level_cleared() -> void:
 	GameState.next_level_bonus = 0.0
 	_reached_level = 0 if chapter.is_last(_level_index) else _level_index + 1
 	_camp_pending = chapter.has_camp_after(_level_index) and _reached_level > 0
+	if chapter.is_last(_level_index):
+		GameState.chapter_cleared = true    # 打完第一章:解鎖困難模式(立即存檔)
 	_clear_record = _record_stars(level)
 	if _level_index == 0:
 		GameState.tutorial_done = true      # 打完 1-1:已懂得操作,教學不再出現
@@ -392,7 +497,7 @@ func _on_level_cleared() -> void:
 func _record_stars(level: LevelData) -> Dictionary:
 	var goals := StarRating.goals(level, true, _session.time_sec, _session.damage_taken)
 	var stars := StarRating.count(goals)
-	var key := String(level.id)
+	var key := StarRating.record_key(level.id, _run_difficulty)
 	var had_record := GameState.best_stars.has(key)
 	var previous := int(GameState.best_stars.get(key, 0))
 	GameState.best_stars[key] = maxi(previous, stars)
@@ -402,10 +507,19 @@ func _record_stars(level: LevelData) -> Dictionary:
 func _on_level_finished(victory: bool) -> void:
 	progression.end_level()
 	_close_pause()
-	# 讓場地停在結算畫面之下(敵人不再移動)。
-	_world.set_deferred(&"process_mode", Node.PROCESS_MODE_DISABLED)
+	# 讓場地停在對白與結算畫面之下(敵人不再移動)。
+	_freeze_world(true)
 	_last_result = _build_result(victory)
 	if victory:
+		var level := chapter.get_level(_level_index)
+		var story := level.story_after
+		if can_play_story(story):
+			var session := _session
+			_set_state(State.STORY)
+			var track := STORY_MUSIC if chapter.is_last(_level_index) else _level_track(level)
+			_music(&"play", [track, difficulty.story_music_fade])
+			if not await _play_story(story) or session != _session or state != State.STORY:
+				return
 		_set_state(State.RESULTS)
 		_screen = _add_ui(FlowParts.RESULTS, _screen_layer)
 		FlowParts.call_if_present(_screen, &"setup", [_last_result.duplicate(true)])
@@ -419,7 +533,8 @@ func _on_level_finished(victory: bool) -> void:
 		FlowParts.connect_if_present(_screen, &"title_pressed", _on_failure_title)
 
 
-## 結算資料:DEV_PLAN 4.9 的九個鍵 + 4.10 的六個鍵 + damage_taken(這一關受到的傷害)。
+## 結算資料:DEV_PLAN 4.9 的九個鍵 + 4.10 的六個鍵 + damage_taken(這一關受到的傷害)
+## + difficulty(v2.3:&"normal" 或 &"hard";best_stars 是這個難度的最佳星數)。
 func _build_result(victory: bool) -> Dictionary:
 	var level := chapter.get_level(_level_index)
 	var tricks: Array = []
@@ -447,11 +562,12 @@ func _build_result(victory: bool) -> Dictionary:
 		"is_final": victory and chapter.is_last(_level_index),
 		"stars": stars,
 		"star_goals": goals,
-		"best_stars": int(GameState.best_stars.get(String(level.id), 0)),
+		"best_stars": int(GameState.best_stars.get(StarRating.record_key(level.id, _run_difficulty), 0)),
 		"new_best": new_best,
 		"level_index": _level_index,
 		"level_count": chapter.level_count(),
 		"damage_taken": damage,
+		"difficulty": _run_difficulty,
 	}
 
 
@@ -470,8 +586,14 @@ func _enter_camp() -> void:
 	_camp_holder.add_child(_camp)
 
 
+## 結算(第一章完)之後:第二章預告 → 回標題。chapter_cleared 已在打敗黑騎士時設定;這裡再存一次。
 func _finish_chapter() -> void:
-	show_title()
+	GameState.chapter_cleared = true
+	save_now()
+	if can_play_story(chapter.teaser):
+		_show_page_story(chapter.teaser, _go.bind(show_title))
+	else:
+		show_title()
 
 
 ## 移除目前的關卡、營地、畫面,取消暫停。
@@ -484,6 +606,10 @@ func _leave_current() -> void:
 	_pause_open = false
 	_choice_open = false
 	_session_waiting = false
+	_story_before_pending = false
+	_page_story = null
+	_page_story_then = Callable()
+	_stop_story()
 	get_tree().paused = false
 	if _session != null:
 		_session.teardown()
@@ -575,9 +701,87 @@ func _go(step: Callable) -> void:
 	_switching = false
 	if _session_waiting:
 		_begin_level()
+	elif _page_story != null:
+		_play_page_story()
 	if _pause_when_ready:
 		_pause_when_ready = false      # 轉場中切到背景:回來時關卡已暫停
 		_open_pause()
+
+
+# --- 故事(v2.3,BS2) ---
+
+func _add_dialogue_box() -> void:
+	var scene := FlowParts.optional_scene(FlowParts.DIALOGUE, use_stand_ins)
+	if scene == null:
+		push_warning("FlowMain: 沒有對白框,略過全部故事")
+		return
+	_dialogue_box = scene.instantiate()
+	if _dialogue_box == null:
+		return
+	_dialogue_box.name = "DialogueBox"
+	add_child(_dialogue_box)
+
+
+## 播一段對白,播完傳回 true;中途離開畫面(_leave_current)時傳回 false,呼叫的一方就不再繼續。
+func _play_story(script: DialogueScript) -> bool:
+	_story_serial += 1
+	var serial := _story_serial
+	_story_playing = true
+	_story_id = script.id
+	await _dialogue_box.play(script)
+	if serial != _story_serial or not is_inside_tree():
+		return false
+	_story_playing = false
+	_story_id = &""
+	save_now()                # GameState.story_seen(對白框已記下)
+	return true
+
+
+## 離開畫面時:還在播的對白直接結束(等著它的步驟不再繼續)。
+func _stop_story() -> void:
+	_story_serial += 1
+	_story_playing = false
+	_story_id = &""
+	if _dialogue_box != null and is_instance_valid(_dialogue_box) and _dialogue_box.has_method(&"is_active") \
+			and _dialogue_box.call(&"is_active"):
+		_dialogue_box.call(&"skip")
+
+
+## 整頁的故事(開場繪本、預告):換成 StoryBackdrop,播 story 音樂;畫面露出後播對白,播完呼叫 then。
+func _show_page_story(script: DialogueScript, then: Callable) -> void:
+	_leave_current()
+	_set_state(State.STORY)
+	_screen = StoryBackdrop.new()
+	_screen.name = "StoryBackdrop"
+	_screen_layer.add_child(_screen)
+	_music(&"play", [STORY_MUSIC])
+	_page_story = script
+	_page_story_then = then
+	if not _switching:
+		_play_page_story()
+
+
+func _play_page_story() -> void:
+	var script := _page_story
+	var then := _page_story_then
+	_page_story = null
+	_page_story_then = Callable()
+	if script == null or state != State.STORY:
+		return
+	if not await _play_story(script) or state != State.STORY:
+		return
+	if then.is_valid():
+		then.call()
+
+
+## 對白期間場地停止運作。用 set_deferred:與 _leave_current 的 set_deferred 依先後次序生效。
+func _freeze_world(frozen: bool) -> void:
+	_world.set_deferred(&"process_mode", Node.PROCESS_MODE_DISABLED if frozen else Node.PROCESS_MODE_PAUSABLE)
+
+
+## 這一關的曲子:頭目關 boss,其他 field。
+func _level_track(level: LevelData) -> StringName:
+	return &"boss" if level != null and level.is_boss else &"field"
 
 
 # --- 教學提示(BP4) ---
@@ -659,7 +863,7 @@ func _on_back_requested() -> void:
 			else:
 				_open_pause()
 		_:
-			pass                  # 結算、失敗、營地、轉場中:略過
+			pass                  # 結算、失敗、營地、轉場中、對白中:略過
 
 
 func _on_app_backgrounded() -> void:

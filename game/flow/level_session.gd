@@ -2,7 +2,8 @@ class_name LevelSession
 extends Node
 ## 一關的進行(B1、B2、B7、BP1、BP3)。由 FlowMain 建立,放在會被暫停的 World 節點之下。
 ##
-## 兩個步驟(FlowMain 在轉場蓋住畫面時 build(),畫面露出後 begin(),玩家才看得到開場):
+## 兩個步驟(FlowMain 在轉場蓋住畫面時 build(),畫面露出、開打前的對白(story_before)播完之後
+## 才 begin(),玩家才看得到開場):
 ##   build():組裝(DEV_PLAN 4.9「一關的組成」)
 ##     1. 實例化場地(FlowParts.arena_for),加為子節點。
 ##     2. arena.set_background(LevelData.background)。
@@ -23,6 +24,8 @@ extends Node
 signal intro_finished()
 signal cleared()
 signal finished(victory: bool)
+## 有中頭目(1-4 的稻草人隊長)的一波開始(v2.3;FlowMain 改播頭目音樂)。
+signal boss_wave_started(index: int)
 
 enum State { READY, PLAYING, WON, DOWNED, OVER }
 
@@ -33,6 +36,8 @@ var arena_scene: PackedScene
 var rng: RandomNumberGenerator
 ## 這一關才加入的同伴(畫面露出後才出場);其他同伴在 build() 時就已經在場上。
 var arriving: Array[StringName] = []
+## v2.3:&"normal" 或 &"hard"(困難模式每組多加幾隻,見 WaveSpawner.spawn_count)。
+var difficulty_mode: StringName = &"normal"
 
 var state: State = State.READY
 var time_sec: float = 0.0
@@ -96,8 +101,10 @@ func build() -> void:
 	spawner = WaveSpawner.new()
 	spawner.name = "WaveSpawner"
 	spawner.setup(level, arena, difficulty, rng)
+	spawner.difficulty_mode = difficulty_mode
 	spawner.all_waves_cleared.connect(_on_all_waves_cleared)
 	spawner.wave_began.connect(_on_wave_began)
+	spawner.boss_wave_began.connect(boss_wave_started.emit)
 	add_child(spawner)
 
 
