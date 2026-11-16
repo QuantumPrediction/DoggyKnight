@@ -6,6 +6,9 @@
 [ext_resource type="SpriteFrames" path="res://game/camp/art/camp_goldie_tail_frames.tres" id="4_tail"]
 [ext_resource type="SpriteFrames" path="res://assets/sprites/bulldog/bulldog_frames.tres" id="5_bulldog"]
 [ext_resource type="PackedScene" path="res://assets/fx/particles/heart.tscn" id="6_heart"]
+[ext_resource type="PackedScene" path="res://ui/dialogue/dialogue_box.tscn" id="7_dialogue"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/merlin/merlin_frames.tres" id="8_merlin"]
+[ext_resource type="PackedScene" path="res://assets/fx/particles/sparkle.tscn" id="9_sparkle"]
 
 [resource]
 script = ExtResource("1_config")
@@ -45,6 +48,29 @@ bulldog_frames = ExtResource("5_bulldog")
 bulldog_animation = &"idle"
 bulldog_scale = 2.0
 bulldog_bark_sec = 0.9
+story_paths = Dictionary[int, String]({
+1: "res://data/story/camp1.tres",
+3: "res://data/story/camp2.tres"
+})
+dialogue_box_scene = ExtResource("7_dialogue")
+merlin_frames = ExtResource("8_merlin")
+merlin_idle_animation = &"idle"
+merlin_cast_animation = &"cast"
+merlin_scale = 2.0
+merlin_flip = false
+merlin_offset = Vector2(-22, -20)
+merlin_staff_tip = Vector2(9, -7)
+merlin_cast_every_min = 6.0
+merlin_cast_every_max = 11.0
+merlin_cast_sec = 0.9
+merlin_sparkle_particles = ExtResource("9_sparkle")
+merlin_glow_color = Color(0.55, 0.75, 1, 0.35)
+merlin_lines = PackedStringArray("CAMP_MERLIN_01", "CAMP_MERLIN_02", "CAMP_MERLIN_03", "CAMP_MERLIN_04", "CAMP_MERLIN_05", "CAMP_MERLIN_06")
+merlin_bubble_sec = 3.2
+merlin_bubble_width = 150.0
+merlin_tap_cooldown_sec = 0.6
+merlin_sfx = &"magic"
+merlin_touch_margin = 4.0
 ember_amount = 10
 smoke_amount = 4
 fire_flicker = 0.12

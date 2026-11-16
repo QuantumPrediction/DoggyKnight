@@ -14,6 +14,11 @@ extends SceneTree
 ##   --out=<資料夾>       輸出位置(預設 ~/doggyknight_store_screenshots;請放在 repo 以外)
 ##   --scene=<res://路徑>  另外截取任何場景(可重複;例如整合後的 res://game/flow/main.tscn)
 ##   --frames=<數字>       截取 --scene 之前等待的格數(預設 90)
+##
+## 截取的畫面:01 營地(摸摸頭)、02 小遊戲「完美!」、03 小遊戲評價、
+## 04 對白(石中劍之丘,梅林登場)、05 繪本頁(開場插畫)、06 營地的梅林(對話泡泡)。
+## 04、05 用 C 線的對白框(ui/dialogue/dialogue_box.tscn)播放用程式建立的 DialogueScript,
+## 文字、頭像、插畫都是遊戲裡真正的素材(docs/STORY.md)。
 
 const TARGETS: Array[Dictionary] = [
 	{"name": "googleplay_phone_1080x1920", "size": Vector2i(1080, 1920)},
@@ -22,6 +27,12 @@ const TARGETS: Array[Dictionary] = [
 ]
 
 const CAMP_SCENE := "res://game/camp/camp.tscn"
+const DIALOGUE_BOX := "res://ui/dialogue/dialogue_box.tscn"
+const DIALOGUE_BACKGROUND := "res://assets/backgrounds/sword_stone.tscn"
+const GOLDIE_FRAMES := "res://assets/sprites/goldie/goldie_frames.tres"
+const MERLIN_FRAMES := "res://assets/sprites/merlin/merlin_frames.tres"
+## 對白框逐字顯示完一整句需要的格數(C 線的正式版有打字效果)。
+const DIALOGUE_SETTLE_FRAMES: int = 150
 
 var _out_dir: String = ""
 var _extra_scenes: PackedStringArray = []
@@ -56,6 +67,9 @@ func _run() -> void:
 		print("%s: logical %s × %d → %s" % [target["name"], logical, scale, px])
 		await _shot_camp(dir, px, scale)
 		await _shot_scroll(dir, px, scale)
+		await _shot_dialogue(dir, px, scale)
+		await _shot_storybook(dir, px, scale)
+		await _shot_camp_merlin(dir, px, scale)
 		for i in _extra_scenes.size():
 			var node := (load(_extra_scenes[i]) as PackedScene).instantiate()
 			root.add_child(node)
@@ -76,7 +90,9 @@ func _shot_camp(dir: String, px: Vector2i, scale: int) -> void:
 	game_state.set("level_index", 3)
 	var camp := (load(CAMP_SCENE) as PackedScene).instantiate()
 	root.add_child(camp)
-	await _frames(30)
+	await _frames(2)
+	await _skip_camp_story(camp)
+	await _frames(28)
 	camp.call("finish_intro")
 	camp.call("spawn_shooting_star")
 	await _frames(8)
@@ -120,6 +136,124 @@ func _shot_scroll(dir: String, px: Vector2i, scale: int) -> void:
 	await _save(dir.path_join("03_scroll_results.png"), px, scale)
 	camp.queue_free()
 	await _frames(2)
+
+
+## 對白:1-1 石中劍之丘,金毛與梅林站在場地上,梅林自我介紹(STORY_L1_BEFORE_03)。
+func _shot_dialogue(dir: String, px: Vector2i, scale: int) -> void:
+	var stage := _make_stage(true)
+	root.add_child(stage)
+	var box := _make_dialogue_box()
+	if box == null:
+		stage.queue_free()
+		return
+	await _frames(2)
+	box.call("play", _script(&"store_dialogue", [["STORY_L1_BEFORE_03", &"merlin", &"proud", ""],
+			["STORY_L1_BEFORE_04", &"goldie", &"surprised", ""]]))
+	await _frames(DIALOGUE_SETTLE_FRAMES)
+	await _save(dir.path_join("04_dialogue.png"), px, scale)
+	box.queue_free()
+	stage.queue_free()
+	await _frames(2)
+
+
+## 繪本頁:開場第三頁(石上刻著「拔出此劍者,即為卡美洛之王。」,插畫 prologue_2)。
+func _shot_storybook(dir: String, px: Vector2i, scale: int) -> void:
+	var stage := _make_stage(false)
+	root.add_child(stage)
+	var box := _make_dialogue_box()
+	if box == null:
+		stage.queue_free()
+		return
+	await _frames(2)
+	box.call("play", _script(&"store_storybook", [["STORY_PROLOGUE_03", &"narrator", &"normal", "res://assets/story/prologue_2.png"],
+			["STORY_PROLOGUE_04", &"narrator", &"normal", "res://assets/story/prologue_3.png"]]))
+	await _frames(DIALOGUE_SETTLE_FRAMES)
+	await _save(dir.path_join("05_storybook.png"), px, scale)
+	box.queue_free()
+	stage.queue_free()
+	await _frames(2)
+
+
+## 營地的梅林:第一次營地,點梅林,他在圓桌後面說一句話(對話泡泡)。
+func _shot_camp_merlin(dir: String, px: Vector2i, scale: int) -> void:
+	var game_state := root.get_node("GameState")
+	game_state.call("reset_run")
+	game_state.set("vigor", 60)
+	game_state.set("satisfaction", 20)
+	game_state.set("level_index", 1)
+	var camp := (load(CAMP_SCENE) as PackedScene).instantiate()
+	var cfg := (camp.get("config") as CampConfig).duplicate() as CampConfig
+	# 固定說「營火、星星和好朋友,就是最好的魔法。」
+	cfg.merlin_lines = PackedStringArray(["CAMP_MERLIN_04"])
+	camp.set("config", cfg)
+	root.add_child(camp)
+	await _frames(2)
+	await _skip_camp_story(camp)
+	await _frames(28)
+	camp.call("finish_intro")
+	camp.call("tap_merlin")
+	await _frames(40)
+	await _save(dir.path_join("06_camp_merlin.png"), px, scale)
+	camp.queue_free()
+	await _frames(2)
+
+
+func _skip_camp_story(camp: Node) -> void:
+	for i in 60:
+		if not camp.call("is_story_playing"):
+			return
+		camp.call("skip_story")
+		await _frames(1)
+
+
+## 場地背景(加上金毛與梅林),用 Camera2D 把遊戲區置中(DEV_PLAN 4.8)。
+func _make_stage(with_actors: bool) -> Node2D:
+	var stage := Node2D.new()
+	stage.name = "StoreStage"
+	var camera := Camera2D.new()
+	camera.position = SafeArea.GAME_CENTER
+	stage.add_child(camera)
+	if ResourceLoader.exists(DIALOGUE_BACKGROUND):
+		stage.add_child((load(DIALOGUE_BACKGROUND) as PackedScene).instantiate())
+	if with_actors:
+		for actor: Array in [[GOLDIE_FRAMES, Vector2(72, 112), false], [MERLIN_FRAMES, Vector2(110, 108), true]]:
+			if not ResourceLoader.exists(actor[0]):
+				continue
+			var sprite := AnimatedSprite2D.new()
+			sprite.sprite_frames = load(actor[0]) as SpriteFrames
+			sprite.position = actor[1]
+			sprite.flip_h = actor[2]
+			if sprite.sprite_frames.has_animation(&"idle"):
+				sprite.play(&"idle")
+			stage.add_child(sprite)
+	camera.ready.connect(camera.make_current)
+	return stage
+
+
+func _make_dialogue_box() -> Node:
+	if not ResourceLoader.exists(DIALOGUE_BOX):
+		push_warning("沒有對白框:略過對白截圖")
+		return null
+	var box := (load(DIALOGUE_BOX) as PackedScene).instantiate()
+	root.add_child(box)
+	return box
+
+
+## [翻譯鍵, speaker, 表情, 插畫路徑(可空白)]
+static func _script(id: StringName, rows: Array) -> DialogueScript:
+	var script := DialogueScript.new()
+	script.id = id
+	var lines: Array[DialogueLine] = []
+	for row: Array in rows:
+		var line := DialogueLine.new()
+		line.text_key = row[0]
+		line.speaker = row[1]
+		line.expression = row[2]
+		if String(row[3]) != "" and ResourceLoader.exists(row[3]):
+			line.illustration = load(row[3]) as Texture2D
+		lines.append(line)
+	script.lines = lines
+	return script
 
 
 func _set_window(logical: Vector2i) -> void:

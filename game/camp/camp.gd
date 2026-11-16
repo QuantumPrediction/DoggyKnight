@@ -8,7 +8,12 @@ extends Node
 ## - 繼續冒險:發出 EventBus.camp_left。營地不會自己消失,由 B 線的流程移除。
 ## 點金毛可以摸摸頭:冒愛心、播 pet、手機輕震,滿意度小幅增加(每次營地有上限,見 CampConfig)。
 ##
+## 梅林(DEV_PLAN 16 DS2)坐在圓桌後面,偶爾施法冒閃光;點他會說一句 CAMP_MERLIN_XX(對話泡泡)。
+##
 ## 進入時(_ready)發出 EventBus.camp_entered,並播放營地音樂(Music.play(&"camp"))。
+## 營地故事(DS1):第一次營地播 camp1、第二次播 camp2(CampConfig.story_paths,依 GameState.level_index),
+## 用營地自己的對白框(ui/dialogue/dialogue_box.tscn 的實例,第 40 層)播放;播完選單才滑出來。
+## 每次進營地只播一次(玩完小遊戲回來不會再播);對白檔不存在時略過,直接顯示選單。
 ## 畫面:放在 CanvasLayer(CampConfig.canvas_layer)內,用 SafeArea 排版,
 ## 填滿任何大小的畫面(180×320 至 196×426 等),畫面大小改變時重新排版。
 
@@ -18,12 +23,18 @@ const BULLDOG_FRAMES_PATH: String = "res://assets/sprites/bulldog/bulldog_frames
 const DEFAULT_MINIGAME_PATH: String = "res://game/minigames/scroll/scroll_minigame.tscn"
 const HEART_PATH: String = "res://assets/fx/particles/heart.tscn"
 const SPARKLE_PATH: String = "res://assets/fx/particles/sparkle.tscn"
+const DIALOGUE_BOX_PATH: String = "res://ui/dialogue/dialogue_box.tscn"
+const MERLIN_FRAMES_PATH: String = "res://assets/sprites/merlin/merlin_frames.tres"
 
 ## 小遊戲開始時發出(給沙盒與測試看)。
 signal minigame_opened(minigame: MinigameBase)
 signal minigame_closed(score: int, grade: int)
 ## 摸了金毛一下。rewarded:這一下有沒有增加滿意度。
 signal goldie_petted(rewarded: bool)
+## 營地故事播完(或略過),選單出現。沒有故事時不發出。
+signal story_finished()
+## 梅林說了一句話(翻譯鍵)。
+signal merlin_spoke(key: String)
 
 @export var config: CampConfig
 
@@ -33,6 +44,12 @@ var has_left: bool = false
 ## 這次營地摸頭的次數,與其中有增加滿意度的次數。
 var pet_count: int = 0
 var pet_rewards: int = 0
+## 測試與沙盒用:指定要播的營地對白(不用 data/story/ 的檔案)。要在加入場景樹之前設定。
+var story_override: DialogueScript
+## 這次營地有沒有播過故事。
+var story_played: bool = false
+## 這次營地點梅林的次數(有說話的)。
+var merlin_taps: int = 0
 
 var _layer: CanvasLayer
 var _root: Control
@@ -77,6 +94,15 @@ var _bulldog_spot: Vector2 = Vector2.ZERO
 var _menu_rest: Vector2 = Vector2.ZERO
 var _intro: float = 0.0
 var _rng := RandomNumberGenerator.new()
+var _dialogue: CanvasLayer
+var _story_playing: bool = false
+var _merlin: CampMerlin
+var _merlin_zone: Control
+var _merlin_bubble: MinigameSpeechBubble
+var _last_merlin_tap: float = -100.0
+var _merlin_bag: PackedStringArray = []
+var _merlin_last_line: String = ""
+var _line_rng := RandomNumberGenerator.new()
 
 
 func _ready() -> void:
@@ -84,6 +110,7 @@ func _ready() -> void:
 		config = CampConfig.new()
 	_load_defaults()
 	_rng.seed = 2026
+	_line_rng.randomize()
 	_build()
 	_shown_vigor = _vigor_ratio()
 	_shown_satisfaction = _satisfaction_ratio()
@@ -93,11 +120,13 @@ func _ready() -> void:
 	if config.music_track != &"":
 		Music.play(config.music_track)
 	EventBus.camp_entered.emit()
+	_start_story()
 
 
 func _load_defaults() -> void:
 	# 用 duplicate:補上預設圖時不改到共用的 .tres。
-	if config.goldie_frames == null or config.bulldog_frames == null or config.minigame_scene == null or config.heart_particles == null:
+	if config.goldie_frames == null or config.bulldog_frames == null or config.minigame_scene == null or config.heart_particles == null \
+			or config.dialogue_box_scene == null or config.merlin_frames == null or config.merlin_sparkle_particles == null:
 		config = config.duplicate() as CampConfig
 	if config.goldie_frames == null:
 		if ResourceLoader.exists(DEFAULT_GOLDIE_FRAMES_PATH):
@@ -112,6 +141,12 @@ func _load_defaults() -> void:
 		config.minigame_scene = load(DEFAULT_MINIGAME_PATH) as PackedScene
 	if config.heart_particles == null and ResourceLoader.exists(HEART_PATH):
 		config.heart_particles = load(HEART_PATH) as PackedScene
+	if config.dialogue_box_scene == null and ResourceLoader.exists(DIALOGUE_BOX_PATH):
+		config.dialogue_box_scene = load(DIALOGUE_BOX_PATH) as PackedScene
+	if config.merlin_frames == null and ResourceLoader.exists(MERLIN_FRAMES_PATH):
+		config.merlin_frames = load(MERLIN_FRAMES_PATH) as SpriteFrames
+	if config.merlin_sparkle_particles == null and ResourceLoader.exists(SPARKLE_PATH):
+		config.merlin_sparkle_particles = load(SPARKLE_PATH) as PackedScene
 
 
 func _process(delta: float) -> void:
@@ -161,9 +196,43 @@ func is_bulldog_visible() -> bool:
 	return _bulldog != null and _bulldog.visible
 
 
+func get_merlin() -> CampMerlin:
+	return _merlin
+
+
+func get_merlin_bubble() -> MinigameSpeechBubble:
+	return _merlin_bubble
+
+
+## 營地自己的對白框(ui/dialogue/dialogue_box.tscn 的實例)。
+func get_dialogue_box() -> CanvasLayer:
+	return _dialogue
+
+
+## 營地故事正在播放(選單還沒出現)。
+func is_story_playing() -> bool:
+	return _story_playing
+
+
+## 略過營地故事(等同按對白框的「略過」)。測試、沙盒與截圖用。
+func skip_story() -> void:
+	if _story_playing and _dialogue != null and _dialogue.has_method(&"skip"):
+		_dialogue.call(&"skip")
+
+
+## 這次營地要播的對白:story_override,或 CampConfig.story_paths[GameState.level_index] 的檔案。沒有時傳回 null。
+func story_script() -> DialogueScript:
+	if story_override != null:
+		return story_override
+	var path: String = config.story_paths.get(GameState.level_index, "")
+	if path == "" or not ResourceLoader.exists(path):
+		return null
+	return load(path) as DialogueScript
+
+
 ## 按下「拉扯王室卷軸」。測試與沙盒也可以直接呼叫。
 func open_minigame() -> void:
-	if has_left or _minigame != null:
+	if has_left or _minigame != null or _story_playing:
 		return
 	Sfx.play(&"ui_tap")
 	if config.minigame_plays_per_visit > 0 and minigame_plays >= config.minigame_plays_per_visit:
@@ -189,7 +258,7 @@ func open_minigame() -> void:
 
 ## 按下「同伴」(預留入口)。
 func open_companion() -> void:
-	if has_left:
+	if has_left or _story_playing:
 		return
 	Sfx.play(&"ui_tap")
 	_show_toast(tr("UI_COMING_SOON"))
@@ -197,7 +266,7 @@ func open_companion() -> void:
 
 ## 按下「繼續冒險」。
 func leave_camp() -> void:
-	if has_left or _minigame != null:
+	if has_left or _minigame != null or _story_playing:
 		return
 	has_left = true
 	Sfx.play(&"ui_tap")
@@ -209,7 +278,7 @@ func leave_camp() -> void:
 ## 摸摸金毛的頭。傳回 true 表示這一下增加了滿意度(每次營地有上限)。
 ## 太快連點(pet_cooldown_sec 之內)不算。
 func pet_goldie() -> bool:
-	if has_left or _minigame != null or _goldie == null:
+	if has_left or _minigame != null or _goldie == null or _story_playing:
 		return false
 	if _time - _last_pet_time < config.pet_cooldown_sec:
 		return false
@@ -232,7 +301,7 @@ func pet_goldie() -> bool:
 
 ## 點鬥牛犬:「汪!」
 func tap_bulldog() -> void:
-	if has_left or _minigame != null or not is_bulldog_visible():
+	if has_left or _minigame != null or not is_bulldog_visible() or _story_playing:
 		return
 	if _bark_left > config.bulldog_bark_sec * 0.5:
 		return
@@ -240,6 +309,30 @@ func tap_bulldog() -> void:
 	_bulldog_hop = 0.3
 	Sfx.play(&"bark")
 	Haptics.play(&"light")
+
+
+## 點梅林:施法、閃光、magic 音效、輕震,對話泡泡說一句 CAMP_MERLIN_XX。
+## 傳回說的那一句的翻譯鍵;沒有說話(故事中、小遊戲中、連點太快)時傳回空字串。
+func tap_merlin() -> String:
+	if has_left or _minigame != null or _story_playing or not is_merlin_visible():
+		return ""
+	if _time - _last_merlin_tap < config.merlin_tap_cooldown_sec:
+		return ""
+	var key := _next_merlin_line()
+	if key == "":
+		return ""
+	_last_merlin_tap = _time
+	merlin_taps += 1
+	_merlin.cast()
+	Sfx.play(config.merlin_sfx)
+	Haptics.play(&"light")
+	_merlin_bubble.show_text(tr(key), _merlin.speech_anchor(), config.merlin_bubble_sec)
+	merlin_spoke.emit(key)
+	return key
+
+
+func is_merlin_visible() -> bool:
+	return _merlin != null and _merlin.visible
 
 
 ## 跳過進場動畫(選單滑入、淡入)。測試與截圖用。
@@ -253,6 +346,55 @@ func finish_intro() -> void:
 ## 立刻放一顆流星(截圖用)。
 func spawn_shooting_star() -> void:
 	_sky.spawn_meteor()
+
+
+# --- 營地故事(DS1)與梅林(DS2) ---
+
+func _start_story() -> void:
+	var script := story_script()
+	if script == null or script.lines.is_empty() or _dialogue == null or not _dialogue.has_method(&"play"):
+		return
+	_story_playing = true
+	story_played = true
+	_menu.visible = false
+	_refresh_stats()
+	# 對白框(C 線)的 play() 播完才返回;它沒有 class_name,所以用 call()。
+	await _dialogue.call(&"play", script)
+	_end_story()
+
+
+func _end_story() -> void:
+	if not _story_playing:
+		return
+	_story_playing = false
+	_menu.visible = _minigame == null
+	_intro = 0.0      # 選單從下面滑出來
+	_animate_menu()
+	_refresh_stats()
+	story_finished.emit()
+
+
+## 隨機取一句,一輪說完才重複,而且不會連續兩次說同一句。
+func _next_merlin_line() -> String:
+	var lines := config.merlin_lines
+	if lines.is_empty():
+		return ""
+	if _merlin_bag.is_empty():
+		var bag := lines.duplicate()
+		for i in range(bag.size() - 1, 0, -1):
+			var j := _line_rng.randi_range(0, i)
+			var tmp := bag[i]
+			bag[i] = bag[j]
+			bag[j] = tmp
+		if bag.size() > 1 and bag[0] == _merlin_last_line:
+			var first := bag[0]
+			bag[0] = bag[bag.size() - 1]
+			bag[bag.size() - 1] = first
+		_merlin_bag = bag
+	var key := _merlin_bag[0]
+	_merlin_bag.remove_at(0)
+	_merlin_last_line = key
+	return key
 
 
 # --- 小遊戲 ---
@@ -293,8 +435,12 @@ func _set_camp_visible(value: bool) -> void:
 		node.visible = value
 	_pet_zone.visible = value
 	_bulldog_zone.visible = value and is_bulldog_visible()
+	if _merlin != null:
+		_merlin.visible = value and config.merlin_frames != null
+	_merlin_zone.visible = value and is_merlin_visible()
 	if not value:
 		_toast.visible = false
+		_merlin_bubble.hide_bubble()
 	_refresh_stats()
 
 
@@ -399,6 +545,10 @@ func _build() -> void:
 
 	_sky = CampScenery.new(CampScenery.Part.SKY, config)
 	_root.add_child(_sky)
+	# 梅林畫在夜空與地面之間:地面上的圓桌會蓋住他的下半身,看起來就是坐在桌子後面。
+	_merlin = CampMerlin.new(config)
+	_merlin.visible = config.merlin_frames != null
+	_root.add_child(_merlin)
 	_ground = CampScenery.new(CampScenery.Part.GROUND, config)
 	_root.add_child(_ground)
 
@@ -463,9 +613,16 @@ func _build() -> void:
 	_bonus_label = MinigameUi.make_label("", config.small_font_size, Color("ffe066"))
 	_root.add_child(_bonus_label)
 
+	_merlin_bubble = MinigameSpeechBubble.new()
+	_merlin_bubble.name = "MerlinBubble"
+	_merlin_bubble.max_width = config.merlin_bubble_width
+	_root.add_child(_merlin_bubble)
+
 	_pet_zone = _make_touch_zone("PetZone", pet_goldie)
 	_bulldog_zone = _make_touch_zone("BulldogZone", tap_bulldog)
 	_bulldog_zone.visible = is_bulldog_visible()
+	_merlin_zone = _make_touch_zone("MerlinZone", tap_merlin)
+	_merlin_zone.visible = is_merlin_visible()
 
 	_menu = VBoxContainer.new()
 	_menu.name = "Menu"
@@ -498,6 +655,13 @@ func _build() -> void:
 	_fade.color = Color(0, 0, 0, 0)
 	_fade.visible = false
 	_root.add_child(_fade)
+
+	# 營地自己的對白框(DS1):C 線的 ui/dialogue/dialogue_box.tscn(第 40 層,蓋在營地上面,擋住全部觸控)。
+	if config.dialogue_box_scene != null:
+		_dialogue = config.dialogue_box_scene.instantiate() as CanvasLayer
+		if _dialogue != null:
+			_dialogue.name = "DialogueBox"
+			add_child(_dialogue)
 
 
 func _make_menu_button(node_name: String, text: String, fill: Color, border: Color, action: Callable) -> Button:
@@ -629,6 +793,14 @@ func _layout() -> void:
 	var pet_rect := _goldie.touch_rect()
 	_pet_zone.position = pet_rect.position
 	_pet_zone.size = pet_rect.size
+	_merlin.position = table_spot + config.merlin_offset
+	var merlin_rect := _merlin.sprite_rect()
+	# 只有桌面以上看得到的部分可以點(桌面約在圓桌中心上方 12 像素)
+	var merlin_bottom := minf(merlin_rect.end.y, table_spot.y - 4.0)
+	var merlin_zone := Rect2(merlin_rect.position, Vector2(merlin_rect.size.x, merlin_bottom - merlin_rect.position.y)).grow(config.merlin_touch_margin)
+	_merlin_zone.position = merlin_zone.position
+	_merlin_zone.size = merlin_zone.size
+	_merlin_bubble.move_to(_merlin.speech_anchor())
 	var bulldog_size := Vector2(24, 24) * config.bulldog_scale
 	var bulldog_rect := Rect2(_bulldog_spot - bulldog_size * 0.5, bulldog_size).grow(2.0)
 	_bulldog_zone.position = bulldog_rect.position
