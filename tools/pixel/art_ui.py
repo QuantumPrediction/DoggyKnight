@@ -488,8 +488,99 @@ def combo_burst() -> Canvas:
     return c
 
 
+# --------------------------------------------------------------------------
+# v2.3 dialogue box (CS1): ornate parchment panel, portrait frame, name plate, storybook page
+# --------------------------------------------------------------------------
+
+def dialogue_panel() -> Canvas:
+    """24x24 9-slice (margins 8): ink outline, brown and gold double border, gold corner studs,
+    cream parchment with a soft inner shade."""
+    c = framed(24, 24, "ink", "brown_d", "cream", top="white", bottom=None, corner=3)
+    for i in range(2, 22):
+        c.set(i, 2, "gold")
+        c.set(i, 21, "gold")
+        c.set(2, i, "gold")
+        c.set(21, i, "gold")
+    for i in range(3, 21):
+        c.set(i, 20, "gold_l")
+        c.set(20, i, "gold_l")
+        c.set(i, 3, "white")
+        c.set(3, i, "white")
+    for (x, y) in ((2, 2), (21, 2), (2, 21), (21, 21)):
+        c.set(x, y, "brown_d")
+    for (cx, cy) in ((4, 4), (19, 4), (4, 19), (19, 19)):
+        for (dx, dy) in ((0, -1), (-1, 0), (1, 0), (0, 1)):
+            c.set(cx + dx, cy + dy, "gold_d")
+        c.set(cx, cy, "yellow")
+    return c
+
+
+def portrait_frame() -> Canvas:
+    """52x52 frame around a 48x48 portrait: ink, gold bevel, ink; rivets in the corners."""
+    c = Canvas(52, 52)
+    for y in range(52):
+        for x in range(52):
+            d = min(x, y, 51 - x, 51 - y)
+            if d == 0:
+                c.set(x, y, "ink")
+            elif d == 1:
+                c.set(x, y, "gold_l" if x < 51 - y else "gold_d")
+    for (x, y) in ((1, 1), (50, 1), (1, 50), (50, 50)):
+        c.set(x, y, "yellow")
+    for (x, y) in ((0, 0), (51, 0), (0, 51), (51, 51)):
+        c.set(x, y, None)
+    return c
+
+
+def name_plate() -> Canvas:
+    """16x14 9-slice (margins 5): plum plate with a gold rim, for the speaker's name."""
+    c = framed(16, 14, "ink", "gold", "plum", top="violet", bottom="night_d", corner=2)
+    return c
+
+
+def page_frame() -> Canvas:
+    """168x128 ornate frame for a 160x120 storybook illustration (transparent centre)."""
+    w, h = 168, 128
+    c = Canvas(w, h)
+    for y in range(h):
+        for x in range(w):
+            d = min(x, y, w - 1 - x, h - 1 - y)
+            col = {0: "ink", 1: "gold_d", 2: "gold", 3: "ink"}.get(d)
+            if col:
+                c.set(x, y, col)
+    for x in range(2, w - 2, 6):
+        c.set(x, 2, "yellow")
+        c.set(x, h - 3, "gold_l")
+    for y in range(2, h - 2, 6):
+        c.set(2, y, "yellow")
+        c.set(w - 3, y, "gold_l")
+    # corner flourishes
+    for (cx, cy, sx, sy) in ((0, 0, 1, 1), (w - 1, 0, -1, 1), (0, h - 1, 1, -1), (w - 1, h - 1, -1, -1)):
+        for (dx, dy, col) in ((1, 1, "yellow"), (2, 2, "gold"), (3, 1, "gold"), (1, 3, "gold"), (4, 4, "gold_d"),
+                              (5, 4, "gold"), (4, 5, "gold"), (5, 5, "yellow")):
+            c.set(cx + sx * dx, cy + sy * dy, col)
+    return c
+
+
+def next_arrow() -> Canvas:
+    c = Canvas(9, 7)
+    c.stamp(["ggggg", ".ggg.", "..g.."], 2, 2, {"g": "gold_d"})
+    c.set(4, 2, "yellow")
+    c.set(5, 2, "yellow")
+    return c
+
+
+def write_dialogue_textures() -> None:
+    dialogue_panel().save(res_path("res://assets/ui/dialogue_panel.png"))
+    portrait_frame().save(res_path("res://assets/ui/portrait_frame.png"))
+    name_plate().save(res_path("res://assets/ui/name_plate.png"))
+    page_frame().save(res_path("res://assets/ui/page_frame.png"))
+    next_arrow().save(res_path("res://assets/ui/next_arrow.png"))
+
+
 def write_all() -> list[str]:
     out = []
+    write_dialogue_textures()
     star_icon(16, True).save(res_path("res://assets/ui/star_full.png"))
     star_icon(16, False).save(res_path("res://assets/ui/star_empty.png"))
     star_icon(26, True).save(res_path("res://assets/ui/star_big_full.png"))
