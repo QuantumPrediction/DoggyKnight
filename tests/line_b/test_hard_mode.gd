@@ -86,7 +86,7 @@ func test_hard_mode_adds_a_few_regular_enemies() -> void:
 		spawner.difficulty_mode = &"hard"
 		hard_counts.append(spawner.spawn_count(entry))
 	assert_eq(normal_counts, [1, 2, 3, 4, 6, 7] as Array[int], "一般模式不變")
-	assert_eq(hard_counts, [1, 2, 4, 5, 8, 9] as Array[int], "困難模式:3 隻以上的組多 1 至 2 隻")
+	assert_eq(hard_counts, [1, 2, 3, 5, 7, 8] as Array[int], "困難模式:4 隻以上的組多 1 隻")
 	for boss: StringName in [&"black_knight", &"scarecrow_captain"]:
 		entry.enemy_id = boss
 		entry.count = 3
@@ -102,7 +102,7 @@ func test_hard_mode_spawns_the_extra_enemies_in_a_wave() -> void:
 	var wave := WaveData.new()
 	var entry := SpawnEntry.new()
 	entry.enemy_id = &"scarecrow"
-	entry.count = 3
+	entry.count = 4
 	entry.pattern = &"surround"
 	wave.spawns.append(entry)
 	level.waves.append(wave)
@@ -115,7 +115,7 @@ func test_hard_mode_spawns_the_extra_enemies_in_a_wave() -> void:
 	spawner.start(0.0)
 	spawner.step(0.01)
 	spawner.step(0.01)
-	assert_eq(arena.spawned.size(), 4, "困難模式:3 隻的包圍變成 4 隻")
+	assert_eq(arena.spawned.size(), 5, "困難模式:4 隻的包圍變成 5 隻")
 	spawner.queue_free()
 	arena.queue_free()
 
