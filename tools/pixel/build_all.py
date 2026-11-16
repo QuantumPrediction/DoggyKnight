@@ -51,11 +51,11 @@ from palette import PALETTE, rgba  # noqa: E402
 from pixel import Canvas, build_sheet, contact_sheet, res_path, write_text  # noqa: E402
 
 CHARACTERS = {
-    "goldie": (art_heroes.goldie, (24, 24)),
-    "bulldog": (art_heroes.bulldog, (24, 24)),
-    "scarecrow": (art_enemies.scarecrow, (24, 24)),
-    "crow": (art_enemies.crow, (16, 16)),
-    "black_knight": (art_enemies.black_knight, (48, 48)),
+    "goldie": (art_heroes.goldie_v2, (24, 24)),
+    "bulldog": (art_heroes.bulldog_v2, (24, 24)),
+    "scarecrow": (art_enemies.scarecrow_v2, (24, 24)),
+    "crow": (art_enemies.crow_v2, (16, 16)),
+    "black_knight": (art_enemies.black_knight_v2, (48, 48)),
 }
 
 

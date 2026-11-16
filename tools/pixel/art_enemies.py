@@ -150,10 +150,22 @@ C_BODY = [
     "......Pv..",
     "....vvvP..",
     "..vvVVvvv.",
-    ".vvVvvvwwv",
-    "vvvvvvvwov",
+    ".vvVvvwwwv",
+    "vvvvvvwoov",
+    "vvvvvvvoov",
+    "PvvVVVVvpv",
+    ".PvVVVVvv.",
+    "..PPPPPP..",
+]
+
+C_BODY_BLINK = [
+    "......Pv..",
+    "....vvvP..",
+    "..vvVVvvv.",
+    ".vvVvvvvvv",
     "vvvvvvvvvv",
-    "PvvVVVVvvv",
+    "vvvvvvoooo",
+    "PvvVVVVvpv",
     ".PvVVVVvv.",
     "..PPPPPP..",
 ]
@@ -165,7 +177,7 @@ C_BODY_HURT = [
     ".vvVvvowov",
     "vvvvvvvovv",
     "vvvvvvowov",
-    "PvvVVVVvvv",
+    "PvvVVVVvpv",
     ".PvVVVVvv.",
     "..PPPPPP..",
 ]
@@ -487,4 +499,122 @@ def black_knight() -> list[Anim]:
         Anim("charge", charge, 10.0, True),
         Anim("slam", slam, 8.0, False, [2.0, 1.0, 2.0]),
         Anim("down", [knight_down()], 1.0, False),
+    ]
+
+
+# --------------------------------------------------------------------------
+# v2.2 (CP1): more frames for every enemy (cell sizes unchanged)
+# --------------------------------------------------------------------------
+
+STRAW = ["y"]
+
+
+def scarecrow_v2() -> list[Anim]:
+    idle = [scarecrow_pose(0), scarecrow_pose(0, tilt=1), scarecrow_pose(1), scarecrow_pose(1, tilt=-1)]
+    hops = [0, -1, -3, -3, -2, 0]
+    run = []
+    for i, b in enumerate(hops):
+        extras = [(STRAW, 9 + i % 3, 22)] if b == 0 else []
+        run.append(scarecrow_pose(b, pole_dy=b, tilt=1 if b <= -3 else 0, extras=extras))
+    attack = [
+        scarecrow_pose(0, lean=-1, tilt=-1, spear=("flat", 10, 15, 6)),
+        scarecrow_pose(0, lean=1, tilt=1, spear=("flat", 15, 15, 6)),
+        scarecrow_pose(0, lean=1, spear=("flat", 15, 15, 5)),
+        scarecrow_pose(0, lean=0, spear=("flat", 13, 15, 5)),
+    ]
+    hurt = [
+        scarecrow_pose(0, head=S_HEAD_HURT, lean=-1, tilt=-1,
+                       extras=[(["y.g"], 3, 9), (["g.y"], 19, 8), (["y"], 20, 12), (STAR, 1, 1)]),
+        scarecrow_pose(1, head=S_HEAD_HURT, lean=-1, tilt=0,
+                       extras=[(["y"], 2, 12), (["g"], 21, 14), (STAR, 0, 0), (STAR, 18, 1)]),
+    ]
+    return [
+        Anim("idle", idle, 5.0, True),
+        Anim("run", run, 12.0, True),
+        Anim("attack", attack, 12.0, False, [1.5, 1.0, 1.0, 1.0]),
+        Anim("hurt", hurt, 6.0, False, [1.0, 3.0]),
+    ]
+
+
+def crow_v2() -> list[Anim]:
+    idle = [
+        crow_pose(wing=C_WING_UP, wing_at=(3, 3)),
+        crow_pose(wing=C_WING_MID, wing_at=(3, 8), bob=1),
+        crow_pose(wing=C_WING_DOWN, wing_at=(3, 8), bob=1),
+        crow_pose(body=C_BODY_BLINK, wing=C_WING_MID, wing_at=(3, 8)),
+    ]
+    run = [
+        crow_pose(wing=C_WING_UP, wing_at=(3, 3)),
+        crow_pose(wing=C_WING_UP, wing_at=(3, 4), bob=0),
+        crow_pose(wing=C_WING_MID, wing_at=(3, 8), bob=1),
+        crow_pose(wing=C_WING_DOWN, wing_at=(3, 8), bob=1),
+        crow_pose(wing=C_WING_DOWN, wing_at=(3, 8), bob=0),
+        crow_pose(wing=C_WING_MID, wing_at=(3, 8)),
+    ]
+    attack = [
+        crow_pose(wing=C_WING_UP, wing_at=(3, 2), bob=-1),
+        crow_pose(wing=C_WING_UP, wing_at=(2, 2), bob=-1),
+        crow_pose(wing=C_WING_BACK, wing_at=(1, 8), dive=1),
+        crow_pose(wing=C_WING_BACK, wing_at=(1, 8), dive=2),
+    ]
+    hurt = [
+        crow_pose(body=C_BODY_HURT, wing=C_WING_UP, wing_at=(3, 3),
+                  extras=[(["V.."], 0, 2), (["..V"], 13, 1), (["V"], 1, 13)]),
+        crow_pose(body=C_BODY_HURT, wing=C_WING_DOWN, wing_at=(3, 8), bob=1,
+                  extras=[(["V"], 0, 4), (["V"], 14, 3), (["..V"], 11, 13)]),
+    ]
+    return [
+        Anim("idle", idle, 8.0, True, [1.0, 1.0, 1.0, 1.0]),
+        Anim("run", run, 16.0, True),
+        Anim("attack", attack, 12.0, False, [1.0, 0.5, 1.0, 2.0]),
+        Anim("hurt", hurt, 6.0, False, [1.0, 3.0]),
+    ]
+
+
+K_SPARK_SMALL = [".y.", "yOy", ".y."]
+
+
+def black_knight_v2() -> list[Anim]:
+    idle = [knight_pose(0), knight_pose(0, helm=K_HELM_DIM), knight_pose(1, helm=K_HELM_DIM), knight_pose(1)]
+    run_sword = ((35, 30), (1, 1), 11)
+    legs = [((12, 34), (27, 35)), ((14, 35), (25, 34)), ((15, 35), (24, 35)),
+            ((16, 34), (23, 35)), ((14, 35), (25, 35)), ((13, 35), (26, 34))]
+    bobs = [0, -1, -1, 0, -1, -1]
+    run = [knight_pose(bobs[i], legs=legs[i], sword=run_sword) for i in range(6)]
+    attack = [
+        knight_pose(0, lean=-2, sword=((22, 14), (-1, -1), 13), sword_behind=True, hand=(20, 13)),
+        knight_pose(0, lean=1, sword=((31, 19), (1, -1), 11), hand=(28, 18)),
+        knight_pose(0, lean=2, sword=((33, 27), (1, 0), 12), hand=(30, 25)),
+        knight_pose(1, lean=2, sword=((33, 29), (1, 1), 12), hand=(30, 26)),
+    ]
+    hurt = [
+        knight_pose(0, helm=K_HELM_HURT, lean=-2, sword=((35, 30), (1, 1), 11),
+                    extras=[(K_SPARK, 35, 6), (K_SPARK, 6, 12), (["y"], 42, 16)]),
+        knight_pose(1, helm=K_HELM_HURT, lean=-1, sword=((35, 30), (1, 1), 11),
+                    extras=[(K_SPARK_SMALL, 37, 8), (K_SPARK_SMALL, 8, 14)]),
+    ]
+    charge = [
+        knight_pose(1, lean=3, cape="wind", legs=((13, 35), (28, 35)), sword=((34, 28), (1, 0), 11), hand=(31, 26)),
+        knight_pose(2, lean=3, cape="wind", legs=((16, 35), (25, 35)), sword=((34, 28), (1, 0), 11), hand=(31, 26)),
+        knight_pose(1, lean=3, cape="wind", legs=((19, 35), (22, 35)), sword=((34, 28), (1, 0), 11), hand=(31, 26),
+                    extras=[(K_DUST, 2, 44)]),
+    ]
+    slam = [
+        knight_pose(-1, lean=-1, sword=((31, 14), (0, -1), 13), hand=(29, 13)),
+        knight_pose(0, lean=1, sword=((33, 20), (1, 0), 12), hand=(30, 18)),
+        knight_pose(1, lean=1, crouch=1, sword=((39, 24), (0, 1), 21), hand=(37, 21),
+                    extras=[(K_DUST, 30, 44), (K_DUST, 40, 44)]),
+        knight_pose(1, lean=1, crouch=1, sword=((39, 24), (0, 1), 21), hand=(37, 21),
+                    extras=[(K_DUST, 28, 43), (K_DUST, 41, 43)]),
+    ]
+    kneel = knight_pose(3, helm=K_HELM_HURT, lean=-1, crouch=2, sword=((36, 32), (1, 1), 10),
+                        extras=[(K_WISP, 30, 6), (K_WISP, 12, 10)])
+    return [
+        Anim("idle", idle, 4.0, True),
+        Anim("run", run, 10.0, True),
+        Anim("attack", attack, 10.0, False, [1.5, 0.6, 1.0, 1.5]),
+        Anim("hurt", hurt, 6.0, False, [1.0, 3.0]),
+        Anim("charge", charge, 12.0, True),
+        Anim("slam", slam, 10.0, False, [2.0, 0.6, 2.0, 2.0]),
+        Anim("down", [kneel, knight_down()], 3.0, False, [1.0, 1.0]),
     ]
