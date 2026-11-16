@@ -3,9 +3,12 @@ extends Node2D
 ## 經驗珠(A7)。敵人倒下時彈出來,金毛靠近(GameState.player_stats.pickup_radius,每格即時讀取)
 ## 就被吸過去;碰到時發 EventBus.exp_collected(原始值),播 pickup 音效。exp_mult 由 B 線套用。
 ## 場上沒有敵人一小段時間後,所有經驗珠自動飛向金毛(不必在清場後到處撿)。
+## M3 打磨:被吸過去時拖著一條發光的尾巴;慢動作時跟著變慢。
 
 const GROUP: StringName = &"exp_orb"
 const PLAYER_GROUP: StringName = &"player"
+const TRAIL_POINTS := 5
+const TRAIL_COLOR := Color(0.75, 1.0, 0.8)
 
 @export var value: int = 1
 @export var pop_time: float = 0.25               ## 彈出動作的秒數(這段時間不能撿)
@@ -26,6 +29,7 @@ var _magnet: bool = false
 var _speed: float = 0.0
 var _age: float = 0.0
 var _no_enemy_time: float = 0.0
+var _trail: PackedVector2Array = PackedVector2Array()
 @onready var _sprite: AnimatedSprite2D = $Sprite
 
 
@@ -50,6 +54,7 @@ func is_popping() -> bool:
 func _physics_process(delta: float) -> void:
 	if collected:
 		return
+	delta *= CombatFx.time_scale
 	_age += delta
 	if _pop_left > 0.0:
 		_pop_left = maxf(0.0, _pop_left - delta)
@@ -76,7 +81,25 @@ func _physics_process(delta: float) -> void:
 	if dist <= collect_distance or step >= dist:
 		collect()
 		return
+	_trail.append(global_position)
+	if _trail.size() > TRAIL_POINTS:
+		_trail.remove_at(0)
 	global_position += to_player / dist * step
+	queue_redraw()
+
+
+func _draw() -> void:
+	# 被吸過去時的尾巴:越舊的點越淡、越細。
+	if _trail.size() < 2:
+		return
+	var points := PackedVector2Array()
+	var colors := PackedColorArray()
+	for i in _trail.size():
+		points.append((_trail[i] - global_position).round() + _sprite.position)
+		colors.append(Color(TRAIL_COLOR, 0.15 + 0.6 * float(i) / float(_trail.size())))
+	points.append(_sprite.position)
+	colors.append(Color(TRAIL_COLOR, 0.85))
+	draw_polyline_colors(points, colors, 1.0)
 
 
 func collect() -> void:

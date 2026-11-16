@@ -25,6 +25,8 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	delta *= CombatFx.time_scale
+	speed_scale = CombatFx.time_scale
 	_age += delta
 	position += drift * delta
 	if lifetime < 0.0:

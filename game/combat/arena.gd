@@ -7,7 +7,14 @@ extends Node2D
 ## 場地要放在世界原點(DEV_PLAN 4.8 的座標約定),B 線實例化後直接加進樹即可。
 ##
 ## 圖層(由下而上):Background(-100)→ GroundFx(-10,塵土、震波、盔甲碎片)→ Pickups(-5,經驗珠)
-## → Entities(y 排序:主角、同伴、敵人)→ Fx(10,刀光、火花、必殺技)。
+## → Entities(y 排序:主角、同伴、敵人)→ 必殺技暗幕(8,金毛暫時升到 9)→ Fx(10,刀光、火花、傷害數字)
+## → 白光(50)。
+##
+## M3 打磨(DEV_PLAN 第 15 節):
+## - AP1 鏡頭:add_trauma() 累積「震動量」,偏移 = 最大偏移 × 震動量²,隨時間衰減;nudge() 揮劍時輕推。
+##   偏移四捨五入到整數像素,保持像素清晰。數值在 data/player/feel_tuning.tres。
+## - AP4 連擊:子節點 Combo(ComboTracker)。
+## - AP5 慢動作:slow_motion() 設定 CombatFx.time_scale(只影響 A 線的角色與特效,不改 Engine.time_scale)。
 
 const ENEMY_DATA_PATH := "res://data/enemies/%s.tres"
 const COMPANION_DATA_PATH := "res://data/companions/%s.tres"
@@ -33,10 +40,17 @@ var fx_layer: Node2D
 var camera: Camera2D
 var player: Node2D
 
+var combo: ComboTracker
+var trauma: float = 0.0                           ## 目前的震動量(0 至 1)
+var feel: FeelTuning
+
 var _spawn_counter: int = 0
-var _shake_left: float = 0.0
-var _shake_total: float = 0.0
-var _shake_strength: float = 0.0
+var _nudge: Vector2 = Vector2.ZERO
+var _shake_time: float = 0.0
+var _noise := FastNoiseLite.new()
+var _slowmo_left: float = 0.0
+var _slowmo_total: float = 0.0
+var _slowmo_scale: float = 1.0
 
 
 func _ready() -> void:
@@ -48,6 +62,12 @@ func _ready() -> void:
 	fx_layer = $Fx as Node2D
 	camera = $Camera2D as Camera2D
 	player = get_node_or_null(^"Entities/Player") as Node2D
+	combo = get_node_or_null(^"Combo") as ComboTracker
+	if feel == null:
+		feel = CombatFx.feel()
+	_noise.seed = 2026
+	_noise.frequency = 1.0
+	CombatFx.time_scale = 1.0
 	_build_walls()
 	camera.position = SafeArea.GAME_CENTER
 	camera.make_current()
@@ -56,15 +76,13 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if _shake_left <= 0.0:
-		return
-	_shake_left -= delta
-	if _shake_left <= 0.0:
-		camera.offset = Vector2.ZERO
-		_shake_strength = 0.0
-		return
-	var s := _shake_strength * _shake_left / maxf(_shake_total, 0.001)
-	camera.offset = Vector2(randf_range(-s, s), randf_range(-s, s)).round()
+	_update_slow_motion(delta)
+	_update_camera(delta)
+
+
+func _exit_tree() -> void:
+	# 慢動作只屬於這個場地;離開時一定回到正常速度。
+	CombatFx.time_scale = 1.0
 
 
 # --- 合約方法(DEV_PLAN 4.4) -------------------------------------------------------
@@ -122,7 +140,7 @@ func get_spawn_points() -> Array[Vector2]:
 	return candidates.slice(0, min_spawn_points)
 
 
-## 清場:移除敵人(立刻離開群組 "enemy",不發 enemy_died)、經驗珠與特效。主角與同伴保留。
+## 清場:移除敵人(立刻離開群組 "enemy",不發 enemy_died)、經驗珠與特效;連擊歸零、結束慢動作。主角與同伴保留。
 func clear() -> void:
 	for node in entities.get_children():
 		if node == player or node.is_in_group(COMPANION_GROUP):
@@ -135,6 +153,12 @@ func clear() -> void:
 			if child.is_in_group(ExpOrb.GROUP):
 				child.remove_from_group(ExpOrb.GROUP)
 			child.queue_free()
+	for child in get_children():
+		if child is ScreenTint:
+			child.queue_free()
+	if combo != null:
+		combo.reset()
+	slow_motion(1.0, 0.0)
 
 
 ## 讀取 data/companions/<companion_id>.tres 生成同伴,放在主角身旁。同一個同伴已在場上時傳回原本那隻。
@@ -199,11 +223,63 @@ func spawn_exp_orb(at: Vector2, value: int) -> Node2D:
 	return orb
 
 
-## 鏡頭震動(邏輯像素,四捨五入到整數,保持像素清晰)。
-func shake(strength: float, duration: float) -> void:
-	_shake_strength = maxf(_shake_strength, strength)
-	_shake_left = maxf(_shake_left, duration)
-	_shake_total = _shake_left
+## 累積鏡頭震動量(0 至 1)。偏移 = max_shake_offset × 震動量^trauma_power,每秒減少 trauma_decay。
+func add_trauma(amount: float) -> void:
+	trauma = clampf(trauma + maxf(0.0, amount), 0.0, 1.0)
+
+
+## 舊的介面:strength 像素、duration 秒 → 換算成震動量。
+func shake(strength: float, _duration: float = 0.0) -> void:
+	add_trauma(clampf(strength * 0.18, 0.0, 1.0))
+
+
+## 鏡頭輕推向 direction 幾個像素(揮劍),之後自己回到中間。
+func nudge(direction: Vector2, pixels: float) -> void:
+	if direction.length() < 0.001:
+		return
+	_nudge = direction.normalized() * pixels
+
+
+## 慢動作:A 線的角色與特效以 scale 倍速進行,duration 秒內(最後 40% 漸漸)回到正常。
+func slow_motion(scale: float, duration: float) -> void:
+	_slowmo_scale = clampf(scale, 0.05, 1.0)
+	_slowmo_left = maxf(0.0, duration)
+	_slowmo_total = _slowmo_left
+	CombatFx.time_scale = _slowmo_scale if _slowmo_left > 0.0 else 1.0
+
+
+func is_slow_motion() -> bool:
+	return _slowmo_left > 0.0
+
+
+## 目前的鏡頭偏移(測試用)。
+func camera_offset() -> Vector2:
+	return camera.offset
+
+
+func _update_slow_motion(delta: float) -> void:
+	if _slowmo_left <= 0.0:
+		return
+	_slowmo_left -= delta
+	if _slowmo_left <= 0.0:
+		CombatFx.time_scale = 1.0
+		return
+	var t := _slowmo_left / maxf(_slowmo_total, 0.001)      # 1 → 0
+	var ramp := clampf(t / 0.4, 0.0, 1.0)                    # 最後 40% 由慢回到正常
+	CombatFx.time_scale = lerpf(1.0, _slowmo_scale, ramp)
+
+
+func _update_camera(delta: float) -> void:
+	trauma = maxf(0.0, trauma - feel.trauma_decay * delta)
+	_nudge *= exp(-feel.nudge_return_rate * delta)
+	if _nudge.length() < 0.05:
+		_nudge = Vector2.ZERO
+	var offset := _nudge
+	if trauma > 0.0:
+		_shake_time += delta * feel.shake_frequency
+		var amount := feel.max_shake_offset * pow(trauma, feel.trauma_power)
+		offset += Vector2(_noise.get_noise_2d(_shake_time, 0.0), _noise.get_noise_2d(0.0, _shake_time + 100.0)) * 2.0 * amount
+	camera.offset = offset.round()
 
 
 ## 在 at 附近找一個沒有敵人的位置(黃金角螺旋向外找)。
