@@ -176,9 +176,17 @@ func test_boss_summons_through_arena_and_defeat_scatters_armor() -> void:
 	assert_eq(get_tree().get_nodes_in_group(&"enemy").size(), 3, "召喚兩隻稻草人兵(也算在場上)")
 	assert_eq(boss.alive_summons(), 2)
 	boss.take_damage(9999)
-	assert_eq(died.count, 3, "頭目倒下時召喚的稻草人兵也一起倒下")
+	assert_eq(died.count, 2, "頭目生命歸零時,召喚的稻草人兵立刻一起倒下")
+	assert_true(boss.is_defeat_playing(), "頭目先播倒下演出(AP5)")
+	assert_true(boss.is_in_group(&"enemy"), "演出期間仍在場上(B 線約 1 秒後才過關)")
+	assert_false(boss.is_targetable(), "演出期間不能被瞄準")
+	boss.take_damage(50)
+	assert_eq(died.count, 2, "演出期間無敵,不會重複倒下")
+	var gone := await wait_until(func() -> bool: return not boss.is_in_group(&"enemy"), 120)
+	assert_true(gone, "演出結束後離開 enemy 群組")
+	assert_eq(died.count, 3)
 	assert_eq(get_tree().get_nodes_in_group(&"enemy").size(), 0)
-	var boss_death: Array = died.calls[0]
+	var boss_death: Array = died.calls[2]
 	assert_eq(boss_death[0], &"black_knight")
 	assert_eq(boss_death[2], 20)
 	var orb_total := 0
