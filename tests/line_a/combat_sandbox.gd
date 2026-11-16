@@ -235,7 +235,7 @@ func _refresh() -> void:
 	if player != null and player.abilities != null:
 		tricks = "shk%d spn%d brk%d" % [player.abilities.stacks(&"shake"), player.abilities.stacks(&"spin"),
 				player.abilities.stacks(&"bark")]
-	_readout.text = "VIG %d/%d  EXP %d  LOY %d/%d  COMBO %d (best %d)\nKO %d  %s  boss P%d %d/%d  foes %d" % [
+	_readout.text = "VIG %d/%d EXP %d LOY %d/%d CB %d/%d\nKO %d %s P%d %d/%d foes %d" % [
 		_vigor.x, _vigor.y, _exp, int(_loyalty.x), int(_loyalty.y), _combo, _best_combo, _kills, tricks,
 		_boss_phase, _boss_hp.x, _boss_hp.y, get_tree().get_nodes_in_group(&"enemy").size()]
 	if _ult_button != null:
