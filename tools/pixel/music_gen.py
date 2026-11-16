@@ -8,7 +8,7 @@ note:duration tokens on a 16th-note grid (see parse()):
     bass     NES-style 16-step triangle
     drums    k = kick, s = snare, h = closed hat, o = open hat, c = crash, t = tom, . = rest
 
-Loops (title, field, boss, camp) are rendered seamlessly: note tails and the echo
+Loops (title, field, boss, camp, story) are rendered seamlessly: note tails and the echo
 wrap around from the end to the start, so the last sample flows into the first.
 Their .import files set Godot's WAV importer to Forward loop over the whole file and
 QOA compression. Jingles (victory, fail, chapter_clear) play once and end in silence.
@@ -448,6 +448,24 @@ def camp() -> Song:
                 lead_release=0.25, harm_release=0.3, lead_kind="tri", harm_decay=6.0, target_rms=0.13)
 
 
+def story() -> Song:
+    """v2.3 storybook theme (prologue, ending, chapter 2 teaser): gentle and warm, G major, 88 BPM.
+    A soft triangle melody over music-box arpeggios. 16 bars, seamless loop."""
+    prog = [("G", 16), ("Em", 16), ("C", 16), ("D", 16), ("G", 16), ("Bm", 16), ("C", 16), ("D", 16),
+            ("Em", 16), ("C", 16), ("G", 16), ("D", 16), ("C", 16), ("D", 16), ("G", 16), ("G", 16)]
+    lead = """
+    B4:4 D5:4 G5:6 F#5:2 | E5:4 G5:4 B5:8 | A5:4 G5:4 E5:4 C5:4 | D5:8 r:4 A4:4 |
+    B4:4 D5:4 G5:4 A5:4 | B5:6 A5:2 F#5:8 | E5:4 G5:4 C6:4 B5:4 | A5:12 r:4 |
+    G5:4 B5:4 E6:6 D6:2 | C6:4 B5:4 G5:8 | B5:4 A5:4 G5:4 D5:4 | F#5:8 A5:8 |
+    G5:4 E5:4 C5:4 E5:4 | F#5:4 A5:4 D6:6 C6:2 | B5:8 A5:4 F#5:4 | G5:12 r:4
+    """
+    harmony = arp(prog, 4, [0, 1, 2, 4, 2, 1, 2, 1], 2)
+    bass = bass_line(prog, 2, [(0, 8), (7, 8)])
+    return Song(88, 16, 16, True, lead, harmony, bass, "", lead_duty=0.5, harm_duty=0.25,
+                lead_gain=0.25, harm_gain=0.11, bass_gain=0.26, echo=0.38, echo_steps=3, lead_vib=0.016,
+                lead_release=0.3, harm_release=0.35, lead_kind="tri", harm_decay=7.0, target_rms=0.12)
+
+
 def victory() -> Song:
     """Level clear jingle (about 3 s)."""
     lead = "G4:1 C5:1 E5:1 G5:1 C6:6 G5:2 E5:2 G5:2 C6:16"
@@ -481,9 +499,9 @@ def chapter_clear() -> Song:
                 lead2=_harmonise(lead, -5), lead2_gain=0.10)
 
 
-SONGS = {"title": title, "field": field, "boss": boss, "camp": camp,
+SONGS = {"title": title, "field": field, "boss": boss, "camp": camp, "story": story,
          "victory": victory, "fail": fail, "chapter_clear": chapter_clear}
-LOOPS = ("title", "field", "boss", "camp")
+LOOPS = ("title", "field", "boss", "camp", "story")
 
 
 def write_wav(path: str, samples: list[float]) -> None:

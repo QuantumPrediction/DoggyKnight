@@ -1,6 +1,8 @@
 extends Node
 ## C 線圖庫(M1 驗收、CP1 至 CP3):每個角色的每個動畫循環播放、全部特效與圖示、
 ## 一次性粒子特效(每 1.2 秒重播)、六個場地背景(含會動的元素與氣氛色)。
+## v2.3:新角色(弓兵、空盔甲兵、稻草人隊長、梅林)、投射物、全部頭像、八張繪本插畫、光暈精靈;
+## 背景頁的角色在各自的群組裡,所以看得到腳下的投影。
 ## 用畫面下方的 ◀ ▶ 換頁(觸控或滑鼠)。這是開發工具,文字不翻譯。
 ##
 ## 執行:godot --path . res://tests/line_c/gallery.tscn
@@ -11,7 +13,20 @@ const CHARACTERS: Array = [
 	["scarecrow", 2, [&"idle", &"run", &"attack", &"hurt"]],
 	["crow", 2, [&"idle", &"run", &"attack", &"hurt"]],
 	["black_knight", 1, [&"idle", &"run", &"attack", &"hurt", &"charge", &"slam", &"down"]],
+	["scarecrow_archer", 2, [&"idle", &"run", &"attack", &"hurt", &"aim"]],
+	["armored_husk", 2, [&"idle", &"run", &"attack", &"hurt", &"dash", &"down"]],
+	["scarecrow_captain", 1, [&"idle", &"run", &"attack", &"hurt", &"throw", &"rally", &"down"]],
+	["merlin", 2, [&"idle", &"run", &"cast"]],
 ]
+const PROJECTILES: Array[String] = ["arrow", "sword_wave", "pitchfork"]
+const PORTRAIT_PAGES: Array = [
+	[["goldie", ["normal", "happy", "surprised", "serious", "tired"]], ["bulldog", ["normal", "happy", "serious"]]],
+	[["merlin", ["normal", "surprised", "proud", "worried"]], ["black_knight", ["normal"]], ["morgana", ["smirk"]],
+			["scarecrow_captain", ["angry"]], ["crow", ["normal"]]],
+]
+const STORY_PAGES: Array[String] = ["prologue_1", "prologue_2", "prologue_3", "prologue_4", "ending_1", "ending_2",
+		"ending_3", "teaser_1"]
+const LIGHTS: Array[String] = ["torch", "campfire", "lantern", "magic", "eye_violet", "visor_blue", "sword", "ultimate"]
 const FX: Array[String] = ["slash", "hit_spark", "exp_orb", "ultimate_slash", "dizzy_stars", "dust"]
 const TRICKS: Array[String] = ["sit", "wag", "fetch", "shake", "spin", "bark"]
 const BACKGROUNDS: Array[String] = ["sword_stone", "wheat_field", "meadow", "farm_fence", "crow_forest", "bridge"]
@@ -63,6 +78,11 @@ func _ready() -> void:
 		_pages.append(_character_page.bind(c))
 	_pages.append(_fx_page)
 	_pages.append(_particles_page)
+	for spec in PORTRAIT_PAGES:
+		_pages.append(_portrait_page.bind(spec))
+	for id in STORY_PAGES:
+		_pages.append(_story_page.bind(id))
+	_pages.append(_lights_page)
 	for bg in BACKGROUNDS:
 		_pages.append(_background_page.bind(bg))
 	get_viewport().size_changed.connect(_layout_nav.bind(bar, prev, next))
@@ -148,6 +168,54 @@ func _fx_page() -> void:
 	for t in TRICKS:
 		icons.add_child(UiKit.texture_rect(load("res://assets/icons/tricks/%s.png" % t) as Texture2D, 1))
 	g.add_child(_cell(icons, "tricks"))
+	for fx in PROJECTILES:
+		var box := UiKit.sprite_box("res://assets/fx/%s/%s_frames.tres" % [fx, fx], &"default", 2)
+		g.add_child(_cell(box, fx))
+
+
+func _portrait_page(spec: Array) -> void:
+	_backdrop(PaletteColors.PLUM)
+	_title.text = "portraits(%d/%d)" % [page + 1, _pages.size()]
+	var g := _grid(3)
+	var frame := load("res://assets/ui/portrait_frame.png") as Texture2D
+	for entry: Array in spec:
+		for expr: String in entry[1]:
+			var holder := Control.new()
+			holder.custom_minimum_size = Vector2(52, 52)
+			var face := UiKit.texture_rect(load("res://assets/portraits/%s/%s.png" % [entry[0], expr]) as Texture2D)
+			face.position = Vector2(2, 2)
+			holder.add_child(face)
+			holder.add_child(UiKit.texture_rect(frame))
+			g.add_child(_cell(holder, expr))
+
+
+func _story_page(id: String) -> void:
+	_backdrop(PaletteColors.NIGHT_D)
+	_title.text = "%s(%d/%d)" % [id, page + 1, _pages.size()]
+	var safe := SafeArea.get_safe_rect()
+	var pic := UiKit.texture_rect(load("res://assets/story/%s.png" % id) as Texture2D)
+	var frame := UiKit.texture_rect(load("res://assets/ui/page_frame.png") as Texture2D)
+	frame.position = (safe.get_center() - Vector2(84, 64)).floor()
+	pic.position = frame.position + Vector2(4, 4)
+	_page_root.add_child(pic)
+	_page_root.add_child(frame)
+
+
+func _lights_page() -> void:
+	# 光暈是加亮混合,放在世界裡的深色地面上看效果
+	var ground := Polygon2D.new()
+	ground.color = PaletteColors.NIGHT
+	ground.polygon = PackedVector2Array([Vector2(-100, -100), Vector2(300, -100), Vector2(300, 500), Vector2(-100, 500)])
+	_world.add_child(ground)
+	_title.text = "lights(%d/%d)" % [page + 1, _pages.size()]
+	for i in LIGHTS.size():
+		var spot := Vector2(45 + (i % 2) * 90, 70 + (i / 2) * 60)
+		var light := (load("res://assets/fx/lights/%s.tscn" % LIGHTS[i]) as PackedScene).instantiate() as Node2D
+		light.position = spot
+		_world.add_child(light)
+		var label := UiKit.label(LIGHTS[i], &"LabelLight")
+		label.position = SafeArea.get_game_rect().position + spot + Vector2(-24, 12)
+		_page_root.add_child(label)
 
 
 func _particles_page() -> void:
@@ -181,12 +249,20 @@ func _background_page(bg: String) -> void:
 	var cast: Array = [["goldie", &"idle", Vector2(90, 232)], ["bulldog", &"guard", Vector2(62, 236)],
 			["scarecrow", &"run", Vector2(48, 140)], ["scarecrow", &"attack", Vector2(128, 120)],
 			["crow", &"run", Vector2(150, 190)]]
+	cast.append(["scarecrow_archer", &"aim", Vector2(140, 250)])
+	cast.append(["armored_husk", &"idle", Vector2(110, 270)])
+	if bg == "farm_fence":
+		cast.append(["scarecrow_captain", &"rally", Vector2(96, 100)])
 	if bg == "bridge":
 		cast.append(["black_knight", &"idle", Vector2(96, 112)])
 	for c: Array in cast:
+		var body := Node2D.new()   # 角色在群組裡,背景的投影層才畫得出影子
+		body.position = c[2]
+		body.add_to_group(&"player" if c[0] == "goldie" else (&"companion" if c[0] == "bulldog" else &"enemy"))
 		var s := AnimatedSprite2D.new()
+		s.name = "Sprite"
 		s.sprite_frames = UiKit.looping_frames(load("res://assets/sprites/%s/%s_frames.tres" % [c[0], c[0]]) as SpriteFrames)
-		s.position = c[2]
 		s.flip_h = (c[2] as Vector2).x > 100.0
-		_world.add_child(s)
+		body.add_child(s)
+		_world.add_child(body)
 		s.play(c[1])

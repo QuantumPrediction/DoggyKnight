@@ -1,7 +1,7 @@
 extends TestCase
 ## 背景音樂與粒子特效(CP3、CP6、CP10)。
 
-const LOOPS: Array[StringName] = [&"title", &"field", &"boss", &"camp"]
+const LOOPS: Array[StringName] = [&"title", &"field", &"boss", &"camp", &"story"]
 const JINGLES: Array[StringName] = [&"victory", &"fail", &"chapter_clear"]
 const PARTICLES: Array[String] = ["hit_burst", "straw_bits", "feathers", "confetti", "level_up_pillar", "shockwave",
 		"sparkle", "ultimate_burst", "footstep_dust", "heart", "star_burst"]

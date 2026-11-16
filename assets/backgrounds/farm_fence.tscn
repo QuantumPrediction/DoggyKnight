@@ -5,6 +5,10 @@
 [ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/windmill_frames.tres" id="3_anim_windmill"]
 [ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_leaf.png" id="4_p_leaf"]
 [ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_mote.png" id="5_p_mote"]
+[ext_resource type="Script" path="res://assets/backgrounds/actor_shadows.gd" id="80_shadows"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/farm_fence_fg.png" id="81_fg"]
+[ext_resource type="PackedScene" path="res://assets/fx/lights/lantern.tscn" id="84_light_lantern"]
+[ext_resource type="PackedScene" path="res://assets/fx/lights/sun.tscn" id="84_light_sun"]
 
 [sub_resource type="Gradient" id="Gradient_fade"]
 offsets = PackedFloat32Array(0, 0.15, 0.8, 1)
@@ -112,6 +116,30 @@ gravity = Vector2(0, 0)
 initial_velocity_min = 2
 initial_velocity_max = 4
 color_ramp = SubResource("Gradient_fade")
+
+[node name="Lights" type="Node2D" parent="."]
+
+[node name="sun_0" parent="Lights" instance=ExtResource("84_light_sun")]
+position = Vector2(90, -110)
+base_alpha = 0.264
+seed_offset = 0
+
+[node name="lantern_1" parent="Lights" instance=ExtResource("84_light_lantern")]
+position = Vector2(118, -24)
+base_alpha = 0.5
+seed_offset = 0
+
+[node name="Shadows" type="Node2D" parent="."]
+script = ExtResource("80_shadows")
+
+[node name="Foreground" type="Node2D" parent="."]
+z_index = 50
+z_as_relative = false
+
+[node name="Image" type="Sprite2D" parent="Foreground"]
+texture = ExtResource("81_fg")
+centered = false
+position = Vector2(-62, -88)
 
 [node name="Mood" type="CanvasModulate" parent="."]
 color = Color(1, 0.95, 0.88, 1)

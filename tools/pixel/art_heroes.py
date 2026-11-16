@@ -243,15 +243,59 @@ G_CAPE_RUN.append([
 
 SPARK = ["..Y..", ".YwY.", "..Y.."]
 
+# v2.3 (CS5): cape sways a little while standing (secondary motion)
+G_CAPE_SWAY = [
+    ".....R",
+    "...rRR",
+    "..rRRR",
+    ".rRRRR",
+    "rRRRRR",
+    "rRRRRr",
+    "rRRRR.",
+    ".rRRr.",
+    "rRr...",
+]
+
+
+def smear(c: Canvas, cx: float, cy: float, r0: float, r1: float, a0: float, a1: float) -> Canvas:
+    """v2.3 (CS5): a swing smear - a translucent crescent between two sword angles (degrees),
+    painted only where the frame is still empty so it never covers Goldie herself."""
+    import math
+    from paint import alpha_px
+    for y in range(c.h):
+        for x in range(c.w):
+            if c.get(x, y) is not None:
+                continue
+            dx, dy = x + 0.5 - cx, y + 0.5 - cy
+            d = math.hypot(dx, dy)
+            ang = math.degrees(math.atan2(dy, dx))
+            if r0 <= d <= r1 and a0 <= ang <= a1:
+                edge = (d - r0) / max(0.1, r1 - r0)
+                t = (ang - a0) / max(1.0, a1 - a0)        # newer part of the swing is brighter
+                if edge > 0.55:
+                    c.set(x, y, alpha_px("white", int(90 + 150 * t)))
+                elif t > 0.25:
+                    c.set(x, y, alpha_px("steel_l", int(50 + 90 * t)))
+    return c
+
+
+def _sway(c: Canvas) -> Canvas:
+    """Redraw the frame with the swaying cape (the cape is the back-most layer)."""
+    out = goldie_pose(0, cape=G_CAPE_SWAY, tail=G_TAIL)
+    return out
+
 
 def goldie_v2() -> list[Anim]:
     """More frames (CP1): idle 4 (breath, tail wag, blink), run 6, attack 4 (wind-up, swing,
     follow-through, recover), hurt 2, sleep 2 (Zzz drifting) and a victory cheer."""
+    # v2.3: six idle frames - breathing, tail wag, cape sway, a blink and an ear twitch
     idle = [
         goldie_pose(0),
         goldie_pose(0, tail=G_TAIL_UP),
-        goldie_pose(1),
+        goldie_pose(1, cape=None),
         goldie_pose(1, tail=G_TAIL_UP, head=G_HEAD_BLINK),
+        goldie_pose(0, tail=G_TAIL_UP, head=G_HEAD_EAR_UP),
+        _sway(goldie_pose(0)),
     ]
     run_sword = ((17, 15), (1, -1), 7)
     legs = [((7, 18), (14, 19)), ((8, 19), (13, 18)), ((10, 19), (11, 19)),
@@ -266,8 +310,8 @@ def goldie_v2() -> list[Anim]:
                                tail=G_TAIL_UP if i % 2 else G_TAIL, sword=run_sword))
     attack = [
         goldie_pose(1, lean=-1, sword=((19, 12), (0, -1), 9), arm=(17, 12)),
-        goldie_pose(0, lean=1, sword=((17, 14), (1, 0), 7), arm=(15, 13)),
-        goldie_pose(0, lean=1, sword=((16, 16), (1, 1), 6), arm=(15, 15)),
+        smear(goldie_pose(0, lean=1, sword=((17, 14), (1, 0), 7), arm=(15, 13)), 17, 14, 4.5, 9.5, -95, 0),
+        smear(goldie_pose(0, lean=1, sword=((16, 16), (1, 1), 6), arm=(15, 15)), 16, 15, 4.5, 9.0, -60, 48),
         goldie_pose(0, lean=0, sword=((17, 15), (1, -1), 7), arm=(15, 14)),
     ]
     hurt = [
@@ -283,7 +327,7 @@ def goldie_v2() -> list[Anim]:
         goldie_pose(0, head=G_HEAD_HAPPY, tail=G_TAIL_UP),
     ]
     return [
-        Anim("idle", idle, 8.0, True, [4.0, 4.0, 4.0, 1.0]),
+        Anim("idle", idle, 8.0, True, [4.0, 4.0, 4.0, 1.0, 2.5, 2.5]),
         Anim("run", run, 14.0, True),
         Anim("attack", attack, 14.0, False, [0.5, 1.0, 1.0, 1.5]),
         Anim("hurt", hurt, 6.0, False, [1.0, 3.0]),
