@@ -99,102 +99,117 @@ class Canvas:
 
 
 def goldie(breath: int = 0, face: str = "rest", ear_up: bool = False) -> Canvas:
+    """趴著的金毛,朝右。頭大身小(和 C 線的 Q 版比例一致)。breath 1 = 吸氣(背部高 1 格)。"""
     cv = Canvas(FW, FH)
     by = -0.5 * breath
     # 後腿(屁股)與身體
-    cv.ellipse(9.0, 16.2 + by, 5.6, 5.4 + 0.5 * breath)
-    cv.ellipse(15.5, 16.8 + by, 10.0, 4.8 + 0.5 * breath)
-    # 胸口(比較亮的毛)
-    cv.ellipse(22.0, 14.8, 4.2, 4.6, base="b", hi="c", lo="b")
-    # 頭與嘴巴
-    cv.ellipse(25.2, 9.4, 5.3, 4.9)
-    cv.ellipse(30.0, 11.6, 3.4, 2.4, base="c", hi="c", lo="b")
+    cv.ellipse(8.6, 16.8 + by, 5.0, 4.9 + 0.5 * breath)
+    cv.ellipse(13.5, 17.4 + by, 9.0, 4.3 + 0.5 * breath)
     # 前腳(伸向前方)
-    cv.rect(22, 19, 31, 20, "b")
-    cv.rect(23, 21, 31, 21, "f")
+    cv.rect(19, 19, 29, 20, "b")
+    cv.rect(20, 21, 29, 21, "f")
     # 後腳
-    cv.ellipse(6.5, 20.6, 3.4, 1.6, base="b", hi="b", lo="f")
+    cv.ellipse(6.0, 20.8, 3.4, 1.5, base="b", hi="b", lo="f")
+    # 頭(大)與嘴巴(奶油色)
+    cv.ellipse(23.6, 9.6, 6.9, 6.0)
+    cv.ellipse(29.6, 12.0, 3.6, 2.6, base="c", hi="c", lo="c")
+    # 胸口的亮毛
+    for (x, y) in ((19, 15), (20, 15), (19, 16), (20, 16), (21, 16), (20, 17), (21, 17), (22, 17)):
+        if cv.get(x, y) != ".":
+            cv.set(x, y, "c")
     # 身體下緣的深色
-    for x in range(6, 22):
-        if cv.get(x, 22) == "." and cv.get(x, 21) in ("f", "b"):
-            cv.set(x, 21, "d")
-    cv.outline()
-    # 前腳和胸口之間的線、兩隻腳之間的線
-    for x in range(24, 31):
-        if cv.get(x, 18) != ".":
-            cv.set(x, 18, "a")
-    cv.set(27, 20, "a")
-    cv.set(27, 21, "a")
-    cv.set(31, 19, "c")
+    for x in range(4, 20):
+        for y in range(FH - 1, 0, -1):
+            if cv.get(x, y) != ".":
+                if cv.get(x, y) in ("b", "f"):
+                    cv.set(x, y, "d")
+                break
     # 耳朵(垂在頭的左邊;摸頭時豎起來一點)
-    ey = 8.2 if ear_up else 10.0
+    ey = 9.4 if ear_up else 10.8
+    ex = 18.8
     for y in range(FH):
         for x in range(FW):
-            dx = (x + 0.5 - 21.6) / 2.3
-            dy = (y + 0.5 - ey) / 3.6
+            dx = (x + 0.5 - ex) / 2.4
+            dy = (y + 0.5 - ey) / 3.9
             d = dx * dx + dy * dy
             if d <= 1.0:
-                cv.set(x, y, "d" if d > 0.45 else ("f" if dy < 0.2 else "e"))
-    # 頭頂的高光
-    cv.set(23, 5, "c")
-    cv.set(24, 5, "c")
-    cv.set(25, 5, "c")
+                cv.set(x, y, "d" if d > 0.5 else ("f" if dy < 0.0 else "e"))
+    cv.outline()
+    # 後腿的輪廓(讓身體不像一條麵包)
+    for (x, y) in ((11, 14), (12, 15), (12, 16), (12, 17), (11, 18), (10, 19)):
+        cv.set(x, y, "f")
+    # 前腳和胸口之間的線、兩隻前腳之間的線、腳趾
+    for x in range(22, 29):
+        if cv.get(x, 18) not in (".",):
+            cv.set(x, 18, "a")
+    cv.set(25, 20, "a")
+    cv.set(25, 21, "a")
+    cv.set(29, 19, "c")
+    cv.set(28, 21, "a")
     # 鼻子
-    cv.set(33, 10, "a")
     cv.set(32, 10, "a")
+    cv.set(33, 10, "a")
+    cv.set(32, 11, "a")
     cv.set(33, 11, "a")
+    cv.set(32, 10, "e")
     # 臉
+    eye_x, eye_y = 25, 8
     if face == "rest":
-        cv.set(27, 8, "a")
-        cv.set(27, 9, "a")
-        cv.set(28, 12, "i")
-        cv.set(31, 13, "a")
-        cv.set(30, 13, "a")
+        cv.set(eye_x, eye_y, "w")
+        cv.set(eye_x + 1, eye_y, "a")
+        cv.set(eye_x, eye_y + 1, "a")
+        cv.set(eye_x + 1, eye_y + 1, "a")
     elif face == "blink":
-        cv.set(26, 9, "a")
-        cv.set(27, 9, "a")
-        cv.set(28, 12, "i")
-        cv.set(31, 13, "a")
-        cv.set(30, 13, "a")
+        cv.set(eye_x, eye_y + 1, "a")
+        cv.set(eye_x + 1, eye_y + 1, "a")
     elif face == "happy":
-        # 瞇眼 ^ ^、張嘴吐舌、腮紅
-        cv.set(26, 9, "a")
-        cv.set(27, 8, "a")
-        cv.set(28, 9, "a")
-        cv.set(27, 11, "i")
-        cv.set(28, 11, "i")
-        cv.set(29, 13, "a")
-        cv.set(30, 13, "g")
-        cv.set(31, 13, "g")
-        cv.set(32, 13, "a")
-        cv.set(30, 14, "h")
-        cv.set(31, 14, "h")
-        cv.set(29, 14, "a")
-        cv.set(32, 14, "a")
-        cv.set(30, 15, "a")
+        cv.set(eye_x - 1, eye_y + 1, "a")
+        cv.set(eye_x, eye_y, "a")
+        cv.set(eye_x + 1, eye_y, "a")
+        cv.set(eye_x + 2, eye_y + 1, "a")
+    # 腮紅
+    cv.set(24, 11, "i")
+    cv.set(25, 11, "i")
+    if face == "happy":
+        cv.set(26, 11, "i")
+        # 張嘴吐舌
+        for x in (28, 29, 30, 31):
+            cv.set(x, 14, "a")
+        cv.set(29, 14, "g")
+        cv.set(30, 14, "g")
+        cv.set(29, 15, "h")
+        cv.set(30, 15, "h")
+        cv.set(28, 15, "a")
         cv.set(31, 15, "a")
+        cv.set(29, 16, "a")
+        cv.set(30, 16, "a")
+    else:
+        # 小小的嘴
+        cv.set(30, 13, "a")
+        cv.set(31, 13, "a")
     return cv
 
 
 def tail(angle_deg: float) -> Canvas:
-    """毛茸茸的尾巴,根在右下角 (TW-2, TH-2),往左伸。angle 0 = 平放,正數 = 往上翹。"""
+    """毛茸茸的尾巴(金毛的尾巴下面有長長的飾毛),根在右下角,往左伸。angle 0 = 平放,正數 = 往上翹。"""
     cv = Canvas(TW, TH)
-    root = (TW - 2.0, TH - 2.5)
+    root = (TW - 1.5, TH - 3.0)
     a = math.radians(angle_deg)
-    length = 10.0
-    steps = 14
+    length = 9.5
+    steps = 16
     for i in range(steps + 1):
         t = i / steps
-        # 稍微彎曲:越到尾端越往上捲
-        bend = a + 0.55 * t * t
+        bend = a + 0.6 * t * t
         x = root[0] - math.cos(bend) * length * t
         y = root[1] - math.sin(bend) * length * t
-        r = 2.0 - 0.9 * t
-        cv.ellipse(x, y, r + 0.3, r, base="b", hi="c", lo="f")
-    # 尾端的淺色
-    tip_x = root[0] - math.cos(a + 0.55) * length
-    tip_y = root[1] - math.sin(a + 0.55) * length
-    cv.ellipse(tip_x, tip_y, 1.4, 1.2, base="c", hi="c", lo="c")
+        r = 2.3 - 1.1 * t
+        cv.ellipse(x, y, r + 0.2, r, base="b", hi="c", lo="f")
+        # 下面的飾毛(往下垂的一撮撮)
+        if 0.2 < t < 0.9 and i % 3 == 0:
+            cv.ellipse(x + 0.4, y + r + 0.4, 1.1, 1.3, base="f", hi="f", lo="f")
+    tip_x = root[0] - math.cos(a + 0.6) * length
+    tip_y = root[1] - math.sin(a + 0.6) * length
+    cv.ellipse(tip_x, tip_y, 1.5, 1.3, base="c", hi="c", lo="c")
     cv.outline()
     return cv
 

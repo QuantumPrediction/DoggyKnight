@@ -1,35 +1,51 @@
 class_name Camp
 extends Node
-## 營地(DEV_PLAN 11 D1、4.9)。
+## 營地(DEV_PLAN 11 D1、4.9、15 DP1)。
 ##
-## 夜裡的圓桌與營火,卸下盔甲的金毛趴著搖尾巴。三個入口:
+## 夜裡的圓桌與營火,卸下盔甲的金毛趴在火旁搖尾巴;第 3 關以後鬥牛犬也坐在火旁。三個入口:
 ## - 小遊戲「拉扯王室卷軸」(玩完回到這裡,獎勵已套用到 GameState)
 ## - 同伴(預留,按下顯示「即將開放」)
 ## - 繼續冒險:發出 EventBus.camp_left。營地不會自己消失,由 B 線的流程移除。
+## 點金毛可以摸摸頭:冒愛心、播 pet、手機輕震,滿意度小幅增加(每次營地有上限,見 CampConfig)。
 ##
-## 進入時(_ready)發出 EventBus.camp_entered。
+## 進入時(_ready)發出 EventBus.camp_entered,並播放營地音樂(Music.play(&"camp"))。
 ## 畫面:放在 CanvasLayer(CampConfig.canvas_layer)內,用 SafeArea 排版,
 ## 填滿任何大小的畫面(180×320 至 196×426 等),畫面大小改變時重新排版。
 
-const GOLDIE_FRAMES_PATH: String = "res://assets/sprites/goldie/goldie_frames.tres"
+const DEFAULT_GOLDIE_FRAMES_PATH: String = "res://game/camp/art/camp_goldie_frames.tres"
+const FALLBACK_GOLDIE_FRAMES_PATH: String = "res://assets/sprites/goldie/goldie_frames.tres"
+const BULLDOG_FRAMES_PATH: String = "res://assets/sprites/bulldog/bulldog_frames.tres"
 const DEFAULT_MINIGAME_PATH: String = "res://game/minigames/scroll/scroll_minigame.tscn"
+const HEART_PATH: String = "res://assets/fx/particles/heart.tscn"
+const SPARKLE_PATH: String = "res://assets/fx/particles/sparkle.tscn"
 
 ## 小遊戲開始時發出(給沙盒與測試看)。
 signal minigame_opened(minigame: MinigameBase)
 signal minigame_closed(score: int, grade: int)
+## 摸了金毛一下。rewarded:這一下有沒有增加滿意度。
+signal goldie_petted(rewarded: bool)
 
 @export var config: CampConfig
 
 var minigame_plays: int = 0
 var last_grade: int = -1
 var has_left: bool = false
+## 這次營地摸頭的次數,與其中有增加滿意度的次數。
+var pet_count: int = 0
+var pet_rewards: int = 0
 
 var _layer: CanvasLayer
 var _root: Control
-var _backdrop: Control
+var _sky: CampScenery
+var _ground: CampScenery
+var _glow: CampScenery
+var _actors: Node2D
+var _goldie: CampGoldie
+var _bulldog: AnimatedSprite2D
+var _embers: CPUParticles2D
+var _smoke: CPUParticles2D
 var _front: Control
-var _goldie: AnimatedSprite2D
-var _fire: AnimatedSprite2D
+var _stats: Control
 var _title: Label
 var _vigor_label: Label
 var _satisfaction_label: Label
@@ -40,41 +56,93 @@ var _companion_button: Button
 var _continue_button: Button
 var _toast: Label
 var _toast_left: float = 0.0
+var _pet_zone: Control
+var _bulldog_zone: Control
+var _fade: ColorRect
 var _minigame: MinigameBase
 var _time: float = 0.0
 var _shown_vigor: float = 0.0
 var _shown_satisfaction: float = 0.0
-var _goldie_spot: Vector2 = Vector2.ZERO
+var _bar_pulse: Dictionary = {"vigor": 0.0, "satisfaction": 0.0}
+var _last_pet_time: float = -100.0
+var _bark_left: float = 0.0
+var _bulldog_hop: float = 0.0
+var _fireflies: Array[Vector4] = []
+## 飛向滿意度條的愛心:{"from": Vector2, "age": float}
+var _flying_hearts: Array[Dictionary] = []
+## 跳起的數字:{"text": String, "pos": Vector2, "age": float, "color": Color}
+var _floaters: Array[Dictionary] = []
 var _fire_spot: Vector2 = Vector2.ZERO
-var _table_spot: Vector2 = Vector2.ZERO
+var _bulldog_spot: Vector2 = Vector2.ZERO
+var _menu_rest: Vector2 = Vector2.ZERO
+var _intro: float = 0.0
+var _rng := RandomNumberGenerator.new()
 
 
 func _ready() -> void:
 	if config == null:
 		config = CampConfig.new()
-	if config.goldie_frames == null and ResourceLoader.exists(GOLDIE_FRAMES_PATH):
-		config.goldie_frames = load(GOLDIE_FRAMES_PATH) as SpriteFrames
-	if config.minigame_scene == null and ResourceLoader.exists(DEFAULT_MINIGAME_PATH):
-		config.minigame_scene = load(DEFAULT_MINIGAME_PATH) as PackedScene
+	_load_defaults()
+	_rng.seed = 2026
 	_build()
 	_shown_vigor = _vigor_ratio()
 	_shown_satisfaction = _satisfaction_ratio()
 	_refresh_stats()
 	_layout()
+	_fade_in()
+	if config.music_track != &"":
+		Music.play(config.music_track)
 	EventBus.camp_entered.emit()
+
+
+func _load_defaults() -> void:
+	# 用 duplicate:補上預設圖時不改到共用的 .tres。
+	if config.goldie_frames == null or config.bulldog_frames == null or config.minigame_scene == null or config.heart_particles == null:
+		config = config.duplicate() as CampConfig
+	if config.goldie_frames == null:
+		if ResourceLoader.exists(DEFAULT_GOLDIE_FRAMES_PATH):
+			config.goldie_frames = load(DEFAULT_GOLDIE_FRAMES_PATH) as SpriteFrames
+		elif ResourceLoader.exists(FALLBACK_GOLDIE_FRAMES_PATH):
+			config.goldie_frames = load(FALLBACK_GOLDIE_FRAMES_PATH) as SpriteFrames
+			config.goldie_animation = &"sleep"
+			config.goldie_flip = false
+	if config.bulldog_frames == null and ResourceLoader.exists(BULLDOG_FRAMES_PATH):
+		config.bulldog_frames = load(BULLDOG_FRAMES_PATH) as SpriteFrames
+	if config.minigame_scene == null and ResourceLoader.exists(DEFAULT_MINIGAME_PATH):
+		config.minigame_scene = load(DEFAULT_MINIGAME_PATH) as PackedScene
+	if config.heart_particles == null and ResourceLoader.exists(HEART_PATH):
+		config.heart_particles = load(HEART_PATH) as PackedScene
 
 
 func _process(delta: float) -> void:
 	_time += delta
+	_intro += delta
 	if _toast_left > 0.0:
 		_toast_left -= delta
 		_toast.visible = _toast_left > 0.0
-	_shown_vigor = move_toward(_shown_vigor, _vigor_ratio(), delta * 0.8)
-	_shown_satisfaction = move_toward(_shown_satisfaction, _satisfaction_ratio(), delta * 0.8)
-	if _backdrop.visible:
-		_backdrop.queue_redraw()
-		_front.queue_redraw()
+	var vigor_target := _vigor_ratio()
+	var sat_target := _satisfaction_ratio()
+	_shown_vigor = move_toward(_shown_vigor, vigor_target, delta * 0.8)
+	_shown_satisfaction = move_toward(_shown_satisfaction, sat_target, delta * 0.8)
+	for key: String in _bar_pulse:
+		_bar_pulse[key] = maxf(0.0, float(_bar_pulse[key]) - delta * 2.5)
+	if not _sky.visible:
+		return
+	var flicker := 1.0 + config.fire_flicker * (0.6 * sin(_time * 9.0) + 0.3 * sin(_time * 23.0 + 1.3) + 0.25 * sin(_time * 3.7))
+	for part: CampScenery in [_sky, _ground, _glow]:
+		part.flicker = flicker
+		part.advance(delta)
+	_bark_left = maxf(0.0, _bark_left - delta)
+	_bulldog_hop = maxf(0.0, _bulldog_hop - delta)
+	if _bulldog != null and _bulldog.visible:
+		_bulldog.position = _bulldog_spot + Vector2(0, -roundf(sin(_bulldog_hop / 0.3 * PI) * 3.0) if _bulldog_hop > 0.0 else 0.0)
+	_update_effects(delta)
+	_animate_menu()
+	_front.queue_redraw()
+	_stats.queue_redraw()
 
+
+# --- 公開方法(B 線、沙盒、測試、截圖) ---
 
 ## 目前開著的小遊戲(沒有時是 null)。
 func get_minigame() -> MinigameBase:
@@ -83,6 +151,15 @@ func get_minigame() -> MinigameBase:
 
 func is_menu_visible() -> bool:
 	return _menu.visible
+
+
+func get_goldie() -> CampGoldie:
+	return _goldie
+
+
+## 鬥牛犬是否坐在營火旁(第 3 關以後)。
+func is_bulldog_visible() -> bool:
+	return _bulldog != null and _bulldog.visible
 
 
 ## 按下「拉扯王室卷軸」。測試與沙盒也可以直接呼叫。
@@ -103,8 +180,12 @@ func open_minigame() -> void:
 	_minigame.finished.connect(_on_minigame_finished)
 	_minigame.closed.connect(_on_minigame_closed)
 	_set_camp_visible(false)
+	_floaters.clear()
+	_flying_hearts.clear()
 	minigame_opened.emit(_minigame)
 	_root.add_child(_minigame)
+	_root.move_child(_fade, -1)
+	_fade_in()
 
 
 ## 按下「同伴」(預留入口)。
@@ -126,6 +207,49 @@ func leave_camp() -> void:
 	EventBus.camp_left.emit()
 
 
+## 摸摸金毛的頭。傳回 true 表示這一下增加了滿意度(每次營地有上限)。
+## 太快連點(pet_cooldown_sec 之內)不算。
+func pet_goldie() -> bool:
+	if has_left or _minigame != null or _goldie == null:
+		return false
+	if _time - _last_pet_time < config.pet_cooldown_sec:
+		return false
+	_last_pet_time = _time
+	pet_count += 1
+	_goldie.pet()
+	Sfx.play(&"pet")
+	Haptics.play(&"light")
+	_spawn_particles(config.heart_particles, _goldie.head_position() + Vector2(0, -6))
+	var rewarded := pet_rewards < config.pet_rewards_per_visit and config.pet_satisfaction_gain > 0 \
+			and GameState.satisfaction < MinigameGrading.SATISFACTION_MAX
+	if rewarded:
+		pet_rewards += 1
+		GameState.satisfaction = clampi(GameState.satisfaction + config.pet_satisfaction_gain,
+				MinigameGrading.SATISFACTION_MIN, MinigameGrading.SATISFACTION_MAX)
+		_flying_hearts.append({"from": _goldie.head_position() + Vector2(0, -10), "age": 0.0})
+	goldie_petted.emit(rewarded)
+	return rewarded
+
+
+## 點鬥牛犬:「汪!」
+func tap_bulldog() -> void:
+	if has_left or _minigame != null or not is_bulldog_visible():
+		return
+	if _bark_left > config.bulldog_bark_sec * 0.5:
+		return
+	_bark_left = config.bulldog_bark_sec
+	_bulldog_hop = 0.3
+	Sfx.play(&"bark")
+	Haptics.play(&"light")
+
+
+## 立刻放一顆流星(截圖用)。
+func spawn_shooting_star() -> void:
+	_sky.spawn_meteor()
+
+
+# --- 小遊戲 ---
+
 func _on_minigame_finished(_score: int, grade: int) -> void:
 	minigame_plays += 1
 	last_grade = grade
@@ -134,17 +258,34 @@ func _on_minigame_finished(_score: int, grade: int) -> void:
 func _on_minigame_closed() -> void:
 	var finished_score := _minigame.score
 	var finished_grade := _minigame.grade
+	var rewards := _minigame.rewards
 	_minigame.queue_free()
 	_minigame = null
 	_set_camp_visible(true)
 	_refresh_stats()
 	_layout()
+	_fade_in()
+	_intro = 0.0
+	# 獎勵回到營地時才「入帳」:條慢慢長、冒閃光和數字。
+	var sparkle: PackedScene = load(SPARKLE_PATH) if ResourceLoader.exists(SPARKLE_PATH) else null
+	if int(rewards.get("vigor", 0)) > 0:
+		_bar_pulse["vigor"] = 1.0
+		_add_floater("+%d" % int(rewards["vigor"]), _bar_tag(_vigor_label), config.vigor_bar_color)
+		_spawn_particles(sparkle, _bar_end(_vigor_label, _vigor_ratio()), _stats)
+	if int(rewards.get("satisfaction", 0)) > 0:
+		_bar_pulse["satisfaction"] = 1.0
+		_add_floater("+%d" % int(rewards["satisfaction"]), _bar_tag(_satisfaction_label), config.satisfaction_bar_color)
+		_spawn_particles(sparkle, _bar_end(_satisfaction_label, _satisfaction_ratio()), _stats)
+	if finished_grade >= 2:
+		_goldie.pet()
 	minigame_closed.emit(finished_score, finished_grade)
 
 
 func _set_camp_visible(value: bool) -> void:
-	for node: CanvasItem in [_backdrop, _front, _title, _vigor_label, _satisfaction_label, _bonus_label, _menu]:
+	for node: CanvasItem in [_sky, _ground, _glow, _actors, _front, _stats, _title, _vigor_label, _satisfaction_label, _bonus_label, _menu]:
 		node.visible = value
+	_pet_zone.visible = value
+	_bulldog_zone.visible = value and is_bulldog_visible()
 	if not value:
 		_toast.visible = false
 	_refresh_stats()
@@ -174,6 +315,65 @@ func _refresh_stats() -> void:
 	_bonus_label.text = tr("CAMP_BONUS") % roundi(GameState.next_level_bonus * 100.0)
 
 
+# --- 特效 ---
+
+func _spawn_particles(scene: PackedScene, at: Vector2, parent: Control = null) -> void:
+	if scene == null:
+		return
+	var fx := scene.instantiate()
+	if fx is Node2D:
+		(fx as Node2D).position = at.round()
+	(parent if parent != null else _front).add_child(fx)
+
+
+func _add_floater(text: String, at: Vector2, color: Color) -> void:
+	_floaters.append({"text": text, "pos": at, "age": 0.0, "color": color})
+
+
+func _bar_end(label: Label, ratio: float) -> Vector2:
+	return label.position + Vector2(42.0 + roundf(80.0 * ratio), 5.0)
+
+
+## 條右邊放「+N」的地方(文字的基線)。
+func _bar_tag(label: Label) -> Vector2:
+	return label.position + Vector2(126.0, 11.0)
+
+
+func _update_effects(delta: float) -> void:
+	for f: Dictionary in _floaters:
+		f["age"] = float(f["age"]) + delta
+		f["pos"] = (f["pos"] as Vector2) + Vector2(0, -8.0 * delta if float(f["age"]) < 0.5 else 0.0)
+	_floaters = _floaters.filter(func(f: Dictionary) -> bool: return float(f["age"]) < 1.1)
+	var arrived := 0
+	for h: Dictionary in _flying_hearts:
+		h["age"] = float(h["age"]) + delta
+		if float(h["age"]) >= 0.6 and not h.has("done"):
+			h["done"] = true
+			arrived += 1
+	_flying_hearts = _flying_hearts.filter(func(h: Dictionary) -> bool: return float(h["age"]) < 0.6)
+	for i in arrived:
+		_bar_pulse["satisfaction"] = 1.0
+		_add_floater("+%d" % config.pet_satisfaction_gain, _bar_tag(_satisfaction_label), config.satisfaction_bar_color)
+	# 還沒摸過時,金毛頭上冒「想被摸」的泡泡
+	_goldie.show_hint = pet_count == 0 and _intro >= config.pet_hint_delay_sec and _menu.visible
+
+
+func _animate_menu() -> void:
+	# 選單從下面彈上來、淡入
+	var t := clampf(_intro / 0.45, 0.0, 1.0)
+	var ease_t := 1.0 - pow(1.0 - t, 3.0)
+	_menu.position = _menu_rest + Vector2(0, roundf((1.0 - ease_t) * 24.0))
+	_menu.modulate.a = ease_t
+
+
+func _fade_in() -> void:
+	_fade.color = Color(0.05, 0.03, 0.1, 1.0)
+	_fade.visible = true
+	var tween := create_tween()
+	tween.tween_property(_fade, "color:a", 0.0, maxf(config.fade_sec, 0.01))
+	tween.tween_callback(func() -> void: _fade.visible = false)
+
+
 # --- 建立畫面 ---
 
 func _build() -> void:
@@ -190,31 +390,41 @@ func _build() -> void:
 	_layer.add_child(_root)
 	_root.resized.connect(_layout)
 
-	_backdrop = Control.new()
-	_backdrop.name = "Backdrop"
-	_backdrop.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_backdrop.draw.connect(_draw_backdrop)
-	_root.add_child(_backdrop)
+	_sky = CampScenery.new(CampScenery.Part.SKY, config)
+	_root.add_child(_sky)
+	_ground = CampScenery.new(CampScenery.Part.GROUND, config)
+	_root.add_child(_ground)
 
+	_actors = Node2D.new()
+	_actors.name = "Actors"
+	_root.add_child(_actors)
 	if config.fire_frames != null:
-		_fire = AnimatedSprite2D.new()
-		_fire.name = "Fire"
-		_fire.sprite_frames = config.fire_frames
+		var fire := AnimatedSprite2D.new()
+		fire.name = "Fire"
+		fire.sprite_frames = config.fire_frames
 		if config.fire_frames.has_animation(config.fire_animation):
-			_fire.play(config.fire_animation)
-		_backdrop.add_child(_fire)
+			fire.play(config.fire_animation)
+		_actors.add_child(fire)
+	_bulldog = AnimatedSprite2D.new()
+	_bulldog.name = "Bulldog"
+	_bulldog.sprite_frames = config.bulldog_frames
+	_bulldog.scale = Vector2.ONE * config.bulldog_scale
+	_bulldog.visible = config.bulldog_frames != null and GameState.level_index >= config.bulldog_from_level_index
+	if config.bulldog_frames != null:
+		for anim: StringName in [config.bulldog_animation, &"idle"]:
+			if config.bulldog_frames.has_animation(anim):
+				_bulldog.play(anim)
+				break
+	_actors.add_child(_bulldog)
+	_goldie = CampGoldie.new(config)
+	_actors.add_child(_goldie)
+	_embers = _make_embers()
+	_actors.add_child(_embers)
+	_smoke = _make_smoke()
+	_actors.add_child(_smoke)
 
-	_goldie = AnimatedSprite2D.new()
-	_goldie.name = "Goldie"
-	_goldie.sprite_frames = config.goldie_frames
-	_goldie.scale = Vector2.ONE * config.goldie_scale
-	if config.goldie_frames != null:
-		if config.goldie_frames.has_animation(config.goldie_animation):
-			_goldie.play(config.goldie_animation)
-		elif config.goldie_frames.has_animation(&"idle"):
-			_goldie.play(&"idle")
-	_backdrop.add_child(_goldie)
+	_glow = CampScenery.new(CampScenery.Part.GLOW, config)
+	_root.add_child(_glow)
 
 	_front = Control.new()
 	_front.name = "Front"
@@ -222,8 +432,19 @@ func _build() -> void:
 	_front.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_front.draw.connect(_draw_front)
 	_root.add_child(_front)
+	_fireflies.clear()
+	for i in config.firefly_count:
+		# x, y(0 至 1 的相對位置)、相位、速度
+		_fireflies.append(Vector4(_rng.randf(), _rng.randf(), _rng.randf() * TAU, _rng.randf_range(0.6, 1.2)))
 
-	_title = MinigameUi.make_label(tr("UI_CAMP"), config.title_font_size, Color("ffe9a8"))
+	_stats = Control.new()
+	_stats.name = "Stats"
+	_stats.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_stats.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_stats.draw.connect(_draw_stats)
+	_root.add_child(_stats)
+
+	_title = MinigameUi.make_title(tr("UI_CAMP"))
 	_title.name = "Title"
 	_root.add_child(_title)
 	_vigor_label = MinigameUi.make_label(tr("CAMP_VIGOR"), config.small_font_size)
@@ -232,32 +453,29 @@ func _build() -> void:
 	_satisfaction_label = MinigameUi.make_label(tr("CAMP_SATISFACTION"), config.small_font_size)
 	_satisfaction_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	_root.add_child(_satisfaction_label)
-	_bonus_label = MinigameUi.make_label("", config.small_font_size, Color("ffd34d"))
+	_bonus_label = MinigameUi.make_label("", config.small_font_size, Color("ffe066"))
 	_root.add_child(_bonus_label)
+
+	_pet_zone = _make_touch_zone("PetZone", pet_goldie)
+	_bulldog_zone = _make_touch_zone("BulldogZone", tap_bulldog)
+	_bulldog_zone.visible = is_bulldog_visible()
 
 	_menu = VBoxContainer.new()
 	_menu.name = "Menu"
 	_menu.add_theme_constant_override(&"separation", config.button_gap)
 	_root.add_child(_menu)
-	_minigame_button = MinigameUi.make_button(tr("UI_CAMP_MINIGAME"), config.button_size, config.button_font_size, Color("c0603a"), Color("3a1a10"))
-	_minigame_button.name = "MinigameButton"
-	_minigame_button.pressed.connect(open_minigame)
-	_menu.add_child(_minigame_button)
-	_companion_button = MinigameUi.make_button(tr("UI_CAMP_COMPANION"), config.button_size, config.button_font_size, Color("5a5670"), Color("24203a"))
-	_companion_button.name = "CompanionButton"
-	_companion_button.pressed.connect(open_companion)
-	_menu.add_child(_companion_button)
-	_continue_button = MinigameUi.make_button(tr("UI_CAMP_CONTINUE"), config.button_size, config.button_font_size, Color("3a8a5a"), Color("123a24"))
-	_continue_button.name = "ContinueButton"
-	_continue_button.pressed.connect(leave_camp)
-	_menu.add_child(_continue_button)
+	_minigame_button = _make_menu_button("MinigameButton", tr("UI_CAMP_MINIGAME"), Color("c0603a"), Color("3a1a10"), open_minigame)
+	_companion_button = _make_menu_button("CompanionButton", tr("UI_CAMP_COMPANION"), Color("5a5670"), Color("24203a"), open_companion)
+	if MinigameUi.has_shared_theme():
+		_companion_button.theme_type_variation = &"ButtonAlt"
+	_continue_button = _make_menu_button("ContinueButton", tr("UI_CAMP_CONTINUE"), Color("3a8a5a"), Color("123a24"), leave_camp)
 
 	_toast = MinigameUi.make_label("", config.button_font_size, MinigameUi.WHITE)
 	_toast.name = "Toast"
 	_toast.visible = false
 	var toast_box := StyleBoxFlat.new()
-	toast_box.bg_color = Color(0.08, 0.06, 0.14, 0.9)
-	toast_box.border_color = Color("ffd34d")
+	toast_box.bg_color = Color(0.08, 0.06, 0.14, 0.92)
+	toast_box.border_color = Color("ffe066")
 	toast_box.set_border_width_all(1)
 	toast_box.content_margin_left = 6
 	toast_box.content_margin_right = 6
@@ -266,179 +484,219 @@ func _build() -> void:
 	_toast.add_theme_stylebox_override(&"normal", toast_box)
 	_root.add_child(_toast)
 
+	_fade = ColorRect.new()
+	_fade.name = "Fade"
+	_fade.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_fade.color = Color(0, 0, 0, 0)
+	_fade.visible = false
+	_root.add_child(_fade)
+
+
+func _make_menu_button(node_name: String, text: String, fill: Color, border: Color, action: Callable) -> Button:
+	var button := MinigameUi.make_button(text, config.button_size, config.button_font_size, fill, border)
+	button.name = node_name
+	button.pressed.connect(action)
+	# 按下時壓扁一下、放開時彈回來
+	button.button_down.connect(func() -> void: _squash(button, 0.92))
+	button.button_up.connect(func() -> void: _squash(button, 1.0))
+	_menu.add_child(button)
+	return button
+
+
+func _squash(button: Button, to: float) -> void:
+	button.pivot_offset = button.size * 0.5
+	var tween := button.create_tween()
+	tween.tween_property(button, "scale", Vector2(to, to), 0.08 if to < 1.0 else 0.18) \
+			.set_trans(Tween.TRANS_BACK if to >= 1.0 else Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+
+func _make_touch_zone(node_name: String, action: Callable) -> Control:
+	var zone := Control.new()
+	zone.name = node_name
+	zone.mouse_filter = Control.MOUSE_FILTER_STOP
+	zone.gui_input.connect(func(event: InputEvent) -> void:
+		var mb := event as InputEventMouseButton
+		if mb != null and mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+			action.call()
+			zone.accept_event())
+	_root.add_child(zone)
+	return zone
+
+
+func _make_embers() -> CPUParticles2D:
+	var p := CPUParticles2D.new()
+	p.name = "Embers"
+	p.amount = maxi(1, config.ember_amount)
+	p.lifetime = 1.6
+	p.preprocess = 1.6
+	p.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+	p.emission_rect_extents = Vector2(7, 2)
+	p.direction = Vector2(0, -1)
+	p.spread = 18.0
+	p.gravity = Vector2(0, -6)
+	p.initial_velocity_min = 14.0
+	p.initial_velocity_max = 28.0
+	p.angular_velocity_min = 0.0
+	p.scale_amount_min = 1.0
+	p.scale_amount_max = 1.0
+	p.tangential_accel_min = -8.0
+	p.tangential_accel_max = 8.0
+	var ramp := Gradient.new()
+	ramp.set_color(0, Color(1, 0.95, 0.55, 1))
+	ramp.set_color(1, Color(1, 0.35, 0.15, 0))
+	ramp.add_point(0.5, Color(1, 0.6, 0.2, 0.9))
+	p.color_ramp = ramp
+	p.emitting = config.ember_amount > 0
+	return p
+
+
+func _make_smoke() -> CPUParticles2D:
+	var p := CPUParticles2D.new()
+	p.name = "Smoke"
+	p.amount = maxi(1, config.smoke_amount)
+	p.lifetime = 2.6
+	p.preprocess = 2.6
+	p.direction = Vector2(0, -1)
+	p.spread = 10.0
+	p.gravity = Vector2(3, -2)
+	p.initial_velocity_min = 8.0
+	p.initial_velocity_max = 12.0
+	p.scale_amount_min = 2.0
+	p.scale_amount_max = 3.0
+	var ramp := Gradient.new()
+	ramp.set_color(0, Color(0.55, 0.5, 0.65, 0.0))
+	ramp.set_color(1, Color(0.55, 0.5, 0.65, 0.0))
+	ramp.add_point(0.25, Color(0.55, 0.5, 0.65, 0.22))
+	p.color_ramp = ramp
+	p.emitting = config.smoke_amount > 0
+	return p
+
 
 func _layout() -> void:
 	if _root == null:
 		return
 	var safe := SafeArea.get_safe_rect()
 	var game := SafeArea.get_game_rect()
+	var screen := SafeArea.get_screen_size()
 	var cx := roundf(safe.get_center().x)
 
-	_title.size = Vector2(safe.size.x, 16)
-	_title.position = Vector2(safe.position.x, safe.position.y + 6)
-	var stats_y := safe.position.y + 26.0
-	_vigor_label.size = Vector2(40, 10)
-	_vigor_label.position = Vector2(cx - 62, stats_y)
-	_satisfaction_label.size = Vector2(40, 10)
-	_satisfaction_label.position = Vector2(cx - 62, stats_y + 12)
-	_bonus_label.size = Vector2(safe.size.x, 10)
-	_bonus_label.position = Vector2(safe.position.x, stats_y + 25)
+	_title.size = Vector2(safe.size.x, 28)
+	_title.position = Vector2(safe.position.x, safe.position.y + 2)
+	var stats_y := safe.position.y + 30.0
+	_vigor_label.size = Vector2(40, 12)
+	_vigor_label.position = Vector2(cx - 64, stats_y)
+	_satisfaction_label.size = Vector2(40, 12)
+	_satisfaction_label.position = Vector2(cx - 64, stats_y + 13)
+	_bonus_label.size = Vector2(safe.size.x, 12)
+	_bonus_label.position = Vector2(safe.position.x, stats_y + 27)
 
 	var menu_size := Vector2(config.button_size.x, config.button_size.y * 3 + config.button_gap * 2)
 	var menu_bottom := safe.end.y - config.menu_bottom_margin
 	_menu.size = menu_size
-	_menu.position = Vector2(cx - roundf(menu_size.x * 0.5), roundf(menu_bottom - menu_size.y))
+	_menu_rest = Vector2(cx - roundf(menu_size.x * 0.5), roundf(menu_bottom - menu_size.y))
+	_menu.position = _menu_rest
 
 	# 場景放在標題與選單之間;長螢幕時置中於遊戲區附近。
-	var scene_top := maxf(stats_y + 36.0, game.position.y + 70.0)
-	var scene_bottom := _menu.position.y - 6.0
+	var scene_top := maxf(stats_y + 40.0, game.position.y + 80.0)
+	var scene_bottom := _menu_rest.y - 6.0
 	var mid := roundf(lerpf(scene_top, scene_bottom, 0.5))
-	_table_spot = Vector2(cx, mid - 22.0)
-	_fire_spot = Vector2(cx - 34.0, mid + 26.0)
-	_goldie_spot = Vector2(cx + 30.0, mid + 26.0)
-	_goldie.position = _goldie_spot
-	if _fire != null:
-		_fire.position = _fire_spot
+	var table_spot := Vector2(cx, mid - 22.0)
+	_fire_spot = Vector2(cx - 16.0, mid + 24.0)
+	_bulldog_spot = Vector2(cx - 58.0, mid + 18.0)
+	var goldie_spot := Vector2(cx + 34.0, mid + 28.0)
+	for part: CampScenery in [_sky, _ground, _glow]:
+		part.horizon_y = table_spot.y + 4.0
+		part.fire_spot = _fire_spot
+		part.table_spot = table_spot
+		part.log_spot = _bulldog_spot + Vector2(0, 22)
+		part.moon_spot = Vector2(screen.x - 28.0, roundf(lerpf(stats_y + 36.0, table_spot.y, 0.3)))
+		part.queue_redraw()
+	_goldie.position = goldie_spot
+	_bulldog.position = _bulldog_spot
+	_embers.position = _fire_spot + Vector2(0, -6)
+	_smoke.position = _fire_spot + Vector2(0, -22)
+	var fire := _actors.get_node_or_null(^"Fire") as Node2D
+	if fire != null:
+		fire.position = _fire_spot
+	var pet_rect := _goldie.touch_rect()
+	_pet_zone.position = pet_rect.position
+	_pet_zone.size = pet_rect.size
+	var bulldog_size := Vector2(24, 24) * config.bulldog_scale
+	var bulldog_rect := Rect2(_bulldog_spot - bulldog_size * 0.5, bulldog_size).grow(2.0)
+	_bulldog_zone.position = bulldog_rect.position
+	_bulldog_zone.size = bulldog_rect.size
 
-	_toast.size = Vector2(minf(150.0, safe.size.x - 16.0), 18)
-	_toast.position = Vector2(cx - roundf(_toast.size.x * 0.5), _menu.position.y - 24.0)
-	_backdrop.queue_redraw()
+	_toast.size = Vector2(minf(156.0, safe.size.x - 16.0), 20)
+	_toast.position = Vector2(cx - roundf(_toast.size.x * 0.5), _menu_rest.y - 26.0)
 	_front.queue_redraw()
+	_stats.queue_redraw()
 
 
-# --- 繪圖(佔位美術;CampConfig 有正式圖時改用正式圖) ---
-
-func _draw_backdrop() -> void:
-	var screen := SafeArea.get_screen_size()
-	var game := SafeArea.get_game_rect()
-	if config.background_texture != null:
-		var tex_size := config.background_texture.get_size()
-		var at := (game.get_center() - tex_size * 0.5).round()
-		_backdrop.draw_rect(Rect2(Vector2.ZERO, screen), config.sky_top_color)
-		_backdrop.draw_texture(config.background_texture, at)
-	else:
-		_draw_night(screen)
-	if config.table_texture != null:
-		var t_size := config.table_texture.get_size()
-		_backdrop.draw_texture(config.table_texture, (_table_spot - t_size * 0.5).round())
-	else:
-		_draw_table()
-	if _fire == null:
-		_draw_fire()
-
-
-func _draw_night(screen: Vector2) -> void:
-	var horizon := _table_spot.y + 4.0
-	var bands := 10
-	for i in bands:
-		var c := config.sky_top_color.lerp(config.sky_bottom_color, float(i) / (bands - 1))
-		_backdrop.draw_rect(Rect2(0, horizon * i / bands, screen.x, horizon / bands + 1), c)
-	for i in 22:
-		var star := Vector2(fmod(i * 47.0 + 13.0, screen.x), fmod(i * 29.0 + 7.0, maxf(horizon - 8.0, 20.0)))
-		var twinkle := 0.5 + 0.5 * sin(_time * 1.7 + i * 1.3)
-		var size := 2.0 if i % 7 == 0 else 1.0
-		_backdrop.draw_rect(Rect2(star.round(), Vector2(size, size)), Color(1, 1, 0.85, 0.3 + 0.6 * twinkle))
-	# 月亮
-	var moon := Vector2(screen.x - 22.0, SafeArea.get_safe_rect().position.y + 14.0)
-	_backdrop.draw_circle(moon, 9.0, Color("fff3c4"))
-	_backdrop.draw_circle(moon + Vector2(4, -2), 8.0, config.sky_top_color.lerp(config.sky_bottom_color, 0.3))
-	# 遠山與地面
-	var hills := PackedVector2Array([Vector2(0, horizon), Vector2(0, horizon - 14), Vector2(screen.x * 0.25, horizon - 26),
-		Vector2(screen.x * 0.5, horizon - 12), Vector2(screen.x * 0.75, horizon - 30), Vector2(screen.x, horizon - 16), Vector2(screen.x, horizon)])
-	_backdrop.draw_colored_polygon(hills, config.sky_bottom_color.darkened(0.35))
-	_backdrop.draw_rect(Rect2(0, horizon, screen.x, screen.y - horizon), config.ground_color)
-	for i in 30:
-		var tuft := Vector2(fmod(i * 53.0 + 5.0, screen.x), horizon + 6.0 + fmod(i * 31.0, maxf(screen.y - horizon - 8.0, 8.0)))
-		_backdrop.draw_rect(Rect2(tuft.round(), Vector2(2, 1)), config.ground_light_color)
-	# 營火照亮的地面
-	for i in 4:
-		_backdrop.draw_circle(_fire_spot + Vector2(0, 4), 44.0 - i * 9.0, config.glow_color)
-
-
-func _draw_table() -> void:
-	var c := _table_spot
-	# 圓桌:從正面看是一個扁扁的橢圓,加上桌腳
-	_backdrop.draw_rect(Rect2(c + Vector2(-40, 6), Vector2(4, 18)), config.table_edge_color)
-	_backdrop.draw_rect(Rect2(c + Vector2(36, 6), Vector2(4, 18)), config.table_edge_color)
-	_backdrop.draw_rect(Rect2(c + Vector2(-2, 8), Vector2(4, 18)), config.table_edge_color)
-	_draw_ellipse(c + Vector2(0, 4), Vector2(56, 14), config.table_edge_color)
-	_draw_ellipse(c, Vector2(56, 14), config.table_color)
-	_draw_ellipse(c + Vector2(0, -2), Vector2(44, 9), config.table_color.lightened(0.12))
-	# 桌上的王室卷軸與杯子(暗示小遊戲)
-	_backdrop.draw_rect(Rect2(c + Vector2(-26, -5), Vector2(22, 6)), Color("f3e6c4"))
-	_backdrop.draw_rect(Rect2(c + Vector2(-28, -6), Vector2(3, 8)), Color("e0b040"))
-	_backdrop.draw_rect(Rect2(c + Vector2(-5, -6), Vector2(3, 8)), Color("e0b040"))
-	_backdrop.draw_rect(Rect2(c + Vector2(-18, -5), Vector2(2, 6)), Color("b8323a"))
-	_backdrop.draw_rect(Rect2(c + Vector2(12, -10), Vector2(7, 9)), Color("c9c9d9"))
-	_backdrop.draw_rect(Rect2(c + Vector2(19, -8), Vector2(2, 4)), Color("c9c9d9"))
-
-
-func _draw_fire() -> void:
-	var c := _fire_spot
-	# 木柴
-	_backdrop.draw_set_transform(c + Vector2(0, 8), 0.35)
-	_backdrop.draw_rect(Rect2(-12, -2, 24, 4), Color("6b4428"))
-	_backdrop.draw_set_transform(c + Vector2(0, 8), -0.35)
-	_backdrop.draw_rect(Rect2(-12, -2, 24, 4), Color("5a3418"))
-	_backdrop.draw_set_transform_matrix(Transform2D.IDENTITY)
-	for i in 5:
-		var stone := c + Vector2(-16 + i * 8, 11)
-		_backdrop.draw_rect(Rect2(stone, Vector2(6, 4)), Color("6a6a78"))
-	# 火焰:三層,高度隨時間跳動
-	for layer in config.fire_colors.size():
-		var scale := 1.0 - layer * 0.28
-		var flick := 1.0 + 0.18 * sin(_time * (9.0 + layer * 3.0)) + 0.1 * sin(_time * 23.0 + layer)
-		var h := 22.0 * scale * flick
-		var w := 11.0 * scale
-		var sway := sin(_time * 4.0 + layer) * 2.0
-		var pts := PackedVector2Array([
-			c + Vector2(-w, 6), c + Vector2(-w * 0.7, -h * 0.35), c + Vector2(sway * 0.5 - w * 0.25, -h * 0.7),
-			c + Vector2(sway, -h), c + Vector2(sway * 0.5 + w * 0.3, -h * 0.6), c + Vector2(w * 0.75, -h * 0.3), c + Vector2(w, 6),
-		])
-		_backdrop.draw_colored_polygon(pts, config.fire_colors[layer])
-	# 火星
-	for i in 4:
-		var life := fmod(_time * 0.8 + i * 0.27, 1.0)
-		var spark := c + Vector2(sin(i * 2.1 + _time) * 6.0, -18.0 - life * 26.0)
-		_backdrop.draw_rect(Rect2(spark.round(), Vector2.ONE), Color(1, 0.85, 0.4, 1.0 - life))
-
+# --- 繪圖 ---
 
 func _draw_front() -> void:
-	# 金毛的尾巴(搖來搖去);正式的搖尾巴動畫由 C 線提供時,可以把 tail_wags_per_sec 設為 0 關掉。
-	if config.tail_wags_per_sec > 0.0:
-		var base := _goldie.position + Vector2(-10, 4) * config.goldie_scale
-		var angle := sin(_time * TAU * config.tail_wags_per_sec) * 0.6 - 0.4
-		_front.draw_set_transform(base, angle)
-		_front.draw_rect(Rect2(-12, -2, 12, 4), MinigameUi.INK)
-		_front.draw_rect(Rect2(-11, -1, 10, 2), config.tail_color)
-		_front.draw_set_transform_matrix(Transform2D.IDENTITY)
-	# 金毛睡得很舒服:Z 字
-	var z_t := fmod(_time * 0.6, 1.0)
-	var font := ThemeDB.fallback_font
-	var z_pos := (_goldie.position + Vector2(10, -18 - z_t * 10.0)).round()
-	_front.draw_string(font, z_pos, "z", HORIZONTAL_ALIGNMENT_LEFT, -1, 8, Color(1, 1, 1, 1.0 - z_t))
-	# 活力與滿意度的條
-	_draw_bar(_vigor_label.position + Vector2(42, 2), _shown_vigor, config.vigor_bar_color)
-	_draw_bar(_satisfaction_label.position + Vector2(42, 2), _shown_satisfaction, config.satisfaction_bar_color)
+	# 螢火蟲:在草地與夜空交界附近慢慢飛,一閃一閃
+	var area := Rect2(0, _sky.horizon_y - 50.0, SafeArea.get_screen_size().x, 110.0)
+	for f in _fireflies:
+		var t := _time * f.w
+		var pos := area.position + Vector2(f.x * area.size.x + sin(t + f.z) * 10.0, f.y * area.size.y + cos(t * 1.3 + f.z) * 6.0)
+		var glow := 0.5 + 0.5 * sin(_time * 2.2 * f.w + f.z * 3.0)
+		if absf(pos.x - _fire_spot.x) < 18.0 and absf(pos.y - _fire_spot.y) < 30.0:
+			continue
+		var p := pos.round()
+		_front.draw_rect(Rect2(p - Vector2(1, 1), Vector2(3, 3)), Color(0.85, 1.0, 0.45, 0.18 * glow))
+		_front.draw_rect(Rect2(p, Vector2.ONE), Color(0.95, 1.0, 0.6, 0.35 + 0.65 * glow))
+	# 鬥牛犬的「汪!」
+	if _bark_left > 0.0 and is_bulldog_visible():
+		var at := (_bulldog_spot + Vector2(10, -34)).round()
+		var box := Rect2(at - Vector2(14, 8), Vector2(28, 15))
+		_front.draw_rect(box.grow(1), MinigameUi.INK)
+		_front.draw_rect(box, MinigameUi.WHITE)
+		_front.draw_rect(Rect2(at + Vector2(-8, 7), Vector2(3, 3)), MinigameUi.INK)
+		_front.draw_rect(Rect2(at + Vector2(-7, 7), Vector2(1, 2)), MinigameUi.WHITE)
+		var font := _title.get_theme_font(&"font")
+		_front.draw_string(font, at + Vector2(-12, 5), tr("CAMP_BULLDOG_BARK"), HORIZONTAL_ALIGNMENT_CENTER, 24, MinigameUi.FONT_S, MinigameUi.INK)
+
+
+func _draw_stats() -> void:
+	if not _stats.visible:
+		return
+	# 活力與滿意度的條(增加時閃一下、變粗)
+	_draw_bar(_vigor_label.position + Vector2(42, 3), _shown_vigor, config.vigor_bar_color, float(_bar_pulse["vigor"]))
+	_draw_bar(_satisfaction_label.position + Vector2(42, 3), _shown_satisfaction, config.satisfaction_bar_color, float(_bar_pulse["satisfaction"]))
+	MinigameUi.draw_heart(_stats, _satisfaction_label.position + Vector2(130, 6), 1.0)
+	# 飛向滿意度條的愛心
+	for h: Dictionary in _flying_hearts:
+		var t := clampf(float(h["age"]) / 0.6, 0.0, 1.0)
+		var from := h["from"] as Vector2
+		var to := _bar_end(_satisfaction_label, _shown_satisfaction)
+		var ctrl := Vector2(lerpf(from.x, to.x, 0.3), minf(from.y, to.y) - 30.0)
+		var a := from.lerp(ctrl, t)
+		var b := ctrl.lerp(to, t)
+		MinigameUi.draw_heart(_stats, a.lerp(b, t * t), 1.0 + (1.0 if t < 0.5 else 0.0))
+	# 跳起的數字
+	var font_small := _title.get_theme_font(&"font")
+	for f: Dictionary in _floaters:
+		var alpha := clampf(1.0 - (float(f["age"]) - 0.6) / 0.5, 0.0, 1.0)
+		var pos := (f["pos"] as Vector2).round()
+		_stats.draw_string_outline(font_small, pos, f["text"], HORIZONTAL_ALIGNMENT_LEFT, -1, MinigameUi.FONT_S, 4, Color(MinigameUi.INK, alpha))
+		_stats.draw_string(font_small, pos, f["text"], HORIZONTAL_ALIGNMENT_LEFT, -1, MinigameUi.FONT_S, Color(f["color"] as Color, alpha))
 	# 玩過小遊戲後,在按鈕旁邊顯示拿到的星星
 	if last_grade >= 0 and _menu.visible:
 		var button_rect := Rect2(_menu.position + _minigame_button.position, _minigame_button.size)
 		for i in 3:
 			var star_at := Vector2(button_rect.end.x - 26.0 + i * 10.0, button_rect.position.y - 1.0)
-			MinigameUi.draw_star(_front, star_at, 4.0, i < last_grade)
+			MinigameUi.draw_star(_stats, star_at, 4.0, i < last_grade)
 
 
-func _draw_bar(at: Vector2, ratio: float, color: Color) -> void:
+func _draw_bar(at: Vector2, ratio: float, color: Color, pulse: float) -> void:
 	var rect := Rect2(at.round(), Vector2(80, 6))
-	_front.draw_rect(rect.grow(1), MinigameUi.INK)
-	_front.draw_rect(rect, Color("2a2440"))
-	_front.draw_rect(Rect2(rect.position, Vector2(roundf(rect.size.x * ratio), rect.size.y)), color)
-	_front.draw_rect(Rect2(rect.position, Vector2(roundf(rect.size.x * ratio), 1)), color.lightened(0.3))
-
-
-func _draw_ellipse(center: Vector2, radii: Vector2, color: Color) -> void:
-	var pts := PackedVector2Array()
-	for i in 24:
-		var a := TAU * i / 24.0
-		pts.append(center + Vector2(cos(a) * radii.x, sin(a) * radii.y))
-	_backdrop.draw_colored_polygon(pts, color)
+	var grow := 1.0 if pulse > 0.0 else 0.0
+	_stats.draw_rect(rect.grow(1 + grow), MinigameUi.INK)
+	_stats.draw_rect(rect.grow(grow), Color("2a2440"))
+	var fill := color.lerp(Color.WHITE, pulse * 0.6)
+	var fill_rect := Rect2(rect.position - Vector2(grow, grow), Vector2(roundf(rect.size.x * ratio) + grow * 2.0, rect.size.y + grow * 2.0))
+	_stats.draw_rect(fill_rect, fill)
+	_stats.draw_rect(Rect2(fill_rect.position, Vector2(fill_rect.size.x, 1)), fill.lightened(0.35))
+	_stats.draw_rect(Rect2(fill_rect.position + Vector2(0, fill_rect.size.y - 1), Vector2(fill_rect.size.x, 1)), fill.darkened(0.2))
