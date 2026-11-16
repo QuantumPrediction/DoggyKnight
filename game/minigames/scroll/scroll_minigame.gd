@@ -268,6 +268,10 @@ func _compute_score() -> int:
 	return floori(pulled_px / maxf(_cfg.px_per_score, 0.001)) + perfects * _cfg.perfect_bonus_score
 
 
+func _results_top_min() -> float:
+	return _goldie_pos.y + 14.0 * _cfg.goldie_scale
+
+
 func _go_text() -> String:
 	return tr("MINIGAME_GO")
 

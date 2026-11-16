@@ -446,7 +446,15 @@ func _layout_overlay() -> void:
 func _results_panel_rect() -> Rect2:
 	var safe := SafeArea.get_safe_rect()
 	var panel_size := Vector2(minf(160.0, safe.size.x - 12.0), 168.0)
-	return Rect2((safe.get_center() - panel_size * 0.5).round(), panel_size)
+	var top := safe.get_center().y - panel_size.y * 0.5
+	# 盡量不要蓋住結束動畫(例如被卷軸包起來的金毛),但不能超出畫面底部
+	top = minf(maxf(top, _results_top_min()), safe.end.y - panel_size.y - 28.0)
+	return Rect2(Vector2(safe.get_center().x - panel_size.x * 0.5, top).round(), panel_size)
+
+
+## 評價面板的上緣至少要在哪裡(畫面邏輯像素)。子類別可以覆寫,讓結束動畫露出來。
+func _results_top_min() -> float:
+	return 0.0
 
 
 func _update_overlay() -> void:
