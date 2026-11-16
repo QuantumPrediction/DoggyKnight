@@ -4,7 +4,11 @@ extends Control
 ## 介面:setup(has_save: bool);訊號 new_game_pressed、continue_pressed、credits_pressed。
 ## 「繼續冒險」只在有存檔時出現。
 ## 會動的東西:雲慢慢飄、標誌彈跳進場後輕輕浮動並偶爾閃光、金毛呼吸眨眼搖尾巴、
-## 鬥牛犬在旁邊、石中劍閃光、花瓣飄落、按鈕依序滑入。
+## 鬥牛犬在旁邊、梅林拄著星星手杖(偶爾施法冒星光,v2.3)、石中劍閃光、花瓣飄落、按鈕依序滑入。
+##
+## 難度(v2.3,DEV_PLAN 4.11、CS6):GameState.chapter_cleared 為 true(打完第一章)時,
+## 按「開始冒險」會先出現難度選擇(一般 / 困難),選好後設定 GameState.difficulty 才發 new_game_pressed;
+## 還沒打完第一章時直接設為 &"normal" 再發訊號。
 
 signal new_game_pressed
 signal continue_pressed
@@ -18,6 +22,10 @@ const SWORD_TIP_IN_BACKDROP: Vector2 = Vector2(213, 220)
 var continue_button: Button
 var new_game_button: Button
 var credits_button: Button
+var normal_button: Button
+var hard_button: Button
+var back_button: Button
+var difficulty_panel: PanelContainer
 
 var _has_save: bool = false
 var _backdrop: TextureRect
@@ -27,6 +35,9 @@ var _logo: TextureRect
 var _subtitle: Label
 var _goldie: Control
 var _bulldog: Control
+var _merlin: Control
+var _cleared_label: Label
+var _next_cast: float = 3.5
 var _glint: AnimatedSprite2D
 var _petals: CPUParticles2D
 var _buttons: VBoxContainer
@@ -63,9 +74,20 @@ func _ready() -> void:
 	_bulldog = UiKit.sprite_box("res://assets/sprites/bulldog/bulldog_frames.tres", &"idle", 2)
 	_bulldog.name = "Bulldog"
 	add_child(_bulldog)
+	_merlin = UiKit.sprite_box("res://assets/sprites/merlin/merlin_frames.tres", &"idle", 2)
+	_merlin.name = "Merlin"
+	var merlin_sprite := _merlin.get_node_or_null(^"Sprite") as AnimatedSprite2D
+	if merlin_sprite != null:
+		merlin_sprite.flip_h = true
+		merlin_sprite.animation_finished.connect(func() -> void: merlin_sprite.play(&"idle"))
+	add_child(_merlin)
 	_goldie = UiKit.sprite_box("res://assets/sprites/goldie/goldie_frames.tres", &"idle", 3)
 	_goldie.name = "Goldie"
 	add_child(_goldie)
+	_cleared_label = UiKit.label(tr("UI_CHAPTER_CLEARED"), &"LabelPop")
+	_cleared_label.name = "ChapterCleared"
+	_cleared_label.visible = GameState.chapter_cleared
+	add_child(_cleared_label)
 
 	_buttons = VBoxContainer.new()
 	_buttons.add_theme_constant_override(&"separation", int(UiKit.GAP))
@@ -76,7 +98,7 @@ func _ready() -> void:
 	_buttons.add_child(continue_button)
 	new_game_button = UiKit.button(tr("UI_NEW_GAME"))
 	new_game_button.name = "NewGameButton"
-	new_game_button.pressed.connect(func() -> void: new_game_pressed.emit())
+	new_game_button.pressed.connect(_on_new_game)
 	_buttons.add_child(new_game_button)
 	credits_button = UiKit.button(tr("UI_CREDITS"), &"ButtonAlt")
 	credits_button.name = "CreditsButton"
@@ -87,10 +109,72 @@ func _ready() -> void:
 			&"LabelLight", HORIZONTAL_ALIGNMENT_RIGHT)
 	add_child(_version)
 
+	_build_difficulty_panel()
 	_apply_save_state()
 	get_viewport().size_changed.connect(_layout)
 	_layout()
 	_play_intro()
+
+
+func _build_difficulty_panel() -> void:
+	difficulty_panel = PanelContainer.new()
+	difficulty_panel.name = "DifficultyPanel"
+	difficulty_panel.visible = false
+	add_child(difficulty_panel)
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override(&"separation", 3)
+	difficulty_panel.add_child(box)
+	box.add_child(UiKit.label(tr("UI_DIFFICULTY"), &""))
+	normal_button = UiKit.button(tr("UI_DIFFICULTY_NORMAL"), &"", Vector2(124, 28))
+	normal_button.name = "NormalButton"
+	normal_button.pressed.connect(func() -> void: _start(&"normal"))
+	box.add_child(_centered(normal_button))
+	box.add_child(UiKit.label(tr("UI_DIFFICULTY_NORMAL_DESC"), &"LabelSoft"))
+	hard_button = UiKit.button(tr("UI_DIFFICULTY_HARD"), &"ButtonAlt", Vector2(124, 28))
+	hard_button.name = "HardButton"
+	hard_button.pressed.connect(func() -> void: _start(&"hard"))
+	box.add_child(_centered(hard_button))
+	box.add_child(UiKit.label(tr("UI_DIFFICULTY_HARD_DESC"), &"LabelSoft"))
+	back_button = UiKit.button(tr("UI_BACK"), &"ButtonAlt", Vector2(64, 24))
+	back_button.name = "BackButton"
+	back_button.pressed.connect(func() -> void: show_difficulty(false))
+	box.add_child(_centered(back_button))
+
+
+func _centered(c: Control) -> CenterContainer:
+	var row := CenterContainer.new()
+	row.add_child(c)
+	return row
+
+
+## 「開始冒險」:打完第一章才問難度,否則直接用一般難度。
+func _on_new_game() -> void:
+	if GameState.chapter_cleared:
+		show_difficulty(true)
+	else:
+		_start(&"normal")
+
+
+func show_difficulty(on: bool) -> void:
+	difficulty_panel.visible = on
+	_buttons.visible = not on
+	if on:
+		difficulty_panel.pivot_offset = difficulty_panel.size * 0.5
+		difficulty_panel.scale = Vector2(0.9, 0.9)
+		var t := create_tween()
+		t.tween_property(difficulty_panel, "scale", Vector2.ONE, 0.16).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	_layout()
+
+
+func is_difficulty_open() -> bool:
+	return difficulty_panel.visible
+
+
+func _start(difficulty: StringName) -> void:
+	GameState.difficulty = difficulty
+	difficulty_panel.visible = false
+	_buttons.visible = true
+	new_game_pressed.emit()
 
 
 ## 由 B 線呼叫:有存檔時顯示「繼續冒險」。可在加入場景前或後呼叫。
@@ -156,6 +240,10 @@ func _process(delta: float) -> void:
 		if _cloud_x[i] > screen_w + 4:
 			_cloud_x[i] = -_clouds[i].size.x - 4
 		_clouds[i].position.x = floorf(_cloud_x[i])
+	_next_cast -= delta
+	if _next_cast <= 0.0:
+		_next_cast = 5.0
+		_merlin_cast()
 	if _intro_done:
 		# 標誌輕輕浮動
 		_logo.position.y = _logo_rest.y + roundf(sin(_time * 1.6) * 1.0)
@@ -166,6 +254,18 @@ func _process(delta: float) -> void:
 			fx.position = _logo.position + Vector2(randf_range(8, _logo.size.x - 8), randf_range(4, _logo.size.y - 4))
 			add_child(fx)
 	_layout()
+
+
+## 梅林偶爾舉起手杖,星星冒出星光。
+func _merlin_cast() -> void:
+	var spr := _merlin.get_node_or_null(^"Sprite") as AnimatedSprite2D
+	if spr == null or not spr.sprite_frames.has_animation(&"cast"):
+		return
+	spr.sprite_frames.set_animation_loop(&"cast", false)
+	spr.play(&"cast")
+	var fx := SPARKLE.instantiate() as Node2D
+	fx.position = _merlin.position + Vector2(6, 2)
+	add_child(fx)
 
 
 func _layout() -> void:
@@ -191,6 +291,12 @@ func _layout() -> void:
 	_goldie.position = center + Vector2(-44, -24)
 	_goldie.position.y = minf(_goldie.position.y, _buttons.position.y - _goldie.size.y - 2.0)
 	_bulldog.position = _goldie.position + Vector2(-38, 22)
+	_merlin.position = _goldie.position + Vector2(62, 20)
+	_cleared_label.size = _cleared_label.get_minimum_size()
+	_cleared_label.position = Vector2(floorf(cx - _cleared_label.size.x * 0.5), _subtitle.position.y + _subtitle.size.y + 1.0)
+	difficulty_panel.size = difficulty_panel.get_combined_minimum_size()
+	difficulty_panel.position = Vector2(floorf(cx - difficulty_panel.size.x * 0.5),
+			floorf(bottom - difficulty_panel.size.y + 4.0))
 	_glint.position = _backdrop.position + SWORD_TIP_IN_BACKDROP - Vector2(4, 4)
 	_petals.position = Vector2(cx - 40, safe.position.y + 60)
 	_version.size = _version.get_minimum_size()

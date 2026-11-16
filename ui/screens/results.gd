@@ -10,6 +10,7 @@ extends Control
 ## 演出:面板彈出 → 星星逐顆亮起(star 音效、音高一顆比一顆高、星星爆開)→ 數字遞增 →
 ## 「新紀錄!」彈出。按「繼續」隨時可以離開。過關短曲(B 線呼叫 Music.play(&"victory"))
 ## 正在播時不再播 clear 音效,避免兩段音樂疊在一起。
+## v2.3(CS7):result.difficulty == &"hard" 時,面板右上角有紅色「困難」標記。
 
 signal continue_pressed
 
@@ -37,6 +38,7 @@ var goals_box: VBoxContainer
 var new_best_label: Label
 var progress: ChapterStrip
 var progress_label: Label
+var hard_badge: NinePatchRect
 
 var _result: Dictionary = {}
 var _panel: PanelContainer
@@ -126,6 +128,19 @@ func _ready() -> void:
 	_ribbon.add_child(title_label)
 	add_child(_ribbon)
 
+	hard_badge = NinePatchRect.new()
+	hard_badge.name = "HardBadge"
+	hard_badge.texture = preload("res://assets/ui/badge_hard.png")
+	for side: Side in [SIDE_LEFT, SIDE_TOP, SIDE_RIGHT, SIDE_BOTTOM]:
+		hard_badge.set_patch_margin(side, 5)
+	hard_badge.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	hard_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var badge_text := UiKit.label(tr("UI_HARD_BADGE"), &"LabelLight")
+	badge_text.name = "Text"
+	hard_badge.add_child(badge_text)
+	hard_badge.visible = false
+	add_child(hard_badge)
+
 	new_best_label = UiKit.label(tr("UI_NEW_BEST"), &"LabelPop")
 	new_best_label.name = "NewBest"
 	new_best_label.visible = false
@@ -170,6 +185,7 @@ func has_stars() -> bool:
 
 func _apply() -> void:
 	var is_final: bool = _result.get("is_final", false)
+	hard_badge.visible = StringName(str(_result.get("difficulty", "normal"))) == &"hard"
 	title_label.text = tr("UI_THE_END") if is_final else tr("UI_LEVEL_CLEAR")
 	var level_name := String(_result.get("level_name", ""))
 	level_label.text = tr(level_name) if not level_name.is_empty() else ""
@@ -341,6 +357,13 @@ func _layout() -> void:
 	_ribbon.position = Vector2(floorf(safe.get_center().x - _ribbon.size.x * 0.5), pos.y)
 	_panel.position = Vector2(pos.x, pos.y + floorf(_ribbon.size.y * 0.5))
 	_panel.pivot_offset = _panel.size * 0.5
+	if hard_badge.visible:
+		var text := hard_badge.get_node(^"Text") as Label
+		text.size = text.get_minimum_size()
+		hard_badge.size = Vector2(text.size.x + 10.0, 16.0)
+		text.position = Vector2(5, 1)
+		hard_badge.position = Vector2(floorf(_panel.position.x + _panel.size.x - hard_badge.size.x + 4.0),
+				floorf(_panel.position.y - 6.0))
 	if new_best_label.visible:
 		new_best_label.size = new_best_label.get_minimum_size()
 		var anchor := stars_row.get_global_rect()

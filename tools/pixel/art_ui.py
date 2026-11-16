@@ -570,7 +570,13 @@ def next_arrow() -> Canvas:
     return c
 
 
+def hard_badge() -> Canvas:
+    """16x14 9-slice (margins 5): the red 「困難」 badge on the results screen."""
+    return framed(16, 14, "ink", "yellow", "red", top="pink", bottom="red_d", corner=2)
+
+
 def write_dialogue_textures() -> None:
+    hard_badge().save(res_path("res://assets/ui/badge_hard.png"))
     dialogue_panel().save(res_path("res://assets/ui/dialogue_panel.png"))
     portrait_frame().save(res_path("res://assets/ui/portrait_frame.png"))
     name_plate().save(res_path("res://assets/ui/name_plate.png"))
