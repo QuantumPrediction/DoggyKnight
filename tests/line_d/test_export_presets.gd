@@ -51,14 +51,17 @@ func test_aab_uses_gradle_with_store_sdk_levels() -> void:
 	assert_eq(_opt("Android", "gradle_build/target_sdk"), "")
 
 
-func test_no_permissions_requested() -> void:
+## DP3:震動(Haptics)需要 VIBRATE;除此之外不要求任何權限(商店的資料安全問卷依此填寫)。
+func test_only_vibrate_permission() -> void:
 	for preset_name in ["Android", "Android AAB", "Android Sandbox"]:
 		var section := _section_of(preset_name) + ".options"
+		assert_eq(_cfg.get_value(section, "permissions/vibrate", false), true, "%s 有 VIBRATE 權限(震動回饋)" % preset_name)
 		for key in _cfg.get_section_keys(section):
-			if key.begins_with("permissions/") and key != "permissions/custom_permissions":
+			if key.begins_with("permissions/") and key != "permissions/custom_permissions" and key != "permissions/vibrate":
 				assert_ne(_cfg.get_value(section, key), true, "%s 不需要權限 %s" % [preset_name, key])
 		var custom: Variant = _cfg.get_value(section, "permissions/custom_permissions", PackedStringArray())
 		assert_eq((custom as PackedStringArray).size(), 0, "沒有自訂權限")
+	assert_eq(_cfg.get_value(_section_of("Android") + ".options", "permissions/internet", false), false, "不連網:沒有 INTERNET 權限")
 
 
 func test_no_secrets_in_presets() -> void:

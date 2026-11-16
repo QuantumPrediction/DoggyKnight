@@ -3,11 +3,15 @@ extends "res://tests/line_b/flow_test_base.gd"
 
 const RESULT_KEYS: Array[String] = [
 	"level_id", "level_name", "victory", "time_sec", "kills", "tricks", "hero_level", "next_is_camp", "is_final",
+	# DEV_PLAN 4.10
+	"stars", "star_goals", "best_stars", "new_best", "level_index", "level_count",
+	# 額外:這一關受到的傷害
+	"damage_taken",
 ]
 
 
 func _in_level() -> bool:
-	return flow.state == FlowMain.State.LEVEL
+	return flow.is_level_running()
 
 
 func test_boot_shows_title_on_layer_30() -> void:
@@ -154,13 +158,18 @@ func test_back_on_title_asks_to_quit_on_android() -> void:
 func test_back_closes_credits() -> void:
 	make_flow()
 	await wait_frames(1)
-	flow.get_screen().emit_signal(&"credits_pressed")
-	assert_not_null(flow.get_credits())
+	var title := flow.get_screen()
+	title.emit_signal(&"credits_pressed")
+	assert_true(await wait_until(func() -> bool: return flow.get_credits() != null and not flow.is_switching()))
 	AppLifecycle.simulate_back()
-	assert_null(flow.get_credits())
-	flow.get_screen().emit_signal(&"credits_pressed")
+	assert_true(await wait_until(func() -> bool: return flow.get_credits() == null and not flow.is_switching()))
+	assert_eq(flow.state, FlowMain.State.TITLE)
+	assert_eq(flow.get_screen(), title, "標題畫面一直都在")
+	title.emit_signal(&"credits_pressed")
+	assert_true(await wait_until(func() -> bool: return flow.get_credits() != null and not flow.is_switching()))
 	flow.get_credits().emit_signal(&"closed")
-	assert_null(flow.get_credits())
+	assert_true(await wait_until(func() -> bool: return flow.get_credits() == null and not flow.is_switching()))
+	assert_eq(flow.state, FlowMain.State.TITLE)
 
 
 func test_results_have_exactly_the_contract_keys() -> void:
@@ -297,3 +306,15 @@ func test_companion_joins_from_level_1_3() -> void:
 	assert_true(await wait_until(_in_level))
 	await wait_frames(1)
 	assert_eq(get_tree().get_node_count_in_group(&"companion"), 1, "鬥牛犬加入")
+	assert_eq(flow.get_session().arriving, [&"bulldog"] as Array[StringName], "1-3 才加入:畫面露出後出場")
+
+
+func test_companion_is_already_there_after_1_3() -> void:
+	SaveStore.new(SAVE_PATH).write(3, 0, true)
+	make_flow(true)
+	await wait_frames(1)
+	flow.get_screen().emit_signal(&"continue_pressed")
+	assert_true(await wait_until(_in_level))
+	assert_eq(flow.get_session().arriving.size(), 0, "1-4 的鬥牛犬一開始就在場上")
+	await wait_frames(1)
+	assert_eq(get_tree().get_node_count_in_group(&"companion"), 1)

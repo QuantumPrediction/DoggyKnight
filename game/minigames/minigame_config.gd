@@ -20,3 +20,7 @@ extends Resource
 @export var resume_on_foreground: bool = false
 ## 時間剩下多少秒時,計時條開始閃爍。
 @export var time_warning_sec: float = 3.0
+## 評價畫面每顆星星亮起的間隔(秒)。
+@export var results_star_interval_sec: float = 0.35
+## 星星亮起時的閃光(DEV_PLAN 4.10 的一次性粒子,例如 star_burst)。留空 = 不放。
+@export var star_fx: PackedScene

@@ -150,7 +150,7 @@ func test_finish_applies_rewards_and_emits() -> void:
 	_game.pulled_px = 245.0 * (_game.config as ScrollMinigameConfig).px_per_score
 	_game.step(_game.config.duration_sec + 0.1)
 	assert_eq(_game.score, 245)
-	assert_eq(_game.grade, 3, "245 ≥ 240 是 3 級")
+	assert_eq(_game.grade, 3, "245 ≥ 230 是 3 級")
 	assert_eq(finished.count, 1)
 	assert_eq(finished.last_args(), [&"scroll", 245, 3])
 	assert_eq(local.count, 1)
@@ -189,3 +189,106 @@ func test_swipe_zone_avoids_bottom_gesture_area() -> void:
 	drag.relative = Vector2(0, 20)
 	_game._unhandled_input(drag)
 	assert_almost_eq(_game.pulled_px, 0.0, 0.0001, "從最底邊開始的手勢不算")
+
+
+# --- DP2:完美停住、震動、評價星星 ---
+
+func _pull_until_ink_stop() -> void:
+	var guard := 0
+	while _game.ink_state == ScrollMinigame.Ink.NONE and guard < 500:
+		guard += 1
+		_game.simulate_swipe(40.0)
+
+
+func test_perfect_stop_when_player_stops_at_once() -> void:
+	var cfg := _game.config as ScrollMinigameConfig
+	Haptics.reset_for_tests()
+	_start_playing()
+	_pull_until_ink_stop()
+	var length_score := floori(_game.pulled_px / cfg.px_per_score)
+	_game.step(cfg.ink_still_sec + 0.01)
+	assert_eq(_game.ink_state, ScrollMinigame.Ink.PASSING)
+	assert_eq(_game.perfects, 1, "墨水漬一到就停手 = 完美")
+	assert_eq(_game.goods, 0)
+	assert_eq(_game._compute_score(), length_score + cfg.perfect_bonus_score, "完美加分")
+	assert_eq(Haptics.last_kind, &"light", "完美時輕震")
+
+
+func test_late_stop_is_good_not_perfect() -> void:
+	var cfg := _game.config as ScrollMinigameConfig
+	_start_playing()
+	_game.simulate_touch_down()
+	var guard := 0
+	while _game.ink_state == ScrollMinigame.Ink.NONE and guard < 2000:
+		guard += 1
+		_game.pull(4.0)
+	assert_eq(_game.ink_state, ScrollMinigame.Ink.STOP)
+	# 同一個手勢繼續滑(不罰),超過完美的時限才停
+	var keep := cfg.perfect_window_sec + 0.15
+	var t := 0.0
+	while t < keep:
+		_game.pull(4.0)
+		_game.step(0.05)
+		t += 0.05
+	assert_eq(_game.mistakes, 0, "同一個手勢不罰")
+	_game.step(cfg.ink_still_sec + 0.01)
+	assert_eq(_game.ink_state, ScrollMinigame.Ink.PASSING)
+	assert_eq(_game.perfects, 0, "太慢停手不算完美")
+	assert_eq(_game.goods, 1, "但算「好」")
+
+
+func test_mistake_on_ink_is_neither_perfect_nor_good() -> void:
+	var cfg := _game.config as ScrollMinigameConfig
+	_start_playing()
+	_pull_until_ink_stop()
+	_game.simulate_swipe(40.0)
+	assert_eq(_game.mistakes, 1)
+	_game.step(cfg.ink_still_sec + 0.01)
+	assert_eq(_game.ink_state, ScrollMinigame.Ink.PASSING)
+	assert_eq(_game.perfects, 0)
+	assert_eq(_game.goods, 0)
+
+
+func test_perfect_window_boundary() -> void:
+	var cfg := _game.config as ScrollMinigameConfig
+	assert_true(_game.is_perfect_stop(cfg.ink_still_sec), "剛好停夠就完美")
+	assert_true(_game.is_perfect_stop(cfg.ink_still_sec + cfg.perfect_window_sec), "時限內")
+	assert_false(_game.is_perfect_stop(cfg.ink_still_sec + cfg.perfect_window_sec + 0.02), "超過時限")
+
+
+func test_time_up_vibrates_medium() -> void:
+	Haptics.reset_for_tests()
+	_start_playing()
+	_game.step(_game.config.duration_sec + 0.1)
+	assert_eq(_game.state, MinigameBase.State.ENDING)
+	assert_eq(Haptics.last_kind, &"medium", "時間到震一下")
+
+
+func test_results_stars_light_up_one_by_one() -> void:
+	_start_playing()
+	_game.pulled_px = 999.0 * (_game.config as ScrollMinigameConfig).px_per_score
+	_game.step(_game.config.duration_sec + 0.1)
+	_game.step(_game.config.results_delay_sec + 0.01)
+	assert_eq(_game.state, MinigameBase.State.RESULTS)
+	assert_eq(_game.grade, 3)
+	var interval := _game.config.results_star_interval_sec
+	assert_eq(_game._stars_lit, 0, "一開始沒有亮")
+	_game.step(interval + 0.01)
+	assert_eq(_game._stars_lit, 1, "第一顆")
+	_game.step(interval)
+	assert_eq(_game._stars_lit, 2, "第二顆")
+	_game.step(interval)
+	assert_eq(_game._stars_lit, 3, "第三顆")
+	_game.step(interval * 3.0)
+	assert_eq(_game._stars_lit, 3, "最多是評價的星數")
+	assert_true(_game.config.results_min_sec >= interval * 3.0, "星星亮完之前不能跳過")
+
+
+func test_go_text_after_countdown() -> void:
+	_game.start()
+	_game.step(_game.config.countdown_sec + 0.01)
+	assert_eq(_game.state, MinigameBase.State.PLAYING)
+	var go := _game.find_child("Go", true, false) as Label
+	assert_not_null(go)
+	assert_true(go.visible, "開始時彈出「拉!」")
+	assert_eq(go.text, tr("MINIGAME_GO"))

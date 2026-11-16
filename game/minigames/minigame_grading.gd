@@ -12,7 +12,7 @@ const SATISFACTION_MIN: int = 0
 const SATISFACTION_MAX: int = 100
 
 ## 評價 1、2、3 各自需要的最低分數(由小到大)。
-@export var grade_thresholds: Array[int] = [80, 160, 240]
+@export var grade_thresholds: Array[int] = [70, 150, 230]
 ## 評價 0 至 3 的活力回復比例。
 @export var vigor_restore_ratio: Array[float] = [0.25, 0.5, 0.75, 1.0]
 ## 評價 0 至 3 增加的滿意度。

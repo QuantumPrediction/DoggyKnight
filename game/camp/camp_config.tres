@@ -2,7 +2,10 @@
 
 [ext_resource type="Script" path="res://game/camp/camp_config.gd" id="1_config"]
 [ext_resource type="PackedScene" path="res://game/minigames/scroll/scroll_minigame.tscn" id="2_minigame"]
-[ext_resource type="SpriteFrames" path="res://assets/sprites/goldie/goldie_frames.tres" id="3_goldie"]
+[ext_resource type="SpriteFrames" path="res://game/camp/art/camp_goldie_frames.tres" id="3_goldie"]
+[ext_resource type="SpriteFrames" path="res://game/camp/art/camp_goldie_tail_frames.tres" id="4_tail"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/bulldog/bulldog_frames.tres" id="5_bulldog"]
+[ext_resource type="PackedScene" path="res://assets/fx/particles/heart.tscn" id="6_heart"]
 
 [resource]
 script = ExtResource("1_config")
@@ -10,13 +13,42 @@ canvas_layer = 15
 minigame_scene = ExtResource("2_minigame")
 minigame_plays_per_visit = 1
 toast_sec = 1.6
+music_track = &"camp"
+fade_sec = 0.3
+pet_satisfaction_gain = 2
+pet_rewards_per_visit = 5
+pet_cooldown_sec = 0.3
+pet_react_sec = 1.1
+pet_hint_delay_sec = 1.5
+pet_touch_margin = 6.0
+heart_particles = ExtResource("6_heart")
 button_size = Vector2(132, 26)
 button_gap = 6
 menu_bottom_margin = 20.0
-title_font_size = 14
-button_font_size = 11
-small_font_size = 9
+title_font_size = 24
+button_font_size = 12
+small_font_size = 12
 goldie_frames = ExtResource("3_goldie")
-goldie_animation = &"sleep"
+goldie_animation = &"rest"
+goldie_happy_animation = &"happy"
+goldie_blink_animation = &"blink"
+goldie_flip = true
 goldie_scale = 2.0
-tail_wags_per_sec = 2.5
+tail_frames = ExtResource("4_tail")
+tail_offset = Vector2(-11, 4)
+tail_wags_per_sec = 1.2
+pet_wag_mult = 3.0
+blink_every_min = 2.5
+blink_every_max = 5.0
+bulldog_from_level_index = 2
+bulldog_frames = ExtResource("5_bulldog")
+bulldog_animation = &"idle"
+bulldog_scale = 2.0
+bulldog_bark_sec = 0.9
+ember_amount = 10
+smoke_amount = 4
+fire_flicker = 0.12
+firefly_count = 7
+shooting_star_every_min = 3.0
+shooting_star_every_max = 7.0
+star_count = 34

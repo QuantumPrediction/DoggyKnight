@@ -37,7 +37,7 @@ ads.show_rewarded(&"continue")
 2. **Apple 的追蹤授權(ATT)**:廣告 SDK 若使用 IDFA(廣告識別碼)做個人化廣告,必須先彈出系統的「允許追蹤」視窗,
    並在 iOS 匯出設定填寫追蹤用途說明;SDK 的隱私清單(privacy manifest)也要一併放進 App。
 3. **Android 的廣告 ID 權限**:使用廣告 ID 要加 `com.google.android.gms.permission.AD_ID` 權限,並在 Play Console 申報。
-   目前 `export_presets.cfg` 沒有任何權限。
+   目前 `export_presets.cfg` 只有震動權限(VIBRATE,不涉及任何資料),沒有 AD_ID 也沒有 INTERNET。
 4. **兒童與家庭政策**:金毛很可愛,很可能吸引兒童。如果目標年齡包含 13 歲以下:
    - Google Play「家庭政策」:只能使用通過 Google「家庭自我認證」的廣告 SDK;不可傳送兒童的廣告 ID;廣告內容要適合兒童。
    - Apple「兒童類別」:基本上不可以有第三方分析與第三方廣告(除非符合特定條件),不可追蹤。

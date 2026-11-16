@@ -13,7 +13,14 @@ const STAR_OFF := Color("4a4560")
 const STAR_EDGE := Color("8a5a1a")
 
 ## 沒有 C 線主題時使用的字型大小(邏輯像素)。
-const FALLBACK_FONT_SIZE: int = 10
+const FALLBACK_FONT_SIZE: int = 12
+## C 線的像素字(Cubic 11)在 12 的整數倍最清楚:一般 12、大字 24、特大 36。
+const FONT_S: int = 12
+const FONT_L: int = 24
+const FONT_XL: int = 36
+
+const HEART := Color("ff6b8a")
+const HEART_EDGE := Color("a8304a")
 
 
 ## 有 C 線的主題就套用並傳回 true;沒有就傳回 false(呼叫端自行設定字型大小)。
@@ -39,10 +46,25 @@ static func make_label(text: String, font_size: int, color: Color = WHITE) -> La
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.add_theme_color_override(&"font_color", color)
 	label.add_theme_color_override(&"font_outline_color", INK)
-	label.add_theme_constant_override(&"outline_size", 2)
-	if not has_shared_theme():
-		label.add_theme_font_size_override(&"font_size", font_size)
+	label.add_theme_constant_override(&"outline_size", 2 if font_size <= FONT_S else 4)
+	label.add_theme_font_size_override(&"font_size", crisp_size(font_size))
 	return label
+
+
+## 大標題(C 線主題的 LabelTitle:金色、粗描邊、影子)。
+static func make_title(text: String) -> Label:
+	var label := make_label(text, FONT_L, Color("ffe066"))
+	if has_shared_theme():
+		label.theme_type_variation = &"LabelTitle"
+		label.remove_theme_color_override(&"font_color")
+		label.remove_theme_color_override(&"font_outline_color")
+		label.remove_theme_constant_override(&"outline_size")
+	return label
+
+
+## 把字型大小調到 12 的整數倍(像素字才不會糊)。
+static func crisp_size(font_size: int) -> int:
+	return maxi(FONT_S, roundi(font_size / float(FONT_S)) * FONT_S)
 
 
 ## 像素風按鈕。有共用主題時只設定最小尺寸,外觀交給主題。
@@ -123,6 +145,25 @@ static func draw_star(ci: CanvasItem, center: Vector2, radius: float, filled: bo
 		outline.append(center + Vector2(cos(angle), sin(angle)) * r)
 	ci.draw_colored_polygon(outline, STAR_EDGE if filled else INK)
 	ci.draw_colored_polygon(points, STAR_ON if filled else STAR_OFF)
+
+
+## 像素愛心(7×6 格,scale 整數倍)。
+static func draw_heart(ci: CanvasItem, center: Vector2, scale: float = 1.0, alpha: float = 1.0, color: Color = HEART) -> void:
+	const ROWS: Array[String] = [".xx.xx.", "xooxoox", "xooooox", ".xooox.", "..xox..", "...x..."]
+	var fill := Color(color, alpha)
+	var edge := Color(HEART_EDGE, alpha)
+	var shine := Color(1, 1, 1, alpha * 0.85)
+	var origin := (center - Vector2(3.5, 3.0) * scale).round()
+	for y in ROWS.size():
+		var row: String = ROWS[y]
+		for x in row.length():
+			var ch := row[x]
+			if ch == ".":
+				continue
+			var c := edge if ch == "x" else fill
+			if y == 1 and x == 1:
+				c = shine
+			ci.draw_rect(Rect2(origin + Vector2(x, y) * scale, Vector2(scale, scale)), c)
 
 
 ## 暫停圖示(兩條直線)。

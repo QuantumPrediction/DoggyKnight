@@ -9,6 +9,10 @@ extends MinigameBase
 ##
 ## 不需要文字:倒數時有手勢動畫與向下的箭頭;墨水漬靠近時金毛頭上出現「!」,
 ## 到達時出現紅色的「停」手掌。
+##
+## 手感(DEV_PLAN 15 DP2):拉得快時紙上與兩旁有速度線;墨水漬一到就停手(perfect_window_sec 之內、沒有犯錯)
+## 是「完美!」:perfect 音效、閃光、手機輕震、加 perfect_bonus_score 分;慢一點停手是「好!」。
+## 時間到時金毛被卷軸包成一捲(只露出頭,綁上紅色蝴蝶結)。
 
 enum Ink { NONE, STOP, PASSING }
 
@@ -21,6 +25,9 @@ var next_blot: int = 0
 var blots_passed: int = 0
 var mistakes: int = 0
 var swipe_count: int = 0
+## 「完美!」與「好!」的次數。
+var perfects: int = 0
+var goods: int = 0
 
 var _cfg: ScrollMinigameConfig
 var _rng := RandomNumberGenerator.new()
@@ -45,6 +52,12 @@ var _ink_face_time: float = 0.0
 var _hop_time: float = 0.0
 var _floaters: Array[Dictionary] = []
 var _anim_time: float = 0.0
+## 這次停住經過的秒數、這次停住有沒有犯錯。
+var _stop_elapsed: float = 0.0
+var _stop_mistake: bool = false
+## 大字彈出(「完美!」「好!」):{"text": String, "age": float, "big": bool}
+var _popups: Array[Dictionary] = []
+var _score_bump: float = 0.0
 
 # 版面(畫面的邏輯像素),由 _on_layout 計算。
 var _roll_y: float = 30.0
@@ -79,7 +92,7 @@ func _on_build() -> void:
 	_front.draw.connect(_draw_front)
 	add_child(_front)
 
-	_score_label = MinigameUi.make_label("", 10)
+	_score_label = MinigameUi.make_label("", MinigameUi.FONT_S)
 	_score_label.name = "Score"
 	_score_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	add_child(_score_label)
@@ -114,6 +127,10 @@ func _on_reset() -> void:
 	_idle_time = 0.0
 	_ink_face_time = 0.0
 	_hop_time = 0.0
+	perfects = 0
+	goods = 0
+	_popups.clear()
+	_score_bump = 0.0
 	_floaters.clear()
 	_goldie.rotation = 0.0
 	_play_goldie(_cfg.goldie_animation)
@@ -150,6 +167,7 @@ func _on_play_process(delta: float) -> void:
 	match ink_state:
 		Ink.STOP:
 			_still_time += delta
+			_stop_elapsed += delta
 			if _still_time >= _cfg.ink_still_sec:
 				_start_ink_pass()
 		Ink.PASSING:
@@ -166,7 +184,9 @@ func _on_play_process(delta: float) -> void:
 			pass
 	_ink_face_time = maxf(0.0, _ink_face_time - delta)
 	_hop_time = maxf(0.0, _hop_time - delta)
+	_score_bump = maxf(0.0, _score_bump - delta)
 	_update_floaters(delta)
+	_update_popups(delta)
 	_animate_goldie()
 	_update_score_label()
 	_front.queue_redraw()
@@ -223,6 +243,19 @@ func simulate_swipe(distance: float, steps: int = 6) -> void:
 		swipe_count += 1
 
 
+## 模擬手指按下(開始一個新手勢)。和 pull()、simulate_touch_up() 一起用來逐格模擬玩家(測試與平衡用)。
+func simulate_touch_down() -> void:
+	if state == State.PLAYING:
+		_begin_gesture()
+
+
+## 模擬手指放開。
+func simulate_touch_up() -> void:
+	if _swipe_distance >= 12.0:
+		swipe_count += 1
+	_swipe_distance = 0.0
+
+
 ## 下一個墨水漬到達咬住位置時,pulled_px 的值。
 func next_ink_stop_at() -> float:
 	if next_blot >= blots.size():
@@ -230,8 +263,24 @@ func next_ink_stop_at() -> float:
 	return blots[next_blot] - _stop_margin()
 
 
+## 分數 = 拉出的長度(公分)+ 每次「完美!」的加分。
 func _compute_score() -> int:
-	return floori(pulled_px / maxf(_cfg.px_per_score, 0.001))
+	return floori(pulled_px / maxf(_cfg.px_per_score, 0.001)) + perfects * _cfg.perfect_bonus_score
+
+
+func _results_top_min() -> float:
+	return _goldie_pos.y + 14.0 * _cfg.goldie_scale
+
+
+func _go_text() -> String:
+	return tr("MINIGAME_GO")
+
+
+func _result_extra_lines() -> PackedStringArray:
+	var lines := PackedStringArray()
+	if perfects > 0:
+		lines.append(tr("MINIGAME_PERFECT_COUNT") % [perfects, perfects * _cfg.perfect_bonus_score])
+	return lines
 
 
 func _countdown_center() -> Vector2:
@@ -252,6 +301,7 @@ func _on_paused(paused: bool) -> void:
 
 func _on_play_ended(_final_score: int, _final_grade: int) -> void:
 	_touch_index = -1
+	_popups.clear()
 	ink_state = Ink.NONE
 	_anim_time = 0.0
 	_play_goldie(_cfg.goldie_tangled_animation)
@@ -264,7 +314,7 @@ func _on_ending_process(delta: float) -> void:
 	_goldie.rotation = sin(_anim_time * 18.0) * 0.12 * maxf(0.0, 1.0 - _anim_time)
 	_goldie.position = _goldie_pos + Vector2(0, -absf(sin(_anim_time * 9.0)) * 2.0)
 	_update_floaters(delta)
-	if fmod(_anim_time, 0.35) < delta:
+	if _anim_time > 0.5 and fmod(_anim_time, 0.35) < delta:
 		_add_floater("♥", _goldie_pos + Vector2(_rng.randf_range(-10, 10), -24), Color("ff8fb0"))
 	_front.queue_redraw()
 
@@ -307,6 +357,8 @@ func _enter_ink_stop() -> void:
 	ink_state = Ink.STOP
 	_still_time = 0.0
 	_stop_drag = 0.0
+	_stop_elapsed = 0.0
+	_stop_mistake = false
 	# 把墨水漬拉到咬住位置的那一下滑動不算犯錯(玩家來不及反應)。
 	_exempt_gesture = _gesture
 
@@ -318,10 +370,45 @@ func _start_ink_pass() -> void:
 	_pass_to = blots[next_blot] + _stop_margin() + 1.0
 	_hop_time = 0.35
 	Sfx.play(&"scroll")
+	if _stop_mistake:
+		return
+	if is_perfect_stop(_stop_elapsed):
+		perfects += 1
+		_score_bump = 0.3
+		_popups.append({"text": tr("MINIGAME_PERFECT"), "age": 0.0, "big": true})
+		Sfx.play(&"perfect")
+		Haptics.play(&"light")
+		_spawn_fx(_cfg.perfect_fx, Vector2(_paper_rect.get_center().x, _bite_y))
+		_add_floater("+%d" % _cfg.perfect_bonus_score, _score_label.position + Vector2(_score_label.size.x - 18.0, 24.0), Color("ffe066"))
+	else:
+		goods += 1
+		_popups.append({"text": tr("MINIGAME_GOOD"), "age": 0.0, "big": false})
+
+
+## 停住了 stop_elapsed 秒才滑過去,算不算「完美」(還要沒有犯錯)。
+## 停手最少要 ink_still_sec;多出來的時間(玩家還在滑)不超過 perfect_window_sec 就是完美。
+func is_perfect_stop(stop_elapsed: float) -> bool:
+	return stop_elapsed - _cfg.ink_still_sec <= _cfg.perfect_window_sec + 0.0001
+
+
+func _spawn_fx(scene: PackedScene, at: Vector2) -> void:
+	if scene == null:
+		return
+	var fx := scene.instantiate()
+	if fx is Node2D:
+		(fx as Node2D).position = at.round()
+	_front.add_child(fx)
+
+
+func _update_popups(delta: float) -> void:
+	for p: Dictionary in _popups:
+		p["age"] = float(p["age"]) + delta
+	_popups = _popups.filter(func(p: Dictionary) -> bool: return float(p["age"]) < 0.8)
 
 
 func _ink_mistake() -> void:
 	mistakes += 1
+	_stop_mistake = true
 	add_time(-_cfg.ink_penalty_sec)
 	_ink_face_time = _cfg.ink_face_sec
 	_still_time = 0.0
@@ -354,6 +441,10 @@ func _animate_goldie() -> void:
 func _update_score_label() -> void:
 	if _score_label != null:
 		_score_label.text = tr("MINIGAME_SCROLL_LENGTH") % _compute_score()
+		_score_label.pivot_offset = Vector2(_score_label.size.x, _score_label.size.y * 0.5)
+		var bump := _score_bump / 0.3
+		_score_label.scale = Vector2.ONE * (1.0 + 0.5 * bump * bump)
+		_score_label.add_theme_color_override(&"font_color", MinigameUi.WHITE.lerp(Color("ffe066"), bump))
 
 
 func _add_floater(text: String, at: Vector2, color: Color) -> void:
@@ -394,9 +485,35 @@ func _draw() -> void:
 		draw_rect(Rect2(star.round(), Vector2.ONE), Color(1, 1, 0.85, 0.35 + 0.5 * twinkle))
 	var table_top := _roll_y + 12.0
 	draw_rect(Rect2(0, table_top, screen.x, screen.y - table_top), _cfg.table_color)
+	# 木板:深淺交錯、接縫、木紋
 	for i in int(screen.y / 18.0) + 1:
-		draw_rect(Rect2(0, table_top + i * 18.0, screen.x, 1), _cfg.table_edge_color)
+		var y := table_top + i * 18.0
+		if i % 2 == 1:
+			draw_rect(Rect2(0, y, screen.x, 18), _cfg.table_color.lightened(0.04))
+		draw_rect(Rect2(0, y, screen.x, 1), _cfg.table_edge_color)
+		var seam := fmod(i * 67.0 + 23.0, screen.x)
+		draw_rect(Rect2(seam, y + 1, 1, 17), _cfg.table_edge_color)
+		draw_rect(Rect2(fmod(seam + 40.0, screen.x), y + 7, 14, 1), _cfg.table_color.darkened(0.08))
 	draw_rect(Rect2(0, table_top, screen.x, 2), _cfg.table_edge_color.darkened(0.2))
+	# 桌上的蠟燭(右上)與暖光
+	var candle := Vector2(roundf(_paper_rect.end.x + 26.0), table_top + 30.0)
+	if candle.x < screen.x - 6.0:
+		var flick := 1.0 + 0.08 * sin(_anim_time * 9.0) + 0.05 * sin(_anim_time * 23.0)
+		for r in [34.0, 24.0, 14.0]:
+			draw_circle(candle + Vector2(0, -8), roundf(r * flick), Color(1.0, 0.7, 0.3, 0.06))
+		draw_rect(Rect2(candle + Vector2(-5, 4), Vector2(10, 3)), _cfg.roll_knob_color.darkened(0.3))
+		draw_rect(Rect2(candle + Vector2(-2, -6), Vector2(5, 10)), MinigameUi.INK)
+		draw_rect(Rect2(candle + Vector2(-1, -5), Vector2(3, 9)), Color("fff1c9"))
+		var lean := 1.0 if sin(_anim_time * 6.0) > 0.5 else 0.0
+		draw_rect(Rect2(candle + Vector2(lean, -10), Vector2(1, 3)), Color("ffe066"))
+		draw_rect(Rect2(candle + Vector2(0, -8), Vector2(1, 2)), Color("ff8a3d"))
+	# 四周暗一點(像燭光照著桌子中間)
+	for k in 4:
+		var a := 0.07 * (4 - k)
+		var w := 3.0
+		draw_rect(Rect2(k * w, table_top, w, screen.y - table_top), Color(0, 0, 0, a))
+		draw_rect(Rect2(screen.x - (k + 1) * w, table_top, w, screen.y - table_top), Color(0, 0, 0, a))
+		draw_rect(Rect2(0, screen.y - (k + 1) * w, screen.x, w), Color(0, 0, 0, a))
 
 	# 滑動範圍(淡淡的框)
 	var zone := _swipe_zone
@@ -496,10 +613,13 @@ func _draw_front() -> void:
 		for i in 4:
 			var spot := head + Vector2(-6 + i * 4, -2 + (i % 2) * 4)
 			_front.draw_circle(spot.round(), 1.5 + (i % 2), _cfg.ink_color)
+	if state == State.PLAYING:
+		_draw_speed_lines()
 	if state == State.ENDING or state == State.RESULTS:
 		_draw_tangle()
 	if _show_hint():
 		_draw_hint()
+	_draw_popups()
 	for f: Dictionary in _floaters:
 		var alpha := 1.0 - float(f["age"]) / 0.9
 		var font := ThemeDB.fallback_font
@@ -510,25 +630,95 @@ func _draw_front() -> void:
 		_front.draw_string(font, pos, text, HORIZONTAL_ALIGNMENT_LEFT, -1, 10, Color(col, alpha))
 
 
-## 結束:卷軸一圈圈纏住金毛。
+## 結束:卷軸一圈圈纏住金毛,最後包成一捲,只露出頭,綁上紅色蝴蝶結。
 func _draw_tangle() -> void:
-	var t := clampf(_anim_time / maxf(config.results_delay_sec, 0.1), 0.0, 1.0) if state == State.ENDING else 1.0
+	var t := clampf(_anim_time / 0.6, 0.0, 1.0) if state == State.ENDING else 1.0
 	var center := _goldie.position
-	var half := 12.0 * _cfg.goldie_scale
-	var bands := [
-		Vector2(-6, 0.30), Vector2(4, -0.25), Vector2(10, 0.15), Vector2(-12, -0.1),
-	]
-	var count := ceili(t * bands.size())
-	for i in count:
-		var b: Vector2 = bands[i]
-		var xf := Transform2D(b.y + sin(_anim_time * 6.0 + i) * 0.03, center + Vector2(0, b.x))
-		_front.draw_set_transform_matrix(xf)
-		_front.draw_rect(Rect2(-half - 3, -3, half * 2 + 6, 6), _cfg.paper_color)
-		_front.draw_rect(Rect2(-half - 3, -3, half * 2 + 6, 1), _cfg.paper_edge_color)
-		_front.draw_rect(Rect2(-half - 3, 2, half * 2 + 6, 1), _cfg.paper_edge_color)
-	_front.draw_set_transform_matrix(Transform2D.IDENTITY)
+	var s := _cfg.goldie_scale
 	# 卷軸的尾巴從金毛身上垂到紙上
-	_front.draw_line(center + Vector2(half, 4), Vector2(_paper_rect.get_center().x, _bite_y + 20), _cfg.paper_color, 4.0)
+	_front.draw_line(center + Vector2(9, 6) * s, Vector2(_paper_rect.get_center().x, _bite_y + 20), _cfg.paper_edge_color, 6.0)
+	_front.draw_line(center + Vector2(9, 6) * s, Vector2(_paper_rect.get_center().x, _bite_y + 20), _cfg.paper_color, 4.0)
+	_front.draw_set_transform(center, _goldie.rotation)
+	if t < 1.0:
+		# 一圈一圈纏上去
+		var bands: Array[Vector2] = [Vector2(8, 0.25), Vector2(2, -0.2), Vector2(-3, 0.12), Vector2(5, -0.08)]
+		var count := ceili(t * bands.size())
+		for i in count:
+			var b := bands[i]
+			_front.draw_set_transform(center, _goldie.rotation + b.y)
+			_front.draw_rect(Rect2(Vector2(-11 * s, b.x * s - 3), Vector2(22 * s, 6)), _cfg.paper_color)
+			_front.draw_rect(Rect2(Vector2(-11 * s, b.x * s - 3), Vector2(22 * s, 1)), _cfg.paper_edge_color)
+			_front.draw_rect(Rect2(Vector2(-11 * s, b.x * s + 2), Vector2(22 * s, 1)), _cfg.paper_edge_color)
+		_front.draw_set_transform_matrix(Transform2D.IDENTITY)
+		return
+	# 包好了:一捲紙(圓角),紙上有捲起來的紋路
+	var body := Rect2(Vector2(-11, -1) * s, Vector2(22, 12) * s)
+	var ink := MinigameUi.INK
+	_front.draw_rect(body.grow(1), ink)
+	_front.draw_circle(Vector2(body.position.x, body.get_center().y), body.size.y * 0.5 + 1, ink)
+	_front.draw_circle(Vector2(body.end.x, body.get_center().y), body.size.y * 0.5 + 1, ink)
+	_front.draw_rect(body, _cfg.paper_color)
+	_front.draw_circle(Vector2(body.position.x, body.get_center().y), body.size.y * 0.5, _cfg.paper_color)
+	_front.draw_circle(Vector2(body.end.x, body.get_center().y), body.size.y * 0.5, _cfg.paper_color.darkened(0.06))
+	# 捲軸端面的螺旋
+	var end_c := Vector2(body.end.x, body.get_center().y)
+	_front.draw_arc(end_c, body.size.y * 0.32, 0.0, TAU * 0.8, 16, _cfg.paper_line_color, 2.0)
+	_front.draw_arc(end_c, body.size.y * 0.15, PI, TAU * 1.2, 12, _cfg.paper_line_color, 2.0)
+	for i in 3:
+		var x := body.position.x + 8.0 + i * 10.0
+		_front.draw_rect(Rect2(x, body.position.y + 3, 1, body.size.y - 6), _cfg.paper_line_color)
+	_front.draw_rect(Rect2(body.position + Vector2(-2, 1), Vector2(body.size.x + 4, 2)), _cfg.paper_edge_color)
+	_front.draw_rect(Rect2(Vector2(body.position.x - 2, body.end.y - 3), Vector2(body.size.x + 4, 2)), _cfg.paper_edge_color)
+	# 紅色蝴蝶結(彈出來)
+	var pop := 1.0 + 0.4 * maxf(0.0, 1.0 - (_anim_time - 0.6) / 0.25) if state == State.ENDING else 1.0
+	var knot := Vector2(body.end.x - 12.0, body.position.y + 2)
+	var bow := 5.0 * pop
+	_front.draw_colored_polygon(PackedVector2Array([knot, knot + Vector2(-bow * 1.6, -bow), knot + Vector2(-bow * 1.6, bow)]), Color("e8434f"))
+	_front.draw_colored_polygon(PackedVector2Array([knot, knot + Vector2(bow * 1.6, -bow), knot + Vector2(bow * 1.6, bow)]), Color("e8434f"))
+	_front.draw_rect(Rect2(knot - Vector2(2, 2), Vector2(4, 4)), Color("a8304a"))
+	_front.draw_rect(Rect2(knot + Vector2(-bow * 1.3, -bow * 0.5), Vector2(2, 2)), Color(1, 1, 1, 0.6))
+	_front.draw_set_transform_matrix(Transform2D.IDENTITY)
+
+
+## 拉得快時:紙上與兩旁往下飛的速度線。
+func _draw_speed_lines() -> void:
+	var span := _cfg.speed_lines_full_speed - _cfg.speed_lines_min_speed
+	var amount := clampf((_pull_speed - _cfg.speed_lines_min_speed) / maxf(span, 1.0), 0.0, 1.0)
+	if amount <= 0.0 or ink_state != Ink.NONE:
+		return
+	var top := _bite_y + 6.0
+	var height := maxf(40.0, _swipe_zone.end.y - top)
+	for side in 2:
+		for i in _cfg.speed_line_count:
+			var k := float(i * 7 + side * 3)
+			var x := _paper_rect.position.x - 8.0 - fmod(k * 5.0, 14.0) if side == 0 else _paper_rect.end.x + 6.0 + fmod(k * 5.0, 14.0)
+			var y := top + fmod(k * 37.0 + _anim_time * (180.0 + 60.0 * amount), height)
+			var length := roundf(6.0 + 14.0 * amount)
+			_front.draw_rect(Rect2(roundf(x), roundf(y), 1, length), Color(1, 1, 1, 0.15 + 0.35 * amount))
+	# 紙上的淡線(像紙在飛快地動)
+	for i in 3:
+		var y := top + fmod(i * 53.0 + _anim_time * 260.0, height)
+		_front.draw_rect(Rect2(_paper_rect.position.x + 4.0, roundf(y), _paper_rect.size.x - 8.0, 1), Color(1, 1, 1, 0.25 * amount))
+
+
+## 「完美!」「好!」的大字:彈出來、往上飄、淡出。
+func _draw_popups() -> void:
+	var font := _score_label.get_theme_font(&"font")
+	for p: Dictionary in _popups:
+		var age := float(p["age"])
+		var big: bool = p["big"]
+		var font_size := MinigameUi.FONT_L if big else MinigameUi.FONT_S
+		var pop := clampf(age / 0.12, 0.0, 1.0)
+		var alpha := clampf((0.8 - age) / 0.25, 0.0, 1.0)
+		var text: String = p["text"]
+		var width := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+		var at := Vector2(_paper_rect.end.x + 4.0, _bite_y + 8.0 - age * 18.0)
+		at.x = minf(at.x, SafeArea.get_safe_rect().end.x - width - 2.0)
+		var color := Color("ffe066") if big else Color("bfe36d")
+		_front.draw_set_transform(at.round() + Vector2(width * 0.5, -font_size * 0.4), 0.0, Vector2.ONE * (0.6 + 0.4 * pop))
+		_front.draw_string_outline(font, Vector2(-width * 0.5, font_size * 0.4), text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, 6 if big else 4, Color(MinigameUi.INK, alpha))
+		_front.draw_string(font, Vector2(-width * 0.5, font_size * 0.4), text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color(color, alpha))
+		_front.draw_set_transform_matrix(Transform2D.IDENTITY)
 
 
 ## 提示:一隻手在下半部向下滑,下面有閃動的箭頭。
