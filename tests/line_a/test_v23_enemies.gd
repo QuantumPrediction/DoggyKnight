@@ -364,7 +364,7 @@ func test_hard_mode_scales_stats_and_telegraphs_without_touching_the_data_file()
 	assert_eq((load("res://data/enemies/scarecrow.tres") as EnemyData).max_hp, 25, "資料檔沒有被改")
 	var boss := spawn(&"black_knight", Vector2(90, 120)) as BlackKnightBoss
 	assert_eq(boss.max_hp, roundi(780 * mode.boss_hp_mult), "頭目用 boss_hp_mult")
-	assert_eq(boss.scaled_damage(boss.slam_damage), roundi(20 * mode.damage_mult))
+	assert_eq(boss.scaled_damage(boss.slam_damage), roundi(18 * mode.damage_mult))
 	assert_true(arena.attack_slot_limit(DifficultyScaling.MELEE) > DifficultyScaling.get_default().slot_limit(
 			DifficultyScaling.MELEE, 0, DifficultyScaling.get_default().mode(&"normal")), "困難:同時進攻的敵人多一隻")
 

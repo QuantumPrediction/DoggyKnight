@@ -6,7 +6,7 @@
 script = ExtResource("1_data")
 id = &"sword_wave"
 fx = &"sword_wave"
-damage = 14
+damage = 12
 speed = 105.0
 max_range = 240.0
 hit_radius = 7.0

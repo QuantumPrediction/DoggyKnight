@@ -25,6 +25,7 @@ func _run() -> void:
 		elif arg == "--approx":
 			approx = true
 	GameState.difficulty = &"hard" if hard else &"normal"
+	GameState.chapter_cleared = hard        # 困難模式要先打完第一章才能選(B 線 BS4)
 	SaveStore.new(SAVE_PATH).delete()
 	flow = (load("res://game/flow/main.tscn") as PackedScene).instantiate() as FlowMain
 	flow.save_path = SAVE_PATH
