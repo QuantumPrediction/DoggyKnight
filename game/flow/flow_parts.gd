@@ -15,6 +15,9 @@ const RESULTS: String = "res://ui/screens/results.tscn"
 const FAILURE: String = "res://ui/screens/failure.tscn"
 const CREDITS: String = "res://ui/screens/credits.tscn"
 const CAMP: String = "res://game/camp/camp.tscn"
+## 可有可無的零件(DEV_PLAN 4.10):不存在時直接略過(正式流程不用替身)。
+const TRANSITION: String = "res://ui/transition/transition.tscn"
+const TUTORIAL: String = "res://ui/hints/tutorial.tscn"
 
 const STUB_DIR: String = "res://game/flow/stubs"
 
@@ -29,6 +32,8 @@ const STAND_INS: Dictionary = {
 	FAILURE: STUB_DIR + "/stub_failure.tscn",
 	CREDITS: STUB_DIR + "/stub_credits.tscn",
 	CAMP: STUB_DIR + "/stub_camp.tscn",
+	TRANSITION: STUB_DIR + "/stub_transition.tscn",
+	TUTORIAL: STUB_DIR + "/stub_tutorial.tscn",
 }
 
 
@@ -39,6 +44,14 @@ static func scene_for(path: String, force_stand_in: bool = false) -> PackedScene
 		if real != null:
 			return real
 	return try_load(STAND_INS.get(path, ""))
+
+
+## 可有可無的零件(轉場、教學提示):force_stand_in = true 時用替身;否則只用正式零件,
+## 不存在就傳回 null(呼叫的一方略過這個步驟)。
+static func optional_scene(path: String, force_stand_in: bool = false) -> PackedScene:
+	if force_stand_in:
+		return try_load(STAND_INS.get(path, ""))
+	return try_load(path)
 
 
 ## 正式零件是否存在(不載入替身)。
