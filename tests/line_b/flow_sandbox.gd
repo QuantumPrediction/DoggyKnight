@@ -10,6 +10,7 @@ extends Node
 ##     BG        模擬切到背景(暫停並存檔)  Back     模擬返回鍵
 ##     Down      金毛直接睡著(測試失敗)     Speed    遊戲速度 1 倍 / 4 倍
 ##     Notch     模擬瀏海                   Android  模擬 Android(標題按返回鍵會詢問離開)
+##     Reset     清除沙盒存檔(教學提示、最佳星數重新開始)
 ## 存檔寫在 user://flow_sandbox_save.json,不會蓋掉正式存檔。
 
 const MAIN_SCENE: String = "res://game/flow/main.tscn"
@@ -44,6 +45,9 @@ func _status_text() -> String:
 		text += "\nwave %d/%d  enemies %d  %.0fs" % [session.spawner.current_wave(), session.spawner.total_waves(),
 				session.spawner.enemies_remaining(), session.time_sec]
 	text += "\nsave: level %d  tricks %s" % [flow.get_reached_level(), ",".join(GameState.active_tricks)]
+	if session != null and session.level != null:
+		text += "\ndamage %d/%d  par %.0fs  best %s" % [session.damage_taken, session.level.damage_budget,
+				session.level.par_time, GameState.best_stars]
 	return text
 
 
@@ -89,6 +93,7 @@ func _build_debug_panel() -> void:
 		["BG", _background], ["Back", AppLifecycle.simulate_back],
 		["Down", _down], ["Speed", _toggle_speed],
 		["Notch", _toggle_notch], ["Android", _toggle_android],
+		["Reset", _reset_save],
 	]:
 		var button := Button.new()
 		button.text = item[0]
@@ -126,6 +131,12 @@ func _toggle_speed() -> void:
 
 func _toggle_notch() -> void:
 	SafeArea.simulate_notch = not SafeArea.simulate_notch
+
+
+func _reset_save() -> void:
+	SaveStore.new(SAVE_PATH).delete()
+	GameState.tutorial_done = false
+	GameState.best_stars = {}
 
 
 func _toggle_android() -> void:

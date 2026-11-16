@@ -133,6 +133,20 @@ func test_a_stuck_transition_never_blocks_the_flow() -> void:
 	assert_true(Time.get_ticks_msec() - t0 < 2000, "2 秒內回到戰鬥")
 
 
+func test_backgrounding_during_a_transition_pauses_the_new_level() -> void:
+	make_flow()
+	await wait_frames(1)
+	_install_fake_transition(false, 0.1)
+	flow.get_screen().emit_signal(&"new_game_pressed")
+	assert_eq(flow.state, FlowMain.State.SWITCHING)
+	AppLifecycle.simulate_background()
+	assert_true(save_file_exists(), "轉場中切到背景也立即存檔")
+	AppLifecycle.simulate_foreground()
+	assert_true(await wait_until(in_level, 3.0))
+	assert_true(flow.is_pause_open(), "回來時新的一關已暫停")
+	assert_true(get_tree().paused)
+
+
 func test_no_transition_scene_switches_directly() -> void:
 	assert_null(FlowParts.optional_scene("res://ui/does_not_exist.tscn"), "檔案不存在 → 不播轉場")
 	make_flow()

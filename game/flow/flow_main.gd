@@ -79,6 +79,7 @@ var _choice_open: bool = false
 var _switch_serial: int = 0
 var _switching: bool = false
 var _session_waiting: bool = false
+var _pause_when_ready: bool = false
 
 var _world: Node
 var _camp_holder: Node
@@ -559,6 +560,7 @@ func _go(step: Callable) -> void:
 	_switch_serial += 1
 	var serial := _switch_serial
 	_switching = true
+	_pause_when_ready = false
 	_set_state(State.SWITCHING)
 	var frame := Engine.get_process_frames()
 	await transition.cover()
@@ -573,6 +575,9 @@ func _go(step: Callable) -> void:
 	_switching = false
 	if _session_waiting:
 		_begin_level()
+	if _pause_when_ready:
+		_pause_when_ready = false      # 轉場中切到背景:回來時關卡已暫停
+		_open_pause()
 
 
 # --- 教學提示(BP4) ---
@@ -662,6 +667,8 @@ func _on_app_backgrounded() -> void:
 	save_now()
 	if state == State.LEVEL and not _choice_open:
 		_open_pause()
+	elif state == State.SWITCHING:
+		_pause_when_ready = true        # 轉場完成、進入關卡時立即暫停
 
 
 func _on_resume_requested() -> void:

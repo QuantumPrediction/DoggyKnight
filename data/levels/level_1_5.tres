@@ -99,5 +99,5 @@ waves = Array[ExtResource("2_wave")]([SubResource("wave1"), SubResource("wave2")
 is_boss = false
 companions = Array[StringName]([&"bulldog"])
 background = ExtResource("4_bg")
-par_time = 57.0
-damage_budget = 12
+par_time = 59.0
+damage_budget = 16

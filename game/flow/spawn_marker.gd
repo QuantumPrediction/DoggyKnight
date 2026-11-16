@@ -7,9 +7,10 @@ extends Node2D
 ## 填滿 = 即將發生)。用程式畫,像素不平滑;放在場地的地面層,不會蓋住金毛或攻擊預警。
 ## 由 WaveSpawner 建立與移除;會被遊戲暫停(跟隨場地)。
 
-const RADIUS: float = 7.0
-const RING_COLOR: Color = Color(1.0, 0.42, 0.3, 0.85)
-const FILL_COLOR: Color = Color(1.0, 0.42, 0.3, 0.45)
+const RADIUS: float = 8.0
+const RING_WIDTH: float = 2.0
+const RING_COLOR: Color = Color(1.0, 0.32, 0.24, 1.0)
+const FILL_COLOR: Color = Color(1.0, 0.32, 0.24, 0.5)
 
 ## 由出現到敵人冒出來的秒數。
 var duration: float = 0.9
@@ -37,9 +38,11 @@ func progress() -> float:
 
 func _draw() -> void:
 	var t := progress()
-	var pulse := 0.5 + 0.5 * sin(_elapsed * TAU * 4.0)
+	# 越接近出現,脈動越快、越亮(與 A 線的攻擊預警同一個語言)。
+	var pulse := 0.5 + 0.5 * sin(_elapsed * TAU * (3.0 + 5.0 * t))
 	var ring := RING_COLOR
-	ring.a *= 0.55 + 0.45 * pulse
-	draw_arc(Vector2.ZERO, RADIUS, 0.0, TAU, 20, ring, 1.0, false)
-	var inner := maxf(1.0, RADIUS * t)
-	draw_circle(Vector2.ZERO, inner, FILL_COLOR, true, -1.0, false)
+	ring.a = 0.6 + 0.4 * pulse
+	draw_arc(Vector2.ZERO, RADIUS, 0.0, TAU, 24, ring, RING_WIDTH, false)
+	var fill := FILL_COLOR
+	fill.a = 0.35 + 0.4 * t
+	draw_circle(Vector2.ZERO, maxf(1.0, (RADIUS - RING_WIDTH) * t), fill, true, -1.0, false)
