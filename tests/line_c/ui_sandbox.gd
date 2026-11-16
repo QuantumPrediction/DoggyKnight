@@ -4,7 +4,8 @@ extends Node
 ##
 ## 執行:godot --path . res://tests/line_c/ui_sandbox.tscn
 ## 按左上「工具」打開按鈕面板,選一個動作後面板自動收起;面板最後一格「更多▶」切換第二頁
-## (v2.2:頭目血條、連擊、過關慶祝、必殺技切入、星級結算、教學、轉場、音樂)。
+## (v2.2:頭目血條、連擊、過關慶祝、必殺技切入、星級結算、教學、轉場、音樂),
+## 第三頁是 v2.3:對白框(頭像對白、繪本頁)、稻草人隊長出場、困難結算、打完第一章的標題、故事音樂。
 ## Esc = Android 返回鍵(打開/關閉暫停選單)。
 ## 這是開發工具,文字不翻譯。
 
@@ -31,6 +32,7 @@ var _music_index: int = 0
 var _tools_page: int = 0
 var _grid: GridContainer
 var _transition: CanvasLayer
+var _dialogue: CanvasLayer
 
 
 func _ready() -> void:
@@ -42,6 +44,8 @@ func _ready() -> void:
 	screen_layer = CanvasLayer.new()
 	screen_layer.layer = 30
 	add_child(screen_layer)
+	_dialogue = (load("res://ui/dialogue/dialogue_box.tscn") as PackedScene).instantiate() as CanvasLayer
+	add_child(_dialogue)
 	_build_tools()
 	# 暫代 B 線
 	EventBus.back_requested.connect(_on_back)
@@ -175,16 +179,32 @@ func _fill_tools() -> void:
 			_status("Music.stop()")],
 		["治療 +30", func() -> void: _set_vigor(_vigor + 30)],
 	]
-	var actions: Array = page_a if _tools_page == 0 else page_b
+	var page_c: Array = [
+		["頭像對白", func() -> void: _play_story(false)],
+		["繪本頁", func() -> void: _play_story(true)],
+		["隊長出場", func() -> void:
+			EventBus.level_started.emit(&"1-4")
+			EventBus.boss_appeared.emit(&"scarecrow_captain")
+			EventBus.boss_hp_changed.emit(320, 320)
+			_status("boss_appeared(scarecrow_captain)")],
+		["困難結算", func() -> void: _open_screen("results_hard")],
+		["通關標題", func() -> void:
+			GameState.chapter_cleared = true
+			_open_screen("title")],
+		["故事音樂", func() -> void:
+			Music.play(&"story")
+			_status("Music.play(story)")],
+	]
+	var actions: Array = [page_a, page_b, page_c][_tools_page]
 	for a: Array in actions:
 		var b := UiKit.button(a[0], &"", Vector2(80, 24))
 		b.pressed.connect(a[1])
 		# 按下後收起面板,才看得到效果;再按「工具」打開。
 		b.pressed.connect(func() -> void: panel.visible = false)
 		_grid.add_child(b)
-	var more := UiKit.button("更多 ▶" if _tools_page == 0 else "◀ 返回", &"ButtonAlt", Vector2(80, 24))
+	var more := UiKit.button("更多 ▶" if _tools_page < 2 else "◀ 返回", &"ButtonAlt", Vector2(80, 24))
 	more.pressed.connect(func() -> void:
-		_tools_page = 1 - _tools_page
+		_tools_page = (_tools_page + 1) % 3
 		_fill_tools.call_deferred())
 	_grid.add_child(more)
 
@@ -336,7 +356,7 @@ func _open_screen(kind: String) -> void:
 	if _screen != null:
 		_screen.queue_free()
 		_screen = null
-	var path := "res://ui/screens/%s.tscn" % kind.trim_suffix("_final").trim_suffix("_stars")
+	var path := "res://ui/screens/%s.tscn" % kind.trim_suffix("_final").trim_suffix("_stars").trim_suffix("_hard")
 	_screen = (load(path) as PackedScene).instantiate() as Control
 	screen_layer.add_child(_screen)
 	var close := func() -> void:
@@ -358,6 +378,17 @@ func _open_screen(kind: String) -> void:
 				"victory": true, "time_sec": 141.0 if final else 83.4, "kills": 9 if final else 27,
 				"tricks": [] if final else [&"sit", &"spin"], "hero_level": _level,
 				"next_is_camp": not final, "is_final": final})
+			_screen.connect("continue_pressed", func() -> void:
+				_status("continue_pressed")
+				close.call())
+		"results_hard":
+			_screen.call("setup", {
+				"level_id": &"1-4", "level_name": "LEVEL_1_4", "victory": true, "time_sec": 66.0, "kills": 41,
+				"tricks": [&"wag"], "hero_level": _level, "next_is_camp": true, "is_final": false,
+				"stars": 2, "best_stars": 2, "new_best": false, "level_index": 3, "level_count": 6, "difficulty": &"hard",
+				"star_goals": [{"key": "STAR_CLEAR", "met": true, "text": "過關"},
+					{"key": "STAR_TIME", "met": true, "text": "70 秒內過關"},
+					{"key": "STAR_NO_DAMAGE", "met": false, "text": "受到的傷害不超過 25"}]})
 			_screen.connect("continue_pressed", func() -> void:
 				_status("continue_pressed")
 				close.call())
@@ -384,3 +415,33 @@ func _open_screen(kind: String) -> void:
 				_status("closed")
 				close.call())
 	_status("open %s" % kind)
+
+
+## v2.3:用 docs/STORY.md 的句子試對白框(B 線的 data/story 還沒好時也能看)。
+func _play_story(book: bool) -> void:
+	var script := DialogueScript.new()
+	script.id = &"sandbox_book" if book else &"sandbox_talk"
+	var specs: Array = [
+		["narrator", "", "STORY_PROLOGUE_01", "prologue_1"], ["narrator", "", "STORY_PROLOGUE_02", "prologue_2"],
+		["narrator", "", "STORY_PROLOGUE_04", "prologue_3"], ["narrator", "", "STORY_PROLOGUE_05", "prologue_4"],
+		["narrator", "", "STORY_L6_AFTER_01", "ending_1"], ["merlin", "worried", "STORY_L6_AFTER_02", ""],
+		["morgana", "smirk", "STORY_L6_AFTER_03", "ending_2"], ["narrator", "", "STORY_L6_AFTER_05", "ending_3"],
+		["goldie", "happy", "STORY_L6_AFTER_07", ""], ["narrator", "", "STORY_TEASER_01", "teaser_1"],
+	] if book else [
+		["goldie", "happy", "STORY_L1_BEFORE_01", ""], ["merlin", "surprised", "STORY_L1_BEFORE_02", ""],
+		["merlin", "proud", "STORY_L1_BEFORE_03", ""], ["goldie", "surprised", "STORY_L1_BEFORE_04", ""],
+		["bulldog", "serious", "STORY_L3_BEFORE_05", ""], ["scarecrow_captain", "angry", "STORY_L4_BEFORE_02", ""],
+		["crow", "normal", "STORY_L2_BEFORE_03", ""], ["black_knight", "normal", "STORY_L6_BEFORE_01", ""],
+		["goldie", "tired", "STORY_L2_AFTER_01", ""], ["bulldog", "happy", "STORY_CAMP2_03", ""],
+	]
+	for spec: Array in specs:
+		var line := DialogueLine.new()
+		line.speaker = StringName(spec[0])
+		line.expression = StringName(spec[1])
+		line.text_key = spec[2]
+		if not String(spec[3]).is_empty():
+			line.illustration = load("res://assets/story/%s.png" % spec[3])
+		script.lines.append(line)
+	_status("dialogue_started(%s)" % script.id)
+	await _dialogue.call(&"play", script)
+	_status("dialogue_finished(%s)" % script.id)
