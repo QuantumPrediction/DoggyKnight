@@ -120,14 +120,13 @@ func _process(delta: float) -> void:
 	if _toast_left > 0.0:
 		_toast_left -= delta
 		_toast.visible = _toast_left > 0.0
-	var vigor_target := _vigor_ratio()
-	var sat_target := _satisfaction_ratio()
-	_shown_vigor = move_toward(_shown_vigor, vigor_target, delta * 0.8)
-	_shown_satisfaction = move_toward(_shown_satisfaction, sat_target, delta * 0.8)
+	if not _sky.visible:
+		# 小遊戲中:條保持原樣,回到營地時才看得到它長上去。
+		return
+	_shown_vigor = move_toward(_shown_vigor, _vigor_ratio(), delta * 0.8)
+	_shown_satisfaction = move_toward(_shown_satisfaction, _satisfaction_ratio(), delta * 0.8)
 	for key: String in _bar_pulse:
 		_bar_pulse[key] = maxf(0.0, float(_bar_pulse[key]) - delta * 2.5)
-	if not _sky.visible:
-		return
 	var flicker := 1.0 + config.fire_flicker * (0.6 * sin(_time * 9.0) + 0.3 * sin(_time * 23.0 + 1.3) + 0.25 * sin(_time * 3.7))
 	for part: CampScenery in [_sky, _ground, _glow]:
 		part.flicker = flicker

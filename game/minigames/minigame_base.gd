@@ -55,6 +55,7 @@ var _last_count: int = -1
 var _count_pop: float = 0.0
 var _go_left: float = 0.0
 var _stars_lit: int = 0
+var _grade_sfx_done: bool = false
 var _star_pop: Array[float] = [0.0, 0.0, 0.0]
 
 
@@ -312,6 +313,10 @@ func _tick_results() -> void:
 		_spawn_star_fx(_star_center(_stars_lit - 1))
 		if _stars_lit == grade and grade == config.grading.max_grade():
 			Haptics.play(&"light")
+	# 星星亮完、評價文字出現時:過關的音效(0 顆星時只是輕輕一聲)
+	if not _grade_sfx_done and _state_time >= config.results_star_interval_sec * (grade + 0.5):
+		_grade_sfx_done = true
+		Sfx.play(&"clear" if grade > 0 else &"ui_tap")
 
 
 func _star_center(index: int) -> Vector2:
@@ -356,7 +361,8 @@ func _show_results() -> void:
 	_results_extra_label.text = "\n".join(_result_extra_lines())
 	_results_extra_label.visible = _results_extra_label.text != ""
 	_stars_lit = 0
-	Sfx.play(&"clear" if grade > 0 else &"ui_tap")
+	_grade_sfx_done = false
+	Sfx.play(&"whoosh")
 
 
 func _set_state(new_state: State) -> void:
