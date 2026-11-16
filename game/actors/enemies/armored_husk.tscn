@@ -14,6 +14,8 @@ separation_radius = 20.0
 separation_speed = 24.0
 spawn_time = 0.6
 max_exp_orbs = 2
+light_fx = &"visor_blue"
+light_offset = Vector2(1, -6)
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 

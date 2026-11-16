@@ -59,6 +59,10 @@ const ELITE_SPARK := Color(1.0, 0.8, 0.4)
 @export var death_particles: StringName = &""     ## 倒下時噴的粒子(assets/fx/particles/<名稱>.tscn)
 @export var number_height: float = -1.0           ## 傷害數字出現在中心上方幾像素;< 0 = 依圖的高度
 
+@export_group("光暈")
+@export var light_fx: StringName = &""           ## C 線的光暈 assets/fx/lights/<名稱>.tscn(眼睛、面罩、羽毛)
+@export var light_offset: Vector2 = Vector2.ZERO ## 朝右時光暈的位置(朝左自動鏡像);只在行動中顯示
+
 var data: EnemyData
 var hp: int = 1
 var max_hp: int = 1
@@ -94,6 +98,7 @@ var _glow_color: Color = Color.WHITE
 var _glow_amount: float = 0.0
 var _age: float = 0.0
 var _number_style: DamageNumber.Style = DamageNumber.Style.NORMAL
+var _light: Node2D
 var mods: EnemyDifficulty                         ## 難度倍數(spawn_enemy 設定;null = 一般模式)
 
 static var _cache_frame: int = -1
@@ -165,6 +170,7 @@ func _ready() -> void:
 		sprite.material = _material
 	arena_margin = CombatMath.sprite_margin(_frame_size, body_radius)
 	global_position = CombatMath.clamp_to_bounds(global_position, arena_margin)
+	_attach_light()
 	_on_ready()
 	_apply_animation()
 	queue_redraw()
@@ -305,6 +311,8 @@ func die() -> void:
 	_clear_spawn_marker()
 	_clear_dizzy()
 	_hitstop_left = 0.0
+	if _light != null:
+		_light.visible = false
 	if sprite != null:
 		sprite.speed_scale = 1.0
 	EventBus.enemy_died.emit(data.id, global_position, data.exp_value)
@@ -637,6 +645,9 @@ func _apply_animation() -> void:
 		return
 	if absf(facing.x) > 0.05:
 		sprite.flip_h = facing.x < 0.0
+	if _light != null:
+		_light.visible = state == State.ACTIVE and sprite.visible
+		_light.position = sprite.position + Vector2(-light_offset.x if sprite.flip_h else light_offset.x, light_offset.y)
 	_play(&"hurt" if _hurt_left > 0.0 else anim_state)
 
 
@@ -659,6 +670,22 @@ func _idle_size() -> Vector2:
 	if frames != null and frames.has_animation(&"idle") and frames.get_frame_count(&"idle") > 0:
 		return frames.get_frame_texture(&"idle", 0).get_size()
 	return Vector2(24, 24)
+
+
+## 加上 C 線的光暈圖(加亮混合的 Sprite2D,不用 Light2D)。檔案不存在就略過。
+func _attach_light() -> void:
+	if light_fx == &"":
+		return
+	var path := "res://assets/fx/lights/%s.tscn" % light_fx
+	if not ResourceLoader.exists(path):
+		return
+	_light = (load(path) as PackedScene).instantiate() as Node2D
+	if _light == null:
+		return
+	_light.name = "Light"
+	_light.position = light_offset
+	_light.visible = false
+	add_child(_light)
 
 
 func _setup_collision() -> void:
