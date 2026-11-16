@@ -85,13 +85,13 @@ animations = [{
 "speed": 8.0
 }, {
 "frames": [{
-"duration": 1.0,
+"duration": 1.2,
 "texture": SubResource("AtlasTexture_attack_0")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_attack_1")
 }, {
-"duration": 1.0,
+"duration": 0.8,
 "texture": SubResource("AtlasTexture_attack_2")
 }],
 "loop": false,
