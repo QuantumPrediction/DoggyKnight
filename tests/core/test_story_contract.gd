@@ -107,6 +107,7 @@ func test_dialogue_box_plays_advances_and_reports() -> void:
 	_box = (load("res://ui/dialogue/dialogue_box.tscn") as PackedScene).instantiate()
 	assert_true(_box is CanvasLayer, "對白框的根節點是 CanvasLayer")
 	add_child(_box)
+	assert_true(_box.is_in_group(&"dialogue_box"), "對白框在群組 dialogue_box")
 	var started := watch_signal(EventBus.dialogue_started)
 	var ended := watch_signal(EventBus.dialogue_finished)
 	var done := [false]

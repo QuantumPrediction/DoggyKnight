@@ -379,7 +379,7 @@ func reset_run() -> void
 
 **對白框**(`ui/dialogue/dialogue_box.tscn`,C 線;整合工作階段已放可用的初版)
 
-- 根節點 CanvasLayer(第 40 層),PROCESS_MODE_ALWAYS;`await play(script)`;`advance()`、`skip()`、`is_active()`;顯示期間擋住全部觸控;結束時把段落 id 記進 `GameState.story_seen`。
+- 根節點 CanvasLayer(第 40 層),PROCESS_MODE_ALWAYS,加入群組 `dialogue_box`(測試與試玩機器人靠它自動略過對白);`await play(script)`;`advance()`、`skip()`、`is_active()`;顯示期間擋住全部觸控;結束時把段落 id 記進 `GameState.story_seen`。
 - 頭像 `assets/portraits/<speaker>/<expression>.png`(48×48);繪本插畫 `assets/story/<id>.png`(160×120)。
 
 **新角色與敵人(佔位圖已放好,C 線原地替換)**

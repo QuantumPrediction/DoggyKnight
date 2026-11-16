@@ -7,7 +7,7 @@ extends CanvasLayer
 ## - 開始時發 EventBus.dialogue_started(script.id);結束時把 id 記進 GameState.story_seen,
 ##   再發 EventBus.dialogue_finished(script.id)。
 ## - 顯示期間擋住全部觸控,A 線的搖桿收不到。
-## - 測試與機器人用:advance()(等同點一下)、skip()(等同按略過)、is_active()。
+## - 測試與機器人用:advance()(等同點一下)、skip()(等同按略過)、is_active()。對白框在群組 "dialogue_box"。
 ## - 頭像:assets/portraits/<speaker>/<expression>.png;名牌:tr("SPEAKER_" + speaker 大寫);旁白(narrator)沒有頭像與名牌。
 ## - 繪本頁:line.illustration 不是空的時候,在上方顯示插畫(160×120)。
 
@@ -31,6 +31,7 @@ var _skip: Button
 func _ready() -> void:
 	layer = LAYER
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	add_to_group(&"dialogue_box")   # 合約:測試與試玩機器人用這個群組找到對白框
 	_build()
 	_root.visible = false
 
