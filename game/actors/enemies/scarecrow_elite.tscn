@@ -6,10 +6,11 @@
 body_radius = 8.0
 visual_scale = 1.3333
 tint = Color(1, 0.62, 0.55, 1)
+elite = true
 knockback_mult = 0.35
 separation_radius = 21.0
 max_exp_orbs = 3
-attack_trigger_range = 15.0
-attack_radius = 18.0
+attack_trigger_range = 19.0
+attack_radius = 21.0
 attack_half_angle_deg = 70.0
 recover_time = 0.6

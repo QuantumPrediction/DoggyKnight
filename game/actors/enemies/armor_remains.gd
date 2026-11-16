@@ -1,6 +1,7 @@
 extends Node2D
 ## 黑騎士被打敗後的盔甲(A11):碎片四散彈跳,頭盔滾出來,停下時翻過來,
-## 看得到裡面是空的,紫色魔法煙飄走。碎片與頭盔用程式畫(C 線之後可換成圖);
+## 看得到裡面是空的,紫色魔法煙飄走。慢動作時(CombatFx.time_scale)跟著變慢。
+## 碎片與頭盔用程式畫(C 線之後可換成圖);
 ## 留在地上的胸甲用 black_knight_frames 的 "down" 動畫。
 ## 在群組 combat_fx,場地 clear() 時移除。
 
@@ -52,6 +53,8 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	# 打倒頭目時的慢動作:盔甲碎片以慢動作飛散,再漸漸回到正常速度。
+	delta *= CombatFx.time_scale
 	_age += delta
 	for piece in _pieces:
 		_simulate(piece, delta, true)

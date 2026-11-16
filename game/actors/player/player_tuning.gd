@@ -22,7 +22,7 @@ extends Resource
 @export var target_search_mult: float = 1.5     ## 找目標的範圍 = attack_range × 這個倍數
 @export var close_hit_distance: float = 6.0     ## 貼身時不計角度
 @export var hitstop_time: float = 0.05          ## 打中時的停頓
-@export var knockback_speed: float = 110.0
+@export var knockback_speed: float = 80.0          ## 普通攻擊的擊退(M3:110 → 80,讓單獨的稻草人也打得到金毛)
 @export var attack_anim_time: float = 0.2
 
 @export_group("受擊")
