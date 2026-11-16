@@ -1,6 +1,6 @@
 # Android:做出安裝檔、裝到手機、上傳 Google Play(D6)
 
-最後更新:2026-11-15(D 線)。iPhone 的說明在 `export/IOS.md`。
+最後更新:2026-11-16(D 線,v2.3 重新建置與核對)。iPhone 的說明在 `export/IOS.md`。
 
 **先記住兩種檔案:**
 
@@ -209,6 +209,12 @@ XDG_CONFIG_HOME=... GODOT_ANDROID_KEYSTORE_RELEASE_PATH=... GODOT_ANDROID_KEYSTO
 AAB 的 Gradle AndroidManifest 也只有這一個 `uses-permission`;
 minSdk 24、targetSdk 36、zipalign 16 KB、arm64-v8a 的 16 KB 分頁、`jarsigner -verify` 都照樣通過。
 `tests/line_d/test_export_presets.gd` 會擋下 VIBRATE 以外的任何權限。
+
+2026-11-16(v2.3 深化:營地故事、梅林、《王室守則》、對白框、頭像與繪本插畫)重新建置除錯版 APK 與沙盒 APK(各約 61 MB):
+`export/build_android.sh verify` 結果相同——`com.doggyknight.prototype`、minSdk 24、targetSdk 36、
+唯一的權限 `android.permission.VIBRATE`、zipalign 16 KB 通過、arm64-v8a 原生程式庫 LOAD 對齊 16384。
+新的檔案(`game/camp/camp_merlin.gd`、`game/minigames/minigame_speech_bubble.gd`、`ui/dialogue/dialogue_box.tscn`、
+`assets/sprites/merlin/`、`i18n/story.csv` 的翻譯)都在安裝檔裡;沙盒 APK 另含壓力測試的替身投射物。
 
 拋棄式金鑰放在雲端環境的 `~/.android/THROWAWAY-not-for-store-release.keystore`(repo 以外),只用來證明 AAB 建置流程可行。
 

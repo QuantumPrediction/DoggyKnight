@@ -196,11 +196,13 @@ func _draw() -> void:
 		var tip := Vector2(clampf(anchor.x, tail_x - 4.0, tail_x + 4.0), minf(anchor.y, base_y + TAIL))
 		draw_colored_polygon(PackedVector2Array([Vector2(tail_x - 3.0, base_y), Vector2(tail_x + 4.0, base_y), tip + Vector2(0.5, 1.0)]), ink)
 		draw_colored_polygon(PackedVector2Array([Vector2(tail_x - 2.0, base_y - 1.0), Vector2(tail_x + 3.0, base_y - 1.0), tip + Vector2(0.5, -0.5)]), fill)
-	# 文字(每行置中)
+	# 文字(每行置中)。彈出途中不畫字:縮放中的像素字會糊掉。
+	draw_set_transform_matrix(Transform2D.IDENTITY)
+	if pop < 1.0:
+		return
 	var font := _font()
 	var line_height := _line_height(font)
 	var inner_w := box.size.x - PADDING.x * 2.0
 	for i in _lines.size():
 		var baseline := box.position + PADDING + Vector2(0, font.get_ascent(font_size) + i * line_height)
 		draw_string(font, baseline.round(), _lines[i], HORIZONTAL_ALIGNMENT_CENTER, inner_w, font_size, Color(text_color, alpha))
-	draw_set_transform_matrix(Transform2D.IDENTITY)
