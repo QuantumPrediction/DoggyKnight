@@ -52,8 +52,15 @@ func test_title_card_plays_on_level_started_and_ends_in_time() -> void:
 	var card: TitleCard = hud.get("title_card")
 	EventBus.level_started.emit(&"1-2")
 	assert_true(card.visible and card.is_playing(), "level_started 時顯示標題卡")
-	assert_eq(card.name_label.text, tr("LEVEL_1_2"))
-	assert_eq(card.chapter_label.text, tr("CHAPTER_1"))
+	# 關卡編號移到章節那一行(小字),大字只放名稱,免得比畫面寬(整合修正)。
+	assert_eq(card.name_label.text, tr("LEVEL_1_2").split(" ", false, 1)[1])
+	assert_eq(card.chapter_label.text, "%s  %s" % [tr("CHAPTER_1"), "1-2"])
+	for id in ["1-1", "1-2", "1-3", "1-4", "1-5", "1-6"]:
+		EventBus.level_started.emit(StringName(id))
+		var safe := SafeArea.get_safe_rect()
+		assert_true(card.name_label.position.x >= safe.position.x and card.name_label.position.x + card.name_label.size.x <= safe.end.x,
+				"%s 的關卡名稱不超出畫面" % id)
+	EventBus.level_started.emit(&"1-2")
 	var limit := (load("res://ui/hud/hud_config.tres") as HudConfig).title_card_time + 0.2
 	await get_tree().create_timer(limit).timeout
 	assert_false(card.visible, "B 線開始第一波時(約 1.6 秒)標題卡已經收起")

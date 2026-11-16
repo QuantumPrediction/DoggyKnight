@@ -4,6 +4,7 @@ extends Control
 ## 章節名與關卡名從左邊滑入、停一下、再從右邊滑出。全程不攔觸控,金毛可以照常走動。
 
 const BAND_HEIGHT: float = 50.0
+const MARGIN_X: float = 12.0      # 文字與畫面左右邊的最小距離(避開兩邊的菱形裝飾)
 
 var chapter_label: Label
 var name_label: Label
@@ -27,8 +28,14 @@ func _ready() -> void:
 
 ## 顯示標題卡;total 是總長(秒)。
 func play(chapter_text: String, level_text: String, total: float) -> void:
+	# 「1-4 稻草人包圍網」用大字一行會比 180 像素寬:把關卡編號移到章節那一行(小字)。
+	var parts := level_text.split(" ", false, 1)
+	if parts.size() == 2 and parts[0].contains("-"):
+		chapter_text = "%s  %s" % [chapter_text, parts[0]]
+		level_text = parts[1]
 	chapter_label.text = chapter_text
 	name_label.text = level_text
+	name_label.theme_type_variation = &"LabelTitle"
 	visible = true
 	_layout()
 	var rest_c := chapter_label.position
@@ -81,6 +88,10 @@ func _layout() -> void:
 	var cy := floorf(safe.position.y + safe.size.y * 0.34)
 	chapter_label.size = chapter_label.get_minimum_size()
 	name_label.size = name_label.get_minimum_size()
+	if name_label.size.x > safe.size.x - MARGIN_X * 2.0:
+		# 保險:名字仍然太長時改用小字,絕不超出畫面。
+		name_label.theme_type_variation = &"LabelLight"
+		name_label.size = name_label.get_minimum_size()
 	var cx := safe.get_center().x
 	chapter_label.position = Vector2(floorf(cx - chapter_label.size.x * 0.5), cy - 22)
 	name_label.position = Vector2(floorf(cx - name_label.size.x * 0.5), cy - 9)
@@ -101,6 +112,8 @@ func _draw() -> void:
 	# small diamonds beside the title
 	var cy := r.get_center().y + 4
 	var safe := SafeArea.get_safe_rect()
+	if name_label.size.x > safe.size.x - 40.0:
+		return    # 名字很長時不畫菱形,免得貼著文字
 	for x: float in [safe.position.x + 8, safe.end.x - 13]:
 		var d := PackedVector2Array([Vector2(x + 2.5, cy - 3), Vector2(x + 5, cy), Vector2(x + 2.5, cy + 3), Vector2(x, cy)])
 		draw_colored_polygon(d, PaletteColors.GOLD_L)
