@@ -14,6 +14,9 @@ separation_radius = 30.0
 separation_speed = 10.0
 spawn_time = 0.9
 death_time = 0.1
+phase2_telegraph_mult = 0.8
+idle_time_phase2 = 0.7
+slam_damage = 20
 max_exp_orbs = 5
 
 [node name="Collision" type="CollisionShape2D" parent="."]

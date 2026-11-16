@@ -7,7 +7,7 @@ func test_enemy_data_files_match_dev_plan() -> void:
 		&"scarecrow": [25, 8, 28.0, 1, "ENEMY_SCARECROW"],
 		&"scarecrow_elite": [75, 10, 26.0, 3, "ENEMY_SCARECROW_ELITE"],
 		&"crow": [12, 6, 140.0, 1, "ENEMY_CROW"],
-		&"black_knight": [700, 18, 40.0, 20, "ENEMY_BLACK_KNIGHT"],   # M2 整合調整:450 → 700(450 時試玩 22 秒就打完)
+		&"black_knight": [780, 18, 40.0, 20, "ENEMY_BLACK_KNIGHT"],   # M2 整合:450 → 700;M3:700 → 780(目標約 45 秒)
 	}
 	for id: StringName in expected:
 		var data := load("res://data/enemies/%s.tres" % id) as EnemyData
@@ -218,7 +218,7 @@ func test_boss_moves_are_telegraphed() -> void:
 	assert_eq(damaged.count, 0, "預警中不會受傷")
 	var hit := await wait_until(func() -> bool: return damaged.count > 0, 40)
 	assert_true(hit, "站在圈內會被重劈打中")
-	assert_eq(damaged.last_args(), [22])
+	assert_eq(damaged.last_args(), [boss.slam_damage])
 
 
 func test_telegraphing_scarecrow_is_not_knocked_back() -> void:

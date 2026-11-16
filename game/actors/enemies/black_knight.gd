@@ -43,7 +43,7 @@ const MAGIC_LIGHT := Color(0.8, 0.55, 1.0)
 @export_group("衝鋒")
 @export var charge_telegraph: float = 0.85
 @export var charge_speed: float = 150.0
-@export var charge_width: float = 22.0
+@export var charge_width: float = 32.0           ## 預警線的寬度 = 打中範圍(角色中心在線內才算打中)
 @export var charge_max_distance: float = 200.0
 @export var charge_recover: float = 0.6
 @export var charge_bonk_time: float = 1.0
@@ -52,6 +52,7 @@ const MAGIC_LIGHT := Color(0.8, 0.55, 1.0)
 @export var slam_telegraph: float = 0.9
 @export var slam_radius: float = 44.0
 @export var slam_recover: float = 0.75
+@export var slam_hit_margin: float = 2.0         ## 角色中心離圓圈邊緣多近也算打中(畫出來的圓圈就是打中範圍)
 @export_group("召喚")
 @export var summon_enemy: StringName = &"scarecrow"
 @export var summon_count: int = 2
@@ -205,7 +206,7 @@ func _ai(delta: float) -> void:
 			desired_velocity = _charge_dir * speed
 			_charge_traveled += speed * delta
 			for victim in victims():
-				if not _charge_hit.has(victim) and global_position.distance_to(victim.global_position) <= body_radius + radius_of(victim) + 3.0:
+				if not _charge_hit.has(victim) and global_position.distance_to(victim.global_position) <= charge_width * 0.5 + slam_hit_margin:
 					_charge_hit.append(victim)
 					victim.call(&"take_damage", data.contact_damage)
 			if _charge_traveled >= _charge_length:
@@ -360,7 +361,10 @@ func _slam() -> void:
 	anim_state = &"slam"
 	if sprite != null:
 		sprite.play(&"slam")
-	hit_victims_in_circle(global_position, slam_radius, slam_damage)
+	# 公平:角色中心在畫出來的圓圈內(加一點點寬容)才算打中,站在圈外就一定閃得掉。
+	for victim in victims():
+		if global_position.distance_to(victim.global_position) <= slam_radius + slam_hit_margin:
+			victim.call(&"take_damage", slam_damage)
 	CombatFx.ring(self, global_position, 6.0, slam_radius + 4.0, 0.3, Color(1.0, 0.85, 0.6, 0.95), 3.0, true)
 	CombatFx.ring(self, global_position, 4.0, slam_radius * 0.6, 0.2, Color(1, 1, 1, 0.6), 2.0, true)
 	for i in 6:

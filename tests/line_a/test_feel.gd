@@ -89,25 +89,26 @@ func test_boss_walks_in_invulnerable_and_announces_hp() -> void:
 	var damaged := watch_signal(EventBus.player_damaged)
 	player.set_physics_process(false)
 	var boss := spawn(&"black_knight", Vector2(40, 200)) as BlackKnightBoss
+	var full := boss.max_hp
 	assert_true(boss.is_walking_in(), "從城門走進來")
 	assert_true(boss.global_position.y < Layout.ARENA_RECT.position.y, "起點在戰鬥區上方(橋頭城門)")
 	assert_eq(hp_changes.count, 1, "出場時發 boss_hp_changed")
-	assert_eq(hp_changes.last_args(), [700, 700])
+	assert_eq(hp_changes.last_args(), [full, full])
 	assert_true(boss.is_in_group(&"enemy"), "走進來時已算在場上")
 	assert_false(boss.is_targetable())
 	boss.take_damage(100)
-	assert_eq(boss.hp, 700, "出場時無敵")
+	assert_eq(boss.hp, full, "出場時無敵")
 	await wait_physics(45)
 	assert_true(boss.is_walking_in(), "大約 1.5 秒")
 	var arrived := await wait_until(func() -> bool: return boss.is_targetable(), 90)
 	assert_true(arrived, "走到定點後開打")
 	assert_true(Layout.ARENA_RECT.has_point(boss.global_position))
-	assert_eq(hp_changes.last_args(), [700, 700])
+	assert_eq(hp_changes.last_args(), [full, full])
 	assert_eq(damaged.count, 0, "出場時不攻擊")
 	boss.take_damage(30)
-	assert_eq(hp_changes.last_args(), [670, 700], "每次受傷都發 boss_hp_changed")
+	assert_eq(hp_changes.last_args(), [full - 30, full], "每次受傷都發 boss_hp_changed")
 	boss.take_damage(5)
-	assert_eq(hp_changes.last_args(), [665, 700])
+	assert_eq(hp_changes.last_args(), [full - 35, full])
 
 
 func test_boss_phase_two_roar_is_invulnerable_and_glows() -> void:
@@ -136,7 +137,7 @@ func test_boss_defeat_holds_about_a_second_with_slow_motion() -> void:
 	var boss := spawn(&"black_knight", Vector2(90, 120)) as BlackKnightBoss
 	var hp_changes := watch_signal(EventBus.boss_hp_changed)
 	boss.take_damage(9999)
-	assert_eq(hp_changes.last_args(), [0, 700], "生命歸零也發 boss_hp_changed")
+	assert_eq(hp_changes.last_args(), [0, boss.max_hp], "生命歸零也發 boss_hp_changed")
 	assert_true(arena.is_slow_motion(), "慢動作")
 	assert_true(CombatFx.time_scale < 1.0)
 	assert_eq(Haptics.last_kind, &"heavy", "打倒頭目:heavy 震動")
