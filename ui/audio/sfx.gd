@@ -1,7 +1,7 @@
 extends Node
 ## 音效播放(Autoload 名稱:Sfx)。DEV_PLAN 4.9。擁有者:C 線。
 ##
-## 用法(任何線):Sfx.play(&"swing")、Sfx.play(&"hit", -6.0)
+## 用法(任何線):Sfx.play(&"swing")、Sfx.play(&"hit", -6.0)、Sfx.play(&"star", 0.0, 1.12)(第三個參數:音高)
 ## 音效檔:assets/sfx/<id>.wav(由 tools/pixel/sfx_gen.py 生成)。找不到檔案時安靜略過。
 ## 遵守 GameState.sound_on。暫停時仍可播放(介面按鍵音)。
 ##
@@ -11,13 +11,16 @@ extends Node
 const IDS: Array[StringName] = [
 	&"swing", &"hit", &"hurt", &"enemy_down", &"pickup", &"level_up", &"bark",
 	&"boss_warning", &"ultimate", &"clear", &"fail", &"ui_tap", &"scroll", &"ink",
+	# v2.2(DEV_PLAN 4.10)
+	&"crit", &"combo", &"boss_roar", &"star", &"whoosh", &"heal", &"pet", &"perfect", &"countdown",
 ]
 const VOICES: int = 12
 const MIN_INTERVAL: float = 0.04
 const MAX_SAME: int = 3
 ## 每次播放時音高隨機變化的幅度(只套用在常重複的音效)。
 const PITCH_JITTER: Dictionary = {
-	&"swing": 0.06, &"hit": 0.08, &"enemy_down": 0.06, &"pickup": 0.04, &"scroll": 0.08,
+	&"swing": 0.06, &"hit": 0.08, &"enemy_down": 0.06, &"pickup": 0.04, &"scroll": 0.08, &"crit": 0.04,
+	&"pet": 0.05,
 }
 
 var _players: Array[AudioStreamPlayer] = []
@@ -40,7 +43,7 @@ func _ready() -> void:
 		_stream(id)       # 先載入,第一次播放時不會卡頓
 
 
-func play(id: StringName, volume_db: float = 0.0) -> void:
+func play(id: StringName, volume_db: float = 0.0, pitch: float = 1.0) -> void:
 	if not GameState.sound_on:
 		return
 	var stream := _stream(id)
@@ -58,7 +61,7 @@ func play(id: StringName, volume_db: float = 0.0) -> void:
 	player.stream = stream
 	player.volume_db = volume_db
 	var jitter: float = PITCH_JITTER.get(id, 0.0)
-	player.pitch_scale = 1.0 + _rng.randf_range(-jitter, jitter)
+	player.pitch_scale = maxf(0.25, pitch) * (1.0 + _rng.randf_range(-jitter, jitter))
 	player.play()
 
 

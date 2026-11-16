@@ -1,5 +1,6 @@
 extends "res://tests/line_b/flow_test_base.gd"
-## B9 存檔:寫入與讀取、寫到一半中斷時舊存檔仍可讀、損毀的檔案、開機讀檔、繼續冒險。
+## B9、BP6 存檔:寫入與讀取、寫到一半中斷時舊存檔仍可讀、損毀的檔案、開機讀檔、繼續冒險、
+## 新欄位(音樂、震動、教學、最佳星數、待進營地)與舊版存檔的向下相容。
 
 
 func before_each() -> void:
@@ -17,13 +18,15 @@ func test_round_trip() -> void:
 	assert_false(FileAccess.file_exists(store.temp_path()), "改名後不留暫存檔")
 
 
-func test_only_three_fields_are_saved() -> void:
+func test_only_known_fields_are_saved() -> void:
 	var store := SaveStore.new(SAVE_PATH)
-	store.write(1, 2, true)
+	store.write_data({"level_index": 1, "snacks": 2, "player_name": "should not be saved"})
 	var raw: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(SAVE_PATH))
 	var keys := raw.keys()
 	keys.sort()
-	assert_eq(keys, ["level_index", "snacks", "sound_on", "version"], "只存到達的關卡、零食、音效(加版本號)")
+	assert_eq(keys, ["best_stars", "camp_pending", "haptics_on", "level_index", "music_on", "snacks", "sound_on",
+			"tutorial_done", "version"], "只存遊戲進度與設定,沒有任何個人資料")
+	assert_eq(raw["version"], 2.0)
 
 
 func test_overwrite_keeps_latest() -> void:

@@ -4,19 +4,27 @@
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_default_0"]
 atlas = ExtResource("1_sheet")
-region = Rect2(0, 0, 8, 8)
+region = Rect2(0, 0, 12, 12)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_default_1"]
 atlas = ExtResource("1_sheet")
-region = Rect2(8, 0, 8, 8)
+region = Rect2(12, 0, 12, 12)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_default_2"]
 atlas = ExtResource("1_sheet")
-region = Rect2(16, 0, 8, 8)
+region = Rect2(24, 0, 12, 12)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_default_3"]
 atlas = ExtResource("1_sheet")
-region = Rect2(24, 0, 8, 8)
+region = Rect2(36, 0, 12, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_4"]
+atlas = ExtResource("1_sheet")
+region = Rect2(48, 0, 12, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_5"]
+atlas = ExtResource("1_sheet")
+region = Rect2(60, 0, 12, 12)
 
 [resource]
 animations = [{
@@ -32,8 +40,14 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_default_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_5")
 }],
 "loop": true,
 "name": &"default",
-"speed": 6.0
+"speed": 9.0
 }]

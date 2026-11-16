@@ -9,6 +9,9 @@ extends CharacterBody2D
 ## - 死亡時「立即」離開群組 "enemy",只發一次 enemy_died,掉落經驗珠,然後才播可愛的「噗」。
 ## - 被打中:閃白、擊退、短暫停頓(hit stop,只凍結自己,不改 Engine.time_scale)。
 ## - 群體分離:附近的敵人互相推開,不會疊成一點。
+## - M3 打磨:被打中時擠壓變形、跳出傷害數字、噴 hit_burst;倒下時噴 death_particles
+##   (稻草人 straw_bits、烏鴉 feathers);從地面冒出時揚起 footstep_dust;精英有光環,
+##   倒下時鏡頭震一下。慢動作時(CombatFx.time_scale)動作跟著變慢。
 ##
 ## 子類別覆寫:_ai(delta)、_cancel_attack()、_on_activated()、_on_died()、_uses_separation()。
 ## 子類別設定 desired_velocity(想走的速度)與 anim_state(想播的動畫)。
@@ -21,10 +24,15 @@ const EXP_ORB_SCENE: PackedScene = preload("res://game/combat/exp_orb.tscn")
 
 enum State { SPAWNING, ACTIVE, DYING }
 
+const POP_TIME := 0.16
+const ELITE_AURA := Color(1.0, 0.45, 0.25)
+const ELITE_SPARK := Color(1.0, 0.8, 0.4)
+
 @export_group("身體")
 @export var body_radius: float = 6.0
 @export var visual_scale: float = 1.0
 @export var tint: Color = Color.WHITE
+@export var elite: bool = false                   ## 精英:腳下有光環,倒下時鏡頭震一下
 
 @export_group("受擊")
 @export var knockback_mult: float = 1.0           ## 0 = 不會被擊退(頭目)
@@ -41,6 +49,8 @@ enum State { SPAWNING, ACTIVE, DYING }
 @export var death_time: float = 0.3
 @export var max_exp_orbs: int = 5
 @export var retarget_interval: float = 0.25
+@export var death_particles: StringName = &""     ## 倒下時噴的粒子(assets/fx/particles/<名稱>.tscn)
+@export var number_height: float = -1.0           ## 傷害數字出現在中心上方幾像素;< 0 = 依圖的高度
 
 var data: EnemyData
 var hp: int = 1
@@ -71,6 +81,12 @@ var _telegraph: AttackTelegraph
 var _material: ShaderMaterial
 var _frame_size: Vector2 = Vector2(24, 24)
 var _sprite_base_offset: Vector2 = Vector2.ZERO
+var _squash_left: float = 0.0
+var _pop_left: float = 0.0
+var _glow_color: Color = Color.WHITE
+var _glow_amount: float = 0.0
+var _age: float = 0.0
+var _number_style: DamageNumber.Style = DamageNumber.Style.NORMAL
 
 static var _cache_frame: int = -1
 static var _cache: Array[Node] = []
@@ -116,6 +132,9 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	var ts := CombatFx.time_scale
+	delta *= ts
+	_age += delta
 	match state:
 		State.SPAWNING:
 			_tick_spawn(delta)
@@ -125,9 +144,17 @@ func _physics_process(delta: float) -> void:
 			return
 	_tick_flash(delta)
 	if _hitstop_left > 0.0:
+		# 打擊停頓:連擠壓變形也停在最扁的那一刻。
 		_hitstop_left -= delta
 		if _hitstop_left <= 0.0 and sprite != null:
-			sprite.speed_scale = 1.0
+			sprite.speed_scale = ts
+		return
+	_tick_squash(delta)
+	if sprite != null:
+		sprite.speed_scale = ts
+	if elite:
+		queue_redraw()
+	if _tick_custom(delta):
 		return
 	_retarget_left -= delta
 	if _retarget_left <= 0.0 or not _is_valid_victim(target):
@@ -149,22 +176,41 @@ func _physics_process(delta: float) -> void:
 # --- 合約與受擊 -------------------------------------------------------------------
 
 func take_damage(amount: int) -> void:
-	if state == State.DYING or amount <= 0:
+	var style := _number_style
+	_number_style = DamageNumber.Style.NORMAL
+	if state == State.DYING or amount <= 0 or is_invulnerable():
 		return
 	hp = maxi(0, hp - amount)
 	_flash_left = flash_time
 	_set_flash(1.0)
 	_hurt_left = hurt_anim_time
+	_squash_left = CombatFx.feel().squash_time
+	if state == State.ACTIVE:
+		_tick_squash(0.0)
+	CombatFx.damage_number(self, amount, number_anchor(), style)
 	_on_damaged(amount)
 	if hp <= 0:
 		die()
 
 
-## 金毛與同伴用的攻擊:傷害 + 從 from_position 往外擊退。
-func hit(amount: int, from_position: Vector2, knockback_speed: float) -> void:
+## 金毛與同伴用的攻擊:傷害 + 從 from_position 往外擊退。style 決定傷害數字的樣子(握手雙倍用 CRIT)。
+func hit(amount: int, from_position: Vector2, knockback_speed: float,
+		style: DamageNumber.Style = DamageNumber.Style.NORMAL) -> void:
+	_number_style = style
 	take_damage(amount)
 	if state != State.DYING:
 		apply_knockback(from_position, knockback_speed)
+
+
+## 傷害數字出現的位置(頭上)。
+func number_anchor() -> Vector2:
+	var h := number_height if number_height >= 0.0 else _frame_size.y * 0.55
+	return global_position + _sprite_base_offset + Vector2(0, -h)
+
+
+## 無敵中(出場時;頭目另有出場、怒吼與倒下演出)。這時受到的傷害一律無效。
+func is_invulnerable() -> bool:
+	return state == State.SPAWNING
 
 
 ## 擊退。正在出招(已經預警)時不會被擊退,讓看得到的預警一定會出手;吠叫的暈眩仍可打斷。
@@ -225,6 +271,11 @@ func die() -> void:
 	_drop_exp()
 	Sfx.play(&"enemy_down")
 	_death_left = death_time
+	if death_particles != &"":
+		CombatFx.particles(self, death_particles, global_position + _sprite_base_offset, true)
+	if elite:
+		CombatFx.trauma(self, CombatFx.feel().trauma_elite_kill)
+		CombatFx.particles(self, &"star_burst", global_position + _sprite_base_offset, false, true)
 	_on_died()
 
 
@@ -244,6 +295,7 @@ func begin_spawn(duration: float = -1.0) -> void:
 	_spawn_marker = AttackTelegraph.make_circle(body_radius + 4.0, AttackTelegraph.DUST)
 	add_child(_spawn_marker)
 	CombatFx.spawn(self, &"dust", global_position, 0.0, Vector2.ONE * 1.5, Color.WHITE, true)
+	CombatFx.particles(self, &"footstep_dust", global_position + Vector2(0, 2), true)
 	_tick_spawn(0.0)
 
 
@@ -253,20 +305,27 @@ func _tick_spawn(delta: float) -> void:
 	if _spawn_marker != null:
 		_spawn_marker.progress = t
 	if sprite != null:
-		sprite.modulate = Color(tint, t)
-		sprite.scale = Vector2(visual_scale, visual_scale * maxf(0.1, t))
-		sprite.position = _sprite_base_offset + Vector2(0, _frame_size.y * 0.5 * (1.0 - t))
+		# 從地面冒出:前半段只看到地上的塵土,後半段由扁到高、由透明到清楚。
+		var rise := clampf((t - 0.35) / 0.65, 0.0, 1.0)
+		sprite.modulate = Color(tint, rise)
+		sprite.scale = Vector2(visual_scale * (1.0 + 0.25 * (1.0 - rise)), visual_scale * maxf(0.1, rise))
+		sprite.position = _sprite_base_offset + Vector2(0, _frame_size.y * 0.5 * (1.0 - rise))
 	if _spawn_left <= 0.0:
 		_activate()
 
 
 func _activate() -> void:
+	var was_spawning := state == State.SPAWNING
 	state = State.ACTIVE
 	_clear_spawn_marker()
 	if sprite != null:
 		sprite.modulate = tint
 		sprite.scale = Vector2.ONE * visual_scale
 		sprite.position = _sprite_base_offset
+	if was_spawning:
+		# 冒出地面的一刻:彈一下,再揚起一點塵土。
+		_pop_left = POP_TIME
+		CombatFx.particles(self, &"footstep_dust", global_position + Vector2(0, 2), true)
 	_on_activated()
 
 
@@ -279,7 +338,7 @@ func _move(delta: float) -> void:
 		v = _knock_velocity * clampf(_knock_left / maxf(knockback_time, 0.001), 0.0, 1.0)
 	elif _uses_separation():
 		v += separation_push() * separation_speed
-	velocity = v
+	velocity = v * CombatFx.time_scale
 	move_and_slide()
 	global_position = CombatMath.clamp_to_bounds(global_position, arena_margin)
 
@@ -442,11 +501,45 @@ func _tick_flash(delta: float) -> void:
 		_flash_left -= delta
 		if _flash_left <= 0.0:
 			_set_flash(0.0)
+	elif _glow_amount > 0.0 and _material != null:
+		_material.set_shader_parameter(&"flash_color", _glow_color)
+		_material.set_shader_parameter(&"flash", _glow_amount)
 
 
 func _set_flash(amount: float) -> void:
 	if _material != null:
-		_material.set_shader_parameter(&"flash", amount)
+		_material.set_shader_parameter(&"flash_color", Color.WHITE)
+		_material.set_shader_parameter(&"flash", amount if amount > 0.0 else _glow_amount)
+		if amount <= 0.0 and _glow_amount > 0.0:
+			_material.set_shader_parameter(&"flash_color", _glow_color)
+
+
+## 讓整隻敵人帶一層顏色(頭目第二階段的紅光)。amount 0 = 沒有。
+func set_glow(color: Color, amount: float) -> void:
+	_glow_color = color
+	_glow_amount = clampf(amount, 0.0, 1.0)
+	if _flash_left <= 0.0:
+		_set_flash(0.0)
+
+
+## 被打中的擠壓變形與出場的彈跳(只在 ACTIVE 時)。
+func _tick_squash(delta: float) -> void:
+	if sprite == null:
+		return
+	var feel := CombatFx.feel()
+	var sx := 1.0
+	var sy := 1.0
+	if _squash_left > 0.0:
+		_squash_left = maxf(0.0, _squash_left - delta)
+		var k := _squash_left / maxf(feel.squash_time, 0.001)
+		sx += feel.squash_amount * k
+		sy -= feel.squash_amount * k * 0.8
+	if _pop_left > 0.0:
+		_pop_left = maxf(0.0, _pop_left - delta)
+		var p := sin(PI * (1.0 - _pop_left / POP_TIME))
+		sx -= 0.15 * p
+		sy += 0.2 * p
+	sprite.scale = Vector2(visual_scale * sx, visual_scale * sy)
 
 
 func _apply_animation() -> void:
@@ -508,15 +601,41 @@ func _clear_dizzy() -> void:
 
 func _draw() -> void:
 	var w := _frame_size.x * 0.3
+	var aura := elite and state == State.ACTIVE
+	var pulse := 0.5 + 0.5 * sin(_age * 5.0)
+	if aura:
+		# 精英的光環:身體後面一團脈動的橘紅色光(在角色圖之下,看起來像輪廓發光)。
+		var body := Vector2(0, -_frame_size.y * 0.02) + _sprite_base_offset
+		draw_set_transform(body, 0.0, Vector2(0.78, 1.0))
+		draw_circle(Vector2.ZERO, _frame_size.y * 0.44 + pulse, Color(ELITE_AURA, 0.12 + 0.12 * pulse))
 	draw_set_transform(Vector2(0, _frame_size.y * 0.42), 0.0, Vector2(1.0, 0.4))
+	if aura:
+		# 腳下一圈光,外面有一圈轉動的虛線。
+		draw_circle(Vector2.ZERO, w + 4.0 + pulse, Color(ELITE_AURA, 0.3 + 0.15 * pulse))
+		var dashes := 10
+		for i in dashes:
+			var a := _age * 1.6 + TAU * float(i) / float(dashes)
+			draw_arc(Vector2.ZERO, w + 7.0 + pulse, a, a + 0.32, 3, Color(ELITE_SPARK, 0.7 + 0.3 * pulse), 2.0)
 	draw_circle(Vector2.ZERO, w, Color(0, 0, 0, 0.22))
 	draw_set_transform(Vector2.ZERO)
+	if aura:
+		# 往上飄的火星。
+		for i in 3:
+			var phase := fmod(_age * 0.9 + float(i) / 3.0, 1.0)
+			var x := sin(float(i) * 2.3 + _age * 2.0) * w * 0.9
+			var y := _frame_size.y * 0.4 - phase * _frame_size.y * 0.9
+			draw_rect(Rect2(Vector2(x, y).round(), Vector2.ONE), Color(ELITE_SPARK, 1.0 - phase))
 
 
 # --- 給子類別覆寫 -----------------------------------------------------------------
 
 func _on_ready() -> void:
 	pass
+
+
+## 子類別自己的計時(頭目的倒下演出)。傳回 true 表示這一格不跑一般的 AI 與移動。
+func _tick_custom(_delta: float) -> bool:
+	return false
 
 
 func _on_activated() -> void:

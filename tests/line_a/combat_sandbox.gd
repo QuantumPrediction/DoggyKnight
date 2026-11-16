@@ -3,14 +3,17 @@ extends Node2D
 ##
 ## 執行:godot --path . res://tests/line_a/combat_sandbox.tscn
 ## 操作:按住畫面任何地方拖曳 → 金毛移動;放手 → 停下自動揮劍。
-## 上方的除錯按鈕(英文,只在沙盒出現)可生成敵人、同伴,加把戲,填滿忠誠度;
+## 上方的除錯按鈕(英文縮寫,只在沙盒出現)可生成敵人、同伴,加把戲,填滿忠誠度;
 ## 右下角 ULT 是必殺技按鈕的佔位(正式按鈕由 C 線的 HUD 提供)。
+## M3:上方小字另外顯示連擊數(combo_changed)與頭目生命(boss_hp_changed);
+## Win 模擬過關(level_completed:金毛與鬥牛犬歡呼);Shake 讓鏡頭震一下。
 ## Esc(= Android 返回鍵)暫停 / 繼續。所有按鈕都在群組 ui_touch_blocker,按按鈕不會觸發搖桿。
 
 const ARENA_SCENE: PackedScene = preload("res://game/combat/arena.tscn")
 const BLOCKER_GROUP: StringName = &"ui_touch_blocker"
 const FONT_SIZE := 8
-const BUTTON_SIZE := Vector2(42, 13)
+const BUTTON_SIZE := Vector2(34, 13)
+const BUTTON_COLUMNS := 5
 const BUTTON_GAP := 2.0
 const ULT_SIZE := Vector2(28, 28)
 
@@ -26,6 +29,9 @@ var _loyalty: Vector2 = Vector2(0, 100)
 var _exp: int = 0
 var _kills: int = 0
 var _boss_phase: int = 0
+var _combo: int = 0
+var _best_combo: int = 0
+var _boss_hp: Vector2i = Vector2i.ZERO
 var _spawn_index: int = 0
 
 
@@ -47,6 +53,13 @@ func _ready() -> void:
 		_boss_phase = phase
 		_refresh())
 	EventBus.trick_chosen.connect(func(_id: StringName) -> void: _refresh.call_deferred())
+	EventBus.combo_changed.connect(func(count: int) -> void:
+		_combo = count
+		_best_combo = maxi(_best_combo, count)
+		_refresh())
+	EventBus.boss_hp_changed.connect(func(current: int, maximum: int) -> void:
+		_boss_hp = Vector2i(current, maximum)
+		_refresh())
 	EventBus.back_requested.connect(_toggle_pause)
 	EventBus.app_backgrounded.connect(func() -> void: _set_paused(true))
 	_build_ui()
@@ -107,6 +120,9 @@ func _reset() -> void:
 	_exp = 0
 	_kills = 0
 	_boss_phase = 0
+	_combo = 0
+	_best_combo = 0
+	_boss_hp = Vector2i.ZERO
 	_new_arena()
 
 
@@ -144,18 +160,20 @@ func _build_ui() -> void:
 	_ui.add_child(_readout)
 
 	var actions: Array = [
-		["Scarecrow", _spawn.bind(&"scarecrow")],
+		["Scare", _spawn.bind(&"scarecrow")],
 		["Elite", _spawn.bind(&"scarecrow_elite")],
 		["Crow", _spawn.bind(&"crow")],
 		["Boss", _spawn_boss],
-		["Bulldog", func() -> void: arena.spawn_companion(&"bulldog")],
-		["10 Scare", _spawn_many.bind(&"scarecrow", 10)],
-		["Loyalty", _fill_loyalty],
+		["Dog", func() -> void: arena.spawn_companion(&"bulldog")],
+		["10xS", _spawn_many.bind(&"scarecrow", 10)],
+		["Loyal", _fill_loyalty],
 		["Heal", _heal],
-		["+Shake", _add_trick.bind(&"shake")],
-		["+Spin", _add_trick.bind(&"spin")],
-		["+Bark", _add_trick.bind(&"bark")],
+		["+Shk", _add_trick.bind(&"shake")],
+		["+Spn", _add_trick.bind(&"spin")],
+		["+Brk", _add_trick.bind(&"bark")],
 		["Reset", _reset],
+		["Win", func() -> void: EventBus.level_completed.emit(&"sandbox")],
+		["Shake", func() -> void: arena.add_trauma(0.6)],
 	]
 	for action: Array in actions:
 		var button := _make_button(action[0])
@@ -192,10 +210,11 @@ func _layout_ui() -> void:
 	var top := maxf(game.position.y, safe.position.y) + 1.0
 	_readout.position = Vector2(left, top)
 	_readout.size = Vector2(176, 20)
+	_readout.autowrap_mode = TextServer.AUTOWRAP_OFF
 	for i in _buttons.size():
-		var col := i % 4
+		var col := i % BUTTON_COLUMNS
 		@warning_ignore("integer_division")
-		var row := i / 4
+		var row := i / BUTTON_COLUMNS
 		var button := _buttons[i]
 		button.position = Vector2(left + col * (BUTTON_SIZE.x + BUTTON_GAP), top + 20.0 + row * (BUTTON_SIZE.y + BUTTON_GAP))
 		button.size = BUTTON_SIZE
@@ -216,9 +235,9 @@ func _refresh() -> void:
 	if player != null and player.abilities != null:
 		tricks = "shk%d spn%d brk%d" % [player.abilities.stacks(&"shake"), player.abilities.stacks(&"spin"),
 				player.abilities.stacks(&"bark")]
-	_readout.text = "VIG %d/%d  EXP %d  LOY %d/%d\nKO %d  %s  boss P%d  foes %d" % [
-		_vigor.x, _vigor.y, _exp, int(_loyalty.x), int(_loyalty.y), _kills, tricks, _boss_phase,
-		get_tree().get_nodes_in_group(&"enemy").size()]
+	_readout.text = "VIG %d/%d EXP %d LOY %d/%d CB %d/%d\nKO %d %s P%d %d/%d foes %d" % [
+		_vigor.x, _vigor.y, _exp, int(_loyalty.x), int(_loyalty.y), _combo, _best_combo, _kills, tricks,
+		_boss_phase, _boss_hp.x, _boss_hp.y, get_tree().get_nodes_in_group(&"enemy").size()]
 	if _ult_button != null:
 		_ult_button.disabled = _loyalty.x < _loyalty.y
 

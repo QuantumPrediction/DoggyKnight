@@ -77,3 +77,13 @@ SOFTWARE.
 | MoltenVK(Godot iOS 範本內附) | iOS 建置 | https://github.com/KhronosGroup/MoltenVK | Apache 2.0 | 是 | 建議同上一併列出 | D 線,2026-11-15 |
 
 D 線的營地、小遊戲與圖示全部由程式繪製(本專案原創),沒有使用外部圖像或音效。
+
+## v2.2(M3 打磨,C 線新增)
+
+| 素材 | 用在哪裡 | 來源網址 | 授權 | 是否允許商用 | 需要在遊戲內列出 | 核對人與日期 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 7 首 8-bit 背景音樂(title、field、boss、camp、victory、fail、chapter_clear),全部旋律原創 | `assets/music/` | 本專案以 `tools/pixel/music_gen.py` 程式作曲與合成(`python3 tools/pixel/build_all.py`) | 本專案原創 | 是 | 否 | C 線,2026-11-16 |
+| 9 個新音效(crit、combo、boss_roar、star、whoosh、heal、pet、perfect、countdown),原有音效加厚層次 | `assets/sfx/` | 本專案以 `tools/pixel/sfx_gen.py` 程式合成 | 本專案原創 | 是 | 否 | C 線,2026-11-16 |
+| 新背景(麥田、農場、烏鴉森林)與重畫的三個背景、背景動畫圖層、粒子特效圖、標題風景、雲、星星、切入畫面頭像、教學手指、狗掌印轉場 | `assets/backgrounds/`、`assets/fx/particles/`、`assets/ui/`、`ui/transition/` | 本專案以 `tools/pixel/` 程式繪製;調色盤增加 8 個氣氛色(共 40 色) | 本專案原創 | 是 | 否 | C 線,2026-11-16 |
+
+D 線 M3(2026-11-16):營地新增的金毛像素圖(`game/camp/art/`,由 `game/camp/art/make_camp_art.py` 以程式畫出,顏色取自 C 線的調色盤)、營火、夜空、城堡剪影、螢火蟲與小遊戲的所有演出,全部是本專案原創,沒有使用外部素材。

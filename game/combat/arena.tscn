@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://game/combat/arena.gd" id="1_arena"]
 [ext_resource type="PackedScene" path="res://assets/backgrounds/meadow.tscn" id="2_background"]
 [ext_resource type="PackedScene" path="res://game/actors/player/player.tscn" id="3_player"]
+[ext_resource type="Script" path="res://game/combat/combo_tracker.gd" id="4_combo"]
 
 [node name="Arena" type="Node2D" groups=["arena"]]
 script = ExtResource("1_arena")
@@ -32,3 +33,6 @@ z_index = 10
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(90, 160)
+
+[node name="Combo" type="Node" parent="."]
+script = ExtResource("4_combo")

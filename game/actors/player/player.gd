@@ -10,6 +10,15 @@ extends CharacterBody2D
 ## - 活力歸零:趴下睡覺(sleep 動畫 + 暈眩星星),只發一次 player_downed,之後不能操作。
 ## - 忠誠度:打中敵人累積,發 loyalty_changed;滿了且收到 ultimate_requested → 必殺技,發 ultimate_used。
 ## - 能力類把戲:進場時依 GameState.active_tricks 重建;關卡中聽 trick_chosen 多疊一層。
+##
+## M3 打磨(DEV_PLAN 第 15 節,數值在 data/player/feel_tuning.tres):
+## - AP1 揮劍時鏡頭輕推向攻擊方向;受擊、必殺技時鏡頭震動(震動量累積)。
+## - AP2 傷害數字(握手雙倍用大字 + crit 音效)、hit_burst 粒子。
+## - AP3 跑步時 footstep_dust、身體前傾與上下彈;揮劍有拖尾,上下交替揮。
+## - AP6 必殺技:畫面變暗、金毛舉劍、光柱、所有敵人停頓 → 斬下(ultimate_burst、大震動、heavy 震動)。
+## - AP9 受擊 medium、必殺技 heavy 震動(Haptics)。
+## - AP10 收到 level_completed 後停止攻擊,停下時歡呼(有 victory 動畫就用)。
+## - 慢動作(打倒頭目時):動作跟著 CombatFx.time_scale 變慢。
 
 const PLAYER_GROUP: StringName = &"player"
 const ENEMY_GROUP: StringName = &"enemy"
@@ -17,7 +26,10 @@ const DEFAULT_TUNING: PlayerTuning = preload("res://data/player/goldie_tuning.tr
 const DEFAULT_ABILITY_TUNING: AbilityTuning = preload("res://data/player/ability_tuning.tres")
 const SPIN_VISUAL_TIME := 0.3
 const HOP_TIME := 0.18
+const CHEER_HOP_TIME := 0.38
 const POWER_TINT := Color(1.0, 0.85, 0.4)
+const TRAIL_TINT := Color(1.0, 0.97, 0.85, 0.9)
+const ULT_Z := 9                          ## 必殺技時金毛升到暗幕(8)之上
 
 @export var tuning: PlayerTuning = DEFAULT_TUNING
 @export var ability_tuning: AbilityTuning = DEFAULT_ABILITY_TUNING
@@ -30,6 +42,8 @@ var swing_count: int = 0                 ## 揮劍次數(含揮空)
 var last_swing_damage: int = 0
 var last_swing_hits: int = 0
 var ultimate_count: int = 0
+var celebrating: bool = false            ## 過關後歡呼中(不再攻擊)
+var feel: FeelTuning
 
 var sprite: AnimatedSprite2D
 var joystick: TouchJoystick
@@ -50,11 +64,20 @@ var _hop_left: float = 0.0
 var _dizzy: Node2D
 var _frame_size: Vector2 = Vector2(24, 24)
 var _arena_margin: Vector2 = Vector2(6, 6)
+var _swing_down: bool = true
+var _ult_left: float = -1.0
+var _ult_overlay: ScreenTint
+var _cheer_left: float = 0.0
+var _cheer_count: int = 0
+var _run_time: float = 0.0
+var _last_pickup_haptic: float = -10.0
 
 
 func _ready() -> void:
 	sprite = $Sprite as AnimatedSprite2D
 	joystick = get_node_or_null(^"JoystickLayer/Joystick") as TouchJoystick
+	if feel == null:
+		feel = CombatFx.feel()
 	add_to_group(PLAYER_GROUP)
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	collision_layer = Layers.PLAYER
@@ -67,6 +90,9 @@ func _ready() -> void:
 	abilities.rebuild(GameState.active_tricks)
 	EventBus.trick_chosen.connect(_on_trick_chosen)
 	EventBus.ultimate_requested.connect(_on_ultimate_requested)
+	EventBus.level_completed.connect(_on_level_completed)
+	EventBus.leveled_up.connect(_on_leveled_up)
+	EventBus.exp_collected.connect(_on_exp_collected)
 	_play(&"idle")
 	if GameState.vigor > GameState.player_stats.max_vigor:
 		GameState.vigor = GameState.player_stats.max_vigor
@@ -78,19 +104,28 @@ func _physics_process(delta: float) -> void:
 	if _downed:
 		velocity = Vector2.ZERO
 		return
+	var ts := CombatFx.time_scale
+	delta *= ts
 	_tick_feedback(delta)
+	if _ult_left >= 0.0:
+		_tick_ultimate(delta)
+		return
 	if _hitstop_left > 0.0:
 		_hitstop_left -= delta
 		if _hitstop_left <= 0.0:
-			sprite.speed_scale = 1.0
+			sprite.speed_scale = ts
 		return
+	sprite.speed_scale = ts
 	var stats := GameState.player_stats
 	var input := get_move_input()
 	var target_velocity := input * stats.move_speed
 	var ramp_time := tuning.accel_time if input != Vector2.ZERO else tuning.decel_time
 	var rate := stats.move_speed / maxf(ramp_time, 0.001)
 	velocity = velocity.move_toward(target_velocity, rate * delta)
+	var real_velocity := velocity
+	velocity *= ts
 	move_and_slide()
+	velocity = real_velocity
 	global_position = CombatMath.clamp_to_bounds(global_position, _arena_margin)
 	var moving := input != Vector2.ZERO
 	if moving:
@@ -112,6 +147,10 @@ func take_damage(amount: int) -> void:
 	Sfx.play(&"hurt")
 	CombatFx.spawn(self, &"hit_spark", global_position + Vector2(0, -_frame_size.y * 0.4), 0.0,
 			Vector2.ONE, Color(1.0, 0.95, 0.55))
+	# 可愛的受擊:頭上冒小星星、鏡頭震一下、手機 medium 震動(狗不會受傷)。
+	CombatFx.particles(self, &"star_burst", global_position + Vector2(0, -_frame_size.y * 0.5))
+	CombatFx.trauma(self, feel.trauma_player_hit)
+	CombatFx.haptic(feel.haptic_player_hit)
 	if GameState.vigor <= 0:
 		_go_down()
 		return
@@ -185,7 +224,7 @@ func _update_attack(delta: float, moving: bool) -> void:
 		if _windup_left <= 0.0:
 			_swing()
 		return
-	if _attack_cooldown <= 0.0 and _has_enemies():
+	if _attack_cooldown <= 0.0 and not celebrating and _has_enemies():
 		_start_windup()
 
 
@@ -227,39 +266,77 @@ func _swing() -> void:
 	last_swing_damage = damage if not hits.is_empty() else 0
 	_attack_cooldown = maxf(0.0, stats.attack_interval - tuning.attack_windup)
 
-	# 揮劍:身體拉長、往前衝一點,弧光朝目標。
+	# 揮劍:身體拉長、往前衝一點,弧光朝目標;上下交替揮,有拖尾;鏡頭輕推向攻擊方向。
 	sprite.scale = Vector2(0.9, 1.1)
 	sprite.position = facing.normalized() * 2.0
 	sprite.play(&"attack")
 	_attack_anim_left = tuning.attack_anim_time
 	var power := mult > 1.0
+	_swing_down = not _swing_down
 	var slash := CombatFx.spawn(self, &"slash", global_position + facing.normalized() * 10.0, facing.angle(),
 			Vector2.ONE * (1.35 if power else 1.0), POWER_TINT if power else Color.WHITE)
 	if slash != null:
-		slash.flip_v = facing.x < 0.0
-	Sfx.play(&"swing")
+		# 預設圖是一個方向的弧光(朝左時鏡像);每一下反過來一次,看起來是上下交替揮。
+		slash.flip_v = (facing.x < 0.0) != _swing_down
+	_spawn_trail(stats.attack_range, power)
+	CombatFx.nudge(self, facing, feel.swing_nudge * (1.6 if power else 1.0))
+	if power:
+		CombatFx.sfx(&"whoosh", &"swing")
+	else:
+		Sfx.play(&"swing")
 	if hits.is_empty():
 		return
-	Sfx.play(&"hit")
+	if power:
+		CombatFx.sfx(&"crit", &"hit")
+	else:
+		Sfx.play(&"hit")
+	var style := DamageNumber.Style.CRIT if power else DamageNumber.Style.NORMAL
+	var stop := tuning.hitstop_time * (1.6 if power else 1.0)
+	var bursts := 0
 	for enemy in hits:
-		_strike(enemy, damage, tuning.knockback_speed)
+		_strike(enemy, damage, tuning.knockback_speed, style, bursts < feel.hit_bursts_per_swing)
+		bursts += 1
 		if enemy.has_method(&"apply_hitstop"):
-			enemy.call(&"apply_hitstop", tuning.hitstop_time)
+			enemy.call(&"apply_hitstop", stop)
 	add_loyalty(tuning.loyalty_per_hit * hits.size())
-	_hitstop_left = tuning.hitstop_time
+	_hitstop_left = stop
 	sprite.speed_scale = 0.0
+	if power:
+		CombatFx.trauma(self, feel.trauma_player_hit * 0.6)
 
 
-func _strike(enemy: Node2D, damage: int, knockback: float) -> void:
+func _spawn_trail(attack_range: float, power: bool) -> void:
+	if not is_inside_tree():
+		return
+	var trail := SwingTrail.new()
+	trail.facing_angle = facing.angle()
+	trail.arc = deg_to_rad(tuning.attack_arc_degrees)
+	trail.inner_radius = 6.0
+	trail.outer_radius = attack_range * (1.05 if power else 0.92)
+	# 畫面上「由上往下」:朝右時角度增加(順時針),朝左時鏡像。
+	trail.clockwise = _swing_down == (facing.x >= 0.0)
+	trail.color = POWER_TINT if power else TRAIL_TINT
+	trail.sweep_time = feel.trail_time
+	trail.fade_time = feel.trail_fade_time
+	CombatFx.layer_for(self).add_child(trail)
+	trail.global_position = global_position + Vector2(0, -2)
+
+
+func _strike(enemy: Node2D, damage: int, knockback: float,
+		style: DamageNumber.Style = DamageNumber.Style.NORMAL, burst: bool = true) -> void:
 	var spark_at := enemy.global_position.lerp(global_position, 0.35)
 	if enemy.has_method(&"hit"):
-		enemy.call(&"hit", damage, global_position, knockback)
+		enemy.call(&"hit", damage, global_position, knockback, style)
 	else:
 		enemy.call(&"take_damage", damage)
 	CombatFx.spawn(self, &"hit_spark", spark_at, randf() * TAU)
+	if burst:
+		CombatFx.particles(self, &"hit_burst", spark_at)
+		if style == DamageNumber.Style.CRIT:
+			CombatFx.particles(self, &"star_burst", spark_at)
 
 
-# --- 忠誠度與必殺技(A9) --------------------------------------------------------
+# --- 忠誠度與必殺技(A9、AP6) ----------------------------------------------------
 
 func add_loyalty(amount: float) -> void:
 	if _downed or amount <= 0.0:
@@ -271,21 +348,72 @@ func add_loyalty(amount: float) -> void:
 
 
 func can_use_ultimate() -> bool:
-	return not _downed and loyalty >= tuning.loyalty_max
+	return not _downed and _ult_left < 0.0 and loyalty >= tuning.loyalty_max
 
 
 ## 王者之劍:以金毛為中心的大範圍斬擊。忠誠度未滿時不做任何事,傳回 false。
+## 演出(AP6):按下的一刻忠誠度歸零、發 ultimate_used;畫面變暗、金毛舉劍、天上降下光柱,
+## 所有敵人停住;ultimate_windup 秒後斬下(ultimate_burst、大震動、heavy 震動),
+## 範圍內的敵人受到攻擊力 × ultimate_damage_mult 的傷害。整段時間金毛無敵、不能移動。
 func use_ultimate() -> bool:
 	if not can_use_ultimate():
 		return false
 	loyalty = 0.0
 	ultimate_count += 1
-	_windup_left = -1.0
+	_cancel_windup()
+	_hitstop_left = 0.0
+	velocity = Vector2.ZERO
+	var windup := maxf(0.0, feel.ultimate_windup)
+	invuln_left = maxf(invuln_left, windup + tuning.ultimate_invuln_time)
+	# 所有敵人停頓(包括範圍外的),斬下之後再多停一下。
+	for node in get_tree().get_nodes_in_group(ENEMY_GROUP):
+		if node.has_method(&"apply_hitstop"):
+			node.call(&"apply_hitstop", windup + feel.ultimate_freeze_after)
+	_ult_overlay = CombatFx.tint(self, Color(0.03, 0.0, 0.1, feel.ultimate_dark_alpha),
+			maxf(feel.ultimate_dark_time, windup + 0.2), 0.08, 0.35, ULT_Z - 1)
+	if _ult_overlay != null:
+		_ult_overlay.pillar = true
+		_ult_overlay.pillar_at = global_position
+		_ult_overlay.pillar_width = feel.ultimate_pillar_width
+	z_index = ULT_Z
+	# 舉劍:停在攻擊動畫的第一格,身體拉高。
+	_play(&"attack", true)
+	sprite.pause()
+	sprite.scale = Vector2(0.85, 1.2)
+	sprite.position = Vector2(0, -2)
+	CombatFx.sfx(&"whoosh", &"swing")
+	CombatFx.particles(self, &"sparkle", global_position + Vector2(0, -_frame_size.y * 0.5), false, true)
+	_ult_left = windup
+	_emit_loyalty()
+	EventBus.ultimate_used.emit()
+	if windup <= 0.0:
+		_ultimate_strike()
+	return true
+
+
+## 必殺技還在蓄力(舉劍)中。
+func is_ultimate_charging() -> bool:
+	return _ult_left >= 0.0
+
+
+func _tick_ultimate(delta: float) -> void:
+	velocity = Vector2.ZERO
+	_ult_left -= delta
+	# 蓄力時越舉越高、微微發抖。
+	var t := 1.0 - clampf(_ult_left / maxf(feel.ultimate_windup, 0.001), 0.0, 1.0)
+	sprite.position = Vector2(roundf(sin(t * 60.0) * 0.5), -2.0 - roundf(2.0 * t))
+	if _ult_left < 0.0:
+		_ultimate_strike()
+
+
+func _ultimate_strike() -> void:
+	_ult_left = -1.0
 	var damage := CombatMath.player_damage(GameState.player_stats, GameState.next_level_bonus,
 			tuning.ultimate_damage_mult)
 	var targets := _enemies_in_radius(tuning.ultimate_radius)
-	invuln_left = maxf(invuln_left, tuning.ultimate_invuln_time)
 	Sfx.play(&"ultimate")
+	CombatFx.haptic(feel.haptic_ultimate)
+	CombatFx.trauma(self, feel.trauma_ultimate)
 	var size := tuning.ultimate_radius * 2.0
 	var fx_frames := CombatFx.frames(&"ultimate_slash")
 	var fx_scale := 2.5
@@ -293,18 +421,27 @@ func use_ultimate() -> bool:
 		fx_scale = size / maxf(1.0, fx_frames.get_frame_texture(&"default", 0).get_width())
 	CombatFx.spawn(self, &"ultimate_slash", global_position, 0.0, Vector2.ONE * fx_scale)
 	CombatFx.ring(self, global_position, 8.0, tuning.ultimate_radius, 0.4, Color(1.0, 0.86, 0.35, 0.95), 3.0)
-	CombatFx.ring(self, global_position, 4.0, tuning.ultimate_radius * 0.8, 0.18, Color(1, 1, 1, 0.5), 1.0, false, true)
-	CombatFx.shake(self, 3.0, 0.3)
-	sprite.scale = Vector2(0.85, 1.2)
+	# 白色閃光與爆發的光點放在暗幕之上、金毛之下,不會蓋住金毛。
+	var overlay_ok := _ult_overlay != null and is_instance_valid(_ult_overlay) and _ult_overlay.is_inside_tree()
+	var flash := CombatFx.ring(self, global_position, 4.0, tuning.ultimate_radius * 0.8, 0.18, Color(1, 1, 1, 0.5), 1.0, false, true)
+	if flash != null and overlay_ok:
+		flash.reparent(_ult_overlay)
+		flash.z_index = 0
+	CombatFx.particles(self, &"ultimate_burst", global_position, not overlay_ok, true,
+			_ult_overlay if overlay_ok else null)
+	sprite.play()
+	sprite.scale = Vector2(1.2, 0.85)
+	sprite.position = Vector2.ZERO
 	_play(&"attack", true)
 	_attack_anim_left = 0.35
+	var bursts := 0
 	for enemy in targets:
-		_strike(enemy, damage, tuning.ultimate_knockback_speed)
+		_strike(enemy, damage, tuning.ultimate_knockback_speed, DamageNumber.Style.ULTIMATE,
+				bursts < feel.hit_bursts_per_swing)
+		bursts += 1
 		if enemy.has_method(&"apply_hitstop"):
-			enemy.call(&"apply_hitstop", tuning.ultimate_hitstop_time)
-	_emit_loyalty()
-	EventBus.ultimate_used.emit()
-	return true
+			enemy.call(&"apply_hitstop", maxf(tuning.ultimate_hitstop_time, feel.ultimate_freeze_after))
+	z_index = 0
 
 
 func _on_ultimate_requested() -> void:
@@ -341,7 +478,7 @@ func ability_visual(kind: StringName, radius: float) -> void:
 			for i in 4:
 				var dir := Vector2.from_angle(TAU * float(i) / 4.0 + PI / 4.0)
 				CombatFx.spawn(self, &"slash", global_position + dir * radius * 0.6, dir.angle() + PI / 2.0)
-			Sfx.play(&"swing")
+			CombatFx.sfx(&"whoosh", &"swing")
 		&"bark":
 			_hop_left = HOP_TIME
 			CombatFx.ring(self, global_position, 4.0, radius, 0.35, Color(1.0, 0.92, 0.45, 0.9), 2.0)
@@ -351,6 +488,46 @@ func ability_visual(kind: StringName, radius: float) -> void:
 func _on_trick_chosen(trick_id: StringName) -> void:
 	if abilities.add_trick(trick_id):
 		CombatFx.ring(self, global_position, 2.0, 16.0, 0.3, Color(1.0, 0.95, 0.6, 0.9), 1.0)
+
+
+# --- 慶祝與回饋 -------------------------------------------------------------------
+
+## 過關(AP10):不再攻擊;停下時歡呼。
+func celebrate() -> void:
+	if _downed or celebrating:
+		return
+	celebrating = true
+	_cancel_windup()
+	_cheer_left = 0.0
+	_cheer_count = 0
+	CombatFx.particles(self, &"heart", global_position + Vector2(0, -_frame_size.y * 0.6), false, true)
+
+
+## 連擊里程碑(由 ComboTracker 呼叫):金毛身邊閃一下。
+func celebrate_combo(_count: int) -> void:
+	CombatFx.particles(self, &"sparkle", global_position + Vector2(0, -_frame_size.y * 0.3), false, true)
+	CombatFx.ring(self, global_position, 4.0, 20.0, 0.3, Color(1.0, 0.92, 0.5, 0.8), 1.0)
+
+
+func _on_level_completed(_level_id: StringName) -> void:
+	celebrate()
+
+
+func _on_leveled_up(_new_level: int) -> void:
+	if not is_inside_tree() or _downed:
+		return
+	# 升級時腳下升起光柱。升級後流程會暫停遊戲讓玩家選把戲,這個特效在暫停時也繼續播。
+	var fx := CombatFx.particles(self, &"level_up_pillar", global_position + Vector2(0, _frame_size.y * 0.4), false, true)
+	if fx != null:
+		fx.process_mode = Node.PROCESS_MODE_ALWAYS
+
+
+func _on_exp_collected(_amount: int) -> void:
+	# 拾取經驗珠:輕震動,但有最短間隔,不會一直嗡嗡響。
+	var now := Time.get_ticks_msec() / 1000.0
+	if now - _last_pickup_haptic >= feel.pickup_haptic_interval:
+		_last_pickup_haptic = now
+		CombatFx.haptic(feel.haptic_pickup)
 
 
 # --- 找敵人 ---------------------------------------------------------------------
@@ -435,16 +612,27 @@ func _update_visuals(delta: float) -> void:
 	_attack_anim_left = maxf(0.0, _attack_anim_left - delta)
 	if absf(facing.x) > 0.05:
 		sprite.flip_h = facing.x < 0.0
+	var running := velocity.length() > 4.0 and _hurt_anim_left <= 0.0 and _windup_left < 0.0 and _attack_anim_left <= 0.0
 	# 蓄力時維持壓扁的姿勢,其他時候慢慢回復原狀。
 	if _windup_left < 0.0:
 		sprite.scale = sprite.scale.move_toward(Vector2.ONE, delta * 2.5)
-		var hop := Vector2.ZERO
+		var offset := Vector2.ZERO
 		if _hop_left > 0.0:
 			_hop_left = maxf(0.0, _hop_left - delta)
-			hop = Vector2(0, -3.0 * sin(PI * _hop_left / HOP_TIME))
-			sprite.position = hop
+			offset = Vector2(0, -3.0 * sin(PI * _hop_left / HOP_TIME))
+		elif running:
+			# 跑步時上下彈。
+			_run_time += delta
+			offset = Vector2(0, -roundf(absf(sin(_run_time * 12.0)) * feel.run_bob))
+		if _hop_left > 0.0 or running:
+			sprite.position = offset
 		else:
-			sprite.position = sprite.position.move_toward(hop, delta * 30.0)
+			sprite.position = sprite.position.move_toward(offset, delta * 30.0)
+	# 跑步時身體往前傾(斜切,像素圖不會變糊)。
+	var lean := 0.0
+	if running:
+		lean = -feel.run_lean * signf(facing.x) if absf(facing.x) > 0.05 else 0.0
+	sprite.skew = move_toward(sprite.skew, lean, delta * 3.0)
 	if _spin_left > 0.0:
 		_spin_left = maxf(0.0, _spin_left - delta)
 		sprite.rotation = TAU * (1.0 - _spin_left / SPIN_VISUAL_TIME) * (-1.0 if sprite.flip_h else 1.0)
@@ -455,15 +643,35 @@ func _update_visuals(delta: float) -> void:
 		_play(&"hurt")
 	elif _windup_left >= 0.0 or _attack_anim_left > 0.0:
 		pass
-	elif velocity.length() > 4.0:
+	elif running:
 		_play(&"run")
 		_footstep_timer -= delta
 		if _footstep_timer <= 0.0:
 			_footstep_timer = tuning.footstep_interval
-			CombatFx.spawn(self, &"dust", global_position + Vector2(0, _frame_size.y * 0.4), 0.0,
-					Vector2.ONE * 0.75, Color(1, 1, 1, 0.7), true)
+			CombatFx.particles(self, &"footstep_dust", global_position + Vector2(-facing.x * 3.0, _frame_size.y * 0.4), true)
+	elif celebrating:
+		_cheer(delta)
 	else:
+		_run_time = 0.0
 		_play(&"idle")
+
+
+## 歡呼:有 victory 動畫就播;沒有的話原地跳一跳(每跳兩下停一下),偶爾冒愛心。
+func _cheer(delta: float) -> void:
+	var frames := sprite.sprite_frames
+	if frames != null and frames.has_animation(&"victory"):
+		_play(&"victory")
+		return
+	_play(&"idle")
+	_cheer_left -= delta
+	if _cheer_left <= 0.0:
+		_cheer_count += 1
+		_cheer_left = CHEER_HOP_TIME * (1.0 if _cheer_count % 3 != 0 else 2.2)
+		if _cheer_count % 3 != 0:
+			_hop_left = HOP_TIME * 1.3
+			sprite.scale = Vector2(0.9, 1.12)
+			if _cheer_count % 3 == 1:
+				CombatFx.particles(self, &"heart", global_position + Vector2(0, -_frame_size.y * 0.6))
 
 
 func _go_down() -> void:
@@ -471,12 +679,15 @@ func _go_down() -> void:
 	invuln_left = 0.0
 	_blink_left = 0.0
 	_windup_left = -1.0
+	_ult_left = -1.0
 	_hitstop_left = 0.0
+	z_index = 0
 	velocity = Vector2.ZERO
 	sprite.visible = true
 	sprite.scale = Vector2.ONE
 	sprite.position = Vector2.ZERO
 	sprite.rotation = 0.0
+	sprite.skew = 0.0
 	sprite.speed_scale = 1.0
 	if joystick != null:
 		joystick.enabled = false

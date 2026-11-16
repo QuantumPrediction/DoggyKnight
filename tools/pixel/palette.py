@@ -1,6 +1,8 @@
-"""The single 32-colour palette of 金毛騎士 (DEV_PLAN 第 10 節「美術方向」).
+"""The single 40-colour palette of 金毛騎士 (DEV_PLAN 第 10 節「美術方向」).
 
-Every sprite, tile, icon and UI texture uses only these colours (FX may use them
+v1 had 32 colours; v2.2 (M3 polish) added 8 mood colours (peach, rose, dusk, night,
+night_d, moss, moss_d, dirt) for the late-afternoon farm, the dusk forest and the
+stormy night bridge. Every sprite, tile, icon and UI texture uses only these colours (FX may use them
 with transparency). tests/line_c/test_line_c_art.gd checks this.
 Order matters: it is the order of the swatches in assets/palette.png and of the
 constants in ui/theme/palette_colors.gd.
@@ -48,6 +50,15 @@ PALETTE: list[tuple[str, str]] = [
     ("stone_l", "dcd3c6"),
     ("stone", "aaa09a"),
     ("stone_d", "7a6f72"),
+    # v2.2 (M3) mood colours: late afternoon, dusk and stormy night scenes
+    ("peach", "ffc79a"),
+    ("rose", "d9748e"),
+    ("dusk", "7d4a78"),
+    ("night", "3b4a80"),
+    ("night_d", "232a50"),
+    ("moss", "a8b850"),
+    ("moss_d", "6d8a3c"),
+    ("dirt", "c9a06e"),
 ]
 
 COLORS: dict[str, str] = dict(PALETTE)

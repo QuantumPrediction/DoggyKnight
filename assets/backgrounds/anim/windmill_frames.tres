@@ -1,0 +1,67 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/windmill.png" id="1_sheet"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_0"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 0, 31, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_1"]
+atlas = ExtResource("1_sheet")
+region = Rect2(31, 0, 31, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_2"]
+atlas = ExtResource("1_sheet")
+region = Rect2(62, 0, 31, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_3"]
+atlas = ExtResource("1_sheet")
+region = Rect2(93, 0, 31, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_4"]
+atlas = ExtResource("1_sheet")
+region = Rect2(124, 0, 31, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_5"]
+atlas = ExtResource("1_sheet")
+region = Rect2(155, 0, 31, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_6"]
+atlas = ExtResource("1_sheet")
+region = Rect2(186, 0, 31, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_7"]
+atlas = ExtResource("1_sheet")
+region = Rect2(217, 0, 31, 31)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_7")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]

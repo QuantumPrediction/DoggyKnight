@@ -3,10 +3,13 @@ extends Control
 ##
 ## 聽 EventBus.game_paused(paused) 決定顯示或隱藏。
 ## 按鈕:繼續 → EventBus.resume_requested;回標題 → EventBus.quit_to_title_requested;
-## 音效開關 → 直接切換 GameState.sound_on(B 線存檔時會一併保存)。
+## 音效開關 → 直接切換 GameState.sound_on;音樂開關 → GameState.music_on 並呼叫 Music.refresh();
+## 震動開關 → GameState.haptics_on(B 線存檔時一併保存)。每個按鈕都有按鍵音與輕震。
 
 var resume_button: Button
 var sound_button: Button
+var music_button: Button
+var haptics_button: Button
 var title_button: Button
 var _panel: PanelContainer
 
@@ -33,6 +36,14 @@ func _ready() -> void:
 	sound_button.name = "SoundButton"
 	sound_button.pressed.connect(toggle_sound)
 	box.add_child(sound_button)
+	music_button = UiKit.button("", &"ButtonAlt")
+	music_button.name = "MusicButton"
+	music_button.pressed.connect(toggle_music)
+	box.add_child(music_button)
+	haptics_button = UiKit.button("", &"ButtonAlt")
+	haptics_button.name = "HapticsButton"
+	haptics_button.pressed.connect(toggle_haptics)
+	box.add_child(haptics_button)
 	title_button = UiKit.button(tr("UI_BACK_TO_TITLE"), &"ButtonAlt")
 	title_button.name = "TitleButton"
 	title_button.pressed.connect(func() -> void: EventBus.quit_to_title_requested.emit())
@@ -49,10 +60,10 @@ func _on_game_paused(paused: bool) -> void:
 	if paused:
 		_refresh_sound()
 		_layout()
-		_panel.scale = Vector2(0.9, 0.9)
+		_panel.scale = Vector2(0.85, 0.85)
 		_panel.pivot_offset = _panel.size * 0.5
 		var t := create_tween()
-		t.tween_property(_panel, "scale", Vector2.ONE, 0.1)
+		t.tween_property(_panel, "scale", Vector2.ONE, 0.14).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 
 ## 音效開關:切換 GameState.sound_on 並更新按鈕文字。
@@ -63,9 +74,30 @@ func toggle_sound() -> void:
 	_refresh_sound()
 
 
+## 音樂開關:切換 GameState.music_on,並請 Music 立刻跟著停止或重新播放。
+func toggle_music() -> void:
+	GameState.music_on = not GameState.music_on
+	var music := get_node_or_null("/root/Music")
+	if music != null:
+		music.call(&"refresh")
+	_refresh_sound()
+
+
+## 震動開關:切換 GameState.haptics_on(打開時輕震一下,讓玩家知道有效)。
+func toggle_haptics() -> void:
+	GameState.haptics_on = not GameState.haptics_on
+	if GameState.haptics_on:
+		Haptics.play(&"light")
+	_refresh_sound()
+
+
 func _refresh_sound() -> void:
 	sound_button.text = tr("UI_SOUND_ON") if GameState.sound_on else tr("UI_SOUND_OFF")
 	sound_button.icon = preload("res://assets/ui/icon_sound_on.png") if GameState.sound_on else preload("res://assets/ui/icon_sound_off.png")
+	music_button.text = tr("UI_MUSIC_ON") if GameState.music_on else tr("UI_MUSIC_OFF")
+	music_button.icon = preload("res://assets/ui/icon_music_on.png") if GameState.music_on else preload("res://assets/ui/icon_music_off.png")
+	haptics_button.text = tr("UI_HAPTICS_ON") if GameState.haptics_on else tr("UI_HAPTICS_OFF")
+	haptics_button.icon = preload("res://assets/ui/icon_vibrate_on.png") if GameState.haptics_on else preload("res://assets/ui/icon_vibrate_off.png")
 
 
 func _process(_delta: float) -> void:

@@ -1,0 +1,32 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://assets/fx/particles/one_shot_particles.gd" id="1_fx"]
+[ext_resource type="Texture2D" path="res://assets/fx/particles/tex/feather.png" id="2_tex"]
+
+[sub_resource type="Gradient" id="Gradient_ramp"]
+offsets = PackedFloat32Array(0, 0.7, 1)
+colors = PackedColorArray(1.000, 0.980, 0.941, 1.000, 1.000, 0.980, 0.941, 1.000, 1.000, 0.980, 0.941, 0.000)
+
+[node name="feathers" type="CPUParticles2D"]
+z_index = 5
+emitting = false
+one_shot = true
+texture = ExtResource("2_tex")
+amount = 7
+lifetime = 1.2
+explosiveness = 0.9
+direction = Vector2(0, -1)
+spread = 100.0
+gravity = Vector2(0, 40)
+initial_velocity_min = 30.0
+initial_velocity_max = 60.0
+damping_min = 60.0
+damping_max = 90.0
+angular_velocity_min = -200.0
+angular_velocity_max = 200.0
+angle_min = -180.0
+angle_max = 180.0
+tangential_accel_min = -30.0
+tangential_accel_max = 30.0
+color_ramp = SubResource("Gradient_ramp")
+script = ExtResource("1_fx")

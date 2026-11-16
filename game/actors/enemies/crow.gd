@@ -2,6 +2,8 @@ class_name CrowEnemy
 extends EnemyBase
 ## 烏鴉斥候(A6):沿著場邊盤旋 → 鎖定金毛,停下並畫出預警線 → 沿直線俯衝(140 像素/秒,
 ## EnemyData.move_speed)→ 落地喘口氣(這時最好打)→ 飛回場邊。
+## M3 打磨(AP7):偶爾兩隻接連俯衝——一隻開始預警時,有機會叫另一隻盤旋中的烏鴉
+## 稍後也鎖定(各自都有完整的預警線)。倒下時噴 feathers。
 
 enum Phase { TO_EDGE, CIRCLE, TELEGRAPH, DIVE, RECOVER }
 
@@ -17,9 +19,12 @@ enum Phase { TO_EDGE, CIRCLE, TELEGRAPH, DIVE, RECOVER }
 @export var max_dive_distance: float = 190.0
 @export var hit_radius: float = 6.0
 @export var recover_time: float = 0.75
+@export var pair_dive_chance: float = 0.35        ## 開始預警時,叫另一隻烏鴉接著俯衝的機率
+@export var pair_dive_delay: float = 0.3          ## 第二隻在幾秒後開始預警
 
 var phase: Phase = Phase.TO_EDGE
 var dives_started: int = 0
+var pair_dives_called: int = 0
 
 var _phase_left: float = 0.0
 var _theta: float = 0.0
@@ -29,6 +34,7 @@ var _dive_length: float = 0.0
 var _dive_traveled: float = 0.0
 var _dive_hit: Array[Node2D] = []
 var _height: float = 0.0
+var _following: bool = false
 
 
 func _on_ready() -> void:
@@ -133,6 +139,29 @@ func _start_telegraph() -> void:
 	_phase_left = telegraph_time
 	facing = _dive_dir
 	_show_telegraph(AttackTelegraph.make_line(_dive_dir, _dive_length, hit_radius * 2.0))
+	if _following:
+		_following = false
+	elif rng.randf() < pair_dive_chance:
+		_call_wingman()
+
+
+## 叫一隻正在盤旋的烏鴉接著俯衝。傳回有沒有叫到。
+func _call_wingman() -> bool:
+	for node in _enemies_cached():
+		var other := node as CrowEnemy
+		if other != null and other != self and other.follow_dive(pair_dive_delay):
+			pair_dives_called += 1
+			return true
+	return false
+
+
+## 被同伴叫來接著俯衝:正在盤旋的話,delay 秒後開始預警。傳回有沒有答應。
+func follow_dive(delay: float) -> bool:
+	if state != State.ACTIVE or phase != Phase.CIRCLE or target == null or is_stunned():
+		return false
+	_phase_left = minf(_phase_left, delay)
+	_following = true
+	return true
 
 
 func _start_dive() -> void:

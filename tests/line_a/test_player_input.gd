@@ -123,14 +123,19 @@ func test_ultimate_needs_full_loyalty() -> void:
 	player.add_loyalty(500.0)
 	assert_eq(loyalty.last_args(), [100.0, 100.0], "最多到上限")
 	EventBus.ultimate_requested.emit()
-	assert_eq(used.count, 1)
+	assert_eq(used.count, 1, "按下的一刻就發 ultimate_used(HUD 播切入畫面)")
 	assert_eq(player.loyalty, 0.0, "放完歸零")
 	assert_eq(loyalty.last_args(), [0.0, 100.0])
+	assert_true(player.is_ultimate_charging(), "先舉劍蓄力(AP6)")
+	assert_eq(died.count, 0, "蓄力時還沒斬下")
+	EventBus.ultimate_requested.emit()
+	assert_eq(used.count, 1, "不能連放")
+	var struck := await wait_until(func() -> bool: return died.count > 0, 60)
+	assert_true(struck, "蓄力後斬下")
 	assert_eq(died.count, 1, "範圍內的稻草人被打倒")
 	assert_true(near.is_dead())
 	assert_false(far.is_dead(), "範圍外的不受影響")
-	EventBus.ultimate_requested.emit()
-	assert_eq(used.count, 1, "不能連放")
+	assert_false(player.is_ultimate_charging())
 
 
 func test_real_touch_events_through_the_viewport() -> void:

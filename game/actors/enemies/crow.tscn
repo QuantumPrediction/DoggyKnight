@@ -8,6 +8,7 @@ collision_layer = 8
 collision_mask = 1
 motion_mode = 1
 script = ExtResource("1_script")
+death_particles = &"feathers"
 body_radius = 5.0
 separation_radius = 14.0
 spawn_time = 0.45

@@ -37,7 +37,7 @@ func test_collision_layer_names() -> void:
 
 
 func test_autoloads() -> void:
-	for autoload in ["EventBus", "GameState", "AppLifecycle", "ScreenFit", "Sfx", "PlayLog"]:
+	for autoload in ["EventBus", "GameState", "AppLifecycle", "ScreenFit", "Sfx", "PlayLog", "Music"]:
 		assert_true(ProjectSettings.has_setting("autoload/%s" % autoload), "Autoload %s" % autoload)
 		assert_not_null(get_tree().root.get_node_or_null(autoload), "Autoload %s 已載入" % autoload)
 
@@ -71,3 +71,15 @@ func test_boot_main_scene_splash_and_theme() -> void:
 	assert_true(ResourceLoader.exists("res://game/flow/main.tscn"))
 	assert_true(ResourceLoader.exists("res://assets/app_icon/splash.png"))
 	assert_true(ResourceLoader.exists("res://ui/theme/main_theme.tres"))
+
+
+func test_strings_csv_rows_have_exactly_two_columns() -> void:
+	var file := FileAccess.open("res://i18n/strings.csv", FileAccess.READ)
+	assert_not_null(file)
+	var line_no := 0
+	while file != null and not file.eof_reached():
+		var row := file.get_csv_line()
+		line_no += 1
+		if row.size() == 1 and row[0].is_empty():
+			continue
+		assert_eq(row.size(), 2, "strings.csv 第 %d 行應該只有兩欄(文字裡的逗號要用全形「,」):%s" % [line_no, ",".join(row)])

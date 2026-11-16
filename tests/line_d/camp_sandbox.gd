@@ -3,7 +3,8 @@ extends Node
 ## 這個場景同時是 B 線流程的替身:它把營地加到自己底下,收到 camp_left 後移除營地。
 ##
 ## 操作(只用觸控;桌面用滑鼠):
-## - 「進入營地」:活力先設為 40,方便看到小遊戲的回復效果。
+## - 「進入營地」:活力先設為 40,方便看到小遊戲的回復效果。點金毛可以摸摸頭。
+## - 「第二次營地」:同上,但 GameState.level_index = 3(1-4 之後),鬥牛犬坐在營火旁。
 ## - 「壓力測試」:開啟 tests/line_d/stress_test.tscn(40 隻敵人與 FPS)。
 ## - 「模擬瀏海」:切換 SafeArea.simulate_notch。
 ## 視窗失去焦點 = 切到背景(小遊戲會暫停);回來後點一下繼續。
@@ -44,14 +45,15 @@ func _ready() -> void:
 	_build_menu()
 	if autoplay:
 		_note("autoplay on")
-		enter_camp()
+		enter_camp(3)
 
 
-func enter_camp() -> void:
+func enter_camp(level_index: int = 1) -> void:
 	if _camp != null:
 		return
 	GameState.reset_run()
 	GameState.vigor = 40
+	GameState.level_index = level_index
 	_menu_layer.visible = false
 	_camp = CAMP_SCENE.instantiate() as Camp
 	_camp.minigame_opened.connect(func(m: MinigameBase) -> void:
@@ -87,7 +89,14 @@ func _run_bot(delta: float) -> void:
 	var minigame := _camp.get_minigame()
 	match _bot_step:
 		0:
-			if _bot_time > 0.5:
+			# 摸摸頭三下、點一下鬥牛犬,然後開小遊戲
+			if _bot_time > 0.5 and _camp.pet_count < 3 and _bot_time > 0.5 + _camp.pet_count * 0.5:
+				var rewarded := _camp.pet_goldie()
+				_note("  petted Goldie (rewarded=%s, satisfaction=%d)" % [rewarded, GameState.satisfaction])
+				if _camp.pet_count == 3:
+					_camp.tap_bulldog()
+					_note("  bulldog visible=%s (level_index=%d)" % [_camp.is_bulldog_visible(), GameState.level_index])
+			elif _bot_time > 2.5:
 				_camp.open_minigame()
 				_bot_step = 1
 		1:
@@ -161,6 +170,9 @@ func _build_menu() -> void:
 	var camp_button := MinigameUi.make_button(tr("CAMP_SANDBOX_CAMP"), size, 11, Color("c0603a"), Color("3a1a10"))
 	camp_button.pressed.connect(enter_camp)
 	_menu.add_child(camp_button)
+	var camp2_button := MinigameUi.make_button(tr("CAMP_SANDBOX_CAMP2"), size, 11, Color("c0603a"), Color("3a1a10"))
+	camp2_button.pressed.connect(enter_camp.bind(3))
+	_menu.add_child(camp2_button)
 	var stress_button := MinigameUi.make_button(tr("CAMP_SANDBOX_STRESS"), size, 11, Color("5a5670"), Color("24203a"))
 	stress_button.pressed.connect(func() -> void: get_tree().change_scene_to_file(STRESS_SCENE_PATH))
 	_menu.add_child(stress_button)

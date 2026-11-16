@@ -1,0 +1,110 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/backgrounds/crow_forest.png" id="1_bg"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/eyes_frames.tres" id="2_anim_eyes"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_firefly.png" id="3_p_firefly"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_leaf_dusk.png" id="4_p_leaf_dusk"]
+
+[sub_resource type="Gradient" id="Gradient_fade"]
+offsets = PackedFloat32Array(0, 0.15, 0.8, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_blink"]
+offsets = PackedFloat32Array(0, 0.2, 0.35, 0.5, 0.65, 0.8, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0.2, 1, 1, 1, 1, 1, 1, 1, 0.3, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="Background" type="Node2D"]
+
+[node name="Image" type="Sprite2D" parent="."]
+texture = ExtResource("1_bg")
+centered = false
+position = Vector2(-62, -88)
+
+[node name="Anim" type="Node2D" parent="."]
+
+[node name="eyes_0" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-26, 40)
+sprite_frames = ExtResource("2_anim_eyes")
+autoplay = "default"
+frame = 0
+speed_scale = 0.6
+centered = false
+
+[node name="eyes_1" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(190, 32)
+sprite_frames = ExtResource("2_anim_eyes")
+autoplay = "default"
+frame = 1
+speed_scale = 0.7
+centered = false
+
+[node name="eyes_2" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-50, 364)
+sprite_frames = ExtResource("2_anim_eyes")
+autoplay = "default"
+frame = 2
+speed_scale = 0.8
+centered = false
+
+[node name="eyes_3" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(208, 382)
+sprite_frames = ExtResource("2_anim_eyes")
+autoplay = "default"
+frame = 3
+speed_scale = 0.9
+centered = false
+
+[node name="Ambient" type="Node2D" parent="."]
+
+[node name="firefly_0" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(95, 180)
+amount = 14
+lifetime = 5
+preprocess = 5
+randomness = 0.5
+texture = ExtResource("3_p_firefly")
+emission_shape = 3
+emission_rect_extents = Vector2(105, 220)
+direction = Vector2(0, -1)
+spread = 180
+gravity = Vector2(0, 0)
+initial_velocity_min = 2
+initial_velocity_max = 6
+color_ramp = SubResource("Gradient_blink")
+
+[node name="leaf_dusk_1" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(100, 120)
+amount = 5
+lifetime = 6
+preprocess = 6
+randomness = 0.5
+texture = ExtResource("4_p_leaf_dusk")
+emission_shape = 3
+emission_rect_extents = Vector2(120, 180)
+direction = Vector2(1, 0.5)
+spread = 20
+gravity = Vector2(0, 3)
+initial_velocity_min = 6
+initial_velocity_max = 10
+angular_velocity_min = -90.0
+angular_velocity_max = 90.0
+angle_min = -180.0
+angle_max = 180.0
+color_ramp = SubResource("Gradient_fade")
+
+[node name="Light" type="Node2D" parent="."]
+
+[node name="Shaft_0" type="Polygon2D" parent="Light"]
+color = Color(1, 0.75, 0.55, 0.07)
+polygon = PackedVector2Array(-10, -90, 4, -90, 304, 430, 290, 430)
+
+[node name="Shaft_1" type="Polygon2D" parent="Light"]
+color = Color(1, 0.7, 0.6, 0.06)
+polygon = PackedVector2Array(30, -90, 52, -90, 352, 430, 330, 430)
+
+[node name="Shaft_2" type="Polygon2D" parent="Light"]
+color = Color(1, 0.8, 0.6, 0.05)
+polygon = PackedVector2Array(90, -90, 102, -90, 402, 430, 390, 430)
+
+[node name="Mood" type="CanvasModulate" parent="."]
+color = Color(0.96, 0.9, 0.96, 1)

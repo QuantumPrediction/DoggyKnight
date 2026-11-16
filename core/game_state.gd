@@ -15,6 +15,10 @@ var hero_level: int
 var active_tricks: Array[StringName] = []
 var next_level_bonus: float       # 小遊戲表現換來的下一關加成,0.05 = +5%
 var sound_on: bool = true         # 音效開關,隨存檔保存
+var music_on: bool = true         # v2.2:背景音樂開關,隨存檔保存
+var haptics_on: bool = true       # v2.2:震動開關,隨存檔保存
+var tutorial_done: bool = false   # v2.2:第一關的操作提示已看過,隨存檔保存
+var best_stars: Dictionary = {}   # v2.2:每關最佳星數 {關卡 id: 0 至 3},隨存檔保存
 
 
 func _ready() -> void:
@@ -23,7 +27,7 @@ func _ready() -> void:
 	reset_run()
 
 
-## 開始新的一輪冒險。零食與音效開關屬於存檔與設定,不會被重設。
+## 開始新的一輪冒險。零食、設定(音效、音樂、震動)、教學紀錄與最佳星數屬於存檔與設定,不會被重設。
 func reset_run() -> void:
 	player_stats = BASE_STATS.duplicate() as StatBlock
 	vigor = player_stats.max_vigor

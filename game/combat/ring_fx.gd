@@ -19,7 +19,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	_age += delta
+	_age += delta * CombatFx.time_scale
 	if _age >= duration:
 		queue_free()
 		return

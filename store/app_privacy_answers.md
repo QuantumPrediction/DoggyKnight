@@ -26,6 +26,11 @@ Apple 的定義:「收集」是指資料**傳送出裝置**,而且保存的時�
   只列出引擎用到的「必要原因 API」:檔案時間(DDA9.1、C617.1)、開機時間(35F9.1)、磁碟空間(E174.1、85F4.1)。
 - 這與上面的答案一致。之後加入任何第三方 SDK,SDK 自己的隱私清單也要一起放進 App,並重填本問卷。
 
+## 震動(觸感回饋)
+
+- 遊戲在 iPhone 上用系統的觸感回饋(`Input.vibrate_handheld`),**不需要任何權限**,也不讀取或傳送任何資料,不影響上面的答案。
+- Android 版為此要求 `VIBRATE` 權限(見 `data_safety_answers.md`);Apple 沒有對應的權限或問卷項目。
+
 ## 出口合規(加密)
 
 - Godot 產生的 `Info.plist` 已有 `ITSAppUsesNonExemptEncryption = false`(✅ 已核對),

@@ -9,8 +9,11 @@ Google 的定義:「收集」是指資料**從使用者的裝置傳送出去**(�
 本遊戲的存檔與遊玩記錄只存在手機上,從不傳送出去,所以不算收集。
 (參考:Play Console 說明「Provide information for Google Play's Data safety section」。)
 
-`export_presets.cfg` 已確認:Android 版**不要求任何權限**(連 INTERNET 權限也沒有),
-D 線的測試 `tests/line_d/test_export_presets.gd` 會擋下任何新增的權限。
+`export_presets.cfg` 已確認:Android 版**只要求一個權限:震動(`android.permission.VIBRATE`)**,
+用來在按下、命中、升級、摸摸金毛等時候讓手機輕輕震一下(玩家可以在暫停選單關掉)。
+震動只是讓手機的馬達轉動,**不讀取、不產生、也不傳送任何資料**,所以不影響「不收集資料」的答案。
+沒有 INTERNET 權限(遊戲根本不能連網)。D 線的測試 `tests/line_d/test_export_presets.gd` 會擋下 VIBRATE 以外的任何權限。
+(2026-11-16 實測:`aapt2 dump permissions` 只列出 `android.permission.VIBRATE`。)
 
 ## 逐題建議答案
 
@@ -30,7 +33,7 @@ D 線的測試 `tests/line_d/test_export_presets.gd` 會擋下任何新增的權
 | --- | --- |
 | 隱私權政策 | 填入 `privacy_policy_zh-Hant.md` 放上網後的網址 |
 | 廣告 | 「否,我的應用程式不含廣告」 |
-| 應用程式存取權 | 「所有功能都不需要特殊存取權限即可使用」(沒有登入) |
+| 應用程式存取權 | 「所有功能都不需要特殊存取權限即可使用」(沒有登入)。這一題問的是「審查人員要不要帳號密碼才能進入」,與 VIBRATE 權限無關 |
 | 目標對象與內容 | M4 由擁有人決定(DEV_PLAN 第 14 節第 3 項)。選了 13 歲以下的年齡層,就要遵守家庭政策 |
 | 內容分級 | 見 `content_rating_answers.md` |
 | 新聞應用程式 | 否 |

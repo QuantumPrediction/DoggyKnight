@@ -14,6 +14,10 @@ region = Rect2(8, 0, 8, 8)
 atlas = ExtResource("1_sheet")
 region = Rect2(16, 0, 8, 8)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_3"]
+atlas = ExtResource("1_sheet")
+region = Rect2(24, 0, 8, 8)
+
 [resource]
 animations = [{
 "frames": [{
@@ -25,8 +29,11 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_default_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_3")
 }],
 "loop": false,
 "name": &"default",
-"speed": 12.0
+"speed": 14.0
 }]
