@@ -170,18 +170,22 @@ func _process(delta: float) -> void:
 
 
 func _layout() -> void:
-	# 提示泡泡在金毛起點的上方,手指在她腳下示範(不擋住金毛)
+	# 提示泡泡放在戰鬥區下緣、金毛起點的腳下(下方是玩家最少走到的地方,不擋住金毛與敵人);
+	# 手指在泡泡下面示範。
 	var safe := SafeArea.get_safe_rect()
-	var start := SafeArea.get_game_rect().position + Layout.PLAYER_START
+	var game := SafeArea.get_game_rect()
+	var start := game.position + Layout.PLAYER_START
+	var arena_bottom := game.position.y + Layout.ARENA_RECT.end.y
 	bubble.size = bubble.get_minimum_size()
+	var y := minf(arena_bottom - 46.0, safe.end.y - 64.0)
 	bubble.position = Vector2(floorf(clampf(start.x - bubble.size.x * 0.5, safe.position.x + 2,
-			safe.end.x - bubble.size.x - 2)), floorf(start.y - 40.0))
+			safe.end.x - bubble.size.x - 2)), floorf(maxf(y, start.y + 16.0)))
 
 
 func _finger_origin() -> Vector2:
-	var start := SafeArea.get_game_rect().position + Layout.PLAYER_START
-	var safe := SafeArea.get_safe_rect()
-	return Vector2(floorf(start.x - 22), floorf(minf(start.y + 22.0, safe.end.y - 40.0)))
+	var game := SafeArea.get_game_rect()
+	var start := game.position + Layout.PLAYER_START
+	return Vector2(floorf(start.x - 22), floorf(bubble.position.y + bubble.size.y + 2.0))
 
 
 func _animate_finger() -> void:

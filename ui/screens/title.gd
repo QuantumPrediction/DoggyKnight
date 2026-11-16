@@ -144,7 +144,7 @@ func _play_intro() -> void:
 		var b := _buttons.get_child(i) as Control
 		b.modulate.a = 0.0
 		var bt := create_tween()
-		bt.tween_interval(0.45 + 0.08 * i)
+		bt.tween_interval(0.2 + 0.08 * i)
 		bt.tween_property(b, "modulate:a", 1.0, 0.2)
 
 
