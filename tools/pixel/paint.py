@@ -262,3 +262,18 @@ def star4(c: Canvas, x: int, y: int, col: str, arm: int = 2, centre: str | None 
 def alpha_px(name: str, a: int) -> tuple[int, int, int, int]:
     r, g, b, _ = rgba(name)
     return (r, g, b, a)
+
+
+def rim_light(c: Canvas, side: tuple[int, int] = (1, 0), skip: tuple[str, ...] = ("ink",)) -> Canvas:
+    """v2.3 (CS5) rim light: silhouette pixels whose outer neighbour (past the ink outline) on `side`
+    is empty get one palette step lighter - a thin backlight edge that lifts dark figures off dark ground."""
+    out = c.copy()
+    dx, dy = side
+    for y in range(c.h):
+        for x in range(c.w):
+            n = name_at(c, x, y)
+            if n is None or n in skip:
+                continue
+            if name_at(c, x + dx, y + dy) == "ink" and c.get(x + 2 * dx, y + 2 * dy) is None:
+                out.set(x, y, LIGHTER.get(n, n))
+    return out

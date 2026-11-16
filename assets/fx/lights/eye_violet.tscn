@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/fx/lights/glow.png" id="1_glow"]
+[ext_resource type="Script" path="res://assets/fx/lights/light_flicker.gd" id="2_flicker"]
+
+[sub_resource type="CanvasItemMaterial" id="Mat_add"]
+blend_mode = 1
+
+[node name="EyeViolet" type="Sprite2D"]
+modulate = Color(0.8, 0.45, 1, 0.7)
+material = SubResource("Mat_add")
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("1_glow")
+script = ExtResource("2_flicker")
+base_alpha = 0.7
+flicker = 0.1
+flicker_speed = 7
+breathe = 0.1

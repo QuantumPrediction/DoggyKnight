@@ -175,6 +175,10 @@ def _num(v) -> str:
     return str(v)
 
 
+# v2.3 (CS5): magical bursts are drawn with additive blending so they glow (no Light2D needed)
+GLOWING = ("sparkle", "ultimate_burst", "level_up_pillar", "star_burst")
+
+
 def effect_tscn(name: str, fx: dict) -> str:
     lines = ['[gd_scene format=3]', "",
              '[ext_resource type="Script" path="res://assets/fx/particles/one_shot_particles.gd" id="1_fx"]',
@@ -185,8 +189,12 @@ def effect_tscn(name: str, fx: dict) -> str:
         lines += ["", '[sub_resource type="Gradient" id="Gradient_initial"]'] + gradient(fx["initial"], constant=True)
     if "scale" in fx:
         lines += ["", '[sub_resource type="Curve" id="Curve_scale"]'] + curve(fx["scale"])
+    if name in GLOWING:
+        lines += ["", '[sub_resource type="CanvasItemMaterial" id="Mat_add"]', "blend_mode = 1"]
     lines += ["", '[node name="%s" type="CPUParticles2D"]' % name, "z_index = %d" % fx["z"],
               "emitting = false", "one_shot = true", 'texture = ExtResource("2_tex")']
+    if name in GLOWING:
+        lines.append('material = SubResource("Mat_add")')
     for k, v in fx["props"].items():
         lines.append("%s = %s" % (k, _num(v)))
     if fx.get("align"):

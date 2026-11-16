@@ -53,6 +53,7 @@ import art_story  # noqa: E402
 import art_ui  # noqa: E402
 import art_world  # noqa: E402
 import music_gen  # noqa: E402
+import paint  # noqa: E402
 import sfx_gen  # noqa: E402
 from palette import PALETTE, rgba  # noqa: E402
 from pixel import Canvas, build_sheet, contact_sheet, res_path, write_text  # noqa: E402
@@ -64,6 +65,17 @@ CHARACTERS = {
     "crow": (art_enemies.crow_v2, (16, 16)),
     "black_knight": (art_enemies.black_knight_v2, (48, 48)),
 }
+
+
+# v2.3 (CS5): a thin backlight edge on the dark armour so it lifts off the night bridge and dark ground
+RIM_LIT = ("black_knight", "armored_husk")
+
+
+def with_rim(code: str, anims: list) -> list:
+    if code in RIM_LIT:
+        for a in anims:
+            a.frames = [paint.rim_light(f) for f in a.frames]
+    return anims
 
 
 def write_palette() -> None:
@@ -112,11 +124,11 @@ def main() -> None:
     write_palette()
     sheets = {}
     for code, (fn, size) in CHARACTERS.items():
-        anims = fn()
+        anims = with_rim(code, fn())
         build_sheet("res://assets/sprites/%s" % code, code, anims, size)
         sheets[code] = anims
     for code, (fn, size) in art_cast.SPRITES.items():          # v2.3 cast (CS4)
-        anims = fn()
+        anims = with_rim(code, fn())
         build_sheet("res://assets/sprites/%s" % code, code, anims, size)
         sheets[code] = anims
     for name, (fn, size) in art_cast.PROJECTILES.items():
