@@ -16,9 +16,9 @@ damage_mult = 1.4
 speed_mult = 1.05
 telegraph_mult = 0.8
 interval_mult = 0.9
-projectile_speed_mult = 1.15
+projectile_speed_mult = 1.05
 melee_slot_bonus = 1
-ranged_slot_bonus = 1
+ranged_slot_bonus = 0
 
 [resource]
 script = ExtResource("1_scaling")
