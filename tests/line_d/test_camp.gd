@@ -243,6 +243,11 @@ func test_bulldog_sits_by_fire_from_second_camp() -> void:
 	await wait_frames(1)
 	GameState.level_index = 3
 	_enter()
+	_camp.skip_story()      # 第二次營地先播 camp2(B 線的對白檔存在時)
+	for i in 30:
+		if not _camp.is_story_playing():
+			break
+		await wait_frames(1)
 	assert_true(_camp.is_bulldog_visible(), "第二次營地(1-4 之後):鬥牛犬坐在火旁")
 	Haptics.reset_for_tests()
 	_camp.tap_bulldog()
