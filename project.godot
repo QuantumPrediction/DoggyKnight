@@ -70,7 +70,7 @@ pointing/emulate_touch_from_mouse=true
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://i18n/strings.zh_TW.translation")
+locale/translations=PackedStringArray("res://i18n/strings.zh_TW.translation", "res://i18n/story.zh_TW.translation")
 locale/fallback="zh_TW"
 
 [layer_names]

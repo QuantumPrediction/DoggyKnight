@@ -12,3 +12,5 @@ extends Resource
 @export var background: PackedScene              ## 場地背景(assets/backgrounds/*.tscn)
 @export var par_time: float = 75.0               ## v2.2 星級:在這個秒數內過關得第 2 顆星
 @export var damage_budget: int = 30              ## v2.2 星級:這一關受到的傷害不超過這個數得第 3 顆星
+@export var story_before: DialogueScript         ## v2.3:開打前的對白(docs/STORY.md)
+@export var story_after: DialogueScript          ## v2.3:過關後的對白

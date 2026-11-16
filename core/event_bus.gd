@@ -17,6 +17,7 @@ signal boss_phase_changed(phase: int)
 signal exp_collected(amount: int)          # 拾取經驗珠(原始值;exp_mult 由 B 線套用)
 signal boss_hp_changed(current: int, maximum: int)   # v2.2:頭目出場時與每次受傷時發出(HUD 頭目血條)
 signal combo_changed(count: int)            # v2.2:連擊數改變;0 = 連擊中斷
+signal boss_appeared(enemy_id: StringName)  # v2.3:頭目或中頭目出場(HUD 頭目血條顯示名字)
 
 # 流程與成長(B 線發出)
 signal level_started(level_id: StringName)
@@ -39,6 +40,10 @@ signal quit_to_title_requested()            # 暫停畫面的「回標題」
 signal camp_entered()
 signal minigame_finished(minigame_id: StringName, score: int, grade: int)  # grade 0 至 3
 signal camp_left()
+
+# 對白(C 線的對白框發出,v2.3)
+signal dialogue_started(script_id: StringName)
+signal dialogue_finished(script_id: StringName)
 
 # 手機生命週期(core/app_lifecycle.gd 發出)
 signal app_backgrounded()                   # 切到背景、來電、鎖螢幕
