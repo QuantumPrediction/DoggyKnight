@@ -1,6 +1,6 @@
 # C 線(像素美術、介面與音效)狀態報告
 
-最後更新:2026-11-16(M3 打磨 CP1 至 CP10 全部完成)
+最後更新:2026-11-16(M3 打磨 CP1 至 CP10 全部完成;已合併整合分支上 B、D 線的打磨)
 
 ## 已完成
 
@@ -55,7 +55,7 @@
 ## 被甚麼卡住
 
 - 沒有卡住。給其他線與整合的接線說明(不需要改合約):
-  - B 線:1-2 至 1-5 的 `LevelData.background` 請改用 `wheat_field`(1-2)、`meadow`(1-3)、`farm_fence`(1-4)、`crow_forest`(1-5)。音樂 id 與檔案都齊全。結算畫面與失敗畫面在對應短曲(victory / chapter_clear / fail)正在播時不會再播 clear / fail 音效;沒有播短曲時照舊自己播。HUD 的標題卡長度是 `hud_config.tres` 的 `title_card_time`(1.6 秒),與 B 線的 `intro_duration` 一致即可。
+  - B 線:已合併 B 線的打磨(六關已用新背景、各狀態會呼叫音樂、轉場用 cover(0.12) / reveal(0.3)、1-1 第一波時加教學)。結算畫面顯示 B 線給的目標文字(`star_goals` 的 `text`,不再自己用 `tr(key) % value`)。結算與失敗畫面在對應短曲(victory / chapter_clear / fail)正在播時不會再疊播 clear / fail 音效。HUD 標題卡長度是 `hud_config.tres` 的 `title_card_time`(1.6 秒),與 B 線的 `intro_duration` 一致。
   - A 線:可以使用金毛與鬥牛犬的 `victory` 動畫(循環)。黑騎士 `slam` 第 0 格是舉劍(暫停時停在這格),第 1 格很短,第 2 格才是劈下;`down` 先跪下再散落(2 格,不循環)。粒子特效的 `footstep_dust`、`shockwave` 的 z_index 是 -1(畫在腳下),其他是 5 至 6。經驗珠圖改成 12×12(含光暈),仍然置中。
   - D 線:`i18n/strings.csv` 的 `CAMP_MINIGAME_DONE` 這一行文字裡用了半形逗號「,」,CSV 會把後半句「明天再來!」當成第三欄丟掉;請改成全形逗號「,」(我沒有動別線的文字)。營地可以播 `Music.play(&"camp")`,摸頭可用 `pet` 音效與 `heart` 粒子。
   - 整合:遊戲內容裡沒有網路、沒有外掛;全部素材都由 `tools/pixel/` 程式生成,授權已記錄在 `docs/licenses.md`。
