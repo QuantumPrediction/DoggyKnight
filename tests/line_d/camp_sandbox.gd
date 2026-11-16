@@ -3,8 +3,10 @@ extends Node
 ## 這個場景同時是 B 線流程的替身:它把營地加到自己底下,收到 camp_left 後移除營地。
 ##
 ## 操作(只用觸控;桌面用滑鼠):
-## - 「進入營地」:活力先設為 40,方便看到小遊戲的回復效果。點金毛可以摸摸頭。
-## - 「第二次營地」:同上,但 GameState.level_index = 3(1-4 之後),鬥牛犬坐在營火旁。
+## - 「進入營地」:活力先設為 40,方便看到小遊戲的回復效果。先播第一次營地的對白(camp1),
+##   播完才有選單。點金毛可以摸摸頭;點圓桌後面的梅林,他會說一句話。
+## - 「第二次營地」:同上,但 GameState.level_index = 3(1-4 之後),播 camp2,鬥牛犬坐在營火旁。
+##   B 線的 data/story/camp1.tres、camp2.tres 還沒有時,用 docs/STORY.md 的同一段對白(在這裡用程式建立)。
 ## - 「壓力測試」:開啟 tests/line_d/stress_test.tscn(40 隻敵人與 FPS)。
 ## - 「模擬瀏海」:切換 SafeArea.simulate_notch。
 ## 視窗失去焦點 = 切到背景(小遊戲會暫停);回來後點一下繼續。
@@ -15,6 +17,14 @@ extends Node
 
 const CAMP_SCENE: PackedScene = preload("res://game/camp/camp.tscn")
 const STRESS_SCENE_PATH: String = "res://tests/line_d/stress_test.tscn"
+## docs/STORY.md 第 5 節的營地對白(B 線的對白檔還沒有時,沙盒用這兩段)。
+const DEMO_STORY: Dictionary = {
+	1: [&"camp1", [["STORY_CAMP1_01", &"merlin", &"proud"], ["STORY_CAMP1_02", &"merlin", &"proud"],
+		["STORY_CAMP1_03", &"merlin", &"normal"], ["STORY_CAMP1_04", &"goldie", &"surprised"],
+		["STORY_CAMP1_05", &"merlin", &"normal"]]],
+	3: [&"camp2", [["STORY_CAMP2_01", &"bulldog", &"normal"], ["STORY_CAMP2_02", &"goldie", &"normal"],
+		["STORY_CAMP2_03", &"bulldog", &"happy"], ["STORY_CAMP2_04", &"merlin", &"proud"]]],
+}
 
 var autoplay: bool = false
 var _camp: Camp
@@ -56,6 +66,12 @@ func enter_camp(level_index: int = 1) -> void:
 	GameState.level_index = level_index
 	_menu_layer.visible = false
 	_camp = CAMP_SCENE.instantiate() as Camp
+	var path: String = (_camp.config as CampConfig).story_paths.get(level_index, "")
+	if DEMO_STORY.has(level_index) and (path == "" or not ResourceLoader.exists(path)):
+		_camp.story_override = demo_story(level_index)
+		_note("data/story 還沒有這段對白:用 docs/STORY.md 的 %s" % _camp.story_override.id)
+	_camp.story_finished.connect(func() -> void: _note("camp story finished → menu"))
+	_camp.merlin_spoke.connect(func(key: String) -> void: _note("  Merlin: %s" % tr(key)))
 	_camp.minigame_opened.connect(func(m: MinigameBase) -> void:
 		_note("minigame opened: %s" % m.config.minigame_id)
 		m.state_changed.connect(func(s: MinigameBase.State) -> void:
@@ -63,6 +79,24 @@ func enter_camp(level_index: int = 1) -> void:
 	_camp.minigame_closed.connect(func(score: int, grade: int) -> void:
 		_note("minigame closed, back at camp menu (score=%d grade=%d)" % [score, grade]))
 	add_child(_camp)
+
+
+## 用程式建立營地對白(docs/STORY.md 的 camp1 / camp2)。
+static func demo_story(level_index: int) -> DialogueScript:
+	var entry: Array = DEMO_STORY.get(level_index, [])
+	if entry.is_empty():
+		return null
+	var script := DialogueScript.new()
+	script.id = entry[0]
+	var lines: Array[DialogueLine] = []
+	for row: Array in entry[1]:
+		var line := DialogueLine.new()
+		line.text_key = row[0]
+		line.speaker = row[1]
+		line.expression = row[2]
+		lines.append(line)
+	script.lines = lines
+	return script
 
 
 func _on_camp_left() -> void:
@@ -87,16 +121,25 @@ func _run_bot(delta: float) -> void:
 		return
 	_bot_time += delta
 	var minigame := _camp.get_minigame()
+	if _camp.is_story_playing():
+		# 營地對白:像玩家一樣每 0.5 秒點一下
+		if _bot_time > 0.5:
+			_bot_time = 0.0
+			_note("  tap dialogue")
+			_camp.get_dialogue_box().call(&"advance")
+		return
 	match _bot_step:
 		0:
-			# 摸摸頭三下、點一下鬥牛犬,然後開小遊戲
-			if _bot_time > 0.5 and _camp.pet_count < 3 and _bot_time > 0.5 + _camp.pet_count * 0.5:
+			# 摸摸頭三下、點一下鬥牛犬、點兩下梅林,然後開小遊戲
+			if _bot_time > 0.5 and _camp.merlin_taps < 2 and _camp.pet_count >= 3 and _bot_time > 0.8 + _camp.merlin_taps * 0.8:
+				_camp.tap_merlin()
+			elif _bot_time > 0.5 and _camp.pet_count < 3 and _bot_time > 0.5 + _camp.pet_count * 0.5:
 				var rewarded := _camp.pet_goldie()
 				_note("  petted Goldie (rewarded=%s, satisfaction=%d)" % [rewarded, GameState.satisfaction])
 				if _camp.pet_count == 3:
 					_camp.tap_bulldog()
 					_note("  bulldog visible=%s (level_index=%d)" % [_camp.is_bulldog_visible(), GameState.level_index])
-			elif _bot_time > 2.5:
+			elif _bot_time > 2.6 and (_camp.merlin_taps >= 2 or not _camp.is_merlin_visible()):
 				_camp.open_minigame()
 				_bot_step = 1
 		1:
@@ -122,6 +165,10 @@ func _run_bot(delta: float) -> void:
 					elif scroll.ink_state == ScrollMinigame.Ink.NONE:
 						scroll.simulate_swipe(70.0)
 			elif minigame.state == MinigameBase.State.RESULTS and minigame.get_state_time() > 1.3:
+				var scroll_done := minigame as ScrollMinigame
+				if scroll_done != null:
+					_note("  scroll: %d rules pulled; Merlin asks: %s" % [scroll_done.rules_pulled(),
+						scroll_done.get_merlin_bubble().text if scroll_done.is_merlin_asking() else "(silent)"])
 				minigame.close()
 				_bot_time = 0.0
 				_bot_step = 3

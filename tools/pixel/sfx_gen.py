@@ -3,6 +3,8 @@
 Every id in DEV_PLAN 4.9 and 4.10 becomes assets/sfx/<id>.wav (22 050 Hz, 16-bit mono).
 v2.2 added crit, combo, boss_roar, star, whoosh, heal, pet, perfect, countdown and made
 hit, swing, pickup, level_up and ultimate fuller (thump and chime layers).
+v2.3 added talk (the dialogue blip; Sfx.play's pitch argument gives each speaker a voice),
+page_turn, arrow_shot, husk_clank, captain_shout and magic.
 Soft waveforms, short attacks/releases (no clicks), a gentle low-pass and loudness
 normalisation keep them cute rather than harsh.
 """
@@ -21,7 +23,9 @@ RATE = 22050
 IDS = ["swing", "hit", "hurt", "enemy_down", "pickup", "level_up", "bark", "boss_warning",
        "ultimate", "clear", "fail", "ui_tap", "scroll", "ink",
        # v2.2 (CP7)
-       "crit", "combo", "boss_roar", "star", "whoosh", "heal", "pet", "perfect", "countdown"]
+       "crit", "combo", "boss_roar", "star", "whoosh", "heal", "pet", "perfect", "countdown",
+       # v2.3 (CS8)
+       "talk", "page_turn", "arrow_shot", "husk_clank", "captain_shout", "magic"]
 
 
 def note(name: str) -> float:
@@ -304,6 +308,49 @@ def make(sid: str) -> list[float]:
         t.add(0, tone(0.2, 380, 110, "sine", attack=0.005, release=0.08))
         t.add(0, lowpass(noise(0.05, 9, release=0.04), 1200), 0.3)
         return finish(t.buf, target_rms=0.17)
+    # ---- v2.3 (CS8) -----------------------------------------------------
+    if sid == "talk":       # a soft rounded "bip" (pitched per speaker by the dialogue box)
+        t = Track(0.07)
+        t.add(0, tone(0.06, 620, 560, "square", 0.25, attack=0.003, release=0.03, decay=20))
+        t.add(0, tone(0.06, 310, 280, "triangle", attack=0.003, release=0.03, decay=20), 0.6)
+        return finish(t.buf, target_rms=0.09, cutoff=3200)
+    if sid == "page_turn":  # paper swish and a soft flap
+        n = noise(0.32, 41, attack=0.06, release=0.12, step=2)
+        swish = lowpass(n, sweep(len(n), 900, 4200))
+        t = Track(0.4)
+        t.add(0, [v * (0.5 + 0.5 * math.sin(i / RATE * 2 * math.pi * 9)) for i, v in enumerate(swish)], 0.9)
+        t.add(0.27, lowpass(noise(0.08, 42, release=0.06, decay=30), 1800), 0.7)
+        t.add(0.28, thump(0.08, 180, 90, decay=40), 0.25)
+        return finish(t.buf, target_rms=0.08, cutoff=5000)
+    if sid == "arrow_shot":  # bowstring twang + a fast airy whoosh
+        t = Track(0.3)
+        t.add(0, tone(0.2, 210, 170, "triangle", attack=0.001, release=0.1, decay=14, vibrato=0.03, vib_rate=45))
+        t.add(0, tone(0.08, 420, 340, "square", 0.25, attack=0.001, release=0.04, decay=30), 0.35)
+        w = noise(0.18, 43, attack=0.01, release=0.1)
+        t.add(0.02, lowpass(highpass(w, 1200), sweep(len(w), 6000, 2000)), 0.5)
+        return finish(t.buf, target_rms=0.12, cutoff=6500)
+    if sid == "husk_clank":  # hollow armour clank (empty inside!)
+        t = Track(0.45)
+        t.add(0, bell(0.4, 430, decay=11, partials=((1.0, 1.0), (2.76, 0.6), (5.4, 0.35), (8.9, 0.15))), 0.8)
+        t.add(0.03, bell(0.3, 610, decay=14, partials=((1.0, 0.7), (2.4, 0.4))), 0.5)
+        t.add(0, lowpass(noise(0.03, 44, release=0.02), 5000), 0.6)
+        t.add(0, thump(0.15, 140, 60, decay=30), 0.6)
+        return finish(t.buf, target_rms=0.14, cutoff=7000)
+    if sid == "captain_shout":   # a raspy straw "hrah!" (more silly than scary)
+        t = Track(0.5)
+        t.add(0, tone(0.36, 240, 170, "saw", attack=0.02, release=0.12, vibrato=0.05, vib_rate=11, curve="lin"))
+        t.add(0, tone(0.36, 120, 90, "square", 0.5, attack=0.02, release=0.12, curve="lin"), 0.3)
+        rustle = noise(0.42, 45, attack=0.02, release=0.15, step=3)
+        t.add(0, lowpass([v * (0.6 + 0.4 * math.sin(i / RATE * 2 * math.pi * 26)) for i, v in enumerate(rustle)], 3500), 0.45)
+        s = lowpass(t.buf, sweep(len(t.buf), 2600, 800))
+        return finish(s, target_rms=0.15)
+    if sid == "magic":       # sparkly rising chimes and a soft shimmer
+        t = Track(0.9)
+        for i, nm in enumerate(["C6", "E6", "G6", "B6", "D7", "G7"]):
+            t.add(i * 0.045, bell(0.5, note(nm), decay=8), 0.32)
+        t.add(0, lowpass(highpass(noise(0.6, 46, attack=0.1, release=0.35), 3000), 9000), 0.12)
+        t.add(0.05, tone(0.5, note("G5"), note("G6"), "triangle", attack=0.05, release=0.3), 0.25)
+        return finish(t.buf, target_rms=0.11, cutoff=9000)
     raise KeyError(sid)
 
 

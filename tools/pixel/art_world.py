@@ -1398,7 +1398,7 @@ def scene_crow_forest() -> Scene:
     # eyes glinting in the dark woods (decoration)
     for k, (x, y) in enumerate(((36, 128), (252, 120), (12, 452), (270, 470))):
         sc.anim("eyes", x, y, k, 0.6 + k * 0.1)
-    sc.particle(kind="firefly", amount=14, lifetime=5.0, rect=(-10, -40, 200, 400), velocity=(0, -1), spread=180,
+    sc.particle(glow=True, kind="firefly", amount=14, lifetime=5.0, rect=(-10, -40, 200, 400), velocity=(0, -1), spread=180,
                 speed=(2, 6), gravity=(0, 0), blink=True)
     sc.particle(kind="leaf_dusk", amount=5, lifetime=6.0, rect=(-20, -60, 220, 300), velocity=(1, 0.5), spread=20,
                 speed=(6, 10), gravity=(0, 3), colour_fade=True, spin=True)
@@ -1700,6 +1700,8 @@ def _particle_node(i: int, p: dict, tex_id: str) -> list[str]:
     if p.get("grow"):
         lines += ["scale_amount_min = 1.0", "scale_amount_max = 2.0",
                   'scale_amount_curve = SubResource("Curve_grow")']
+    if p.get("glow"):
+        lines.append('material = SubResource("Mat_add")')
     if p.get("blink"):
         lines.append('color_ramp = SubResource("Gradient_blink")')
     elif p.get("colour_fade"):
@@ -1726,7 +1728,21 @@ def background_tscn(name: str, sc: Scene) -> str:
                    % (kind, ptex_ids[kind]))
     if sc.lightning:
         ext.append('[ext_resource type="Script" path="%s" id="90_lightning"]' % LIGHTNING_SCRIPT)
+    # v2.3 (CS5): drop shadows, light sprites, foreground + vignette, rain sheets
+    ext.append('[ext_resource type="Script" path="res://assets/backgrounds/actor_shadows.gd" id="80_shadows"]')
+    fg = getattr(sc, "fg", None) is not None
+    if fg:
+        ext.append('[ext_resource type="Texture2D" path="res://assets/backgrounds/%s_fg.png" id="81_fg"]' % name)
+    lights = list(getattr(sc, "lights", [])) + list(getattr(sc, "fg_lights", []))
+    for kind in sorted({l[0] for l in lights}):
+        ext.append('[ext_resource type="PackedScene" path="res://assets/fx/lights/%s.tscn" id="84_light_%s"]'
+                   % (kind, kind))
+    if getattr(sc, "rain", False):
+        ext.append('[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/rain_sheet.png" id="82_rain"]')
+        ext.append('[ext_resource type="Script" path="res://assets/backgrounds/rain_sheet.gd" id="83_rain_script"]')
     subs = []
+    if any(p.get("glow") for p in sc.particles):
+        subs += ["", '[sub_resource type="CanvasItemMaterial" id="Mat_add"]', "blend_mode = 1"]
     if any(p.get("colour_fade") for p in sc.particles):
         subs += ["", '[sub_resource type="Gradient" id="Gradient_fade"]',
                  "offsets = PackedFloat32Array(0, 0.15, 0.8, 1)",
@@ -1776,11 +1792,54 @@ def background_tscn(name: str, sc: Scene) -> str:
                       "color = Color(%g, %g, %g, %g)" % (r, g, b, a),
                       "polygon = PackedVector2Array(%g, -90, %g, -90, %g, 430, %g, 430)"
                       % (x, x + w, x + w + run, x + run)]
+    lines += _v23_nodes(sc, fg)
     if sc.modulate is not None:
         lines += ["", '[node name="Mood" type="CanvasModulate" parent="."]',
                   "color = Color(%g, %g, %g, 1)" % sc.modulate]
     lines.append("")
     return "\n".join(lines)
+
+
+def _light_node(parent: str, i: int, light: tuple) -> list[str]:
+    kind, wx, wy, _scale_mult, alpha_mult, seed = light
+    import art_light
+    rgb, size, base, *_ = art_light.LIGHTS[kind]
+    return ["", '[node name="%s_%d" parent="%s" instance=ExtResource("84_light_%s")]' % (kind, i, parent, kind),
+            "position = Vector2(%g, %g)" % (round(wx), round(wy)),
+            "base_alpha = %g" % round(base * alpha_mult, 3),
+            "seed_offset = %g" % round(seed, 3)]
+
+
+def _v23_nodes(sc: "Scene", fg: bool) -> list[str]:
+    """Lights (additive, under the actors), drop shadows, rain sheets and the foreground layer."""
+    out: list[str] = []
+    lights = list(getattr(sc, "lights", []))
+    if lights:
+        out += ["", '[node name="Lights" type="Node2D" parent="."]']
+        for i, light in enumerate(lights):
+            out += _light_node("Lights", i, light)
+    out += ["", '[node name="Shadows" type="Node2D" parent="."]', 'script = ExtResource("80_shadows")']
+    if getattr(sc, "rain", False):
+        out += ["", '[node name="RainSheet" type="Sprite2D" parent="."]',
+                "modulate = Color(1, 1, 1, 0.35)", 'texture = ExtResource("82_rain")', "centered = false",
+                "texture_repeat = 2", "region_enabled = true",
+                "region_rect = Rect2(0, 0, %d, %d)" % (IMG_W, IMG_H), "position = Vector2(%d, %d)" % ORIGIN,
+                'script = ExtResource("83_rain_script")']
+    out += ["", '[node name="Foreground" type="Node2D" parent="."]', "z_index = 50", "z_as_relative = false"]
+    if fg:
+        out += ["", '[node name="Image" type="Sprite2D" parent="Foreground"]', 'texture = ExtResource("81_fg")',
+                "centered = false", "position = Vector2(%d, %d)" % ORIGIN]
+    for i, light in enumerate(getattr(sc, "fg_lights", [])):
+        out += _light_node("Foreground", i, light)
+    if getattr(sc, "rain", False):
+        # front rain only above and below the arena (never over the fight)
+        for k, (y, h) in enumerate(((-88, 128), (306, 118))):
+            out += ["", '[node name="RainFront%d" type="Sprite2D" parent="Foreground"]' % k,
+                    "modulate = Color(1, 1, 1, 0.55)", 'texture = ExtResource("82_rain")', "centered = false",
+                    "texture_repeat = 2", "region_enabled = true", "region_rect = Rect2(0, 0, %d, %d)" % (IMG_W, h),
+                    "position = Vector2(%d, %d)" % (ORIGIN[0], y), 'script = ExtResource("83_rain_script")',
+                    "speed = Vector2(-90, 330)"]
+    return out
 
 
 def write_all(preview_dir: str | None = None) -> dict[str, Canvas]:
@@ -1793,9 +1852,13 @@ def write_all(preview_dir: str | None = None) -> dict[str, Canvas]:
         build_sheet("res://assets/backgrounds/anim", kind, fn(), size)
     for kind, tex in particle_textures().items():
         tex.save(res_path("res://assets/backgrounds/anim/p_%s.png" % kind))
+    import art_light
+    art_light.write_shared()
     out = {}
     for name, fn in SCENES.items():
         sc = fn()
+        art_light.decorate(name, sc)
+        sc.fg.save(res_path("res://assets/backgrounds/%s_fg.png" % name))
         sc.img.save(res_path("res://assets/backgrounds/%s.png" % name))
         write_text(res_path("res://assets/backgrounds/%s.tscn" % name), background_tscn(name, sc))
         out[name] = sc.img

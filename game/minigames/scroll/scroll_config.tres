@@ -5,6 +5,7 @@
 [ext_resource type="SpriteFrames" path="res://assets/sprites/goldie/goldie_frames.tres" id="3_goldie"]
 [ext_resource type="PackedScene" path="res://assets/fx/particles/star_burst.tscn" id="4_star"]
 [ext_resource type="PackedScene" path="res://assets/fx/particles/sparkle.tscn" id="5_sparkle"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/merlin/merlin_frames.tres" id="6_merlin"]
 
 [resource]
 script = ExtResource("1_config")
@@ -45,6 +46,17 @@ goldie_scale = 2.0
 perfect_window_sec = 0.2
 perfect_bonus_score = 5
 perfect_fx = ExtResource("5_sparkle")
+rules_title_key = "MINIGAME_SCROLL_TITLE"
+rule_label_key = "MINIGAME_SCROLL_RULE"
+rule_rows = 7
+rule_text_color = Color(0.55, 0.42, 0.28, 0.75)
+rules_title_color = Color(0.72, 0.2, 0.23, 0.85)
+merlin_frames = ExtResource("6_merlin")
+merlin_scale = 2.0
+merlin_ask_key = "MINIGAME_MERLIN_ASK"
+merlin_enter_sec = 0.5
+merlin_ask_delay_sec = 0.6
+merlin_stand_dx = 26.0
 speed_lines_min_speed = 60.0
 speed_lines_full_speed = 260.0
 speed_line_count = 5

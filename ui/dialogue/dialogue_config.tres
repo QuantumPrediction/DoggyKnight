@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="DialogueConfig" format=3]
+
+[ext_resource type="Script" path="res://ui/dialogue/dialogue_config.gd" id="1_cfg"]
+
+[resource]
+script = ExtResource("1_cfg")
+chars_per_second = 30.0
+punctuation_pause = 0.12
+blip_every = 2
+blip_volume_db = -8.0
+speaker_pitch = {
+"black_knight": 0.55,
+"bulldog": 0.78,
+"crow": 1.6,
+"goldie": 1.3,
+"merlin": 0.95,
+"morgana": 1.12,
+"scarecrow_captain": 0.68
+}
+tap_guard = 0.15
+dim_alpha = 0.3
+book_dim_alpha = 0.85
+page_turn_time = 0.32

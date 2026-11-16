@@ -2,9 +2,11 @@ class_name CutIn
 extends Control
 ## 必殺技切入畫面(C 線,CP4):ultimate_used 時,一條斜斜的金色光帶劃過畫面,
 ## 金毛的半身像從右邊衝進來、停一下、再從左邊衝出去(約 0.6 秒)。不攔觸控。
+## v2.3(CS5):半身像後面有一團加亮混合的金色光暈(和半身像一起移動)。
 
 var portrait: TextureRect
 var shout: Label
+var glow: TextureRect
 
 var _open: float = 0.0
 var _lines: float = 0.0
@@ -14,6 +16,13 @@ var _tween: Tween
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_anchors_preset(Control.PRESET_FULL_RECT)
+	glow = UiKit.texture_rect(preload("res://assets/fx/lights/glow_128.png"))
+	glow.name = "Glow"
+	var mat := CanvasItemMaterial.new()
+	mat.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	glow.material = mat
+	glow.modulate = Color(1.0, 0.9, 0.55, 0.75)
+	add_child(glow)
 	portrait = UiKit.texture_rect(preload("res://assets/ui/cutin_goldie.png"))
 	portrait.name = "Portrait"
 	add_child(portrait)
@@ -64,6 +73,12 @@ func is_playing() -> bool:
 func _set_open(v: float) -> void:
 	_open = v
 	queue_redraw()
+
+
+func _process(_delta: float) -> void:
+	if visible:
+		glow.position = (portrait.position + portrait.size * 0.5 - glow.size * 0.5).floor()
+		glow.modulate.a = 0.75 * _open
 
 
 func _set_lines(v: float) -> void:
