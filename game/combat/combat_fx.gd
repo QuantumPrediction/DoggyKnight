@@ -5,7 +5,11 @@ extends RefCounted
 ## 特效放在所屬戰鬥場地的特效層;不在場地內(例如單元測試)時放在呼叫者的上一層。
 ##
 ## 品質標準(DEV_PLAN 第 15 節):特效不可以蓋住預警或金毛,同時存在的特效有上限。
-## - 粒子:同時最多 FeelTuning.max_particles 個(重要的必殺技、頭目特效不受限)。
+## - 粒子:三層上限(數值在 data/player/feel_tuning.tres):
+##   1. 每一種特效同時最多幾個(particle_caps,例如 hit_burst 8、shockwave 2、ultimate_burst 1);
+##   2. 全部特效同時最多 max_particles 個(重要的必殺技、頭目特效不受這一項限制);
+##   3. 畫面上的粒子點數(每個特效的 amount 加總)不超過 max_particle_points;一般特效只能用到
+##      「上限 − particle_points_reserve」,保留的部分給重要特效。
 ##   粒子放在場地的特效層或地面層,z 跟著圖層走(地面層在預警與角色之下)。
 ## - 傷害數字:同時最多 FeelTuning.max_damage_numbers 個,超過時移除最舊的。
 ##
@@ -24,6 +28,8 @@ static var _frames_cache: Dictionary = {}
 static var _particle_cache: Dictionary = {}
 static var _feel: FeelTuning
 static var _particles_alive: int = 0
+static var _particles_by_name: Dictionary = {}
+static var _particle_points: int = 0
 static var _numbers: Array[Node] = []
 
 
@@ -120,13 +126,21 @@ static func particles(host: Node, particle_name: StringName, at: Vector2, ground
 		important: bool = false, parent: Node = null) -> Node2D:
 	if host == null or not host.is_inside_tree():
 		return null
-	if not important and _particles_alive >= feel().max_particles:
+	var tuning := feel()
+	if not important and _particles_alive >= tuning.max_particles:
+		return null
+	if int(_particles_by_name.get(particle_name, 0)) >= int(tuning.particle_caps.get(particle_name, 1 << 30)):
 		return null
 	var scene := _particle_scene(particle_name)
 	if scene == null:
 		return null
 	var fx := scene.instantiate() as Node2D
 	if fx == null:
+		return null
+	var points := (fx as CPUParticles2D).amount if fx is CPUParticles2D else 0
+	var budget := tuning.max_particle_points - (0 if important else tuning.particle_points_reserve)
+	if _particle_points + points > budget:
+		fx.free()
 		return null
 	# z 跟著所屬圖層(地面層在預警與角色之下;特效層在角色之上)。
 	fx.z_as_relative = true
@@ -135,20 +149,31 @@ static func particles(host: Node, particle_name: StringName, at: Vector2, ground
 		(fx as CPUParticles2D).speed_scale = maxf(0.05, time_scale)
 	fx.add_to_group(PARTICLE_GROUP)
 	_particles_alive += 1
-	fx.tree_exiting.connect(_on_particle_exit, CONNECT_ONE_SHOT)
+	_particle_points += points
+	_particles_by_name[particle_name] = int(_particles_by_name.get(particle_name, 0)) + 1
+	fx.tree_exiting.connect(_on_particle_exit.bind(particle_name, points), CONNECT_ONE_SHOT)
 	var target := parent if parent != null else layer_for(host, ground)
 	target.add_child(fx)
 	fx.global_position = at
 	return fx
 
 
-## 目前場上有幾個粒子特效(A 線產生的)。
-static func particles_alive() -> int:
+## 目前場上有幾個粒子特效(A 線產生的)。particle_name 指定時只算那一種。
+static func particles_alive(particle_name: StringName = &"") -> int:
+	if particle_name != &"":
+		return int(_particles_by_name.get(particle_name, 0))
 	return _particles_alive
 
 
-static func _on_particle_exit() -> void:
+## 目前場上的粒子點數(每個特效的 amount 加總)。
+static func particle_points() -> int:
+	return _particle_points
+
+
+static func _on_particle_exit(particle_name: StringName, points: int) -> void:
 	_particles_alive = maxi(0, _particles_alive - 1)
+	_particle_points = maxi(0, _particle_points - points)
+	_particles_by_name[particle_name] = maxi(0, int(_particles_by_name.get(particle_name, 0)) - 1)
 
 
 static func _particle_scene(particle_name: StringName) -> PackedScene:

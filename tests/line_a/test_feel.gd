@@ -221,7 +221,15 @@ func test_particles_and_damage_numbers_are_capped() -> void:
 		CombatFx.particles(player, &"hit_burst", Vector2(90, 150))
 	assert_true(CombatFx.particles_alive() <= maxi(feel.max_particles, before), "粒子同時最多 %d 個" % feel.max_particles)
 	var important := CombatFx.particles(player, &"ultimate_burst", Vector2(90, 150), false, true)
-	assert_not_null(important, "必殺技等重要特效不受上限限制")
+	assert_not_null(important, "必殺技等重要特效不受總數上限限制")
+	assert_null(CombatFx.particles(player, &"ultimate_burst", Vector2(90, 150), false, true),
+			"但每一種特效仍有自己的上限(ultimate_burst 1 個)")
+	for i in 10:
+		CombatFx.particles(player, &"shockwave", Vector2(90, 150), true, true)
+	assert_true(CombatFx.particles_alive(&"shockwave") <= int(feel.particle_caps[&"shockwave"]), "shockwave 最多 2 個")
+	assert_true(CombatFx.particles_alive(&"hit_burst") <= int(feel.particle_caps[&"hit_burst"]), "hit_burst 最多 8 個")
+	assert_true(CombatFx.particle_points() <= feel.max_particle_points, "粒子點數不超過 %d(%d)" % [
+			feel.max_particle_points, CombatFx.particle_points()])
 	for i in feel.max_damage_numbers + 15:
 		CombatFx.damage_number(player, 7, Vector2(90, 150))
 	await get_tree().process_frame
@@ -235,11 +243,17 @@ func test_particles_and_damage_numbers_are_capped() -> void:
 func test_particle_counter_goes_back_down() -> void:
 	make_arena()
 	var before := CombatFx.particles_alive()
+	var points_before := CombatFx.particle_points()
+	var dust_before := CombatFx.particles_alive(&"footstep_dust")
 	CombatFx.particles(player, &"footstep_dust", Vector2(90, 150), true)
 	assert_eq(CombatFx.particles_alive(), before + 1)
+	assert_eq(CombatFx.particles_alive(&"footstep_dust"), dust_before + 1)
+	assert_true(CombatFx.particle_points() > points_before)
 	arena.clear()
 	await get_tree().process_frame
 	assert_eq(CombatFx.particles_alive(), before, "清場後計數歸位")
+	assert_eq(CombatFx.particles_alive(&"footstep_dust"), dust_before)
+	assert_eq(CombatFx.particle_points(), points_before)
 
 
 # --- AP2 命中回饋 ------------------------------------------------------------------

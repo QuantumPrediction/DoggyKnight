@@ -18,7 +18,7 @@ extends Resource
 @export var trauma_boss_slam: float = 0.6
 @export var trauma_boss_bonk: float = 0.35
 @export var trauma_boss_defeat: float = 0.85
-@export var swing_nudge: float = 1.5              ## 揮劍時鏡頭推向攻擊方向幾個像素
+@export var swing_nudge: float = 1.2              ## 揮劍時鏡頭推向攻擊方向幾個像素
 @export var nudge_return_rate: float = 12.0       ## 推出去後回到中間的速度(越大越快)
 
 @export_group("傷害數字(AP2)")
@@ -45,7 +45,17 @@ extends Resource
 @export var trail_fade_time: float = 0.12
 
 @export_group("特效上限(品質標準 5)")
-@export var max_particles: int = 16               ## 同時存在的粒子特效上限(必殺技、頭目重劈等重要特效不受限)
+## 同時存在的一次性粒子特效(個數)上限。必殺技、頭目重劈等重要特效不受這個限制,但仍受下面兩項限制。
+@export var max_particles: int = 30
+## 每一種粒子特效同時最多幾個(名稱 → 個數;沒列出的種類只受總數限制)。C 線提高粒子數量時可以調低這裡。
+@export var particle_caps: Dictionary = {
+	&"hit_burst": 8, &"straw_bits": 6, &"feathers": 6, &"footstep_dust": 4, &"sparkle": 6, &"heart": 4,
+	&"star_burst": 3, &"shockwave": 2, &"level_up_pillar": 1, &"ultimate_burst": 1, &"confetti": 1,
+}
+## 畫面上的粒子點數上限(把每個特效的 amount 加起來)。一般特效最多用到「上限 − 保留」,
+## 保留的部分只給重要特效(必殺技、頭目),所以加起來不會超過上限。
+@export var max_particle_points: int = 250
+@export var particle_points_reserve: int = 80
 @export var pickup_haptic_interval: float = 0.15  ## 拾取經驗珠的輕震動最短間隔
 
 @export_group("連擊(AP4)")

@@ -16,7 +16,7 @@ trauma_boss_roar = 0.5
 trauma_boss_slam = 0.6
 trauma_boss_bonk = 0.35
 trauma_boss_defeat = 0.85
-swing_nudge = 1.5
+swing_nudge = 1.2
 nudge_return_rate = 12.0
 damage_numbers = true
 number_jump_speed = 62.0
@@ -37,7 +37,22 @@ run_lean = 0.18
 run_bob = 1.0
 trail_time = 0.13
 trail_fade_time = 0.12
-max_particles = 16
+max_particles = 30
+particle_caps = {
+&"confetti": 1,
+&"feathers": 6,
+&"footstep_dust": 4,
+&"heart": 4,
+&"hit_burst": 8,
+&"level_up_pillar": 1,
+&"shockwave": 2,
+&"sparkle": 6,
+&"star_burst": 3,
+&"straw_bits": 6,
+&"ultimate_burst": 1
+}
+max_particle_points = 250
+particle_points_reserve = 80
 pickup_haptic_interval = 0.15
 combo_window = 2.0
 combo_milestones = PackedInt32Array(5, 10, 20)
