@@ -20,10 +20,15 @@ extends Node
 ##   發 wave_cleared(index),等 inter_wave_delay 秒再開始下一波。
 ## - 最後一波清空後發本地訊號 all_waves_cleared(LevelSession 據此發 level_completed)。
 ## - 用 _physics_process 計時,遊戲暫停時自動停住。
+## - v2.3:含有 DifficultyData.boss_music_enemies(稻草人隊長)的一波開始時,播 boss_warning 並發
+##   本地訊號 boss_wave_began(FlowMain 改播頭目音樂)。
+## - v2.3 困難模式(difficulty_mode == &"hard"):每組多加 DifficultyData.hard_extra() 隻(頭目、中頭目除外)。
 
 signal all_waves_cleared()
 ## 第 index 波開始(與 EventBus.wave_started 同時發出;LevelSession 用來知道開場結束)。
 signal wave_began(index: int)
+## 有中頭目(稻草人隊長)的一波開始(v2.3)。頭目關(LevelData.is_boss)不發這個訊號。
+signal boss_wave_began(index: int)
 
 enum Phase { IDLE, WAITING, IN_WAVE, DONE }
 
@@ -38,6 +43,8 @@ var level: LevelData
 var arena: Node
 var difficulty: DifficultyData
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+## &"normal" 或 &"hard"(LevelSession 依 GameState.difficulty 設定)。
+var difficulty_mode: StringName = &"normal"
 
 var _phase: Phase = Phase.IDLE
 var _wave: int = 0                       # 目前的波次(1 起算;0 = 還沒開始)
@@ -161,10 +168,32 @@ func _start_wave(number: int) -> void:
 		return a["time"] < b["time"] or (a["time"] == b["time"] and a["order"] < b["order"]))
 	EventBus.wave_started.emit(number, total_waves())
 	wave_began.emit(number)
-	if level.is_boss:
+	var mini_boss := not level.is_boss and has_boss_music(wave)
+	if level.is_boss or mini_boss:
 		Sfx.play(&"boss_warning")
+	if mini_boss:
+		boss_wave_began.emit(number)
 	_telegraph_due()
 	_spawn_due()
+
+
+## 這一波有沒有要改播頭目音樂的敵人(稻草人隊長)。
+func has_boss_music(wave: WaveData) -> bool:
+	if wave == null or difficulty == null:
+		return false
+	for entry in wave.spawns:
+		if entry != null and entry.count > 0 and difficulty.boss_music_enemies.has(entry.enemy_id):
+			return true
+	return false
+
+
+## 這一組實際放出的數目(困難模式多加幾隻)。
+func spawn_count(entry: SpawnEntry) -> int:
+	if entry == null or entry.count <= 0:
+		return 0
+	if difficulty_mode == &"hard" and difficulty != null:
+		return entry.count + difficulty.hard_extra(entry.enemy_id, entry.count)
+	return entry.count
 
 
 ## 依隊形排定一組敵人的出現時間。
@@ -172,13 +201,14 @@ func _schedule(entry: SpawnEntry) -> void:
 	var pattern := entry.pattern if PATTERNS.has(entry.pattern) else EDGES
 	if pattern != entry.pattern:
 		push_warning("WaveSpawner: 不認識的隊形 %s,改用 edges" % entry.pattern)
+	var count := spawn_count(entry)
 	var group_index := _groups.size()
 	var telegraph_at := -1.0
 	if pattern == SURROUND:
 		telegraph_at = entry.delay
-	_groups.append({"pattern": pattern, "count": entry.count, "telegraph_at": telegraph_at,
+	_groups.append({"pattern": pattern, "count": count, "telegraph_at": telegraph_at,
 			"positions": [] as Array[Vector2], "markers": []})
-	for i in entry.count:
+	for i in count:
 		var time := entry.delay
 		match pattern:
 			SURROUND:

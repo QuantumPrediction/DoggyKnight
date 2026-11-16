@@ -209,3 +209,34 @@ func test_enemy_not_yet_in_tree_still_counts() -> void:
 	arena.kill_all()
 	s.step(0.1)
 	assert_eq(cleared.count, 1)
+
+
+func test_captain_wave_signals_boss_music_once() -> void:
+	var d := _difficulty()
+	d.first_wave_delay = 0.0
+	d.inter_wave_delay = 0.0
+	d.spawn_spacing = 0.0
+	var s := _make(_level([_wave([_entry(&"scarecrow", 2)]),
+			_wave([_entry(&"scarecrow_captain", 1), _entry(&"scarecrow", 3, 5.0)])]), d)
+	var boss_waves := watch_signal(s.boss_wave_began)
+	s.start()
+	s.step(0.0)
+	assert_eq(boss_waves.count, 0, "第 1 波只有稻草人兵")
+	arena.kill_all()
+	s.step(0.1)
+	s.step(0.1)
+	assert_eq(s.current_wave(), 2)
+	assert_eq(boss_waves.count, 1, "有稻草人隊長的那一波開始時發一次")
+	assert_eq(boss_waves.last_args(), [2])
+
+
+func test_boss_level_does_not_signal_a_mini_boss_wave() -> void:
+	var d := _difficulty()
+	d.first_wave_delay = 0.0
+	d.boss_music_enemies = [&"scarecrow_captain", &"black_knight"]
+	var s := _make(_level([_wave([_entry(&"black_knight", 1)])], true), d)
+	var boss_waves := watch_signal(s.boss_wave_began)
+	s.start()
+	s.step(0.0)
+	assert_eq(s.current_wave(), 1)
+	assert_eq(boss_waves.count, 0, "頭目關一開始就播頭目音樂,不另外發訊號")

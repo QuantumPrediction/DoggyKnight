@@ -7,6 +7,8 @@ const RESULT_KEYS: Array[String] = [
 	"stars", "star_goals", "best_stars", "new_best", "level_index", "level_count",
 	# 額外:這一關受到的傷害
 	"damage_taken",
+	# DEV_PLAN 4.11(v2.3)
+	"difficulty",
 ]
 
 
@@ -200,6 +202,7 @@ func test_results_have_exactly_the_contract_keys() -> void:
 	assert_eq(result["hero_level"], 3)
 	assert_eq(result["next_is_camp"], false)
 	assert_eq(result["is_final"], false)
+	assert_eq(result["difficulty"], &"normal", "v2.3:一般模式")
 	var screen := flow.get_screen()
 	assert_eq(screen.get(&"result"), result, "結算畫面收到 setup(result)")
 

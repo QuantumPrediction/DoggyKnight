@@ -17,6 +17,13 @@ const KEY_TIME: String = "STAR_TIME"
 const KEY_DAMAGE: String = "STAR_DAMAGE"
 const KEY_NO_DAMAGE: String = "STAR_NO_DAMAGE"
 const MAX_STARS: int = 3
+## 困難模式的最佳星數存在「關卡 id + 這個字尾」(DEV_PLAN 4.11:best_stars["1-1:hard"])。
+const HARD_SUFFIX: String = ":hard"
+
+
+## best_stars 的鍵:一般模式 = 關卡 id("1-1");困難模式 = "1-1:hard"。
+static func record_key(level_id: StringName, difficulty: StringName = &"normal") -> String:
+	return String(level_id) + (HARD_SUFFIX if difficulty == &"hard" else "")
 
 
 ## 三個目標(依序:過關、時間、傷害)。

@@ -7,7 +7,8 @@ extends Node
 ##   b5_corners           1-2 第 2 波:烏鴉從角落飛進來
 ##   b6_results_<關>      結算畫面(星級)
 ##   b7_transition        轉場蓋住一半時
-## 敵人由工具直接擊倒(快轉到想看的那一波)。
+##   b8_story_<段落 id>   對白(v2.3):開場繪本、關卡前後、結局、預告(每段拍第一句)
+## 敵人由工具直接擊倒(快轉到想看的那一波);對白拍完就略過。
 ##
 ## 執行(需要畫面):
 ##   xvfb-run -a godot --path . --rendering-driver opengl3 --audio-driver Dummy \
@@ -32,6 +33,7 @@ func _run() -> void:
 	await _level_shots(0)
 	await _level_shots(1)
 	await _level_shots(3)
+	await _level_shots(5)
 	SaveStore.new(SAVE_PATH).delete()
 	print("PATTERN SHOTS DONE → %s" % shots_dir)
 	get_tree().quit()
@@ -45,6 +47,9 @@ func _level_shots(index: int) -> void:
 	add_child(flow)
 	await _frames(10)
 	flow.get_screen().emit_signal(&"continue_pressed" if index > 0 else &"new_game_pressed")
+	if index == 0:
+		await _story_shot()          # 開場繪本
+	await _story_shot()              # 開打前的對白
 	await _until(flow.is_level_running)
 	var id := String(flow.get_session().level.id)
 	await _seconds(0.5)
@@ -66,15 +71,40 @@ func _level_shots(index: int) -> void:
 			await _until(func() -> bool: return flow.get_session().spawner.active_markers().is_empty())
 			await _seconds(0.6)
 			await _shot("b3_surround_spawn")
-	await _clear_until(func() -> bool: return flow.state == FlowMain.State.RESULTS)
+	await _clear_until(func() -> bool:
+		return flow.state == FlowMain.State.RESULTS or flow.is_story_playing())
+	await _story_shot()              # 過關後的對白(1-6 = 結局)
+	await _until(func() -> bool: return flow.state == FlowMain.State.RESULTS)
 	await _seconds(1.5)
 	await _shot("b6_results_%s" % id)
 	if index == 0:
 		flow.get_screen().emit_signal(&"continue_pressed")
 		await _frames(4)
 		await _shot("b7_transition")
+	elif index == 5:
+		flow.get_screen().emit_signal(&"continue_pressed")
+		await _story_shot()          # 第二章預告
+		await _until(func() -> bool: return flow.state == FlowMain.State.TITLE and not flow.is_switching())
 	flow.queue_free()
 	await _frames(5)
+
+
+## 等對白開始,拍第一句,再略過。插畫的段落(繪本頁)多拍一句有插畫的。
+func _story_shot() -> void:
+	await _until(flow.is_story_playing)
+	if not flow.is_story_playing():
+		return
+	var id := String(flow.get_story_id())
+	await _seconds(0.6)
+	await _shot("b8_story_%s" % id)
+	var box := flow.get_dialogue_box()
+	if id == "l6_after":
+		box.call(&"advance")
+		box.call(&"advance")
+		await _seconds(0.6)
+		await _shot("b8_story_%s_3" % id)
+	if box.call(&"is_active"):
+		box.call(&"skip")
 
 
 func _clear_until_wave(wave: int) -> void:

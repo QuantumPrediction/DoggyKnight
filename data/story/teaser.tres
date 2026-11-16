@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="DialogueScript" format=3]
+
+[ext_resource type="Script" path="res://core/data/dialogue_script.gd" id="1_script"]
+[ext_resource type="Script" path="res://core/data/dialogue_line.gd" id="2_line"]
+[ext_resource type="Texture2D" path="res://assets/story/teaser_1.png" id="3_teaser_1"]
+
+[sub_resource type="Resource" id="line_01"]
+script = ExtResource("2_line")
+speaker = &"narrator"
+expression = &""
+text_key = "STORY_TEASER_01"
+illustration = ExtResource("3_teaser_1")
+
+[resource]
+script = ExtResource("1_script")
+id = &"teaser"
+lines = Array[ExtResource("2_line")]([SubResource("line_01")])
+skippable = true

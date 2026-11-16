@@ -10,7 +10,9 @@ extends Node
 ##     BG        模擬切到背景(暫停並存檔)  Back     模擬返回鍵
 ##     Down      金毛直接睡著(測試失敗)     Speed    遊戲速度 1 倍 / 4 倍
 ##     Notch     模擬瀏海                   Android  模擬 Android(標題按返回鍵會詢問離開)
-##     Reset     清除沙盒存檔(教學提示、最佳星數重新開始)
+##     Reset     清除沙盒存檔(教學提示、最佳星數、通關紀錄重新開始)
+##     Cleared   切換「已打完第一章」(標題出現「New Game (Hard)」困難模式按鈕)
+## 對白(v2.3)用替身對白框:點畫面 = 下一句,右上「Skip」= 略過整段。
 ## 存檔寫在 user://flow_sandbox_save.json,不會蓋掉正式存檔。
 
 const MAIN_SCENE: String = "res://game/flow/main.tscn"
@@ -45,6 +47,7 @@ func _status_text() -> String:
 		text += "\nwave %d/%d  enemies %d  %.0fs" % [session.spawner.current_wave(), session.spawner.total_waves(),
 				session.spawner.enemies_remaining(), session.time_sec]
 	text += "\nsave: level %d  tricks %s" % [flow.get_reached_level(), ",".join(GameState.active_tricks)]
+	text += "\n%s  cleared %s  story %s" % [flow.get_run_difficulty(), GameState.chapter_cleared, flow.get_story_id()]
 	if session != null and session.level != null:
 		text += "\ndamage %d/%d  par %.0fs  best %s" % [session.damage_taken, session.level.damage_budget,
 				session.level.par_time, GameState.best_stars]
@@ -93,7 +96,7 @@ func _build_debug_panel() -> void:
 		["BG", _background], ["Back", AppLifecycle.simulate_back],
 		["Down", _down], ["Speed", _toggle_speed],
 		["Notch", _toggle_notch], ["Android", _toggle_android],
-		["Reset", _reset_save],
+		["Reset", _reset_save], ["Cleared", _toggle_cleared],
 	]:
 		var button := Button.new()
 		button.text = item[0]
@@ -137,6 +140,13 @@ func _reset_save() -> void:
 	SaveStore.new(SAVE_PATH).delete()
 	GameState.tutorial_done = false
 	GameState.best_stars = {}
+	GameState.chapter_cleared = false
+	GameState.difficulty = &"normal"
+	GameState.story_seen = {}
+
+
+func _toggle_cleared() -> void:
+	GameState.chapter_cleared = not GameState.chapter_cleared
 
 
 func _toggle_android() -> void:
