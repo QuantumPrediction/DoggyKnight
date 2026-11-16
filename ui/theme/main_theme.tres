@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" path="res://assets/ui/card_normal.png" id="9_card_normal"]
 [ext_resource type="Texture2D" path="res://assets/ui/card_pressed.png" id="10_card_pressed"]
 [ext_resource type="Texture2D" path="res://assets/ui/ribbon.png" id="11_ribbon"]
+[ext_resource type="Texture2D" path="res://assets/ui/ribbon.png" id="12_ribbon_big"]
 
 [sub_resource type="StyleBoxTexture" id="Style_button_normal"]
 content_margin_left = 6.0
@@ -122,6 +123,17 @@ texture_margin_top = 4.0
 texture_margin_right = 8.0
 texture_margin_bottom = 5.0
 
+[sub_resource type="StyleBoxTexture" id="Style_ribbon_big"]
+content_margin_left = 16.0
+content_margin_top = 6.0
+content_margin_right = 16.0
+content_margin_bottom = 8.0
+texture = ExtResource("12_ribbon_big")
+texture_margin_left = 8.0
+texture_margin_top = 4.0
+texture_margin_right = 8.0
+texture_margin_bottom = 5.0
+
 [sub_resource type="StyleBoxEmpty" id="Style_empty"]
 
 [sub_resource type="StyleBoxFlat" id="Style_scroll"]
@@ -186,6 +198,18 @@ LabelTitle/constants/outline_size = 4
 LabelTitle/constants/shadow_offset_x = 0
 LabelTitle/constants/shadow_offset_y = 2
 LabelTitle/font_sizes/font_size = 24
+LabelPop/base_type = &"Label"
+LabelPop/colors/font_color = Color(1.0000, 0.8784, 0.4000, 1.00)
+LabelPop/colors/font_outline_color = Color(0.1647, 0.1059, 0.1765, 1.00)
+LabelPop/constants/outline_size = 4
+LabelBig/base_type = &"Label"
+LabelBig/colors/font_color = Color(1.0000, 0.9804, 0.9412, 1.00)
+LabelBig/colors/font_outline_color = Color(0.1647, 0.1059, 0.1765, 1.00)
+LabelBig/colors/font_shadow_color = Color(0.1647, 0.1059, 0.1765, 1.00)
+LabelBig/constants/outline_size = 4
+LabelBig/constants/shadow_offset_x = 0
+LabelBig/constants/shadow_offset_y = 2
+LabelBig/font_sizes/font_size = 24
 LabelSoft/base_type = &"Label"
 LabelSoft/colors/font_color = Color(0.5412, 0.3216, 0.1961, 1.00)
 PanelContainer/styles/panel = SubResource("Style_panel")
@@ -194,6 +218,8 @@ PanelDark/base_type = &"PanelContainer"
 PanelDark/styles/panel = SubResource("Style_panel_dark")
 Ribbon/base_type = &"PanelContainer"
 Ribbon/styles/panel = SubResource("Style_ribbon")
+RibbonBig/base_type = &"PanelContainer"
+RibbonBig/styles/panel = SubResource("Style_ribbon_big")
 VScrollBar/styles/scroll = SubResource("Style_scroll")
 VScrollBar/styles/grabber = SubResource("Style_grabber")
 VScrollBar/styles/grabber_highlight = SubResource("Style_grabber")

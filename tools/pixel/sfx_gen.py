@@ -1,6 +1,8 @@
-"""Procedural 8-bit sound effects (C12). Python standard library only.
+"""Procedural 8-bit sound effects (C12, CP7). Python standard library only.
 
-Every id in DEV_PLAN 4.9 becomes assets/sfx/<id>.wav (22 050 Hz, 16-bit mono).
+Every id in DEV_PLAN 4.9 and 4.10 becomes assets/sfx/<id>.wav (22 050 Hz, 16-bit mono).
+v2.2 added crit, combo, boss_roar, star, whoosh, heal, pet, perfect, countdown and made
+hit, swing, pickup, level_up and ultimate fuller (thump and chime layers).
 Soft waveforms, short attacks/releases (no clicks), a gentle low-pass and loudness
 normalisation keep them cute rather than harsh.
 """
@@ -17,7 +19,9 @@ from pixel import res_path
 
 RATE = 22050
 IDS = ["swing", "hit", "hurt", "enemy_down", "pickup", "level_up", "bark", "boss_warning",
-       "ultimate", "clear", "fail", "ui_tap", "scroll", "ink"]
+       "ultimate", "clear", "fail", "ui_tap", "scroll", "ink",
+       # v2.2 (CP7)
+       "crit", "combo", "boss_roar", "star", "whoosh", "heal", "pet", "perfect", "countdown"]
 
 
 def note(name: str) -> float:
@@ -118,17 +122,109 @@ def finish(samples: list[float], target_rms: float = 0.16, peak: float = 0.85, c
     return s
 
 
+def bell(seconds: float, f: float, decay: float = 9.0, partials=((1.0, 1.0), (2.0, 0.45), (3.01, 0.2)),
+         attack: float = 0.002) -> list[float]:
+    """Soft chime: a few sine partials with exponential decay."""
+    n = int(seconds * RATE)
+    out = []
+    for i in range(n):
+        t = i / RATE
+        v = sum(a * math.sin(2 * math.pi * f * k * t) * math.exp(-t * decay * (0.7 + 0.5 * k))
+                for k, a in partials)
+        out.append(v * min(1.0, t / attack) * min(1.0, (n - i) / (0.01 * RATE)))
+    return out
+
+
+def thump(seconds: float, f0: float, f1: float, decay: float = 25.0) -> list[float]:
+    n = int(seconds * RATE)
+    out = []
+    ph = 0.0
+    for i in range(n):
+        t = i / RATE
+        f = f1 + (f0 - f1) * math.exp(-t * 40)
+        ph += f / RATE
+        out.append(math.sin(2 * math.pi * ph) * math.exp(-t * decay))
+    return out
+
+
+def highpass(samples: list[float], cutoff: float) -> list[float]:
+    low = lowpass(samples, cutoff)
+    return [a - b for a, b in zip(samples, low)]
+
+
 # --------------------------------------------------------------------------
 
 def make(sid: str) -> list[float]:
-    if sid == "swing":
-        n = noise(0.14, 1, attack=0.01, release=0.08)
-        return finish(lowpass(n, sweep(len(n), 600, 3500)), target_rms=0.12)
-    if sid == "hit":
-        t = Track(0.12)
-        t.add(0, tone(0.08, 330, 110, "square", 0.5, release=0.04, decay=20))
-        t.add(0, lowpass(noise(0.05, 2, release=0.03, decay=40), 2500), 0.7)
-        return finish(t.buf, target_rms=0.18)
+    if sid == "swing":   # airy swoosh with a faint blade ring
+        n = noise(0.16, 1, attack=0.012, release=0.09)
+        t = Track(0.2)
+        t.add(0, lowpass(n, sweep(len(n), 700, 4200)))
+        t.add(0.02, bell(0.14, 2350, decay=30, partials=((1.0, 1.0), (1.51, 0.4))), 0.06)
+        return finish(t.buf, target_rms=0.12)
+    if sid == "hit":     # punchy: low thump + crunchy click + square tick
+        t = Track(0.16)
+        t.add(0, thump(0.14, 210, 70, decay=28), 0.9)
+        t.add(0, tone(0.06, 520, 160, "square", 0.5, release=0.03, decay=30), 0.45)
+        t.add(0, lowpass(noise(0.05, 2, release=0.03, decay=45), 3200), 0.8)
+        return finish(t.buf, target_rms=0.2, peak=0.9)
+    if sid == "crit":    # extra-heavy hit with a bright metallic ting
+        t = Track(0.42)
+        t.add(0, thump(0.18, 240, 60, decay=20), 1.0)
+        t.add(0, tone(0.07, 660, 180, "square", 0.5, release=0.03, decay=25), 0.5)
+        t.add(0, lowpass(noise(0.07, 12, release=0.04, decay=35), 4200), 0.9)
+        t.add(0.03, bell(0.38, 1760, decay=10, partials=((1.0, 1.0), (1.5, 0.6), (2.76, 0.3))), 0.35)
+        return finish(t.buf, target_rms=0.2, peak=0.9)
+    if sid == "combo":   # rising double chime
+        t = Track(0.42)
+        t.add(0, bell(0.2, note("E6"), decay=14), 0.8)
+        t.add(0.09, bell(0.32, note("B6"), decay=10), 0.9)
+        t.add(0, tone(0.18, note("E5"), note("B5"), "square", 0.125, release=0.08), 0.15)
+        return finish(t.buf, target_rms=0.12, cutoff=8000)
+    if sid == "boss_roar":   # hollow armour roar: growling saw, rumble and a metal clank
+        t = Track(1.1)
+        t.add(0, tone(1.0, 110, 70, "saw", attack=0.06, release=0.3, vibrato=0.06, vib_rate=11), 0.6)
+        t.add(0, tone(1.0, 165, 104, "square", 0.3, attack=0.06, release=0.3, vibrato=0.05, vib_rate=7), 0.3)
+        t.add(0, lowpass(noise(1.0, 13, attack=0.08, release=0.35), 900), 0.8)
+        t.add(0, bell(0.6, 420, decay=8, partials=((1.0, 1.0), (2.41, 0.6), (3.9, 0.4))), 0.3)
+        s = lowpass(t.buf, sweep(len(t.buf), 2400, 600))
+        return finish(s, target_rms=0.19)
+    if sid == "star":    # sparkly result star
+        t = Track(0.55)
+        t.add(0, bell(0.5, note("A6"), decay=7, partials=((1.0, 1.0), (2.0, 0.3), (2.99, 0.15))), 0.8)
+        t.add(0.03, bell(0.4, note("E7"), decay=12), 0.25)
+        t.add(0, lowpass(noise(0.04, 14, release=0.03), 6000), 0.2)
+        return finish(t.buf, target_rms=0.12, cutoff=9000)
+    if sid == "whoosh":  # screen transition / cut-in
+        n = noise(0.36, 15, attack=0.12, release=0.2)
+        half = len(n) // 2
+        s = lowpass(n, sweep(half, 500, 3600) + sweep(len(n) - half, 3600, 900))
+        return finish(highpass(s, 250), target_rms=0.1)
+    if sid == "heal":    # gentle rising sparkle
+        t = Track(0.62)
+        for i, nm in enumerate(["C6", "E6", "G6", "C7"]):
+            t.add(i * 0.07, bell(0.3, note(nm), decay=11), 0.7)
+        t.add(0, tone(0.4, note("C5"), note("G5"), "triangle", attack=0.05, release=0.2), 0.3)
+        return finish(t.buf, target_rms=0.11, cutoff=8000)
+    if sid == "pet":     # happy little "boop" and a heart sparkle
+        t = Track(0.42)
+        t.add(0, tone(0.13, note("A5"), note("C#6"), "sine", attack=0.01, release=0.06, vibrato=0.02, vib_rate=18), 0.9)
+        t.add(0.12, tone(0.2, note("E6"), note("A6"), "sine", attack=0.01, release=0.12, vibrato=0.02, vib_rate=18),
+              0.8)
+        t.add(0.2, bell(0.2, note("A7"), decay=16), 0.15)
+        return finish(t.buf, target_rms=0.12, cutoff=7000)
+    if sid == "perfect":  # bright chime chord with a sparkle run
+        t = Track(0.85)
+        for nm in ("C6", "E6", "G6"):
+            t.add(0, bell(0.8, note(nm), decay=5), 0.5)
+        for i, nm in enumerate(["G6", "C7", "E7", "G7"]):
+            t.add(0.1 + i * 0.05, bell(0.25, note(nm), decay=14), 0.3)
+        t.add(0, tone(0.12, note("C5"), note("C6"), "square", 0.25, release=0.05), 0.3)
+        return finish(t.buf, target_rms=0.13, cutoff=9000)
+    if sid == "countdown":  # 3, 2, 1 beep
+        t = Track(0.16)
+        t.add(0, tone(0.12, 880, wave_kind="square", duty=0.25, attack=0.002, release=0.05), 0.8)
+        t.add(0, tone(0.12, 440, wave_kind="triangle", attack=0.002, release=0.05), 0.5)
+        return finish(t.buf, target_rms=0.12, cutoff=6000)
     if sid == "hurt":   # cute little "kyan!"
         t = Track(0.2)
         t.add(0, tone(0.17, 1100, 620, "square", 0.25, attack=0.005, release=0.06, vibrato=0.03, vib_rate=30))
@@ -139,17 +235,23 @@ def make(sid: str) -> list[float]:
         t.add(0.02, tone(0.25, 700, 220, "triangle", release=0.12), 0.6)
         return finish(t.buf, target_rms=0.15)
     if sid == "pickup":
-        t = Track(0.16)
+        t = Track(0.2)
         t.add(0, tone(0.06, note("E6"), wave_kind="square", duty=0.125, release=0.02))
         t.add(0.05, tone(0.1, note("B6"), wave_kind="square", duty=0.125, release=0.07))
-        return finish(t.buf, target_rms=0.11, cutoff=6000)
-    if sid == "level_up":
-        t = Track(0.62)
+        t.add(0.05, bell(0.14, note("B7"), decay=20), 0.12)
+        return finish(t.buf, target_rms=0.11, cutoff=7000)
+    if sid == "level_up":   # fanfare arpeggio, a shimmering run and a held chord
+        t = Track(1.1)
         for i, nm in enumerate(["C5", "E5", "G5", "C6"]):
-            t.add(i * 0.08, tone(0.14 if i < 3 else 0.3, note(nm), wave_kind="square", duty=0.25, release=0.08))
-            t.add(i * 0.08, tone(0.14 if i < 3 else 0.3, note(nm) / 2, wave_kind="triangle", release=0.08), 0.6)
-        t.add(0.32, tone(0.28, note("G6"), wave_kind="triangle", release=0.2, vibrato=0.01), 0.4)
-        return finish(t.buf, target_rms=0.14, cutoff=6000)
+            t.add(i * 0.07, tone(0.12 if i < 3 else 0.5, note(nm), wave_kind="square", duty=0.25, release=0.1,
+                                 vibrato=0.008 if i == 3 else 0))
+            t.add(i * 0.07, tone(0.12 if i < 3 else 0.5, note(nm) / 2, wave_kind="triangle", release=0.1), 0.6)
+        for nm in ("E5", "G5"):
+            t.add(0.28, tone(0.5, note(nm), wave_kind="square", duty=0.125, release=0.25), 0.35)
+        for i, nm in enumerate(["G6", "C7", "E7", "G7", "C8"]):
+            t.add(0.3 + i * 0.045, bell(0.35, note(nm), decay=10), 0.28)
+        t.add(0.28, lowpass(noise(0.4, 16, attack=0.05, release=0.3), 7000), 0.08)
+        return finish(t.buf, target_rms=0.14, cutoff=8000)
     if sid == "bark":   # small friendly "arf!"
         t = Track(0.2)
         t.add(0, tone(0.15, 420, 300, "saw", attack=0.006, release=0.05, vibrato=0.04, vib_rate=40, curve="lin"))
@@ -163,13 +265,16 @@ def make(sid: str) -> list[float]:
             t.add(i * 0.4 + 0.18, tone(0.18, 147, wave_kind="square", duty=0.5, release=0.08))
         return finish(lowpass(t.buf, 1800), target_rms=0.16)
     if sid == "ultimate":
-        t = Track(1.0)
+        t = Track(1.2)
         t.add(0, tone(0.45, 220, 1320, "square", 0.25, attack=0.02, release=0.05), 0.7)
         t.add(0, lowpass(noise(0.45, 6, attack=0.1, release=0.1), sweep(int(0.45 * RATE), 400, 5000)), 0.5)
+        t.add(0.42, thump(0.4, 160, 40, decay=8), 0.9)
         for nm in ("C6", "E6", "G6"):
             t.add(0.42, tone(0.55, note(nm), wave_kind="triangle", release=0.4, vibrato=0.008))
         t.add(0.42, lowpass(noise(0.3, 7, release=0.25, decay=6), 3000), 0.5)
-        return finish(t.buf, target_rms=0.17)
+        for i, nm in enumerate(["C7", "G7", "C8"]):
+            t.add(0.5 + i * 0.06, bell(0.4, note(nm), decay=9), 0.2)
+        return finish(t.buf, target_rms=0.18)
     if sid == "clear":
         t = Track(1.25)
         seq = [("G4", 0.0, 0.12), ("C5", 0.12, 0.12), ("E5", 0.24, 0.12), ("G5", 0.36, 0.2), ("E5", 0.56, 0.1),

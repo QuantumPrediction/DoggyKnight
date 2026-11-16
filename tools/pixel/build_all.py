@@ -3,21 +3,25 @@
 
     python3 tools/pixel/build_all.py                  # write all assets into assets/
     python3 tools/pixel/build_all.py --preview /tmp/p # also write enlarged preview sheets there
+    python3 tools/pixel/build_all.py --no-music       # skip the (slower) music rendering
 
 Then let Godot pick up new or changed files:
 
     godot --headless --path . --import
 
 What it writes (paths are the contracts of DEV_PLAN 4.6 / 4.9 — never rename them):
-  assets/palette.png                              the 32-colour palette
+  assets/palette.png                              the 40-colour palette
   assets/sprites/<code>/<code>.png + _frames.tres  goldie, bulldog, scarecrow, crow, black_knight
   assets/fx/<name>/<name>.png + _frames.tres       slash, hit_spark, exp_orb, ultimate_slash, dizzy_stars, dust
+  assets/fx/particles/<name>.tscn + tex/*.png     11 one-shot CPUParticles2D effects (DEV_PLAN 4.10)
   assets/icons/tricks/<id>.png                    sit, wag, fetch, shake, spin, bark (16x16)
   assets/tiles/chapter1_tiles.png                 16x16 tile set
-  assets/backgrounds/<name>.png + .tscn           sword_stone, meadow, bridge
+  assets/backgrounds/<name>.png + .tscn           sword_stone, wheat_field, meadow, farm_fence, crow_forest, bridge
+  assets/backgrounds/anim/*                       animated layers and ambient particle textures
   assets/ui/*.png                                 buttons, panels, HUD icons, logo
   assets/app_icon/*.png                           app icons, store graphics, boot splash
-  assets/sfx/<id>.wav                             the 14 sound effects
+  assets/sfx/<id>.wav                             the 23 sound effects
+  assets/music/<id>.wav (+ .import)               7 music tracks (4 seamless loops, 3 jingles; QOA import)
   ui/theme/palette_colors.gd                      the palette as GDScript constants
   ui/theme/main_theme.tres                        the UI theme (font, buttons, panels)
   ui/screens/ofl_text.gd                          the font licence text for the credits screen
@@ -38,18 +42,20 @@ import art_brand  # noqa: E402
 import art_enemies  # noqa: E402
 import art_fx  # noqa: E402
 import art_heroes  # noqa: E402
+import art_particles  # noqa: E402
 import art_ui  # noqa: E402
 import art_world  # noqa: E402
+import music_gen  # noqa: E402
 import sfx_gen  # noqa: E402
 from palette import PALETTE, rgba  # noqa: E402
 from pixel import Canvas, build_sheet, contact_sheet, res_path, write_text  # noqa: E402
 
 CHARACTERS = {
-    "goldie": (art_heroes.goldie, (24, 24)),
-    "bulldog": (art_heroes.bulldog, (24, 24)),
-    "scarecrow": (art_enemies.scarecrow, (24, 24)),
-    "crow": (art_enemies.crow, (16, 16)),
-    "black_knight": (art_enemies.black_knight, (48, 48)),
+    "goldie": (art_heroes.goldie_v2, (24, 24)),
+    "bulldog": (art_heroes.bulldog_v2, (24, 24)),
+    "scarecrow": (art_enemies.scarecrow_v2, (24, 24)),
+    "crow": (art_enemies.crow_v2, (16, 16)),
+    "black_knight": (art_enemies.black_knight_v2, (48, 48)),
 }
 
 
@@ -61,7 +67,7 @@ def write_palette() -> None:
     lines = [
         "class_name PaletteColors",
         "extends RefCounted",
-        "## 全遊戲共用的 32 色調色盤(由 tools/pixel/build_all.py 自動產生,請勿手改)。",
+        "## 全遊戲共用的 40 色調色盤(由 tools/pixel/build_all.py 自動產生,請勿手改)。",
         "## 介面程式用這些常數,讓顏色與像素圖一致。",
         "",
     ]
@@ -106,6 +112,7 @@ def main() -> None:
         anims = fn()
         build_sheet("res://assets/fx/%s" % name, name, anims, size)
         sheets["fx_" + name] = anims
+    art_particles.write_all()
     art_ui.write_all()
     art_ui.write_theme()
     art_world.write_all()
@@ -114,6 +121,8 @@ def main() -> None:
     art_brand.write_all(goldie_idle, bulldog_idle, art_world.prop(art_world.SWORD_STONE),
                         art_world.prop(art_world.TREE), art_world.prop(art_world.BUSH))
     sfx_gen.write_all()
+    if "--no-music" not in sys.argv:
+        music_gen.write_all()
     write_ofl_text()
 
     if preview_dir:

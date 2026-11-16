@@ -2,8 +2,12 @@ extends TestCase
 ## C 線美術(C1 至 C7、C9、C13):格數、格子大小、調色盤、背景範圍、App 圖示規格。
 ## (路徑與動畫名稱的合約由 tests/core/test_art_contract.gd 檢查。)
 
-const FRAME_COUNTS: Dictionary = {   # DEV_PLAN C2
-	"goldie": {&"idle": 2, &"run": 4, &"attack": 3, &"hurt": 1, &"sleep": 2},
+const FRAME_COUNTS: Dictionary = {   # DEV_PLAN C2、CP1(v2.2 加格數)
+	"goldie": {&"idle": 4, &"run": 6, &"attack": 4, &"hurt": 2, &"sleep": 2, &"victory": 4},
+	"bulldog": {&"idle": 4, &"run": 6, &"attack": 4, &"hurt": 2, &"guard": 2, &"victory": 4},
+	"scarecrow": {&"idle": 4, &"run": 6, &"attack": 4, &"hurt": 2},
+	"crow": {&"idle": 4, &"run": 6, &"attack": 4, &"hurt": 2},
+	"black_knight": {&"idle": 4, &"run": 6, &"attack": 4, &"hurt": 2, &"charge": 3, &"slam": 4, &"down": 2},
 }
 const SIZES: Dictionary = {
 	"goldie": 24, "bulldog": 24, "scarecrow": 24, "crow": 16, "black_knight": 48,
@@ -13,7 +17,9 @@ const PIXEL_ART: Array[String] = [
 	"res://assets/sprites/scarecrow/scarecrow.png", "res://assets/sprites/crow/crow.png",
 	"res://assets/sprites/black_knight/black_knight.png", "res://assets/tiles/chapter1_tiles.png",
 	"res://assets/backgrounds/meadow.png", "res://assets/backgrounds/sword_stone.png",
-	"res://assets/backgrounds/bridge.png", "res://assets/icons/tricks/sit.png",
+	"res://assets/backgrounds/bridge.png", "res://assets/backgrounds/wheat_field.png",
+	"res://assets/backgrounds/farm_fence.png", "res://assets/backgrounds/crow_forest.png",
+	"res://assets/icons/tricks/sit.png",
 	"res://assets/icons/tricks/spin.png", "res://assets/ui/button_normal.png",
 	"res://assets/ui/title_bg.png", "res://assets/app_icon/icon_master_32.png",
 ]
@@ -32,8 +38,10 @@ func _palette() -> Dictionary:
 	return colors
 
 
-func test_palette_has_32_colours() -> void:
-	assert_eq(_palette().size(), 32)
+func test_palette_has_40_colours() -> void:
+	# v1 的 32 色 + v2.2 的 8 個氣氛色(黃昏、夜晚、農場);見 tools/pixel/palette.py
+	assert_eq(_palette().size(), 40)
+	assert_eq(PaletteColors.DIRT, Color("c9a06e"))
 
 
 func test_pixel_art_uses_only_the_palette() -> void:
@@ -75,19 +83,52 @@ func test_looping_rules() -> void:
 	var knight := load("res://assets/sprites/black_knight/black_knight_frames.tres") as SpriteFrames
 	assert_false(knight.get_animation_loop(&"down"))
 	assert_false(knight.get_animation_loop(&"slam"))
+	assert_true(goldie.get_animation_loop(&"victory"), "過關歡呼循環播放")
+
+
+func test_attack_animations_stay_short() -> void:
+	# A 線在動畫開始的一刻就判定命中;揮劍動畫要短,第一格(預備)更要短。
+	var goldie := load("res://assets/sprites/goldie/goldie_frames.tres") as SpriteFrames
+	var total := 0.0
+	for i in goldie.get_frame_count(&"attack"):
+		total += goldie.get_frame_duration(&"attack", i) / goldie.get_animation_speed(&"attack")
+	assert_true(total <= 0.32, "金毛揮劍動畫 %.2f 秒(不超過 0.32)" % total)
+	assert_true(goldie.get_frame_duration(&"attack", 0) / goldie.get_animation_speed(&"attack") <= 0.05,
+			"預備格很短,揮劍的感覺不會延遲")
+
+
+const ALL_BACKGROUNDS: Array[String] = ["sword_stone", "wheat_field", "meadow", "farm_fence", "crow_forest", "bridge"]
 
 
 func test_backgrounds_cover_the_extended_screen() -> void:
 	var need := Rect2(-10, -60, 200, 440)
-	for bg in ["meadow", "sword_stone", "bridge"]:
+	for bg in ALL_BACKGROUNDS:
 		var node := (load("res://assets/backgrounds/%s.tscn" % bg) as PackedScene).instantiate() as Node2D
-		var covered := Rect2()
-		for c in node.get_children():
-			if c is Sprite2D:
-				var s := c as Sprite2D
-				covered = Rect2(s.position, s.texture.get_size())
-		assert_true(covered.encloses(need), "%s 覆蓋 %s(實際 %s)" % [bg, need, covered])
-		assert_true(covered.encloses(Layout.ARENA_RECT))
+		var image := node.get_node_or_null("Image") as Sprite2D
+		assert_not_null(image, "%s 有 Image(烘焙好的背景圖)" % bg)
+		if image != null:
+			var covered := Rect2(image.position, image.texture.get_size())
+			assert_true(covered.encloses(need), "%s 覆蓋 %s(實際 %s)" % [bg, need, covered])
+			assert_true(covered.encloses(Layout.ARENA_RECT))
+		node.free()
+
+
+func test_background_ambience_is_light_and_readable() -> void:
+	for bg in ALL_BACKGROUNDS:
+		var node := (load("res://assets/backgrounds/%s.tscn" % bg) as PackedScene).instantiate() as Node2D
+		var particles := 0
+		var mood: CanvasModulate = null
+		for c in node.find_children("*", "", true, false):
+			if c is CPUParticles2D:
+				particles += (c as CPUParticles2D).amount
+			elif c is GPUParticles2D:
+				assert_true(false, "%s:背景只用 CPUParticles2D" % bg)
+			elif c is CanvasModulate:
+				mood = c as CanvasModulate
+		assert_true(particles <= 100, "%s 的環境粒子不超過 100 個(實際 %d)" % [bg, particles])
+		if mood != null:
+			var lum := mood.color.r * 0.3 + mood.color.g * 0.59 + mood.color.b * 0.11
+			assert_true(lum >= 0.85, "%s 的氣氛色不可太暗(亮度 %.2f),角色與預警要看得清楚" % [bg, lum])
 		node.free()
 
 

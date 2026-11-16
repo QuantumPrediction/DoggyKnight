@@ -20,8 +20,33 @@ static func button(text: String, variation: StringName = &"", min_size: Vector2 
 	b.focus_mode = Control.FOCUS_NONE
 	b.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
-	b.pressed.connect(tap_sound)
+	b.pressed.connect(tap_feedback)
+	add_squash(b)
 	return b
+
+
+## 按下時擠扁、放開時彈回(CP5)。任何 Control 按鈕都可以用。
+static func add_squash(b: BaseButton) -> void:
+	b.resized.connect(func() -> void: b.pivot_offset = (b.size * 0.5).floor())
+	b.button_down.connect(func() -> void: _squash(b, Vector2(1.06, 0.88), 0.05))
+	b.button_up.connect(func() -> void:
+		var t := b.create_tween()
+		t.tween_property(b, "scale", Vector2(0.96, 1.06), 0.06)
+		t.tween_property(b, "scale", Vector2.ONE, 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT))
+
+
+static func _squash(b: Control, to: Vector2, time: float) -> void:
+	if not b.is_inside_tree():
+		return
+	b.pivot_offset = (b.size * 0.5).floor()
+	var t := b.create_tween()
+	t.tween_property(b, "scale", to, time)
+
+
+## 按鈕回饋:按鍵音 + 手機輕震(遵守 GameState.haptics_on)。
+static func tap_feedback() -> void:
+	tap_sound()
+	Haptics.play(&"light")
 
 
 static func label(text: String, variation: StringName = &"", align: HorizontalAlignment = HORIZONTAL_ALIGNMENT_CENTER) -> Label:

@@ -1,19 +1,31 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://assets/fx/particles/one_shot_particles.gd" id="1_fx"]
+[ext_resource type="Texture2D" path="res://assets/fx/particles/tex/heart_outline.png" id="2_tex"]
+
+[sub_resource type="Gradient" id="Gradient_ramp"]
+offsets = PackedFloat32Array(0, 0.75, 1)
+colors = PackedColorArray(1.000, 0.980, 0.941, 1.000, 1.000, 0.980, 0.941, 1.000, 1.000, 0.980, 0.941, 0.000)
+
+[sub_resource type="Curve" id="Curve_scale"]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(0.2, 1.2), 0.0, 0.0, 0, 0, Vector2(0.35, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 4
 
 [node name="heart" type="CPUParticles2D"]
-z_index = 5
-amount = 3
-lifetime = 0.9
+z_index = 6
+emitting = false
 one_shot = true
-explosiveness = 0.5
+texture = ExtResource("2_tex")
+amount = 3
+lifetime = 1.0
+explosiveness = 0.6
 direction = Vector2(0, -1)
-spread = 30.0
-gravity = Vector2(0, -30)
-initial_velocity_min = 10.0
-initial_velocity_max = 20.0
-scale_amount_min = 1.0
-scale_amount_max = 2.0
-color = Color(1, 0.42, 0.6, 1)
+spread = 35.0
+gravity = Vector2(0, -20)
+initial_velocity_min = 18.0
+initial_velocity_max = 30.0
+tangential_accel_min = -20.0
+tangential_accel_max = 20.0
+color_ramp = SubResource("Gradient_ramp")
+scale_amount_curve = SubResource("Curve_scale")
 script = ExtResource("1_fx")

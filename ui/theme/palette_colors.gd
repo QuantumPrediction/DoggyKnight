@@ -1,6 +1,6 @@
 class_name PaletteColors
 extends RefCounted
-## 全遊戲共用的 32 色調色盤(由 tools/pixel/build_all.py 自動產生,請勿手改)。
+## 全遊戲共用的 40 色調色盤(由 tools/pixel/build_all.py 自動產生,請勿手改)。
 ## 介面程式用這些常數,讓顏色與像素圖一致。
 
 const INK: Color = Color("2a1b2d")
@@ -35,3 +35,11 @@ const WATER_D: Color = Color("2c5aa0")
 const STONE_L: Color = Color("dcd3c6")
 const STONE: Color = Color("aaa09a")
 const STONE_D: Color = Color("7a6f72")
+const PEACH: Color = Color("ffc79a")
+const ROSE: Color = Color("d9748e")
+const DUSK: Color = Color("7d4a78")
+const NIGHT: Color = Color("3b4a80")
+const NIGHT_D: Color = Color("232a50")
+const MOSS: Color = Color("a8b850")
+const MOSS_D: Color = Color("6d8a3c")
+const DIRT: Color = Color("c9a06e")

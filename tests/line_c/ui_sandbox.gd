@@ -3,7 +3,9 @@ extends Node
 ## 並暫代 B 線處理暫停、繼續、回標題,暫代 A 線處理必殺技。
 ##
 ## 執行:godot --path . res://tests/line_c/ui_sandbox.tscn
-## 按左上「工具」打開按鈕面板,選一個動作後面板自動收起。Esc = Android 返回鍵(打開/關閉暫停選單)。
+## 按左上「工具」打開按鈕面板,選一個動作後面板自動收起;面板最後一格「更多▶」切換第二頁
+## (v2.2:頭目血條、連擊、過關慶祝、必殺技切入、星級結算、教學、轉場、音樂)。
+## Esc = Android 返回鍵(打開/關閉暫停選單)。
 ## 這是開發工具,文字不翻譯。
 
 const TRICK_IDS: Array[String] = ["sit", "wag", "fetch", "shake", "spin", "bark"]
@@ -23,6 +25,12 @@ var _loyalty: float = 0.0
 var _wave: int = 0
 var _paused: bool = false
 var _screen: Control
+var _boss_hp: int = 700
+var _combo: int = 0
+var _music_index: int = 0
+var _tools_page: int = 0
+var _grid: GridContainer
+var _transition: CanvasLayer
 
 
 func _ready() -> void:
@@ -91,12 +99,35 @@ func _build_tools() -> void:
 	panel = PanelContainer.new()
 	panel.theme_type_variation = &"PanelDark"
 	root.add_child(panel)
-	var grid := GridContainer.new()
-	grid.columns = 2
-	grid.add_theme_constant_override(&"h_separation", 4)
-	grid.add_theme_constant_override(&"v_separation", 4)
-	panel.add_child(grid)
-	var actions: Array = [
+	_grid = GridContainer.new()
+	_grid.columns = 2
+	_grid.add_theme_constant_override(&"h_separation", 4)
+	_grid.add_theme_constant_override(&"v_separation", 4)
+	panel.add_child(_grid)
+	_fill_tools()
+	status_label = UiKit.label("", &"LabelLight", HORIZONTAL_ALIGNMENT_LEFT)
+	root.add_child(status_label)
+	toggle.pressed.connect(func() -> void: panel.visible = not panel.visible)
+	var relayout := func() -> void:
+		var safe := SafeArea.get_safe_rect()
+		toggle.size = toggle.custom_minimum_size
+		toggle.position = Vector2(safe.position.x + 4, safe.position.y + 34)
+		panel.size = panel.get_minimum_size()
+		panel.position = Vector2(floorf(safe.get_center().x - panel.size.x * 0.5), toggle.position.y + 28)
+		status_label.position = Vector2(safe.position.x + 4, safe.end.y - 16)
+		status_label.size = Vector2(safe.size.x - 8, 14)
+	get_viewport().size_changed.connect(relayout)
+	relayout.call()
+	panel.visible = true
+	set_meta(&"relayout", relayout)
+	_transition = (load("res://ui/transition/transition.tscn") as PackedScene).instantiate() as CanvasLayer
+	add_child(_transition)
+
+
+func _fill_tools() -> void:
+	for c in _grid.get_children():
+		c.queue_free()
+	var page_a: Array = [
 		["活力 -15", func() -> void: _set_vigor(_vigor - 15)],
 		["活力 +15", func() -> void: _set_vigor(_vigor + 15)],
 		["經驗 +1", _add_exp],
@@ -116,27 +147,46 @@ func _build_tools() -> void:
 		["失敗結算", func() -> void: _open_screen("failure")],
 		["製作名單", func() -> void: _open_screen("credits")],
 	]
+	var page_b: Array = [
+		["頭目血 -80", _boss_hit],
+		["連擊 +1", func() -> void:
+			_combo += 1
+			EventBus.combo_changed.emit(_combo)
+			_status("combo_changed(%d)" % _combo)],
+		["連擊中斷", func() -> void:
+			_combo = 0
+			EventBus.combo_changed.emit(0)
+			_status("combo_changed(0)")],
+		["關卡開場", func() -> void:
+			EventBus.level_started.emit(&"1-%d" % (randi() % 6 + 1))
+			_status("level_started")],
+		["過關慶祝", func() -> void:
+			EventBus.level_completed.emit(&"1-2")
+			_status("level_completed")],
+		["必殺切入", func() -> void:
+			EventBus.ultimate_used.emit()
+			_status("ultimate_used")],
+		["星級結算", func() -> void: _open_screen("results_stars")],
+		["教學提示", _open_tutorial],
+		["轉場", _play_transition],
+		["換音樂", _next_music],
+		["停音樂", func() -> void:
+			Music.stop()
+			_status("Music.stop()")],
+		["治療 +30", func() -> void: _set_vigor(_vigor + 30)],
+	]
+	var actions: Array = page_a if _tools_page == 0 else page_b
 	for a: Array in actions:
 		var b := UiKit.button(a[0], &"", Vector2(80, 24))
 		b.pressed.connect(a[1])
 		# 按下後收起面板,才看得到效果;再按「工具」打開。
 		b.pressed.connect(func() -> void: panel.visible = false)
-		grid.add_child(b)
-	status_label = UiKit.label("", &"LabelLight", HORIZONTAL_ALIGNMENT_LEFT)
-	root.add_child(status_label)
-	toggle.pressed.connect(func() -> void: panel.visible = not panel.visible)
-	var relayout := func() -> void:
-		var safe := SafeArea.get_safe_rect()
-		toggle.size = toggle.custom_minimum_size
-		toggle.position = Vector2(safe.position.x + 4, safe.position.y + 34)
-		panel.size = panel.get_minimum_size()
-		panel.position = Vector2(floorf(safe.get_center().x - panel.size.x * 0.5), toggle.position.y + 28)
-		status_label.position = Vector2(safe.position.x + 4, safe.end.y - 16)
-		status_label.size = Vector2(safe.size.x - 8, 14)
-	get_viewport().size_changed.connect(relayout)
-	relayout.call()
-	panel.visible = true
-	set_meta(&"relayout", relayout)
+		_grid.add_child(b)
+	var more := UiKit.button("更多 ▶" if _tools_page == 0 else "◀ 返回", &"ButtonAlt", Vector2(80, 24))
+	more.pressed.connect(func() -> void:
+		_tools_page = 1 - _tools_page
+		_fill_tools.call_deferred())
+	_grid.add_child(more)
 
 
 func _process(_delta: float) -> void:
@@ -213,6 +263,41 @@ func _boss_level() -> void:
 	_status("level_started(1-6)")
 
 
+func _boss_hit() -> void:
+	if _boss_hp <= 0:
+		_boss_hp = 700
+	if _boss_hp == 700:
+		EventBus.boss_hp_changed.emit(700, 700)      # 出場
+	var was := _boss_hp
+	_boss_hp = maxi(0, _boss_hp - 80)
+	EventBus.boss_hp_changed.emit(_boss_hp, 700)
+	if was > 350 and _boss_hp <= 350:
+		EventBus.boss_phase_changed.emit(2)
+	_status("boss_hp_changed(%d, 700)" % _boss_hp)
+
+
+func _open_tutorial() -> void:
+	var tut := (load("res://ui/hints/tutorial.tscn") as PackedScene).instantiate()
+	trick_choice.get_parent().add_child(tut)
+	tut.connect(&"finished", func() -> void: _status("tutorial finished"))
+	_status("tutorial: drag 20 px, then release")
+
+
+func _play_transition() -> void:
+	_status("transition cover(0.12) → reveal(0.3)")
+	await _transition.call(&"cover", 0.12)
+	await get_tree().create_timer(0.2).timeout
+	await _transition.call(&"reveal", 0.3)
+
+
+func _next_music() -> void:
+	var tracks: Array[StringName] = [&"title", &"field", &"boss", &"camp", &"victory", &"fail", &"chapter_clear"]
+	var t := tracks[_music_index % tracks.size()]
+	_music_index += 1
+	Music.play(t)
+	_status("Music.play(%s)" % t)
+
+
 func _offer_tricks() -> void:
 	var ids := TRICK_IDS.duplicate()
 	ids.shuffle()
@@ -251,7 +336,7 @@ func _open_screen(kind: String) -> void:
 	if _screen != null:
 		_screen.queue_free()
 		_screen = null
-	var path := "res://ui/screens/%s.tscn" % kind.trim_suffix("_final")
+	var path := "res://ui/screens/%s.tscn" % kind.trim_suffix("_final").trim_suffix("_stars")
 	_screen = (load(path) as PackedScene).instantiate() as Control
 	screen_layer.add_child(_screen)
 	var close := func() -> void:
@@ -273,6 +358,17 @@ func _open_screen(kind: String) -> void:
 				"victory": true, "time_sec": 141.0 if final else 83.4, "kills": 9 if final else 27,
 				"tricks": [] if final else [&"sit", &"spin"], "hero_level": _level,
 				"next_is_camp": not final, "is_final": final})
+			_screen.connect("continue_pressed", func() -> void:
+				_status("continue_pressed")
+				close.call())
+		"results_stars":
+			_screen.call("setup", {
+				"level_id": &"1-3", "level_name": "LEVEL_1_3", "victory": true, "time_sec": 58.0, "kills": 27,
+				"tricks": [&"wag"], "hero_level": _level, "next_is_camp": false, "is_final": false,
+				"stars": 3, "best_stars": 3, "new_best": true, "level_index": 2, "level_count": 6,
+				"star_goals": [{"key": "STAR_CLEAR", "met": true, "text": "過關"},
+					{"key": "STAR_TIME", "met": true, "text": "70 秒內過關"},
+					{"key": "STAR_NO_DAMAGE", "met": true, "text": "受到的傷害不超過 25"}]})
 			_screen.connect("continue_pressed", func() -> void:
 				_status("continue_pressed")
 				close.call())
