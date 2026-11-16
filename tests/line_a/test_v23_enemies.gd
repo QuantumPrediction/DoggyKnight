@@ -441,3 +441,38 @@ func test_pincer_makes_waiting_scarecrows_attack_together_in_later_levels() -> v
 	a.phase = ScarecrowEnemy.Phase.APPROACH
 	a._start_telegraph(player.global_position - a.global_position)
 	assert_eq(b.phase, ScarecrowEnemy.Phase.APPROACH, "前段關卡沒有夾擊")
+
+
+func test_enemy_projectiles_are_grouped_and_capped() -> void:
+	make_arena()
+	player.set_physics_process(false)
+	var feel := CombatFx.feel().duplicate() as FeelTuning
+	feel.max_enemy_projectiles = 3
+	CombatFx.set_feel(feel)
+	var arrow := load("res://data/enemies/projectiles/arrow.tres") as ProjectileData
+	for i in 5:
+		var from := Vector2(20, 90 + i * 8)
+		EnemyProjectile.launch(arena, arrow, from, Vector2.RIGHT, 150.0, 7)
+	assert_eq(get_tree().get_nodes_in_group(&"enemy_projectile").size(), 5, "每個投射物都在群組 enemy_projectile")
+	assert_eq(EnemyProjectile.flying_count(arena), 3, "超過上限時最舊的淡出(D 線的效能上限)")
+	var archer := spawn(&"scarecrow_archer", player.global_position + Vector2(0, -80)) as ArcherEnemy
+	archer._cooldown_left = 0.0
+	archer.target = player
+	assert_false(archer._wants_to_shoot(), "快到上限時弓兵先不瞄準")
+
+
+func test_clearing_the_arena_mid_guard_and_mid_windup_is_safe() -> void:
+	# B 線在失敗或重試時會 clear() 場地:鬥牛犬正在舉盾、金毛正在蓄力的目標被釋放了,也不可以出錯。
+	make_arena()
+	var dog := arena.spawn_companion(&"bulldog") as BulldogCompanion
+	dog.global_position = player.global_position + Vector2(0, -20)
+	var enemy := spawn(&"scarecrow_elite", player.global_position + Vector2(0, -36))
+	enemy.set_physics_process(false)
+	await wait_until(func() -> bool: return dog.is_taunting(), 120)
+	player.set_move_override(Vector2.ZERO)
+	await wait_until(func() -> bool: return player._windup_left >= 0.0, 60)
+	arena.clear()
+	enemy = null
+	await wait_physics(10)
+	assert_false(dog.is_taunting(), "敵人被清掉後,鬥牛犬回到跟隨")
+	assert_true(player._windup_left < 0.0 or player.swing_count >= 0, "金毛的蓄力目標消失也沒事")

@@ -480,8 +480,12 @@ static func radius_of(node: Node) -> float:
 	return float(r) if r != null else 6.0
 
 
-func _is_valid_victim(node: Node2D) -> bool:
-	if node == null or not is_instance_valid(node) or not node.is_inside_tree():
+## 參數用 Variant:目標可能已被釋放;已釋放的物件傳給有物件型別的參數會出錯。
+func _is_valid_victim(victim: Variant) -> bool:
+	if not is_instance_valid(victim):
+		return false
+	var node := victim as Node2D
+	if node == null or not node.is_inside_tree():
 		return false
 	if node.has_method(&"is_downed") and bool(node.call(&"is_downed")):
 		return false

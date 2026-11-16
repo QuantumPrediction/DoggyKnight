@@ -9,6 +9,7 @@ extends Node2D
 ## - 鬥牛犬舉盾時擋得住(is_taunting() 且牠有 block_projectile()):「鏘!」一聲,投射物被彈開、落地。
 ## - 會飛回來的(乾草叉)飛到盡頭後飛回射出者手上(catch_projectile());射出者倒下就落地。
 ## - 在群組 enemy_projectile;放在場地的特效層(在角色之上,最顯眼),場地 clear() 時一起移除。
+## - 數量上限(FeelTuning.max_enemy_projectiles,D 線建議 16 至 20):超過時最舊的(會停下的)投射物淡出。
 ## - 慢動作時(CombatFx.time_scale)跟著變慢。
 
 const GROUP: StringName = &"enemy_projectile"
@@ -50,6 +51,7 @@ static func launch(host: Node, p_data: ProjectileData, from: Vector2, dir: Vecto
 		p_damage: int, p_speed_mult: float = 1.0, p_shooter: Node2D = null) -> EnemyProjectile:
 	if host == null or not host.is_inside_tree() or p_data == null:
 		return null
+	_enforce_cap(host)
 	var p := EnemyProjectile.new()
 	p.data = p_data
 	p.direction = dir.normalized() if dir.length() > 0.001 else Vector2.RIGHT
@@ -62,6 +64,32 @@ static func launch(host: Node, p_data: ProjectileData, from: Vector2, dir: Vecto
 	p.global_position = from
 	p.origin = from
 	return p
+
+
+## 場上還在飛的敵方投射物數目。
+static func flying_count(host: Node) -> int:
+	if host == null or not host.is_inside_tree():
+		return 0
+	var count := 0
+	for node in host.get_tree().get_nodes_in_group(GROUP):
+		var p := node as EnemyProjectile
+		if p != null and p.is_flying():
+			count += 1
+	return count
+
+
+## 已經到上限時,讓最舊的、不會飛回來的投射物淡出,騰出一個位置。
+static func _enforce_cap(host: Node) -> void:
+	var cap := maxi(1, CombatFx.feel().max_enemy_projectiles)
+	var flying: Array[EnemyProjectile] = []
+	for node in host.get_tree().get_nodes_in_group(GROUP):
+		var p := node as EnemyProjectile
+		if p != null and p.is_flying() and not p.data.returns:
+			flying.append(p)
+	var i := 0
+	while flying_count(host) >= cap and i < flying.size():
+		flying[i]._stop(Vector2.ZERO, 0.15)
+		i += 1
 
 
 ## 從 from 往 dir 飛,最遠 max_range,撞到戰鬥區邊緣為止的長度(預警線與投射物共用)。

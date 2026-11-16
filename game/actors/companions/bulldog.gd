@@ -258,6 +258,8 @@ func _on_level_completed(_level_id: StringName) -> void:
 # --- 判斷與行動 -------------------------------------------------------------------
 
 func _think(player: Node2D) -> void:
+	if not is_instance_valid(_target_enemy):
+		_target_enemy = null         # 場地 clear() 把牠移除了(已釋放的物件 != null 也是 false,所以直接檢查)
 	if celebrating:
 		_target_enemy = null
 		_set_mode(Mode.FOLLOW)
@@ -282,6 +284,8 @@ func _think(player: Node2D) -> void:
 
 
 func _act(delta: float, player: Node2D) -> Vector2:
+	if (mode == Mode.APPROACH or mode == Mode.GUARD) and not _is_valid_enemy(_target_enemy):
+		_set_mode(Mode.FOLLOW)
 	match mode:
 		Mode.APPROACH:
 			var to_enemy := _target_enemy.global_position - global_position
@@ -332,10 +336,14 @@ func _pick_enemy(player: Node2D) -> Node2D:
 	return best
 
 
-func _is_valid_enemy(enemy: Node2D) -> bool:
-	if enemy == null or not is_instance_valid(enemy) or not enemy.is_inside_tree() or not enemy.is_in_group(ENEMY_GROUP):
+## 參數用 Variant:敵人可能已被釋放(場地 clear() 時);已釋放的物件傳給有物件型別的參數會出錯。
+func _is_valid_enemy(enemy: Variant) -> bool:
+	if not is_instance_valid(enemy):
 		return false
-	return not enemy.has_method(&"is_targetable") or bool(enemy.call(&"is_targetable"))
+	var node := enemy as Node2D
+	if node == null or not node.is_inside_tree() or not node.is_in_group(ENEMY_GROUP):
+		return false
+	return not node.has_method(&"is_targetable") or bool(node.call(&"is_targetable"))
 
 
 func _gap_to(enemy: Node2D) -> float:

@@ -57,6 +57,9 @@ extends Resource
 @export var max_particle_points: int = 250
 @export var particle_points_reserve: int = 80
 @export var pickup_haptic_interval: float = 0.15  ## 拾取經驗珠的輕震動最短間隔
+## 場上同時最多幾個敵方投射物(v2.3;D 線壓力測試建議 16 至 20)。弓兵在接近上限時先不瞄準;
+## 真的超過時,最舊的箭淡出(頭目的劍氣與隊長的乾草叉一定會射出)。
+@export var max_enemy_projectiles: int = 18
 
 @export_group("連擊(AP4)")
 @export var combo_window: float = 2.0             ## 兩次擊倒相隔不超過這個秒數就算連擊

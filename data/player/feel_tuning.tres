@@ -54,6 +54,7 @@ particle_caps = {
 max_particle_points = 250
 particle_points_reserve = 80
 pickup_haptic_interval = 0.15
+max_enemy_projectiles = 18
 combo_window = 2.0
 combo_milestones = PackedInt32Array(5, 10, 20)
 combo_milestone_loyalty = PackedFloat32Array(10, 15, 25)

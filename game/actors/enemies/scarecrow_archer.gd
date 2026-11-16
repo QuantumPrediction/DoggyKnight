@@ -102,6 +102,9 @@ func _wants_to_shoot() -> bool:
 		crossfire = _cooldown_left <= window and bool(arena.call(&"melee_attack_on", target))
 	if not ready and not crossfire:
 		return false
+	# 場上的投射物快到上限時先不瞄準(D 線的效能上限)。
+	if EnemyProjectile.flying_count(self) >= CombatFx.feel().max_enemy_projectiles - 2:
+		return false
 	if not claim_attack_slot():
 		return false
 	if crossfire:

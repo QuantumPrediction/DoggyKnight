@@ -19,7 +19,7 @@ const MAGIC_BLUE := Color(0.45, 0.75, 1.0)
 @export var bash_interval: float = 4.0           ## 兩次衝撞之間的秒數(× 難度)
 @export var first_bash_min: float = 1.2
 @export var first_bash_max: float = 2.2
-@export var bash_trigger_range: float = 64.0     ## 目標中心在這個距離內才衝撞
+@export var bash_trigger_range: float = 50.0     ## 目標中心在這個距離內才衝撞(衝撞約 60 像素,一定碰得到)
 @export var bash_telegraph: float = 0.6
 @export var bash_distance: float = 60.0
 @export var bash_speed: float = 170.0
@@ -115,7 +115,7 @@ func _approach() -> void:
 	anim_state = &"run"
 
 
-func _start_bash(to_target: Vector2) -> void:
+func _start_bash(to_target: Vector2, call_friends: bool = true) -> void:
 	phase = Phase.TELEGRAPH
 	bashes_started += 1
 	_bash_dir = to_target.normalized() if to_target.length() > 0.01 else facing
@@ -130,7 +130,8 @@ func _start_bash(to_target: Vector2) -> void:
 	# 預警線的寬度 = 盔甲的身體(碰到就被撞到)。
 	_show_telegraph(AttackTelegraph.make_line(_bash_dir, _bash_length + body_radius, body_radius * 2.0 + 2.0))
 	CombatFx.sfx(&"husk_clank", &"", -2.0)
-	_call_pincer(target)
+	if call_friends:
+		_call_pincer(target)
 
 
 func _begin_bash() -> void:
@@ -170,7 +171,7 @@ func join_attack(victim: Node2D) -> bool:
 	if not claim_attack_slot():
 		return false
 	_cooldown_left = 0.0
-	_start_bash(victim.global_position - global_position)
+	_start_bash(victim.global_position - global_position, false)
 	return true
 
 
