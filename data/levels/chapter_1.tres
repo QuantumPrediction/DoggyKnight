@@ -8,8 +8,12 @@
 [ext_resource type="Resource" path="res://data/levels/level_1_4.tres" id="5_l4"]
 [ext_resource type="Resource" path="res://data/levels/level_1_5.tres" id="6_l5"]
 [ext_resource type="Resource" path="res://data/levels/level_1_6.tres" id="7_l6"]
+[ext_resource type="Resource" path="res://data/story/prologue.tres" id="9_prologue"]
+[ext_resource type="Resource" path="res://data/story/teaser.tres" id="10_teaser"]
 
 [resource]
 script = ExtResource("1_chapter")
 levels = Array[ExtResource("8_level")]([ExtResource("2_l1"), ExtResource("3_l2"), ExtResource("4_l3"), ExtResource("5_l4"), ExtResource("6_l5"), ExtResource("7_l6")])
 camp_after = Array[int]([1, 3])
+prologue = ExtResource("9_prologue")
+teaser = ExtResource("10_teaser")

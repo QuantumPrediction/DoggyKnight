@@ -6,6 +6,11 @@ extends Resource
 @export var levels: Array[LevelData] = []
 ## 在哪幾關「過關」之後進營地(0 起算的索引)。第一章是 1-2 與 1-4,即 [1, 3]。
 @export var camp_after: Array[int] = [1, 3]
+## v2.3 故事(docs/STORY.md 第 8 節):新遊戲時、第 1 關之前的開場繪本(data/story/prologue.tres)。
+@export var prologue: DialogueScript
+## v2.3 故事:打完最後一關的結算之後、回標題之前的下一章預告(data/story/teaser.tres)。
+## 結局本身是最後一關的 LevelData.story_after。
+@export var teaser: DialogueScript
 
 
 func level_count() -> int:
