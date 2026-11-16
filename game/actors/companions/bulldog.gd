@@ -7,6 +7,12 @@ extends CharacterBody2D
 ##   每隔一段時間用盾撞一下(6 點傷害)。
 ## - 牠不會倒下:累積受到一定傷害後暈眩 3 秒(冒星星、不挑釁),然後自己站起來。
 ## - 離金毛太遠時一定先回到金毛身邊。
+##
+## M3 打磨(AP8,有個性):
+## - 舉盾時頭上冒「汪!」對話泡泡(有冷卻,不會一直冒)。
+## - 跟著跑時一蹦一跳。
+## - 過關(level_completed)時跳起歡呼(有 victory 動畫就用),冒愛心。
+## - 盾撞敵人時跳出淡藍色的傷害數字。慢動作時動作跟著變慢。
 
 enum Mode { FOLLOW, APPROACH, GUARD, DAZED }
 
@@ -38,6 +44,13 @@ const GUARD_COLOR := Color(0.55, 0.8, 1.0, 0.6)
 @export var daze_threshold: float = 24.0         ## 累積受到這麼多傷害就暈眩
 @export var daze_time: float = 3.0
 @export var hurt_anim_time: float = 0.2
+@export_group("個性")
+@export var woof_cooldown: float = 2.5           ## 「汪!」泡泡的最短間隔
+@export var woof_time: float = 0.9
+@export var hop_height: float = 2.0              ## 跑步時一蹦一跳的高度
+@export var hop_rate: float = 9.0
+@export var cheer_hop_height: float = 5.0
+@export var cheer_interval: float = 0.55
 
 var data: CompanionData
 var companion_id: StringName = &"bulldog"
@@ -59,6 +72,12 @@ var _dizzy: Node2D
 var _frame_size: Vector2 = Vector2(24, 24)
 var _arena_margin: Vector2 = Vector2(7, 7)
 var _age: float = 0.0
+var woofs: int = 0
+var celebrating: bool = false
+var _woof_ready_at: float = 0.0
+var _cheer_left: float = 0.0
+var _cheer_t: float = -1.0
+var _bubble: SpeechBubble
 
 
 func setup(p_data: CompanionData) -> void:
@@ -77,10 +96,14 @@ func _ready() -> void:
 	if frames != null and frames.has_animation(&"idle") and frames.get_frame_count(&"idle") > 0:
 		_frame_size = frames.get_frame_texture(&"idle", 0).get_size()
 	_arena_margin = CombatMath.sprite_margin(_frame_size, body_radius)
+	EventBus.level_completed.connect(_on_level_completed)
 	_play(&"idle")
 
 
 func _physics_process(delta: float) -> void:
+	var ts := CombatFx.time_scale
+	delta *= ts
+	sprite.speed_scale = ts
 	_age += delta
 	_mode_time += delta
 	_hurt_left = maxf(0.0, _hurt_left - delta)
@@ -95,9 +118,13 @@ func _physics_process(delta: float) -> void:
 		_think(player)
 		desired = _act(delta, player)
 	velocity = velocity.move_toward(desired, accel * delta)
+	var real_velocity := velocity
+	velocity *= ts
 	move_and_slide()
+	velocity = real_velocity
 	global_position = CombatMath.clamp_to_bounds(global_position, _arena_margin)
 	_update_animation()
+	_update_bounce(delta)
 	if mode == Mode.GUARD:
 		queue_redraw()
 
@@ -151,12 +178,49 @@ func _set_mode(new_mode: Mode) -> void:
 	_mode_time = 0.0
 	if new_mode == Mode.GUARD:
 		_bump_timer = bump_interval * 0.5
+		woof()
 	queue_redraw()
+
+
+## 頭上冒「汪!」(有冷卻)。傳回有沒有冒出來。
+func woof() -> bool:
+	if _age < _woof_ready_at or not is_inside_tree():
+		return false
+	_woof_ready_at = _age + woof_cooldown
+	woofs += 1
+	if _bubble != null and is_instance_valid(_bubble):
+		_bubble.queue_free()
+	_bubble = SpeechBubble.new()
+	_bubble.text = tr(&"COMPANION_BULLDOG_WOOF")
+	_bubble.lifetime = woof_time
+	_bubble.position = Vector2(0, -_frame_size.y * 0.5)
+	add_child(_bubble)
+	return true
+
+
+## 過關歡呼(AP8):不再理會敵人,回到金毛身邊跳起來。
+func celebrate() -> void:
+	if celebrating:
+		return
+	celebrating = true
+	_target_enemy = null
+	if mode != Mode.DAZED:
+		_set_mode(Mode.FOLLOW)
+	_cheer_left = 0.15
+	CombatFx.particles(self, &"heart", global_position + Vector2(0, -_frame_size.y * 0.6), false, true)
+
+
+func _on_level_completed(_level_id: StringName) -> void:
+	celebrate()
 
 
 # --- 判斷與行動 -------------------------------------------------------------------
 
 func _think(player: Node2D) -> void:
+	if celebrating:
+		_target_enemy = null
+		_set_mode(Mode.FOLLOW)
+		return
 	if player != null and global_position.distance_to(player.global_position) > leash_radius:
 		_target_enemy = null
 		_set_mode(Mode.FOLLOW)
@@ -205,7 +269,7 @@ func _bump() -> void:
 	_bump_anim_left = 0.2
 	_play(&"attack", true)
 	if _target_enemy.has_method(&"hit"):
-		_target_enemy.call(&"hit", bump_damage, global_position, bump_knockback)
+		_target_enemy.call(&"hit", bump_damage, global_position, bump_knockback, DamageNumber.Style.ALLY)
 	else:
 		_target_enemy.call(&"take_damage", bump_damage)
 	CombatFx.spawn(self, &"hit_spark", global_position.lerp(_target_enemy.global_position, 0.5), randf() * TAU,
@@ -251,8 +315,32 @@ func _update_animation() -> void:
 		_play(&"guard")
 	elif velocity.length() > 4.0:
 		_play(&"run")
+	elif celebrating and sprite.sprite_frames != null and sprite.sprite_frames.has_animation(&"victory"):
+		_play(&"victory")
 	else:
 		_play(&"idle")
+
+
+## 一蹦一跳:跑步時小跳;過關時原地大跳(沒有 victory 動畫時)。
+func _update_bounce(delta: float) -> void:
+	var y := 0.0
+	var squash := Vector2.ONE
+	if celebrating and velocity.length() <= 4.0 and mode != Mode.DAZED:
+		_cheer_left -= delta
+		if _cheer_left <= 0.0 and _cheer_t < 0.0:
+			_cheer_t = 0.0
+			_cheer_left = cheer_interval
+		if _cheer_t >= 0.0:
+			_cheer_t += delta / 0.32
+			y = -cheer_hop_height * sin(PI * minf(_cheer_t, 1.0))
+			squash = Vector2(0.92, 1.1) if _cheer_t < 0.5 else Vector2.ONE
+			if _cheer_t >= 1.0:
+				_cheer_t = -1.0
+				squash = Vector2(1.12, 0.88)
+	elif mode != Mode.GUARD and mode != Mode.DAZED and velocity.length() > 4.0:
+		y = -absf(sin(_age * hop_rate)) * hop_height
+	sprite.position = Vector2(0, roundf(y))
+	sprite.scale = sprite.scale.lerp(squash, clampf(delta * 18.0, 0.0, 1.0))
 
 
 func _play(anim: StringName, restart: bool = false) -> void:
