@@ -4,6 +4,8 @@ extends Control
 ## 聽 EventBus.trick_offered(options: Array[TrickData]),顯示三張卡片(圖示、名稱、一行說明)。
 ## 玩家點一張 → 發 EventBus.trick_chosen(id) 並隱藏。遊戲暫停中也能操作(PROCESS_MODE_ALWAYS)。
 ## 卡片出現後短暫不接受點擊,避免玩家原本按著畫面的手指一放開就誤選。
+## CP5:卡片一張接一張翻進來、閃一下光;右上角標示「NEW」(還沒學過)或「Lv2」(選了會變第幾層,
+## 由 GameState.active_tricks 數)。選中的卡片彈一下,其他卡片淡出。
 
 const INPUT_DELAY: float = 0.35
 const CARD_SIZE: Vector2 = Vector2(168, 54)
@@ -54,15 +56,23 @@ func show_options(options: Array) -> void:
 	visible = true
 	_accept_at = Time.get_ticks_msec() / 1000.0 + INPUT_DELAY
 	_layout()
+	_title.pivot_offset = _title.size * 0.5
+	_title.scale = Vector2(0.3, 0.3)
+	var tt := _title.create_tween()
+	tt.tween_property(_title, "scale", Vector2.ONE, 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	for i in cards.size():
 		var card := cards[i]
-		card.modulate.a = 0.0
-		var rest := card.position
-		card.position = rest + Vector2(0, 8)
+		card.pivot_offset = CARD_SIZE * 0.5
+		card.scale = Vector2(0.0, 1.0)
+		card.modulate = Color(2.0, 2.0, 2.0, 0.0)
 		var t := card.create_tween()
-		t.tween_interval(0.05 * i)
-		t.tween_property(card, "position", rest, 0.15)
-		t.parallel().tween_property(card, "modulate:a", 1.0, 0.15)
+		t.tween_interval(0.07 * i)
+		t.tween_property(card, "modulate:a", 1.0, 0.05)
+		t.parallel().tween_property(card, "scale", Vector2(1.06, 1.0), 0.14).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		t.tween_property(card, "scale", Vector2.ONE, 0.06)
+		t.parallel().tween_property(card, "modulate", Color.WHITE, 0.25)
+		if i == 0:
+			t.tween_callback(UiKit.play_sfx.bind(&"whoosh"))
 
 
 ## 選擇第 index 張卡片(點卡片時呼叫;測試也用這個)。
@@ -74,10 +84,25 @@ func choose(index: int) -> void:
 	EventBus.trick_chosen.emit(id)
 
 
+## 這個把戲已經學了幾次(由 GameState.active_tricks 數)。
+static func learned_count(id: StringName) -> int:
+	return GameState.active_tricks.count(id)
+
+
+## 卡片右上角的標記文字:沒學過是「NEW」,學過 n 次就是「Lv(n+1)」。
+static func badge_text(id: StringName) -> String:
+	var n := learned_count(id)
+	return tr_static("UI_TRICK_NEW") if n == 0 else tr_static("UI_TRICK_LEVEL") % (n + 1)
+
+
+static func tr_static(key: String) -> String:
+	return TranslationServer.translate(key)
+
+
 func _on_card_pressed(index: int) -> void:
 	if Time.get_ticks_msec() / 1000.0 < _accept_at:
 		return
-	UiKit.tap_sound()
+	UiKit.tap_feedback()
 	choose(index)
 
 
@@ -111,6 +136,16 @@ func _make_card(trick: TrickData) -> Button:
 	desc.position = Vector2(text_x, 21)
 	desc.size = Vector2(text_w, 30)
 	card.add_child(desc)
+	var badge := PanelContainer.new()
+	badge.name = "Badge"
+	badge.theme_type_variation = &"Ribbon" if learned_count(trick.id) == 0 else &"PanelDark"
+	badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var badge_label := UiKit.label(badge_text(trick.id), &"LabelLight")
+	badge_label.name = "Text"
+	badge.add_child(badge_label)
+	card.add_child(badge)
+	badge.size = badge.get_minimum_size()
+	badge.position = Vector2(CARD_SIZE.x - badge.size.x + 2, -5)
 	return card
 
 

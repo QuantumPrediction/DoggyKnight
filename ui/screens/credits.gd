@@ -1,7 +1,8 @@
 extends Control
 ## 製作名單與授權(C10,DEV_PLAN 4.9)。B 線把它放在第 30 層 CanvasLayer。
 ##
-## 訊號 closed(按「關閉」)。內容可上下拖曳捲動:
+## 訊號 closed(按「關閉」)。內容會自動慢慢往上捲(CP5);玩家一碰就停,放手 3 秒後再繼續。
+## 內容可上下拖曳捲動:
 ## 1. 製作名單;2. 授權條目(照抄 docs/licenses.md,見 LICENSE_ENTRIES);
 ## 3. 俐方體11號的 SIL OFL 授權全文;4. Godot 引擎本身與內含第三方元件的授權聲明
 ##    (Engine.get_license_text()、get_copyright_info()、get_license_info())。
@@ -42,9 +43,15 @@ var close_button: Button
 var scroll: ScrollContainer
 var content: VBoxContainer
 
+## 自動捲動速度(每秒幾個像素)與玩家碰過之後的等待秒數。
+const AUTO_SCROLL_SPEED: float = 14.0
+const AUTO_SCROLL_RESUME: float = 3.0
+
 var _bg: ColorRect
 var _panel: PanelContainer
 var _built_width: float = -1.0
+var _scroll_pos: float = 0.0
+var _hold: float = 1.2
 
 
 func _ready() -> void:
@@ -80,8 +87,34 @@ func _ready() -> void:
 	_layout()
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	_layout()
+	_auto_scroll(delta)
+
+
+func _input(event: InputEvent) -> void:
+	if not visible:
+		return
+	if event is InputEventScreenTouch or event is InputEventScreenDrag or event is InputEventMouseButton:
+		_hold = AUTO_SCROLL_RESUME
+
+
+func _auto_scroll(delta: float) -> void:
+	if _hold > 0.0:
+		_hold -= delta
+		_scroll_pos = float(scroll.scroll_vertical)
+		return
+	var bar := scroll.get_v_scroll_bar()
+	var max_pos := maxf(0.0, bar.max_value - bar.page)
+	if _scroll_pos >= max_pos:
+		return
+	_scroll_pos = minf(max_pos, _scroll_pos + AUTO_SCROLL_SPEED * delta)
+	scroll.scroll_vertical = int(_scroll_pos)
+
+
+## 自動捲動目前的位置(測試用)。
+func auto_scroll_position() -> float:
+	return _scroll_pos
 
 
 func _layout() -> void:

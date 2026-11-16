@@ -494,6 +494,8 @@ def write_all() -> list[str]:
     star_icon(16, False).save(res_path("res://assets/ui/star_empty.png"))
     star_icon(26, True).save(res_path("res://assets/ui/star_big_full.png"))
     star_icon(26, False).save(res_path("res://assets/ui/star_big_empty.png"))
+    star_icon(10, True).save(res_path("res://assets/ui/star_small_full.png"))
+    star_icon(10, False).save(res_path("res://assets/ui/star_small_empty.png"))
     finger_pointer(False).save(res_path("res://assets/ui/finger.png"))
     finger_pointer(True).save(res_path("res://assets/ui/finger_pressed.png"))
     cutin_portrait().save(res_path("res://assets/ui/cutin_goldie.png"))
