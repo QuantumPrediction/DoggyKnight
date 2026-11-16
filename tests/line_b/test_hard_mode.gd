@@ -71,8 +71,10 @@ func test_continue_keeps_the_saved_runs_difficulty() -> void:
 
 
 func test_hard_mode_adds_a_few_regular_enemies() -> void:
-	var d := load(DIFFICULTY) as DifficultyData
-	assert_true(d.hard_extra_ratio > 0.0 and d.hard_extra_ratio <= 0.5, "少量(每組最多多一半)")
+	var shipped := load(DIFFICULTY) as DifficultyData
+	assert_true(shipped.hard_extra_ratio >= 0.0 and shipped.hard_extra_ratio <= 0.5, "少量(每組最多多一半)")
+	var d := shipped.duplicate() as DifficultyData
+	d.hard_extra_ratio = 0.25
 	var spawner := WaveSpawner.new()
 	spawner.setup(LevelData.new(), null, d)
 	var entry := SpawnEntry.new()
@@ -107,6 +109,7 @@ func test_hard_mode_spawns_the_extra_enemies_in_a_wave() -> void:
 	wave.spawns.append(entry)
 	level.waves.append(wave)
 	var d := fast_difficulty()
+	d.hard_extra_ratio = 0.25
 	var spawner := WaveSpawner.new()
 	spawner.setup(level, arena, d)
 	spawner.difficulty_mode = &"hard"

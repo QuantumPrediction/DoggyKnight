@@ -38,9 +38,11 @@ extends Resource
 
 @export_group("Hard mode")
 ## 困難模式(GameState.difficulty == &"hard")每組敵人多加 floor(數目 × 這個比例) 隻
-## (0.25:4 至 7 隻的組多 1 隻,8 隻以上多 2 隻;1 至 3 隻的組不變)。敵人本身的生命與傷害
-## 由 A 線依難度放大(data/enemies/difficulty_scaling.tres)。多加太多會讓近戰小怪擠成一團。
-@export var hard_extra_ratio: float = 0.25
+## (例如 0.25:4 至 7 隻的組多 1 隻,8 隻以上多 2 隻;1 至 3 隻的組不變)。敵人本身的生命、傷害、
+## 速度與同時進攻的數目由 A 線依難度放大(data/enemies/difficulty_scaling.tres)。
+## 目前是 0(不多加):量度時 A 線的放大已經讓困難模式機器人每輪倒下 1 至 8 次;多加 0.25 會變成
+## 13 次(1-4 連續失敗 7 次),而且近戰小怪會擠成一團。想讓困難模式「人更多」時再調高。
+@export var hard_extra_ratio: float = 0.0
 ## 困難模式不會多加的敵人(頭目、中頭目)。
 @export var hard_extra_exempt: Array[StringName] = [&"black_knight", &"scarecrow_captain"]
 
