@@ -780,7 +780,7 @@ def write_all() -> list[str]:
     out = []
     for sid in IDS:
         p = res_path("res://assets/story/%s.png" % sid)
-        BUILDERS[sid]().save(p, opaque=True)
+        P.quantize(BUILDERS[sid]()).save(p, opaque=True)
         out.append(p)
     return out
 
@@ -790,5 +790,5 @@ if __name__ == "__main__":
     out_dir = sys.argv[1]
     which = sys.argv[2:] or IDS
     for sid in which:
-        BUILDERS[sid]().scaled(4).save("%s/story_%s.png" % (out_dir, sid))
+        P.quantize(BUILDERS[sid]()).scaled(4).save("%s/story_%s.png" % (out_dir, sid))
     print("ok")

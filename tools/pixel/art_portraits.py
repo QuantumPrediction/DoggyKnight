@@ -683,6 +683,7 @@ def portrait(speaker: str, expr: str) -> Canvas:
     c = backdrop(speaker)
     fig = BUILDERS[speaker](expr)
     c.blit(fig, 0, 0)
+    P.quantize(c)
     return c.flipped() if speaker in FACES_LEFT else c
 
 

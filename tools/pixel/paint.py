@@ -264,6 +264,32 @@ def alpha_px(name: str, a: int) -> tuple[int, int, int, int]:
     return (r, g, b, a)
 
 
+def quantize(c: Canvas) -> Canvas:
+    """Snap every opaque pixel that is not a palette colour (e.g. a painted glow blended onto an
+    opaque picture) to the two nearest palette colours with an ordered dither."""
+    pal = [(n, rgba(n)[:3]) for n, _ in PALETTE]
+    cache: dict = {}
+    for y in range(c.h):
+        for x in range(c.w):
+            p = c.get(x, y)
+            if p is None or p[3] == 0 or p[:3] in NAME_BY_RGB:
+                continue
+            key = p[:3]
+            if key not in cache:
+                ds = sorted(pal, key=lambda q: sum((a - b) ** 2 for a, b in zip(q[1], key)))
+                d0 = sum((a - b) ** 2 for a, b in zip(ds[0][1], key)) ** 0.5
+                d1 = sum((a - b) ** 2 for a, b in zip(ds[1][1], key)) ** 0.5
+                cache[key] = (ds[0][0], ds[1][0], d0 / max(1e-6, d0 + d1))
+            a, b, t = cache[key]
+            c.set(x, y, P_ALPHA(b if t > bayer(x, y) else a, p[3]))
+    return c
+
+
+def P_ALPHA(name: str, a: int) -> tuple[int, int, int, int]:
+    r, g, b, _ = rgba(name)
+    return (r, g, b, a)
+
+
 def rim_light(c: Canvas, side: tuple[int, int] = (1, 0), skip: tuple[str, ...] = ("ink",)) -> Canvas:
     """v2.3 (CS5) rim light: silhouette pixels whose outer neighbour (past the ink outline) on `side`
     is empty get one palette step lighter - a thin backlight edge that lifts dark figures off dark ground."""
