@@ -117,25 +117,21 @@ polygon = PackedVector2Array(90, -90, 102, -90, 402, 430, 390, 430)
 
 [node name="eye_violet_0" parent="Lights" instance=ExtResource("84_light_eye_violet")]
 position = Vector2(-24, 41)
-scale = Vector2(0.24, 0.24)
 base_alpha = 0.56
 seed_offset = 4.68
 
 [node name="eye_violet_1" parent="Lights" instance=ExtResource("84_light_eye_violet")]
 position = Vector2(192, 33)
-scale = Vector2(0.24, 0.24)
 base_alpha = 0.56
 seed_offset = 32.76
 
 [node name="eye_violet_2" parent="Lights" instance=ExtResource("84_light_eye_violet")]
 position = Vector2(-48, 365)
-scale = Vector2(0.24, 0.24)
 base_alpha = 0.56
 seed_offset = 1.56
 
 [node name="eye_violet_3" parent="Lights" instance=ExtResource("84_light_eye_violet")]
 position = Vector2(210, 383)
-scale = Vector2(0.24, 0.24)
 base_alpha = 0.56
 seed_offset = 35.1
 

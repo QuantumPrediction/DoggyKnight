@@ -247,49 +247,41 @@ position = Vector2(-62, -88)
 
 [node name="torch_0" parent="Foreground" instance=ExtResource("84_light_torch")]
 position = Vector2(0, 54)
-scale = Vector2(0.7, 0.7)
 base_alpha = 0.55
 seed_offset = 2.22
 
 [node name="torch_1" parent="Foreground" instance=ExtResource("84_light_torch")]
 position = Vector2(182, 54)
-scale = Vector2(0.7, 0.7)
 base_alpha = 0.55
 seed_offset = 2.59
 
 [node name="torch_2" parent="Foreground" instance=ExtResource("84_light_torch")]
 position = Vector2(0, 296)
-scale = Vector2(0.7, 0.7)
 base_alpha = 0.55
 seed_offset = 2.96
 
 [node name="torch_3" parent="Foreground" instance=ExtResource("84_light_torch")]
 position = Vector2(182, 296)
-scale = Vector2(0.7, 0.7)
 base_alpha = 0.55
 seed_offset = 3.33
 
 [node name="torch_4" parent="Foreground" instance=ExtResource("84_light_torch")]
 position = Vector2(0, 176)
-scale = Vector2(0.7, 0.7)
 base_alpha = 0.55
 seed_offset = 2.96
 
 [node name="torch_5" parent="Foreground" instance=ExtResource("84_light_torch")]
 position = Vector2(182, 176)
-scale = Vector2(0.7, 0.7)
 base_alpha = 0.55
 seed_offset = 3.33
 
 [node name="torch_6" parent="Foreground" instance=ExtResource("84_light_torch")]
 position = Vector2(54, 38)
-scale = Vector2(0.7, 0.7)
 base_alpha = 0.55
 seed_offset = 1.85
 
 [node name="torch_7" parent="Foreground" instance=ExtResource("84_light_torch")]
 position = Vector2(120, 38)
-scale = Vector2(0.7, 0.7)
 base_alpha = 0.55
 seed_offset = 0
 

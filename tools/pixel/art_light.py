@@ -4,6 +4,8 @@ Mobile-first: no Light2D. Lights are Sprite2D with an additive CanvasItemMateria
 pixel glow texture (stepped, dithered falloff). Outputs:
 
   assets/fx/lights/glow.png                  64x64 white glow (alpha steps), tinted by modulate
+  assets/fx/lights/glow_<px>.png             the same glow at each light's own size, so every light is
+                                             drawn at scale 1 and its dither stays on the pixel grid
   assets/fx/lights/<name>.tscn               ready-made light sprites any line can add as a child:
                                              torch, campfire, lantern, magic, eye_violet, visor_blue,
                                              sword, sun, ultimate (script light_flicker.gd)
@@ -30,26 +32,26 @@ GAME = (62, 88, 242, 408)                     # world (0,0)-(180,320)
 ARENA = (AW.AX0, AW.AY0, AW.AX1, AW.AY1)      # world (2,72)-(178,296)
 
 LIGHTS = {
-    # name: (rgb, scale, base_alpha, flicker, flicker_speed, breathe)
-    "torch": ((1.0, 0.62, 0.25), 0.7, 0.55, 0.3, 11.0, 0.0),
-    "campfire": ((1.0, 0.55, 0.2), 1.6, 0.6, 0.25, 8.0, 0.03),
-    "lantern": ((1.0, 0.78, 0.42), 0.8, 0.5, 0.12, 5.0, 0.0),
-    "magic": ((0.75, 0.55, 1.0), 0.8, 0.5, 0.05, 6.0, 0.12),
-    "eye_violet": ((0.8, 0.45, 1.0), 0.3, 0.7, 0.1, 7.0, 0.1),
-    "visor_blue": ((0.45, 0.8, 1.0), 0.35, 0.6, 0.15, 9.0, 0.0),
-    "sword": ((1.0, 0.95, 0.7), 0.9, 0.45, 0.0, 1.0, 0.08),
-    "sun": ((1.0, 0.86, 0.6), 4.0, 0.22, 0.0, 1.0, 0.02),
-    "ultimate": ((1.0, 0.9, 0.55), 2.0, 0.7, 0.0, 1.0, 0.1),
+    # name: (rgb, size in px, base_alpha, flicker, flicker_speed, pulse)
+    "torch": ((1.0, 0.62, 0.25), 44, 0.55, 0.3, 11.0, 0.0),
+    "campfire": ((1.0, 0.55, 0.2), 96, 0.6, 0.25, 8.0, 0.1),
+    "lantern": ((1.0, 0.78, 0.42), 52, 0.5, 0.12, 5.0, 0.0),
+    "magic": ((0.75, 0.55, 1.0), 52, 0.5, 0.05, 6.0, 0.3),
+    "eye_violet": ((0.8, 0.45, 1.0), 20, 0.7, 0.1, 7.0, 0.25),
+    "visor_blue": ((0.45, 0.8, 1.0), 22, 0.6, 0.15, 9.0, 0.0),
+    "sword": ((1.0, 0.95, 0.7), 56, 0.45, 0.0, 1.0, 0.3),
+    "sun": ((1.0, 0.86, 0.6), 192, 0.22, 0.0, 1.0, 0.08),
+    "ultimate": ((1.0, 0.9, 0.55), 128, 0.7, 0.0, 1.0, 0.2),
 }
 
 
-def glow_texture() -> Canvas:
+def glow_texture(size: int = GLOW) -> Canvas:
     """White glow: alpha falls off in a few steps with an ordered dither between them (pixel look)."""
-    c = Canvas(GLOW, GLOW)
-    r = GLOW / 2
+    c = Canvas(size, size)
+    r = size / 2
     levels = [0, 40, 80, 130, 190, 255]
-    for y in range(GLOW):
-        for x in range(GLOW):
+    for y in range(size):
+        for x in range(size):
             d = math.hypot(x + 0.5 - r, y + 0.5 - r) / r
             if d >= 1:
                 continue
@@ -63,11 +65,11 @@ def glow_texture() -> Canvas:
 
 
 def light_tscn(name: str) -> str:
-    rgb, scale, base, flicker, speed, breathe = LIGHTS[name]
+    rgb, size, base, flicker, speed, pulse = LIGHTS[name]
     return "\n".join([
         '[gd_scene format=3]',
         '',
-        '[ext_resource type="Texture2D" path="res://assets/fx/lights/glow.png" id="1_glow"]',
+        '[ext_resource type="Texture2D" path="res://assets/fx/lights/glow_%d.png" id="1_glow"]' % size,
         '[ext_resource type="Script" path="res://assets/fx/lights/light_flicker.gd" id="2_flicker"]',
         '',
         '[sub_resource type="CanvasItemMaterial" id="Mat_add"]',
@@ -76,13 +78,12 @@ def light_tscn(name: str) -> str:
         '[node name="%s" type="Sprite2D"]' % "".join(p.capitalize() for p in name.split("_")),
         'modulate = Color(%g, %g, %g, %g)' % (rgb + (base,)),
         'material = SubResource("Mat_add")',
-        'scale = Vector2(%g, %g)' % (scale, scale),
         'texture = ExtResource("1_glow")',
         'script = ExtResource("2_flicker")',
         'base_alpha = %g' % base,
         'flicker = %g' % flicker,
         'flicker_speed = %g' % speed,
-        'breathe = %g' % breathe,
+        'pulse = %g' % pulse,
         '',
     ])
 
@@ -102,6 +103,8 @@ def rain_sheet_texture() -> Canvas:
 
 def write_shared() -> None:
     glow_texture().save(res_path("res://assets/fx/lights/glow.png"))
+    for size in sorted({v[1] for v in LIGHTS.values()}):
+        glow_texture(size).save(res_path("res://assets/fx/lights/glow_%d.png" % size))
     for name in LIGHTS:
         write_text(res_path("res://assets/fx/lights/%s.tscn" % name), light_tscn(name))
     rain_sheet_texture().save(res_path("res://assets/backgrounds/anim/rain_sheet.png"))

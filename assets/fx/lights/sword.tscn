@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Texture2D" path="res://assets/fx/lights/glow.png" id="1_glow"]
+[ext_resource type="Texture2D" path="res://assets/fx/lights/glow_56.png" id="1_glow"]
 [ext_resource type="Script" path="res://assets/fx/lights/light_flicker.gd" id="2_flicker"]
 
 [sub_resource type="CanvasItemMaterial" id="Mat_add"]
@@ -9,10 +9,9 @@ blend_mode = 1
 [node name="Sword" type="Sprite2D"]
 modulate = Color(1, 0.95, 0.7, 0.45)
 material = SubResource("Mat_add")
-scale = Vector2(0.9, 0.9)
 texture = ExtResource("1_glow")
 script = ExtResource("2_flicker")
 base_alpha = 0.45
 flicker = 0
 flicker_speed = 1
-breathe = 0.08
+pulse = 0.3

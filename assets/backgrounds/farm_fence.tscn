@@ -121,13 +121,11 @@ color_ramp = SubResource("Gradient_fade")
 
 [node name="sun_0" parent="Lights" instance=ExtResource("84_light_sun")]
 position = Vector2(90, -110)
-scale = Vector2(4.8, 4.8)
 base_alpha = 0.264
 seed_offset = 0
 
 [node name="lantern_1" parent="Lights" instance=ExtResource("84_light_lantern")]
 position = Vector2(118, -24)
-scale = Vector2(0.8, 0.8)
 base_alpha = 0.5
 seed_offset = 0
 

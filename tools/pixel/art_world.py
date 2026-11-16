@@ -1801,12 +1801,11 @@ def background_tscn(name: str, sc: Scene) -> str:
 
 
 def _light_node(parent: str, i: int, light: tuple) -> list[str]:
-    kind, wx, wy, scale_mult, alpha_mult, seed = light
+    kind, wx, wy, _scale_mult, alpha_mult, seed = light
     import art_light
-    rgb, scale, base, *_ = art_light.LIGHTS[kind]
+    rgb, size, base, *_ = art_light.LIGHTS[kind]
     return ["", '[node name="%s_%d" parent="%s" instance=ExtResource("84_light_%s")]' % (kind, i, parent, kind),
             "position = Vector2(%g, %g)" % (round(wx), round(wy)),
-            "scale = Vector2(%g, %g)" % (scale * scale_mult, scale * scale_mult),
             "base_alpha = %g" % round(base * alpha_mult, 3),
             "seed_offset = %g" % round(seed, 3)]
 
