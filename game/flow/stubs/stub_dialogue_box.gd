@@ -49,6 +49,7 @@ func _ready() -> void:
 	_root.add_child(panel)
 	_text = Label.new()
 	_text.autowrap_mode = TextServer.AUTOWRAP_ARBITRARY
+	_text.add_theme_color_override(&"font_color", Color.WHITE)
 	_text.position = Vector2(4, 4)
 	_text.size = panel.size - Vector2(8, 8)
 	panel.add_child(_text)
