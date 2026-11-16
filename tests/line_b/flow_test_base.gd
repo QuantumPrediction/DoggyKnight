@@ -6,9 +6,12 @@ const MAIN_SCENE: String = "res://game/flow/main.tscn"
 const SAVE_PATH: String = "user://test_line_b_save.json"
 const CHAPTER_1: String = "res://data/levels/chapter_1.tres"
 const DIFFICULTY: String = "res://game/progression/difficulty.tres"
+const MusicRecorder := preload("res://tests/line_b/music_recorder.gd")
 
 var flow: FlowMain
 var quit_calls: int = 0
+## make_flow 換上的假音樂播放器(記錄 Music 的呼叫次序;不碰真的 Music Autoload)。
+var music_log: MusicRecorder
 
 
 func after_each() -> void:
@@ -90,6 +93,8 @@ func make_flow(keep_save: bool = false, rng_seed: int = 1234) -> FlowMain:
 	f.platform_name = "Linux"
 	quit_calls = 0
 	f.quit_handler = func() -> void: quit_calls += 1
+	music_log = MusicRecorder.new()
+	f.music = music_log
 	add_child(f)
 	flow = f
 	return f

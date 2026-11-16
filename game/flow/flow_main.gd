@@ -334,6 +334,7 @@ func _start_level(index: int) -> void:
 	_session = LevelSession.new()
 	_session.name = "LevelSession"
 	_session.setup(level, index, difficulty, FlowParts.arena_for(level, use_stand_ins), _spawn_rng)
+	_session.arriving = _arriving_companions(index)
 	_session.cleared.connect(_on_level_cleared)
 	_session.finished.connect(_on_level_finished)
 	_session.intro_finished.connect(_on_intro_finished)
@@ -345,6 +346,17 @@ func _start_level(index: int) -> void:
 		_session_waiting = true        # 轉場露出畫面之後才開始(_go)
 	else:
 		_begin_level()
+
+
+## 這一關才加入的同伴(上一關沒有的),例如 1-3 的鬥牛犬:等畫面露出才出場。
+func _arriving_companions(index: int) -> Array[StringName]:
+	var result: Array[StringName] = []
+	var level := chapter.get_level(index)
+	var previous := chapter.get_level(index - 1)
+	for companion_id in level.companions:
+		if previous == null or not previous.companions.has(companion_id):
+			result.append(companion_id)
+	return result
 
 
 ## 發 level_started、開始開場倒數。

@@ -33,6 +33,16 @@ func setup(scene: PackedScene, curve: DifficultyData) -> void:
 			add_child(screen)
 
 
+## 換掉轉場畫面(測試用;傳入 null = 不播轉場)。舊的畫面會被移除。
+func use_screen(node: Node) -> void:
+	if screen != null and is_instance_valid(screen) and screen != node:
+		remove_child(screen)
+		screen.queue_free()
+	screen = node
+	if node != null and node.get_parent() == null:
+		add_child(node)
+
+
 ## 有轉場畫面,而且設定了秒數。
 func is_active() -> bool:
 	return screen != null and is_instance_valid(screen) and (cover_time > 0.0 or reveal_time > 0.0)

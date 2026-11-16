@@ -306,3 +306,15 @@ func test_companion_joins_from_level_1_3() -> void:
 	assert_true(await wait_until(_in_level))
 	await wait_frames(1)
 	assert_eq(get_tree().get_node_count_in_group(&"companion"), 1, "鬥牛犬加入")
+	assert_eq(flow.get_session().arriving, [&"bulldog"] as Array[StringName], "1-3 才加入:畫面露出後出場")
+
+
+func test_companion_is_already_there_after_1_3() -> void:
+	SaveStore.new(SAVE_PATH).write(3, 0, true)
+	make_flow(true)
+	await wait_frames(1)
+	flow.get_screen().emit_signal(&"continue_pressed")
+	assert_true(await wait_until(_in_level))
+	assert_eq(flow.get_session().arriving.size(), 0, "1-4 的鬥牛犬一開始就在場上")
+	await wait_frames(1)
+	assert_eq(get_tree().get_node_count_in_group(&"companion"), 1)

@@ -6,9 +6,10 @@ extends Node
 ##   build():組裝(DEV_PLAN 4.9「一關的組成」)
 ##     1. 實例化場地(FlowParts.arena_for),加為子節點。
 ##     2. arena.set_background(LevelData.background)。
-##     3. 為 LevelData.companions 的每個代號呼叫 arena.spawn_companion()。
-##   begin():發 EventBus.level_started,開始計時;等 intro_duration 秒(HUD 播關卡標題卡,
-##     金毛可以走動)才開始第一波,這時發本地訊號 intro_finished。
+##     3. 為 LevelData.companions 的每個代號呼叫 arena.spawn_companion()
+##        (這一關才「加入」的同伴(arriving,例如 1-3 的鬥牛犬)留到 begin() 才出場,玩家看得到)。
+##   begin():新加入的同伴出場;發 EventBus.level_started,開始計時;等 intro_duration 秒
+##     (HUD 播關卡標題卡,金毛可以走動)才開始第一波,這時發本地訊號 intro_finished。
 ##   start() = build() + begin()(沒有轉場時用)。
 ## 進行中:記錄擊倒數(enemy_died)、受到的傷害(player_damaged,星級用)與用時
 ##   (由 begin() 起算,只在遊戲沒有暫停時累計)。
@@ -30,6 +31,8 @@ var level_index: int = 0
 var difficulty: DifficultyData
 var arena_scene: PackedScene
 var rng: RandomNumberGenerator
+## 這一關才加入的同伴(畫面露出後才出場);其他同伴在 build() 時就已經在場上。
+var arriving: Array[StringName] = []
 
 var state: State = State.READY
 var time_sec: float = 0.0
@@ -87,7 +90,8 @@ func build() -> void:
 	if level.background != null:
 		FlowParts.call_if_present(arena, &"set_background", [level.background])
 	for companion_id in level.companions:
-		FlowParts.call_if_present(arena, &"spawn_companion", [companion_id])
+		if not arriving.has(companion_id):
+			FlowParts.call_if_present(arena, &"spawn_companion", [companion_id])
 
 	spawner = WaveSpawner.new()
 	spawner.name = "WaveSpawner"
@@ -102,6 +106,9 @@ func begin(progression: RunProgression) -> void:
 	build()
 	if state != State.READY or arena == null:
 		return
+	for companion_id in arriving:
+		if level.companions.has(companion_id):
+			FlowParts.call_if_present(arena, &"spawn_companion", [companion_id])
 	state = State.PLAYING
 	time_sec = 0.0
 	kills = 0

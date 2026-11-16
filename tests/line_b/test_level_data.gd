@@ -33,7 +33,7 @@ func test_six_level_files_follow_the_table() -> void:
 	var levels := _levels()
 	var ids: Array[StringName] = [&"1-1", &"1-2", &"1-3", &"1-4", &"1-5", &"1-6"]
 	var wave_counts: Array[int] = [2, 3, 3, 3, 4, 1]
-	var backgrounds: Array[String] = ["sword_stone", "meadow", "meadow", "meadow", "meadow", "bridge"]
+	var backgrounds: Array[String] = ["sword_stone", "wheat_field", "meadow", "farm_fence", "crow_forest", "bridge"]
 	for i in levels.size():
 		var level := levels[i]
 		assert_not_null(level, LEVEL_FILES[i])
@@ -84,7 +84,7 @@ func test_estimated_length_and_level_ups_are_on_target() -> void:
 	var hero := 1
 	var progress := 0
 	for level in _levels():
-		var seconds := curve.first_wave_delay + curve.inter_wave_delay * (level.waves.size() - 1)
+		var seconds := curve.intro_duration + curve.first_wave_delay + curve.inter_wave_delay * (level.waves.size() - 1)
 		var exp_gained := BOSS_SUMMON_EXP if level.is_boss else 0
 		var factor := COMPANION_FACTOR if not level.companions.is_empty() else 1.0
 		for wave in level.waves:
