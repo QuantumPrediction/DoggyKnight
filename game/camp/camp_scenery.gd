@@ -319,10 +319,10 @@ func _draw_fire() -> void:
 		draw_rect(Rect2(ember.round(), Vector2(2, 1)), Color(1, 0.45 + 0.3 * hot, 0.2, 1))
 	# 火焰:三層,高度隨時間跳動
 	for layer in config.fire_colors.size():
-		var scale := 1.0 - layer * 0.28
+		var layer_scale := 1.0 - layer * 0.28
 		var flick := 1.0 + 0.18 * sin(time * (9.0 + layer * 3.0)) + 0.1 * sin(time * 23.0 + layer)
-		var h := 24.0 * scale * flick
-		var w := 11.0 * scale
+		var h := 24.0 * layer_scale * flick
+		var w := 11.0 * layer_scale
 		var sway := sin(time * 4.0 + layer) * 2.0
 		var pts := PackedVector2Array([
 			c + Vector2(-w, 6), c + Vector2(-w * 0.7, -h * 0.35), c + Vector2(sway * 0.5 - w * 0.25, -h * 0.7),

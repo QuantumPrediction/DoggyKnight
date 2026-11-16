@@ -690,9 +690,9 @@ func _draw_speed_lines() -> void:
 	var height := maxf(40.0, _swipe_zone.end.y - top)
 	for side in 2:
 		for i in _cfg.speed_line_count:
-			var seed := float(i * 7 + side * 3)
-			var x := _paper_rect.position.x - 8.0 - fmod(seed * 5.0, 14.0) if side == 0 else _paper_rect.end.x + 6.0 + fmod(seed * 5.0, 14.0)
-			var y := top + fmod(seed * 37.0 + _anim_time * (180.0 + 60.0 * amount), height)
+			var k := float(i * 7 + side * 3)
+			var x := _paper_rect.position.x - 8.0 - fmod(k * 5.0, 14.0) if side == 0 else _paper_rect.end.x + 6.0 + fmod(k * 5.0, 14.0)
+			var y := top + fmod(k * 37.0 + _anim_time * (180.0 + 60.0 * amount), height)
 			var length := roundf(6.0 + 14.0 * amount)
 			_front.draw_rect(Rect2(roundf(x), roundf(y), 1, length), Color(1, 1, 1, 0.15 + 0.35 * amount))
 	# 紙上的淡線(像紙在飛快地動)
@@ -707,17 +707,17 @@ func _draw_popups() -> void:
 	for p: Dictionary in _popups:
 		var age := float(p["age"])
 		var big: bool = p["big"]
-		var size := MinigameUi.FONT_L if big else MinigameUi.FONT_S
+		var font_size := MinigameUi.FONT_L if big else MinigameUi.FONT_S
 		var pop := clampf(age / 0.12, 0.0, 1.0)
 		var alpha := clampf((0.8 - age) / 0.25, 0.0, 1.0)
 		var text: String = p["text"]
-		var width := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
+		var width := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 		var at := Vector2(_paper_rect.end.x + 4.0, _bite_y + 8.0 - age * 18.0)
 		at.x = minf(at.x, SafeArea.get_safe_rect().end.x - width - 2.0)
 		var color := Color("ffe066") if big else Color("bfe36d")
-		_front.draw_set_transform(at.round() + Vector2(width * 0.5, -size * 0.4), 0.0, Vector2.ONE * (0.6 + 0.4 * pop))
-		_front.draw_string_outline(font, Vector2(-width * 0.5, size * 0.4), text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, 6 if big else 4, Color(MinigameUi.INK, alpha))
-		_front.draw_string(font, Vector2(-width * 0.5, size * 0.4), text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, Color(color, alpha))
+		_front.draw_set_transform(at.round() + Vector2(width * 0.5, -font_size * 0.4), 0.0, Vector2.ONE * (0.6 + 0.4 * pop))
+		_front.draw_string_outline(font, Vector2(-width * 0.5, font_size * 0.4), text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, 6 if big else 4, Color(MinigameUi.INK, alpha))
+		_front.draw_string(font, Vector2(-width * 0.5, font_size * 0.4), text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color(color, alpha))
 		_front.draw_set_transform_matrix(Transform2D.IDENTITY)
 
 

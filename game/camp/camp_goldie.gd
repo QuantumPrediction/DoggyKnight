@@ -133,8 +133,8 @@ func head_position() -> Vector2:
 
 ## 可以點的範圍(畫面邏輯像素),比圖稍大一些。
 func touch_rect() -> Rect2:
-	var size := _frame_size * scale
-	return Rect2(position - size * 0.5, size).grow(config.pet_touch_margin)
+	var sprite_size := _frame_size * scale
+	return Rect2(position - sprite_size * 0.5, sprite_size).grow(config.pet_touch_margin)
 
 
 func _update_tail_speed() -> void:

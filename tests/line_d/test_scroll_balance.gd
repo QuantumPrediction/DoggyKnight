@@ -35,13 +35,13 @@ func after_each() -> void:
 
 
 ## 模擬一位玩家玩完一場,傳回 [分數, 評價, 完美次數, 犯錯次數]。
-func _simulate(profile: Dictionary, seed: int) -> Array:
+func _simulate(profile: Dictionary, run_seed: int) -> Array:
 	if _game != null and is_instance_valid(_game):
 		_game.free()
 	_game = SCROLL_SCENE.instantiate() as ScrollMinigame
 	_game.auto_start = false
 	var cfg := (_game.config as ScrollMinigameConfig).duplicate() as ScrollMinigameConfig
-	cfg.rng_seed = seed
+	cfg.rng_seed = run_seed
 	_game.config = cfg
 	_game.reward_target = _FakeState.new()
 	add_child(_game)
@@ -49,7 +49,7 @@ func _simulate(profile: Dictionary, seed: int) -> Array:
 	_game.start()
 	_game.step(cfg.countdown_sec + 0.001)
 	var rng := RandomNumberGenerator.new()
-	rng.seed = seed * 31 + 7
+	rng.seed = run_seed * 31 + 7
 	var speed: float = profile["finger_speed"]
 	var stroke: float = profile["stroke"]
 	var lift: float = profile["lift"]
@@ -116,8 +116,8 @@ func _simulate(profile: Dictionary, seed: int) -> Array:
 func _grade_counts(profile: Dictionary) -> Array:
 	var grades: Array[int] = []
 	var scores: Array[int] = []
-	for seed in [11, 22, 33, 44, 55]:
-		var r := _simulate(profile, seed)
+	for run_seed in [11, 22, 33, 44, 55]:
+		var r := _simulate(profile, run_seed)
 		scores.append(int(r[0]))
 		grades.append(int(r[1]))
 	print("    [balance] %s: scores %s grades %s" % [profile["name"], scores, grades])

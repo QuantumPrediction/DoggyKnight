@@ -77,3 +77,5 @@ SOFTWARE.
 | MoltenVK(Godot iOS 範本內附) | iOS 建置 | https://github.com/KhronosGroup/MoltenVK | Apache 2.0 | 是 | 建議同上一併列出 | D 線,2026-11-15 |
 
 D 線的營地、小遊戲與圖示全部由程式繪製(本專案原創),沒有使用外部圖像或音效。
+
+D 線 M3(2026-11-16):營地新增的金毛像素圖(`game/camp/art/`,由 `game/camp/art/make_camp_art.py` 以程式畫出,顏色取自 C 線的調色盤)、營火、夜空、城堡剪影、螢火蟲與小遊戲的所有演出,全部是本專案原創,沒有使用外部素材。
