@@ -168,15 +168,21 @@ def icon_character() -> Canvas:
 
 
 def icon_background(size: int = 32) -> Canvas:
-    """Sky with soft sun rays and a meadow hill (opaque)."""
+    """Morning sky with a bright sunburst behind the hero and a meadow hill (opaque). Blue keeps the
+    golden dog popping (complementary colours)."""
     c = Canvas(size, size, rgba("sky"))
     cx, cy = size / 2, size * 0.42
     for y in range(size):
         for x in range(size):
             a = math.atan2(y + 0.5 - cy, x + 0.5 - cx)
-            if int((a + math.pi) / (2 * math.pi) * 16) % 2 == 0:
+            d = math.hypot(x + 0.5 - cx, y + 0.5 - cy) / size
+            ray = int((a + math.pi) / (2 * math.pi) * 16) % 2 == 0
+            if d < 0.3:
+                c.set(x, y, "white" if ray else "sky_l")
+            elif d < 0.42:
+                c.set(x, y, "sky_l" if ray else "sky")
+            elif ray:
                 c.set(x, y, "sky_l")
-    c.ellipse(cx, cy, size * 0.22, size * 0.22, "sky_l")
     for y in range(size):
         for x in range(size):
             if y > size * 0.84 + 2 * math.sin(x / size * math.pi * 2):

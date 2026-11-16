@@ -1,19 +1,22 @@
 extends Node
-## C 線圖庫(M1 驗收):每個角色的每個動畫循環播放、全部特效與圖示、三個場地背景。
+## C 線圖庫(M1 驗收、CP1 至 CP3):每個角色的每個動畫循環播放、全部特效與圖示、
+## 一次性粒子特效(每 1.2 秒重播)、六個場地背景(含會動的元素與氣氛色)。
 ## 用畫面下方的 ◀ ▶ 換頁(觸控或滑鼠)。這是開發工具,文字不翻譯。
 ##
 ## 執行:godot --path . res://tests/line_c/gallery.tscn
 
 const CHARACTERS: Array = [
-	["goldie", 2, [&"idle", &"run", &"attack", &"hurt", &"sleep"]],
-	["bulldog", 2, [&"idle", &"run", &"attack", &"hurt", &"guard"]],
+	["goldie", 2, [&"idle", &"run", &"attack", &"hurt", &"sleep", &"victory"]],
+	["bulldog", 2, [&"idle", &"run", &"attack", &"hurt", &"guard", &"victory"]],
 	["scarecrow", 2, [&"idle", &"run", &"attack", &"hurt"]],
 	["crow", 2, [&"idle", &"run", &"attack", &"hurt"]],
 	["black_knight", 1, [&"idle", &"run", &"attack", &"hurt", &"charge", &"slam", &"down"]],
 ]
 const FX: Array[String] = ["slash", "hit_spark", "exp_orb", "ultimate_slash", "dizzy_stars", "dust"]
 const TRICKS: Array[String] = ["sit", "wag", "fetch", "shake", "spin", "bark"]
-const BACKGROUNDS: Array[String] = ["sword_stone", "meadow", "bridge"]
+const BACKGROUNDS: Array[String] = ["sword_stone", "wheat_field", "meadow", "farm_fence", "crow_forest", "bridge"]
+const PARTICLES: Array[String] = ["hit_burst", "straw_bits", "feathers", "confetti", "level_up_pillar", "shockwave",
+		"sparkle", "ultimate_burst", "footstep_dust", "heart", "star_burst"]
 
 var page: int = 0
 var _world: Node2D
@@ -59,6 +62,7 @@ func _ready() -> void:
 	for c in CHARACTERS:
 		_pages.append(_character_page.bind(c))
 	_pages.append(_fx_page)
+	_pages.append(_particles_page)
 	for bg in BACKGROUNDS:
 		_pages.append(_background_page.bind(bg))
 	get_viewport().size_changed.connect(_layout_nav.bind(bar, prev, next))
@@ -144,6 +148,29 @@ func _fx_page() -> void:
 	for t in TRICKS:
 		icons.add_child(UiKit.texture_rect(load("res://assets/icons/tricks/%s.png" % t) as Texture2D, 1))
 	g.add_child(_cell(icons, "tricks"))
+
+
+func _particles_page() -> void:
+	_backdrop(PaletteColors.LEAF_D)
+	_title.text = "particles(%d/%d)" % [page + 1, _pages.size()]
+	var spots: Array[Vector2] = []
+	for i in PARTICLES.size():
+		spots.append(Vector2(32 + (i % 3) * 58, 52 + (i / 3) * 64))
+	for i in PARTICLES.size():
+		var label := UiKit.label(PARTICLES[i], &"LabelLight")
+		label.position = SafeArea.get_game_rect().position + spots[i] + Vector2(-26, 14)
+		_page_root.add_child(label)
+	var timer := Timer.new()
+	timer.wait_time = 1.2
+	timer.autostart = true
+	_page_root.add_child(timer)
+	var burst := func() -> void:
+		for i in PARTICLES.size():
+			var fx := (load("res://assets/fx/particles/%s.tscn" % PARTICLES[i]) as PackedScene).instantiate() as Node2D
+			fx.position = spots[i]
+			_world.add_child(fx)
+	timer.timeout.connect(burst)
+	burst.call()
 
 
 func _background_page(bg: String) -> void:
