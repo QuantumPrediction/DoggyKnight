@@ -151,14 +151,15 @@ func _fx_page() -> void:
 
 
 func _particles_page() -> void:
-	_backdrop(PaletteColors.LEAF_D)
+	# 粒子在世界座標噴發,所以背景放在世界裡(不用介面層的底色,否則會蓋住粒子)
+	_world.add_child((load("res://assets/backgrounds/meadow.tscn") as PackedScene).instantiate())
 	_title.text = "particles(%d/%d)" % [page + 1, _pages.size()]
 	var spots: Array[Vector2] = []
 	for i in PARTICLES.size():
-		spots.append(Vector2(32 + (i % 3) * 58, 52 + (i / 3) * 64))
+		spots.append(Vector2(48 + (i % 2) * 86, 60 + (i / 2) * 38))
 	for i in PARTICLES.size():
 		var label := UiKit.label(PARTICLES[i], &"LabelLight")
-		label.position = SafeArea.get_game_rect().position + spots[i] + Vector2(-26, 14)
+		label.position = SafeArea.get_game_rect().position + spots[i] + Vector2(-30, 10)
 		_page_root.add_child(label)
 	var timer := Timer.new()
 	timer.wait_time = 1.2
