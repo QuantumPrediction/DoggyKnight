@@ -153,6 +153,7 @@ func _steer() -> void:
 
 
 func _on_results() -> void:
+	_level_clock = 0.0   # 下一關在畫面露出前就進入 LEVEL;由結算時歸零,截圖才會在關卡進行中拍
 	var r := flow.get_last_result()
 	_level_lines.append("%s  %5.1f 秒  擊倒 %2d  等級 %2d  把戲 %s  活力 %d" % [
 			r["level_id"], r["time_sec"], r["kills"], r["hero_level"], r["tricks"], GameState.vigor])
