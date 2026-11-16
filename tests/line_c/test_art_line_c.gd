@@ -13,7 +13,9 @@ const PIXEL_ART: Array[String] = [
 	"res://assets/sprites/scarecrow/scarecrow.png", "res://assets/sprites/crow/crow.png",
 	"res://assets/sprites/black_knight/black_knight.png", "res://assets/tiles/chapter1_tiles.png",
 	"res://assets/backgrounds/meadow.png", "res://assets/backgrounds/sword_stone.png",
-	"res://assets/backgrounds/bridge.png", "res://assets/icons/tricks/sit.png",
+	"res://assets/backgrounds/bridge.png", "res://assets/backgrounds/wheat_field.png",
+	"res://assets/backgrounds/farm_fence.png", "res://assets/backgrounds/crow_forest.png",
+	"res://assets/icons/tricks/sit.png",
 	"res://assets/icons/tricks/spin.png", "res://assets/ui/button_normal.png",
 	"res://assets/ui/title_bg.png", "res://assets/app_icon/icon_master_32.png",
 ]
@@ -32,8 +34,10 @@ func _palette() -> Dictionary:
 	return colors
 
 
-func test_palette_has_32_colours() -> void:
-	assert_eq(_palette().size(), 32)
+func test_palette_has_40_colours() -> void:
+	# v1 的 32 色 + v2.2 的 8 個氣氛色(黃昏、夜晚、農場);見 tools/pixel/palette.py
+	assert_eq(_palette().size(), 40)
+	assert_eq(PaletteColors.DIRT, Color("c9a06e"))
 
 
 func test_pixel_art_uses_only_the_palette() -> void:
@@ -77,17 +81,38 @@ func test_looping_rules() -> void:
 	assert_false(knight.get_animation_loop(&"slam"))
 
 
+const ALL_BACKGROUNDS: Array[String] = ["sword_stone", "wheat_field", "meadow", "farm_fence", "crow_forest", "bridge"]
+
+
 func test_backgrounds_cover_the_extended_screen() -> void:
 	var need := Rect2(-10, -60, 200, 440)
-	for bg in ["meadow", "sword_stone", "bridge"]:
+	for bg in ALL_BACKGROUNDS:
 		var node := (load("res://assets/backgrounds/%s.tscn" % bg) as PackedScene).instantiate() as Node2D
-		var covered := Rect2()
-		for c in node.get_children():
-			if c is Sprite2D:
-				var s := c as Sprite2D
-				covered = Rect2(s.position, s.texture.get_size())
-		assert_true(covered.encloses(need), "%s 覆蓋 %s(實際 %s)" % [bg, need, covered])
-		assert_true(covered.encloses(Layout.ARENA_RECT))
+		var image := node.get_node_or_null("Image") as Sprite2D
+		assert_not_null(image, "%s 有 Image(烘焙好的背景圖)" % bg)
+		if image != null:
+			var covered := Rect2(image.position, image.texture.get_size())
+			assert_true(covered.encloses(need), "%s 覆蓋 %s(實際 %s)" % [bg, need, covered])
+			assert_true(covered.encloses(Layout.ARENA_RECT))
+		node.free()
+
+
+func test_background_ambience_is_light_and_readable() -> void:
+	for bg in ALL_BACKGROUNDS:
+		var node := (load("res://assets/backgrounds/%s.tscn" % bg) as PackedScene).instantiate() as Node2D
+		var particles := 0
+		var mood: CanvasModulate = null
+		for c in node.find_children("*", "", true, false):
+			if c is CPUParticles2D:
+				particles += (c as CPUParticles2D).amount
+			elif c is GPUParticles2D:
+				assert_true(false, "%s:背景只用 CPUParticles2D" % bg)
+			elif c is CanvasModulate:
+				mood = c as CanvasModulate
+		assert_true(particles <= 100, "%s 的環境粒子不超過 100 個(實際 %d)" % [bg, particles])
+		if mood != null:
+			var lum := mood.color.r * 0.3 + mood.color.g * 0.59 + mood.color.b * 0.11
+			assert_true(lum >= 0.85, "%s 的氣氛色不可太暗(亮度 %.2f),角色與預警要看得清楚" % [bg, lum])
 		node.free()
 
 

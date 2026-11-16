@@ -1,6 +1,12 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3]
 
-[ext_resource type="Texture2D" path="res://assets/backgrounds/meadow.png" id="1_bg"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/wheat_field.png" id="1_bg"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/wheat_row_frames.tres" id="2_anim_wheat_row"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_chaff.png" id="3_p_chaff"]
+
+[sub_resource type="Gradient" id="Gradient_fade"]
+offsets = PackedFloat32Array(0, 0.15, 0.8, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
 
 [node name="Background" type="Node2D"]
 
@@ -8,3 +14,423 @@
 texture = ExtResource("1_bg")
 centered = false
 position = Vector2(-62, -88)
+
+[node name="Anim" type="Node2D" parent="."]
+
+[node name="wheat_row_0" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-66, 56)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 0
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_1" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-66, 38)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 2
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_2" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-66, 290)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 4
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_3" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-66, 308)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 6
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_4" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-18, 56)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 3
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_5" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-18, 38)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 5
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_6" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-18, 290)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 7
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_7" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-18, 308)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 1
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_8" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(30, 56)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 6
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_9" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(30, 38)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 0
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_10" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(30, 290)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 2
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_11" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(30, 308)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 4
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_12" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(78, 38)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 3
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_13" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(78, 308)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 7
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_14" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(126, 56)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 4
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_15" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(126, 38)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 6
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_16" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(126, 290)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 0
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_17" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(126, 308)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 2
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_18" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(174, 56)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 7
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_19" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(174, 38)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 1
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_20" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(174, 290)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 3
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_21" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(174, 308)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 5
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_22" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(222, 56)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 2
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_23" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(222, 38)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 4
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_24" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(222, 290)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 6
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_25" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(222, 308)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 0
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_26" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-44, 72)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 0
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_27" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(176, 72)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 4
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_28" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-44, 90)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 1
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_29" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(176, 90)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 5
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_30" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-44, 108)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 2
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_31" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(176, 108)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 6
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_32" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-44, 126)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 3
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_33" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(176, 126)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 7
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_34" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-44, 144)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 4
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_35" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(176, 144)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 0
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_36" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-44, 162)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 5
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_37" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(176, 162)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 1
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_38" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-44, 180)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 6
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_39" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(176, 180)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 2
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_40" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-44, 198)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 7
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_41" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(176, 198)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 3
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_42" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-44, 216)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 0
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_43" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(176, 216)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 4
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_44" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-44, 234)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 1
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_45" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(176, 234)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 5
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_46" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-44, 252)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 2
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_47" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(176, 252)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 6
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_48" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-44, 270)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 3
+speed_scale = 1
+centered = false
+
+[node name="wheat_row_49" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(176, 270)
+sprite_frames = ExtResource("2_anim_wheat_row")
+autoplay = "default"
+frame = 7
+speed_scale = 1
+centered = false
+
+[node name="Ambient" type="Node2D" parent="."]
+
+[node name="chaff_0" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(95, 170)
+amount = 8
+lifetime = 5
+preprocess = 5
+randomness = 0.5
+texture = ExtResource("3_p_chaff")
+emission_shape = 3
+emission_rect_extents = Vector2(105, 210)
+direction = Vector2(1, 0)
+spread = 25
+gravity = Vector2(0, 1)
+initial_velocity_min = 8
+initial_velocity_max = 14
+color_ramp = SubResource("Gradient_fade")
