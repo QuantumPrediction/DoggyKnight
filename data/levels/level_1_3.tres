@@ -16,16 +16,16 @@ pattern = &"edges"
 
 [sub_resource type="Resource" id="wave1_spawn2"]
 script = ExtResource("3_spawn")
-enemy_id = &"crow"
+enemy_id = &"scarecrow_archer"
 count = 2
-delay = 5.0
-pattern = &"corners"
+delay = 4.0
+pattern = &"line_top"
 
 [sub_resource type="Resource" id="wave1_spawn3"]
 script = ExtResource("3_spawn")
 enemy_id = &"scarecrow"
 count = 3
-delay = 10.0
+delay = 11.0
 pattern = &"edges"
 
 [sub_resource type="Resource" id="wave1"]
@@ -48,14 +48,21 @@ pattern = &"line_top"
 
 [sub_resource type="Resource" id="wave2_spawn3"]
 script = ExtResource("3_spawn")
+enemy_id = &"scarecrow_archer"
+count = 2
+delay = 10.0
+pattern = &"edges"
+
+[sub_resource type="Resource" id="wave2_spawn4"]
+script = ExtResource("3_spawn")
 enemy_id = &"crow"
 count = 2
-delay = 11.0
+delay = 13.0
 pattern = &"corners"
 
 [sub_resource type="Resource" id="wave2"]
 script = ExtResource("2_wave")
-spawns = Array[ExtResource("3_spawn")]([SubResource("wave2_spawn1"), SubResource("wave2_spawn2"), SubResource("wave2_spawn3")])
+spawns = Array[ExtResource("3_spawn")]([SubResource("wave2_spawn1"), SubResource("wave2_spawn2"), SubResource("wave2_spawn3"), SubResource("wave2_spawn4")])
 
 [sub_resource type="Resource" id="wave3_spawn1"]
 script = ExtResource("3_spawn")
@@ -66,21 +73,28 @@ pattern = &"line_top"
 
 [sub_resource type="Resource" id="wave3_spawn2"]
 script = ExtResource("3_spawn")
-enemy_id = &"crow"
-count = 3
+enemy_id = &"scarecrow_archer"
+count = 2
 delay = 6.0
 pattern = &"corners"
 
 [sub_resource type="Resource" id="wave3_spawn3"]
 script = ExtResource("3_spawn")
+enemy_id = &"crow"
+count = 3
+delay = 9.0
+pattern = &"corners"
+
+[sub_resource type="Resource" id="wave3_spawn4"]
+script = ExtResource("3_spawn")
 enemy_id = &"scarecrow"
 count = 3
-delay = 11.0
+delay = 12.0
 pattern = &"edges"
 
 [sub_resource type="Resource" id="wave3"]
 script = ExtResource("2_wave")
-spawns = Array[ExtResource("3_spawn")]([SubResource("wave3_spawn1"), SubResource("wave3_spawn2"), SubResource("wave3_spawn3")])
+spawns = Array[ExtResource("3_spawn")]([SubResource("wave3_spawn1"), SubResource("wave3_spawn2"), SubResource("wave3_spawn3"), SubResource("wave3_spawn4")])
 
 [resource]
 script = ExtResource("1_level")
@@ -90,7 +104,7 @@ waves = Array[ExtResource("2_wave")]([SubResource("wave1"), SubResource("wave2")
 is_boss = false
 companions = Array[StringName]([&"bulldog"])
 background = ExtResource("4_bg")
-par_time = 65.0
-damage_budget = 18
+par_time = 80.0
+damage_budget = 24
 story_before = ExtResource("5_before")
 story_after = ExtResource("6_after")
