@@ -18,15 +18,29 @@ func after_each() -> void:
 	get_tree().paused = false
 	AppLifecycle.simulate_foreground()
 	GameState.reset_run()
-	GameState.snacks = 0
-	GameState.sound_on = true
+	reset_settings()
 	SaveStore.new(SAVE_PATH).delete()
 	await wait_frames(2)
 
 
-## 測試用難度:所有等待都接近 0,測試跑得快。
+## 存檔與設定欄位回到預設值(reset_run 不會重設它們)。
+static func reset_settings() -> void:
+	GameState.snacks = 0
+	GameState.sound_on = true
+	GameState.music_on = true
+	GameState.haptics_on = true
+	GameState.tutorial_done = false
+	GameState.best_stars = {}
+
+
+## 測試用難度:所有等待都接近 0、不播轉場,測試跑得快。
 func fast_difficulty() -> DifficultyData:
 	var d := (load(DIFFICULTY) as DifficultyData).duplicate() as DifficultyData
+	d.intro_duration = 0.0
+	d.transition_cover_time = 0.0
+	d.transition_reveal_time = 0.0
+	d.surround_telegraph = 0.0
+	d.line_spacing = 0.0
 	d.first_wave_delay = 0.0
 	d.inter_wave_delay = 0.0
 	d.spawn_spacing = 0.0
@@ -47,6 +61,8 @@ func fast_chapter() -> ChapterData:
 		copy.is_boss = level.is_boss
 		copy.companions = level.companions.duplicate()
 		copy.background = level.background
+		copy.par_time = level.par_time
+		copy.damage_budget = level.damage_budget
 		for wave in level.waves:
 			var wave_copy := WaveData.new()
 			for entry in wave.spawns:
@@ -54,6 +70,7 @@ func fast_chapter() -> ChapterData:
 				entry_copy.enemy_id = entry.enemy_id
 				entry_copy.count = entry.count
 				entry_copy.delay = 0.0
+				entry_copy.pattern = entry.pattern
 				wave_copy.spawns.append(entry_copy)
 			copy.waves.append(wave_copy)
 		chapter.levels.append(copy)
@@ -88,11 +105,16 @@ func wait_until(condition: Callable, timeout_sec: float = 5.0) -> bool:
 	return true
 
 
-## 從標題開始新遊戲,等到第一關開始。
+## 從標題開始新遊戲,等到第一關開始(已發 level_started)。
 func start_new_game() -> bool:
 	var title := flow.get_screen()
 	title.emit_signal(&"new_game_pressed")
-	return await wait_until(func() -> bool: return flow.state == FlowMain.State.LEVEL)
+	return await wait_until(flow.is_level_running)
+
+
+## 關卡已開始(轉場完成、已發 level_started)。
+func in_level() -> bool:
+	return flow.is_level_running()
 
 
 ## 一直打倒敵人、選第一個把戲,直到這一關結束(結算或失敗畫面出現)。

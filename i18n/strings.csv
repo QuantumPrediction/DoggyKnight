@@ -85,3 +85,7 @@ UI_CREDITS_THANKS,感謝每一位試玩的朋友!
 UI_THIRD_PARTY,Godot 引擎與內含元件的授權
 UI_VERSION,版本 %s
 UI_LEVEL_SHORT,Lv
+STAR_CLEAR,過關
+STAR_TIME,%d 秒內過關
+STAR_DAMAGE,失去的活力不超過 %d
+STAR_NO_DAMAGE,完全沒被打中
