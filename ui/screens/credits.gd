@@ -37,6 +37,12 @@ const LICENSE_ENTRIES: Array[Dictionary] = [
 		"source": "本專案原創(tools/pixel 程式合成)",
 		"license": "本專案原創",
 	},
+	{
+		"name": "背景音樂",
+		"use": "標題、關卡、頭目戰、營地、過關、失敗、第一章完",
+		"source": "本專案原創(tools/pixel/music_gen.py 程式作曲與合成)",
+		"license": "本專案原創",
+	},
 ]
 
 var close_button: Button

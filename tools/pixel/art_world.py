@@ -1026,6 +1026,8 @@ def in_arena(x: int, y: int) -> bool:
 
 
 GREEN = ("leaf_d", "leaf", "leaf_l")
+# arena ground: very soft variation so actors and telegraphs always read first
+CALM = {"max_light": 0.16, "max_dark": 0.16}
 TREE_GREEN = ("forest", "leaf_d", "leaf", "leaf_l")
 
 
@@ -1072,7 +1074,8 @@ def scene_sword_stone() -> Scene:
     img = sc.img
     paint_ground(img, (0, 0, IMG_W, IMG_H), GREEN, 11, tufts=0.45)
     # arena: calmer, slightly lighter grass
-    paint_ground(img, (AX0, AY0, AX1, AY1), GREEN, 12, scale=34, lo=0.3, hi=0.66, tufts=0.22, sparkle=0.02)
+    paint_ground(img, (AX0, AY0, AX1, AY1), GREEN, 12, scale=34, lo=0.3, hi=0.66, tufts=0.22, sparkle=0.02,
+                 **CALM)
     # a worn path from the bottom up to the stone
     paint_path(img, [(150, 520), (146, 440), (156, 400), (152, 384)], 14, 5)
     paint_path(img, [(152, 150), (152, 132), (152, 118)], 12, 6, pebbles=10)
@@ -1129,7 +1132,7 @@ def scene_wheat_field() -> Scene:
                  tufts=0.9, sparkle=0.1)
     # arena: warm green clearing
     paint_ground(img, (AX0, AY0, AX1, AY1), GREEN, 22, scale=32, lo=0.3, hi=0.66,
-                 tufts=0.25, sparkle=0.02)
+                 tufts=0.25, sparkle=0.02, **CALM)
     arena_vignette(img)
     # cart tracks (two ruts) through the field and the clearing
     for off in (-7, 7):
@@ -1179,7 +1182,8 @@ def scene_meadow() -> Scene:
     sc = Scene("leaf_d")
     img = sc.img
     paint_ground(img, (0, 0, IMG_W, IMG_H), GREEN, 31, tufts=0.5)
-    paint_ground(img, (AX0, AY0, AX1, AY1), GREEN, 32, scale=34, lo=0.28, hi=0.68, tufts=0.22, sparkle=0.02)
+    paint_ground(img, (AX0, AY0, AX1, AY1), GREEN, 32, scale=34, lo=0.28, hi=0.68, tufts=0.22, sparkle=0.02,
+                 **CALM)
     sprinkle_flowers(img, (0, 0, IMG_W, IMG_H), 220, 33, ["white", "yellow", "pink", "lilac"],
                      mask=lambda x, y: not in_arena(x, y))
     sprinkle_flowers(img, (AX0 + 4, AY0 + 6, AX1 - 4, AY1 - 4), 22, 34, ["white", "yellow", "pink"])
@@ -1191,7 +1195,7 @@ def scene_meadow() -> Scene:
     # clover and flower clumps in the arena corners
     for (cx, cy, sd) in ((AX0 + 16, AY0 + 18, 1), (AX1 - 18, AY0 + 30, 2), (AX0 + 20, AY1 - 22, 3),
                          (AX1 - 22, AY1 - 16, 4)):
-        soft_light(img, cx, cy, 12, 8, -1, 0.5)
+        soft_light(img, cx, cy, 12, 8, -1, 0.3)
         sprinkle_flowers(img, (cx - 10, cy - 7, cx + 10, cy + 7), 6, sd + 90, ["pink", "white", "yellow"])
     # the pond on the left of the top band, with lily pads and reeds
     pond = Canvas(78, 32)
@@ -1249,7 +1253,7 @@ def scene_farm_fence() -> Scene:
     img = sc.img
     paint_ground(img, (0, 0, IMG_W, IMG_H), ("moss_d", "moss", "leaf_l"), 41, scale=26, tufts=0.5)
     paint_ground(img, (AX0, AY0, AX1, AY1), ("moss_d", "moss", "leaf_l"), 42, scale=34, lo=0.3, hi=0.7,
-                 tufts=0.25, sparkle=0.02)
+                 tufts=0.25, sparkle=0.02, **CALM)
     arena_vignette(img)
     # dirt patches trampled by the scarecrows
     for (cx, cy, rx, ry, sd) in ((96, 206, 16, 9, 1), (206, 296, 14, 8, 2), (130, 356, 11, 6, 3),
@@ -1335,7 +1339,7 @@ def scene_crow_forest() -> Scene:
     img = sc.img
     paint_ground(img, (0, 0, IMG_W, IMG_H), ("forest_d", "forest", "moss_d"), 51, scale=22, tufts=0.6)
     paint_ground(img, (AX0, AY0, AX1, AY1), ("forest", "leaf_d", "moss_d"), 52, scale=36, lo=0.3, hi=0.66,
-                 tufts=0.25, sparkle=0.015, max_light=0.35)
+                 tufts=0.25, sparkle=0.015, max_light=0.2, max_dark=0.16)
     arena_vignette(img, 24, 0.42)
     # fallen leaves
     rng = random.Random(53)

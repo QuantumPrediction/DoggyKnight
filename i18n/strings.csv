@@ -78,7 +78,7 @@ UI_NONE,(沒有)
 UI_LICENSES,授權聲明
 UI_CREDITS_TEAM,製作
 UI_CREDITS_GAME,企劃與製作:金毛騎士原型小組
-UI_CREDITS_ART,像素圖、介面與音效:以程式生成(本專案原創)
+UI_CREDITS_ART,像素圖、介面、音效與音樂:以程式生成(本專案原創)
 UI_CREDITS_ENGINE,遊戲引擎:Godot Engine
 UI_CREDITS_FONT,字型:俐方體11號(Cubic 11)
 UI_CREDITS_THANKS,感謝每一位試玩的朋友!
