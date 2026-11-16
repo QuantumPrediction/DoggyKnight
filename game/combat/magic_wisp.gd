@@ -5,11 +5,11 @@ extends Node2D
 ## 在群組 combat_fx;慢動作時跟著變慢。用 MagicWisp.spawn() 產生(放在特效層,畫在角色之上)。
 
 var color: Color = Color(0.45, 0.75, 1.0)
-var lifetime: float = 1.3
+var lifetime: float = 1.6
 var rise_speed: float = 34.0              ## 往上飛的速度(像素/秒)
 var drift_speed: float = 14.0             ## 往旁邊飄的速度
 var sway: float = 5.0                     ## 左右搖晃的幅度
-var radius: float = 2.0
+var radius: float = 2.6
 
 var _age: float = 0.0
 var _start: Vector2 = Vector2.ZERO
@@ -46,7 +46,7 @@ func _process(delta: float) -> void:
 	var up := rise_speed * t * (0.6 + 0.8 * t)
 	var side := drift_speed * t * _side + sin(t * 9.0) * sway * minf(1.0, t * 2.0)
 	_trail.push_front(global_position)
-	if _trail.size() > 6:
+	if _trail.size() > 8:
 		_trail.pop_back()
 	global_position = _start + Vector2(side, -up)
 	queue_redraw()

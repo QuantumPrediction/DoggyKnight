@@ -15,6 +15,8 @@ const GROUP: StringName = &"enemy_projectile"
 const PLAYER_GROUP: StringName = &"player"
 const COMPANION_GROUP: StringName = &"companion"
 const MAX_RETURN_TIME := 4.0
+const TRAIL_LENGTH := 5
+const HALO_DARK := Color(0.12, 0.02, 0.06, 0.32)
 
 enum State { FLYING, RETURNING, FALLING }
 
@@ -39,6 +41,7 @@ var _fall_total: float = 0.3
 var _fall_velocity: Vector2 = Vector2.ZERO
 var _fall_spin: float = 0.0
 var _return_time: float = 0.0
+var _trail: Array[Vector2] = []           ## 最近幾格的位置(殘影)
 
 
 ## 射出一個投射物。from、dir:起點與方向(與預警線相同);travel:最遠飛多遠(travel_length());
@@ -95,6 +98,10 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	delta *= CombatFx.time_scale
 	_age += delta
+	if state != State.FALLING:
+		_trail.push_front(global_position)
+		if _trail.size() > TRAIL_LENGTH:
+			_trail.pop_back()
 	if _sprite != null:
 		_sprite.speed_scale = CombatFx.time_scale
 	match state:
@@ -238,14 +245,30 @@ func _stop(drift: Vector2, fade: float = -1.0, spin: float = 0.0) -> void:
 		shooter.call(&"projectile_lost", self)
 
 
+## 投射物的「光暈」:在任何背景上都看得清楚(品質標準 2:危險的東西最顯眼)。
+## 地上的影子 → 殘影 → 深色外框 → 會閃的亮色光暈 → 圖(子節點,畫在最上面)。
 func _draw() -> void:
 	if state == State.FALLING:
 		return
-	# 地上的影子與身後的一小段拖尾,讓投射物在任何背景上都看得清楚。
-	draw_set_transform(Vector2(0, 5), 0.0, Vector2(1.0, 0.4))
-	draw_circle(Vector2.ZERO, maxf(2.0, data.hit_radius + 1.0), Color(0, 0, 0, 0.25))
+	var r := maxf(2.5, data.hit_radius) * maxf(1.0, data.visual_scale * 0.8)
+	var pulse := 0.5 + 0.5 * sin(_age * 18.0)
+	draw_set_transform(Vector2(0, 6), 0.0, Vector2(1.0, 0.4))
+	draw_circle(Vector2.ZERO, r + 1.0, Color(0, 0, 0, 0.28))
 	draw_set_transform(Vector2.ZERO)
-	var tail := -direction * minf(10.0, 4.0 + data.hit_radius)
-	draw_line(tail, Vector2.ZERO, data.trail_color, maxf(1.0, data.hit_radius))
+	for i in _trail.size():
+		var k := 1.0 - float(i + 1) / float(_trail.size() + 1)
+		draw_circle(_trail[i] - global_position, r * (0.5 + 0.5 * k), Color(data.trail_color, data.trail_color.a * k * 0.7))
+	if data.spin_speed != 0.0:
+		# 會旋轉的(乾草叉):圓形光暈。
+		draw_circle(Vector2.ZERO, r + 4.0, HALO_DARK)
+		draw_circle(Vector2.ZERO, r + 2.0 + pulse, Color(data.trail_color, 0.5))
+	else:
+		# 直直飛的(箭、劍氣):沿著飛行方向的膠囊形光暈。
+		var back := -direction * (5.0 + r)
+		var front := direction * minf(3.0, r * 0.5)
+		draw_line(back, front, HALO_DARK, r * 2.0 + 4.0)
+		draw_circle(back, r + 2.0, HALO_DARK)
+		draw_circle(front, r + 2.0, HALO_DARK)
+		draw_line(back * 0.8, front, Color(data.trail_color, 0.45 + 0.25 * pulse), r * 2.0 + 1.0)
 	if _sprite == null:
 		draw_circle(Vector2.ZERO, maxf(1.5, data.hit_radius), Color(1, 1, 1, 0.9))

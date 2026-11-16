@@ -11,7 +11,8 @@ extends BossBase
 ##   3. 擲乾草叉:直線預警,乾草叉沿線飛出去、再沿同一條線飛回來(去回都會打中;
 ##      隊長站著等,這時手上沒有武器——反擊的好機會)。被鬥牛犬的盾擋下時乾草叉落地,隊長要變出一支新的。
 ## - 一半生命:吶喊(短暫無敵、紫光),之後預警變短、動作變快、更常號令。
-## - 倒下:散成一堆稻草(straw_bits),帽子上的紫色羽毛(PurpleFeather)慢慢飄落到地上(故事伏筆),
+## - 倒下:散成一堆稻草(straw_bits 粒子與 StrawScatter 的稻草、隊長帽),帽子上的紫色羽毛
+##   (PurpleFeather)慢慢飄落到地上(故事伏筆),
 ##   它叫來的稻草人兵一起倒下。
 
 enum Phase { INTRO, IDLE, CHASE, SWEEP_TELL, SWEEP_RECOVER, THROW_TELL, THROW_WAIT, THROW_RECOVER,
@@ -406,12 +407,10 @@ func _on_died() -> void:
 	CombatFx.spawn(self, &"dust", global_position, 0.0, Vector2.ONE * 2.4, STRAW, true)
 	CombatFx.ring(self, global_position, 4.0, 40.0, 0.45, Color(PURPLE, 0.9), 2.0)
 	CombatFx.ring(self, global_position, 3.0, 26.0, 0.3, Color(STRAW, 0.8), 1.0, true)
-	for i in 8:
-		var dir := Vector2.from_angle(TAU * float(i) / 8.0 + rng.randf_range(-0.3, 0.3))
-		var bit := CombatFx.spawn(self, &"dust", center + dir * 6.0, 0.0, Vector2.ONE * 0.8, STRAW, false, 0.7)
-		if bit != null:
-			bit.drift = dir * rng.randf_range(25.0, 45.0)
-			bit.fade_out = true
+	var straw := StrawScatter.new()
+	straw.flip = facing.x < 0.0
+	CombatFx.layer_for(self, true).add_child(straw)
+	straw.global_position = global_position + Vector2(0, _frame_size.y * 0.2)
 	var feet := global_position.y + _frame_size.y * 0.4
 	var hat := global_position + Vector2(facing.x * 4.0, -_frame_size.y * 0.5 - feather_fall_height)
 	PurpleFeather.drop(self, hat, feet)
