@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ProjectileData" format=3]
+
+[ext_resource type="Script" path="res://game/combat/projectile_data.gd" id="1_data"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"pitchfork"
+fx = &"pitchfork"
+damage = 10
+speed = 130.0
+max_range = 150.0
+hit_radius = 4.0
+pierce = true
+returns = true
+return_speed = 140.0
+spin_speed = 14.0
+blockable = true
+visual_scale = 1.0
+trail_color = Color(0.95, 0.8, 0.45, 0.5)
+end_fade_time = 0.4

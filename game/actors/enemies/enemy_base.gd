@@ -13,7 +13,14 @@ extends CharacterBody2D
 ##   (稻草人 straw_bits、烏鴉 feathers);從地面冒出時揚起 footstep_dust;精英有光環,
 ##   倒下時鏡頭震一下。慢動作時(CombatFx.time_scale)動作跟著變慢。
 ##
-## 子類別覆寫:_ai(delta)、_cancel_attack()、_on_activated()、_on_died()、_uses_separation()。
+## - v2.3 難度(AS6):spawn_enemy() 依 GameState.difficulty 呼叫 apply_difficulty(mods);
+##   子類別的預警秒數用 tell()、休息與冷卻用 rest()、不在 EnemyData 的傷害用 scaled_damage()、
+##   速度用 scaled_speed()(生命、接觸傷害、移動速度已經在 EnemyData 的複本裡乘好)。
+## - v2.3 合作(AS7):同時進攻的敵人有上限(場地的「進攻名額」)。近戰敵人出手前先
+##   claim_attack_slot(),收招或被打斷時 release_attack_slot();拿不到名額就在攻擊距離外等。
+##
+## 子類別覆寫:_ai(delta)、_cancel_attack()、_on_activated()、_on_died()、_uses_separation()、
+## attack_role()、is_attacking_target()、join_attack()。
 ## 子類別設定 desired_velocity(想走的速度)與 anim_state(想播的動畫)。
 
 const ENEMY_GROUP: StringName = &"enemy"
@@ -87,6 +94,7 @@ var _glow_color: Color = Color.WHITE
 var _glow_amount: float = 0.0
 var _age: float = 0.0
 var _number_style: DamageNumber.Style = DamageNumber.Style.NORMAL
+var mods: EnemyDifficulty                         ## 難度倍數(spawn_enemy 設定;null = 一般模式)
 
 static var _cache_frame: int = -1
 static var _cache: Array[Node] = []
@@ -101,6 +109,37 @@ func setup(p_data: EnemyData) -> void:
 	data = p_data
 	max_hp = maxi(1, data.max_hp)
 	hp = max_hp
+
+
+## 難度(AS6):spawn_enemy() 在加進場景前呼叫。生命、傷害、速度已在 EnemyData 的複本裡乘好。
+func apply_difficulty(p_mods: EnemyDifficulty) -> void:
+	mods = p_mods
+
+
+## 預警秒數 × 難度。
+func tell(seconds: float) -> float:
+	return seconds * (mods.telegraph_mult if mods != null else 1.0)
+
+
+## 攻擊之間的休息、冷卻秒數 × 難度。
+func rest(seconds: float) -> float:
+	return seconds * (mods.interval_mult if mods != null else 1.0)
+
+
+## 不在 EnemyData 裡的傷害(頭目重劈、投射物)× 難度。
+func scaled_damage(base: int) -> int:
+	if base <= 0:
+		return 0
+	return maxi(1, roundi(float(base) * (mods.damage_mult if mods != null else 1.0)))
+
+
+## 不在 EnemyData 裡的速度(衝鋒、衝撞)× 難度。
+func scaled_speed(speed: float) -> float:
+	return speed * (mods.speed_mult if mods != null else 1.0)
+
+
+func projectile_speed_mult() -> float:
+	return mods.projectile_speed_mult if mods != null else 1.0
 
 
 func _ready() -> void:
@@ -262,6 +301,7 @@ func die() -> void:
 	remove_from_group(ENEMY_GROUP)
 	collision_layer = 0
 	_cancel_attack()
+	release_attack_slot()
 	_clear_spawn_marker()
 	_clear_dizzy()
 	_hitstop_left = 0.0
@@ -446,6 +486,52 @@ func _is_valid_victim(node: Node2D) -> bool:
 	if node.has_method(&"is_downed") and bool(node.call(&"is_downed")):
 		return false
 	return node.has_method(&"take_damage")
+
+
+# --- 進攻名額(AS7) ----------------------------------------------------------------
+
+## 這隻敵人用哪一種進攻名額:&"melee"、&"ranged";空白 = 不受限制(烏鴉、頭目)。
+func attack_role() -> StringName:
+	return &""
+
+
+func _arena_ok() -> bool:
+	return arena != null and is_instance_valid(arena) and arena.has_method(&"claim_attack_slot")
+
+
+## 拿一個進攻名額(已經拿著就傳回 true)。不在場地裡時一律可以出手。
+func claim_attack_slot() -> bool:
+	if attack_role() == &"" or not _arena_ok():
+		return true
+	return bool(arena.call(&"claim_attack_slot", self, attack_role()))
+
+
+## 現在有沒有空的名額(不拿)。
+func attack_slot_free() -> bool:
+	if attack_role() == &"" or not _arena_ok():
+		return true
+	return bool(arena.call(&"attack_slot_free", self, attack_role()))
+
+
+func release_attack_slot() -> void:
+	if _arena_ok():
+		arena.call(&"release_attack_slot", self)
+
+
+## 正在對 victim 出招(預警或揮擊中)。弓兵的交叉火力看這個。
+func is_attacking_target(_victim: Node2D) -> bool:
+	return false
+
+
+## 夾擊:同伴開始預警時,場地叫附近等著的近戰敵人一起出手。傳回有沒有答應。
+func join_attack(_victim: Node2D) -> bool:
+	return false
+
+
+## 開始預警時呼叫:後段關卡讓附近的同伴一起夾擊(場地決定這一關有沒有夾擊)。
+func _call_pincer(victim: Node2D) -> void:
+	if _arena_ok() and arena.has_method(&"call_pincer"):
+		arena.call(&"call_pincer", self, victim)
 
 
 func _show_telegraph(telegraph: AttackTelegraph) -> void:

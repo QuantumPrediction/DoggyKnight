@@ -15,6 +15,13 @@ extends Node2D
 ##   偏移四捨五入到整數像素,保持像素清晰。數值在 data/player/feel_tuning.tres。
 ## - AP4 連擊:子節點 Combo(ComboTracker)。
 ## - AP5 慢動作:slow_motion() 設定 CombatFx.time_scale(只影響 A 線的角色與特效,不改 Engine.time_scale)。
+##
+## v2.3 深化(DEV_PLAN 第 16 節):
+## - AS6 難度:spawn_enemy() 依 GameState.difficulty 套用 data/enemies/difficulty_scaling.tres
+##   (生命、傷害、速度乘在 EnemyData 的複本上;預警與攻擊間隔由敵人用 EnemyBase.tell()/rest() 換算)。
+## - AS7 合作:進攻名額(claim_attack_slot / release_attack_slot)限制同時出手的近戰敵人與瞄準的弓兵,
+##   上限隨關卡(GameState.level_index)增加;後段關卡有夾擊(call_pincer)與交叉火力(melee_attack_on)。
+## - AS5 投射物(箭、劍氣、乾草叉)放在特效層(在角色之上,最顯眼),clear() 時一起移除。
 
 const ENEMY_DATA_PATH := "res://data/enemies/%s.tres"
 const COMPANION_DATA_PATH := "res://data/companions/%s.tres"
@@ -51,6 +58,7 @@ var _noise := FastNoiseLite.new()
 var _slowmo_left: float = 0.0
 var _slowmo_total: float = 0.0
 var _slowmo_scale: float = 1.0
+var _slots: Dictionary = {}                       ## 進攻名額:敵人的 instance id → 種類(melee / ranged)
 
 
 func _ready() -> void:
@@ -102,8 +110,13 @@ func spawn_enemy(enemy_id: StringName, at: Vector2) -> Node:
 	var enemy := data.scene.instantiate() as Node2D
 	if enemy == null:
 		return null
+	# 難度(AS6):生命、傷害、速度乘在資料的複本上;其他倍數交給敵人自己換算。
+	var mode := DifficultyScaling.current_mode()
+	data = mode.scaled_data(data, enemy is BossBase)
 	if enemy.has_method(&"setup"):
 		enemy.call(&"setup", data)
+	if enemy.has_method(&"apply_difficulty"):
+		enemy.call(&"apply_difficulty", mode)
 	if &"arena" in enemy:
 		enemy.set(&"arena", self)
 	var r: Variant = enemy.get(&"body_radius")
@@ -158,6 +171,7 @@ func clear() -> void:
 			child.queue_free()
 	if combo != null:
 		combo.reset()
+	_slots.clear()
 	slow_motion(1.0, 0.0)
 
 
@@ -213,6 +227,83 @@ func get_ground_layer() -> Node2D:
 
 func get_enemies() -> Array[Node]:
 	return get_tree().get_nodes_in_group(ENEMY_GROUP)
+
+
+# --- 進攻名額、夾擊、交叉火力(AS7) ---------------------------------------------------
+
+## 這一關、這個難度,同時出手的 kind(&"melee" 近戰 / &"ranged" 弓兵)敵人上限。
+func attack_slot_limit(kind: StringName) -> int:
+	return DifficultyScaling.get_default().slot_limit(kind, GameState.level_index, DifficultyScaling.current_mode())
+
+
+## 目前拿著 kind 名額的敵人數(順便清掉已經倒下或消失的)。
+func attack_slots_used(kind: StringName) -> int:
+	var count := 0
+	for id: int in _slots.keys():
+		var node := instance_from_id(id) as Node
+		if node == null or not is_instance_valid(node) or not node.is_inside_tree() or not node.is_in_group(ENEMY_GROUP):
+			_slots.erase(id)
+			continue
+		if _slots[id] == kind:
+			count += 1
+	return count
+
+
+func attack_slot_free(enemy: Node, kind: StringName) -> bool:
+	if _slots.has(enemy.get_instance_id()):
+		return true
+	return attack_slots_used(kind) < attack_slot_limit(kind)
+
+
+## 拿一個名額;已經拿著時也傳回 true。名額滿了傳回 false(敵人在攻擊距離外等)。
+func claim_attack_slot(enemy: Node, kind: StringName) -> bool:
+	var id := enemy.get_instance_id()
+	if _slots.has(id):
+		return true
+	if attack_slots_used(kind) >= attack_slot_limit(kind):
+		return false
+	_slots[id] = kind
+	return true
+
+
+func release_attack_slot(enemy: Node) -> void:
+	_slots.erase(enemy.get_instance_id())
+
+
+func has_attack_slot(enemy: Node) -> bool:
+	return _slots.has(enemy.get_instance_id())
+
+
+## 有沒有近戰敵人正在對 victim 出招(弓兵的交叉火力:這一關有開才算)。
+func melee_attack_on(victim: Node2D) -> bool:
+	if not DifficultyScaling.get_default().crossfire_on(GameState.level_index):
+		return false
+	for id: int in _slots.keys():
+		if _slots[id] != DifficultyScaling.MELEE:
+			continue
+		var node := instance_from_id(id) as Node
+		if node != null and is_instance_valid(node) and node.has_method(&"is_attacking_target") \
+				and bool(node.call(&"is_attacking_target", victim)):
+			return true
+	return false
+
+
+## 夾擊:starter 開始對 victim 預警時,叫附近等著的近戰同伴一起出手。傳回有幾隻答應。
+func call_pincer(starter: Node, victim: Node2D) -> int:
+	if victim == null or not DifficultyScaling.get_default().pincer_on(GameState.level_index):
+		return 0
+	var joined := 0
+	for node in get_tree().get_nodes_in_group(ENEMY_GROUP):
+		if node == starter or not node.has_method(&"join_attack"):
+			continue
+		if bool(node.call(&"join_attack", victim)):
+			joined += 1
+	return joined
+
+
+## 場上的敵方投射物(箭、劍氣、乾草叉)。
+func get_projectiles() -> Array[Node]:
+	return get_tree().get_nodes_in_group(EnemyProjectile.GROUP)
 
 
 func spawn_exp_orb(at: Vector2, value: int) -> Node2D:

@@ -13,6 +13,9 @@ extends CharacterBody2D
 ## - 跟著跑時一蹦一跳。
 ## - 過關(level_completed)時跳起歡呼(有 victory 動畫就用),冒愛心。
 ## - 盾撞敵人時跳出淡藍色的傷害數字。慢動作時動作跟著變慢。
+##
+## v2.3(AS1、AS5):舉盾時擋得住箭、劍氣、乾草叉(投射物碰到盾就呼叫 block_projectile()):
+## 「鏘!」一聲、盾發亮、火花與光圈、頭上冒「鏘!」,不受傷也不累積暈眩。
 
 enum Mode { FOLLOW, APPROACH, GUARD, DAZED }
 
@@ -51,6 +54,10 @@ const GUARD_COLOR := Color(0.55, 0.8, 1.0, 0.6)
 @export var hop_rate: float = 9.0
 @export var cheer_hop_height: float = 5.0
 @export var cheer_interval: float = 0.55
+@export_group("擋投射物(AS1、AS5)")
+@export var block_reach: float = 5.0             ## 舉盾時,投射物離身體邊緣這麼近就被擋下
+@export var clang_cooldown: float = 0.35         ## 「鏘!」泡泡的最短間隔
+@export var block_flash_time: float = 0.25
 
 var data: CompanionData
 var companion_id: StringName = &"bulldog"
@@ -78,6 +85,9 @@ var _woof_ready_at: float = 0.0
 var _cheer_left: float = 0.0
 var _cheer_t: float = -1.0
 var _bubble: SpeechBubble
+var blocks: int = 0                              ## 擋下幾個投射物
+var _clang_ready_at: float = 0.0
+var _block_flash_left: float = 0.0
 
 
 func setup(p_data: CompanionData) -> void:
@@ -108,6 +118,9 @@ func _physics_process(delta: float) -> void:
 	_mode_time += delta
 	_hurt_left = maxf(0.0, _hurt_left - delta)
 	_bump_anim_left = maxf(0.0, _bump_anim_left - delta)
+	if _block_flash_left > 0.0:
+		_block_flash_left = maxf(0.0, _block_flash_left - delta)
+		queue_redraw()
 	var player := get_tree().get_first_node_in_group(PLAYER_GROUP) as Node2D
 	var desired := Vector2.ZERO
 	if mode == Mode.DAZED:
@@ -188,14 +201,42 @@ func woof() -> bool:
 		return false
 	_woof_ready_at = _age + woof_cooldown
 	woofs += 1
+	_say(tr(&"COMPANION_BULLDOG_WOOF"), woof_time)
+	return true
+
+
+## 盾擋下投射物(由 EnemyProjectile 呼叫):「鏘!」、火花、光圈、盾發亮。不受傷。
+func block_projectile(projectile: Node2D) -> void:
+	blocks += 1
+	_block_flash_left = block_flash_time
+	_bump_anim_left = maxf(_bump_anim_left, 0.12)
+	var at := global_position
+	if projectile != null and is_instance_valid(projectile):
+		at = global_position.lerp(projectile.global_position, 0.6)
+		var dir := projectile.global_position - global_position
+		if dir.length() > 0.5:
+			facing = dir.normalized()
+	CombatFx.spawn(self, &"hit_spark", at, randf() * TAU, Vector2.ONE * 1.2, Color(0.85, 0.97, 1.0))
+	CombatFx.ring(self, at, 2.0, 12.0, 0.22, Color(0.8, 0.95, 1.0, 0.9), 1.5)
+	CombatFx.particles(self, &"sparkle", at, false, false)
+	CombatFx.sfx(&"husk_clank", &"hit")
+	CombatFx.trauma(self, 0.1)
+	if _age >= _clang_ready_at:
+		_clang_ready_at = _age + clang_cooldown
+		_say(tr(&"COMPANION_BULLDOG_CLANG"), woof_time * 0.8)
+	queue_redraw()
+
+
+func _say(text: String, lifetime: float) -> void:
+	if not is_inside_tree():
+		return
 	if _bubble != null and is_instance_valid(_bubble):
 		_bubble.queue_free()
 	_bubble = SpeechBubble.new()
-	_bubble.text = tr(&"COMPANION_BULLDOG_WOOF")
-	_bubble.lifetime = woof_time
+	_bubble.text = text
+	_bubble.lifetime = lifetime
 	_bubble.position = Vector2(0, -_frame_size.y * 0.5)
 	add_child(_bubble)
-	return true
 
 
 ## 過關歡呼(AP8):不再理會敵人,回到金毛身邊跳起來。
@@ -367,3 +408,10 @@ func _draw() -> void:
 		var pulse := 0.5 + 0.5 * sin(_age * 8.0)
 		draw_arc(Vector2.ZERO, w + 4.0 + pulse * 2.0, 0.0, TAU, 20, Color(GUARD_COLOR, 0.35 + 0.3 * pulse), 1.5)
 	draw_set_transform(Vector2.ZERO)
+	if _block_flash_left > 0.0:
+		# 擋下投射物:盾的那一邊亮起一道白藍色的弧。
+		var k := _block_flash_left / maxf(block_flash_time, 0.001)
+		var a := facing.angle()
+		var r := body_radius + block_reach
+		draw_arc(Vector2(0, -2), r, a - 1.1, a + 1.1, 10, Color(0.9, 0.98, 1.0, 0.95 * k), 2.0)
+		draw_arc(Vector2(0, -2), r + 3.0 * (1.0 - k), a - 0.8, a + 0.8, 8, Color(0.6, 0.85, 1.0, 0.6 * k), 1.0)

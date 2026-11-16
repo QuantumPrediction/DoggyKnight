@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/actors/enemies/scarecrow_archer.gd" id="1_script"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/scarecrow_archer/scarecrow_archer_frames.tres" id="2_frames"]
+
+[node name="ScarecrowArcher" type="CharacterBody2D" groups=["enemy"]]
+collision_layer = 8
+collision_mask = 1
+motion_mode = 1
+script = ExtResource("1_script")
+death_particles = &"straw_bits"
+max_exp_orbs = 2
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_frames")
+animation = &"idle"
