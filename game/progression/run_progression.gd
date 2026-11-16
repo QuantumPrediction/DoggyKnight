@@ -3,7 +3,7 @@ extends Node
 ## 一輪冒險之中的經驗、升級與把戲(B4、B5)。由 FlowMain 擁有,跨關保留。
 ##
 ## - 聽 EventBus.exp_collected(原始值),乘上 GameState.player_stats.exp_mult 後累計。
-## - 達到門檻:GameState.hero_level +1,發 leveled_up(新等級)、播 Sfx level_up。
+## - 達到門檻:GameState.hero_level +1,發 leveled_up(新等級)、播 Sfx level_up、手機震動 medium。
 ##   一次升好幾級時,每級各發一次 leveled_up,把戲選擇排隊逐次出現。
 ## - 要給玩家選把戲時發出本地訊號 choice_opened(FlowMain 據此暫停遊戲),
 ##   然後發 EventBus.trick_offered(Array[TrickData])。
@@ -138,6 +138,7 @@ func _on_exp_collected(amount: int) -> void:
 		GameState.hero_level += 1
 		EventBus.leveled_up.emit(GameState.hero_level)
 		Sfx.play(&"level_up")
+		Haptics.play(&"medium")
 	emit_exp_changed()
 	if gained > 0:
 		_pending_choices += gained

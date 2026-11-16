@@ -45,7 +45,10 @@ func test_real_parts_are_used() -> void:
 	assert_eq(flow.state, FlowMain.State.TITLE)
 	assert_true(flow.get_screen().scene_file_path.begins_with("res://ui/screens/title"), "C 線的標題畫面")
 	flow.get_screen().emit_signal(&"new_game_pressed")
-	await wait_frames(10)
+	for i in 240:   # 轉場(畫面蓋住 → 換場景)需要幾格,不寫死格數
+		if flow.state == FlowMain.State.LEVEL:
+			break
+		await get_tree().process_frame
 	assert_eq(flow.state, FlowMain.State.LEVEL)
 	assert_true(flow.get_arena() is CombatArena, "A 線的戰鬥場地")
 	assert_true(flow.get_hud().scene_file_path == "res://ui/hud/hud.tscn", "C 線的 HUD")

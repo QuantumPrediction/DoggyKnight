@@ -22,7 +22,9 @@ fi
 
 IMPORT_LOG="$(mktemp)"
 TEST_LOG="$(mktemp)"
-trap 'rm -f "$IMPORT_LOG" "$TEST_LOG"' EXIT
+# 每次測試用自己的 user:// 資料夾:同時執行的測試不會互相覆蓋存檔,也不會碰到真正玩家的存檔。
+TEST_DATA_HOME="$(mktemp -d)"
+trap 'rm -rf "$IMPORT_LOG" "$TEST_LOG" "$TEST_DATA_HOME"' EXIT
 
 # 1. 匯入資源。新 clone 沒有 .godot/,不匯入的話圖檔與 class_name 都讀不到。
 echo "== 匯入資源 =="
@@ -45,7 +47,7 @@ args=()
 if [ -n "$FILTER" ]; then
 	args=(-- "--filter=$FILTER")
 fi
-timeout "$TIMEOUT" "$GODOT" --headless --path . res://tests/framework/test_runner.tscn "${args[@]}" 2>&1 | tee "$TEST_LOG"
+XDG_DATA_HOME="$TEST_DATA_HOME" timeout "$TIMEOUT" "$GODOT" --headless --path . res://tests/framework/test_runner.tscn "${args[@]}" 2>&1 | tee "$TEST_LOG"
 status=${PIPESTATUS[0]}
 
 if [ "$status" -eq 124 ]; then

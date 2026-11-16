@@ -98,6 +98,7 @@ func test_minigame_plays_per_visit_limit() -> void:
 
 func test_layout_fits_every_phone_size() -> void:
 	_enter()
+	_camp.finish_intro()
 	var root := get_tree().root
 	var original := root.size
 	# 手機實體像素 → ScreenFit 算出的邏輯畫面
@@ -110,6 +111,7 @@ func test_layout_fits_every_phone_size() -> void:
 		root.size = phone
 		ScreenFit.call(&"_refit")
 		await wait_frames(2)
+		_camp.finish_intro()
 		var size := SafeArea.get_screen_size()
 		assert_eq(size, phones[phone], "%s 的邏輯畫面" % phone)
 		var safe := SafeArea.get_safe_rect()
@@ -120,6 +122,137 @@ func test_layout_fits_every_phone_size() -> void:
 		for button_name in ["MinigameButton", "CompanionButton", "ContinueButton"]:
 			var b := _camp.find_child(button_name, true, false) as Button
 			assert_true(b.size.y >= 24.0 and b.size.x >= 24.0, "%s:%s 至少 24×24" % [size, button_name])
+		# 摸頭的範圍:夠大、在畫面內、不和選單重疊
+		var pet := _camp.find_child("PetZone", true, false) as Control
+		var pet_rect := Rect2(pet.global_position, pet.size)
+		assert_true(pet_rect.size.x >= 24.0 and pet_rect.size.y >= 24.0, "%s:金毛夠大好點" % size)
+		assert_true(Rect2(Vector2.ZERO, size).encloses(pet_rect.grow(-6.0)), "%s:金毛在畫面內" % size)
+		assert_false(pet_rect.intersects(rect), "%s:摸頭範圍不蓋住選單" % size)
 	root.size = original
 	ScreenFit.call(&"_refit")
 	await wait_frames(1)
+
+
+# --- DP1:營火旁的摸摸頭、鬥牛犬、音樂 ---
+
+func _enter_with(changes: Dictionary) -> void:
+	_camp = CAMP_SCENE.instantiate() as Camp
+	var cfg := (_camp.config as CampConfig).duplicate() as CampConfig
+	for key: String in changes:
+		cfg.set(key, changes[key])
+	_camp.config = cfg
+	add_child(_camp)
+
+
+func test_camp_plays_its_own_music() -> void:
+	GameState.music_on = true
+	_enter()
+	assert_eq(Music.current, &"camp", "營地自己播 camp 音樂")
+
+
+func test_petting_goldie_raises_satisfaction_up_to_cap() -> void:
+	GameState.satisfaction = 0
+	_enter_with({"pet_cooldown_sec": 0.0, "pet_satisfaction_gain": 2, "pet_rewards_per_visit": 5})
+	# 不用 watch_signal:營地在 after_each 釋放,訊號監看會在之後才停止。
+	var emitted: Array = []
+	_camp.goldie_petted.connect(func(rewarded: bool) -> void: emitted.append(rewarded))
+	var results: Array[bool] = []
+	for i in 7:
+		results.append(_camp.pet_goldie())
+	assert_eq(results, [true, true, true, true, true, false, false] as Array[bool], "前 5 下有加分")
+	assert_eq(GameState.satisfaction, 10, "滿意度 +2 × 5")
+	assert_eq(_camp.pet_count, 7, "超過上限照樣可以摸")
+	assert_eq(_camp.pet_rewards, 5)
+	assert_eq(emitted.size(), 7)
+	assert_eq(emitted[0], true)
+	assert_eq(emitted[6], false)
+
+
+func test_pet_cap_resets_on_next_camp_visit() -> void:
+	GameState.satisfaction = 0
+	_enter_with({"pet_cooldown_sec": 0.0, "pet_rewards_per_visit": 1, "pet_satisfaction_gain": 3})
+	assert_true(_camp.pet_goldie())
+	assert_false(_camp.pet_goldie())
+	_camp.queue_free()
+	await wait_frames(1)
+	_enter_with({"pet_cooldown_sec": 0.0, "pet_rewards_per_visit": 1, "pet_satisfaction_gain": 3})
+	assert_true(_camp.pet_goldie(), "下一次營地又可以加分")
+	assert_eq(GameState.satisfaction, 6)
+
+
+func test_pet_satisfaction_never_exceeds_100() -> void:
+	GameState.satisfaction = 99
+	_enter_with({"pet_cooldown_sec": 0.0, "pet_satisfaction_gain": 2})
+	assert_true(_camp.pet_goldie())
+	assert_eq(GameState.satisfaction, 100)
+	assert_false(_camp.pet_goldie(), "滿了就不再加")
+	assert_eq(GameState.satisfaction, 100)
+
+
+func test_fast_taps_are_ignored_by_cooldown() -> void:
+	_enter_with({"pet_cooldown_sec": 0.3})
+	assert_true(_camp.pet_goldie())
+	assert_false(_camp.pet_goldie(), "同一瞬間連點不算")
+	assert_eq(_camp.pet_count, 1)
+
+
+func test_goldie_reacts_to_petting() -> void:
+	Haptics.reset_for_tests()
+	_enter()
+	var goldie := _camp.get_goldie()
+	assert_false(goldie.is_happy())
+	_camp.pet_goldie()
+	assert_true(goldie.is_happy(), "開心")
+	assert_eq(goldie.current_animation(), _camp.config.goldie_happy_animation, "瞇眼吐舌的動畫")
+	assert_eq(Haptics.last_kind, &"light", "輕震")
+	goldie.advance(_camp.config.pet_react_sec + 0.01)
+	assert_false(goldie.is_happy(), "一會兒後回到平常")
+	assert_eq(goldie.current_animation(), _camp.config.goldie_animation)
+
+
+func test_tapping_goldie_on_screen_pets_her() -> void:
+	_enter()
+	var zone := _camp.find_child("PetZone", true, false) as Control
+	assert_not_null(zone)
+	assert_eq(zone.mouse_filter, Control.MOUSE_FILTER_STOP)
+	var tap := InputEventMouseButton.new()
+	tap.button_index = MOUSE_BUTTON_LEFT
+	tap.pressed = true
+	zone.gui_input.emit(tap)
+	assert_eq(_camp.pet_count, 1, "點金毛 = 摸頭")
+
+
+func test_no_petting_during_minigame_or_after_leaving() -> void:
+	_enter_with({"pet_cooldown_sec": 0.0})
+	_camp.open_minigame()
+	assert_false(_camp.pet_goldie(), "小遊戲中不能摸")
+	assert_eq(_camp.pet_count, 0)
+	var game := _camp.get_minigame()
+	game.set_process(false)
+	game.close()
+	await wait_frames(1)
+	_camp.leave_camp()
+	assert_false(_camp.pet_goldie(), "離開後不能摸")
+
+
+func test_bulldog_sits_by_fire_from_second_camp() -> void:
+	GameState.level_index = 1
+	_enter()
+	assert_false(_camp.is_bulldog_visible(), "第一次營地(1-2 之後):鬥牛犬還沒加入")
+	_camp.queue_free()
+	await wait_frames(1)
+	GameState.level_index = 3
+	_enter()
+	assert_true(_camp.is_bulldog_visible(), "第二次營地(1-4 之後):鬥牛犬坐在火旁")
+	Haptics.reset_for_tests()
+	_camp.tap_bulldog()
+	assert_eq(Haptics.last_kind, &"light", "點鬥牛犬:汪!")
+
+
+func test_pet_hint_appears_until_first_pet() -> void:
+	_enter_with({"pet_hint_delay_sec": 0.0, "pet_cooldown_sec": 0.0})
+	await wait_frames(2)
+	assert_true(_camp.get_goldie().show_hint, "還沒摸過:金毛頭上有愛心泡泡")
+	_camp.pet_goldie()
+	await wait_frames(2)
+	assert_false(_camp.get_goldie().show_hint, "摸過就不再出現")

@@ -63,3 +63,19 @@ extends MinigameConfig
 @export var sky_bottom_color: Color = Color("3a2c55")
 @export var table_color: Color = Color("6b4428")
 @export var table_edge_color: Color = Color("4a2c18")
+
+@export_group("完美停住(DP2)")
+## 墨水漬到達後,玩家在這麼多秒內停手(而且沒有犯錯)就是「完美!」。
+@export var perfect_window_sec: float = 0.2
+## 每次「完美!」加多少分(公分)。
+@export var perfect_bonus_score: int = 5
+## 「完美!」時的閃光(一次性粒子)。
+@export var perfect_fx: PackedScene
+
+@export_group("速度線")
+## 卷軸每秒被拉出多少像素以上才出現速度線。
+@export var speed_lines_min_speed: float = 60.0
+## 每秒多少像素時速度線最濃。
+@export var speed_lines_full_speed: float = 260.0
+## 速度線的數量(每邊)。
+@export var speed_line_count: int = 5

@@ -10,6 +10,7 @@ script = ExtResource("3_spawn")
 enemy_id = &"black_knight"
 count = 1
 delay = 0.0
+pattern = &"line_top"
 
 [sub_resource type="Resource" id="wave1"]
 script = ExtResource("2_wave")
@@ -23,3 +24,5 @@ waves = Array[ExtResource("2_wave")]([SubResource("wave1")])
 is_boss = true
 companions = Array[StringName]([&"bulldog"])
 background = ExtResource("4_bg")
+par_time = 40.0
+damage_budget = 30

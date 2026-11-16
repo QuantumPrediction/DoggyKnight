@@ -121,7 +121,7 @@ D 線的測試(`tests/line_d/test_export_presets.gd`)會檢查 `export_presets.c
 **每次上傳新版本之前**:把「Android AAB」(和「Android」)的 **Version → Code** 加 1(例如 1 → 2)。Google Play 不接受相同或較小的版本號。
 **Version → Name**(例如 0.1.0)是給人看的,可以自己決定。
 
-這個 AAB 已經符合 Google Play 2026 年的要求(✅ 已檢查):target API 36、min API 24、arm64-v8a 的原生程式庫支援 16 KB 記憶體分頁、不要求任何權限。
+這個 AAB 已經符合 Google Play 2026 年的要求(✅ 已檢查):target API 36、min API 24、arm64-v8a 的原生程式庫支援 16 KB 記憶體分頁、只要求震動權限(VIBRATE)。
 
 ---
 
@@ -194,7 +194,7 @@ XDG_CONFIG_HOME=... GODOT_ANDROID_KEYSTORE_RELEASE_PATH=... GODOT_ANDROID_KEYSTO
   godot --headless --path . --install-android-build-template --export-release "Android AAB" export/build/doggyknight-release.aab
 ```
 
-2026-11-15 的實際結果:
+2026-11-15 的實際結果(2026-11-16 加入震動權限後重新建置,結果見表格下方):
 
 | 項目 | 結果 |
 | --- | --- |
@@ -203,6 +203,12 @@ XDG_CONFIG_HOME=... GODOT_ANDROID_KEYSTORE_RELEASE_PATH=... GODOT_ANDROID_KEYSTO
 | 原生程式庫 16 KB 分頁 | arm64-v8a 的 `libgodot_android.so`、`libc++_shared.so` LOAD 對齊 16384 ✅;armeabi-v7a 為 4096(32 位元手機只用 4 KB 分頁,不受規定限制) |
 | AAB(Gradle) | 約 53 MB,建置約 2 分鐘(第一次含下載);Gradle 產生的 AndroidManifest:minSdk 24、targetSdk 36、沒有權限;以**測試用的拋棄式金鑰**簽署(`CN=THROWAWAY NOT FOR STORE`),`jarsigner -verify` 通過 |
 | iOS | 見 `export/IOS.md` |
+
+2026-11-16(M3,加入震動權限 VIBRATE 之後)重新建置除錯版 APK、沙盒 APK(各約 60 MB)與 AAB(約 55 MB,用拋棄式金鑰簽署):
+`aapt2 dump permissions` 只列出 **`android.permission.VIBRATE`**(震動回饋用,見 `core/haptics.gd`);
+AAB 的 Gradle AndroidManifest 也只有這一個 `uses-permission`;
+minSdk 24、targetSdk 36、zipalign 16 KB、arm64-v8a 的 16 KB 分頁、`jarsigner -verify` 都照樣通過。
+`tests/line_d/test_export_presets.gd` 會擋下 VIBRATE 以外的任何權限。
 
 拋棄式金鑰放在雲端環境的 `~/.android/THROWAWAY-not-for-store-release.keystore`(repo 以外),只用來證明 AAB 建置流程可行。
 

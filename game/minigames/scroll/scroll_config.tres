@@ -3,6 +3,8 @@
 [ext_resource type="Script" path="res://game/minigames/scroll/scroll_minigame_config.gd" id="1_config"]
 [ext_resource type="Resource" path="res://game/minigames/scroll/scroll_grading.tres" id="2_grading"]
 [ext_resource type="SpriteFrames" path="res://assets/sprites/goldie/goldie_frames.tres" id="3_goldie"]
+[ext_resource type="PackedScene" path="res://assets/fx/particles/star_burst.tscn" id="4_star"]
+[ext_resource type="PackedScene" path="res://assets/fx/particles/sparkle.tscn" id="5_sparkle"]
 
 [resource]
 script = ExtResource("1_config")
@@ -11,10 +13,12 @@ grading = ExtResource("2_grading")
 duration_sec = 15.0
 countdown_sec = 3.0
 results_delay_sec = 1.2
-results_min_sec = 1.0
+results_min_sec = 1.4
 results_auto_close_sec = 0.0
 resume_on_foreground = false
 time_warning_sec = 3.0
+results_star_interval_sec = 0.35
+star_fx = ExtResource("4_star")
 pull_ratio = 0.6
 max_pull_per_event = 24.0
 px_per_score = 10.0
@@ -26,7 +30,7 @@ ink_still_sec = 0.45
 ink_swipe_tolerance_px = 4.0
 ink_penalty_sec = 1.5
 ink_pass_sec = 0.3
-ink_warn_px = 44.0
+ink_warn_px = 56.0
 ink_size = 10.0
 ink_face_sec = 1.2
 rng_seed = 0
@@ -38,3 +42,9 @@ goldie_frames = ExtResource("3_goldie")
 goldie_animation = &"idle"
 goldie_tangled_animation = &"idle"
 goldie_scale = 2.0
+perfect_window_sec = 0.2
+perfect_bonus_score = 5
+perfect_fx = ExtResource("5_sparkle")
+speed_lines_min_speed = 60.0
+speed_lines_full_speed = 260.0
+speed_line_count = 5

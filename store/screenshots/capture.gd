@@ -67,14 +67,21 @@ func _run() -> void:
 	quit(0)
 
 
+## 營地:第二次營地(鬥牛犬在火旁),正在摸金毛的頭,天上剛好有流星。
 func _shot_camp(dir: String, px: Vector2i, scale: int) -> void:
 	var game_state := root.get_node("GameState")
 	game_state.call("reset_run")
 	game_state.set("vigor", 70)
 	game_state.set("satisfaction", 40)
+	game_state.set("level_index", 3)
 	var camp := (load(CAMP_SCENE) as PackedScene).instantiate()
 	root.add_child(camp)
-	await _frames(40)
+	await _frames(30)
+	camp.call("finish_intro")
+	camp.call("spawn_shooting_star")
+	await _frames(8)
+	camp.call("pet_goldie")
+	await _frames(14)
 	await _save(dir.path_join("01_camp.png"), px, scale)
 	camp.queue_free()
 	await _frames(2)
@@ -89,22 +96,26 @@ func _shot_scroll(dir: String, px: Vector2i, scale: int) -> void:
 	await _frames(2)
 	var game: Object = camp.call("get_minigame")
 	game.call("set_process", false)
-	game.call("step", float(game.get("config").get("countdown_sec")) + 0.05)
-	# 拉到第一個墨水漬快到咬住位置的地方:畫面上看得到墨水漬與金毛頭上的「!」。
+	camp.call("finish_intro")
+	var cfg: Object = game.get("config")
+	game.call("step", float(cfg.get("countdown_sec")) + 0.8)
+	# 拉到第一個墨水漬,一到就停手:畫面上是「完美!」、閃光與加分。
 	var stop_at: float = game.call("next_ink_stop_at")
-	while float(game.get("pulled_px")) < stop_at - 30.0:
+	while float(game.get("pulled_px")) < stop_at:
 		game.call("simulate_swipe", 20.0, 2)
 		game.call("step", 0.05)
-	game.call("step", 2.0)
+	game.call("step", float(cfg.get("ink_still_sec")) + 0.02)
+	game.call("step", 0.1)
 	await _frames(3)
 	await _save(dir.path_join("02_scroll_minigame.png"), px, scale)
-	# 評價畫面(3 顆星)
-	var cfg: Object = game.get("config")
+	# 評價畫面(3 顆星,全部亮起)。先等墨水漬滑過去,不然設定的長度會被蓋掉。
+	game.call("step", float(cfg.get("ink_pass_sec")) + 0.1)
 	var three_star: int = (cfg.get("grading") as MinigameGrading).grade_thresholds[-1]
 	game.set("pulled_px", float(three_star + 12) * float(cfg.get("px_per_score")))
 	game.call("step", float(cfg.get("duration_sec")))
 	game.call("step", float(cfg.get("results_delay_sec")) + 0.05)
-	game.call("step", 1.2)
+	for i in 8:
+		game.call("step", 0.25)
 	await _frames(3)
 	await _save(dir.path_join("03_scroll_results.png"), px, scale)
 	camp.queue_free()
