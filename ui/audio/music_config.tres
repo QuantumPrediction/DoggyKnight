@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MusicConfig" format=3]
+
+[ext_resource type="Script" path="res://ui/audio/music_config.gd" id="1_cfg"]
+
+[resource]
+script = ExtResource("1_cfg")
+volume_db = -9.0
+duck_db = -10.0
+crossfade = 0.8
+jingle_fade_out = 0.25
+track_trim_db = {
+&"camp": 0.0,
+&"chapter_clear": 1.5,
+&"fail": 0.0,
+&"victory": 1.5
+}

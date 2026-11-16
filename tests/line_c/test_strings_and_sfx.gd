@@ -1,9 +1,10 @@
 extends TestCase
 ## 文字與音效(C10、C11、C12):介面用到的每個 tr() 鍵都有翻譯;每個 Sfx id 都有音效檔。
 
-const SFX_IDS: Array[StringName] = [   # DEV_PLAN 4.9 的固定 id
+const SFX_IDS: Array[StringName] = [   # DEV_PLAN 4.9 與 4.10 的固定 id
 	&"swing", &"hit", &"hurt", &"enemy_down", &"pickup", &"level_up", &"bark",
 	&"boss_warning", &"ultimate", &"clear", &"fail", &"ui_tap", &"scroll", &"ink",
+	&"crit", &"combo", &"boss_roar", &"star", &"whoosh", &"heal", &"pet", &"perfect", &"countdown",
 ]
 
 var _sound_before: bool
@@ -60,7 +61,7 @@ func test_trick_and_level_keys_exist_for_dynamic_lookups() -> void:
 
 
 func test_every_sfx_id_has_a_sound_file() -> void:
-	assert_eq(Sfx.IDS.size(), SFX_IDS.size(), "Sfx.IDS 與 DEV_PLAN 4.9 一致")
+	assert_eq(Sfx.IDS.size(), SFX_IDS.size(), "Sfx.IDS 與 DEV_PLAN 4.9、4.10 一致")
 	for id in SFX_IDS:
 		var path := "res://assets/sfx/%s.wav" % id
 		assert_true(ResourceLoader.exists(path), path)
