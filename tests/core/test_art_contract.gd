@@ -82,3 +82,51 @@ func test_trick_icons_exist() -> void:
 	for trick in ["sit", "wag", "fetch", "shake", "spin", "bark"]:
 		var path := "res://assets/icons/tricks/%s.png" % trick
 		assert_true(ResourceLoader.exists(path), path)
+
+
+const PARTICLES: Array[String] = ["hit_burst", "straw_bits", "feathers", "confetti", "level_up_pillar", "shockwave",
+		"sparkle", "ultimate_burst", "footstep_dust", "heart", "star_burst"]
+const V22_BACKGROUNDS: Array[String] = ["wheat_field", "farm_fence", "crow_forest"]
+
+
+func test_v22_particles_are_one_shot_cpu_particles() -> void:
+	for fx_name in PARTICLES:
+		var path := "res://assets/fx/particles/%s.tscn" % fx_name
+		var scene := load(path) as PackedScene
+		assert_not_null(scene, path)
+		if scene != null:
+			var node := scene.instantiate()
+			assert_true(node is CPUParticles2D, "%s 的根節點是 CPUParticles2D" % fx_name)
+			node.free()
+
+
+func test_v22_backgrounds_exist() -> void:
+	for bg in V22_BACKGROUNDS:
+		var scene := load("res://assets/backgrounds/%s.tscn" % bg) as PackedScene
+		assert_not_null(scene, bg)
+
+
+func test_particle_frees_itself_after_playing() -> void:
+	var fx := (load("res://assets/fx/particles/hit_burst.tscn") as PackedScene).instantiate() as CPUParticles2D
+	add_child(fx)
+	assert_true(fx.emitting)
+	var waited := 0
+	while is_instance_valid(fx) and waited < 240:
+		await get_tree().process_frame
+		waited += 1
+	assert_false(is_instance_valid(fx), "一次性特效播完自己刪除")
+
+
+func test_music_and_transition_api() -> void:
+	for method in [&"play", &"stop", &"set_ducked", &"refresh"]:
+		assert_true(Music.has_method(method), "Music.%s" % method)
+	Music.play(&"no_such_track")     # 沒有檔案時安靜略過
+	Music.stop(0.0)
+	var transition := (load("res://ui/transition/transition.tscn") as PackedScene).instantiate()
+	assert_true(transition is CanvasLayer, "轉場的根節點是 CanvasLayer")
+	add_child(transition)
+	await transition.cover(0.01)
+	assert_true(transition.is_covered())
+	await transition.reveal(0.01)
+	assert_false(transition.is_covered())
+	transition.queue_free()

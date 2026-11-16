@@ -6,6 +6,11 @@ func after_each() -> void:
 	GameState.reset_run()
 	GameState.snacks = 0
 	GameState.sound_on = true
+	GameState.music_on = true
+	GameState.haptics_on = true
+	GameState.tutorial_done = false
+	GameState.best_stars = {}
+	Haptics.reset_for_tests()
 
 
 func test_reset_run_starts_a_fresh_run() -> void:
@@ -58,9 +63,9 @@ func test_data_classes_have_contract_fields() -> void:
 		EnemyData: ["id", "display_name", "scene", "max_hp", "contact_damage", "move_speed", "exp_value"],
 		CompanionData: ["id", "display_name", "scene", "role"],
 		TrickData: ["id", "display_name", "description", "icon", "stat_modifiers", "is_ability"],
-		LevelData: ["id", "display_name", "waves", "is_boss", "arena_scene", "companions", "background"],
+		LevelData: ["id", "display_name", "waves", "is_boss", "arena_scene", "companions", "background", "par_time", "damage_budget"],
 		WaveData: ["spawns"],
-		SpawnEntry: ["enemy_id", "count", "delay"],
+		SpawnEntry: ["enemy_id", "count", "delay", "pattern"],
 	}
 	for data_class: GDScript in contract:
 		var instance: Resource = data_class.new()
@@ -80,3 +85,32 @@ func test_level_data_holds_typed_waves() -> void:
 	level.waves.append(wave)
 	assert_eq(level.waves[0].spawns[0].enemy_id, &"scarecrow")
 	assert_eq(level.waves[0].spawns[0].count, 3)
+
+
+func test_reset_run_keeps_v22_settings_and_records() -> void:
+	GameState.music_on = false
+	GameState.haptics_on = false
+	GameState.tutorial_done = true
+	GameState.best_stars = {&"1-1": 3}
+	GameState.reset_run()
+	assert_false(GameState.music_on, "音樂開關屬於設定")
+	assert_false(GameState.haptics_on, "震動開關屬於設定")
+	assert_true(GameState.tutorial_done, "教學紀錄屬於存檔")
+	assert_eq(GameState.best_stars.get(&"1-1"), 3, "最佳星數屬於存檔")
+
+
+func test_spawn_entry_default_pattern() -> void:
+	assert_eq(SpawnEntry.new().pattern, &"edges")
+
+
+func test_haptics_respects_setting_and_merges_bursts() -> void:
+	Haptics.reset_for_tests()
+	Haptics.play(&"medium")
+	assert_eq(Haptics.play_count, 1)
+	assert_eq(Haptics.last_kind, &"medium")
+	Haptics.play(&"heavy")
+	assert_eq(Haptics.play_count, 1, "60 毫秒內的連續震動會被合併")
+	Haptics.reset_for_tests()
+	GameState.haptics_on = false
+	Haptics.play(&"heavy")
+	assert_eq(Haptics.play_count, 0, "關掉震動就不震")

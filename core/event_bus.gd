@@ -15,6 +15,8 @@ signal ultimate_used()
 signal player_downed()                      # 活力歸零,金毛趴下睡著
 signal boss_phase_changed(phase: int)
 signal exp_collected(amount: int)          # 拾取經驗珠(原始值;exp_mult 由 B 線套用)
+signal boss_hp_changed(current: int, maximum: int)   # v2.2:頭目出場時與每次受傷時發出(HUD 頭目血條)
+signal combo_changed(count: int)            # v2.2:連擊數改變;0 = 連擊中斷
 
 # 流程與成長(B 線發出)
 signal level_started(level_id: StringName)
