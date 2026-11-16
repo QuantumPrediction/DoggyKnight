@@ -2,8 +2,8 @@ extends TestCase
 ## C 線美術(C1 至 C7、C9、C13):格數、格子大小、調色盤、背景範圍、App 圖示規格。
 ## (路徑與動畫名稱的合約由 tests/core/test_art_contract.gd 檢查。)
 
-const FRAME_COUNTS: Dictionary = {   # DEV_PLAN C2、CP1(v2.2 加格數)
-	"goldie": {&"idle": 4, &"run": 6, &"attack": 4, &"hurt": 2, &"sleep": 2, &"victory": 4},
+const FRAME_COUNTS: Dictionary = {   # DEV_PLAN C2、CP1(v2.2 加格數);v2.3 金毛站立 6 格(披風、耳朵)
+	"goldie": {&"idle": 6, &"run": 6, &"attack": 4, &"hurt": 2, &"sleep": 2, &"victory": 4},
 	"bulldog": {&"idle": 4, &"run": 6, &"attack": 4, &"hurt": 2, &"guard": 2, &"victory": 4},
 	"scarecrow": {&"idle": 4, &"run": 6, &"attack": 4, &"hurt": 2},
 	"crow": {&"idle": 4, &"run": 6, &"attack": 4, &"hurt": 2},

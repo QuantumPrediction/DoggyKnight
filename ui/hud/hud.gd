@@ -72,6 +72,7 @@ func _ready() -> void:
 	EventBus.level_failed.connect(_on_level_failed)
 	EventBus.boss_phase_changed.connect(_on_boss_phase_changed)
 	EventBus.boss_hp_changed.connect(_on_boss_hp_changed)
+	EventBus.boss_appeared.connect(_on_boss_appeared)
 	EventBus.combo_changed.connect(_on_combo_changed)
 	EventBus.player_damaged.connect(_on_player_damaged)
 	get_viewport().size_changed.connect(relayout)
@@ -404,6 +405,16 @@ func _on_boss_hp_changed(current: int, maximum: int) -> void:
 		relayout()
 
 
+## v2.3:頭目或中頭目出場,血條換上它的名字;不是頭目關時(1-4 的稻草人隊長)顯示「強敵出現!」。
+func _on_boss_appeared(enemy_id: StringName) -> void:
+	boss_bar.set_boss(enemy_id)
+	if not _boss_banner_shown:
+		_boss_banner_shown = true
+		# 稍等一下:A 線緊接著發 boss_hp_changed,血條出現後橫幅才排在它下面
+		queue_banner(tr("UI_BOSS") if _boss_level else tr("UI_MIDBOSS"), BOSS_BANNER_HOLD, true, 0.05)
+	relayout()
+
+
 func _on_combo_changed(count: int) -> void:
 	combo.set_count(count)
 
@@ -449,7 +460,9 @@ func _on_boss_phase_changed(phase: int) -> void:
 		_boss_banner_shown = true
 		queue_banner(tr("UI_BOSS"), BOSS_BANNER_HOLD, true)
 	elif phase >= 2:
-		queue_banner(tr("UI_BOSS_ANGRY"), BOSS_BANNER_HOLD, true)
+		var angry := tr("UI_BOSS_ANGRY") if boss_bar.boss_id == &"black_knight" \
+				else tr("UI_BOSS_ANGRY_NAMED") % boss_bar.name_label.text
+		queue_banner(angry, BOSS_BANNER_HOLD, true)
 
 
 func _on_level_completed(_level_id: StringName) -> void:

@@ -6,20 +6,26 @@ const LEVEL_FILES: Array[String] = [
 	"res://data/levels/level_1_1.tres", "res://data/levels/level_1_2.tres", "res://data/levels/level_1_3.tres",
 	"res://data/levels/level_1_4.tres", "res://data/levels/level_1_5.tres", "res://data/levels/level_1_6.tres",
 ]
-const KNOWN_ENEMIES: Array[StringName] = [&"scarecrow", &"crow", &"scarecrow_elite", &"black_knight"]
+const KNOWN_ENEMIES: Array[StringName] = [&"scarecrow", &"crow", &"scarecrow_elite", &"black_knight",
+		&"scarecrow_archer", &"armored_husk", &"scarecrow_captain"]
 
 # --- 估算用的假設(不是遊戲數值;A 線的戰鬥完成後,M3 以實際試玩時間校正) ---
 ## 一個普通玩家處理一隻敵人平均要幾秒(走位 + 攻擊)。金毛每 0.5 秒 10 點傷害:
-## 稻草人兵 25 生命 = 3 下;烏鴉 12 生命 = 2 下但會俯衝;精英 75 生命 = 8 下;黑騎士 450 生命。
-const HANDLE_SEC: Dictionary = {&"scarecrow": 2.5, &"crow": 2.0, &"scarecrow_elite": 6.0, &"black_knight": 70.0}
-## 每隻敵人給的經驗(A 線的資料檔;精英暫定 3)。
-const EXP_VALUE: Dictionary = {&"scarecrow": 1, &"crow": 1, &"scarecrow_elite": 3, &"black_knight": 20}
+## 稻草人兵 25 生命 = 3 下;烏鴉 12 生命 = 2 下但會俯衝;精英 75 生命 = 8 下;黑騎士 780 生命。
+## v2.3:弓兵 18 生命但會後退;空盔甲兵 70 生命、推不動;稻草人隊長約 320 生命、會召喚。
+const HANDLE_SEC: Dictionary = {&"scarecrow": 2.5, &"crow": 2.0, &"scarecrow_elite": 6.0, &"black_knight": 70.0,
+		&"scarecrow_archer": 3.0, &"armored_husk": 6.0, &"scarecrow_captain": 25.0}
+## 每隻敵人給的經驗(A 線的資料檔;DEV_PLAN 第 16 節 AS1 至 AS3)。
+const EXP_VALUE: Dictionary = {&"scarecrow": 1, &"crow": 1, &"scarecrow_elite": 3, &"black_knight": 20,
+		&"scarecrow_archer": 2, &"armored_husk": 4, &"scarecrow_captain": 12}
 ## 敵人從出生點走到金毛身邊的時間。
 const APPROACH_SEC: float = 3.0
 ## 有同伴幫忙時處理速度的倍數。
 const COMPANION_FACTOR: float = 0.85
 ## 黑騎士一場大約召喚幾隻小怪(每隻 1 經驗)。
 const BOSS_SUMMON_EXP: int = 6
+## 稻草人隊長一場大約召喚幾隻稻草人兵(每隻 1 經驗)。
+const CAPTAIN_SUMMON_EXP: int = 6
 
 
 func _levels() -> Array[LevelData]:
@@ -64,6 +70,21 @@ func test_level_contents() -> void:
 	assert_eq(_enemy_set(levels[1].waves[1]), [&"crow"] as Array[StringName], "1-2 第 2 波只有烏鴉")
 	assert_true(_enemy_set(levels[4]).has(&"scarecrow_elite"), "1-5 有精英稻草人兵")
 	assert_false(_enemy_set(levels[4]).has(&"scarecrow"), "1-5 用精英,不用普通稻草人兵")
+	# v2.3(BS5)
+	for i in 2:
+		assert_false(_enemy_set(levels[i]).has(&"scarecrow_archer"), "%s 還沒有弓兵" % levels[i].id)
+	assert_true(_enemy_set(levels[2].waves[0]).has(&"scarecrow_archer"), "1-3 第 1 波就有弓兵(鬥牛犬同時加入)")
+	assert_true(levels[2].companions.has(&"bulldog"))
+	var captain_waves: Array[int] = []
+	for level in levels:
+		for w in level.waves.size():
+			if _enemy_set(level.waves[w]).has(&"scarecrow_captain"):
+				captain_waves.append(levels.find(level) * 10 + w)
+	assert_eq(captain_waves, [32] as Array[int], "稻草人隊長只在 1-4 的最後一波(第 3 波)")
+	for kind: StringName in [&"armored_husk", &"scarecrow_elite", &"crow", &"scarecrow_archer"]:
+		assert_true(_enemy_set(levels[4]).has(kind), "1-5 混合:%s" % kind)
+	for i in 4:
+		assert_false(_enemy_set(levels[i]).has(&"armored_husk"), "空盔甲兵在 1-5 才出現(%s)" % levels[i].id)
 	var boss_wave := levels[5].waves[0]
 	assert_eq(boss_wave.spawns.size(), 1)
 	assert_eq(boss_wave.spawns[0].enemy_id, &"black_knight")
@@ -94,6 +115,8 @@ func test_estimated_length_and_level_ups_are_on_target() -> void:
 				spawn_end = maxf(spawn_end, entry.delay + (entry.count - 1) * curve.spawn_spacing)
 				work += entry.count * float(HANDLE_SEC[entry.enemy_id])
 				exp_gained += entry.count * int(EXP_VALUE[entry.enemy_id])
+				if entry.enemy_id == &"scarecrow_captain":
+					exp_gained += CAPTAIN_SUMMON_EXP
 			seconds += maxf(spawn_end, work * factor) + APPROACH_SEC
 		progress += exp_gained
 		var ups := 0
@@ -103,7 +126,9 @@ func test_estimated_length_and_level_ups_are_on_target() -> void:
 			ups += 1
 		print("    %s  估計 %.0f 秒  經驗 %d  升 %d 級 → 第 %d 級" % [level.id, seconds, exp_gained, ups, hero])
 		# 關卡長度改由 tests/integration/playthrough_bot.tscn 以正式戰鬥量度(這個估算沒有真實戰鬥,M2 時比實際短約三成),這裡只印出參考。
-		assert_true(ups >= 1 and ups <= 2, "%s 估計升 %d 級,目標 1 至 2 級" % [level.id, ups])
+		# 頭目關的經驗大多在打倒頭目時才拿到(之後就過關),所以頭目關升 0 級也可以。
+		var fewest := 0 if level.is_boss else 1
+		assert_true(ups >= fewest and ups <= 2, "%s 估計升 %d 級,目標 %d 至 2 級" % [level.id, ups, fewest])
 
 
 func _enemy_set(source: Resource) -> Array[StringName]:

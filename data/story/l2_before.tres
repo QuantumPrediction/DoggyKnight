@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="DialogueScript" format=3]
+
+[ext_resource type="Script" path="res://core/data/dialogue_script.gd" id="1_script"]
+[ext_resource type="Script" path="res://core/data/dialogue_line.gd" id="2_line"]
+
+[sub_resource type="Resource" id="line_01"]
+script = ExtResource("2_line")
+speaker = &"goldie"
+expression = &"happy"
+text_key = "STORY_L2_BEFORE_01"
+
+[sub_resource type="Resource" id="line_02"]
+script = ExtResource("2_line")
+speaker = &"merlin"
+expression = &"worried"
+text_key = "STORY_L2_BEFORE_02"
+
+[sub_resource type="Resource" id="line_03"]
+script = ExtResource("2_line")
+speaker = &"crow"
+expression = &"normal"
+text_key = "STORY_L2_BEFORE_03"
+
+[sub_resource type="Resource" id="line_04"]
+script = ExtResource("2_line")
+speaker = &"merlin"
+expression = &"normal"
+text_key = "STORY_L2_BEFORE_04"
+
+[resource]
+script = ExtResource("1_script")
+id = &"l2_before"
+lines = Array[ExtResource("2_line")]([SubResource("line_01"), SubResource("line_02"), SubResource("line_03"), SubResource("line_04")])
+skippable = true

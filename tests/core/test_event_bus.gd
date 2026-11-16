@@ -1,5 +1,5 @@
 extends TestCase
-## 核對 EventBus 與 DEV_PLAN 4.1(v2.2)的合約完全一致(名稱、參數名稱、參數型別,不多不少)。
+## 核對 EventBus 與 DEV_PLAN 4.1(v2.3)的合約完全一致(名稱、參數名稱、參數型別,不多不少)。
 ## 這個測試失敗,代表有人改了凍結的合約。
 
 const CONTRACT: Dictionary = {
@@ -13,6 +13,7 @@ const CONTRACT: Dictionary = {
 	"exp_collected": [["amount", TYPE_INT]],
 	"boss_hp_changed": [["current", TYPE_INT], ["maximum", TYPE_INT]],
 	"combo_changed": [["count", TYPE_INT]],
+	"boss_appeared": [["enemy_id", TYPE_STRING_NAME]],
 	"level_started": [["level_id", TYPE_STRING_NAME]],
 	"wave_started": [["index", TYPE_INT], ["total", TYPE_INT]],
 	"wave_cleared": [["index", TYPE_INT]],
@@ -29,6 +30,8 @@ const CONTRACT: Dictionary = {
 	"camp_entered": [],
 	"minigame_finished": [["minigame_id", TYPE_STRING_NAME], ["score", TYPE_INT], ["grade", TYPE_INT]],
 	"camp_left": [],
+	"dialogue_started": [["script_id", TYPE_STRING_NAME]],
+	"dialogue_finished": [["script_id", TYPE_STRING_NAME]],
 	"app_backgrounded": [],
 	"app_foregrounded": [],
 	"back_requested": [],

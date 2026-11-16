@@ -1,10 +1,21 @@
 # 《金毛騎士》原型開發計劃(給 Claude Code)
 
-版本:v2.2,2026-11-16。工作名稱《金毛騎士》,repo:`DoggyKnight`。
+版本:v2.3,2026-11-16。工作名稱《金毛騎士》,repo:`DoggyKnight`。
 
 **最終目標:一款在 App Store(iOS)與 Google Play(Android)上架的手機遊戲。** 原型本身不公開上架,但從第一天起就按手機與商店的要求來做,避免日後返工。
 
 這份文件是四個 Claude Code 工作階段(下稱「線」)同時開發的唯一依據。每條線開工前必須讀完第 1 至 5 節(包括 4.9 整合約定),以及自己那一線的章節。商店規定、費用與送審清單集中在 `docs/STORE_RELEASE.md`(D 線與整合工作階段必讀)。
+
+### v2.3 變更摘要(深化,相對 v2.2)
+
+- 擁有人問「故事夠不夠好玩?敵人是否太容易?畫面是否太簡單?」並要求再深化。**範圍變更(擁有人要求)**:
+  - 加入完整的第一章故事:開場繪本、每關前後的頭像對白、營地對白、結局與第二章預告(`docs/STORY.md`)。仍然不做動畫過場(劇情動畫)。
+  - 小怪由兩種增加為四種:新增稻草人弓兵(遠程)、空盔甲兵(重裝);1-4 新增中頭目稻草人隊長;黑騎士新增招式。
+  - 打完第一章後解鎖困難模式。
+  - 美術提升:角色頭像、繪本插畫、光影、前景層次、更細緻的動畫。
+- 合約補充(4.11):`boss_appeared`、`dialogue_started`、`dialogue_finished` 三個訊號;`GameState` 加 `difficulty`、`chapter_cleared`、`story_seen`;新資料類別 `DialogueLine`、`DialogueScript`;`LevelData` 加 `story_before`、`story_after`;對白框;`i18n/story.csv`。
+- 新增第 16 節「深化」:四條線的任務。
+- 詳細記錄:`docs/requests/20261116-INT-v2.3-story-contract.md`。
 
 ### v2.2 變更摘要(M3 打磨,相對 v2.1)
 
@@ -347,6 +358,41 @@ func reset_run() -> void
 - 新增的音效 id(加在 4.9 的清單後面):`crit`、`combo`、`boss_roar`、`star`、`whoosh`、`heal`、`pet`、`perfect`、`countdown`。
 - 可選的新動畫名稱:`goldie` 與 `bulldog` 的 `victory`(過關歡呼)。使用前先用 `has_animation()` 確認。
 
+### 4.11 故事與深化合約(v2.3,四條線必讀)
+
+**故事**:唯一依據是 `docs/STORY.md`(角色、插畫清單、全部對白的次序與說話者、播放規則);文字在 `i18n/story.csv`(鍵 `STORY_*`、名牌 `SPEAKER_*`)。
+
+**新訊號**
+
+- `boss_appeared(enemy_id: StringName)`:A 線在頭目或中頭目出場時發出;C 線的頭目血條用 `tr("ENEMY_" + id 大寫)` 顯示名字。
+- `dialogue_started(script_id)`、`dialogue_finished(script_id)`:C 線的對白框發出。
+
+**GameState 新欄位(B 線存檔、讀檔)**
+
+- `difficulty`(`&"normal"` 或 `&"hard"`;新遊戲時由標題畫面設定)、`chapter_cleared`(打完第一章,解鎖困難模式)、`story_seen`(看過的對白段落)。`reset_run()` 不會重設。
+- 困難模式的最佳星數存在 `best_stars["<關卡 id>:hard"]`。
+
+**資料**
+
+- `DialogueLine`(`speaker`、`expression`、`text_key`、`illustration`)、`DialogueScript`(`id`、`lines`、`skippable`)。B 線依 `docs/STORY.md` 建立 `data/story/<段落 id>.tres`;D 線的營地讀 `data/story/camp1.tres`、`camp2.tres`。
+- `LevelData.story_before`、`story_after`。
+
+**對白框**(`ui/dialogue/dialogue_box.tscn`,C 線;整合工作階段已放可用的初版)
+
+- 根節點 CanvasLayer(第 40 層),PROCESS_MODE_ALWAYS,加入群組 `dialogue_box`(測試與試玩機器人靠它自動略過對白);`await play(script)`;`advance()`、`skip()`、`is_active()`;顯示期間擋住全部觸控;結束時把段落 id 記進 `GameState.story_seen`。
+- 頭像 `assets/portraits/<speaker>/<expression>.png`(48×48);繪本插畫 `assets/story/<id>.png`(160×120)。
+
+**新角色與敵人(佔位圖已放好,C 線原地替換)**
+
+| 代號 | 格子 | 動畫 | 說明 |
+| --- | --- | --- | --- |
+| `scarecrow_archer` | 24 | idle、run、attack、hurt、aim | 稻草人弓兵(遠程) |
+| `armored_husk` | 24 | idle、run、attack、hurt、dash、down | 空盔甲兵(重裝、推不動) |
+| `scarecrow_captain` | 32 | idle、run、attack、hurt、throw、rally、down | 中頭目稻草人隊長(1-4) |
+| `merlin` | 24 | idle、run、cast | 梅林(營地與故事) |
+
+投射物特效:`assets/fx/arrow`、`sword_wave`、`pitchfork`(動畫 `default`)。敵人資料 id 與代號相同(`data/enemies/<代號>.tres`,A 線)。
+
 ---
 
 ## 5. 所有線共同遵守的規則
@@ -378,7 +424,7 @@ func reset_run() -> void
 | M3 實機打磨 | Android 實機(經 Google Play 內部或封閉測試安裝);iPhone 實機(經 TestFlight,已具備條件時);手感調整、修錯 | 第 1 節的「完成定義」全部打勾 |
 | M4 上架準備 | 擁有人決定繼續之後:補足上架內容、商店頁面、隱私權政策、內容分級、送審 | 見第 14 節與 `docs/STORE_RELEASE.md` |
 
-**目前進度(2026-11-16):** M0、M1、M2 已完成;M3 進行中:第 15 節的打磨已完成並合併,打磨後的 Android 除錯版 APK 已建好,下一步是實機試玩。詳見 `docs/integration_report.md`。
+**目前進度(2026-11-16):** M0、M1、M2 已完成;M3 進行中:第 15 節的打磨已完成並合併;第 16 節的深化(故事、新敵人、困難模式、美術提升)進行中。還沒有實機試玩。詳見 `docs/integration_report.md`。
 
 時間無法準確預估。請以里程碑為準,不要以日期為準;每個里程碑完成後由擁有人試玩再決定是否繼續。
 
@@ -650,3 +696,51 @@ func reset_run() -> void
 - [ ] DP4 效能:壓力測試加入新的粒子特效(40 隻敵人 + 特效),仍維持 60 FPS(headless 量度),建議各特效的數量上限。
 - [ ] DP5 商店截圖:打磨完成後用 `store/screenshots/capture.gd` 重新產生,更新商店說明文字的賣點。
 - [ ] DP6 測試:摸頭的上限與滿意度、完美停住的判定、VIBRATE 權限在匯出設定中。
+
+---
+
+## 16. 深化(v2.3)
+
+**目標:** 回答擁有人的三個問題。(1)**故事**:由「幾乎沒有」變成完整、溫暖、好笑、有懸念的第一章。(2)**挑戰**:敵人不再太容易,而且需要不同的打法;通關後有困難模式。(3)**畫面**:由「乾淨可愛」提升到「有氣氛、有層次、有感情」的像素遊戲。第 15 節的品質標準繼續適用。
+
+### A 線(敵人與挑戰)
+
+- [ ] AS1 稻草人弓兵 `scarecrow_archer`(生命 18、箭傷害 7、速度 24、經驗 2):保持 60 至 90 像素距離;瞄準時畫紅線 0.7 秒再射箭(箭速約 120 像素/秒,射程約 160,看得見、躲得開);金毛靠近時後退。**鬥牛犬舉盾時擋得住箭**(同伴的價值)。
+- [ ] AS2 空盔甲兵 `armored_husk`(生命 70、傷害 12、速度 22、經驗 4):不會被擊退、吠叫只震懾一半時間;約每 4 秒用盾衝撞一次(紅線預警 0.6 秒,衝約 60 像素);倒下時盔甲散開、一縷藍色火光飛走(呼應黑騎士)。
+- [ ] AS3 中頭目稻草人隊長 `scarecrow_captain`(32×32,生命約 320、經驗 12):出場發 `boss_appeared` 與 `boss_hp_changed`;招式:乾草叉橫掃(扇形預警)、號令稻草人(紫圈預警後召喚 3 隻)、擲乾草叉(直線預警,會飛回來);一半生命後加快;倒下時散成稻草,一根紫色羽毛慢慢飄落(故事伏筆)。
+- [ ] AS4 黑騎士新招式:出場時發 `boss_appeared`;第二階段重劈後放出劍氣(直線預警的弧形投射物),召喚改為 2 隻空盔甲兵。
+- [ ] AS5 投射物系統:箭、劍氣、乾草叉共用;都有預警;鬥牛犬的盾擋得住;數值放資料檔。
+- [ ] AS6 難度:`data/enemies/difficulty_scaling.tres`,依 `GameState.difficulty` 在 `spawn_enemy` 套用(生命、傷害、預警時間、速度、攻擊間隔)。困難模式大約:生命 ×1.5、傷害 ×1.4、預警 ×0.8。
+- [ ] AS7 一般模式的整體挑戰提高:後段關卡的敵人更會合作(例如同時進攻的數量上限隨關卡增加、弓兵配合近戰)。用 `tests/integration/playthrough_bot.tscn` 調整:一般模式機器人在 1-1 至 1-3 不倒下,1-5、1-6 偶爾倒下(五個種子之中一至兩次);困難模式機器人每輪倒下數次但能過關。
+- [ ] AS8 新增 `ENEMY_SCARECROW_ARCHER`、`ENEMY_ARMORED_HUSK`、`ENEMY_SCARECROW_CAPTAIN` 文字;測試(新敵人行為、投射物被盾擋下、難度倍率、`boss_appeared`)。
+
+### B 線(故事流程與關卡)
+
+- [ ] BS1 依 `docs/STORY.md` 建立 `data/story/` 全部段落,設定六關的 `story_before`、`story_after`。
+- [ ] BS2 依 `docs/STORY.md` 第 8 節播放:開場繪本、每關前後、重試不重播、結局、第二章預告。對白期間場地停止運作,HUD 的關卡標題卡在對白之後才出現。
+- [ ] BS3 結局:1-6 慶祝 → `l6_after` → 結算(第一章完)→ `teaser` → 設定 `chapter_cleared` 並存檔 → 標題。
+- [ ] BS4 困難模式:標題畫面設定 `GameState.difficulty`;困難模式的最佳星數分開存;結算資料加 `difficulty`;困難模式可以多加少量敵人(放 difficulty.tres)。
+- [ ] BS5 關卡重新設計:1-3 引入弓兵(鬥牛犬同時加入,示範盾擋箭);1-4 最後一波是稻草人隊長(播 `boss` 音樂);1-5 空盔甲兵、精英、烏鴉、弓兵混合;每關仍是 60 至 90 秒。
+- [ ] BS6 存檔第 3 版:`difficulty`、`chapter_cleared`、`story_seen`,舊存檔可讀。
+- [ ] BS7 測試:對白次序、重試不重播、結局次序、困難模式星數分開、存檔向下相容。
+
+### C 線(畫面與介面)
+
+- [ ] CS1 正式對白框(原地替換,方法不變):羊皮紙與精緻像素框;頭像左右分邊(金毛、貝德維爾在左,其他在右);名牌;逐字顯示並有說話音效(每個角色音高不同);點一下先顯示整句、再點下一句;右上角「略過」;有插畫的句子用繪本頁模式(翻頁效果)。
+- [ ] CS2 頭像:`docs/STORY.md` 第 3 節全部角色與表情,48×48,細緻的明暗;原創設計(梅林是西施犬法師;摩根娜只是紫色剪影)。
+- [ ] CS3 繪本插畫:第 4 節八張,160×120,統一的繪本像素風格(抖色漸層、有限色板),與頭像一致。
+- [ ] CS4 新角色圖與投射物(原地替換佔位圖):弓兵、空盔甲兵(藍色魔法光)、稻草人隊長(32×32,紫色羽毛)、梅林(24×24);箭、劍氣、乾草叉。
+- [ ] CS5 高級像素畫面:光影(用加亮混合的光暈圖做火把、閃電、營火、魔法、黑騎士眼睛、必殺技;手機效能允許才用 Light2D);景深(場地以外的前景枝葉、草叢、雨幕);角色投影、邊緣光、次要動作(披風飄動、耳朵晃動)、揮劍殘影、閒置小動作;各關色調與輕微暗角(不可遮住戰鬥)。
+- [ ] CS6 標題:加入梅林的主視覺;`chapter_cleared` 時出現難度選擇(設定 `GameState.difficulty` 後才發 `new_game_pressed`)。
+- [ ] CS7 失敗畫面放梅林頭像與隨機 `STORY_TIP_*`;結算畫面顯示「困難」標記;頭目血條改用 `boss_appeared` 的名字。
+- [ ] CS8 音效與音樂:說話音效、翻頁、射箭、盔甲碰撞、隊長吶喊、魔法;新增 `story` 音樂(溫柔的繪本主題,開場與結局用)。
+- [ ] CS9 測試。
+
+### D 線(營地與手機)
+
+- [ ] DS1 營地故事:第一次進營地播 `camp1`,第二次播 `camp2`(用自己的對白框),播完才顯示選單。
+- [ ] DS2 營地的梅林:坐在圓桌旁(偶爾施法閃星星);點他說一句 `CAMP_MERLIN_01` 至 `06`(D 線撰寫,語氣同 `docs/STORY.md`)。
+- [ ] DS3 小遊戲包裝:卷軸上有《王室守則》的小字條目;結束時梅林問「讀完了嗎?」。
+- [ ] DS4 效能:光暈、投射物、對白插畫加入後的壓力測試;重建並驗證 APK。
+- [ ] DS5 商店:說明文字加入故事賣點;截圖工具加入對白與繪本畫面。
+- [ ] DS6 測試。

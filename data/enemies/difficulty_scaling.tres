@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="DifficultyScaling" format=3]
+
+[ext_resource type="Script" path="res://game/combat/difficulty_scaling.gd" id="1_scaling"]
+[ext_resource type="Script" path="res://game/combat/enemy_difficulty.gd" id="2_mode"]
+
+[sub_resource type="Resource" id="mode_normal"]
+script = ExtResource("2_mode")
+id = &"normal"
+
+[sub_resource type="Resource" id="mode_hard"]
+script = ExtResource("2_mode")
+id = &"hard"
+hp_mult = 1.5
+boss_hp_mult = 1.25
+damage_mult = 1.4
+speed_mult = 1.05
+telegraph_mult = 0.8
+interval_mult = 0.9
+projectile_speed_mult = 1.05
+melee_slot_bonus = 1
+ranged_slot_bonus = 0
+
+[resource]
+script = ExtResource("1_scaling")
+modes = Array[ExtResource("2_mode")]([SubResource("mode_normal"), SubResource("mode_hard")])
+melee_slots_by_level = PackedInt32Array(2, 3, 3, 3, 4, 4)
+ranged_slots_by_level = PackedInt32Array(1, 1, 1, 2, 2, 2)
+crossfire_from_level = 3
+crossfire_ready = 1.2
+pincer_from_level = 4
+pincer_reach = 16.0

@@ -10,6 +10,9 @@ func after_each() -> void:
 	GameState.haptics_on = true
 	GameState.tutorial_done = false
 	GameState.best_stars = {}
+	GameState.difficulty = &"normal"
+	GameState.chapter_cleared = false
+	GameState.story_seen = {}
 	Haptics.reset_for_tests()
 
 
@@ -63,7 +66,10 @@ func test_data_classes_have_contract_fields() -> void:
 		EnemyData: ["id", "display_name", "scene", "max_hp", "contact_damage", "move_speed", "exp_value"],
 		CompanionData: ["id", "display_name", "scene", "role"],
 		TrickData: ["id", "display_name", "description", "icon", "stat_modifiers", "is_ability"],
-		LevelData: ["id", "display_name", "waves", "is_boss", "arena_scene", "companions", "background", "par_time", "damage_budget"],
+		LevelData: ["id", "display_name", "waves", "is_boss", "arena_scene", "companions", "background", "par_time", "damage_budget",
+				"story_before", "story_after"],
+		DialogueLine: ["speaker", "expression", "text_key", "illustration"],
+		DialogueScript: ["id", "lines", "skippable"],
 		WaveData: ["spawns"],
 		SpawnEntry: ["enemy_id", "count", "delay", "pattern"],
 	}
@@ -114,3 +120,13 @@ func test_haptics_respects_setting_and_merges_bursts() -> void:
 	GameState.haptics_on = false
 	Haptics.play(&"heavy")
 	assert_eq(Haptics.play_count, 0, "關掉震動就不震")
+
+
+func test_reset_run_keeps_v23_progress() -> void:
+	GameState.difficulty = &"hard"
+	GameState.chapter_cleared = true
+	GameState.story_seen = {&"prologue": true}
+	GameState.reset_run()
+	assert_eq(GameState.difficulty, &"hard", "難度屬於存檔")
+	assert_true(GameState.chapter_cleared, "通關紀錄屬於存檔")
+	assert_true(GameState.story_seen.has(&"prologue"), "看過的對白屬於存檔")

@@ -1,0 +1,30 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/actors/enemies/scarecrow_captain.gd" id="1_script"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/scarecrow_captain/scarecrow_captain_frames.tres" id="2_frames"]
+
+[node name="ScarecrowCaptain" type="CharacterBody2D" groups=["enemy"]]
+collision_layer = 8
+collision_mask = 1
+motion_mode = 1
+script = ExtResource("1_script")
+body_radius = 11.0
+knockback_mult = 0.0
+separation_radius = 24.0
+separation_speed = 12.0
+spawn_time = 1.0
+death_time = 0.1
+max_exp_orbs = 4
+phase2_telegraph_mult = 0.8
+phase2_speed_mult = 1.25
+defeat_time_scale = 0.6
+defeat_slowmo_scale = 0.5
+defeat_impact = 0.6
+light_fx = &"eye_violet"
+light_offset = Vector2(1, -14)
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_frames")
+animation = &"idle"

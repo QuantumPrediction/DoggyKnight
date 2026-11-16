@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="DialogueScript" format=3]
+
+[ext_resource type="Script" path="res://core/data/dialogue_script.gd" id="1_script"]
+[ext_resource type="Script" path="res://core/data/dialogue_line.gd" id="2_line"]
+
+[sub_resource type="Resource" id="line_01"]
+script = ExtResource("2_line")
+speaker = &"bulldog"
+expression = &"normal"
+text_key = "STORY_L3_AFTER_01"
+
+[sub_resource type="Resource" id="line_02"]
+script = ExtResource("2_line")
+speaker = &"merlin"
+expression = &"worried"
+text_key = "STORY_L3_AFTER_02"
+
+[resource]
+script = ExtResource("1_script")
+id = &"l3_after"
+lines = Array[ExtResource("2_line")]([SubResource("line_01"), SubResource("line_02")])
+skippable = true

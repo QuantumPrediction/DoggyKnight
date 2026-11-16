@@ -11,11 +11,15 @@ colors = PackedColorArray(1.000, 0.980, 0.941, 1.000, 1.000, 0.878, 0.400, 1.000
 _data = [Vector2(0, 0.4), 0.0, 0.0, 0, 0, Vector2(0.3, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.2), 0.0, 0.0, 0, 0]
 point_count = 3
 
+[sub_resource type="CanvasItemMaterial" id="Mat_add"]
+blend_mode = 1
+
 [node name="sparkle" type="CPUParticles2D"]
 z_index = 6
 emitting = false
 one_shot = true
 texture = ExtResource("2_tex")
+material = SubResource("Mat_add")
 amount = 6
 lifetime = 0.6
 explosiveness = 0.7

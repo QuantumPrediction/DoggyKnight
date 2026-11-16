@@ -11,7 +11,11 @@ Then let Godot pick up new or changed files:
 
 What it writes (paths are the contracts of DEV_PLAN 4.6 / 4.9 — never rename them):
   assets/palette.png                              the 40-colour palette
-  assets/sprites/<code>/<code>.png + _frames.tres  goldie, bulldog, scarecrow, crow, black_knight
+  assets/sprites/<code>/<code>.png + _frames.tres  goldie, bulldog, scarecrow, crow, black_knight,
+                                                  scarecrow_archer, armored_husk, scarecrow_captain, merlin (v2.3)
+  assets/fx/{arrow,sword_wave,pitchfork}/*        v2.3 projectiles
+  assets/portraits/<speaker>/<expression>.png     v2.3 dialogue portraits, 48x48
+  assets/story/<id>.png                           v2.3 storybook illustrations, 160x120
   assets/fx/<name>/<name>.png + _frames.tres       slash, hit_spark, exp_orb, ultimate_slash, dizzy_stars, dust
   assets/fx/particles/<name>.tscn + tex/*.png     11 one-shot CPUParticles2D effects (DEV_PLAN 4.10)
   assets/icons/tricks/<id>.png                    sit, wag, fetch, shake, spin, bark (16x16)
@@ -39,13 +43,17 @@ sys.dont_write_bytecode = True   # keep tools/pixel free of __pycache__
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import art_brand  # noqa: E402
+import art_cast  # noqa: E402
 import art_enemies  # noqa: E402
 import art_fx  # noqa: E402
 import art_heroes  # noqa: E402
 import art_particles  # noqa: E402
+import art_portraits  # noqa: E402
+import art_story  # noqa: E402
 import art_ui  # noqa: E402
 import art_world  # noqa: E402
 import music_gen  # noqa: E402
+import paint  # noqa: E402
 import sfx_gen  # noqa: E402
 from palette import PALETTE, rgba  # noqa: E402
 from pixel import Canvas, build_sheet, contact_sheet, res_path, write_text  # noqa: E402
@@ -57,6 +65,17 @@ CHARACTERS = {
     "crow": (art_enemies.crow_v2, (16, 16)),
     "black_knight": (art_enemies.black_knight_v2, (48, 48)),
 }
+
+
+# v2.3 (CS5): a thin backlight edge on the dark armour so it lifts off the night bridge and dark ground
+RIM_LIT = ("black_knight", "armored_husk")
+
+
+def with_rim(code: str, anims: list) -> list:
+    if code in RIM_LIT:
+        for a in anims:
+            a.frames = [paint.rim_light(f) for f in a.frames]
+    return anims
 
 
 def write_palette() -> None:
@@ -105,9 +124,19 @@ def main() -> None:
     write_palette()
     sheets = {}
     for code, (fn, size) in CHARACTERS.items():
-        anims = fn()
+        anims = with_rim(code, fn())
         build_sheet("res://assets/sprites/%s" % code, code, anims, size)
         sheets[code] = anims
+    for code, (fn, size) in art_cast.SPRITES.items():          # v2.3 cast (CS4)
+        anims = with_rim(code, fn())
+        build_sheet("res://assets/sprites/%s" % code, code, anims, size)
+        sheets[code] = anims
+    for name, (fn, size) in art_cast.PROJECTILES.items():
+        anims = fn()
+        build_sheet("res://assets/fx/%s" % name, name, anims, size)
+        sheets["fx_" + name] = anims
+    art_portraits.write_all()                                    # v2.3 portraits (CS2)
+    art_story.write_all()                                        # v2.3 storybook pages (CS3)
     for name, (fn, size) in art_fx.ALL.items():
         anims = fn()
         build_sheet("res://assets/fx/%s" % name, name, anims, size)
@@ -127,7 +156,7 @@ def main() -> None:
 
     if preview_dir:
         for code, anims in sheets.items():
-            scale = 8 if code == "crow" else (3 if code == "black_knight" else 6)
+            scale = 8 if code in ("crow", "fx_arrow", "fx_pitchfork") else (3 if code == "black_knight" else 6)
             contact_sheet([a.frames for a in anims], scale).save(os.path.join(preview_dir, "%s.png" % code))
         print("previews in", preview_dir)
     assert rgba("ink")

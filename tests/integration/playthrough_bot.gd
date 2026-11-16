@@ -29,6 +29,7 @@ var _ultimates: int = 0
 var _level_lines: PackedStringArray = []
 var _shot_flags: Dictionary = {}
 var _level_clock: float = 0.0
+var _dialogues: int = 0
 
 
 func _ready() -> void:
@@ -63,6 +64,8 @@ func _run() -> void:
 	var finished := false
 	while Time.get_ticks_msec() - started < TIMEOUT_MS:
 		await get_tree().process_frame
+		if _skip_dialogues():
+			continue
 		match flow.state:
 			FlowMain.State.LEVEL:
 				_level_clock += get_process_delta_time()
@@ -84,7 +87,7 @@ func _run() -> void:
 	print("\n== 試玩結果 ==")
 	for line in _level_lines:
 		print(line)
-	print("倒下 %d 次;必殺技 %d 次;最後活力 %d" % [_downs, _ultimates, GameState.vigor])
+	print("倒下 %d 次;必殺技 %d 次;略過對白 %d 段;最後活力 %d" % [_downs, _ultimates, _dialogues, GameState.vigor])
 	print("PLAYTHROUGH %s" % ("COMPLETE" if finished else "TIMEOUT"))
 	SaveStore.new(SAVE_PATH).delete()
 	get_tree().quit(0 if finished else 1)
@@ -168,6 +171,10 @@ func _play_camp() -> void:
 	if camp == null:
 		return
 	await _frames(20)
+	for i in 600:   # 營地對白(D 線)播完才有選單
+		if not _skip_dialogues():
+			break
+		await _frames(5)
 	await _shot_once("camp_%d" % flow.get_level_index(), "04_camp_%d" % flow.get_level_index())
 	camp.call(&"open_minigame")
 	await _frames(5)
@@ -192,6 +199,18 @@ func _play_camp() -> void:
 	await _frames(10)
 	camp.call(&"leave_camp")
 	await _frames(5)
+
+
+## 有對白正在播放就略過(先截一張圖)。傳回 true 表示這一格處理了對白。
+func _skip_dialogues() -> bool:
+	for box in get_tree().get_nodes_in_group(&"dialogue_box"):
+		if box.has_method(&"is_active") and box.call(&"is_active"):
+			_dialogues += 1
+			if _dialogues <= 3 or _dialogues % 5 == 0:
+				_shot("07_dialogue_%02d" % _dialogues)
+			box.call(&"skip")
+			return true
+	return false
 
 
 func _shot_once(flag: String, file_name: String) -> void:

@@ -45,7 +45,8 @@ func test_real_parts_are_used() -> void:
 	assert_eq(flow.state, FlowMain.State.TITLE)
 	assert_true(flow.get_screen().scene_file_path.begins_with("res://ui/screens/title"), "C 線的標題畫面")
 	flow.get_screen().emit_signal(&"new_game_pressed")
-	for i in 240:   # 轉場(畫面蓋住 → 換場景)需要幾格,不寫死格數
+	for i in 600:   # 轉場與開場對白需要幾格,不寫死格數
+		_skip_dialogues()
 		if flow.state == FlowMain.State.LEVEL:
 			break
 		await get_tree().process_frame
@@ -72,8 +73,16 @@ func test_two_levels_camp_and_companion() -> void:
 	assert_eq(flow.state, FlowMain.State.CAMP)
 	var camp := flow.get_camp()
 	assert_true(camp != null and camp.scene_file_path == "res://game/camp/camp.tscn", "D 線的營地")
+	for i in 300:   # 營地對白(D 線)
+		if not _skip_dialogues():
+			break
+		await wait_frames(2)
 	camp.call(&"leave_camp")
-	await wait_frames(10)
+	for i in 600:   # 1-3 開場對白
+		_skip_dialogues()
+		if flow.state == FlowMain.State.LEVEL and get_tree().get_nodes_in_group(&"companion").size() > 0:
+			break
+		await get_tree().process_frame
 	assert_eq(flow.state, FlowMain.State.LEVEL)
 	assert_eq(started_levels, [&"1-1", &"1-2", &"1-3"] as Array[StringName])
 	assert_eq(get_tree().get_nodes_in_group(&"companion").size(), 1, "鬥牛犬在 1-3 加入")
@@ -88,6 +97,8 @@ func _clear_level() -> bool:
 		await get_tree().process_frame
 		if flow.state == FlowMain.State.RESULTS:
 			return true
+		if _skip_dialogues():
+			continue
 		if flow.state != FlowMain.State.LEVEL:
 			continue
 		if flow.is_choice_open():
@@ -98,4 +109,13 @@ func _clear_level() -> bool:
 		for node in get_tree().get_nodes_in_group(&"enemy"):
 			if node.has_method(&"is_targetable") and node.call(&"is_targetable"):
 				node.call(&"take_damage", 9999)
+	return false
+
+
+## 有對白正在播放就略過;傳回 true 表示略過了一段。
+func _skip_dialogues() -> bool:
+	for box in get_tree().get_nodes_in_group(&"dialogue_box"):
+		if box.has_method(&"is_active") and box.call(&"is_active"):
+			box.call(&"skip")
+			return true
 	return false

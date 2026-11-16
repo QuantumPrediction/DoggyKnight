@@ -32,6 +32,20 @@ extends Resource
 ## 敵人不會在離金毛這麼近(像素)的地方出現(surround 另有自己的距離)。
 @export var min_spawn_distance: float = 48.0
 
+## 這些敵人所在的一波開始時改播頭目音樂(boss)並播 boss_warning(1-4 的稻草人隊長;
+## 頭目關本身一開始就播 boss)。
+@export var boss_music_enemies: Array[StringName] = [&"scarecrow_captain"]
+
+@export_group("Hard mode")
+## 困難模式(GameState.difficulty == &"hard")每組敵人多加 floor(數目 × 這個比例) 隻
+## (例如 0.25:4 至 7 隻的組多 1 隻,8 隻以上多 2 隻;1 至 3 隻的組不變)。敵人本身的生命、傷害、
+## 速度與同時進攻的數目由 A 線依難度放大(data/enemies/difficulty_scaling.tres)。
+## 目前是 0(不多加):量度時 A 線的放大已經讓困難模式機器人每輪倒下 1 至 8 次;多加 0.25 會變成
+## 13 次(1-4 連續失敗 7 次),而且近戰小怪會擠成一團。想讓困難模式「人更多」時再調高。
+@export var hard_extra_ratio: float = 0.0
+## 困難模式不會多加的敵人(頭目、中頭目)。
+@export var hard_extra_exempt: Array[StringName] = [&"black_knight", &"scarecrow_captain"]
+
 @export_group("Patterns")
 ## 隊形(SpawnEntry.pattern)的出生點離戰鬥區(Layout.ARENA_RECT)邊緣的距離(像素)。
 @export var pattern_inset: float = 12.0
@@ -54,6 +68,10 @@ extends Resource
 ## 金毛倒下(睡著)後,等多少秒才顯示失敗結算。
 @export var failure_delay: float = 1.0
 
+@export_group("Story")
+## 過關後的對白開始時,勝利短曲淡出、換回該關曲子(結局換 story)所用的秒數(讓短曲不會突然被切斷)。
+@export var story_music_fade: float = 2.5
+
 @export_group("Transition")
 ## 換畫面時:畫面被蓋住要多少秒(快一點,按下按鈕立即有反應)。0 = 不播轉場。
 @export var transition_cover_time: float = 0.12
@@ -61,6 +79,13 @@ extends Resource
 @export var transition_reveal_time: float = 0.3
 ## 轉場超過「預定秒數 + 這個秒數」仍未完成,流程就不再等它(保證不會卡住)。以真實時間計算。
 @export var transition_timeout: float = 1.5
+
+
+## 困難模式時這一組要多加幾隻。
+func hard_extra(enemy_id: StringName, count: int) -> int:
+	if count <= 0 or hard_extra_exempt.has(enemy_id):
+		return 0
+	return maxi(0, floori(float(count) * hard_extra_ratio + 0.0001))
 
 
 ## 由 level 級升到 level + 1 級需要的經驗。

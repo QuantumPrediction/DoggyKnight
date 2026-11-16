@@ -6,7 +6,10 @@ All frames face right.
 
 from __future__ import annotations
 
+from palette import rgba
 from pixel import Anim, Canvas
+
+_RGB = {n: rgba(n)[:3] for n in ("white", "lilac", "steel_d", "iron")}
 
 L = {
     "o": "ink", "P": "plum", "v": "violet", "V": "lilac", "w": "white", "c": "cream",
@@ -263,7 +266,7 @@ K_HELM = [
     ".izszzzzzzzzzzzzi.",
     "izzzzzzzzzzzzzzzzi",
     "izzzzzzzziiiiiiiii",
-    "izzzzzzzzioOyooOyo",
+    "izzzzzzzzioVwooVwo",
     "izzzzzzzziiiiiiiii",
     "izzzzzzzzzzzzzizii",
     "izzzzzzzzzzzzzizii",
@@ -272,8 +275,27 @@ K_HELM = [
     "..iiiiiiiiiiiiii..",
 ]
 
-K_HELM_DIM = [row.replace("y", "O") for row in K_HELM]
-K_HELM_HURT = [row.replace("y", "o").replace("O", "o") for row in K_HELM]
+K_HELM_DIM = [row.replace("w", "V") for row in K_HELM]
+K_HELM_HURT = [row.replace("w", "o").replace("V", "o") for row in K_HELM]
+
+
+def visor_glow(c: Canvas, x0: int, y0: int, w: int, h: int) -> None:
+    """v2.3 (CS5): the violet magic inside the empty helm lights the steel around the visor
+    (painted glow: nearby dark steel turns violet / plum in a checker, so it reads as light)."""
+    eyes = [(x, y) for y in range(y0, y0 + h) for x in range(x0, x0 + w)
+            if c.get(x, y) is not None and c.get(x, y)[:3] in (_RGB["white"], _RGB["lilac"])]
+    for (ex, ey) in eyes:
+        for dy in range(-2, 3):
+            for dx in range(-2, 3):
+                if abs(dx) + abs(dy) > 2 or (dx, dy) == (0, 0):
+                    continue
+                p = c.get(ex + dx, ey + dy)
+                if p is None:
+                    continue
+                if p[:3] == _RGB["steel_d"] and (ex + dx + ey + dy) % 2 == 0:
+                    c.set(ex + dx, ey + dy, "violet")
+                elif p[:3] == _RGB["iron"] and abs(dy) == 1 and (ex + dx) % 2 == 0:
+                    c.set(ex + dx, ey + dy, "plum")
 
 K_CREST = [
     "..........vVV.",
@@ -423,6 +445,7 @@ def knight_pose(bob: int = 0, helm=K_HELM, lean: int = 0, legs=((14, 35), (25, 3
     c.stamp(K_LEG, legs[1][0], legs[1][1], L)
     c.stamp(K_CREST, 11 + lean, 1 + by, L)
     c.stamp(helm, 16 + lean, 5 + by, L)
+    visor_glow(c, 16 + lean, 5 + by, 19, 14)
     c.stamp(K_PAULDRON, 29 + lean, 16 + by, L)
     if sword is not None and not sword_behind:
         c.blit(greatsword_layer(sword[0][0] + lean, sword[0][1] + by, sword[1], sword[2]), 0, 0)

@@ -4,6 +4,7 @@ extends EnemyBase
 ## EnemyData.move_speed)→ 落地喘口氣(這時最好打)→ 飛回場邊。
 ## M3 打磨(AP7):偶爾兩隻接連俯衝——一隻開始預警時,有機會叫另一隻盤旋中的烏鴉
 ## 稍後也鎖定(各自都有完整的預警線)。倒下時噴 feathers。
+## v2.3(AS6):預警秒數 × 難度(tell),盤旋與落地喘氣的秒數 × 難度(rest)。
 
 enum Phase { TO_EDGE, CIRCLE, TELEGRAPH, DIVE, RECOVER }
 
@@ -35,6 +36,7 @@ var _dive_traveled: float = 0.0
 var _dive_hit: Array[Node2D] = []
 var _height: float = 0.0
 var _following: bool = false
+var _tell_total: float = 0.55
 
 
 func _on_ready() -> void:
@@ -76,7 +78,7 @@ func _ai(delta: float) -> void:
 			desired_velocity = Vector2.ZERO
 			_phase_left -= delta
 			if _telegraph != null:
-				_telegraph.progress = 1.0 - _phase_left / telegraph_time
+				_telegraph.progress = 1.0 - _phase_left / maxf(_tell_total, 0.001)
 			anim_state = &"idle"
 			if _phase_left <= 0.0:
 				_start_dive()
@@ -124,7 +126,7 @@ func _nearest_theta(pos: Vector2) -> float:
 
 func _start_circling() -> void:
 	phase = Phase.CIRCLE
-	_phase_left = rng.randf_range(circle_time_min, circle_time_max)
+	_phase_left = rest(rng.randf_range(circle_time_min, circle_time_max))
 
 
 # --- 俯衝 -----------------------------------------------------------------------
@@ -136,7 +138,8 @@ func _start_telegraph() -> void:
 	_dive_length = minf(minf(to_target.length() + dive_overshoot, max_dive_distance), to_edge)
 	phase = Phase.TELEGRAPH
 	dives_started += 1
-	_phase_left = telegraph_time
+	_tell_total = tell(telegraph_time)
+	_phase_left = _tell_total
 	facing = _dive_dir
 	_show_telegraph(AttackTelegraph.make_line(_dive_dir, _dive_length, hit_radius * 2.0))
 	if _following:
@@ -183,7 +186,7 @@ func _check_dive_hits() -> void:
 
 func _land() -> void:
 	phase = Phase.RECOVER
-	_phase_left = recover_time
+	_phase_left = rest(recover_time)
 	CombatFx.spawn(self, &"dust", global_position, 0.0, Vector2.ONE, Color.WHITE, true)
 
 

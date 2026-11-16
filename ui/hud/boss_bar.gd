@@ -1,7 +1,8 @@
 class_name BossBar
 extends Control
 ## 頭目血條(C 線,CP4)。聽 boss_hp_changed 出現;第二階段(boss_phase_changed(2))變紅並閃一下。
-## 名字用 tr("ENEMY_BLACK_KNIGHT")。不攔觸控。
+## 名字:v2.3 起用 boss_appeared(enemy_id) 的 tr("ENEMY_" + id 大寫)(HUD 呼叫 set_boss);
+## 沒收到時預設 tr("ENEMY_BLACK_KNIGHT")。不攔觸控。
 
 const BAR_HEIGHT: float = 7.0
 
@@ -9,6 +10,7 @@ var name_label: Label
 var bar: PixelBar
 var icon: TextureRect
 var phase: int = 1
+var boss_id: StringName = &"black_knight"
 
 var _shown: bool = false
 var _tween: Tween
@@ -33,6 +35,20 @@ func _ready() -> void:
 	add_child(bar)
 	modulate.a = 0.0
 	visible = false
+
+
+## 頭目(或中頭目)出場:換上它的名字 tr("ENEMY_<代號>");沒有這個鍵時用故事的名牌 SPEAKER_<代號>,
+## 再沒有才用黑騎士。
+func set_boss(enemy_id: StringName) -> void:
+	var code := String(enemy_id).to_upper()
+	boss_id = enemy_id
+	var text := tr("ENEMY_" + code)
+	if text == "ENEMY_" + code:
+		text = tr("SPEAKER_" + code)
+	if text == "SPEAKER_" + code:
+		text = tr("ENEMY_BLACK_KNIGHT")
+	name_label.text = text
+	name_label.size = name_label.get_minimum_size()
 
 
 func set_hp(current: int, maximum: int) -> void:
@@ -68,6 +84,7 @@ func is_shown() -> bool:
 func reset() -> void:
 	_shown = false
 	phase = 1
+	set_boss(&"black_knight")
 	bar.fill_color = PaletteColors.VIOLET
 	bar.fill_light = PaletteColors.LILAC
 	name_label.remove_theme_color_override(&"font_color")

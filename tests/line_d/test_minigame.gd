@@ -292,3 +292,43 @@ func test_go_text_after_countdown() -> void:
 	assert_not_null(go)
 	assert_true(go.visible, "開始時彈出「拉!」")
 	assert_eq(go.text, tr("MINIGAME_GO"))
+
+
+# --- DS3:《王室守則》與梅林問「讀完了嗎?」 ---
+
+func test_scroll_is_the_royal_rulebook() -> void:
+	var cfg := _game.config as ScrollMinigameConfig
+	assert_eq(tr(cfg.rules_title_key), "王室守則", "卷軸開頭的標題")
+	assert_eq(tr(cfg.rule_label_key) % 3, "第3條", "每一條的編號")
+	_start_playing()
+	assert_eq(_game.rules_pulled(), 0)
+	var per_rule := cfg.rule_rows * ScrollMinigame.LINE_GAP
+	while _game.pulled_px < per_rule * 2.0 + 1.0 and _game.state == MinigameBase.State.PLAYING:
+		if _game.ink_state == ScrollMinigame.Ink.NONE:
+			_game.simulate_swipe(60.0)
+		_game.step(0.1)
+	assert_true(_game.rules_pulled() >= 2, "拉得越長,出來的條數越多(%d)" % _game.rules_pulled())
+
+
+func test_merlin_asks_if_done_reading_at_the_end() -> void:
+	var cfg := _game.config as ScrollMinigameConfig
+	_start_playing()
+	assert_false(_game.get_merlin().visible, "遊戲中梅林不在")
+	assert_false(_game.is_merlin_asking())
+	_game.step(cfg.duration_sec + 0.01)
+	assert_eq(_game.state, MinigameBase.State.ENDING)
+	assert_true(_game.get_merlin().visible, "時間到:梅林走進來")
+	assert_false(_game.is_merlin_asking(), "先走進來")
+	_game.step(cfg.merlin_ask_delay_sec + 0.05)
+	assert_true(_game.is_merlin_asking(), "然後問")
+	assert_eq(_game.get_merlin_bubble().text, "讀完了嗎？")
+	var screen := Rect2(Vector2.ZERO, SafeArea.get_screen_size())
+	assert_true(screen.has_point(_game.get_merlin().position), "梅林站在畫面內")
+	assert_true(SafeArea.get_safe_rect().encloses(_game.get_merlin_bubble().get_box()), "泡泡在安全區內")
+	_game.step(cfg.results_delay_sec)
+	assert_eq(_game.state, MinigameBase.State.RESULTS)
+	assert_true(_game.is_merlin_asking(), "評價畫面時還在問")
+	assert_true(_game.get_merlin_bubble().get_box().end.y <= _game._results_panel_rect().position.y, "泡泡不蓋住評價面板")
+	_game.start()
+	assert_false(_game.get_merlin().visible, "重新開始:梅林離開")
+	assert_false(_game.is_merlin_asking())

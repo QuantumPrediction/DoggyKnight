@@ -78,6 +78,48 @@ extends Resource
 ## 點鬥牛犬時「汪!」泡泡停留的秒數。
 @export var bulldog_bark_sec: float = 0.9
 
+@export_group("故事(DS1)")
+## 進營地時播的對白:GameState.level_index → 對白檔(B 線依 docs/STORY.md 建立)。
+## 第一次營地(1-2 之後,level_index = 1)播 camp1;第二次(1-4 之後,= 3)播 camp2。
+## 用路徑字串:檔案還不存在時安靜略過,直接顯示選單。
+@export var story_paths: Dictionary[int, String] = {1: "res://data/story/camp1.tres", 3: "res://data/story/camp2.tres"}
+## 對白框(C 線,DEV_PLAN 4.11)。留空時用 ui/dialogue/dialogue_box.tscn。
+@export var dialogue_box_scene: PackedScene
+
+@export_group("梅林(DS2)")
+## 梅林的圖(C 線,動畫 idle、run、cast)。留空時用 assets/sprites/merlin/merlin_frames.tres;沒有圖就不出現。
+@export var merlin_frames: SpriteFrames
+@export var merlin_idle_animation: StringName = &"idle"
+@export var merlin_cast_animation: StringName = &"cast"
+@export var merlin_scale: float = 2.0
+## 梅林的圖朝右畫;true = 朝左。
+@export var merlin_flip: bool = false
+## 梅林相對圓桌中心的位置(邏輯像素)。坐在桌子後面:圖的下半部被桌面遮住。
+@export var merlin_offset: Vector2 = Vector2(-22, -20)
+## 手杖頂端相對梅林圖中心的位置(朝右時;梅林的圖的像素)。閃光從這裡冒出。
+@export var merlin_staff_tip: Vector2 = Vector2(9, -7)
+## 平常每隔幾秒施法一次(隨機取這個範圍;max 為 0 表示平常不施法)。
+@export var merlin_cast_every_min: float = 6.0
+@export var merlin_cast_every_max: float = 11.0
+## 一次施法的秒數。
+@export var merlin_cast_sec: float = 0.9
+## 施法時手杖冒出的閃光(DEV_PLAN 4.10 的一次性粒子)。
+@export var merlin_sparkle_particles: PackedScene
+@export var merlin_glow_color: Color = Color(0.55, 0.75, 1.0, 0.35)
+## 點梅林時隨機說的話(翻譯鍵,i18n/strings.csv)。不會連續兩次說同一句。
+@export var merlin_lines: PackedStringArray = ["CAMP_MERLIN_01", "CAMP_MERLIN_02", "CAMP_MERLIN_03",
+		"CAMP_MERLIN_04", "CAMP_MERLIN_05", "CAMP_MERLIN_06"]
+## 對話泡泡停留的秒數。
+@export var merlin_bubble_sec: float = 3.2
+## 對話泡泡最寬多少(邏輯像素)。
+@export var merlin_bubble_width: float = 150.0
+## 兩次點梅林之間至少隔多少秒(連點太快時忽略)。
+@export var merlin_tap_cooldown_sec: float = 0.6
+## 點梅林時的音效(C 線的 magic;檔案不存在時安靜略過)。
+@export var merlin_sfx: StringName = &"magic"
+## 點梅林的觸控範圍比看得到的部分大多少(每邊,邏輯像素)。
+@export var merlin_touch_margin: float = 4.0
+
 @export_group("營火與夜空")
 ## 營火的火星數量(CPUParticles2D;手機效能:保持少量)。
 @export var ember_amount: int = 10

@@ -34,6 +34,9 @@ static func reset_settings() -> void:
 	GameState.haptics_on = true
 	GameState.tutorial_done = false
 	GameState.best_stars = {}
+	GameState.difficulty = &"normal"
+	GameState.chapter_cleared = false
+	GameState.story_seen = {}
 
 
 ## 測試用難度:所有等待都接近 0、不播轉場,測試跑得快。
@@ -53,10 +56,14 @@ func fast_difficulty() -> DifficultyData:
 
 
 ## 第一章的複本,但每組敵人的 delay 都是 0(敵人數目與波次不變)。
-func fast_chapter() -> ChapterData:
+## with_story = false(預設):不帶任何對白(舊的流程測試不受故事影響);true:帶上 data/story/ 的全部對白。
+func fast_chapter(with_story: bool = false) -> ChapterData:
 	var source := load(CHAPTER_1) as ChapterData
 	var chapter := ChapterData.new()
 	chapter.camp_after = source.camp_after.duplicate()
+	if with_story:
+		chapter.prologue = source.prologue
+		chapter.teaser = source.teaser
 	for level in source.levels:
 		var copy := LevelData.new()
 		copy.id = level.id
@@ -66,6 +73,9 @@ func fast_chapter() -> ChapterData:
 		copy.background = level.background
 		copy.par_time = level.par_time
 		copy.damage_budget = level.damage_budget
+		if with_story:
+			copy.story_before = level.story_before
+			copy.story_after = level.story_after
 		for wave in level.waves:
 			var wave_copy := WaveData.new()
 			for entry in wave.spawns:
@@ -80,8 +90,9 @@ func fast_chapter() -> ChapterData:
 	return chapter
 
 
-## 建立流程(一律用替身、測試存檔、固定種子)並加進場景樹。
-func make_flow(keep_save: bool = false, rng_seed: int = 1234) -> FlowMain:
+## 建立流程(一律用替身、測試存檔、固定種子)並加進場景樹。with_story = true 時帶上全部對白
+## (對白框是替身 game/flow/stubs/stub_dialogue_box.tscn)。
+func make_flow(keep_save: bool = false, rng_seed: int = 1234, with_story: bool = false) -> FlowMain:
 	if not keep_save:
 		SaveStore.new(SAVE_PATH).delete()
 	var f := (load(MAIN_SCENE) as PackedScene).instantiate() as FlowMain
@@ -89,7 +100,7 @@ func make_flow(keep_save: bool = false, rng_seed: int = 1234) -> FlowMain:
 	f.use_stand_ins = true
 	f.rng_seed = rng_seed
 	f.difficulty = fast_difficulty()
-	f.chapter = fast_chapter()
+	f.chapter = fast_chapter(with_story)
 	f.platform_name = "Linux"
 	quit_calls = 0
 	f.quit_handler = func() -> void: quit_calls += 1
@@ -139,6 +150,22 @@ func _auto_step() -> void:
 	var arena := flow.get_arena()
 	if arena != null and arena.has_method(&"debug_kill_all"):
 		arena.call(&"debug_kill_all")
+
+
+## 對白框正在播時按「略過」。傳回略過的段落 id(沒有在播時為 &"")。
+func skip_dialogue() -> StringName:
+	var box := flow.get_dialogue_box() if flow != null else null
+	if box == null or not box.call(&"is_active"):
+		return &""
+	var id := flow.get_story_id()
+	box.call(&"skip")
+	return id
+
+
+## 等到正在播對白(最多 timeout_sec 秒)。
+func wait_for_story(timeout_sec: float = 5.0) -> bool:
+	return await wait_until(func() -> bool:
+		return flow.state == FlowMain.State.STORY and flow.is_story_playing(), timeout_sec)
 
 
 func save_file_exists() -> bool:

@@ -130,7 +130,7 @@ func test_scarecrow_telegraphs_before_hitting() -> void:
 	await wait_physics(12)
 	assert_eq(damaged.count, 0, "0.2 秒時還沒打中")
 	var hit := await wait_until(func() -> bool: return damaged.count > 0, 30)
-	assert_true(hit, "0.4 秒後揮擊打中")
+	assert_true(hit, "預警 0.5 秒後揮擊打中")
 	assert_eq(damaged.last_args(), [8])
 
 

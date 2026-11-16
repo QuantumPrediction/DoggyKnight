@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/fx/lights/glow_44.png" id="1_glow"]
+[ext_resource type="Script" path="res://assets/fx/lights/light_flicker.gd" id="2_flicker"]
+
+[sub_resource type="CanvasItemMaterial" id="Mat_add"]
+blend_mode = 1
+
+[node name="Torch" type="Sprite2D"]
+modulate = Color(1, 0.62, 0.25, 0.55)
+material = SubResource("Mat_add")
+texture = ExtResource("1_glow")
+script = ExtResource("2_flicker")
+base_alpha = 0.55
+flicker = 0.3
+flicker_speed = 11
+pulse = 0

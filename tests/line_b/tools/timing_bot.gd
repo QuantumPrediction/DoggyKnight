@@ -34,6 +34,10 @@ func _run() -> void:
 	while Time.get_ticks_msec() - started < TIMEOUT_MS:
 		await get_tree().process_frame
 		match flow.state:
+			FlowMain.State.STORY:
+				var box := flow.get_dialogue_box()      # 對白(v2.3):直接略過
+				if box != null and box.call(&"is_active"):
+					box.call(&"skip")
 			FlowMain.State.LEVEL:
 				if flow.is_choice_open():
 					var offer := flow.progression.get_current_offer()
@@ -57,7 +61,8 @@ func _run() -> void:
 				EventBus.camp_left.emit()
 				await _frames(3)
 			FlowMain.State.TITLE:
-				break
+				if not flow.is_switching():
+					break
 	print("倒下 %d 次" % downs[0])
 	Engine.time_scale = 1.0
 	SaveStore.new(SAVE_PATH).delete()

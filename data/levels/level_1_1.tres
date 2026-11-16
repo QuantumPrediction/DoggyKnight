@@ -4,6 +4,8 @@
 [ext_resource type="Script" path="res://core/data/wave_data.gd" id="2_wave"]
 [ext_resource type="Script" path="res://core/data/spawn_entry.gd" id="3_spawn"]
 [ext_resource type="PackedScene" path="res://assets/backgrounds/sword_stone.tscn" id="4_bg"]
+[ext_resource type="Resource" path="res://data/story/l1_before.tres" id="5_before"]
+[ext_resource type="Resource" path="res://data/story/l1_after.tres" id="6_after"]
 
 [sub_resource type="Resource" id="wave1_spawn1"]
 script = ExtResource("3_spawn")
@@ -65,3 +67,5 @@ companions = Array[StringName]([])
 background = ExtResource("4_bg")
 par_time = 70.0
 damage_budget = 16
+story_before = ExtResource("5_before")
+story_after = ExtResource("6_after")

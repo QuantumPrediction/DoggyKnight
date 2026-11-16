@@ -8,6 +8,8 @@ extends Node2D
 ## M3:上方小字另外顯示連擊數(combo_changed)與頭目生命(boss_hp_changed);
 ## Win 模擬過關(level_completed:金毛與鬥牛犬歡呼);Shake 讓鏡頭震一下。
 ## Esc(= Android 返回鍵)暫停 / 繼續。所有按鈕都在群組 ui_touch_blocker,按按鈕不會觸發搖桿。
+## v2.3:Arch 弓兵、Husk 空盔甲兵、Capt 稻草人隊長;Hard 切換一般 / 困難模式(之後生成的敵人);
+## Lv+ 切換關卡編號(1 至 6:同時進攻的上限、交叉火力、夾擊隨關卡增加)。上方小字顯示 N/H 與 L 幾。
 
 const ARENA_SCENE: PackedScene = preload("res://game/combat/arena.tscn")
 const BLOCKER_GROUP: StringName = &"ui_touch_blocker"
@@ -97,6 +99,20 @@ func _spawn_boss() -> void:
 	arena.spawn_enemy(&"black_knight", Vector2(Layout.ARENA_RECT.get_center().x, Layout.ARENA_RECT.position.y + 40))
 
 
+func _spawn_captain() -> void:
+	arena.spawn_enemy(&"scarecrow_captain", Vector2(Layout.ARENA_RECT.get_center().x, Layout.ARENA_RECT.position.y + 50))
+
+
+func _toggle_hard() -> void:
+	GameState.difficulty = &"normal" if GameState.difficulty == &"hard" else &"hard"
+	_refresh()
+
+
+func _next_level() -> void:
+	GameState.level_index = (GameState.level_index + 1) % 6
+	_refresh()
+
+
 func _add_trick(trick_id: StringName) -> void:
 	EventBus.trick_chosen.emit(trick_id)
 	GameState.active_tricks.append(trick_id)
@@ -116,7 +132,9 @@ func _heal() -> void:
 
 func _reset() -> void:
 	_set_paused(false)
+	var level := GameState.level_index
 	GameState.reset_run()
+	GameState.level_index = level
 	_exp = 0
 	_kills = 0
 	_boss_phase = 0
@@ -174,6 +192,11 @@ func _build_ui() -> void:
 		["Reset", _reset],
 		["Win", func() -> void: EventBus.level_completed.emit(&"sandbox")],
 		["Shake", func() -> void: arena.add_trauma(0.6)],
+		["Arch", _spawn.bind(&"scarecrow_archer")],
+		["Husk", _spawn.bind(&"armored_husk")],
+		["Capt", _spawn_captain],
+		["Hard", _toggle_hard],
+		["Lv+", _next_level],
 	]
 	for action: Array in actions:
 		var button := _make_button(action[0])
@@ -235,8 +258,9 @@ func _refresh() -> void:
 	if player != null and player.abilities != null:
 		tricks = "shk%d spn%d brk%d" % [player.abilities.stacks(&"shake"), player.abilities.stacks(&"spin"),
 				player.abilities.stacks(&"bark")]
-	_readout.text = "VIG %d/%d EXP %d LOY %d/%d CB %d/%d\nKO %d %s P%d %d/%d foes %d" % [
-		_vigor.x, _vigor.y, _exp, int(_loyalty.x), int(_loyalty.y), _combo, _best_combo, _kills, tricks,
+	_readout.text = "VIG %d/%d EXP %d LOY %d/%d CB %d/%d %s L%d\nKO %d %s P%d %d/%d foes %d" % [
+		_vigor.x, _vigor.y, _exp, int(_loyalty.x), int(_loyalty.y), _combo, _best_combo,
+		"H" if GameState.difficulty == &"hard" else "N", GameState.level_index + 1, _kills, tricks,
 		_boss_phase, _boss_hp.x, _boss_hp.y, get_tree().get_nodes_in_group(&"enemy").size()]
 	if _ult_button != null:
 		_ult_button.disabled = _loyalty.x < _loyalty.y

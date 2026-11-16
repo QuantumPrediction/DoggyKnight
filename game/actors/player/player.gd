@@ -576,10 +576,12 @@ func _enemies_in_sector(attack_range: float, half_angle: float) -> Array[Node2D]
 	return result
 
 
-func _is_valid_target(enemy: Node2D) -> bool:
-	if enemy == null or not is_instance_valid(enemy) or not enemy.is_inside_tree():
+## 參數用 Variant:敵人可能已被釋放(場地 clear() 時);已釋放的物件傳給有物件型別的參數會出錯。
+func _is_valid_target(target: Variant) -> bool:
+	if not is_instance_valid(target):
 		return false
-	if not enemy.is_in_group(ENEMY_GROUP):
+	var enemy := target as Node2D
+	if enemy == null or not enemy.is_inside_tree() or not enemy.is_in_group(ENEMY_GROUP):
 		return false
 	return not enemy.has_method(&"is_targetable") or bool(enemy.call(&"is_targetable"))
 

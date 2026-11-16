@@ -13,10 +13,16 @@ extends MinigameBase
 ## 手感(DEV_PLAN 15 DP2):拉得快時紙上與兩旁有速度線;墨水漬一到就停手(perfect_window_sec 之內、沒有犯錯)
 ## 是「完美!」:perfect 音效、閃光、手機輕震、加 perfect_bonus_score 分;慢一點停手是「好!」。
 ## 時間到時金毛被卷軸包成一捲(只露出頭,綁上紅色蝴蝶結)。
+##
+## 包裝(DEV_PLAN 16 DS3):卷軸是《王室守則》——開頭有標題,之後一條一條淡淡的「第 N 條」,
+## 拉得越長,出來的條數越多。時間到時梅林從右邊走進來,對話泡泡問「讀完了嗎?」(MINIGAME_MERLIN_ASK)。
 
 enum Ink { NONE, STOP, PASSING }
 
 const GOLDIE_FRAMES_PATH: String = "res://assets/sprites/goldie/goldie_frames.tres"
+const MERLIN_FRAMES_PATH: String = "res://assets/sprites/merlin/merlin_frames.tres"
+## 卷軸上的一行是幾像素(淡淡的字線、條目編號都對齊這個間距)。
+const LINE_GAP: float = 8.0
 
 var pulled_px: float = 0.0
 var ink_state: Ink = Ink.NONE
@@ -58,6 +64,10 @@ var _stop_mistake: bool = false
 ## 大字彈出(「完美!」「好!」):{"text": String, "age": float, "big": bool}
 var _popups: Array[Dictionary] = []
 var _score_bump: float = 0.0
+## 時間到之後的梅林(DS3):走進來、問「讀完了嗎?」。_merlin_time < 0 表示還沒出場。
+var _merlin: AnimatedSprite2D
+var _merlin_bubble: MinigameSpeechBubble
+var _merlin_time: float = -1.0
 
 # 版面(畫面的邏輯像素),由 _on_layout 計算。
 var _roll_y: float = 30.0
@@ -77,6 +87,8 @@ func _on_build() -> void:
 		_cfg.minigame_id = &"scroll"
 	if _cfg.goldie_frames == null and ResourceLoader.exists(GOLDIE_FRAMES_PATH):
 		_cfg.goldie_frames = load(GOLDIE_FRAMES_PATH) as SpriteFrames
+	if _cfg.merlin_frames == null and ResourceLoader.exists(MERLIN_FRAMES_PATH):
+		_cfg.merlin_frames = load(MERLIN_FRAMES_PATH) as SpriteFrames
 
 	_goldie = AnimatedSprite2D.new()
 	_goldie.name = "Goldie"
@@ -97,6 +109,18 @@ func _on_build() -> void:
 	_score_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	add_child(_score_label)
 
+	_merlin = AnimatedSprite2D.new()
+	_merlin.name = "Merlin"
+	_merlin.sprite_frames = _cfg.merlin_frames
+	_merlin.scale = Vector2.ONE * _cfg.merlin_scale
+	_merlin.flip_h = true      # 圖朝右畫;走進來時朝左看著金毛
+	_merlin.visible = false
+	add_child(_merlin)
+	_merlin_bubble = MinigameSpeechBubble.new()
+	_merlin_bubble.name = "MerlinBubble"
+	_merlin_bubble.max_width = 120.0
+	add_child(_merlin_bubble)
+
 
 func _on_layout() -> void:
 	var safe := SafeArea.get_safe_rect()
@@ -113,6 +137,8 @@ func _on_layout() -> void:
 	_goldie.position = _goldie_pos
 	_score_label.size = Vector2(70, 12)
 	_score_label.position = Vector2(safe.end.x - 74.0, safe.position.y + 14.0)
+	if _merlin != null and _merlin_time >= 0.0:
+		_update_merlin(0.0)
 
 
 func _on_reset() -> void:
@@ -134,6 +160,9 @@ func _on_reset() -> void:
 	_floaters.clear()
 	_goldie.rotation = 0.0
 	_play_goldie(_cfg.goldie_animation)
+	_merlin_time = -1.0
+	_merlin.visible = false
+	_merlin_bubble.hide_bubble()
 	if _cfg.rng_seed != 0:
 		_rng.seed = _cfg.rng_seed
 	else:
@@ -306,10 +335,17 @@ func _on_play_ended(_final_score: int, _final_grade: int) -> void:
 	_anim_time = 0.0
 	_play_goldie(_cfg.goldie_tangled_animation)
 	_update_score_label()
+	# 梅林從右邊走進來。泡泡移到最上層:評價畫面變暗時,「讀完了嗎?」仍然看得清楚。
+	_merlin_time = 0.0
+	move_child(_merlin_bubble, -1)
+	_merlin.visible = _merlin.sprite_frames != null
+	_play_merlin(&"run")
+	_update_merlin(0.0)
 
 
 func _on_ending_process(delta: float) -> void:
 	_anim_time += delta
+	_update_merlin(delta)
 	# 被卷軸纏住:左右扭動。
 	_goldie.rotation = sin(_anim_time * 18.0) * 0.12 * maxf(0.0, 1.0 - _anim_time)
 	_goldie.position = _goldie_pos + Vector2(0, -absf(sin(_anim_time * 9.0)) * 2.0)
@@ -321,12 +357,61 @@ func _on_ending_process(delta: float) -> void:
 
 func _on_results_process(delta: float) -> void:
 	_anim_time += delta
+	_update_merlin(delta)
 	_update_floaters(delta)
 	_goldie.rotation = 0.0
 	_front.queue_redraw()
 
 
+## 已經拉出幾條《王室守則》(條目編號經過金毛嘴巴的數目)。
+func rules_pulled() -> int:
+	return floori(pulled_px / (maxi(3, _cfg.rule_rows) * LINE_GAP))
+
+
+## 梅林是否已經問了「讀完了嗎?」(測試用)。
+func is_merlin_asking() -> bool:
+	return _merlin_bubble != null and _merlin_bubble.is_showing()
+
+
+func get_merlin_bubble() -> MinigameSpeechBubble:
+	return _merlin_bubble
+
+
+func get_merlin() -> AnimatedSprite2D:
+	return _merlin
+
+
 # --- 內部 ---
+
+## 梅林:時間到時從畫面右邊走到卷軸旁(run),停下(idle),過一會兒問「讀完了嗎?」。
+func _update_merlin(delta: float) -> void:
+	if _merlin_time < 0.0:
+		return
+	_merlin_time += delta
+	var screen := SafeArea.get_screen_size()
+	var target := Vector2(minf(_paper_rect.end.x + _cfg.merlin_stand_dx, screen.x - 12.0 * _cfg.merlin_scale), _bite_y - 4.0)
+	var start := Vector2(screen.x + 14.0 * _cfg.merlin_scale, target.y)
+	var t := clampf(_merlin_time / maxf(_cfg.merlin_enter_sec, 0.01), 0.0, 1.0)
+	var ease_t := 1.0 - pow(1.0 - t, 2.0)
+	var hop := 0.0 if t >= 1.0 else -absf(sin(_merlin_time * 18.0)) * 2.0
+	_merlin.position = Vector2(roundf(lerpf(start.x, target.x, ease_t)), target.y + roundf(hop))
+	if t >= 1.0 and _merlin.animation != &"idle":
+		_play_merlin(&"idle")
+	var anchor := (_merlin.position + Vector2(-2.0, -12.0 * _cfg.merlin_scale - 1.0)).round()
+	if _merlin_time >= _cfg.merlin_ask_delay_sec and not _merlin_bubble.is_showing():
+		_merlin_bubble.show_text(tr(_cfg.merlin_ask_key), anchor, 0.0)
+	elif _merlin_bubble.is_showing():
+		_merlin_bubble.move_to(anchor)
+
+
+func _play_merlin(animation: StringName) -> void:
+	if _merlin == null or _merlin.sprite_frames == null:
+		return
+	if _merlin.sprite_frames.has_animation(animation):
+		_merlin.play(animation)
+	elif _merlin.sprite_frames.has_animation(&"idle"):
+		_merlin.play(&"idle")
+
 
 func _stop_margin() -> float:
 	return _cfg.ink_size * 0.5 + 2.0
@@ -528,17 +613,7 @@ func _draw() -> void:
 	draw_rect(paper, _cfg.paper_color)
 	draw_rect(Rect2(paper.position, Vector2(2, paper.size.y)), _cfg.paper_edge_color)
 	draw_rect(Rect2(paper.end.x - 2, paper.position.y, 2, paper.size.y), _cfg.paper_edge_color)
-	var line_gap := 8.0
-	var first := floori((pulled_px - (screen.y - _bite_y)) / line_gap) - 1
-	var last := ceili((pulled_px + (_bite_y - _roll_y)) / line_gap) + 1
-	for k in range(first, last):
-		var y := _bite_y + pulled_px - k * line_gap
-		if y < _roll_y + 8.0 or y > screen.y:
-			continue
-		var w := 18.0 + float(posmod(k * 7, 5)) * 5.0
-		draw_rect(Rect2(paper.position.x + 7, y, w, 1), _cfg.paper_line_color)
-		if posmod(k, 3) != 0:
-			draw_rect(Rect2(paper.position.x + 10 + w, y, 10, 1), _cfg.paper_line_color)
+	_draw_rules(paper, screen)
 
 	# 墨水漬
 	for i in range(next_blot, blots.size()):
@@ -565,6 +640,52 @@ func _draw() -> void:
 		draw_rect(Rect2(roll.position.x + 1, sy, roll.size.x - 2, 1), _cfg.paper_line_color)
 	draw_rect(Rect2(roll.position.x, roll.position.y, 2, roll.size.y), _cfg.paper_edge_color)
 	draw_rect(Rect2(roll.end.x - 2, roll.position.y, 2, roll.size.y), _cfg.paper_edge_color)
+
+
+## 《王室守則》(DS3):卷軸上的一行一行(第 k 行在卷軸上的位置是 k × LINE_GAP 像素,畫面上的 y = 咬住處 + 拉出長度 − 位置)。
+## - 第 -1、-2 行:標題「王室守則」(開始時就在金毛嘴巴下面),第 -3 行是雙線;更前面是空白的紙頭。
+## - 第 1 行起,每 rule_rows 行是一條:最上面兩行是淡淡的「第 N 條」,下面是字線。
+func _draw_rules(paper: Rect2, screen: Vector2) -> void:
+	var first := floori((pulled_px - (screen.y - _bite_y)) / LINE_GAP) - 1
+	var last := ceili((pulled_px + (_bite_y - _roll_y)) / LINE_GAP) + 1
+	var font := _score_label.get_theme_font(&"font")
+	var rows := maxi(3, _cfg.rule_rows)
+	for k in range(maxi(first, -4), last):
+		var y := _bite_y + pulled_px - k * LINE_GAP
+		if y < _roll_y + 8.0 or y > screen.y + 12.0:
+			continue
+		if k == -1:
+			_draw_paper_text(font, tr(_cfg.rules_title_key), Vector2(paper.position.x, y + 9.0), paper.size.x, _cfg.rules_title_color, true)
+			continue
+		if k == -3:
+			# 標題下的雙線
+			draw_rect(Rect2(paper.position.x + 6, y, paper.size.x - 12, 1), Color(_cfg.rules_title_color, 0.6))
+			draw_rect(Rect2(paper.position.x + 6, y + 2, paper.size.x - 12, 1), Color(_cfg.rules_title_color, 0.4))
+			continue
+		if k <= 0:
+			continue
+		var local := (k - 1) % rows
+		@warning_ignore("integer_division")
+		var number := (k - 1) / rows + 1
+		if local == rows - 1:
+			_draw_paper_text(font, tr(_cfg.rule_label_key) % number, Vector2(paper.position.x + 6.0, y + 9.0), -1.0, _cfg.rule_text_color, false)
+			continue
+		if local == rows - 2:
+			continue
+		# 字線:長短不一,像一行一行的小字
+		var w := 16.0 + float(posmod(k * 7, 5)) * 5.0
+		draw_rect(Rect2(paper.position.x + 7, y, w, 1), _cfg.paper_line_color)
+		var rest := minf(10.0, paper.size.x - 17.0 - w)
+		if posmod(k, 3) != 0 and local != 0 and rest >= 3.0:
+			draw_rect(Rect2(paper.position.x + 10 + w, y, rest, 1), _cfg.paper_line_color)
+
+
+## 在卷軸上寫字。width > 0 時置中。
+func _draw_paper_text(font: Font, text: String, baseline: Vector2, width: float, color: Color, centered: bool) -> void:
+	if font == null or text == "":
+		return
+	var align := HORIZONTAL_ALIGNMENT_CENTER if centered and width > 0.0 else HORIZONTAL_ALIGNMENT_LEFT
+	draw_string(font, baseline.round(), text, align, width if centered else -1.0, MinigameUi.FONT_S, color)
 
 
 func _draw_blot(center: Vector2, index: int) -> void:

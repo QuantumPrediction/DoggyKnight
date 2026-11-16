@@ -189,6 +189,18 @@ func _patterns(level: LevelData) -> Array[StringName]:
 	return result
 
 
+## 一波的「威脅」:敵人數目,但較強的敵人算多幾隻(v2.3:1-4 的高潮是稻草人隊長)。
+const THREAT: Dictionary = {&"scarecrow": 1.0, &"crow": 1.0, &"scarecrow_archer": 1.5, &"scarecrow_elite": 3.0,
+		&"armored_husk": 3.0, &"scarecrow_captain": 12.0, &"black_knight": 30.0}
+
+
+func _threat(wave: WaveData) -> float:
+	var total := 0.0
+	for entry in wave.spawns:
+		total += entry.count * float(THREAT.get(entry.enemy_id, 1.0))
+	return total
+
+
 func _count(wave: WaveData) -> int:
 	var total := 0
 	for entry in wave.spawns:
@@ -216,11 +228,11 @@ func test_levels_have_identity_and_a_climax() -> void:
 	assert_eq(levels[5].waves[0].spawns[0].pattern, &"line_top", "黑騎士從橋頭(上方正中)出場")
 	for i in 5:
 		var level := levels[i]
-		var counts: Array[int] = []
+		var threat: Array[float] = []
 		for wave in level.waves:
-			counts.append(_count(wave))
-		var last := counts.back() as int
-		assert_eq(counts.max(), last, "%s 最後一波是高潮 %s" % [level.id, counts])
+			threat.append(_threat(wave))
+		var last := threat.back() as float
+		assert_eq(threat.max(), last, "%s 最後一波是高潮(威脅 %s)" % [level.id, threat])
 		# 高潮之前有喘息:最後一波的第一組不是一開始就出來
 		var first_delay := INF
 		for entry in level.waves.back().spawns:
