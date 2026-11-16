@@ -72,6 +72,29 @@ extends MinigameConfig
 ## 「完美!」時的閃光(一次性粒子)。
 @export var perfect_fx: PackedScene
 
+@export_group("王室守則與梅林(DS3)")
+## 卷軸開頭的標題(翻譯鍵):開始時就在金毛嘴巴下面。
+@export var rules_title_key: String = "MINIGAME_SCROLL_TITLE"
+## 每一條的編號(翻譯鍵,%d = 第幾條)。拉得越長,出來的條數越多。
+@export var rule_label_key: String = "MINIGAME_SCROLL_RULE"
+## 每一條佔幾行(一行 8 像素;其中兩行是編號)。
+@export var rule_rows: int = 7
+## 條目編號的顏色(淡淡的,不搶墨水漬的眼)。
+@export var rule_text_color: Color = Color(0.55, 0.42, 0.28, 0.75)
+## 標題的顏色。
+@export var rules_title_color: Color = Color(0.72, 0.2, 0.23, 0.85)
+## 時間到時走進來的梅林(C 線的 merlin_frames:run、idle)。留空時用 assets/sprites/merlin/merlin_frames.tres。
+@export var merlin_frames: SpriteFrames
+@export var merlin_scale: float = 2.0
+## 梅林問的話(翻譯鍵)。
+@export var merlin_ask_key: String = "MINIGAME_MERLIN_ASK"
+## 梅林從畫面右邊走到卷軸旁的秒數。
+@export var merlin_enter_sec: float = 0.5
+## 時間到之後多少秒,梅林開口問。
+@export var merlin_ask_delay_sec: float = 0.6
+## 梅林站在卷軸右邊多遠(邏輯像素,到梅林的中心)。
+@export var merlin_stand_dx: float = 26.0
+
 @export_group("速度線")
 ## 卷軸每秒被拉出多少像素以上才出現速度線。
 @export var speed_lines_min_speed: float = 60.0
