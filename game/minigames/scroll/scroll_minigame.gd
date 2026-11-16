@@ -485,9 +485,35 @@ func _draw() -> void:
 		draw_rect(Rect2(star.round(), Vector2.ONE), Color(1, 1, 0.85, 0.35 + 0.5 * twinkle))
 	var table_top := _roll_y + 12.0
 	draw_rect(Rect2(0, table_top, screen.x, screen.y - table_top), _cfg.table_color)
+	# 木板:深淺交錯、接縫、木紋
 	for i in int(screen.y / 18.0) + 1:
-		draw_rect(Rect2(0, table_top + i * 18.0, screen.x, 1), _cfg.table_edge_color)
+		var y := table_top + i * 18.0
+		if i % 2 == 1:
+			draw_rect(Rect2(0, y, screen.x, 18), _cfg.table_color.lightened(0.04))
+		draw_rect(Rect2(0, y, screen.x, 1), _cfg.table_edge_color)
+		var seam := fmod(i * 67.0 + 23.0, screen.x)
+		draw_rect(Rect2(seam, y + 1, 1, 17), _cfg.table_edge_color)
+		draw_rect(Rect2(fmod(seam + 40.0, screen.x), y + 7, 14, 1), _cfg.table_color.darkened(0.08))
 	draw_rect(Rect2(0, table_top, screen.x, 2), _cfg.table_edge_color.darkened(0.2))
+	# 桌上的蠟燭(右上)與暖光
+	var candle := Vector2(roundf(_paper_rect.end.x + 26.0), table_top + 30.0)
+	if candle.x < screen.x - 6.0:
+		var flick := 1.0 + 0.08 * sin(_anim_time * 9.0) + 0.05 * sin(_anim_time * 23.0)
+		for r in [34.0, 24.0, 14.0]:
+			draw_circle(candle + Vector2(0, -8), roundf(r * flick), Color(1.0, 0.7, 0.3, 0.06))
+		draw_rect(Rect2(candle + Vector2(-5, 4), Vector2(10, 3)), _cfg.roll_knob_color.darkened(0.3))
+		draw_rect(Rect2(candle + Vector2(-2, -6), Vector2(5, 10)), MinigameUi.INK)
+		draw_rect(Rect2(candle + Vector2(-1, -5), Vector2(3, 9)), Color("fff1c9"))
+		var lean := 1.0 if sin(_anim_time * 6.0) > 0.5 else 0.0
+		draw_rect(Rect2(candle + Vector2(lean, -10), Vector2(1, 3)), Color("ffe066"))
+		draw_rect(Rect2(candle + Vector2(0, -8), Vector2(1, 2)), Color("ff8a3d"))
+	# 四周暗一點(像燭光照著桌子中間)
+	for k in 4:
+		var a := 0.07 * (4 - k)
+		var w := 3.0
+		draw_rect(Rect2(k * w, table_top, w, screen.y - table_top), Color(0, 0, 0, a))
+		draw_rect(Rect2(screen.x - (k + 1) * w, table_top, w, screen.y - table_top), Color(0, 0, 0, a))
+		draw_rect(Rect2(0, screen.y - (k + 1) * w, screen.x, w), Color(0, 0, 0, a))
 
 	# 滑動範圍(淡淡的框)
 	var zone := _swipe_zone
