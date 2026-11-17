@@ -120,7 +120,7 @@ title = "EVENT_BRIDGE_MIST_MERLIN"
 desc = "EVENT_BRIDGE_MIST_MERLIN_DESC"
 icon = "res://assets/portraits/merlin/proud.png"
 tone = "merlin"
-effects = {"heal_ratio": 1.0, "stats": {"damage_taken_mult": -0.1}}
+effects = {"heal_ratio": 0.4, "snacks": 10}
 
 [sub_resource type="Resource" id="bridge_mist_morgana"]
 script = ExtResource("3_option")
