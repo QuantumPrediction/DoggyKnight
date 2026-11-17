@@ -180,6 +180,13 @@ func buy(id: StringName) -> bool:
 	return true
 
 
+## 跳過打開時的滑入動畫(測試與截圖用)。
+func finish_intro() -> void:
+	_open_t = 1.0
+	_content.position = Vector2.ZERO
+	_content.modulate.a = 1.0
+
+
 ## 關閉(「返回」按鈕、返回鍵)。
 func close() -> void:
 	if is_closed:
@@ -196,6 +203,9 @@ func close() -> void:
 
 ## 依目前的零食與等級更新每一列(價格、能不能按、效果)。
 func refresh() -> void:
+	if _counter_left <= 0.0:
+		_shown_snacks = snacks()
+		_snack_label.text = str(snacks())
 	for id: StringName in _rows:
 		var r: Dictionary = _rows[id]
 		var e: Dictionary = r["entry"]
@@ -361,7 +371,6 @@ func _add_row(e: Dictionary) -> void:
 	button.mouse_filter = Control.MOUSE_FILTER_PASS
 	for style: StringName in [&"normal", &"hover", &"pressed", &"disabled", &"focus", &"hover_pressed"]:
 		button.add_theme_stylebox_override(style, StyleBoxEmpty.new())
-	button.set_anchors_preset(Control.PRESET_FULL_RECT)
 	button.pressed.connect(buy.bind(id))
 	button.button_down.connect(func() -> void: _squash(row, 0.95))
 	button.button_up.connect(func() -> void: _squash(row, 1.0))
