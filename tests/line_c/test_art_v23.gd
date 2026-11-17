@@ -3,11 +3,11 @@ extends TestCase
 ## (路徑、動畫名稱與大小範圍的合約由 tests/core/test_story_contract.gd 檢查;這裡檢查 C 線自己的規格。)
 
 const SPRITES: Dictionary = {   # 代號:[格子, {動畫: 是否循環}]
-	"scarecrow_archer": [24, {&"idle": true, &"run": true, &"attack": false, &"hurt": false, &"aim": true}],
-	"armored_husk": [24, {&"idle": true, &"run": true, &"attack": false, &"hurt": false, &"dash": true, &"down": false}],
-	"scarecrow_captain": [32, {&"idle": true, &"run": true, &"attack": false, &"hurt": false, &"throw": false,
+	"scarecrow_archer": [32, {&"idle": true, &"run": true, &"attack": false, &"hurt": false, &"aim": true}],
+	"armored_husk": [32, {&"idle": true, &"run": true, &"attack": false, &"hurt": false, &"dash": true, &"down": false}],
+	"scarecrow_captain": [48, {&"idle": true, &"run": true, &"attack": false, &"hurt": false, &"throw": false,
 			&"rally": true, &"down": false}],
-	"merlin": [24, {&"idle": true, &"run": true, &"cast": false}],
+	"merlin": [32, {&"idle": true, &"run": true, &"cast": false}],
 }
 const PROJECTILES: Dictionary = {"arrow": 16, "sword_wave": 24, "pitchfork": 16}
 const BACKGROUNDS: Array[String] = ["sword_stone", "wheat_field", "meadow", "farm_fence", "crow_forest", "bridge"]

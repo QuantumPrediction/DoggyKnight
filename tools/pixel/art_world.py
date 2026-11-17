@@ -60,6 +60,9 @@ DARKER = {
     "steel": "steel_d", "steel_d": "iron", "iron": "ink", "peach": "rose", "rose": "dusk", "dusk": "plum",
     "pink": "rose", "red": "red_d", "red_d": "plum", "lilac": "violet", "violet": "plum", "plum": "ink",
     "yellow": "gold_l", "orange": "gold_d", "ink": "ink",
+    "spring": "leaf", "grass": "leaf_d", "teal": "forest_d", "deep": "night_d", "sand": "dirt", "haze": "sky_l",
+    "azure": "sky", "slate": "ink", "fog": "ash", "ash": "slate", "amber": "orange", "coral": "red",
+    "wine": "plum", "umber": "ink", "navy": "ink",
 }
 LIGHTER = {
     "night_d": "night", "night": "water_d", "water_d": "water", "water": "sky", "sky": "sky_l",
@@ -70,6 +73,9 @@ LIGHTER = {
     "steel": "steel_l", "steel_l": "white", "dusk": "rose", "rose": "pink", "pink": "peach",
     "peach": "cream", "plum": "violet", "violet": "lilac", "lilac": "white", "red_d": "red",
     "red": "pink", "orange": "yellow", "yellow": "white", "white": "white", "ink": "plum",
+    "grass": "leaf", "spring": "leaf_l", "teal": "grass", "deep": "teal", "sand": "cream", "haze": "white",
+    "azure": "sky_l", "slate": "ash", "ash": "fog", "fog": "white", "amber": "yellow", "coral": "pink",
+    "wine": "red_d", "umber": "brown_d", "navy": "night_d",
 }
 _NAME_BY_RGB = {rgba(n)[:3]: n for n, _ in PALETTE}
 
@@ -189,33 +195,59 @@ def bayer(x: int, y: int) -> float:
     return (BAYER4[y % 4][x % 4] + 0.5) / 16.0
 
 
+def _cluster(x: int, y: int, seed: int) -> float:
+    """2x2-cell jitter in [-0.5, 0.5], staggered per row pair: breaks smooth contours into pixel clusters."""
+    cy = y // 2
+    return hash01((x + (cy % 2)) // 2, cy, seed) - 0.5
+
+
+GRASS_TUFTS = [   # (dx, dy, tone) tone: -1 darker, +1 lighter; drawn upward from the base
+    [(0, 0, -1), (0, -1, -1), (2, 0, -1), (2, -1, -1), (2, -2, 1), (4, 0, -1), (4, -1, 1)],
+    [(0, 0, -1), (1, -1, -1), (1, -2, 1), (3, 0, -1), (3, -1, 1)],
+    [(0, 0, -1), (0, -1, 1), (2, 0, -1), (2, -1, -1), (3, -2, 1)],
+    [(0, 0, -1), (1, 0, -1), (1, -1, -1), (2, -2, 1), (3, 0, -1), (3, -1, -1)],
+]
+
+
 def paint_ground(img: Canvas, rect: tuple[int, int, int, int], ramp: tuple[str, str, str], seed: int,
                  scale: float = 30.0, lo: float = 0.36, hi: float = 0.6, tufts: float = 0.35,
                  sparkle: float = 0.04, mask=None, max_light: float = 0.3, max_dark: float = 0.3) -> None:
-    """Grass-like ground: mid colour with soft ordered-dither dark/light zones, tufts and highlights.
+    """Grass-like ground (v2.5 CR2): large soft patches of the three ramp tones with clustered,
+    organic edges (no ordered dithering, no single-pixel specks), then sparse hand-shaped grass tufts.
 
-    ramp = (dark, mid, light). Zones never exceed max_light / max_dark pixel density, so the
-    ground stays calm (no camouflage blobs). mask(x, y) -> bool limits the area.
+    ramp = (dark, mid, light). max_light / max_dark set how much of the area the light / dark patches
+    may cover (smaller = calmer). mask(x, y) -> bool limits the area. `sparkle` is kept for callers but
+    no longer scatters single pixels.
     """
     dark, mid, light = ramp
     x0, y0, x1, y1 = rect
+    hi_t = hi + (0.3 - max_light) * 0.45
+    lo_t = lo - (0.3 - max_dark) * 0.45
     for y in range(y0, y1):
         for x in range(x0, x1):
             if mask is not None and not mask(x, y):
                 continue
-            n = fbm(x, y, seed, scale)
-            b = bayer(x, y)
+            n = fbm(x, y, seed, scale) + _cluster(x, y, seed) * 0.05
             col = mid
-            if n > hi and min(1.0, (n - hi) / 0.12) * max_light > b:
+            if n > hi_t:
                 col = light
-            elif n < lo and min(1.0, (lo - n) / 0.12) * max_dark > b:
+            elif n < lo_t:
                 col = dark
             img.set(x, y, col)
+    # lone pixels follow their neighbours
+    for y in range(y0 + 1, y1 - 1):
+        for x in range(x0 + 1, x1 - 1):
+            if mask is not None and not mask(x, y):
+                continue
+            c = img.get(x, y)
+            nb = [img.get(x + 1, y), img.get(x - 1, y), img.get(x, y + 1), img.get(x, y - 1)]
+            if c not in nb and nb.count(nb[0]) >= 3:
+                img.set(x, y, nb[0])
     rng = random.Random(seed * 7 + 1)
-    step = 5
+    step = 7
     for gy in range(y0, y1, step):
         for gx in range(x0, x1, step):
-            if rng.random() >= tufts:
+            if rng.random() >= tufts * 0.8:
                 continue
             tx, ty = gx + rng.randrange(step), gy + rng.randrange(step)
             if mask is not None and not mask(tx, ty):
@@ -223,16 +255,12 @@ def paint_ground(img: Canvas, rect: tuple[int, int, int, int], ramp: tuple[str, 
             base = name_at(img, tx, ty)
             if base is None:
                 continue
-            dcol = DARKER.get(base, base)
-            for (dx, dy) in rng.choice(TUFTS):
-                if (mask is None or mask(tx + dx, ty + dy)) and x0 <= tx + dx < x1 and y0 <= ty + dy < y1:
-                    img.set(tx + dx, ty + dy, dcol)
-            if rng.random() < 0.35 and (mask is None or mask(tx + 1, ty - 1)):
-                img.set(tx + 1, ty - 1, LIGHTER.get(base, base))
-    for _ in range(int((x1 - x0) * (y1 - y0) * sparkle / 25)):
-        x, y = rng.randrange(x0, x1), rng.randrange(y0, y1)
-        if mask is None or mask(x, y):
-            shade(img, x, y, 1)
+            for (dx, dy, tone) in rng.choice(GRASS_TUFTS):
+                px, py = tx + dx, ty + dy
+                if (mask is None or mask(px, py)) and x0 <= px < x1 and y0 <= py < y1:
+                    b = name_at(img, px, py) or base
+                    img.set(px, py, DARKER.get(b, b) if tone < 0 else LIGHTER.get(b, b))
+    _ = sparkle
 
 
 def paint_path(img: Canvas, points: list[tuple[float, float]], width: float, seed: int,
@@ -262,7 +290,7 @@ def paint_path(img: Canvas, points: list[tuple[float, float]], width: float, see
             if d < half - 1:
                 n = fbm(x, y, seed + 5, 7, 2)
                 img.set(x, y, light if n > 0.66 else (dark if n < 0.3 else mid))
-            elif d < half or (d < half + 1 and (x + y) % 2 == 0):
+            elif d < half + _cluster(x, y, seed + 9) * 1.2:
                 if edge_dark:
                     shade(img, x, y, -1)
                 else:
@@ -274,9 +302,10 @@ def paint_path(img: Canvas, points: list[tuple[float, float]], width: float, see
         f = t * (len(points) - 1) - k
         px = ax + (bx - ax) * f + rng.uniform(-width / 2 + 1, width / 2 - 1)
         py = ay + (by - ay) * f + rng.uniform(-width / 2 + 1, width / 2 - 1)
-        img.set(int(px), int(py), rng.choice(["stone_l", "stone", "gold_l"]))
-        if rng.random() < 0.4:
-            img.set(int(px) + 1, int(py), "stone")
+        img.set(int(px), int(py), "stone_l")
+        img.set(int(px) + 1, int(py), "stone")
+        img.set(int(px), int(py) + 1, "stone_d")
+        img.set(int(px) + 1, int(py) + 1, "stone_d")
 
 
 # --------------------------------------------------------------------------
@@ -1026,6 +1055,8 @@ def in_arena(x: int, y: int) -> bool:
 
 
 GREEN = ("leaf_d", "leaf", "leaf_l")
+# v2.5: the arena floor uses a closer, calmer ramp so actors and telegraphs always read first
+ARENA_GREEN = ("grass", "leaf", "spring")
 # arena ground: very soft variation so actors and telegraphs always read first
 CALM = {"max_light": 0.16, "max_dark": 0.16}
 TREE_GREEN = ("forest", "leaf_d", "leaf", "leaf_l")
@@ -1035,7 +1066,7 @@ def arena_edge_shadow(img: Canvas, depth: int = 4, sides: bool = True) -> None:
     """Darken the arena just below the top border (the hedge casts a shadow) and a 1 px rim at the sides."""
     for y in range(AY0, AY0 + depth):
         for x in range(AX0, AX1):
-            if y < AY0 + depth - 1 or (x + y) % 2 == 0:
+            if y < AY0 + depth - 1 + (_cluster(x, y, 5) > 0.1):
                 shade(img, x, y, -1)
     if sides:
         for y in range(AY0, AY1):
@@ -1048,7 +1079,7 @@ def arena_vignette(img: Canvas, depth: int = 14, density: float = 0.28) -> None:
     for y in range(AY0, AY1):
         for x in range(AX0, AX1):
             d = min(x - AX0, AX1 - 1 - x, y - AY0, AY1 - 1 - y)
-            if d < depth and (1 - d / depth) * density > bayer(x, y):
+            if d < depth * density * 0.7 + (fbm(x, y, 77, 10, 2) - 0.5) * 6 + _cluster(x, y, 78):
                 shade(img, x, y, -1)
 
 
@@ -1074,7 +1105,7 @@ def scene_sword_stone() -> Scene:
     img = sc.img
     paint_ground(img, (0, 0, IMG_W, IMG_H), GREEN, 11, tufts=0.45)
     # arena: calmer, slightly lighter grass
-    paint_ground(img, (AX0, AY0, AX1, AY1), GREEN, 12, scale=34, lo=0.3, hi=0.66, tufts=0.22, sparkle=0.02,
+    paint_ground(img, (AX0, AY0, AX1, AY1), ARENA_GREEN, 12, scale=34, lo=0.3, hi=0.66, tufts=0.22, sparkle=0.02,
                  **CALM)
     # a worn path from the bottom up to the stone
     paint_path(img, [(150, 520), (146, 440), (156, 400), (152, 384)], 14, 5)
@@ -1131,7 +1162,7 @@ def scene_wheat_field() -> Scene:
     paint_ground(img, (0, 0, IMG_W, IMG_H), ("gold_d", "gold", "gold_l"), 21, scale=20, lo=0.4, hi=0.62,
                  tufts=0.9, sparkle=0.1)
     # arena: warm green clearing
-    paint_ground(img, (AX0, AY0, AX1, AY1), GREEN, 22, scale=32, lo=0.3, hi=0.66,
+    paint_ground(img, (AX0, AY0, AX1, AY1), ARENA_GREEN, 22, scale=32, lo=0.3, hi=0.66,
                  tufts=0.25, sparkle=0.02, **CALM)
     arena_vignette(img)
     # cart tracks (two ruts) through the field and the clearing
@@ -1182,7 +1213,7 @@ def scene_meadow() -> Scene:
     sc = Scene("leaf_d")
     img = sc.img
     paint_ground(img, (0, 0, IMG_W, IMG_H), GREEN, 31, tufts=0.5)
-    paint_ground(img, (AX0, AY0, AX1, AY1), GREEN, 32, scale=34, lo=0.28, hi=0.68, tufts=0.22, sparkle=0.02,
+    paint_ground(img, (AX0, AY0, AX1, AY1), ARENA_GREEN, 32, scale=34, lo=0.28, hi=0.68, tufts=0.22, sparkle=0.02,
                  **CALM)
     sprinkle_flowers(img, (0, 0, IMG_W, IMG_H), 220, 33, ["white", "yellow", "pink", "lilac"],
                      mask=lambda x, y: not in_arena(x, y))
@@ -1440,7 +1471,7 @@ def scene_bridge() -> Scene:
         x = -rng2.randrange(0, 16)
         while x < IMG_W:
             wid = rng2.randrange(11, 22)
-            tone = rng2.choice(["stone_l", "stone_l", "stone_l", "stone"])
+            tone = rng2.choice(["stone_l", "stone_l", "stone", "stone"])
             for yy in range(y, y + hgt):
                 for xx in range(x, x + wid):
                     if not on_deck(xx, yy):
@@ -1448,12 +1479,13 @@ def scene_bridge() -> Scene:
                     if yy == y + hgt - 1 or xx == x + wid - 1:
                         col = "stone_d"
                     elif yy == y or xx == x:
-                        col = LIGHTER[tone] if tone == "stone" else ("white" if hash01(xx, yy, 66) > 0.8 else tone)
-                    elif yy == y + hgt - 2 or xx == x + wid - 2:
-                        col = DARKER[tone] if bayer(xx, yy) < 0.5 else tone
+                        col = "stone_l"
+                    elif yy == y + hgt - 2:
+                        col = DARKER[tone] if tone == "stone_l" else tone
                     else:
                         col = tone
-                        if bayer(xx, yy) < 0.12 and hash01(xx // 3, yy // 3, 67) > 0.5:
+                        # worn 2x2 spots, never single specks
+                        if hash01(xx // 2, yy // 2, 67) > 0.95:
                             col = DARKER[tone]
                     img.set(xx, yy, col)
             if rng2.random() < 0.18:

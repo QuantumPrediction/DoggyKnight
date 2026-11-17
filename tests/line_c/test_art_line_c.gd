@@ -9,8 +9,8 @@ const FRAME_COUNTS: Dictionary = {   # DEV_PLAN C2、CP1(v2.2 加格數);v2.3 �
 	"crow": {&"idle": 4, &"run": 6, &"attack": 4, &"hurt": 2},
 	"black_knight": {&"idle": 4, &"run": 6, &"attack": 4, &"hurt": 2, &"charge": 3, &"slam": 4, &"down": 2},
 }
-const SIZES: Dictionary = {
-	"goldie": 24, "bulldog": 24, "scarecrow": 24, "crow": 16, "black_knight": 48,
+const SIZES: Dictionary = {   # v2.5 全面重畫(DEV_PLAN 第 18 節):解析度提高
+	"goldie": 32, "bulldog": 32, "scarecrow": 32, "crow": 24, "black_knight": 64,
 }
 const PIXEL_ART: Array[String] = [
 	"res://assets/sprites/goldie/goldie.png", "res://assets/sprites/bulldog/bulldog.png",
@@ -38,9 +38,9 @@ func _palette() -> Dictionary:
 	return colors
 
 
-func test_palette_has_40_colours() -> void:
-	# v1 的 32 色 + v2.2 的 8 個氣氛色(黃昏、夜晚、農場);見 tools/pixel/palette.py
-	assert_eq(_palette().size(), 40)
+func test_palette_has_55_colours() -> void:
+	# v1 的 32 色 + v2.2 的 8 個氣氛色 + v2.5 重畫的 15 色(色階兩端、彩色描邊、草地、天空);見 tools/pixel/palette.py
+	assert_eq(_palette().size(), 55)
 	assert_eq(PaletteColors.DIRT, Color("c9a06e"))
 
 

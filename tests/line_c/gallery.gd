@@ -152,7 +152,7 @@ func _character_page(spec: Array) -> void:
 	var scale: int = spec[1]
 	_backdrop(PaletteColors.LEAF_D)
 	_title.text = "%s(%d/%d)" % [code, page + 1, _pages.size()]
-	var g := _grid(3)
+	var g := _grid(2)   # v2.5:角色格子變大(32、48、64),一列放兩個
 	for anim: StringName in spec[2]:
 		var box := UiKit.sprite_box("res://assets/sprites/%s/%s_frames.tres" % [code, code], anim, scale)
 		g.add_child(_cell(box, String(anim)))
