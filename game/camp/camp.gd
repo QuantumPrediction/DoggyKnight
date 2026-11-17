@@ -4,6 +4,7 @@ extends Node
 ##
 ## 夜裡的圓桌與營火,卸下盔甲的金毛趴在火旁搖尾巴;第 3 關以後鬥牛犬也坐在火旁。三個入口:
 ## - 小遊戲「拉扯王室卷軸」(玩完回到這裡,獎勵已套用到 GameState)
+## - 訓練(v2.4 DV1):打開 game/camp/training.tscn(用零食買永久升級),關掉後回到選單
 ## - 同伴(預留,按下顯示「即將開放」)
 ## - 繼續冒險:發出 EventBus.camp_left。營地不會自己消失,由 B 線的流程移除。
 ## 點金毛可以摸摸頭:冒愛心、播 pet、手機輕震,滿意度小幅增加(每次營地有上限,見 CampConfig)。
@@ -25,6 +26,8 @@ const HEART_PATH: String = "res://assets/fx/particles/heart.tscn"
 const SPARKLE_PATH: String = "res://assets/fx/particles/sparkle.tscn"
 const DIALOGUE_BOX_PATH: String = "res://ui/dialogue/dialogue_box.tscn"
 const MERLIN_FRAMES_PATH: String = "res://assets/sprites/merlin/merlin_frames.tres"
+const TRAINING_PATH: String = "res://game/camp/training.tscn"
+const SNACK_FRAMES_PATH: String = "res://assets/fx/snack/snack_frames.tres"
 
 ## 小遊戲開始時發出(給沙盒與測試看)。
 signal minigame_opened(minigame: MinigameBase)
@@ -35,6 +38,10 @@ signal goldie_petted(rewarded: bool)
 signal story_finished()
 ## 梅林說了一句話(翻譯鍵)。
 signal merlin_spoke(key: String)
+## v2.4:訓練介面打開、關閉;在訓練裡買了一級(B 線想立即套用時可以聽這個)。
+signal training_opened(training: CampTraining)
+signal training_closed()
+signal training_upgraded(id: StringName, new_level: int)
 
 @export var config: CampConfig
 
@@ -69,6 +76,7 @@ var _satisfaction_label: Label
 var _bonus_label: Label
 var _menu: VBoxContainer
 var _minigame_button: Button
+var _training_button: Button
 var _companion_button: Button
 var _continue_button: Button
 var _toast: Label
@@ -77,6 +85,9 @@ var _pet_zone: Control
 var _bulldog_zone: Control
 var _fade: ColorRect
 var _minigame: MinigameBase
+var _training: CampTraining
+var _snack_texture: Texture2D
+var _snack_pulse: float = 0.0
 var _time: float = 0.0
 var _shown_vigor: float = 0.0
 var _shown_satisfaction: float = 0.0
@@ -147,6 +158,13 @@ func _load_defaults() -> void:
 		config.merlin_frames = load(MERLIN_FRAMES_PATH) as SpriteFrames
 	if config.merlin_sparkle_particles == null and ResourceLoader.exists(SPARKLE_PATH):
 		config.merlin_sparkle_particles = load(SPARKLE_PATH) as PackedScene
+	if config.training_scene == null and ResourceLoader.exists(TRAINING_PATH):
+		config = config.duplicate() as CampConfig
+		config.training_scene = load(TRAINING_PATH) as PackedScene
+	if ResourceLoader.exists(SNACK_FRAMES_PATH):
+		var snack := load(SNACK_FRAMES_PATH) as SpriteFrames
+		if snack != null and snack.has_animation(&"default") and snack.get_frame_count(&"default") > 0:
+			_snack_texture = snack.get_frame_texture(&"default", 0)
 
 
 func _process(delta: float) -> void:
@@ -167,6 +185,7 @@ func _process(delta: float) -> void:
 		part.flicker = flicker
 		part.advance(delta)
 	_bark_left = maxf(0.0, _bark_left - delta)
+	_snack_pulse = maxf(0.0, _snack_pulse - delta * 2.5)
 	_bulldog_hop = maxf(0.0, _bulldog_hop - delta)
 	if _bulldog != null and _bulldog.visible:
 		_bulldog.position = _bulldog_spot + Vector2(0, -roundf(sin(_bulldog_hop / 0.3 * PI) * 3.0) if _bulldog_hop > 0.0 else 0.0)
@@ -181,6 +200,11 @@ func _process(delta: float) -> void:
 ## 目前開著的小遊戲(沒有時是 null)。
 func get_minigame() -> MinigameBase:
 	return _minigame
+
+
+## 目前開著的訓練介面(沒有時是 null)。
+func get_training() -> CampTraining:
+	return _training
 
 
 func is_menu_visible() -> bool:
@@ -232,7 +256,7 @@ func story_script() -> DialogueScript:
 
 ## 按下「拉扯王室卷軸」。測試與沙盒也可以直接呼叫。
 func open_minigame() -> void:
-	if has_left or _minigame != null or _story_playing:
+	if has_left or _minigame != null or _story_playing or _training != null:
 		return
 	Sfx.play(&"ui_tap")
 	if config.minigame_plays_per_visit > 0 and minigame_plays >= config.minigame_plays_per_visit:
@@ -256,9 +280,32 @@ func open_minigame() -> void:
 	_fade_in()
 
 
+## 按下「訓練」(v2.4 DV1):打開訓練介面,蓋在營地上面;關掉後回到選單。
+func open_training() -> void:
+	if has_left or _minigame != null or _story_playing or _training != null:
+		return
+	if config.training_scene == null:
+		Sfx.play(&"ui_tap")
+		_show_toast(tr("UI_COMING_SOON"))
+		return
+	_training = config.training_scene.instantiate() as CampTraining
+	if _training == null:
+		push_error("CampConfig.training_scene 的根節點必須是 CampTraining")
+		return
+	Sfx.play(&"ui_tap")
+	_training.closed.connect(_on_training_closed)
+	_training.upgraded.connect(func(id: StringName, level: int) -> void: training_upgraded.emit(id, level))
+	_toast.visible = false
+	_toast_left = 0.0
+	_merlin_bubble.hide_bubble()
+	_root.add_child(_training)
+	_root.move_child(_fade, -1)
+	training_opened.emit(_training)
+
+
 ## 按下「同伴」(預留入口)。
 func open_companion() -> void:
-	if has_left or _story_playing:
+	if has_left or _story_playing or _training != null:
 		return
 	Sfx.play(&"ui_tap")
 	_show_toast(tr("UI_COMING_SOON"))
@@ -266,11 +313,11 @@ func open_companion() -> void:
 
 ## 按下「繼續冒險」。
 func leave_camp() -> void:
-	if has_left or _minigame != null or _story_playing:
+	if has_left or _minigame != null or _story_playing or _training != null:
 		return
 	has_left = true
 	Sfx.play(&"ui_tap")
-	for button: Button in [_minigame_button, _companion_button, _continue_button]:
+	for button: Button in [_minigame_button, _training_button, _companion_button, _continue_button]:
 		button.disabled = true
 	EventBus.camp_left.emit()
 
@@ -278,7 +325,7 @@ func leave_camp() -> void:
 ## 摸摸金毛的頭。傳回 true 表示這一下增加了滿意度(每次營地有上限)。
 ## 太快連點(pet_cooldown_sec 之內)不算。
 func pet_goldie() -> bool:
-	if has_left or _minigame != null or _goldie == null or _story_playing:
+	if has_left or _minigame != null or _goldie == null or _story_playing or _training != null:
 		return false
 	if _time - _last_pet_time < config.pet_cooldown_sec:
 		return false
@@ -301,7 +348,7 @@ func pet_goldie() -> bool:
 
 ## 點鬥牛犬:「汪!」
 func tap_bulldog() -> void:
-	if has_left or _minigame != null or not is_bulldog_visible() or _story_playing:
+	if has_left or _minigame != null or not is_bulldog_visible() or _story_playing or _training != null:
 		return
 	if _bark_left > config.bulldog_bark_sec * 0.5:
 		return
@@ -314,7 +361,7 @@ func tap_bulldog() -> void:
 ## 點梅林:施法、閃光、magic 音效、輕震,對話泡泡說一句 CAMP_MERLIN_XX。
 ## 傳回說的那一句的翻譯鍵;沒有說話(故事中、小遊戲中、連點太快)時傳回空字串。
 func tap_merlin() -> String:
-	if has_left or _minigame != null or _story_playing or not is_merlin_visible():
+	if has_left or _minigame != null or _story_playing or _training != null or not is_merlin_visible():
 		return ""
 	if _time - _last_merlin_tap < config.merlin_tap_cooldown_sec:
 		return ""
@@ -425,9 +472,24 @@ func _on_minigame_closed() -> void:
 		_bar_pulse["satisfaction"] = 1.0
 		_add_floater("+%d" % int(rewards["satisfaction"]), _bar_tag(_satisfaction_label), config.satisfaction_bar_color)
 		_spawn_particles(sparkle, _bar_end(_satisfaction_label, _satisfaction_ratio()), _stats)
+	if int(rewards.get("snacks", 0)) > 0:
+		_snack_pulse = 1.0
+		_add_floater("+%d" % int(rewards["snacks"]), _snack_tag(), Color("ffe066"))
+		_spawn_particles(sparkle, _snack_spot(), _stats)
 	if finished_grade >= 2:
 		_goldie.pet()
 	minigame_closed.emit(finished_score, finished_grade)
+
+
+func _on_training_closed() -> void:
+	if _training == null:
+		return
+	_training.queue_free()
+	_training = null
+	_refresh_stats()
+	_intro = 0.0      # 選單再滑出來一次
+	_animate_menu()
+	training_closed.emit()
 
 
 func _set_camp_visible(value: bool) -> void:
@@ -485,6 +547,17 @@ func _add_floater(text: String, at: Vector2, color: Color) -> void:
 
 func _bar_end(label: Label, ratio: float) -> Vector2:
 	return label.position + Vector2(42.0 + roundf(80.0 * ratio), 5.0)
+
+
+## 零食數(右上角)的圖示中心。
+func _snack_spot() -> Vector2:
+	var safe := SafeArea.get_safe_rect()
+	return Vector2(safe.end.x - 40.0, safe.position.y + 10.0)
+
+
+## 零食數下面放「+N」的地方(文字的基線)。
+func _snack_tag() -> Vector2:
+	return _snack_spot() + Vector2(4.0, 22.0)
 
 
 ## 條右邊放「+N」的地方(文字的基線)。
@@ -629,7 +702,14 @@ func _build() -> void:
 	_menu.add_theme_constant_override(&"separation", config.button_gap)
 	_root.add_child(_menu)
 	_minigame_button = _make_menu_button("MinigameButton", tr("UI_CAMP_MINIGAME"), Color("c0603a"), Color("3a1a10"), open_minigame)
-	_companion_button = _make_menu_button("CompanionButton", tr("UI_CAMP_COMPANION"), Color("5a5670"), Color("24203a"), open_companion)
+	# 中間一列:「訓練」(v2.4)與「同伴」各佔一半,選單的高度不變。
+	var middle := HBoxContainer.new()
+	middle.name = "MiddleRow"
+	middle.add_theme_constant_override(&"separation", config.button_gap)
+	_menu.add_child(middle)
+	var half := Vector2(floorf((config.button_size.x - config.button_gap) * 0.5), config.button_size.y)
+	_training_button = _make_menu_button("TrainingButton", tr("CAMP_TRAINING"), Color("3a5a8a"), Color("12243a"), open_training, middle, half)
+	_companion_button = _make_menu_button("CompanionButton", tr("UI_CAMP_COMPANION"), Color("5a5670"), Color("24203a"), open_companion, middle, half)
 	if MinigameUi.has_shared_theme():
 		_companion_button.theme_type_variation = &"ButtonAlt"
 	_continue_button = _make_menu_button("ContinueButton", tr("UI_CAMP_CONTINUE"), Color("3a8a5a"), Color("123a24"), leave_camp)
@@ -664,14 +744,15 @@ func _build() -> void:
 			add_child(_dialogue)
 
 
-func _make_menu_button(node_name: String, text: String, fill: Color, border: Color, action: Callable) -> Button:
-	var button := MinigameUi.make_button(text, config.button_size, config.button_font_size, fill, border)
+func _make_menu_button(node_name: String, text: String, fill: Color, border: Color, action: Callable,
+		parent: Container = null, min_size: Vector2 = Vector2.ZERO) -> Button:
+	var button := MinigameUi.make_button(text, min_size if min_size != Vector2.ZERO else config.button_size, config.button_font_size, fill, border)
 	button.name = node_name
 	button.pressed.connect(action)
 	# 按下時壓扁一下、放開時彈回來
 	button.button_down.connect(func() -> void: _squash(button, 0.92))
 	button.button_up.connect(func() -> void: _squash(button, 1.0))
-	_menu.add_child(button)
+	(parent if parent != null else _menu).add_child(button)
 	return button
 
 
@@ -845,6 +926,16 @@ func _draw_stats() -> void:
 	_draw_bar(_vigor_label.position + Vector2(42, 3), _shown_vigor, config.vigor_bar_color, float(_bar_pulse["vigor"]))
 	_draw_bar(_satisfaction_label.position + Vector2(42, 3), _shown_satisfaction, config.satisfaction_bar_color, float(_bar_pulse["satisfaction"]))
 	MinigameUi.draw_heart(_stats, _satisfaction_label.position + Vector2(130, 6), 1.0)
+	# 零食數(右上角,v2.4):小遊戲給零食時跳一下
+	if _snack_texture != null:
+		var spot := _snack_spot()
+		var bump := roundf(sin(_snack_pulse * PI) * 2.0)
+		_stats.draw_texture_rect(_snack_texture, Rect2(spot - Vector2(8, 8 + bump), Vector2(16, 16)), false)
+		var font := _title.get_theme_font(&"font")
+		var text := str(GameState.snacks)
+		var at := (spot + Vector2(11, 5 - bump)).round()
+		_stats.draw_string_outline(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, MinigameUi.FONT_S, 4, MinigameUi.INK)
+		_stats.draw_string(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, MinigameUi.FONT_S, Color("ffe066"))
 	# 飛向滿意度條的愛心
 	for h: Dictionary in _flying_hearts:
 		var t := clampf(float(h["age"]) / 0.6, 0.0, 1.0)
