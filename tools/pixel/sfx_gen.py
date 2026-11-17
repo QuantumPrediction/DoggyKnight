@@ -3,6 +3,7 @@
 Every id in DEV_PLAN 4.9 and 4.10 becomes assets/sfx/<id>.wav (22 050 Hz, 16-bit mono).
 v2.2 added crit, combo, boss_roar, star, whoosh, heal, pet, perfect, countdown and made
 hit, swing, pickup, level_up and ultimate fuller (thump and chime layers).
+v2.4 added chest_open, evolve, snack, revive and event.
 v2.3 added talk (the dialogue blip; Sfx.play's pitch argument gives each speaker a voice),
 page_turn, arrow_shot, husk_clank, captain_shout and magic.
 Soft waveforms, short attacks/releases (no clicks), a gentle low-pass and loudness
@@ -25,7 +26,9 @@ IDS = ["swing", "hit", "hurt", "enemy_down", "pickup", "level_up", "bark", "boss
        # v2.2 (CP7)
        "crit", "combo", "boss_roar", "star", "whoosh", "heal", "pet", "perfect", "countdown",
        # v2.3 (CS8)
-       "talk", "page_turn", "arrow_shot", "husk_clank", "captain_shout", "magic"]
+       "talk", "page_turn", "arrow_shot", "husk_clank", "captain_shout", "magic",
+       # v2.4 (CV6)
+       "chest_open", "evolve", "snack", "revive", "event"]
 
 
 def note(name: str) -> float:
@@ -351,6 +354,55 @@ def make(sid: str) -> list[float]:
         t.add(0, lowpass(highpass(noise(0.6, 46, attack=0.1, release=0.35), 3000), 9000), 0.12)
         t.add(0.05, tone(0.5, note("G5"), note("G6"), "triangle", attack=0.05, release=0.3), 0.25)
         return finish(t.buf, target_rms=0.11, cutoff=9000)
+    # ---- v2.4 (CV6) -----------------------------------------------------
+    if sid == "chest_open":  # wooden creak-clunk, then a bright "ta-da" shimmer of treasure
+        t = Track(1.0)
+        t.add(0, tone(0.12, 160, 230, "saw", attack=0.01, release=0.05, vibrato=0.06, vib_rate=30, curve="lin"), 0.35)
+        t.add(0.1, thump(0.12, 200, 90, decay=35), 0.7)
+        t.add(0.1, lowpass(noise(0.05, 51, release=0.04), 2500), 0.4)
+        for i, nm in enumerate(["G5", "C6", "E6", "G6"]):
+            t.add(0.18 + i * 0.05, tone(0.1 if i < 3 else 0.45, note(nm), wave_kind="square", duty=0.25,
+                                        release=0.08 if i < 3 else 0.3), 0.55)
+        for i, nm in enumerate(["C7", "E7", "G7", "C8", "G7", "E7"]):
+            t.add(0.4 + i * 0.05, bell(0.35, note(nm), decay=10), 0.18)
+        return finish(t.buf, target_rms=0.15, cutoff=8500)
+    if sid == "evolve":      # two notes rising toward each other, a whoosh, then a big golden chord
+        t = Track(1.4)
+        for i in range(6):
+            lo = note("C4") * 2 ** (i * 2 / 12)
+            hi = note("C6") * 2 ** (-i * 1 / 12)
+            t.add(i * 0.07, tone(0.07, lo, wave_kind="square", duty=0.25, release=0.03), 0.45)
+            t.add(i * 0.07, tone(0.07, hi, wave_kind="square", duty=0.125, release=0.03), 0.35)
+        w = noise(0.4, 52, attack=0.25, release=0.05)
+        t.add(0.1, lowpass(w, sweep(len(w), 600, 6000)), 0.3)
+        for nm in ("C5", "E5", "G5", "C6"):
+            t.add(0.5, tone(0.8, note(nm), wave_kind="square", duty=0.25, release=0.5, vibrato=0.006), 0.32)
+        t.add(0.5, tone(0.8, note("C3"), wave_kind="triangle", release=0.5), 0.6)
+        for i, nm in enumerate(["G6", "C7", "E7", "G7", "C8"]):
+            t.add(0.52 + i * 0.05, bell(0.5, note(nm), decay=7), 0.2)
+        return finish(t.buf, target_rms=0.16, cutoff=8000)
+    if sid == "snack":       # a crunchy little "crunch-pop" (biscuit)
+        t = Track(0.22)
+        t.add(0, lowpass(highpass(noise(0.06, 53, release=0.04, decay=40, step=2), 900), 5000), 0.8)
+        t.add(0.03, tone(0.08, note("A5"), note("E6"), "square", 0.25, release=0.04), 0.45)
+        t.add(0.07, bell(0.13, note("E7"), decay=20), 0.2)
+        return finish(t.buf, target_rms=0.1, cutoff=7000)
+    if sid == "revive":      # a sleepy yawn rising into a happy "boing!" and sparkles (cute wake-up)
+        t = Track(1.1)
+        t.add(0, tone(0.35, 220, 330, "triangle", attack=0.08, release=0.1, vibrato=0.02, vib_rate=6, curve="lin"), 0.6)
+        t.add(0.35, tone(0.22, 260, 780, "square", 0.25, attack=0.003, release=0.08, vibrato=0.04, vib_rate=25), 0.5)
+        for i, nm in enumerate(["C6", "E6", "G6", "C7", "E7"]):
+            t.add(0.5 + i * 0.06, bell(0.4, note(nm), decay=9), 0.3)
+        t.add(0.55, tone(0.45, note("C5"), wave_kind="triangle", release=0.3), 0.3)
+        return finish(t.buf, target_rms=0.14, cutoff=8000)
+    if sid == "event":       # a curious "hmm?" chime: two soft bells and a magical shimmer (a choice appears)
+        t = Track(0.95)
+        t.add(0, bell(0.6, note("E6"), decay=6), 0.55)
+        t.add(0.16, bell(0.7, note("B5"), decay=5), 0.5)
+        t.add(0.32, bell(0.6, note("G#6"), decay=6), 0.35)
+        t.add(0.05, lowpass(highpass(noise(0.7, 54, attack=0.2, release=0.35), 2500), 8000), 0.1)
+        t.add(0, tone(0.8, note("E4"), wave_kind="triangle", attack=0.1, release=0.4), 0.25)
+        return finish(t.buf, target_rms=0.11, cutoff=8000)
     raise KeyError(sid)
 
 

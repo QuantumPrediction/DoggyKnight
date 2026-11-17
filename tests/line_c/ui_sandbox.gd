@@ -6,6 +6,7 @@ extends Node
 ## 按左上「工具」打開按鈕面板,選一個動作後面板自動收起;面板最後一格「更多▶」切換第二頁
 ## (v2.2:頭目血條、連擊、過關慶祝、必殺技切入、星級結算、教學、轉場、音樂),
 ## 第三頁是 v2.3:對白框(頭像對白、繪本頁)、稻草人隊長出場、困難結算、打完第一章的標題、故事音樂。
+## 第四頁是 v2.4:抉擇事件、進化卡片、進化演出、零食、無盡試煉的波數、可復活的失敗畫面。
 ## Esc = Android 返回鍵(打開/關閉暫停選單)。
 ## 這是開發工具,文字不翻譯。
 
@@ -13,6 +14,7 @@ const TRICK_IDS: Array[String] = ["sit", "wag", "fetch", "shake", "spin", "bark"
 
 var hud: Control
 var trick_choice: Control
+var event_choice: Control
 var pause_menu: Control
 var screen_layer: CanvasLayer
 var panel: PanelContainer
@@ -33,6 +35,8 @@ var _tools_page: int = 0
 var _grid: GridContainer
 var _transition: CanvasLayer
 var _dialogue: CanvasLayer
+var _snacks: int = 0
+var _endless_wave: int = 0
 
 
 func _ready() -> void:
@@ -40,6 +44,7 @@ func _ready() -> void:
 	_build_world()
 	hud = _add_layer(10, "res://ui/hud/hud.tscn")
 	trick_choice = _add_layer(20, "res://ui/trick_choice/trick_choice.tscn")
+	event_choice = _add_layer(20, "res://ui/event_choice/event_choice.tscn")
 	pause_menu = _add_layer(20, "res://ui/pause/pause.tscn")
 	screen_layer = CanvasLayer.new()
 	screen_layer.layer = 30
@@ -57,6 +62,9 @@ func _ready() -> void:
 	EventBus.trick_chosen.connect(func(id: StringName) -> void:
 		get_tree().paused = false
 		_status("trick_chosen: %s" % id))
+	EventBus.event_chosen.connect(func(id: StringName, index: int) -> void:
+		get_tree().paused = false
+		_status("event_chosen(%s, %d)" % [id, index]))
 	# 暫代 A 線
 	EventBus.ultimate_requested.connect(_on_ultimate_requested)
 	_emit_all()
@@ -115,7 +123,7 @@ func _build_tools() -> void:
 	var relayout := func() -> void:
 		var safe := SafeArea.get_safe_rect()
 		toggle.size = toggle.custom_minimum_size
-		toggle.position = Vector2(safe.position.x + 4, safe.position.y + 34)
+		toggle.position = Vector2(safe.position.x + 4, safe.position.y + 46)
 		panel.size = panel.get_minimum_size()
 		panel.position = Vector2(floorf(safe.get_center().x - panel.size.x * 0.5), toggle.position.y + 28)
 		status_label.position = Vector2(safe.position.x + 4, safe.end.y - 16)
@@ -195,16 +203,44 @@ func _fill_tools() -> void:
 			Music.play(&"story")
 			_status("Music.play(story)")],
 	]
-	var actions: Array = [page_a, page_b, page_c][_tools_page]
+	var page_d: Array = [
+		["抉擇事件", _offer_event],
+		["進化卡片", _offer_evolution],
+		["進化演出", func() -> void:
+			var ids: Array[StringName] = [&"tornado_tail", &"lion_roar", &"high_five", &"meteor_pounce"]
+			var id := ids[randi() % ids.size()]
+			EventBus.trick_evolved.emit(id)
+			_status("trick_evolved(%s)" % id)],
+		["零食 +3", func() -> void:
+			_snacks += 3
+			GameState.snacks = _snacks
+			EventBus.snacks_changed.emit(_snacks)
+			_status("snacks_changed(%d)" % _snacks)],
+		["無盡下一波", func() -> void:
+			if GameState.mode != &"endless":
+				GameState.mode = &"endless"
+				GameState.endless_best = 3
+				_endless_wave = 0
+				EventBus.level_started.emit(&"endless")
+			_endless_wave += 1
+			EventBus.wave_started.emit(_endless_wave, 0)
+			_status("endless wave_started(%d)" % _endless_wave)],
+		["回故事模式", func() -> void:
+			GameState.mode = &"story"
+			EventBus.level_started.emit(&"1-2")
+			_status("mode = story")],
+		["可復活失敗", func() -> void: _open_screen("failure_revive")],
+	]
+	var actions: Array = [page_a, page_b, page_c, page_d][_tools_page]
 	for a: Array in actions:
 		var b := UiKit.button(a[0], &"", Vector2(80, 24))
 		b.pressed.connect(a[1])
 		# 按下後收起面板,才看得到效果;再按「工具」打開。
 		b.pressed.connect(func() -> void: panel.visible = false)
 		_grid.add_child(b)
-	var more := UiKit.button("更多 ▶" if _tools_page < 2 else "◀ 返回", &"ButtonAlt", Vector2(80, 24))
+	var more := UiKit.button("更多 ▶" if _tools_page < 3 else "◀ 返回", &"ButtonAlt", Vector2(80, 24))
 	more.pressed.connect(func() -> void:
-		_tools_page = (_tools_page + 1) % 3
+		_tools_page = (_tools_page + 1) % 4
 		_fill_tools.call_deferred())
 	_grid.add_child(more)
 
@@ -356,7 +392,8 @@ func _open_screen(kind: String) -> void:
 	if _screen != null:
 		_screen.queue_free()
 		_screen = null
-	var path := "res://ui/screens/%s.tscn" % kind.trim_suffix("_final").trim_suffix("_stars").trim_suffix("_hard")
+	var path := "res://ui/screens/%s.tscn" % kind.trim_suffix("_final").trim_suffix("_stars").trim_suffix("_hard") \
+			.trim_suffix("_revive")
 	_screen = (load(path) as PackedScene).instantiate() as Control
 	screen_layer.add_child(_screen)
 	var close := func() -> void:
@@ -371,6 +408,10 @@ func _open_screen(kind: String) -> void:
 					_status(s)
 					close.call())
 			_screen.connect("credits_pressed", func() -> void: _open_screen("credits"))
+			for s: String in ["endless_pressed", "training_pressed"]:
+				_screen.connect(s, func() -> void:
+					_status("%s (mode = %s)" % [s, GameState.mode])
+					close.call())
 		"results", "results_final":
 			var final := kind == "results_final"
 			_screen.call("setup", {
@@ -410,6 +451,14 @@ func _open_screen(kind: String) -> void:
 				_screen.connect(s, func() -> void:
 					_status(s)
 					close.call())
+		"failure_revive":
+			_screen.call("setup", {"level_id": &"1-5", "level_name": "LEVEL_1_5", "victory": false,
+				"time_sec": 52.0, "kills": 30, "tricks": [], "hero_level": _level, "next_is_camp": false,
+				"is_final": false, "can_revive": true, "revive_cost": 5})
+			for s: String in ["revive_pressed", "retry_pressed", "title_pressed"]:
+				_screen.connect(s, func() -> void:
+					_status(s)
+					close.call())
 		"credits":
 			_screen.connect("closed", func() -> void:
 				_status("closed")
@@ -445,3 +494,30 @@ func _play_story(book: bool) -> void:
 	_status("dialogue_started(%s)" % script.id)
 	await _dialogue.call(&"play", script)
 	_status("dialogue_finished(%s)" % script.id)
+
+
+## v2.4:抉擇事件(梅林的祝福 / 摩根娜的誘惑)。B 線的事件文字還沒好時用把戲的鍵代替。
+func _offer_event() -> void:
+	var options: Array = [
+		{"title": "UI_EVENT_MERLIN", "desc": "TRICK_SIT_DESC", "icon": "res://assets/ui/icon_heart.png", "tone": "merlin"},
+		{"title": "UI_EVENT_MORGANA", "desc": "TRICK_SHAKE_DESC", "icon": "res://assets/fx/snack/snack.png", "tone": "morgana"},
+	]
+	get_tree().paused = true
+	EventBus.event_offered.emit(&"sandbox_event", options)
+	_status("event_offered(sandbox_event)")
+
+
+## v2.4:三選一裡有一張進化卡片。
+func _offer_evolution() -> void:
+	var options: Array = []
+	for id: String in ["tornado_tail", "sniff", "pounce"]:
+		var t := TrickData.new()
+		t.id = StringName(id)
+		t.display_name = "TRICK_%s_NAME" % id.to_upper()
+		t.description = "TRICK_%s_DESC" % id.to_upper()
+		t.icon = load("res://assets/icons/tricks/%s.png" % id)
+		t.is_evolution = id == "tornado_tail"
+		options.append(t)
+	get_tree().paused = true
+	EventBus.trick_offered.emit(options)
+	_status("trick_offered(tornado_tail 進化, sniff, pounce)")

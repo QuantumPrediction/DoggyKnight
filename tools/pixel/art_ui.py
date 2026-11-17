@@ -633,6 +633,12 @@ def theme_tres() -> str:
         ("button_alt_pressed", 4, (6, 4, 6, 4)), ("panel", 5, (8, 7, 8, 7)),
         ("panel_dark", 5, (6, 5, 6, 5)), ("card_normal", 5, (6, 5, 6, 5)), ("card_pressed", 5, (6, 6, 6, 4)),
         ("ribbon", 6, (10, 3, 10, 4)), ("ribbon_big", 6, (16, 6, 16, 8)),
+        # v2.4 (art_v24.py): evolution card, choice-event cards, golden ribbon, violet button
+        ("card_evolve_normal", 5, (6, 5, 6, 5)), ("card_evolve_pressed", 5, (6, 6, 6, 4)),
+        ("card_merlin_normal", 5, (6, 5, 6, 5)), ("card_merlin_pressed", 5, (6, 6, 6, 4)),
+        ("card_morgana_normal", 5, (6, 5, 6, 5)), ("card_morgana_pressed", 5, (6, 6, 6, 4)),
+        ("ribbon_gold", 6, (10, 3, 10, 4)),
+        ("button_violet_normal", 4, (6, 3, 6, 5)), ("button_violet_pressed", 4, (6, 4, 6, 4)),
     ]
     lines = ['[gd_resource type="Theme" format=3]', "",
              '[ext_resource type="FontFile" path="res://assets/fonts/Cubic_11.ttf" id="1_font"]']
@@ -644,7 +650,7 @@ def theme_tres() -> str:
                   'content_margin_left = %.1f' % cl, 'content_margin_top = %.1f' % ct,
                   'content_margin_right = %.1f' % cr, 'content_margin_bottom = %.1f' % cb,
                   'texture = ExtResource("%d_%s")' % (i + 2, name)]
-        if name in ("ribbon", "ribbon_big"):
+        if name in ("ribbon", "ribbon_big", "ribbon_gold"):
             lines += ["texture_margin_left = 8.0", "texture_margin_top = 4.0",
                       "texture_margin_right = 8.0", "texture_margin_bottom = 5.0"]
         else:
@@ -694,6 +700,39 @@ def theme_tres() -> str:
          'CardButton/styles/pressed = SubResource("Style_card_pressed")',
          'CardButton/styles/hover_pressed = SubResource("Style_card_pressed")',
          'CardButton/styles/disabled = SubResource("Style_card_normal")',
+         # v2.4: 「進化!」 card and the two choice-event cards (Merlin blue, Morgana purple)
+         'CardEvolve/base_type = &"Button"',
+         'CardEvolve/styles/normal = SubResource("Style_card_evolve_normal")',
+         'CardEvolve/styles/hover = SubResource("Style_card_evolve_normal")',
+         'CardEvolve/styles/pressed = SubResource("Style_card_evolve_pressed")',
+         'CardEvolve/styles/hover_pressed = SubResource("Style_card_evolve_pressed")',
+         'CardEvolve/styles/disabled = SubResource("Style_card_evolve_normal")',
+         'CardMerlin/base_type = &"Button"',
+         'CardMerlin/styles/normal = SubResource("Style_card_merlin_normal")',
+         'CardMerlin/styles/hover = SubResource("Style_card_merlin_normal")',
+         'CardMerlin/styles/pressed = SubResource("Style_card_merlin_pressed")',
+         'CardMerlin/styles/hover_pressed = SubResource("Style_card_merlin_pressed")',
+         'CardMerlin/styles/disabled = SubResource("Style_card_merlin_normal")',
+         'CardMorgana/base_type = &"Button"',
+         'CardMorgana/styles/normal = SubResource("Style_card_morgana_normal")',
+         'CardMorgana/styles/hover = SubResource("Style_card_morgana_normal")',
+         'CardMorgana/styles/pressed = SubResource("Style_card_morgana_pressed")',
+         'CardMorgana/styles/hover_pressed = SubResource("Style_card_morgana_pressed")',
+         'CardMorgana/styles/disabled = SubResource("Style_card_morgana_normal")',
+         # v2.4: violet button (「無盡試煉」)
+         'ButtonViolet/base_type = &"Button"',
+         "ButtonViolet/colors/font_color = %s" % _col("white"),
+         "ButtonViolet/colors/font_hover_color = %s" % _col("white"),
+         "ButtonViolet/colors/font_pressed_color = %s" % _col("white"),
+         "ButtonViolet/colors/font_hover_pressed_color = %s" % _col("white"),
+         "ButtonViolet/colors/font_focus_color = %s" % _col("white"),
+         "ButtonViolet/colors/font_shadow_color = %s" % ink,
+         "ButtonViolet/constants/shadow_offset_x = 1",
+         "ButtonViolet/constants/shadow_offset_y = 1",
+         'ButtonViolet/styles/normal = SubResource("Style_button_violet_normal")',
+         'ButtonViolet/styles/hover = SubResource("Style_button_violet_normal")',
+         'ButtonViolet/styles/pressed = SubResource("Style_button_violet_pressed")',
+         'ButtonViolet/styles/hover_pressed = SubResource("Style_button_violet_pressed")',
          # Labels: dark text on parchment by default
          "Label/colors/font_color = %s" % ink,
          "Label/constants/line_spacing = 1",
@@ -738,6 +777,8 @@ def theme_tres() -> str:
          'Ribbon/styles/panel = SubResource("Style_ribbon")',
          'RibbonBig/base_type = &"PanelContainer"',
          'RibbonBig/styles/panel = SubResource("Style_ribbon_big")',
+         'RibbonGold/base_type = &"PanelContainer"',
+         'RibbonGold/styles/panel = SubResource("Style_ribbon_gold")',
          # Thin pixel scroll bar
          "VScrollBar/styles/scroll = SubResource(\"Style_scroll\")",
          "VScrollBar/styles/grabber = SubResource(\"Style_grabber\")",

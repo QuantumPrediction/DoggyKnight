@@ -9,10 +9,20 @@ extends Control
 ## 難度(v2.3,DEV_PLAN 4.11、CS6):GameState.chapter_cleared 為 true(打完第一章)時,
 ## 按「開始冒險」會先出現難度選擇(一般 / 困難),選好後設定 GameState.difficulty 才發 new_game_pressed;
 ## 還沒打完第一章時直接設為 &"normal" 再發訊號。
+##
+## v2.4(CV5,DEV_PLAN 4.12):
+## - 「無盡試煉」(紫色)只在 GameState.chapter_cleared 時出現;按下先設 GameState.mode = &"endless"
+##   再發 endless_pressed。「開始冒險」「繼續冒險」會把 mode 設回 &"story"。
+## - 「訓練」發 training_pressed(B 線打開 D 線的 game/camp/training.tscn)。和「製作名單」並排在最下面。
+## - 按鈕最多三行:「繼續冒險」/「開始冒險」+「無盡試煉」/「訓練」+「製作名單」(180×320 加瀏海也放得下)。
 
 signal new_game_pressed
 signal continue_pressed
 signal credits_pressed
+signal endless_pressed
+signal training_pressed
+
+const SMALL_BUTTON: Vector2 = Vector2(62, 26)
 
 const CLOUD_SPEEDS: Array[float] = [3.0, 2.0, 4.5]
 const SPARKLE: PackedScene = preload("res://assets/fx/particles/sparkle.tscn")
@@ -22,6 +32,8 @@ const SWORD_TIP_IN_BACKDROP: Vector2 = Vector2(213, 220)
 var continue_button: Button
 var new_game_button: Button
 var credits_button: Button
+var endless_button: Button
+var training_button: Button
 var normal_button: Button
 var hard_button: Button
 var back_button: Button
@@ -94,16 +106,40 @@ func _ready() -> void:
 	add_child(_buttons)
 	continue_button = UiKit.button(tr("UI_CONTINUE"))
 	continue_button.name = "ContinueButton"
-	continue_button.pressed.connect(func() -> void: continue_pressed.emit())
+	continue_button.pressed.connect(func() -> void:
+		GameState.mode = &"story"
+		continue_pressed.emit())
 	_buttons.add_child(continue_button)
-	new_game_button = UiKit.button(tr("UI_NEW_GAME"))
+	# 「開始冒險」與「無盡試煉」並排(還沒通關時「開始冒險」佔滿整行),小螢幕也放得下
+	var mid := HBoxContainer.new()
+	mid.name = "PlayButtons"
+	mid.add_theme_constant_override(&"separation", int(UiKit.GAP))
+	_buttons.add_child(mid)
+	new_game_button = UiKit.button(tr("UI_NEW_GAME"), &"", SMALL_BUTTON)
 	new_game_button.name = "NewGameButton"
+	new_game_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	new_game_button.pressed.connect(_on_new_game)
-	_buttons.add_child(new_game_button)
-	credits_button = UiKit.button(tr("UI_CREDITS"), &"ButtonAlt")
+	mid.add_child(new_game_button)
+	endless_button = UiKit.button(tr("UI_ENDLESS"), &"ButtonViolet", SMALL_BUTTON)
+	endless_button.name = "EndlessButton"
+	endless_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	endless_button.pressed.connect(_on_endless)
+	mid.add_child(endless_button)
+	var row := HBoxContainer.new()
+	row.name = "SmallButtons"
+	row.add_theme_constant_override(&"separation", int(UiKit.GAP))
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	_buttons.add_child(row)
+	training_button = UiKit.button(tr("UI_TRAINING"), &"ButtonAlt", SMALL_BUTTON)
+	training_button.name = "TrainingButton"
+	training_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	training_button.pressed.connect(func() -> void: training_pressed.emit())
+	row.add_child(training_button)
+	credits_button = UiKit.button(tr("UI_CREDITS"), &"ButtonAlt", SMALL_BUTTON)
 	credits_button.name = "CreditsButton"
+	credits_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	credits_button.pressed.connect(func() -> void: credits_pressed.emit())
-	_buttons.add_child(credits_button)
+	row.add_child(credits_button)
 
 	_version = UiKit.label(tr("UI_VERSION") % ProjectSettings.get_setting("application/config/version", "0.1.0"),
 			&"LabelLight", HORIZONTAL_ALIGNMENT_RIGHT)
@@ -170,8 +206,17 @@ func is_difficulty_open() -> bool:
 	return difficulty_panel.visible
 
 
+## 「無盡試煉」:先設定模式再發訊號(B 線收到後開始無盡試煉)。
+func _on_endless() -> void:
+	if not GameState.chapter_cleared:
+		return
+	GameState.mode = &"endless"
+	endless_pressed.emit()
+
+
 func _start(difficulty: StringName) -> void:
 	GameState.difficulty = difficulty
+	GameState.mode = &"story"
 	difficulty_panel.visible = false
 	_buttons.visible = true
 	new_game_pressed.emit()
@@ -187,6 +232,8 @@ func setup(has_save: bool) -> void:
 
 func _apply_save_state() -> void:
 	continue_button.visible = _has_save
+	endless_button.visible = GameState.chapter_cleared
+	_cleared_label.visible = GameState.chapter_cleared
 	# 有存檔時「繼續」是主要按鈕(金色),「開始冒險」改為次要(藍色)。
 	new_game_button.theme_type_variation = &"ButtonAlt" if _has_save else &""
 
