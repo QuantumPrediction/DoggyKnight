@@ -8,6 +8,9 @@ extends RefCounted
 ##   ability_hit(target: Node2D, damage: int, knockback: float) -> void
 ##   ability_stun(target: Node2D, duration: float) -> void
 ##   ability_visual(kind: StringName, radius: float) -> void
+##   ability_projectile(kind: StringName, damage: int) -> void     v2.4:擊掌連打的掌印
+## 能力也可以影響金毛本身(v2.4):speed_mult()、damage_taken_mult()、is_invulnerable(),
+## 以及場上有敵人倒下時的 on_kill()。金毛把這些乘起來,不改 GameState.player_stats(那是 B 線的)。
 ## 時間由宿主每個物理格呼叫 update(delta) 推進,所以測試可以用模擬時間。
 
 var id: StringName
@@ -43,6 +46,26 @@ func update(_delta: float) -> void:
 ## 金毛的一次揮劍打中了至少一隻敵人。傳回這一下的傷害倍數。
 func on_swing_landed() -> float:
 	return 1.0
+
+
+## 場上有敵人倒下(v2.4)。
+func on_kill() -> void:
+	pass
+
+
+## 移動速度倍數(v2.4;1 = 不影響)。
+func speed_mult() -> float:
+	return 1.0
+
+
+## 受到的傷害倍數(v2.4;1 = 不影響)。
+func damage_taken_mult() -> float:
+	return 1.0
+
+
+## 這個能力讓金毛暫時無敵(v2.4 打滾)。
+func is_invulnerable() -> bool:
+	return false
 
 
 func _targets(radius: float) -> Array:

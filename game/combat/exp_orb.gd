@@ -21,6 +21,7 @@ const TRAIL_COLOR := Color(0.75, 1.0, 0.8)
 @export var auto_collect_delay: float = 0.8      ## 場上沒有敵人多久後自動吸過去;< 0 關閉
 
 var collected: bool = false
+var trail_color: Color = TRAIL_COLOR
 
 var _pop_left: float = 0.0
 var _pop_from: Vector2 = Vector2.ZERO
@@ -96,9 +97,9 @@ func _draw() -> void:
 	var colors := PackedColorArray()
 	for i in _trail.size():
 		points.append((_trail[i] - global_position).round() + _sprite.position)
-		colors.append(Color(TRAIL_COLOR, 0.15 + 0.6 * float(i) / float(_trail.size())))
+		colors.append(Color(trail_color, 0.15 + 0.6 * float(i) / float(_trail.size())))
 	points.append(_sprite.position)
-	colors.append(Color(TRAIL_COLOR, 0.85))
+	colors.append(Color(trail_color, 0.85))
 	draw_polyline_colors(points, colors, 1.0)
 
 

@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="LootTuning" format=3]
+
+[ext_resource type="Script" path="res://game/combat/loot_tuning.gd" id="1_loot"]
+
+[resource]
+script = ExtResource("1_loot")
+guaranteed_chests = {
+&"black_knight": 2,
+&"scarecrow_captain": 2,
+&"scarecrow_elite": 1
+}
+chest_chance = 0.012
+chest_chance_per_luck = 0.006
+chest_chance_max = 0.1
+max_random_chests = 2
+chest_open_distance = 11.0
+chest_pop_time = 0.35
+chest_pop_height = 10.0
+chest_auto_collect_delay = 1.0
+chest_magnet_accel = 260.0
+chest_magnet_max_speed = 140.0
+chest_open_linger = 0.7
+chest_glow_colors = Array[Color]([Color(1, 0.95, 0.7, 0.55), Color(1, 0.6, 0.25, 0.6), Color(0.85, 0.55, 1, 0.65)])
+chest_tints = Array[Color]([Color(1, 1, 1, 1), Color(1, 0.9, 0.8, 1), Color(1, 0.95, 0.75, 1)])
+snack_chance = 0.12
+snack_chance_per_luck = 0.03
+dig_snack_bonus = 0.5
+snack_chance_max = 0.85
+guaranteed_snacks = {
+&"black_knight": 5,
+&"scarecrow_captain": 3,
+&"scarecrow_elite": 2
+}
+snack_value = 1
+dig_heal = 2
+max_snacks_on_field = 12
+luck_id = &"luck"

@@ -1,0 +1,12 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/combat/chest.gd" id="1_chest"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/chest/chest_frames.tres" id="2_frames"]
+
+[node name="Chest" type="Node2D" groups=["chest"]]
+script = ExtResource("1_chest")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_frames")
+animation = &"idle"
+autoplay = "idle"

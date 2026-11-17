@@ -19,6 +19,14 @@ extends CharacterBody2D
 ## - AP9 受擊 medium、必殺技 heavy 震動(Haptics)。
 ## - AP10 收到 level_completed 後停止攻擊,停下時歡呼(有 victory 動畫就用)。
 ## - 慢動作(打倒頭目時):動作跟著 CombatFx.time_scale 變慢。
+##
+## v2.4 玩法深度(DEV_PLAN 4.12、第 17 節,數值在 data/player/ability_tuning.tres、goldie_tuning.tres):
+## - AV1 新能力:撲擊(停下時撲向 60 像素內的敵人再揮劍)、打滾(開始移動時翻滾無敵)、
+##   裝死(每關一次活力歸零改為剩 1)、暴衝(打倒敵人後加速);進化:旋風尾、獅王吼、擊掌連打、流星撲擊。
+##   進化聽 trick_evolved(或 trick_chosen 是進化 id);進場時依 GameState.active_tricks 重建。
+##   能力的速度、減傷、無敵乘在金毛身上,不改 GameState.player_stats。
+##   嗅嗅(sniff)的暴擊率由這裡套用(StatBlock 沒有暴擊欄位):每層 +8%,暴擊 ×1.5。
+## - AV4 復活:revive() 伸懶腰醒來(星星、愛心、光圈)、短暫無敵、震開並暈眩附近敵人。
 
 const PLAYER_GROUP: StringName = &"player"
 const ENEMY_GROUP: StringName = &"enemy"
@@ -71,6 +79,21 @@ var _cheer_left: float = 0.0
 var _cheer_count: int = 0
 var _run_time: float = 0.0
 var _last_pickup_haptic: float = -10.0
+var _spin_total: float = SPIN_VISUAL_TIME
+var _was_moving: bool = false
+var _pounce_left: float = -1.0
+var _pounce_total: float = 0.0
+var _pounce_from: Vector2 = Vector2.ZERO
+var _pounce_to: Vector2 = Vector2.ZERO
+var _pounce_target: Node2D
+var _pounce_ability: PounceAbility
+var _flop_left: float = -1.0
+var _wake_left: float = -1.0
+var _tornado_fx: TornadoFx
+var rng := RandomNumberGenerator.new()   ## 暴擊用(測試可以設定種子)
+var crit_count: int = 0                  ## 嗅嗅暴擊次數(測試與除錯用)
+var play_dead_count: int = 0             ## 裝死救回的次數
+var revive_count: int = 0
 
 
 func _ready() -> void:
@@ -89,6 +112,8 @@ func _ready() -> void:
 	abilities = AbilitySet.new(self, ability_tuning)
 	abilities.rebuild(GameState.active_tricks)
 	EventBus.trick_chosen.connect(_on_trick_chosen)
+	EventBus.trick_evolved.connect(_on_trick_evolved)
+	EventBus.enemy_died.connect(_on_enemy_died)
 	EventBus.ultimate_requested.connect(_on_ultimate_requested)
 	EventBus.level_completed.connect(_on_level_completed)
 	EventBus.leveled_up.connect(_on_leveled_up)
@@ -98,6 +123,7 @@ func _ready() -> void:
 		GameState.vigor = GameState.player_stats.max_vigor
 	_emit_vigor()
 	_emit_loyalty()
+	_sync_tornado_fx()
 
 
 func _physics_process(delta: float) -> void:
@@ -110,6 +136,9 @@ func _physics_process(delta: float) -> void:
 	if _ult_left >= 0.0:
 		_tick_ultimate(delta)
 		return
+	if _flop_left >= 0.0 or _wake_left >= 0.0:
+		_tick_flop_and_wake(delta)
+		return
 	if _hitstop_left > 0.0:
 		_hitstop_left -= delta
 		if _hitstop_left <= 0.0:
@@ -118,29 +147,50 @@ func _physics_process(delta: float) -> void:
 	sprite.speed_scale = ts
 	var stats := GameState.player_stats
 	var input := get_move_input()
-	var target_velocity := input * stats.move_speed
-	var ramp_time := tuning.accel_time if input != Vector2.ZERO else tuning.decel_time
-	var rate := stats.move_speed / maxf(ramp_time, 0.001)
+	var moving := input != Vector2.ZERO
+	if _pounce_left >= 0.0:
+		if moving:
+			_cancel_pounce()
+		else:
+			_tick_pounce(delta)
+			abilities.update(delta)
+			if absf(facing.x) > 0.05:
+				sprite.flip_h = facing.x < 0.0
+			return
+	if moving and not _was_moving and abilities.roll.try_roll():
+		_begin_roll(input)
+	_was_moving = moving
+	var speed := stats.move_speed * abilities.speed_mult()
+	var target_velocity := input * speed
+	var ramp_time := tuning.accel_time if moving else tuning.decel_time
+	var rate := speed / maxf(ramp_time, 0.001)
 	velocity = velocity.move_toward(target_velocity, rate * delta)
 	var real_velocity := velocity
 	velocity *= ts
 	move_and_slide()
 	velocity = real_velocity
 	global_position = CombatMath.clamp_to_bounds(global_position, _arena_margin)
-	var moving := input != Vector2.ZERO
 	if moving:
 		facing = input
 	_update_attack(delta, moving)
 	abilities.update(delta)
 	_update_visuals(delta)
+	if abilities.is_zooming() or abilities.roll.is_rolling():
+		queue_redraw()
 
 
 # --- 合約方法 ------------------------------------------------------------------
 
 func take_damage(amount: int) -> void:
-	if _downed or amount <= 0 or invuln_left > 0.0:
+	if _downed or amount <= 0 or invuln_left > 0.0 or abilities.is_invulnerable():
 		return
 	var final := CombatMath.damage_taken(amount, GameState.player_stats)
+	var guard := abilities.damage_taken_mult()
+	if guard != 1.0:
+		final = maxi(1, roundi(float(final) * guard))
+	if GameState.vigor - final <= 0 and abilities.play_dead.try_save():
+		_save_by_playing_dead()
+		return
 	GameState.vigor = maxi(0, GameState.vigor - final)
 	EventBus.player_damaged.emit(final)
 	_emit_vigor()
@@ -171,22 +221,43 @@ func is_downed() -> bool:
 	return _downed
 
 
-## 叫醒睡著的金毛(給流程或沙盒用;一般重試是重新建立場地)。活力為 0 時回到上限。
+## 叫醒睡著的金毛(AV4:B 線用零食復活時呼叫;一般重試是重新建立場地)。
+## 活力回到上限的 revive_vigor_ratio(預設全滿);可愛地醒來:伸懶腰、跳起來、冒星星與愛心,
+## 金色光圈把附近的敵人震開並暈眩一下;醒來後 revive_invuln_time 秒無敵(閃爍)。
+## 醒來的演出(revive_wake_time 秒)期間不能動。沒有睡著時不做任何事。
 func revive() -> void:
 	if not _downed:
 		return
 	_downed = false
+	revive_count += 1
 	if _dizzy != null and is_instance_valid(_dizzy):
 		_dizzy.queue_free()
 	_dizzy = null
 	if joystick != null:
 		joystick.enabled = true
-	if GameState.vigor <= 0:
-		GameState.vigor = GameState.player_stats.max_vigor
-	invuln_left = tuning.invuln_time
-	_blink_left = tuning.invuln_time
+	var max_vigor := GameState.player_stats.max_vigor
+	GameState.vigor = clampi(maxi(GameState.vigor, ceili(float(max_vigor) * tuning.revive_vigor_ratio)), 1, max_vigor)
+	invuln_left = maxf(tuning.invuln_time, tuning.revive_invuln_time)
+	_blink_left = 0.0
+	_wake_left = maxf(0.0, tuning.revive_wake_time)
+	_flop_left = -1.0
+	velocity = Vector2.ZERO
+	_was_moving = false
+	# 伸懶腰:身體先壓扁,演出結束時跳起來。
+	sprite.scale = Vector2(1.25, 0.75)
 	_play(&"idle")
+	var head := global_position + Vector2(0, -_frame_size.y * 0.55)
+	CombatFx.particles(self, &"star_burst", head, false, true)
+	CombatFx.particles(self, &"sparkle", global_position, false, true)
+	CombatFx.particles(self, &"heart", head, false, true)
+	CombatFx.ring(self, global_position, 4.0, tuning.revive_push_radius, 0.45, Color(1.0, 0.9, 0.45, 0.95), 2.0)
+	CombatFx.ring(self, global_position, 2.0, tuning.revive_push_radius * 0.6, 0.3, Color(1.0, 1.0, 0.85, 0.8), 1.0)
+	CombatFx.sfx(&"revive", &"heal")
+	CombatFx.haptic(feel.haptic_player_hit)
+	_push_enemies(tuning.revive_push_radius, tuning.revive_push_speed, tuning.revive_stun_time)
 	_emit_vigor()
+	if _wake_left <= 0.0:
+		_finish_wake()
 
 
 # --- 移動輸入 ------------------------------------------------------------------
@@ -225,7 +296,8 @@ func _update_attack(delta: float, moving: bool) -> void:
 			_swing()
 		return
 	if _attack_cooldown <= 0.0 and not celebrating and _has_enemies():
-		_start_windup()
+		if not _try_pounce():
+			_start_windup()
 
 
 func _start_windup() -> void:
@@ -260,6 +332,9 @@ func _swing() -> void:
 	var half_angle := deg_to_rad(tuning.attack_arc_degrees) * 0.5
 	var hits := _enemies_in_sector(stats.attack_range, half_angle)
 	var mult := abilities.on_swing_landed() if not hits.is_empty() else 1.0
+	if not hits.is_empty() and rng.randf() < crit_chance():
+		mult *= ability_tuning.crit_multiplier
+		crit_count += 1
 	var damage := CombatMath.player_damage(stats, GameState.next_level_bonus, mult)
 	swing_count += 1
 	last_swing_hits = hits.size()
@@ -473,6 +548,7 @@ func ability_stun(target: Node2D, duration: float) -> void:
 func ability_visual(kind: StringName, radius: float) -> void:
 	match kind:
 		&"spin":
+			_spin_total = SPIN_VISUAL_TIME
 			_spin_left = SPIN_VISUAL_TIME
 			CombatFx.ring(self, global_position, 6.0, radius, 0.25, Color(1, 1, 1, 0.9), 2.0)
 			for i in 4:
@@ -483,11 +559,271 @@ func ability_visual(kind: StringName, radius: float) -> void:
 			_hop_left = HOP_TIME
 			CombatFx.ring(self, global_position, 4.0, radius, 0.35, Color(1.0, 0.92, 0.45, 0.9), 2.0)
 			CombatFx.ring(self, global_position, 2.0, radius * 0.6, 0.25, Color(1.0, 0.92, 0.45, 0.7), 1.0)
+		&"lion_roar":
+			# 獅王吼:比吠叫大一倍的三圈金色聲波、地上的震波、鏡頭震動。
+			_hop_left = HOP_TIME * 1.4
+			sprite.scale = Vector2(1.2, 0.85)
+			CombatFx.ring(self, global_position, 6.0, radius, 0.5, Color(1.0, 0.7, 0.2, 0.95), 3.0)
+			CombatFx.ring(self, global_position, 4.0, radius * 0.72, 0.4, Color(1.0, 0.85, 0.35, 0.85), 2.0)
+			CombatFx.ring(self, global_position, 2.0, radius * 0.45, 0.3, Color(1.0, 0.95, 0.6, 0.8), 1.0)
+			CombatFx.ring(self, global_position, 2.0, radius * 0.3, 0.2, Color(1.0, 0.85, 0.4, 0.35), 1.0, true, true)
+			CombatFx.particles(self, &"shockwave", global_position, true, true)
+			CombatFx.trauma(self, feel.trauma_player_hit * 0.8)
+			CombatFx.haptic(&"medium")
+		&"tornado":
+			CombatFx.ring(self, global_position, radius * 0.5, radius, 0.2, Color(0.8, 0.97, 1.0, 0.6), 1.0)
+		&"meteor":
+			# 流星撲擊落地:橘色衝擊閃光與圓圈、震波、塵土、鏡頭震動。
+			CombatFx.ring(self, global_position, 2.0, radius, 0.18, Color(1.0, 0.55, 0.2, 0.55), 1.0, true, true)
+			CombatFx.ring(self, global_position, 4.0, radius * 1.15, 0.35, Color(1.0, 0.6, 0.2, 0.95), 3.0, true)
+			CombatFx.particles(self, &"shockwave", global_position, true, true)
+			CombatFx.particles(self, &"footstep_dust", global_position + Vector2(-6, 4), true)
+			CombatFx.particles(self, &"footstep_dust", global_position + Vector2(6, 4), true)
+			CombatFx.trauma(self, feel.trauma_player_hit * 0.7)
+			CombatFx.sfx(&"meteor", &"hit")
+			CombatFx.haptic(&"light")
+
+
+## 擊掌連打的掌印(kind = paw):飛向最近的敵人。
+func ability_projectile(kind: StringName, damage: int) -> void:
+	if kind != &"paw" or not is_inside_tree():
+		return
+	var paw := PawPrint.new()
+	paw.damage = damage
+	paw.speed = ability_tuning.high_five_paw_speed
+	paw.search_range = ability_tuning.high_five_paw_range
+	paw.lifetime = ability_tuning.high_five_paw_lifetime
+	paw.shooter = self
+	paw.target = _nearest_enemy(ability_tuning.high_five_paw_range)
+	CombatFx.layer_for(self).add_child(paw)
+	paw.launch(global_position + facing.normalized() * 8.0 + Vector2(0, -4), facing)
+	CombatFx.ring(self, global_position + facing.normalized() * 8.0, 2.0, 10.0, 0.2, Color(1.0, 0.9, 0.5, 0.9), 1.0)
+	CombatFx.sfx(&"high_five", &"whoosh")
+
+
+## 嗅嗅(sniff)的暴擊率:每層 sniff_crit_chance(數 GameState.active_tricks)。
+func crit_chance() -> float:
+	return ability_tuning.sniff_crit_chance * float(GameState.active_tricks.count(&"sniff"))
 
 
 func _on_trick_chosen(trick_id: StringName) -> void:
+	if AbilitySet.is_evolution(trick_id):
+		_apply_evolution(trick_id)
+		return
 	if abilities.add_trick(trick_id):
 		CombatFx.ring(self, global_position, 2.0, 16.0, 0.3, Color(1.0, 0.95, 0.6, 0.9), 1.0)
+		_sync_tornado_fx()
+
+
+func _on_trick_evolved(evolution_id: StringName) -> void:
+	_apply_evolution(evolution_id)
+
+
+## 進化(v2.4):換成進化把戲;第一次換時有演出(光柱、閃光、音效)。重複收到不會疊加。
+func _apply_evolution(evolution_id: StringName) -> void:
+	if not abilities.evolve(evolution_id):
+		return
+	_sync_tornado_fx()
+	if not is_inside_tree():
+		return
+	CombatFx.sfx(&"evolve", &"level_up")
+	CombatFx.haptic(&"medium")
+	var pillar := CombatFx.particles(self, &"level_up_pillar", global_position + Vector2(0, _frame_size.y * 0.4), false, true)
+	if pillar != null:
+		pillar.process_mode = Node.PROCESS_MODE_ALWAYS
+	CombatFx.particles(self, &"sparkle", global_position + Vector2(0, -_frame_size.y * 0.4), false, true)
+	CombatFx.ring(self, global_position, 4.0, 30.0, 0.45, Color(1.0, 0.85, 0.3, 0.95), 2.0)
+	CombatFx.ring(self, global_position, 2.0, 18.0, 0.3, Color(0.75, 0.95, 1.0, 0.9), 1.0)
+
+
+func _on_enemy_died(_enemy_id: StringName, _position: Vector2, _exp_value: int) -> void:
+	if _downed:
+		return
+	var was := abilities.is_zooming()
+	abilities.on_kill()
+	if not was and abilities.is_zooming() and is_inside_tree():
+		# 暴衝開始:腳下一圈風、揚起塵土。
+		CombatFx.ring(self, global_position, 3.0, 14.0, 0.25, Color(0.6, 0.95, 1.0, 0.9), 1.0, true)
+		CombatFx.particles(self, &"footstep_dust", global_position + Vector2(0, _frame_size.y * 0.4), true)
+
+
+# --- v2.4 新能力的動作(撲擊、打滾、裝死、旋風) ---------------------------------------
+
+## 停下要攻擊時:最近的敵人在撲擊範圍內(但不在身邊)就撲過去。傳回 true 表示開始撲。
+func _try_pounce() -> bool:
+	var ability := abilities.active_pounce()
+	if ability == null or not ability.is_ready():
+		return false
+	var target := _nearest_enemy(ability.reach())
+	if target == null:
+		return false
+	var distance := global_position.distance_to(target.global_position) - _radius_of(target)
+	if not ability.try_pounce(distance):
+		return false
+	_begin_pounce(target, ability)
+	return true
+
+
+func _begin_pounce(target: Node2D, ability: PounceAbility) -> void:
+	_pounce_ability = ability
+	_pounce_target = target
+	_pounce_from = global_position
+	var dir := (target.global_position - global_position).normalized()
+	var stop := ability_tuning.pounce_stop_distance + _radius_of(target) * 0.5
+	_pounce_to = CombatMath.clamp_to_bounds(target.global_position - dir * stop, _arena_margin)
+	_pounce_total = maxf(0.05, ability.dash_time())
+	_pounce_left = _pounce_total
+	facing = dir
+	velocity = Vector2.ZERO
+	invuln_left = maxf(invuln_left, _pounce_total)
+	_cancel_windup()
+	_play(&"run", true)
+	sprite.scale = Vector2(1.2, 0.85)
+	if ability is MeteorPounceAbility:
+		sprite.modulate = Color(1.0, 0.75, 0.45)
+	CombatFx.particles(self, &"footstep_dust", global_position + Vector2(0, _frame_size.y * 0.4), true)
+	CombatFx.sfx(&"whoosh", &"swing")
+
+
+func _tick_pounce(delta: float) -> void:
+	velocity = Vector2.ZERO
+	_pounce_left -= delta
+	var t := 1.0 - clampf(_pounce_left / _pounce_total, 0.0, 1.0)
+	var eased := 1.0 - (1.0 - t) * (1.0 - t)
+	global_position = _pounce_from.lerp(_pounce_to, eased)
+	var hop := _pounce_ability.hop_height() if _pounce_ability != null else 6.0
+	sprite.position = Vector2(0, -roundf(sin(PI * t) * hop))
+	sprite.scale = Vector2(0.9, 1.12) if t < 0.5 else Vector2(1.05, 0.95)
+	if _pounce_left <= 0.0:
+		_land_pounce()
+
+
+func _land_pounce() -> void:
+	_pounce_left = -1.0
+	sprite.position = Vector2.ZERO
+	sprite.modulate = Color.WHITE
+	sprite.scale = Vector2(1.15, 0.88)
+	var ability := _pounce_ability
+	_pounce_ability = null
+	if ability != null:
+		ability.on_land()
+	var target := _pounce_target
+	_pounce_target = null
+	if _is_valid_target(target):
+		_attack_target = target
+	_swing()
+
+
+func _cancel_pounce() -> void:
+	_pounce_left = -1.0
+	_pounce_ability = null
+	_pounce_target = null
+	if sprite != null:
+		sprite.position = Vector2.ZERO
+		sprite.modulate = Color.WHITE
+
+
+func is_pouncing() -> bool:
+	return _pounce_left >= 0.0
+
+
+func _begin_roll(direction: Vector2) -> void:
+	_spin_total = abilities.roll.roll_time()
+	_spin_left = _spin_total
+	facing = direction
+	sprite.scale = Vector2(1.1, 0.9)
+	CombatFx.particles(self, &"footstep_dust", global_position + Vector2(-direction.x * 4.0, _frame_size.y * 0.4), true)
+	CombatFx.sfx(&"whoosh", &"swing", -4.0)
+
+
+## 裝死(play_dead):這一下本來會睡著,改為剩 1 活力。先倒下裝死一下,再跳起來(無敵、震開敵人)。
+func _save_by_playing_dead() -> void:
+	var taken := maxi(0, GameState.vigor - 1)
+	GameState.vigor = 1
+	play_dead_count += 1
+	if taken > 0:
+		EventBus.player_damaged.emit(taken)
+	_emit_vigor()
+	_cancel_windup()
+	_cancel_pounce()
+	velocity = Vector2.ZERO
+	_flop_left = maxf(0.0, ability_tuning.play_dead_flop_time)
+	invuln_left = _flop_left + ability_tuning.play_dead_invuln
+	_blink_left = 0.0
+	_hurt_anim_left = 0.0
+	sprite.visible = true
+	_play(&"sleep", true)
+	sprite.scale = Vector2(1.15, 0.85)
+	Sfx.play(&"hurt")
+	CombatFx.particles(self, &"star_burst", global_position + Vector2(0, -_frame_size.y * 0.5))
+	CombatFx.trauma(self, feel.trauma_player_hit)
+	CombatFx.haptic(feel.haptic_player_hit)
+
+
+## 裝死倒下與復活醒來的演出(都不能動)。
+func _tick_flop_and_wake(delta: float) -> void:
+	velocity = Vector2.ZERO
+	sprite.speed_scale = CombatFx.time_scale
+	if _flop_left >= 0.0:
+		_flop_left -= delta
+		# 倒下時微微起伏,像在睡覺。
+		sprite.position = Vector2(0, roundf(sin(_flop_left * 18.0) * 0.5))
+		if _flop_left < 0.0:
+			_flop_left = -1.0
+			_blink_left = ability_tuning.play_dead_invuln
+			_hop_left = HOP_TIME * 1.5
+			sprite.scale = Vector2(0.85, 1.2)
+			sprite.position = Vector2.ZERO
+			_play(&"idle", true)
+			CombatFx.particles(self, &"sparkle", global_position + Vector2(0, -_frame_size.y * 0.4), false, true)
+			CombatFx.ring(self, global_position, 4.0, ability_tuning.play_dead_push_radius, 0.35, Color(0.85, 0.95, 1.0, 0.9), 2.0)
+			CombatFx.sfx(&"whoosh", &"swing")
+			_push_enemies(ability_tuning.play_dead_push_radius, ability_tuning.play_dead_push_speed, 0.0)
+		return
+	_wake_left -= delta
+	var t := 1.0 - clampf(_wake_left / maxf(tuning.revive_wake_time, 0.001), 0.0, 1.0)
+	# 伸懶腰:先壓扁再慢慢伸直,最後跳起來。
+	sprite.scale = Vector2(lerpf(1.25, 1.0, t), lerpf(0.75, 1.0, t))
+	if _wake_left < 0.0:
+		_finish_wake()
+
+
+func _finish_wake() -> void:
+	_wake_left = -1.0
+	_hop_left = HOP_TIME * 1.6
+	sprite.scale = Vector2(0.85, 1.2)
+	_blink_left = maxf(0.0, invuln_left)
+	CombatFx.particles(self, &"sparkle", global_position + Vector2(0, -_frame_size.y * 0.4), false, true)
+
+
+## 正在裝死倒下,或正在醒來(不能動)。
+func is_waking() -> bool:
+	return _wake_left >= 0.0 or _flop_left >= 0.0
+
+
+## 把 radius 內的敵人往外推(stun > 0 時也暈眩幾秒)。
+func _push_enemies(radius: float, speed: float, stun: float) -> void:
+	if not is_inside_tree():
+		return
+	for enemy in _enemies_in_radius(radius):
+		if enemy.has_method(&"apply_knockback"):
+			enemy.call(&"apply_knockback", global_position, speed)
+		if stun > 0.0 and enemy.has_method(&"stun"):
+			enemy.call(&"stun", stun)
+
+
+## 旋風尾啟用時掛上持續的旋風畫面;停用時拿掉。
+func _sync_tornado_fx() -> void:
+	var want := abilities != null and abilities.tornado.is_active()
+	var has := _tornado_fx != null and is_instance_valid(_tornado_fx)
+	if want and not has:
+		_tornado_fx = TornadoFx.new()
+		_tornado_fx.ability = abilities.tornado
+		_tornado_fx.radius = abilities.tornado.radius()
+		add_child(_tornado_fx)
+	elif not want and has:
+		_tornado_fx.queue_free()
+		_tornado_fx = null
 
 
 # --- 慶祝與回饋 -------------------------------------------------------------------
@@ -637,7 +973,7 @@ func _update_visuals(delta: float) -> void:
 	sprite.skew = move_toward(sprite.skew, lean, delta * 3.0)
 	if _spin_left > 0.0:
 		_spin_left = maxf(0.0, _spin_left - delta)
-		sprite.rotation = TAU * (1.0 - _spin_left / SPIN_VISUAL_TIME) * (-1.0 if sprite.flip_h else 1.0)
+		sprite.rotation = TAU * (1.0 - _spin_left / maxf(_spin_total, 0.001)) * (-1.0 if sprite.flip_h else 1.0)
 	elif sprite.rotation != 0.0:
 		sprite.rotation = 0.0
 
@@ -647,7 +983,7 @@ func _update_visuals(delta: float) -> void:
 		pass
 	elif running:
 		_play(&"run")
-		_footstep_timer -= delta
+		_footstep_timer -= delta * (2.0 if abilities.is_zooming() else 1.0)
 		if _footstep_timer <= 0.0:
 			_footstep_timer = tuning.footstep_interval
 			CombatFx.particles(self, &"footstep_dust", global_position + Vector2(-facing.x * 3.0, _frame_size.y * 0.4), true)
@@ -678,6 +1014,9 @@ func _cheer(delta: float) -> void:
 
 func _go_down() -> void:
 	_downed = true
+	_cancel_pounce()
+	_flop_left = -1.0
+	_wake_left = -1.0
 	invuln_left = 0.0
 	_blink_left = 0.0
 	_windup_left = -1.0
@@ -731,3 +1070,11 @@ func _draw() -> void:
 	draw_set_transform(Vector2(0, _frame_size.y * 0.42), 0.0, Vector2(1.0, 0.4))
 	draw_circle(Vector2.ZERO, w, Color(0, 0, 0, 0.25))
 	draw_set_transform(Vector2.ZERO)
+	# 暴衝與打滾:身後的速度線。
+	if abilities != null and (abilities.is_zooming() or abilities.roll.is_rolling()) and velocity.length() > 4.0:
+		var back := -velocity.normalized()
+		var side := Vector2(-back.y, back.x)
+		var c := Color(0.75, 0.95, 1.0, 0.75) if abilities.is_zooming() else Color(1, 1, 1, 0.6)
+		for k: int in [-1, 1]:
+			var start := (back * 7.0 + side * 3.0 * float(k)).round()
+			draw_line(start, start + (back * 5.0).round(), c, 1.0)

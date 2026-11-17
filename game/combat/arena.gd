@@ -22,10 +22,16 @@ extends Node2D
 ## - AS7 合作:進攻名額(claim_attack_slot / release_attack_slot)限制同時出手的近戰敵人與瞄準的弓兵,
 ##   上限隨關卡(GameState.level_index)增加;後段關卡有夾擊(call_pincer)與交叉火力(melee_attack_on)。
 ## - AS5 投射物(箭、劍氣、乾草叉)放在特效層(在角色之上,最顯眼),clear() 時一起移除。
+##
+## v2.4 玩法深度(DEV_PLAN 4.12、第 17 節):
+## - AV2、AV3 掉落:敵人倒下時呼叫 drop_loot(enemy),依 Loot(data/enemies/loot_tuning.tres)
+##   在拾取層放寶箱(spawn_chest)與零食(spawn_snack)。clear() 時一起移除。
 
 const ENEMY_DATA_PATH := "res://data/enemies/%s.tres"
 const COMPANION_DATA_PATH := "res://data/companions/%s.tres"
 const EXP_ORB_SCENE: PackedScene = preload("res://game/combat/exp_orb.tscn")
+const CHEST_SCENE: PackedScene = preload("res://game/combat/chest.tscn")
+const SNACK_SCENE: PackedScene = preload("res://game/combat/snack.tscn")
 const ARENA_GROUP: StringName = &"arena"
 const ENEMY_GROUP: StringName = &"enemy"
 const COMPANION_GROUP: StringName = &"companion"
@@ -163,8 +169,9 @@ func clear() -> void:
 		node.queue_free()
 	for layer: Node in [pickups, ground_layer, fx_layer]:
 		for child in layer.get_children():
-			if child.is_in_group(ExpOrb.GROUP):
-				child.remove_from_group(ExpOrb.GROUP)
+			for group: StringName in [ExpOrb.GROUP, TreasureChest.GROUP, Snack.SNACK_GROUP]:
+				if child.is_in_group(group):
+					child.remove_from_group(group)
 			child.queue_free()
 	for child in get_children():
 		if child is ScreenTint:
@@ -312,6 +319,54 @@ func spawn_exp_orb(at: Vector2, value: int) -> Node2D:
 	pickups.add_child(orb)
 	orb.pop_from(at)
 	return orb
+
+
+## 敵人倒下時的掉落(寶箱、零食)。由 EnemyBase.die() 呼叫。
+func drop_loot(enemy: Node2D) -> void:
+	var enemy_id: StringName = &""
+	var data: Variant = enemy.get(&"data")
+	if data is EnemyData:
+		enemy_id = (data as EnemyData).id
+	var elite := bool(enemy.get(&"elite")) if enemy.get(&"elite") != null else false
+	var random_chests := 0
+	for chest in get_chests():
+		if bool(chest.get(&"random_drop")):
+			random_chests += 1
+	var drop := Loot.roll(enemy_id, elite, enemy is BossBase, random_chests)
+	var at := enemy.global_position
+	var tier := int(drop["chest"])
+	if tier >= 0:
+		var guaranteed := Loot.guaranteed_chest_tier(enemy_id, elite, enemy is BossBase) >= 0
+		spawn_chest(at, tier, not guaranteed)
+	var room := Loot.tuning().max_snacks_on_field - get_snacks().size()
+	for i in mini(int(drop["snacks"]), maxi(0, room)):
+		spawn_snack(at, Loot.tuning().snack_value)
+
+
+func spawn_chest(at: Vector2, tier: int, random_drop: bool = false) -> TreasureChest:
+	var chest := CHEST_SCENE.instantiate() as TreasureChest
+	chest.tier = clampi(tier, 0, 2)
+	chest.random_drop = random_drop
+	pickups.add_child(chest)
+	chest.pop_from(at)
+	return chest
+
+
+func spawn_snack(at: Vector2, value: int = 1) -> Snack:
+	var snack := SNACK_SCENE.instantiate() as Snack
+	snack.value = value
+	pickups.add_child(snack)
+	snack.pop_from(at)
+	return snack
+
+
+## 場上還沒打開的寶箱。
+func get_chests() -> Array[Node]:
+	return get_tree().get_nodes_in_group(TreasureChest.GROUP)
+
+
+func get_snacks() -> Array[Node]:
+	return get_tree().get_nodes_in_group(Snack.SNACK_GROUP)
 
 
 ## 累積鏡頭震動量(0 至 1)。偏移 = max_shake_offset × 震動量^trauma_power,每秒減少 trauma_decay。
