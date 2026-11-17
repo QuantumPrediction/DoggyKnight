@@ -7,6 +7,8 @@ extends Resource
 ## - 活力回復:vigor_restore_ratio × player_stats.max_vigor,最多回到上限。
 ## - 滿意度:加 satisfaction_gain,限制在 0 至 100。
 ## - next_level_bonus:直接設為 next_level_bonus 的值(0.05 = 下一關攻擊 +5%)。
+## - 零食(v2.4 DV2):加 snack_reward 個到 state.snacks(state 沒有 snacks 欄位時略過)。
+##   EventBus.snacks_changed 由 MinigameBase 在獎勵套用到 GameState 之後發出。
 
 const SATISFACTION_MIN: int = 0
 const SATISFACTION_MAX: int = 100
@@ -19,6 +21,8 @@ const SATISFACTION_MAX: int = 100
 @export var satisfaction_gain: Array[int] = [5, 10, 20, 30]
 ## 評價 0 至 3 給下一關的攻擊加成。
 @export var next_level_bonus: Array[float] = [0.0, 0.05, 0.10, 0.15]
+## v2.4:評價 0 至 3 給的零食(營地訓練用,DEV_PLAN 17 DV2)。
+@export var snack_reward: Array[int] = [0, 3, 6, 10]
 
 
 func max_grade() -> int:
@@ -34,7 +38,7 @@ func grade_for(score: int) -> int:
 
 
 ## 把獎勵套用到 state(GameState Autoload,或測試用的同型物件)。
-## 傳回實際的變化,給介面顯示:{"vigor": 回復量, "satisfaction": 增加量, "bonus": 加成}。
+## 傳回實際的變化,給介面顯示:{"vigor": 回復量, "satisfaction": 增加量, "bonus": 加成, "snacks": 零食}。
 func apply_rewards(grade: int, state: Object) -> Dictionary:
 	var g := clampi(grade, 0, max_grade())
 	var stats := state.get(&"player_stats") as StatBlock
@@ -50,10 +54,16 @@ func apply_rewards(grade: int, state: Object) -> Dictionary:
 
 	var bonus := _pick_float(next_level_bonus, g)
 	state.set(&"next_level_bonus", bonus)
+
+	var snacks := 0
+	if &"snacks" in state:
+		snacks = maxi(0, _pick_int(snack_reward, g))
+		state.set(&"snacks", int(state.get(&"snacks")) + snacks)
 	return {
 		"vigor": new_vigor - old_vigor,
 		"satisfaction": new_satisfaction - old_satisfaction,
 		"bonus": bonus,
+		"snacks": snacks,
 	}
 
 
