@@ -214,3 +214,4 @@ animations = [{
 "name": &"down",
 "speed": 3.0
 }]
+metadata/foot_lift = 8

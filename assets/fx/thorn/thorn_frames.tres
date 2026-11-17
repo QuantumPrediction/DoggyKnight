@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" format=3]
 
-[ext_resource type="Texture2D" path="res://assets/fx/arrow/arrow.png" id="1_sheet"]
+[ext_resource type="Texture2D" path="res://assets/fx/thorn/thorn.png" id="1_sheet"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_default_0"]
 atlas = ExtResource("1_sheet")
@@ -21,5 +21,5 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 12.0
+"speed": 8.0
 }]
