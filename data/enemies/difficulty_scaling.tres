@@ -31,5 +31,5 @@ crossfire_from_level = 3
 crossfire_ready = 1.2
 pincer_from_level = 4
 pincer_reach = 16.0
-chapter_hp_mult = PackedFloat32Array(1.0, 1.3, 1.6)
-chapter_damage_mult = PackedFloat32Array(1.0, 1.2, 1.4)
+chapter_hp_mult = PackedFloat32Array(1.0, 1.15, 1.3)
+chapter_damage_mult = PackedFloat32Array(1.0, 1.1, 1.2)

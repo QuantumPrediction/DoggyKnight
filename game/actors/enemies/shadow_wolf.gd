@@ -14,7 +14,7 @@ enum Phase { CIRCLE, TELL, DASH, RECOVER }
 const LEAF_COLORS: Array[Color] = [Color("4f3f73"), Color("2f5a3a"), Color("6f8f4a"), Color("8a6fb0")]
 
 @export_group("繞圈")
-@export var circle_radius: float = 70.0
+@export var circle_radius: float = 48.0
 @export var circle_pull: float = 2.5            ## 拉回圈上的力道
 @export_group("衝鋒")
 @export var dash_telegraph: float = 0.75        ## 紅線預警(× 難度)
@@ -22,9 +22,9 @@ const LEAF_COLORS: Array[Color] = [Color("4f3f73"), Color("2f5a3a"), Color("6f8f
 @export var dash_overshoot: float = 30.0        ## 衝過目標多遠
 @export var dash_max_distance: float = 180.0
 @export var hit_radius: float = 7.0             ## 預警線寬度 = 2 × 這個
-@export var recover_time: float = 0.7
-@export var dash_cooldown_min: float = 2.4
-@export var dash_cooldown_max: float = 3.8
+@export var recover_time: float = 1.1
+@export var dash_cooldown_min: float = 2.8
+@export var dash_cooldown_max: float = 4.2
 @export var first_dash_min: float = 1.2
 @export var first_dash_max: float = 2.6
 @export var dash_range: float = 120.0           ## 目標在這個距離內才衝
