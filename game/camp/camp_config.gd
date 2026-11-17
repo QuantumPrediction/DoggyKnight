@@ -88,6 +88,57 @@ extends Resource
 ## 對白框(C 線,DEV_PLAN 4.11)。留空時用 ui/dialogue/dialogue_box.tscn。
 @export var dialogue_box_scene: PackedScene
 
+@export_group("三章(v2.6 DV1)")
+## GameState.level_index → 這是這一章的第幾次營地(1 = 第一次)。
+@export var camp_numbers: Dictionary[int, int] = {1: 1, 3: 2}
+## 第 2 章起的營地對白檔:第一個 %d = 章,第二個 %d = 第幾次營地(DEV_PLAN 4.13:cN_camp1、cN_camp2)。
+## 第一章仍用上面的 story_paths(camp1、camp2)。
+@export var chapter_story_path_format: String = "res://data/story/c%d_camp%d.tres"
+## 第幾章起鬥牛犬一開始就在營地(第二、三章 2-1 起就是同伴)。
+@export var bulldog_from_chapter: int = 2
+
+@export_group("小遊戲輪流(v2.6 DV3)")
+## 第幾章起營地的小遊戲輪流出現(第一章只有 minigame_scene)。
+@export var minigame_rotation_from_chapter: int = 2
+## 輪流的小遊戲。第 N 章第 K 次營地用第 (N + K) % 數量 個:
+## 預設 [卷軸, 叫醒騎士] → 2 章第 1 次叫醒騎士、第 2 次卷軸;3 章第 1 次卷軸、第 2 次叫醒騎士。
+@export var minigame_rotation: Array[PackedScene] = []
+## 每個輪流小遊戲的按鈕文字(翻譯鍵,和 minigame_rotation 同一次序)。
+@export var minigame_rotation_keys: PackedStringArray = []
+
+@export_group("蘭斯洛特(v2.6 DV1)")
+## 第幾章起蘭斯洛特在營地(第二章第一次營地起,DEV_PLAN 4.13)。
+@export var lancelot_from_chapter: int = 2
+## 蘭斯洛特的圖(C 線,動畫 idle、run、attack、hurt、dash)。留空時用 assets/sprites/lancelot/lancelot_frames.tres。
+@export var lancelot_frames: SpriteFrames
+@export var lancelot_idle_animation: StringName = &"idle"
+## 被點時播的動畫(轉一下長槍;播完回到 idle)。
+@export var lancelot_tap_animation: StringName = &"attack"
+@export var lancelot_scale: float = 2.0
+## 圖朝右畫;true = 朝左(看著營火)。
+@export var lancelot_flip: bool = true
+## 相對圓桌中心的位置(邏輯像素):站在圓桌右後方,桌面遮住下半身。
+@export var lancelot_offset: Vector2 = Vector2(32, -20)
+## 點蘭斯洛特時隨機說的話(翻譯鍵)。不會連續兩次說同一句。
+@export var lancelot_lines: PackedStringArray = ["CAMP_LANCELOT_01", "CAMP_LANCELOT_02", "CAMP_LANCELOT_03", "CAMP_LANCELOT_04"]
+## 點蘭斯洛特時的音效(揮槍)。
+@export var lancelot_sfx: StringName = &"swing"
+## 被點時動畫最多播多少秒就回到 idle(動畫不循環時也會自己停)。
+@export var lancelot_tap_sec: float = 0.6
+@export var lancelot_touch_margin: float = 4.0
+
+@export_group("湖中仙女(v2.6 DV1)")
+## 第幾章起由湖中仙女代替梅林(第三章:梅林被抓走了)。0 = 不換。
+@export var lady_from_chapter: int = 3
+## 湖中仙女的圖(C 線,動畫 idle、run、cast)。留空時用 assets/sprites/lady_lake/lady_lake_frames.tres。
+@export var lady_frames: SpriteFrames
+## 點她時隨機說的話(翻譯鍵)。
+@export var lady_lines: PackedStringArray = ["CAMP_LADY_01", "CAMP_LADY_02", "CAMP_LADY_03", "CAMP_LADY_04"]
+## 施法時的光(淡藍色的水光)。
+@export var lady_glow_color: Color = Color(0.5, 0.85, 1.0, 0.4)
+## 施法時光的位置(相對圖中心,圖的像素):她沒有手杖,光在胸前的水珠上。
+@export var lady_cast_tip: Vector2 = Vector2(6, -2)
+
 @export_group("梅林(DS2)")
 ## 梅林的圖(C 線,動畫 idle、run、cast)。留空時用 assets/sprites/merlin/merlin_frames.tres;沒有圖就不出現。
 @export var merlin_frames: SpriteFrames
@@ -145,6 +196,10 @@ extends Resource
 @export var fire_animation: StringName = &"default"
 
 @export_group("顏色(佔位圖用)")
+## v2.6 DV2:營地的場景依章變化(1 草地夜空、2 城牆下的營火、3 湖邊洞口與月光)。
+## 這裡是第一章的顏色;第二、三章的顏色在 chapter_palettes(章 → {欄位名稱: 顏色}),
+## 沒有寫的欄位沿用第一章的。
+@export var chapter_palettes: Dictionary[int, Dictionary] = {}
 @export var sky_top_color: Color = Color("141030")
 @export var sky_bottom_color: Color = Color("3a2c55")
 @export var ground_color: Color = Color("2e3b2a")

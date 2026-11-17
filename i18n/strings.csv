@@ -268,3 +268,22 @@ CHAPTER_SHORT_3,第三章
 UI_CHAPTER_PROGRESS_ANY,%s %d/%d
 UI_CHAPTER_CLEARED_ANY,%s 完成！
 UI_CHAPTER_UNLOCKED,%s 已經開啟！
+CAMP_LANCELOT_01,我從不睡午覺，所以今晚的守夜交給我。
+CAMP_LANCELOT_02,貝德維爾的香腸？我只是幫他試吃而已。
+CAMP_LANCELOT_03,尾巴捲起來是因為驕傲，才不是開心！
+CAMP_LANCELOT_04,別碰我的羽飾！……好吧，只能摸一下。
+CAMP_LADY_01,湖水記得很多往事，也會記得你的笑聲。
+CAMP_LADY_02,小水珠喜歡你呢，牠們在你頭上跳舞。
+CAMP_LADY_03,梅林小時候在這裡玩水，還跌進湖裡呢。
+CAMP_LADY_04,薩摩耶的毛不怕水……只是很難吹乾。
+UI_CAMP_MINIGAME_WAKE,叫醒打瞌睡的騎士
+MINIGAME_WAKE_GO,起床！
+MINIGAME_WAKE_HINT,圈圈縮到騎士頭上時，點他！
+MINIGAME_WAKE_SCORE,%d 分
+MINIGAME_WAKE_RESULT,完美 ×%d，最高連擊 ×%d
+MINIGAME_WAKE_COMBO,連擊 ×%d
+MINIGAME_WAKE_SNORE,呼嚕……
+MINIGAME_WAKE_CHEER,汪！
+CAMP_SANDBOX_C2,第二章營地(蘭斯洛特)
+CAMP_SANDBOX_C3,第三章營地(湖中仙女)
+CAMP_SANDBOX_BOSS,頭目壓力測試
