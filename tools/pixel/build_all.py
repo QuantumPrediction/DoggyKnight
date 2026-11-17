@@ -59,6 +59,10 @@ import art_v25_fx  # noqa: E402
 import art_v25_foes  # noqa: E402
 import art_v25_goldie  # noqa: E402
 import art_v25_knights  # noqa: E402
+import art_v26_ch1  # noqa: E402
+import art_v26_story  # noqa: E402
+import art_v26_title  # noqa: E402
+import art_v26_world  # noqa: E402
 import music_gen  # noqa: E402
 import paint  # noqa: E402
 import sfx_gen  # noqa: E402
@@ -159,6 +163,11 @@ def main() -> None:
     bulldog_idle = sheets["bulldog"][0].frames[0]
     art_brand.write_all(goldie_idle, bulldog_idle, art_world.prop(art_world.SWORD_STONE),
                         art_world.prop(art_world.TREE), art_world.prop(art_world.BUSH))
+    # v2.6 (C 世界): chapter 2-3 backgrounds, chapter 1 repaint, title backdrops, new storybook pages
+    art_v26_world.write_all()
+    art_v26_ch1.write_all()
+    art_v26_title.write_all()
+    art_v26_story.write_all()
     sfx_gen.write_all()
     if "--no-music" not in sys.argv:
         music_gen.write_all()

@@ -152,11 +152,11 @@ def title_bg_2() -> Canvas:
                      base_dark=6)
     c.blit(wall, 0, base - 34)
     c.blit(K.crenels(TW, 7, 5, 6, ("stone", "stone_l", "white"), "stone_d"), 0, base - 41)
-    keep = K.masonry(84, 64, ("stone", "stone_l", "white"), 5202, course=6, mortar="stone_d", base_dark=0)
-    c.blit(keep, 110, base - 98)
-    c.blit(K.crenels(84, 7, 5, 6, ("stone", "stone_l", "white"), "stone_d"), 110, base - 105)
-    for (tx, w, h, cone) in ((30, 26, 96, 24), (96, 20, 112, 22), (208, 20, 116, 22), (274, 26, 98, 24),
-                             (152, 22, 140, 26)):
+    keep = K.masonry(84, 44, ("stone", "stone_l", "white"), 5202, course=6, mortar="stone_d", base_dark=0)
+    c.blit(keep, 110, base - 78)
+    c.blit(K.crenels(84, 7, 5, 6, ("stone", "stone_l", "white"), "stone_d"), 110, base - 85)
+    for (tx, w, h, cone) in ((30, 24, 62, 20), (96, 18, 72, 18), (208, 18, 74, 18), (274, 24, 64, 20),
+                             (152, 20, 88, 22)):
         t = K.round_tower(w, h, ("stone_d", "stone", "stone_l", "white"), tx, cone=("red_d", "red", "coral"),
                           cone_h=cone, outline="umber", windows=2)
         c.blit(t, tx - t.w // 2, base - t.h + 2)
@@ -173,12 +173,12 @@ def title_bg_2() -> Canvas:
             if y >= base - 30 + (1 - math.sqrt(max(0.0, 1 - dxn * dxn))) * 10:
                 c.set(x, y, "gold_l" if abs(x + 0.5 - gx) < 9 and y > base - 24 else "brown_d")
     for x in (124, 172):
-        for y in range(base - 92, base - 60):
+        for y in range(base - 74, base - 46):
             for xx in range(x, x + 8):
-                if y < base - 64 or abs(xx - x - 3.5) > (y - base + 64) * 1.2:
+                if y < base - 50 or abs(xx - x - 3.5) > (y - base + 50) * 1.2:
                     c.set(xx, y, "red" if xx > x else "coral")
-        c.set(x + 3, base - 80, "gold_l")
-        c.set(x + 4, base - 80, "gold_l")
+        c.set(x + 3, base - 64, "gold_l")
+        c.set(x + 4, base - 64, "gold_l")
     for k in range(7):
         K.thorn_vine(c, 20 + k * 44, base - 1, 22 + k % 3 * 6, 5210 + k)
     # town roofs in front of the wall, the road, hills and framing trees
