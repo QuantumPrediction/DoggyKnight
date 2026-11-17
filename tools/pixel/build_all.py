@@ -59,6 +59,7 @@ import art_v25_fx  # noqa: E402
 import art_v25_foes  # noqa: E402
 import art_v25_goldie  # noqa: E402
 import art_v25_knights  # noqa: E402
+import art_v26_cast  # noqa: E402
 import music_gen  # noqa: E402
 import paint  # noqa: E402
 import sfx_gen  # noqa: E402
@@ -140,6 +141,7 @@ def main() -> None:
         anims = with_rim(code, fn())
         build_sheet("res://assets/sprites/%s" % code, code, anims, size)
         sheets[code] = anims
+    art_v26_cast.write_all()                                     # v2.6 C 角色: new cast, portraits, FX, knight lift
     for name, (fn, size) in art_cast.PROJECTILES.items():
         anims = fn()
         build_sheet("res://assets/fx/%s" % name, name, anims, size)
