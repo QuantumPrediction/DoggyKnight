@@ -6,9 +6,9 @@ const BASE_ANIMS: Array[StringName] = [&"idle", &"run", &"attack", &"hurt"]
 
 ## 代號:[額外動畫, 最小格子, 最大格子](格子大小依 DEV_PLAN 2 與 C2 至 C5)
 const CHARACTERS: Dictionary = {
-	"goldie": [[&"sleep"], 24, 24],
-	"bulldog": [[&"guard"], 24, 24],
-	"scarecrow": [[], 16, 24],
+	"goldie": [[&"sleep"], 24, 32],
+	"bulldog": [[&"guard"], 24, 32],
+	"scarecrow": [[], 16, 32],
 	"crow": [[], 16, 24],
 	"black_knight": [[&"charge", &"slam", &"down"], 48, 64],
 }

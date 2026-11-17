@@ -15,10 +15,10 @@ const ILLUSTRATIONS: Array[String] = ["prologue_1", "prologue_2", "prologue_3", 
 		"ending_1", "ending_2", "ending_3", "teaser_1"]
 ## 代號:[必要動畫, 最小格子, 最大格子]
 const NEW_SPRITES: Dictionary = {
-	"scarecrow_archer": [[&"idle", &"run", &"attack", &"hurt", &"aim"], 16, 24],
-	"armored_husk": [[&"idle", &"run", &"attack", &"hurt", &"dash", &"down"], 16, 24],
-	"scarecrow_captain": [[&"idle", &"run", &"attack", &"hurt", &"throw", &"rally", &"down"], 24, 40],
-	"merlin": [[&"idle", &"run", &"cast"], 16, 24],
+	"scarecrow_archer": [[&"idle", &"run", &"attack", &"hurt", &"aim"], 16, 32],
+	"armored_husk": [[&"idle", &"run", &"attack", &"hurt", &"dash", &"down"], 16, 32],
+	"scarecrow_captain": [[&"idle", &"run", &"attack", &"hurt", &"throw", &"rally", &"down"], 24, 48],
+	"merlin": [[&"idle", &"run", &"cast"], 16, 32],
 }
 const PROJECTILES: Array[String] = ["arrow", "sword_wave", "pitchfork"]
 
