@@ -52,7 +52,12 @@ func _on_trick_offered(options: Array) -> void:
 		var trick := option as TrickData
 		if trick == null:
 			continue
-		var button := StubUI.add_button(_column, String(trick.id).capitalize(), _choose.bind(trick.id))
+		var label := String(trick.id).capitalize()
+		if trick.is_evolution:
+			label = "EVOLVE! " + label      # v2.4:進化選項
+		else:
+			label += " Lv%d" % (TrickDeck.count_in(GameState.active_tricks, trick.id) + 1)
+		var button := StubUI.add_button(_column, label, _choose.bind(trick.id))
 		button.icon = trick.icon
 		button.custom_minimum_size = Vector2(96, 28)
 		button.expand_icon = false

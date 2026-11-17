@@ -6,9 +6,13 @@ extends Control
 ## 顯示時播放 fail 音效(B 線已經在播失敗短曲時就不重複)。
 ## 「再試一次」是最大的主要按鈕,會輕輕跳動,讓玩家 2 秒內回到戰鬥。
 ## v2.3(CS7):梅林的小頭像與一句隨機提示 tr("STORY_TIP_%02d" % n)(n = 1 至 8,不會連續兩次相同)。
+## v2.4(CV5,DEV_PLAN 4.12):結果字典的 can_revive 為 true 時,最上面多一個金色的
+## 「用 N 個零食復活」按鈕(N = revive_cost,按鈕上有零食圖示),按下播 revive 音效並發 revive_pressed;
+## 這時「再試一次」改為藍色次要按鈕,梅林的小提示換成「金毛吃了零食就會醒來!」。can_revive 為 false 或沒有這個鍵時完全不顯示。
 
 signal retry_pressed
 signal title_pressed
+signal revive_pressed
 
 const PANEL_WIDTH: float = 160.0
 const TIP_COUNT: int = 8
@@ -16,6 +20,8 @@ const PORTRAIT_FRAME: Texture2D = preload("res://assets/ui/portrait_frame.png")
 
 static var _last_tip: int = 0
 
+var revive_button: Button
+var revive_hint: Label
 var retry_button: Button
 var title_button: Button
 var title_label: Label
@@ -26,6 +32,7 @@ var tip_index: int = 0
 
 var _result: Dictionary = {}
 var _panel: PanelContainer
+var _tip: Control
 var _stars: CPUParticles2D
 var _time: float = 0.0
 
@@ -57,7 +64,22 @@ func _ready() -> void:
 	box.add_child(grid)
 	time_value = _stat_row(grid, tr("UI_TIME"))
 	kills_value = _stat_row(grid, tr("UI_KILLS"))
-	box.add_child(_tip_row())
+	_tip = _tip_row()
+	box.add_child(_tip)
+
+	revive_button = UiKit.button(tr("UI_REVIVE") % 0, &"", Vector2(140, 30))
+	revive_button.name = "ReviveButton"
+	revive_button.icon = preload("res://assets/ui/icon_snack.png")
+	revive_button.pressed.connect(_on_revive)
+	revive_button.visible = false
+	var revive_row := CenterContainer.new()
+	revive_row.name = "ReviveRow"
+	revive_row.add_child(revive_button)
+	box.add_child(revive_row)
+	revive_hint = UiKit.label(tr("UI_REVIVE_HINT"), &"LabelSoft")
+	revive_hint.name = "ReviveHint"
+	revive_hint.visible = false
+	box.add_child(revive_hint)
 
 	retry_button = UiKit.button(tr("UI_RETRY"), &"", Vector2(124, 30))
 	retry_button.name = "RetryButton"
@@ -158,17 +180,34 @@ func _stat_row(grid: GridContainer, title: String) -> Label:
 func _apply() -> void:
 	time_value.text = UiKit.format_time(float(_result.get("time_sec", 0.0)))
 	kills_value.text = str(int(_result.get("kills", 0)))
+	var can_revive := bool(_result.get("can_revive", false))
+	revive_button.visible = can_revive
+	revive_hint.visible = can_revive
+	_tip.visible = not can_revive        # 小螢幕放得下:可以復活時,復活提示代替梅林的小提示
+	revive_button.text = tr("UI_REVIVE") % int(_result.get("revive_cost", 0))
+	revive_button.disabled = false
+	# 可以復活時,復活是主要按鈕(金色),再試一次改為次要(藍色)
+	retry_button.theme_type_variation = &"ButtonAlt" if can_revive else &""
 	_layout()
+
+
+func _on_revive() -> void:
+	if not revive_button.visible or revive_button.disabled:
+		return
+	revive_button.disabled = true      # 防止連按扣兩次零食
+	UiKit.play_sfx(&"revive")
+	revive_pressed.emit()
 
 
 func _process(delta: float) -> void:
 	_time += delta
 	_layout()
-	# 「再試一次」輕輕跳動
-	retry_button.pivot_offset = retry_button.size * 0.5
-	if retry_button.scale.y > 0.95 and retry_button.scale.y < 1.08:
+	# 主要按鈕(可以復活時是「復活」,否則「再試一次」)輕輕跳動
+	var main := revive_button if revive_button.visible else retry_button
+	main.pivot_offset = main.size * 0.5
+	if main.scale.y > 0.95 and main.scale.y < 1.08:
 		var s := 1.0 + 0.04 * maxf(0.0, sin(_time * 4.0))
-		retry_button.scale = Vector2(s, s)
+		main.scale = Vector2(s, s)
 
 
 func _layout() -> void:

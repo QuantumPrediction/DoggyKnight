@@ -1,22 +1,63 @@
 # D 線(營地、小遊戲與手機建置)狀態報告
 
-最後更新:2026-11-16(v2.3 深化:DS1 至 DS6 全部完成)
+最後更新:2026-11-17(v2.4 玩法深度:DV1 至 DV4 全部完成)
 
 ## 怎樣試玩(不用寫程式)
 
-1. 用 Godot 4.7.2 開啟專案,在左下角的「檔案系統」打開 `tests/line_d/camp_sandbox.tscn`,按右上角「執行目前場景」(或 F6)。
-2. 按「進入營地」(第一次營地)或「第二次營地(有鬥牛犬)」。
-   - **先播營地的對白**(第一次:梅林介紹他的圓桌和《王室守則》;第二次:貝德維爾問金毛想不想當國王)。點畫面看下一句,右上角可以「略過」。播完,選單才從下面滑出來。
-   - **梅林坐在圓桌後面**(桌面遮住他的下半身),偶爾舉起手杖,杖頂發光、冒出閃光。**點梅林**:他施個小魔法,頭上冒出對話泡泡,說一句溫暖又有點好笑的話(六句輪流,不會連續說同一句)。手機上會輕輕震一下。
-   - 和以前一樣:點金毛摸摸頭、第二次營地點鬥牛犬會「汪!」。
-3. 按「拉扯王室卷軸」:
-   - 卷軸現在是**《王室守則》**:開頭寫著「王室守則」,之後一條一條淡淡的「第 1 條」「第 2 條」……拉得越長,條數越多(一局大約拉出 30 條)。
-   - 時間到、金毛被卷軸包起來之後,**梅林從右邊走進來,問「讀完了嗎？」**。評價畫面變暗時,這個泡泡仍然看得清楚。
-4. 「繼續冒險」離開營地。
+1. 用 Godot 4.7.2 開啟專案,打開 `tests/line_d/camp_sandbox.tscn`,按「執行目前場景」(F6)。
+2. **營地訓練(新)**:按「訓練(送 50 個零食)」——像從標題打開一樣,單獨打開訓練畫面,先送你 50 個零食。
+   - 五項訓練:**活力**(活力上限)、**力量**(攻擊力)、**敏捷**(移動速度)、**忠誠**(忠誠累積)、**幸運**(寶箱與零食)。
+   - 每一列:左邊是圖示(愛心、劍、羽毛、狗掌印、四葉草),名稱旁邊 5 格是等級,右上角的牌子是價格,下面一行是效果「現在 → 下一級」。
+   - **整列就是按鈕**(手指好按)。買得起的列有金色外框、價格牌是橘色;買不起是灰色,按了沒反應;5 級滿了顯示「滿級」。
+   - 買了:那一列閃白光、圖示跳一下、星星噴出來、新的等級格亮起、冒出「Lv.N！」,最上面的零食數往下數,旁邊冒「-N」;播升級音效,手機輕震一下。
+   - 按「返回」(或 Android 的返回鍵)關掉。
+3. **營地裡也有**:按「進入營地」或「第二次營地」→ 看完對白 → 選單中間一列左邊是新的「訓練」(右邊是原本的「同伴」)。營地右上角現在顯示零食數。
+4. **小遊戲給零食(新)**:拉完卷軸,評價畫面多一行「零食 +N」(0 星 0 個、1 星 3 個、2 星 6 個、3 星 10 個);回到營地時右上角的零食數會跳一下、冒「+N」。
+5. 壓力測試照舊(「壓力測試」按鈕);現在場上多了 3 個會打開的寶箱、12 個被吸向金毛的零食、繞著金毛轉的 6 道劍氣(像「旋風尾」進化)與定時的進化光柱。
 
-整個遊戲裡:第 2 關、第 4 關過關後的營地就是這個畫面(從標題開始玩即可)。B 線的對白檔(`data/story/camp1.tres`、`camp2.tres`)合併前,正式遊戲的營地不播對白(安靜略過);沙盒會用 `docs/STORY.md` 的同一段對白代替。梅林的圖、頭像和插畫現在是佔位的方塊,C 線同時在畫正式版,合併後自動換上。
+截圖(雲端,180×320):`/tmp/line_d_shots/v24/`(營地選單、訓練畫面、剛升級、零食不夠、小遊戲評價)。
 
-## 已完成(v2.3 深化,DEV_PLAN 第 16 節)
+## 已完成(v2.4 玩法深度,DEV_PLAN 第 17 節)
+
+- **DV1 營地訓練介面** `game/camp/training.tscn`(`game/camp/training.gd`,類別 `CampTraining`)
+  - 根節點是全螢幕的 `Control`(PROCESS_MODE_ALWAYS),自己畫半透明夜色底,營地裡和標題上都能用;訊號 `closed()`、`upgraded(id, new_level)`。
+  - 買得起才可以按 → `GameState.snacks -= 價格`、`GameState.meta_upgrades[id] += 1`、`EventBus.snacks_changed.emit(總數)`、升級演出(`star_burst`、`sparkle`、`Sfx level_up`、`Haptics light`)。
+  - 收到別處發的 `snacks_changed` 會自動更新;收到 `back_requested` 自己關閉(`close_on_back`);`free_on_close` 可讓它關閉時自己刪除(預設由打開的一方移除)。
+  - 規則與讀資料在 `game/camp/training_shop.gd`(`TrainingShop`,和畫面分開);外觀與演出數值在 `game/camp/training_config.tres`。
+  - 營地選單:中間一列「訓練 | 同伴」各佔一半(選單高度不變,不擠到營火);營地右上角顯示零食數;訓練開著時不能開小遊戲、離開、摸頭、點梅林。營地新訊號 `training_opened`、`training_closed`、`training_upgraded(id, level)`。
+- **DV2 小遊戲的零食獎勵**:`MinigameGrading.snack_reward`(`scroll_grading.tres`:`[0, 3, 6, 10]`)。獎勵直接加到 `GameState.snacks`,有零食時發 `snacks_changed`;評價畫面顯示「零食 +N」。
+- **DV3 效能**:壓力測試加入寶箱(C 線的 `chest_frames`,輪流打開、底下有光暈)、零食(`snack_frames`,從敵人身上掉、被吸向金毛)、進化(6 道繞身劍氣 + 每 5 秒一次光柱與星星);`--no-loot` 可關掉對照。
+- **DV4 測試**:新增 23 個(`test_training.gd` 21 個、`test_grading.gd` 1 個、`test_stress_scene.gd` 1 個),`test_camp.gd` 的版面測試加上「訓練」按鈕。D 線共 109 個;全部 482 個測試通過。
+
+### 升級表的形狀(和 B 線約定)
+
+B 線的 `data/progression/meta_upgrades.tres`:一個 Resource(B 線的 `MetaUpgradeTable`),欄位 `entries: Array`,每項(B 線的 `MetaUpgrade`)有
+`id: StringName`、`name_key: String`(`TRAINING_<ID>_NAME`)、`desc_key: String`(`TRAINING_<ID>_DESC`)、`max_level: int`(5)、`costs: Array[int]`(每級一個價格,`costs[0]` = 買第 1 級)、`per_level: float`。
+訓練介面**依欄位名稱讀**(不檢查類別,每項也可以是 Dictionary),所以兩邊不用共用類別。B 線的檔案不存在時用 D 線的替身 `game/camp/training_upgrades.tres`(類別 `TrainingUpgradeTable` / `TrainingUpgrade`,形狀相同、名字不同,合併時不會撞名)。
+效果文字:`desc_key` 的文字裡的 `%s` 換成「+20%→+30%」;`per_level` 小於 1 當作百分比(0.1 = 每級 +10%),1 以上當作點數(10 = 每級 +10)。
+
+D 線替身的數值(B 線可以照抄或改):
+
+| id | 名稱 | 效果 | per_level | 價格(第 1 至 5 級) |
+| --- | --- | --- | --- | --- |
+| vitality | 活力 | 活力上限 | 0.10 | 10、20、35、55、80 |
+| strength | 力量 | 攻擊力 | 0.08 | 10、20、35、55、80 |
+| agility | 敏捷 | 移動速度 | 0.05 | 8、16、28、45、65 |
+| loyalty | 忠誠 | 忠誠累積 | 0.10 | 8、16、28、45、65 |
+| luck | 幸運 | 寶箱與零食機率 | 0.15 | 12、24、40、60、90 |
+
+全部升滿共 950 個零食。
+
+### v2.4 效能數字(DV3,雲端無畫面模式,40 隻敵人,每種跑 3 次取中間值)
+
+| 情況 | 每格 CPU(腳本 + 物理) | 最慢 1% CPU |
+| --- | --- | --- |
+| 不加寶箱、零食、進化(`--no-loot`) | 1.4 + 3.4 = 4.7 毫秒 | 9.2 毫秒 |
+| 加上 3 個寶箱、12 個零食、6 道劍氣、進化演出(新的預設) | 1.5 + 3.3 = 4.8 毫秒 | 10.6 毫秒 |
+
+一格的上限是 16.7 毫秒(60 FPS),平均都在 58 FPS 以上;差別在誤差之內。**建議上限**(給 A、C 線):場上同時的零食不超過約 12 至 15 個(多的可以合併成一個「大零食」);寶箱光暈同時不超過 3 個;進化的繞身特效用 6 個左右的精靈圖就夠,不要用粒子一直噴。
+
+## 以前完成:v2.3 深化(DEV_PLAN 第 16 節)
 
 - **DS1 營地故事**(`game/camp/camp.gd`)
   - 第一次營地(`GameState.level_index` = 1)播 `data/story/camp1.tres`,第二次(= 3)播 `camp2.tres`。對應表在 `game/camp/camp_config.tres` 的 `story_paths`。
@@ -49,7 +90,7 @@
   - `store/screenshots/capture.gd` 多截三張:`04_dialogue.png`(石中劍之丘,梅林自我介紹)、`05_storybook.png`(開場繪本頁)、`06_camp_merlin.png`(梅林在圓桌後面說話)。三種尺寸各六張,已在雲端執行過。
 - **DS6 測試**:新增 20 個(`test_camp_story.gd` 16 個、`test_minigame.gd` 2 個、`test_stress_scene.gd` 2 個),更新 1 個(第二次營地的鬥牛犬測試先略過對白)。D 線共 86 個測試;全部 393 個測試通過。另外用暫時的 `data/story/camp1.tres`、`camp2.tres`(模擬 B 線,沒有提交)試過:整合測試、自動試玩機器人(略過 2 段營地對白,PLAYTHROUGH COMPLETE)與沙盒都正常。
 
-### 效能數字(DS4,雲端無畫面模式,40 隻敵人,每種設定跑 3 次取中間值)
+### v2.3 效能數字(DS4,雲端無畫面模式,40 隻敵人,每種設定跑 3 次取中間值)
 
 | 情況 | 每格 CPU(腳本 + 物理) | 最慢 1% | 說明 |
 | --- | --- | --- | --- |
@@ -63,7 +104,7 @@
 
 **建議的上限**(給 A、C 線參考):同時存在的投射物不超過約 16 至 20 支;光暈圖每個不大於 32×32 像素、畫面上同時不超過約 20 個,另外最多一個全畫面大小的光暈(必殺技、閃電);M3 的粒子上限照舊(畫面上的粒子總數最好不超過約 250 顆)。
 
-### APK 核對(2026-11-16,v2.3)
+### v2.3 APK 核對(2026-11-16,v2.3)
 
 `export/build_android.sh debug` 與 `sandbox` 各約 61 MB;`export/build_android.sh verify`:`com.doggyknight.prototype`、versionCode 1、minSdk 24、targetSdk 36、App 名稱「金毛騎士」、**唯一的權限 `android.permission.VIBRATE`**、zipalign 16 KB 通過、arm64-v8a 的 `libgodot_android.so` 與 `libc++_shared.so` LOAD 對齊 16384。新的梅林、對話泡泡、對白框、故事翻譯都在安裝檔裡。
 
@@ -77,26 +118,33 @@
 
 ## 被甚麼卡住
 
-- 沒有。雲端沒有手機,所以手感、震動強弱、光暈在手機顯示卡上的真實效能都還沒在實機上試過。
-- **給其他線與整合工作階段**:
-  - B 線:**營地自己播 `camp1` / `camp2`**(依 `GameState.level_index` = 1 / 3),B 線不要再播這兩段。營地只用路徑讀 `data/story/camp1.tres`、`camp2.tres`,檔案的 `id` 要是 `&"camp1"`、`&"camp2"`。對白播完之前 `leave_camp()` 不會有作用(玩家也看不到按鈕)。
-  - C 線:營地與小遊戲用到 `merlin_frames.tres` 的 `idle`、`run`、`cast`(24×24,朝右畫);`cast` 不循環也沒關係,營地用計時器回到 `idle`。梅林的位置假設頭在圖的上半部;正式圖若不同,改 `game/camp/camp_config.tres` 的 `merlin_offset`(相對圓桌中心)與 `merlin_staff_tip`(杖頂,閃光從這裡冒出),不用改程式。點梅林用音效 id `magic`。對白框請保持合約:`play()` 播完才返回、`skip()`、`advance()`、`is_active()`、群組 `dialogue_box`,營地靠這些運作。
-  - A 線:壓力測試會自動用 `data/enemies/scarecrow_archer.tres`、`armored_husk.tres`(存在時);若投射物節點加入群組 `projectile`(或 `projectiles`、`enemy_projectile`),總結會印出真正的投射物數量。
-  - 整合:`i18n/strings.csv` 新增 `CAMP_MERLIN_01` 至 `06`、`MINIGAME_SCROLL_TITLE`、`MINIGAME_SCROLL_RULE`、`MINIGAME_MERLIN_ASK`(放在 D 線原有的那一段)。合併 C 線的正式頭像與插畫後,用 `store/screenshots/capture.gd` 重新產生商店截圖。
+- 沒有。雲端沒有手機,訓練畫面的手感(整列按鈕、捲動)與震動還沒在實機上試過。
+
+## 給其他線與整合工作階段(v2.4)
+
+- **B 線**:
+  - 標題的 `training_pressed`:實例化 `game/camp/training.tscn`,放在第 30 層的 CanvasLayer 之下;收到 `closed` 後移除(或設 `free_on_close = true`)。**訓練開著時,標題的返回鍵請不要開「離開遊戲」對話框**——訓練自己會用 `back_requested` 關閉(和製作名單同樣處理)。
+  - 訓練會改 `GameState.snacks` 與 `meta_upgrades` 並發 `snacks_changed`;**請在收到 `snacks_changed`(或訓練關閉)時存檔**,不然買完立刻關 App 會失去這次購買(切到背景時你本來就會存)。
+  - 營地裡買的升級只寫進 `GameState.meta_upgrades`;要不要在這一局立刻生效由 B 線決定(可以聽營地的 `training_upgraded(id, level)`)。我建議「下一次新遊戲才生效」照 4.12,但在訓練畫面的提示寫的是「效果永遠保留」,不會誤導。
+  - 小遊戲直接把零食加到 `GameState.snacks` 並發 `snacks_changed`,B 線不用再加。
+  - 請在 `meta_upgrades.tres` 的 `name_key` / `desc_key` 用 `TRAINING_<ID>_NAME` / `TRAINING_<ID>_DESC`(文字 D 線已寫好,`DESC` 裡有 `%s`)。
+- **C 線**:訓練畫面的圖示是程式畫的 8×8 像素圖;想換正式圖,填 `game/camp/training_config.tres` 的 `icons`(升級 id → 16×16 圖),不用改程式。價格牌與零食數用 `assets/fx/snack/snack_frames.tres` 的第一格。新文字:`TRAINING_*`、`CAMP_TRAINING`、`MINIGAME_REWARD_SNACKS`、`CAMP_SANDBOX_TRAINING`。
+- **A 線**:壓力測試用 `assets/sprites/chest/chest_frames.tres` 的 `idle`、`open` 與 `assets/fx/sword_wave/` 當繞身劍氣;數字見上表。
 
 ## 下一步
 
-- 在 Android 手機上裝「Android Sandbox」APK(`export/build_android.sh sandbox`):看營地對白、點梅林、卷軸上的《王室守則》,以及壓力測試的 FPS(特別是光暈在手機上的負擔)。
-- B、C 線合併後:確認正式遊戲的兩次營地都會播對白,梅林與頭像換上正式圖後位置是否需要微調(只改 `camp_config.tres`)。
+- B 線合併 `meta_upgrades.tres` 後,確認訓練畫面讀到正式的價格與效果(畫面不用改)。
+- 在手機上試訓練畫面:整列按鈕好不好按、短手機(有瀏海)上列表捲動是否順。
 
 ## 需要擁有人決定的事(我先替你決定了,想改只要改資料檔或文字檔)
 
-1. **梅林的六句話**(上面列出)由 D 線撰寫,語氣跟 `docs/STORY.md` 一致,沒有劇透(不提摩根娜)。想改句子:改 `i18n/strings.csv` 的 `CAMP_MERLIN_01` 至 `06`(每句不超過 26 字,逗號要用全形「，」)。
-2. **梅林坐在圓桌後面**(而不是站在旁邊):桌子是他「最寶貝的圓桌」(第一次營地的對白),坐在後面也不會擋住營火、金毛和鬥牛犬。
-3. **營地對白播完才有選單**,對白中不能摸頭或點梅林;每次進營地只播一次,但重新開始遊戲或從存檔回到營地時會再播(和 `docs/STORY.md` 第 8 節一樣,玩家可以略過)。
-4. **16:9 的舊手機上**,梅林的泡泡會暫時蓋住「活力」「滿意度」兩條(大約 3 秒);較長的手機不會。選擇蓋住數值條,而不是蓋住梅林的臉。
-5. **商店文字**:副標題改為「拔出石中劍的,是一隻金毛!」;摩根娜只當伏筆(「狐狸女巫」「紫色羽毛」),不寫成第一章的頭目。
-6. 以前的決定仍然有效:套件識別碼 `com.doggyknight.prototype` 是佔位(第一次上傳商店前一定要決定,之後不能改);每次營地只能玩一次小遊戲;摸頭每次營地最多 5 下加分;小遊戲門檻 70 / 150 / 230 公分。
+1. **訓練的名稱與說明**:活力 / 力量 / 敏捷 / 忠誠 / 幸運;說明「活力上限」「攻擊力」「移動速度」「忠誠累積」「寶箱零食」。畫面標題「營地訓練」,提示「用零食訓練，效果永遠保留！」。改 `i18n/strings.csv` 的 `TRAINING_*`。
+2. **小遊戲給的零食**:0 / 3 / 6 / 10 個(`game/minigames/scroll/scroll_grading.tres` 的 `snack_reward`)。
+3. **替身價格**(上表):B 線的正式資料會取代它;全部升滿約 950 個零食,讓訓練成為好幾局的目標。
+4. **營地選單**:「訓練」和「同伴」並排各佔一半,選單仍是三列,不會擠到營火和金毛。
+5. **整列是按鈕**(而不是右邊一顆小按鈕):手機上更好按,文字也有地方完整顯示「現在 → 下一級」。
+6. **買不起的列**變灰、按了沒反應(不跳提示),跟 DEV_PLAN「買得起才可以按」一致。
+7. 以前的決定仍然有效(梅林的六句話、每次營地一次小遊戲、摸頭上限 5 下、門檻 70 / 150 / 230 公分、套件識別碼是佔位)。
 
 ## 建議(只記錄,未實作)
 

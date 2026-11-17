@@ -9,6 +9,8 @@ const RESULT_KEYS: Array[String] = [
 	"damage_taken",
 	# DEV_PLAN 4.11(v2.3)
 	"difficulty",
+	# DEV_PLAN 4.12(v2.4)
+	"mode", "snacks", "snacks_earned", "snack_bonus", "revive_cost", "can_revive", "event_tone",
 ]
 
 

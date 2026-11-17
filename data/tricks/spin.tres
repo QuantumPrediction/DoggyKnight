@@ -11,3 +11,7 @@ description = "TRICK_SPIN_DESC"
 icon = ExtResource("2_icon")
 stat_modifiers = {}
 is_ability = true
+max_level = 3
+evolution_partner = &"wag"
+evolves_into = &"tornado_tail"
+is_evolution = false

@@ -317,6 +317,7 @@ func die() -> void:
 		sprite.speed_scale = 1.0
 	EventBus.enemy_died.emit(data.id, global_position, data.exp_value)
 	_drop_exp()
+	_drop_loot()
 	Sfx.play(&"enemy_down")
 	_death_left = death_time
 	if death_particles != &"":
@@ -559,6 +560,12 @@ func _clear_telegraph() -> void:
 
 
 # --- 掉落與倒下 -------------------------------------------------------------------
+
+## v2.4 寶箱與零食(AV2、AV3):交給場地依 data/enemies/loot_tuning.tres 決定。
+func _drop_loot() -> void:
+	if arena != null and is_instance_valid(arena) and arena.has_method(&"drop_loot"):
+		arena.call(&"drop_loot", self)
+
 
 func _drop_exp() -> void:
 	for value in CombatMath.split_exp(data.exp_value, max_exp_orbs):

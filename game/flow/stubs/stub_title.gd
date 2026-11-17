@@ -3,15 +3,20 @@ extends Control
 ##   setup(has_save: bool);訊號 new_game_pressed、continue_pressed、credits_pressed。
 ##   v2.3:GameState.chapter_cleared 時多一個「Hard」按鈕;按下「New Game」/「Hard」先設定
 ##   GameState.difficulty(normal / hard)才發 new_game_pressed。
+##   v2.4(DEV_PLAN 4.12):通關後多一個「Endless」按鈕(先設定 GameState.mode = &"endless" 才發
+##   endless_pressed);「Training」按鈕發 training_pressed。
 
 signal new_game_pressed()
 signal continue_pressed()
 signal credits_pressed()
+signal endless_pressed()
+signal training_pressed()
 
 const StubUI := preload("res://game/flow/stubs/stub_ui.gd")
 
 var _continue_button: Button
 var _hard_button: Button
+var _endless_button: Button
 
 
 func _ready() -> void:
@@ -26,6 +31,9 @@ func _ready() -> void:
 	_hard_button.visible = GameState.chapter_cleared
 	_continue_button = StubUI.add_button(column, "Continue", continue_pressed.emit)
 	_continue_button.visible = false
+	_endless_button = StubUI.add_button(column, "Endless", _endless)
+	_endless_button.visible = GameState.chapter_cleared
+	StubUI.add_button(column, "Training", training_pressed.emit)
 	StubUI.add_button(column, "Credits", credits_pressed.emit)
 
 
@@ -36,8 +44,14 @@ func setup(has_save: bool) -> void:
 
 func _process(_delta: float) -> void:
 	_hard_button.visible = GameState.chapter_cleared     # 沙盒可以隨時切換
+	_endless_button.visible = GameState.chapter_cleared
 
 
 func _new_game(mode: StringName) -> void:
 	GameState.difficulty = mode if GameState.chapter_cleared else &"normal"
 	new_game_pressed.emit()
+
+
+func _endless() -> void:
+	GameState.mode = &"endless"
+	endless_pressed.emit()

@@ -37,6 +37,9 @@ static func reset_settings() -> void:
 	GameState.difficulty = &"normal"
 	GameState.chapter_cleared = false
 	GameState.story_seen = {}
+	GameState.mode = &"story"
+	GameState.meta_upgrades = {}
+	GameState.endless_best = 0
 
 
 ## 測試用難度:所有等待都接近 0、不播轉場,測試跑得快。
@@ -52,6 +55,8 @@ func fast_difficulty() -> DifficultyData:
 	d.spawn_spacing = 0.0
 	d.results_delay = 0.02
 	d.failure_delay = 0.02
+	d.event_delay = 0.0
+	d.event_auto_pick_delay = 0.05
 	return d
 
 
@@ -91,8 +96,10 @@ func fast_chapter(with_story: bool = false) -> ChapterData:
 
 
 ## 建立流程(一律用替身、測試存檔、固定種子)並加進場景樹。with_story = true 時帶上全部對白
-## (對白框是替身 game/flow/stubs/stub_dialogue_box.tscn)。
-func make_flow(keep_save: bool = false, rng_seed: int = 1234, with_story: bool = false) -> FlowMain:
+## (對白框是替身 game/flow/stubs/stub_dialogue_box.tscn)。with_events = true(v2.4)時帶上
+## data/levels/events.tres 的抉擇事件(替身事件介面);預設是空的事件表(舊的流程測試不受事件影響)。
+func make_flow(keep_save: bool = false, rng_seed: int = 1234, with_story: bool = false,
+		with_events: bool = false) -> FlowMain:
 	if not keep_save:
 		SaveStore.new(SAVE_PATH).delete()
 	var f := (load(MAIN_SCENE) as PackedScene).instantiate() as FlowMain
@@ -101,6 +108,8 @@ func make_flow(keep_save: bool = false, rng_seed: int = 1234, with_story: bool =
 	f.rng_seed = rng_seed
 	f.difficulty = fast_difficulty()
 	f.chapter = fast_chapter(with_story)
+	if not with_events:
+		f.events = LevelEventTable.new()
 	f.platform_name = "Linux"
 	quit_calls = 0
 	f.quit_handler = func() -> void: quit_calls += 1
@@ -142,7 +151,11 @@ func play_until_level_ends(timeout_sec: float = 10.0) -> bool:
 
 
 func _auto_step() -> void:
-	if flow.is_choice_open():
+	if flow.is_event_open():
+		EventBus.event_chosen.emit(flow.get_open_event_id(), 0)
+		return
+	if flow.is_trick_choice_open():
+
 		var offer := flow.progression.get_current_offer()
 		if not offer.is_empty():
 			EventBus.trick_chosen.emit(offer[0].id)

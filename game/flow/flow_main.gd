@@ -52,7 +52,20 @@ extends Node
 ## 星級(BP3):過關時依 StarRating 計算,最佳星數寫進 GameState.best_stars 並立即存檔。
 ##
 ## 存檔(B9、BP6):每關開始、過關、切到背景、關閉暫停選單、回標題、關閉視窗、看完教學時寫入
-## (同步,不用 await)。
+## (同步,不用 await)。v2.4 存檔第 4 版另存營地訓練等級、無盡試煉最佳波數(零食本來就有存)。
+##
+## v2.4 玩法深度(DEV_PLAN 4.12、第 17 節):
+##   - 把戲進化:RunProgression / TrickDeck。數值在每關開始時重算(基準 → 營地訓練 → 把戲 → 事件)。
+##   - 寶箱與零食:RunRewards(data/progression/economy.tres);過關依星數給零食。
+##   - 抉擇事件:LevelEvents(data/levels/events.tres),每關一次,在中段兩波之間;遊戲暫停到選完
+##     (state 仍是 LEVEL,is_event_open() = true)。沒有事件介面時自動選第一項。
+##   - 復活:失敗結算的 revive_pressed(result["can_revive"])→ 扣零食、主角 revive()、回到同一關
+##     (不重發 level_started;每關一次)。
+##   - 營地訓練:標題的 training_pressed 打開 game/camp/training.tscn(D 線;不存在就略過),
+##     它發 closed 時收起並存檔。
+##   - 無盡試煉:標題的 endless_pressed(GameState.mode = &"endless",通關後才有)→ start_endless():
+##     EndlessWaves 一波接一波產生,每 5 波頭目、每 10 波抉擇事件;倒下(沒有復活)就結束,
+##     「再試一次」= 新的一輪無盡試煉。每清一波就更新 GameState.endless_best 並存檔。
 
 signal state_changed(new_state: State)
 
@@ -66,11 +79,23 @@ const STORY_MUSIC: StringName = &"story"
 
 const DEFAULT_CHAPTER: String = "res://data/levels/chapter_1.tres"
 const DEFAULT_DIFFICULTY: String = "res://game/progression/difficulty.tres"
+const DEFAULT_ECONOMY: String = "res://data/progression/economy.tres"
+const DEFAULT_ENDLESS: String = "res://data/levels/endless.tres"
+const STORY_MODE: StringName = &"story"
+const ENDLESS_MODE: StringName = &"endless"
 
 ## 這一章的關卡;留空就用第一章。
 @export var chapter: ChapterData
 ## 難度參數;留空就用 game/progression/difficulty.tres。
 @export var difficulty: DifficultyData
+## v2.4 零食經濟;留空就用 data/progression/economy.tres。
+@export var economy: EconomyData
+## v2.4 營地訓練;留空就用 data/progression/meta_upgrades.tres。
+@export var meta_table: MetaUpgradeTable
+## v2.4 抉擇事件;留空就用 data/levels/events.tres(測試可以放一個空的表,不出事件)。
+@export var events: LevelEventTable
+## v2.4 無盡試煉;留空就用 data/levels/endless.tres。
+@export var endless_data: EndlessData
 ## 存檔位置(測試與沙盒用別的檔名,才不會蓋掉正式存檔)。
 @export var save_path: String = SaveStore.DEFAULT_PATH
 ## true:一律用 game/flow/stubs/ 的替身(沙盒用,不受別線影響)。
@@ -87,6 +112,8 @@ var music: Object
 
 var state: State = State.BOOT
 var progression: RunProgression
+var rewards: RunRewards
+var level_events: LevelEvents
 var save_store: SaveStore
 var transition: FlowTransition
 
@@ -114,6 +141,14 @@ var _story_playing: bool = false
 var _story_id: StringName = &""
 ## 每次開始播對白、或離開目前畫面時 +1;播完時不一樣就表示已被打斷(不再繼續原本的步驟)。
 var _story_serial: int = 0
+## v2.4
+var _event_open: bool = false
+var _revive_used: bool = false
+var _endless_waves: EndlessWaves
+var _endless_best_before: int = 0
+var _endless_boss_music: bool = false
+var _event_rng: RandomNumberGenerator = RandomNumberGenerator.new()
+var _last_endless_event: StringName = &""
 
 var _world: Node
 var _camp_holder: Node
@@ -131,6 +166,8 @@ var _credits: Node
 var _quit_dialog: Node
 var _camp: Node
 var _dialogue_box: Node
+var _event_ui: Node
+var _training: Node
 
 
 func _ready() -> void:
@@ -139,22 +176,46 @@ func _ready() -> void:
 		chapter = load(DEFAULT_CHAPTER) as ChapterData
 	if difficulty == null:
 		difficulty = load(DEFAULT_DIFFICULTY) as DifficultyData
+	if economy == null:
+		economy = load(DEFAULT_ECONOMY) as EconomyData
+	if meta_table == null:
+		meta_table = MetaUpgradeTable.load_default()
+	if events == null:
+		events = LevelEventTable.load_default()
+	if endless_data == null:
+		endless_data = load(DEFAULT_ENDLESS) as EndlessData
 	if not quit_handler.is_valid():
 		quit_handler = get_tree().quit
 	if music == null:
 		music = get_node_or_null(^"/root/Music")
 	if rng_seed != 0:
 		_spawn_rng.seed = rng_seed + 1
+		_event_rng.seed = rng_seed + 3
 	else:
 		_spawn_rng.randomize()
+		_event_rng.randomize()
 	_build_nodes()
 
 	progression = RunProgression.new()
 	progression.name = "Progression"
-	progression.setup(difficulty, rng_seed)
+	progression.setup(difficulty, rng_seed, meta_table)
 	progression.choice_opened.connect(_on_choice_opened)
 	progression.choice_closed.connect(_on_choice_closed)
 	add_child(progression)
+
+	rewards = RunRewards.new()
+	rewards.name = "Rewards"
+	rewards.setup(economy, progression, rng_seed)
+	rewards.player_getter = func() -> Object: return _session.get_player() if _session != null else null
+	add_child(rewards)
+
+	level_events = LevelEvents.new()
+	level_events.name = "LevelEvents"
+	level_events.auto_pick_delay = difficulty.event_auto_pick_delay
+	add_child(level_events)
+	level_events.setup(progression, rewards)
+	level_events.event_opened.connect(_on_event_opened)
+	level_events.event_closed.connect(_on_event_closed)
 
 	transition = FlowTransition.new()
 	transition.name = "TransitionHost"
@@ -171,6 +232,7 @@ func _ready() -> void:
 	EventBus.resume_requested.connect(_on_resume_requested)
 	EventBus.quit_to_title_requested.connect(_on_quit_to_title_requested)
 	EventBus.camp_left.connect(_on_camp_left)
+	EventBus.snacks_changed.connect(_on_snacks_changed)
 	show_title()
 
 
@@ -182,6 +244,7 @@ func _exit_tree() -> void:
 		[EventBus.resume_requested, _on_resume_requested],
 		[EventBus.quit_to_title_requested, _on_quit_to_title_requested],
 		[EventBus.camp_left, _on_camp_left],
+		[EventBus.snacks_changed, _on_snacks_changed],
 	]:
 		var sig: Signal = pair[0]
 		if sig.is_connected(pair[1]):
@@ -237,7 +300,15 @@ func get_hud() -> Node:
 	return _hud
 
 
+## 目前要玩家選擇的介面:平常是把戲選擇;v2.4 抉擇事件開著時傳回事件介面(有 choose(index),
+## 讓只會「點第一張卡」的試玩機器人與整合測試也能繼續)。只要把戲選擇介面:get_trick_choice_ui()。
 func get_trick_choice() -> Node:
+	if _event_open and _event_ui != null and is_instance_valid(_event_ui):
+		return _event_ui
+	return _trick_choice
+
+
+func get_trick_choice_ui() -> Node:
 	return _trick_choice
 
 
@@ -261,8 +332,15 @@ func is_pause_open() -> bool:
 	return _pause_open
 
 
+## 正在選擇(升級或寶箱的把戲三選一,或 v2.4 的抉擇事件;遊戲暫停中)。
+## 只問把戲:is_trick_choice_open();只問事件:is_event_open()。
 func is_choice_open() -> bool:
+	return _choice_open or _event_open
+
+
+func is_trick_choice_open() -> bool:
 	return _choice_open
+
 
 
 ## 正在轉場(由按下按鈕到新畫面完全露出)。
@@ -295,6 +373,35 @@ func get_run_difficulty() -> StringName:
 	return _run_difficulty
 
 
+## v2.4:抉擇事件開著(遊戲暫停中,等 event_chosen)。試玩機器人與測試可以用
+## EventBus.event_chosen.emit(get_open_event_id(), 0) 或 choose_event(0) 選第一項。
+func is_event_open() -> bool:
+	return _event_open
+
+
+func get_open_event_id() -> StringName:
+	return level_events.get_open_id()
+
+
+func choose_event(index: int) -> bool:
+	return level_events.choose(index)
+
+
+## v2.4:事件介面(沒有時為 null:自動選第一項)。
+func get_event_ui() -> Node:
+	return _event_ui
+
+
+## v2.4:營地訓練介面(從標題打開時;沒有打開時為 null)。
+func get_training() -> Node:
+	return _training
+
+
+## v2.4:正在玩無盡試煉。
+func is_endless() -> bool:
+	return GameState.mode == ENDLESS_MODE
+
+
 ## 這段對白能不能播(有內容,而且有對白框)。
 func can_play_story(script: DialogueScript) -> bool:
 	return script != null and not script.lines.is_empty() and _dialogue_box != null \
@@ -316,6 +423,10 @@ func save_now() -> bool:
 		"difficulty": String(_run_difficulty),
 		"chapter_cleared": GameState.chapter_cleared,
 		"story_seen": GameState.story_seen,
+		"meta_upgrades": GameState.meta_upgrades,
+		# 無盡試煉進行中:存檔先記下這一輪清了幾波(App 被關掉也不遺失);GameState.endless_best
+		# 等倒下(或離開)才更新,HUD 才能比較「新紀錄!」。
+		"endless_best": maxi(GameState.endless_best, _endless_run_waves()),
 	})
 
 
@@ -340,11 +451,18 @@ func _load_save() -> void:
 	for id: String in (data["story_seen"] as Dictionary):
 		seen[StringName(id)] = true
 	GameState.story_seen = seen
+	var meta := {}
+	var stored := data["meta_upgrades"] as Dictionary
+	for id: String in stored:
+		meta[StringName(id)] = int(stored[id])
+	GameState.meta_upgrades = meta
+	GameState.endless_best = data["endless_best"]
 
 
 # --- 畫面切換 ---
 
 func show_title() -> void:
+	_end_endless_mode()      # 先記錄無盡試煉的波數(_leave_current 會移除關卡)
 	_leave_current()
 	_set_state(State.TITLE)
 	_screen = _add_ui(FlowParts.TITLE, _screen_layer)
@@ -352,6 +470,10 @@ func show_title() -> void:
 	FlowParts.connect_if_present(_screen, &"new_game_pressed", _on_title_new_game)
 	FlowParts.connect_if_present(_screen, &"continue_pressed", _on_title_continue)
 	FlowParts.connect_if_present(_screen, &"credits_pressed", _on_title_credits)
+	if _screen != null and _screen.has_signal(&"endless_pressed"):
+		_screen.connect(&"endless_pressed", _on_title_endless)
+	if _screen != null and _screen.has_signal(&"training_pressed"):
+		_screen.connect(&"training_pressed", _on_title_training)
 	_music(&"play", [&"title"])
 
 
@@ -359,8 +481,10 @@ func show_title() -> void:
 ## 難度用標題畫面設定的 GameState.difficulty(還沒打完第一章時一律 normal)。
 ## 舊的進度立即作廢(開場繪本播到一半 App 被關掉,也不會「繼續」舊的那一輪)。
 func start_new_game() -> void:
+	_end_endless_mode()
 	GameState.reset_run()
 	progression.reset_run()
+	_prepare_run()
 	if GameState.difficulty != HARD or not GameState.chapter_cleared:
 		GameState.difficulty = NORMAL
 	_run_difficulty = GameState.difficulty
@@ -377,8 +501,10 @@ func start_new_game() -> void:
 ## 存檔記錄了「應先進營地」(上一關過關後、進營地之前 App 被關掉)時,先回到那個營地。
 func continue_game() -> void:
 	var index := _reached_level
+	_end_endless_mode()
 	GameState.reset_run()
 	progression.reset_run()
+	_prepare_run()
 	GameState.difficulty = _run_difficulty         # 沿用存檔那一輪的難度
 	if _camp_pending and index > 0 and chapter.has_camp_after(index - 1):
 		_level_index = index - 1
@@ -391,6 +517,9 @@ func continue_game() -> void:
 
 ## 失敗後再試一次:還原這一關開始時的快照,活力補滿,立即重新開始(不重播開打前的對白)。
 func retry_level() -> void:
+	if is_endless():
+		start_endless()
+		return
 	progression.restore_snapshot(_snapshot)
 	GameState.vigor = GameState.player_stats.max_vigor
 	_start_level(_level_index, false)
@@ -406,28 +535,13 @@ func _start_level(index: int, with_story: bool = true) -> void:
 	_leave_current()
 	_level_index = index
 	GameState.level_index = index
+	progression.rebuild_stats()          # v2.4:營地訓練(在營地剛練的)從這一關生效
 	_snapshot = progression.take_snapshot()
 	_reached_level = index
 	_camp_pending = false
 	_clear_record = {}
 	save_now()
-
-	# 介面先建立,才收得到主角進場時發出的 vigor_changed。
-	_hud = _add_ui(FlowParts.HUD, _hud_layer)
-	_trick_choice = _add_ui(FlowParts.TRICK_CHOICE, _overlay_layer)
-	_pause = _add_ui(FlowParts.PAUSE, _overlay_layer)
-
-	_session = LevelSession.new()
-	_session.name = "LevelSession"
-	_session.setup(level, index, difficulty, FlowParts.arena_for(level, use_stand_ins), _spawn_rng)
-	_session.arriving = _arriving_companions(index)
-	_session.difficulty_mode = _run_difficulty
-	_session.cleared.connect(_on_level_cleared)
-	_session.finished.connect(_on_level_finished)
-	_session.intro_finished.connect(_on_intro_finished)
-	_session.boss_wave_started.connect(_on_boss_wave_started)
-	_world.add_child(_session)
-	_session.build()
+	_open_session(level, index, _arriving_companions(index))
 	_story_before_pending = with_story
 	_set_state(State.LEVEL)
 	_music(&"play", [_level_track(level)])
@@ -435,6 +549,41 @@ func _start_level(index: int, with_story: bool = true) -> void:
 		_session_waiting = true        # 轉場露出畫面之後才開始(_go)
 	else:
 		_begin_level()
+
+
+## 建立這一關的介面與 LevelSession(還沒開始)。endless = true:無盡試煉。
+func _open_session(level: LevelData, index: int, arriving: Array[StringName], endless: bool = false) -> void:
+	_revive_used = false
+	# 介面先建立,才收得到主角進場時發出的 vigor_changed。
+	_hud = _add_ui(FlowParts.HUD, _hud_layer)
+	_trick_choice = _add_ui(FlowParts.TRICK_CHOICE, _overlay_layer)
+	var event_scene := FlowParts.optional_scene(FlowParts.EVENT_CHOICE, use_stand_ins)
+	_event_ui = event_scene.instantiate() if event_scene != null else null
+	if _event_ui != null:
+		_event_ui.name = "EventChoice"
+		_overlay_layer.add_child(_event_ui)
+	level_events.has_ui = _event_ui != null
+	_pause = _add_ui(FlowParts.PAUSE, _overlay_layer)
+
+	_session = LevelSession.new()
+	_session.name = "LevelSession"
+	_session.setup(level, index, difficulty, FlowParts.arena_for(level, use_stand_ins), _spawn_rng)
+	_session.arriving = arriving
+	_session.difficulty_mode = NORMAL if endless else _run_difficulty
+	_session.endless = endless
+	_session.cleared.connect(_on_level_cleared)
+	_session.finished.connect(_on_level_finished)
+	_session.intro_finished.connect(_on_intro_finished)
+	_session.boss_wave_started.connect(_on_boss_wave_started)
+	_session.event_due.connect(_on_event_due)
+	if endless:
+		_session.event_every = endless_data.event_every
+		_session.wave_began.connect(_on_endless_wave_began)
+		_session.wave_done.connect(_on_endless_wave_done)
+	elif events != null:
+		_session.event_after_wave = events.trigger_wave(level)
+	_world.add_child(_session)
+	_session.build()
 
 
 ## 這一關才加入的同伴(上一關沒有的),例如 1-3 的鬥牛犬:等畫面露出才出場。
@@ -463,6 +612,8 @@ func _begin_level() -> void:
 			return
 		_freeze_world(false)
 		_set_state(State.LEVEL)
+	level_events.reset_level()
+	rewards.begin_level()
 	session.begin(progression)
 
 
@@ -483,6 +634,10 @@ func _on_level_cleared() -> void:
 	if chapter.is_last(_level_index):
 		GameState.chapter_cleared = true    # 打完第一章:解鎖困難模式(立即存檔)
 	_clear_record = _record_stars(level)
+	var bonus := economy.clear_reward(_clear_record["stars"], _run_difficulty == HARD)
+	_clear_record["snack_bonus"] = bonus
+	rewards.add_snacks(bonus)
+	level_events.cancel()
 	if _level_index == 0:
 		GameState.tutorial_done = true      # 打完 1-1:已懂得操作,教學不再出現
 	_free_node(_tutorial)
@@ -506,7 +661,11 @@ func _record_stars(level: LevelData) -> Dictionary:
 
 func _on_level_finished(victory: bool) -> void:
 	progression.end_level()
+	rewards.end_level()
+	level_events.cancel()
 	_close_pause()
+	if not victory and is_endless():
+		_record_endless()
 	# 讓場地停在對白與結算畫面之下(敵人不再移動)。
 	_freeze_world(true)
 	_last_result = _build_result(victory)
@@ -531,11 +690,23 @@ func _on_level_finished(victory: bool) -> void:
 		FlowParts.call_if_present(_screen, &"setup", [_last_result.duplicate(true)])
 		FlowParts.connect_if_present(_screen, &"retry_pressed", _on_failure_retry)
 		FlowParts.connect_if_present(_screen, &"title_pressed", _on_failure_title)
+		if _screen != null and _screen.has_signal(&"revive_pressed"):
+			_screen.connect(&"revive_pressed", _on_failure_revive)
+
 
 
 ## 結算資料:DEV_PLAN 4.9 的九個鍵 + 4.10 的六個鍵 + damage_taken(這一關受到的傷害)
 ## + difficulty(v2.3:&"normal" 或 &"hard";best_stars 是這個難度的最佳星數)。
+## v2.4 另加:
+##   mode(&"story" / &"endless")、snacks(零食總數)、snacks_earned(這一關得到的,含過關獎勵)、
+##   snack_bonus(過關獎勵)、revive_cost、can_revive(失敗畫面顯示「用 N 個零食復活」)、
+##   event_tone(這一關選了 "merlin" / "morgana";沒有事件時 "")、
+##   無盡試煉:endless_wave(清了幾波)、endless_best、endless_new_best
+##   (level_id = &"endless"、level_name = "LEVEL_ENDLESS"、level_index = -1、level_count = 0、
+##   star_goals 是空的)。
 func _build_result(victory: bool) -> Dictionary:
+	if is_endless():
+		return _build_endless_result()
 	var level := chapter.get_level(_level_index)
 	var tricks: Array = []
 	tricks.append_array(progression.tricks_this_level)
@@ -568,7 +739,58 @@ func _build_result(victory: bool) -> Dictionary:
 		"level_count": chapter.level_count(),
 		"damage_taken": damage,
 		"difficulty": _run_difficulty,
+		"mode": STORY_MODE,
+		"snacks": GameState.snacks,
+		"snacks_earned": rewards.snacks_this_level,
+		"snack_bonus": int(_clear_record.get("snack_bonus", 0)) if victory else 0,
+		"revive_cost": economy.revive_cost(_level_index),
+		"can_revive": not victory and _can_revive(economy.revive_cost(_level_index)),
+		"event_tone": String(level_events.last_choice.get("tone", "")),
 	}
+
+
+func _build_endless_result() -> Dictionary:
+	var cleared := _session.waves_cleared if _session != null else 0
+	var cost := economy.endless_revive_cost(cleared)
+	var tricks: Array = []
+	tricks.append_array(progression.tricks_this_level)
+	return {
+		"level_id": endless_data.level_id,
+		"level_name": endless_data.display_name,
+		"victory": false,
+		"time_sec": _session.time_sec if _session != null else 0.0,
+		"kills": _session.kills if _session != null else 0,
+		"tricks": tricks,
+		"hero_level": GameState.hero_level,
+		"next_is_camp": false,
+		"is_final": false,
+		"stars": 0,
+		"star_goals": [] as Array[Dictionary],
+		"best_stars": 0,
+		"new_best": cleared > _endless_best_before,
+		"level_index": -1,
+		"level_count": 0,
+		"damage_taken": _session.damage_taken if _session != null else 0,
+		"difficulty": NORMAL,
+		"mode": ENDLESS_MODE,
+		"snacks": GameState.snacks,
+		"snacks_earned": rewards.snacks_this_level,
+		"snack_bonus": 0,
+		"revive_cost": cost,
+		"can_revive": _can_revive(cost),
+		"event_tone": String(level_events.last_choice.get("tone", "")),
+		"endless_wave": cleared,
+		"endless_best": GameState.endless_best,
+		"endless_new_best": cleared > _endless_best_before,
+	}
+
+
+## 能不能復活:這一關還沒復活過、金毛正睡著、零食夠、主角有 revive()。
+func _can_revive(cost: int) -> bool:
+	if _revive_used or _session == null or not _session.is_downed() or GameState.snacks < cost:
+		return false
+	var player := _session.get_player()
+	return player != null and player.has_method(&"revive")
 
 
 ## 營地(D 線合約):營地顯示期間 GameState.level_index = 剛打完那一關的索引(1-2 之後 = 1)。
@@ -600,6 +822,11 @@ func _finish_chapter() -> void:
 func _leave_current() -> void:
 	if progression != null:
 		progression.end_level()
+	if rewards != null:
+		rewards.end_level()
+	if level_events != null:
+		level_events.cancel()
+	_event_open = false
 	if _pause_open:
 		EventBus.game_paused.emit(false)
 		_music(&"set_ducked", [false])
@@ -615,8 +842,10 @@ func _leave_current() -> void:
 		_session.teardown()
 		_free_node(_session)
 		_session = null
-	for node in [_hud, _trick_choice, _pause, _tutorial, _screen, _credits, _quit_dialog, _camp]:
+	for node in [_hud, _trick_choice, _pause, _tutorial, _screen, _credits, _quit_dialog, _camp, _event_ui, _training]:
 		_free_node(node)
+	_event_ui = null
+	_training = null
 	_hud = null
 	_trick_choice = null
 	_pause = null
@@ -787,7 +1016,7 @@ func _level_track(level: LevelData) -> StringName:
 # --- 教學提示(BP4) ---
 
 func _maybe_show_tutorial() -> void:
-	if _level_index != 0 or GameState.tutorial_done or _tutorial != null or state != State.LEVEL:
+	if is_endless() or _level_index != 0 or GameState.tutorial_done or _tutorial != null or state != State.LEVEL:
 		return
 	var scene := FlowParts.optional_scene(FlowParts.TUTORIAL, use_stand_ins)
 	if scene == null:
@@ -811,11 +1040,11 @@ func _on_tutorial_finished() -> void:
 # --- 暫停 ---
 
 func _apply_pause() -> void:
-	get_tree().paused = state == State.LEVEL and (_pause_open or _choice_open)
+	get_tree().paused = state == State.LEVEL and (_pause_open or _choice_open or _event_open)
 
 
 func _open_pause() -> void:
-	if state != State.LEVEL or _pause_open or _choice_open:
+	if state != State.LEVEL or _pause_open or _choice_open or _event_open:
 		return
 	_pause_open = true
 	_apply_pause()
@@ -843,6 +1072,177 @@ func _on_choice_closed() -> void:
 	_apply_pause()
 
 
+func _on_event_opened() -> void:
+	_event_open = true
+	_apply_pause()
+
+
+func _on_event_closed() -> void:
+	_event_open = false
+	_apply_pause()
+
+
+## LevelSession:該出抉擇事件了。
+func _on_event_due(_index: int) -> void:
+	if state != State.LEVEL or events == null or _session == null:
+		return
+	var event: LevelEvent = null
+	if is_endless():
+		event = events.random_endless(_event_rng, _last_endless_event)
+		if event != null:
+			_last_endless_event = event.id
+	else:
+		event = events.event_for_level(_session.level.id)
+	level_events.offer(event)
+
+
+# --- 復活(v2.4 BV4) ---
+
+## 失敗畫面的 revive_pressed:扣零食、叫醒金毛、回到同一關(波次從原處繼續)。
+func _on_failure_revive() -> void:
+	if state != State.FAILURE or not _last_result.get("can_revive", false) or _session == null:
+		return
+	var cost := int(_last_result.get("revive_cost", 0))
+	if not _can_revive(cost) or not rewards.spend(cost):
+		return
+	_revive_used = true
+	_free_node(_screen)
+	_screen = null
+	_freeze_world(false)
+	_session.revive()
+	FlowParts.call_if_present(_session.get_player(), &"revive")
+	progression.resume_level()
+	rewards.resume_level()
+	_set_state(State.LEVEL)
+	_music(&"play", [&"boss" if _endless_boss_music else _level_track(_current_level())])
+	save_now()
+
+
+## 目前這一關的資料(無盡試煉是產生出來的那一關)。
+func _current_level() -> LevelData:
+	if _session != null and is_instance_valid(_session) and _session.level != null:
+		return _session.level
+	return chapter.get_level(_level_index)
+
+
+# --- 新的一輪 ---
+
+## 新遊戲、繼續冒險、無盡試煉:reset_run() 之後套用營地訓練,活力補滿。
+func _prepare_run() -> void:
+	progression.rebuild_stats()
+	GameState.vigor = GameState.player_stats.max_vigor
+
+
+## 離開無盡試煉:回到故事模式,難度回到這一輪冒險的難度(無盡試煉後段會切到困難的倍數)。
+func _end_endless_mode() -> void:
+	if GameState.mode == ENDLESS_MODE:
+		_record_endless()
+		GameState.mode = STORY_MODE
+		GameState.difficulty = _run_difficulty
+
+
+# --- 無盡試煉(v2.4 BV6) ---
+
+## 開始一輪無盡試煉(標題的 endless_pressed;失敗後「再試一次」)。故事進度不受影響。
+func start_endless() -> void:
+	_record_endless()
+	_leave_current()
+
+	GameState.reset_run()
+	progression.reset_run()
+	GameState.mode = ENDLESS_MODE
+	GameState.difficulty = NORMAL
+	_prepare_run()
+	_endless_waves = EndlessWaves.new(endless_data, _spawn_rng)
+	var level := _endless_waves.make_level()
+	_endless_waves.ensure_waves(level, 2)
+	_endless_best_before = GameState.endless_best
+	_endless_boss_music = false
+	_last_endless_event = &""
+	_clear_record = {}
+	_snapshot = {}
+	save_now()
+	_open_session(level, 0, [] as Array[StringName], true)
+	_story_before_pending = false
+	_set_state(State.LEVEL)
+	_music(&"play", [&"field"])
+	if _switching:
+		_session_waiting = true
+	else:
+		_begin_level()
+
+
+func _on_endless_wave_began(index: int) -> void:
+	if _session == null or _endless_waves == null:
+		return
+	_endless_waves.ensure_waves(_session.level, index + 1)   # 永遠有下一波
+	var boss := endless_data.is_boss_wave(index)
+	if not boss and _endless_boss_music:
+		_music(&"play", [&"field"])
+	_endless_boss_music = boss
+
+
+func _on_endless_wave_done(index: int) -> void:
+	var amount := economy.endless_snacks_per_wave
+	if endless_data.is_boss_wave(index):
+		amount += economy.endless_boss_wave_snacks
+	rewards.add_snacks(amount)
+	if endless_data.hard_from_wave > 0 and index + 1 >= endless_data.hard_from_wave:
+		GameState.difficulty = HARD        # 之後出場的敵人用困難模式的倍數(A 線)
+	save_now()                             # 存檔記下這一輪的波數(GameState.endless_best 倒下才更新)
+
+
+## 這一輪無盡試煉清了幾波(不在無盡試煉時為 0)。
+func _endless_run_waves() -> int:
+	if is_endless() and _session != null and is_instance_valid(_session) and _session.endless:
+		return _session.waves_cleared
+	return 0
+
+
+## 這一輪結束(倒下、回標題):更新 GameState.endless_best 並存檔。
+func _record_endless() -> void:
+	var waves := _endless_run_waves()
+	if waves > GameState.endless_best:
+		GameState.endless_best = waves
+	save_now()
+
+
+# --- 營地訓練(v2.4 BV5) ---
+
+func _open_training() -> void:
+	_set_state(State.TITLE)
+	var scene := FlowParts.optional_scene(FlowParts.TRAINING, use_stand_ins)
+	_training = scene.instantiate() if scene != null else null
+	if _training == null:
+		return
+	_training.name = "Training"
+	_screen_layer.add_child(_training)
+	for signal_name: StringName in [&"closed", &"close_pressed", &"back_pressed"]:
+		if _training.has_signal(signal_name):
+			_training.connect(signal_name, _close_training)
+	_training.tree_exiting.connect(_on_training_gone.bind(_training))
+
+
+func _close_training() -> void:
+	if state == State.TITLE and _training != null:
+		_go(_remove_training)
+
+
+func _remove_training() -> void:
+	_set_state(State.TITLE)
+	var node := _training
+	_training = null
+	_free_node(node)
+	save_now()
+
+
+## 訓練介面自己移除了自己(沒有發 closed):一樣存檔。
+func _on_training_gone(node: Node) -> void:
+	if _training == node:
+		_training = null
+		save_now()
+
+
 # --- EventBus ---
 
 func _on_back_requested() -> void:
@@ -850,14 +1250,16 @@ func _on_back_requested() -> void:
 		State.TITLE:
 			if _quit_dialog != null:
 				_close_quit_dialog()
+			elif _training != null:
+				pass              # 訓練介面自己處理返回鍵(發 closed);不詢問離開
 			elif _credits != null:
 				_close_credits()
 			elif platform_name == "Android":
 				_open_quit_dialog()
 			# iOS 與桌面:沒有「離開」這回事,略過。
 		State.LEVEL:
-			if _choice_open:
-				return            # 正在選把戲:返回鍵無效
+			if _choice_open or _event_open:
+				return            # 正在選把戲或抉擇事件:返回鍵無效
 			if _pause_open:
 				_close_pause()
 			else:
@@ -869,7 +1271,7 @@ func _on_back_requested() -> void:
 func _on_app_backgrounded() -> void:
 	# 先存檔(同步完成),再暫停。
 	save_now()
-	if state == State.LEVEL and not _choice_open:
+	if state == State.LEVEL and not _choice_open and not _event_open:
 		_open_pause()
 	elif state == State.SWITCHING:
 		_pause_when_ready = true        # 轉場完成、進入關卡時立即暫停
@@ -888,7 +1290,15 @@ func _on_quit_to_title_requested() -> void:
 	_go(show_title)
 
 
+## 零食改變:在標題(訓練)與營地(訓練、小遊戲獎勵)立即存檔;關卡中不存(太頻繁),
+## 由過關、復活、切到背景、離開關卡時存。
+func _on_snacks_changed(_total: int) -> void:
+	if (state == State.TITLE or state == State.CAMP) and save_store != null:
+		save_now()
+
+
 func _on_camp_left() -> void:
+
 	if state != State.CAMP:
 		return
 	_go(_start_level.bind(_level_index + 1))
@@ -897,7 +1307,28 @@ func _on_camp_left() -> void:
 # --- 介面訊號 ---
 
 func _title_is_idle() -> bool:
-	return state == State.TITLE and _credits == null and _quit_dialog == null
+	return state == State.TITLE and _credits == null and _quit_dialog == null and _training == null
+
+
+## v2.4:標題的「無盡試煉」(打完第一章才有;C 線的標題已先設定 GameState.mode)。
+func _on_title_endless() -> void:
+	if not _title_is_idle():
+		return
+	if not GameState.chapter_cleared:
+		GameState.mode = STORY_MODE
+		return
+	_go(start_endless)
+
+
+## v2.4:標題的「訓練」(D 線的 game/camp/training.tscn;不存在就略過)。
+func _on_title_training() -> void:
+	if not _title_is_idle():
+		return
+	if FlowParts.optional_scene(FlowParts.TRAINING, use_stand_ins) == null:
+		push_warning("FlowMain: 沒有訓練介面,略過")
+		return
+	_go(_open_training)
+
 
 
 func _on_title_new_game() -> void:

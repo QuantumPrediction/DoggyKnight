@@ -130,7 +130,7 @@ func test_version_3_fields_round_trip() -> void:
 	store.write_data({"level_index": 4, "difficulty": "hard", "chapter_cleared": true,
 			"story_seen": {&"prologue": true, "l1_before": true}, "best_stars": {"1-1:hard": 2}})
 	var data := store.read()
-	assert_eq(data["version"], 3)
+	assert_eq(data["version"], SaveStore.VERSION)
 	assert_eq(data["difficulty"], "hard")
 	assert_eq(data["chapter_cleared"], true)
 	assert_eq(data["story_seen"], {"prologue": true, "l1_before": true})
@@ -156,7 +156,7 @@ func test_version_2_save_still_loads_with_v3_defaults() -> void:
 	assert_false(GameState.chapter_cleared)
 	assert_eq(GameState.best_stars, {"1-1": 3})
 	flow.save_now()
-	assert_eq(read_save()["version"], 3, "下次存檔就是第 3 版")
+	assert_eq(read_save()["version"], SaveStore.VERSION, "下次存檔就是最新版")
 
 
 func test_bad_v3_values_are_cleaned() -> void:

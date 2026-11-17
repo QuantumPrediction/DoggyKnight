@@ -41,3 +41,15 @@ extends Resource
 
 @export_group("特效")
 @export var footstep_interval: float = 0.22
+
+@export_group("營地訓練(v2.4)")
+## 「忠誠」訓練每級:忠誠度累積 +10%(讀 GameState.meta_upgrades["loyalty"];StatBlock 沒有這個欄位,所以由 A 線套用)
+@export var loyalty_meta_bonus_per_level: float = 0.1
+
+@export_group("復活(v2.4 AV4)")
+@export var revive_vigor_ratio: float = 1.0     ## 醒來時活力回到上限的幾成(1 = 全滿)
+@export var revive_wake_time: float = 0.5       ## 醒來的演出秒數(伸懶腰、跳起來;這段時間不能動)
+@export var revive_invuln_time: float = 2.5     ## 醒來後無敵秒數(含演出)
+@export var revive_push_radius: float = 56.0    ## 震開附近敵人的範圍
+@export var revive_push_speed: float = 160.0
+@export var revive_stun_time: float = 0.8       ## 被震開的敵人暈眩幾秒

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="EconomyData" format=3]
+
+[ext_resource type="Script" path="res://game/progression/economy_data.gd" id="1_econ"]
+
+[resource]
+script = ExtResource("1_econ")
+kills_per_snack = 4
+clear_snacks = 5
+snacks_per_star = 4
+hard_snack_mult = 1.5
+chest_snacks = Array[int]([6, 4, 12])
+chest_heal_chance = 0.5
+chest_heal_ratio = 0.3
+chest_trick_choices = Array[int]([0, 1, 1])
+revive_cost_base = 15
+revive_cost_per_level = 8
+endless_revive_cost_base = 20
+endless_revive_cost_per_wave = 2
+endless_snacks_per_wave = 1
+endless_boss_wave_snacks = 8

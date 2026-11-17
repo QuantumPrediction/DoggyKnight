@@ -13,6 +13,9 @@ func after_each() -> void:
 	GameState.difficulty = &"normal"
 	GameState.chapter_cleared = false
 	GameState.story_seen = {}
+	GameState.mode = &"story"
+	GameState.meta_upgrades = {}
+	GameState.endless_best = 0
 	Haptics.reset_for_tests()
 
 
@@ -65,7 +68,8 @@ func test_data_classes_have_contract_fields() -> void:
 				"damage_taken_mult", "pickup_radius", "exp_mult"],
 		EnemyData: ["id", "display_name", "scene", "max_hp", "contact_damage", "move_speed", "exp_value"],
 		CompanionData: ["id", "display_name", "scene", "role"],
-		TrickData: ["id", "display_name", "description", "icon", "stat_modifiers", "is_ability"],
+		TrickData: ["id", "display_name", "description", "icon", "stat_modifiers", "is_ability", "max_level",
+				"evolution_partner", "evolves_into", "is_evolution"],
 		LevelData: ["id", "display_name", "waves", "is_boss", "arena_scene", "companions", "background", "par_time", "damage_budget",
 				"story_before", "story_after"],
 		DialogueLine: ["speaker", "expression", "text_key", "illustration"],
@@ -130,3 +134,11 @@ func test_reset_run_keeps_v23_progress() -> void:
 	assert_eq(GameState.difficulty, &"hard", "難度屬於存檔")
 	assert_true(GameState.chapter_cleared, "通關紀錄屬於存檔")
 	assert_true(GameState.story_seen.has(&"prologue"), "看過的對白屬於存檔")
+
+
+func test_reset_run_keeps_v24_meta_progress() -> void:
+	GameState.meta_upgrades = {&"strength": 2}
+	GameState.endless_best = 12
+	GameState.reset_run()
+	assert_eq(GameState.meta_upgrades.get(&"strength"), 2, "營地訓練屬於存檔")
+	assert_eq(GameState.endless_best, 12, "無盡試煉紀錄屬於存檔")

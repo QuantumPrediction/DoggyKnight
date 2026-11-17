@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="MetaUpgradeTable" format=3]
+
+[ext_resource type="Script" path="res://game/progression/meta_upgrade_table.gd" id="1_table"]
+[ext_resource type="Script" path="res://game/progression/meta_upgrade.gd" id="2_up"]
+
+[sub_resource type="Resource" id="up_vitality"]
+script = ExtResource("2_up")
+id = &"vitality"
+name_key = "TRAINING_VITALITY_NAME"
+desc_key = "TRAINING_VITALITY_DESC"
+max_level = 5
+costs = Array[int]([10, 20, 35, 55, 80])
+per_level = 0.1
+stat = &"max_vigor"
+
+[sub_resource type="Resource" id="up_strength"]
+script = ExtResource("2_up")
+id = &"strength"
+name_key = "TRAINING_STRENGTH_NAME"
+desc_key = "TRAINING_STRENGTH_DESC"
+max_level = 5
+costs = Array[int]([10, 20, 35, 55, 80])
+per_level = 0.08
+stat = &"attack_damage"
+
+[sub_resource type="Resource" id="up_agility"]
+script = ExtResource("2_up")
+id = &"agility"
+name_key = "TRAINING_AGILITY_NAME"
+desc_key = "TRAINING_AGILITY_DESC"
+max_level = 5
+costs = Array[int]([8, 16, 28, 45, 65])
+per_level = 0.05
+stat = &"move_speed"
+
+[sub_resource type="Resource" id="up_loyalty"]
+script = ExtResource("2_up")
+id = &"loyalty"
+name_key = "TRAINING_LOYALTY_NAME"
+desc_key = "TRAINING_LOYALTY_DESC"
+max_level = 5
+costs = Array[int]([8, 16, 28, 45, 65])
+per_level = 0.1
+stat = &""
+
+[sub_resource type="Resource" id="up_luck"]
+script = ExtResource("2_up")
+id = &"luck"
+name_key = "TRAINING_LUCK_NAME"
+desc_key = "TRAINING_LUCK_DESC"
+max_level = 5
+costs = Array[int]([12, 24, 40, 60, 90])
+per_level = 0.15
+stat = &""
+
+[resource]
+script = ExtResource("1_table")
+entries = Array[ExtResource("2_up")]([SubResource("up_vitality"), SubResource("up_strength"), SubResource("up_agility"), SubResource("up_loyalty"), SubResource("up_luck")])

@@ -11,3 +11,7 @@ description = "TRICK_BARK_DESC"
 icon = ExtResource("2_icon")
 stat_modifiers = {}
 is_ability = true
+max_level = 3
+evolution_partner = &"sit"
+evolves_into = &"lion_roar"
+is_evolution = false

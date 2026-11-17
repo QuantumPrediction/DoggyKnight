@@ -19,6 +19,12 @@ extends Node
 ##     再等 results_delay 秒(HUD 慶祝、經驗珠飛完)→ 發 finished(true)。
 ##   - 收到 player_downed → 停止生成敵人;等 failure_delay 秒 → 發 level_failed、發 finished(false)。
 ## 音效 clear / fail 由結算畫面自己播(C 線),音樂由 FlowMain 播,這裡都不播,避免重複。
+## v2.4:
+##   - 抉擇事件:event_after_wave >= 1 時,第 event_after_wave 波清空 event_delay 秒之後發 event_due;
+##     0 = 開場結束(第一波開始)時發;event_every > 0(無盡試煉)= 每清 event_every 波一次。
+##   - 倒下時波次生成器先停住(hold),failure_delay 秒後照樣發 level_failed / finished(false);
+##     revive() 讓這一關從原處繼續(復活)。真的離開時由 teardown() 結束。
+##   - waves_cleared:已清空的波數(無盡試煉的紀錄)。
 ## 計時都在 _process 裡做,遊戲暫停(選把戲、暫停選單、切到背景)時不會走。
 
 signal intro_finished()
@@ -26,6 +32,11 @@ signal cleared()
 signal finished(victory: bool)
 ## 有中頭目(1-4 的稻草人隊長)的一波開始(v2.3;FlowMain 改播頭目音樂)。
 signal boss_wave_started(index: int)
+## v2.4:該出抉擇事件了(index = 剛清空的波;0 = 開場之後)。
+signal event_due(index: int)
+## v2.4:第 index 波開始 / 清空(轉發 WaveSpawner 的 wave_began / wave_done)。
+signal wave_began(index: int)
+signal wave_done(index: int)
 
 enum State { READY, PLAYING, WON, DOWNED, OVER }
 
@@ -38,18 +49,30 @@ var rng: RandomNumberGenerator
 var arriving: Array[StringName] = []
 ## v2.3:&"normal" 或 &"hard"(困難模式每組多加幾隻,見 WaveSpawner.spawn_count)。
 var difficulty_mode: StringName = &"normal"
+## v2.4 抉擇事件在第幾波清空之後(0 = 開場之後;-1 = 沒有)。
+var event_after_wave: int = -1
+## v2.4 無盡試煉:每清這麼多波一次事件(0 = 不用)。
+var event_every: int = 0
+## v2.4 無盡試煉(WaveSpawner.endless)。
+var endless: bool = false
 
 var state: State = State.READY
 var time_sec: float = 0.0
 var kills: int = 0
 ## 這一關金毛受到的傷害總和(player_damaged 的數值,已乘上受傷倍率)。
 var damage_taken: int = 0
+## v2.4:已清空的波數。
+var waves_cleared: int = 0
+## v2.4:這一關復活過幾次。
+var revives: int = 0
 
 var arena: Node
 var spawner: WaveSpawner
 var _countdown: float = 0.0
 var _built: bool = false
 var _intro_done: bool = false
+var _event_countdown: float = -1.0
+var _event_index: int = 0
 
 
 func setup(level_data: LevelData, index: int, curve: DifficultyData, scene: PackedScene,
@@ -102,9 +125,11 @@ func build() -> void:
 	spawner.name = "WaveSpawner"
 	spawner.setup(level, arena, difficulty, rng)
 	spawner.difficulty_mode = difficulty_mode
+	spawner.endless = endless
 	spawner.all_waves_cleared.connect(_on_all_waves_cleared)
 	spawner.wave_began.connect(_on_wave_began)
 	spawner.boss_wave_began.connect(boss_wave_started.emit)
+	spawner.wave_done.connect(_on_wave_done)
 	add_child(spawner)
 
 
@@ -120,7 +145,10 @@ func begin(progression: RunProgression) -> void:
 	time_sec = 0.0
 	kills = 0
 	damage_taken = 0
+	waves_cleared = 0
+	revives = 0
 	_intro_done = false
+	_event_countdown = -1.0
 	EventBus.level_started.emit(level.id)
 	if progression != null:
 		progression.begin_level()
@@ -133,6 +161,22 @@ func is_built() -> bool:
 
 func is_playing() -> bool:
 	return state == State.PLAYING
+
+
+## 金毛已倒下(等待失敗結算或已顯示失敗結算)。
+func is_downed() -> bool:
+	return state == State.DOWNED or (state == State.OVER and spawner != null and spawner.is_held())
+
+
+## 復活(v2.4):倒下之後回到戰鬥,波次從原處繼續。傳回是否成功。主角的 revive() 由 FlowMain 呼叫。
+func revive() -> bool:
+	if not is_downed():
+		return false
+	state = State.PLAYING
+	revives += 1
+	if spawner != null:
+		spawner.release()
+	return true
 
 
 ## 開場(標題卡)已結束、第一波已開始。
@@ -163,6 +207,11 @@ func _process(delta: float) -> void:
 	match state:
 		State.PLAYING:
 			time_sec += delta
+			if _event_countdown >= 0.0:
+				_event_countdown -= delta
+				if _event_countdown <= 0.0:
+					_event_countdown = -1.0
+					event_due.emit(_event_index)
 		State.WON:
 			_countdown -= delta
 			if _countdown <= 0.0:
@@ -180,6 +229,24 @@ func _on_wave_began(index: int) -> void:
 	if index == 1 and not _intro_done:
 		_intro_done = true
 		intro_finished.emit()
+		if event_after_wave == 0 and event_every <= 0 and state == State.PLAYING:
+			event_due.emit(0)
+	wave_began.emit(index)
+
+
+func _on_wave_done(index: int) -> void:
+	if state != State.PLAYING:
+		return
+	waves_cleared = index
+	wave_done.emit(index)
+	var due := (event_every > 0 and index % event_every == 0) or (event_every <= 0 and event_after_wave > 0 \
+			and index == event_after_wave)
+	if due and (spawner == null or index < spawner.total_waves() or endless):
+		_event_index = index
+		_event_countdown = maxf(0.0, difficulty.event_delay)
+		if _event_countdown <= 0.0:
+			_event_countdown = -1.0
+			event_due.emit(index)
 
 
 func _on_enemy_died(_enemy_id: StringName, _position: Vector2, _exp_value: int) -> void:
@@ -206,5 +273,6 @@ func _on_player_downed() -> void:
 		return
 	state = State.DOWNED
 	_countdown = difficulty.failure_delay
+	_event_countdown = -1.0
 	if spawner != null:
-		spawner.stop()
+		spawner.hold()

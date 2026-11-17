@@ -119,7 +119,7 @@ func test_layout_fits_every_phone_size() -> void:
 		var rect := Rect2(menu.global_position, menu.size)
 		assert_true(safe.encloses(rect), "%s:選單在安全區內" % size)
 		assert_true(rect.end.y <= safe.end.y - 16.0, "%s:選單避開底部手勢區" % size)
-		for button_name in ["MinigameButton", "CompanionButton", "ContinueButton"]:
+		for button_name in ["MinigameButton", "TrainingButton", "CompanionButton", "ContinueButton"]:
 			var b := _camp.find_child(button_name, true, false) as Button
 			assert_true(b.size.y >= 24.0 and b.size.x >= 24.0, "%s:%s 至少 24×24" % [size, button_name])
 		# 摸頭的範圍:夠大、在畫面內、不和選單重疊

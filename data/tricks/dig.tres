@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="TrickData" format=3]
+
+[ext_resource type="Script" path="res://core/data/trick_data.gd" id="1_trick"]
+[ext_resource type="Texture2D" path="res://assets/icons/tricks/dig.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_trick")
+id = &"dig"
+display_name = "TRICK_DIG_NAME"
+description = "TRICK_DIG_DESC"
+icon = ExtResource("2_icon")
+stat_modifiers = {"snack_chance": 0.5, "snack_heal": 2.0}
+is_ability = false
+max_level = 3
+evolution_partner = &""
+evolves_into = &""
+is_evolution = false

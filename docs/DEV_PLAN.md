@@ -1,10 +1,16 @@
 # 《金毛騎士》原型開發計劃(給 Claude Code)
 
-版本:v2.3,2026-11-16。工作名稱《金毛騎士》,repo:`DoggyKnight`。
+版本:v2.4,2026-11-17。工作名稱《金毛騎士》,repo:`DoggyKnight`。
 
 **最終目標:一款在 App Store(iOS)與 Google Play(Android)上架的手機遊戲。** 原型本身不公開上架,但從第一天起就按手機與商店的要求來做,避免日後返工。
 
 這份文件是四個 Claude Code 工作階段(下稱「線」)同時開發的唯一依據。每條線開工前必須讀完第 1 至 5 節(包括 4.9 整合約定),以及自己那一線的章節。商店規定、費用與送審清單集中在 `docs/STORE_RELEASE.md`(D 線與整合工作階段必讀)。
+
+### v2.4 變更摘要(玩法深度,相對 v2.3)
+
+- 擁有人要求繼續深化,並參考同類型最受歡迎的遊戲(《Archero》的「移動閃避、停下攻擊」與技能抉擇;《Vampire Survivors》《Survivor.io》的技能進化、寶箱與無盡模式;《Brotato》《Soul Knight》的局外成長)。**只參考玩法機制,名稱、角色、美術全部原創。**
+- **範圍變更(擁有人要求)**:把戲進化與 6 個新把戲;寶箱;關卡中途的抉擇事件;零食經濟、營地訓練(用遊戲內零食做永久升級,**不涉及真錢,不是商店**)與零食復活;通關後的「無盡試煉」。
+- 合約補充見 4.12;任務見第 17 節。不重建 APK(擁有人指示:最後才建)。
 
 ### v2.3 變更摘要(深化,相對 v2.2)
 
@@ -393,6 +399,37 @@ func reset_run() -> void
 
 投射物特效:`assets/fx/arrow`、`sword_wave`、`pitchfork`(動畫 `default`)。敵人資料 id 與代號相同(`data/enemies/<代號>.tres`,A 線)。
 
+### 4.12 玩法深度合約(v2.4,四條線必讀)
+
+**新訊號**:`chest_collected(tier)`(A 線:拾取寶箱;0 普通、1 精英、2 頭目)、`snack_collected(amount)`(A 線:拾取零食)、`trick_evolved(evolution_id)`(B 線:把戲進化)、`event_offered(event_id, options)`(B 線:抉擇事件;options 是 `Array[Dictionary]`,每項 `{"title": 翻譯鍵, "desc": 翻譯鍵, "icon": 路徑, "tone": "merlin"|"morgana"}`)、`event_chosen(event_id, option_index)`(C 線的事件介面)、`snacks_changed(total)`(B 線)。
+
+**TrickData 新欄位**:`max_level`(預設 5)、`evolution_partner`、`evolves_into`、`is_evolution`。規則:一個把戲到 `max_level`(基本把戲設 3)且擁有 `evolution_partner` 時,下一次升級或寶箱的選項中會出現進化;選了就換成進化把戲(兩個原把戲的效果由進化版取代)。
+
+**GameState 新欄位**:`mode`(`&"story"`、`&"endless"`)、`meta_upgrades`(營地訓練等級)、`endless_best`。`reset_run()` 不重設 `meta_upgrades`、`endless_best`。
+
+**把戲 id(圖示佔位版已放在 `assets/icons/tricks/`)**
+
+| id | 名稱 | 類型 | 效果(初始值) | 進化 |
+| --- | --- | --- | --- | --- |
+| `pounce` | 撲擊 | 能力 | 停下時若敵人在 60 像素內,先撲過去再揮劍 | + `zoomies` → `meteor_pounce` 流星撲擊 |
+| `roll` | 打滾 | 能力 | 開始移動時翻滾 0.3 秒無敵(冷卻 3 秒) | 無 |
+| `dig` | 挖寶 | 數值 | 敵人掉零食的機率 +50%,吃到零食回復 2 活力 | 無 |
+| `sniff` | 嗅嗅 | 數值 | 拾取範圍 +30%,暴擊率 +8% | 無 |
+| `play_dead` | 裝死 | 能力 | 每關一次:活力歸零時改為剩 1 並無敵 2 秒 | 無 |
+| `zoomies` | 暴衝 | 能力 | 打倒敵人後 2 秒移動速度 +30% | 見上 |
+| `tornado_tail` | 旋風尾 | 進化 | `spin` + `wag`:持續繞身旋轉的旋風 | — |
+| `lion_roar` | 獅王吼 | 進化 | `bark` + `sit`:吠叫範圍加倍並造成傷害,震懾時金毛減傷 50% | — |
+| `high_five` | 擊掌連打 | 進化 | `shake` + `fetch`:每第 3 下攻擊放出飛向最近敵人的掌印 | — |
+| `meteor_pounce` | 流星撲擊 | 進化 | `pounce` + `zoomies`:撲擊落地造成小範圍衝擊 | — |
+
+數值類由 B 線套用,能力類與進化由 A 線實作。
+
+**新資源(佔位版已放好,C 線原地替換)**:寶箱 `assets/sprites/chest/chest_frames.tres`(idle、open,24×24)、零食 `assets/fx/snack/snack_frames.tres`(default)。
+
+**介面新增(場景訊號,補充 4.9)**:失敗畫面 `revive_pressed`(只在結果字典 `can_revive` 為 true 時顯示按鈕);標題 `endless_pressed`(通關後才顯示,按下前設定 `GameState.mode = &"endless"`)與 `training_pressed`(開啟 D 線的訓練介面)。
+
+**營地訓練**:升級 id `vitality`(活力上限)、`strength`(攻擊)、`agility`(速度)、`loyalty`(忠誠度累積)、`luck`(寶箱與零食機率),每項 5 級,資料在 `data/progression/meta_upgrades.tres`(B 線),介面 `game/camp/training.tscn`(D 線,營地與標題都可以打開)。
+
 ---
 
 ## 5. 所有線共同遵守的規則
@@ -744,3 +781,45 @@ func reset_run() -> void
 - [ ] DS4 效能:光暈、投射物、對白插畫加入後的壓力測試;重建並驗證 APK。
 - [ ] DS5 商店:說明文字加入故事賣點;截圖工具加入對白與繪本畫面。
 - [ ] DS6 測試。
+
+---
+
+## 17. 玩法深度(v2.4)
+
+**目標:** 讓「再玩一局」的動力來自自己的選擇與成長。品質標準同第 15 節。各線**不建 APK**,只做必要的截圖。
+
+### A 線(戰鬥)
+
+- [ ] AV1 六個新把戲中的能力類(撲擊、打滾、裝死、暴衝)與四個進化把戲(4.12);數值放資料檔;進化要有明顯不同的畫面效果。
+- [ ] AV2 寶箱:精英、中頭目、頭目必掉;一般敵人極少機率掉(`luck` 會提高);寶箱落地有光,金毛碰到就打開(發 `chest_collected`)。
+- [ ] AV3 零食:敵人有機率掉零食(挖寶、`luck` 提高),被吸向金毛,拾取發 `snack_collected`。
+- [ ] AV4 復活:B 線呼叫 `player.revive()` 時要可愛地醒來(星星、短暫無敵、震開附近敵人)。
+- [ ] AV5 測試。
+
+### B 線(流程與成長)
+
+- [ ] BV1 六個新把戲與四個進化的資料檔;進化規則;升級與寶箱的三選一會在條件達成時出現進化選項(標「進化!」)。
+- [ ] BV2 寶箱獎勵:普通 = 回復或零食;精英與頭目 = 一次把戲三選一(可能是進化)。
+- [ ] BV3 抉擇事件:每關一次,在中段兩波之間發 `event_offered`:「梅林的祝福」(例如回滿活力 / 下一個把戲升兩級)與「摩根娜的誘惑」(例如攻擊 +30% 但活力上限 −20%)。選項表放資料檔,每關不同;遊戲暫停到選完。介面不存在時自動選第一項。
+- [ ] BV4 零食經濟:擊倒、寶箱、星級都給零食,發 `snacks_changed`;倒下時可以花零食復活一次(每關一次,價格放資料檔)。結果字典加 `revive_cost`、`can_revive`;失敗畫面的新訊號 `revive_pressed`(見 4.12 介面)→ 扣零食、`player.revive()`、回到戰鬥。
+- [ ] BV5 營地訓練資料 `data/progression/meta_upgrades.tres` 與套用:新遊戲 `reset_run()` 之後套用 `GameState.meta_upgrades`;存檔第 4 版(`meta_upgrades`、`endless_best`、零食)。
+- [ ] BV6 無盡試煉(`mode = &"endless"`):通關後在標題選擇;隨機背景;一波接一波,越來越強,每 5 波一個中頭目或頭目,每 10 波一個抉擇事件;倒下就結束,紀錄最佳波數與獲得零食。
+- [ ] BV7 用機器人調整:一般模式難度維持 v2.3 的目標;進化在第一章大約能完成一至兩次。
+- [ ] BV8 測試。
+
+### C 線(介面與美術)
+
+- [ ] CV1 新把戲與進化的圖示(原地替換);把戲卡片的「進化!」樣式。
+- [ ] CV2 進化演出(`trick_evolved`):兩個圖示合體的短動畫與音效。
+- [ ] CV3 抉擇事件介面 `ui/event_choice/event_choice.tscn`:聽 `event_offered`,兩張卡片(梅林:藍色、溫暖;摩根娜:紫色、神秘),選了發 `event_chosen`;遊戲暫停時可用。
+- [ ] CV4 寶箱與零食的美術(原地替換);寶箱打開的光與音效。
+- [ ] CV5 HUD:零食數;無盡模式的波數與最佳紀錄。失敗畫面:「用 N 個零食復活」按鈕(發 `revive_pressed`,只在 `can_revive` 時出現)。標題:通關後的「無盡試煉」按鈕(設定 `GameState.mode` 後發新訊號 `endless_pressed`)與「訓練」按鈕(發 `training_pressed`)。
+- [ ] CV6 新音效:`chest_open`、`evolve`、`snack`、`revive`、`event`。
+- [ ] CV7 測試。
+
+### D 線(營地訓練與手機)
+
+- [ ] DV1 營地訓練介面 `game/camp/training.tscn`:五項升級、等級、價格、零食數;買得起才可以按;買了有升級演出;營地選單加「訓練」入口;標題的 `training_pressed` 也開啟它(由 B 線加到流程)。
+- [ ] DV2 小遊戲獎勵加入零食(依評價)。
+- [ ] DV3 效能:寶箱、零食、進化特效加入壓力測試。
+- [ ] DV4 測試。

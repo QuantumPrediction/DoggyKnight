@@ -18,10 +18,12 @@ func before_each() -> void:
 
 func test_thresholds_follow_the_curve() -> void:
 	var curve := load(DIFFICULTY) as DifficultyData
+	# 第一級 5 點,之後每級多 exp_step_per_level(v2.4 由 3 調為 4,配合新把戲與寶箱)。
+	var step := curve.exp_step_per_level
 	assert_eq(curve.exp_to_next(1), 5, "第 1 → 2 級")
-	assert_eq(curve.exp_to_next(2), 8, "第 2 → 3 級")
-	assert_eq(curve.exp_to_next(3), 11, "第 3 → 4 級")
-	assert_eq(curve.exp_to_next(10), 32)
+	assert_eq(curve.exp_to_next(2), 5 + step, "第 2 → 3 級")
+	assert_eq(curve.exp_to_next(3), 5 + step * 2, "第 3 → 4 級")
+	assert_eq(curve.exp_to_next(10), 5 + step * 9)
 
 
 func test_level_up_exactly_at_threshold() -> void:
@@ -32,12 +34,13 @@ func test_level_up_exactly_at_threshold() -> void:
 	assert_eq(xp.add(1), 1, "第 5 點升到第 2 級")
 	assert_eq(xp.level, 2)
 	assert_eq(xp.current(), 0)
-	assert_eq(xp.needed(), 8)
+	assert_eq(xp.needed(), 5 + (load(DIFFICULTY) as DifficultyData).exp_step_per_level)
 
 
 func test_overflow_carries_into_next_level_and_can_skip_levels() -> void:
 	var xp := HeroExperience.new(load(DIFFICULTY) as DifficultyData)
-	assert_eq(xp.add(15), 2, "15 = 5 + 8 + 2 → 升兩級")
+	var step := (load(DIFFICULTY) as DifficultyData).exp_step_per_level
+	assert_eq(xp.add(5 + (5 + step) + 2), 2, "5 + (5 + 每級增加) + 2 → 升兩級")
 	assert_eq(xp.level, 3)
 	assert_eq(xp.current(), 2)
 
@@ -83,7 +86,7 @@ func test_multiple_level_ups_queue_one_choice_each() -> void:
 	var offered := watch_signal(EventBus.trick_offered)
 	var closed := [0]
 	progression.choice_closed.connect(func() -> void: closed[0] += 1)
-	EventBus.exp_collected.emit(13)     # 5 + 8 → 第 3 級
+	EventBus.exp_collected.emit(5 + 5 + (load(DIFFICULTY) as DifficultyData).exp_step_per_level)     # 剛好升到第 3 級
 	assert_eq(leveled.count, 2)
 	assert_eq(leveled.calls[0], [2])
 	assert_eq(leveled.calls[1], [3])

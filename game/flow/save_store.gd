@@ -2,18 +2,22 @@ class_name SaveStore
 extends RefCounted
 ## 存檔(B9、BP6、BS6)。存在本機 user://,不連網,不存任何個人資料或裝置識別碼。
 ##
-## 檔案格式(JSON,第 3 版):
-##   {"version": 3, "level_index": 2, "snacks": 0, "sound_on": true, "music_on": true,
+## 檔案格式(JSON,第 4 版):
+##   {"version": 4, "level_index": 2, "snacks": 0, "sound_on": true, "music_on": true,
 ##    "haptics_on": true, "tutorial_done": true, "best_stars": {"1-1": 3, "1-2": 2, "1-1:hard": 1},
 ##    "camp_pending": false, "difficulty": "normal", "chapter_cleared": false,
-##    "story_seen": {"prologue": true, "l1_before": true}}
+##    "story_seen": {"prologue": true, "l1_before": true},
+##    "meta_upgrades": {"strength": 2, "luck": 1}, "endless_best": 12}
 ##   level_index:下次「繼續冒險」要從哪一關開始(0 起算;0 = 沒有可以繼續的進度)。
 ##   camp_pending:上一關過關後應該先進營地(結算畫面出現後 App 被關掉,繼續時先回到營地)。
 ##   best_stars:每關最佳星數(鍵是關卡 id 字串,困難模式加 ":hard";值 0 至 3)。
 ##   difficulty(v3):這一輪冒險的難度 "normal" 或 "hard"(繼續冒險時沿用)。
 ##   chapter_cleared(v3):打完第一章(解鎖困難模式)。
 ##   story_seen(v3):看過的對白段落 {段落 id: true}。
-## 向下相容:第 1 版存檔(只有 level_index、snacks、sound_on)與第 2 版存檔都可以讀,缺的欄位用預設值;
+##   snacks:零食總數(v2.4 起真的會增減:擊倒、寶箱、過關、復活、營地訓練)。
+##   meta_upgrades(v4):營地訓練等級 {升級 id: 0 至 MAX_META_LEVEL}。
+##   endless_best(v4):無盡試煉最佳波數。
+## 向下相容:第 1、2、3 版存檔都可以讀,缺的欄位用預設值;
 ## 但第 1 版存檔已經到達第 2 關以後,表示玩家玩過第一關,tutorial_done 視為 true。
 ##
 ## 防止存檔損毀:先把完整內容寫到「<路徑>.tmp」,關檔之後才改名成正式檔名。
@@ -22,7 +26,9 @@ extends RefCounted
 ##
 ## 寫入是同步的(不用 await),所以在 app_backgrounded 裡呼叫可以立即完成。
 
-const VERSION: int = 3
+const VERSION: int = 4
+## 營地訓練等級的上限(存檔清理用;實際上限在 data/progression/meta_upgrades.tres)。
+const MAX_META_LEVEL: int = 99
 const DEFAULT_PATH: String = "user://save.json"
 const MAX_STARS: int = 3
 const DIFFICULTIES: Array[String] = ["normal", "hard"]
@@ -54,6 +60,8 @@ static func defaults() -> Dictionary:
 		"difficulty": "normal",
 		"chapter_cleared": false,
 		"story_seen": {},
+		"meta_upgrades": {},
+		"endless_best": 0,
 	}
 
 
@@ -143,7 +151,22 @@ static func sanitize(raw: Dictionary) -> Dictionary:
 		"difficulty": _difficulty_field(raw.get("difficulty", d["difficulty"])),
 		"chapter_cleared": _bool_field(raw, "chapter_cleared", d["chapter_cleared"]),
 		"story_seen": _seen_field(raw.get("story_seen", {})),
+		"meta_upgrades": _meta_field(raw.get("meta_upgrades", {})),
+		"endless_best": _int_field(raw, "endless_best", d["endless_best"]),
 	}
+
+
+## {升級 id: 等級}:鍵一律轉成字串,等級限制在 0 至 MAX_META_LEVEL,不是數字的項目略過。
+static func _meta_field(value: Variant) -> Dictionary:
+	var result := {}
+	if not value is Dictionary:
+		return result
+	for key: Variant in (value as Dictionary).keys():
+		var level: Variant = (value as Dictionary)[key]
+		if (key is String or key is StringName) and (level is int or level is float):
+			result[String(key)] = clampi(int(level), 0, MAX_META_LEVEL)
+	return result
+
 
 
 static func _int_field(raw: Dictionary, key: String, fallback: int) -> int:

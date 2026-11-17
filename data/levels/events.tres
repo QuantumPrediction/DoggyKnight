@@ -1,0 +1,188 @@
+[gd_resource type="Resource" script_class="LevelEventTable" format=3]
+
+[ext_resource type="Script" path="res://game/progression/level_event_table.gd" id="1_table"]
+[ext_resource type="Script" path="res://game/progression/level_event.gd" id="2_event"]
+[ext_resource type="Script" path="res://game/progression/event_option.gd" id="3_option"]
+
+[sub_resource type="Resource" id="sword_glow_merlin"]
+script = ExtResource("3_option")
+title = "EVENT_SWORD_GLOW_MERLIN"
+desc = "EVENT_SWORD_GLOW_MERLIN_DESC"
+icon = "res://assets/portraits/merlin/proud.png"
+tone = "merlin"
+effects = {"heal_ratio": 1.0}
+
+[sub_resource type="Resource" id="sword_glow_morgana"]
+script = ExtResource("3_option")
+title = "EVENT_SWORD_GLOW_MORGANA"
+desc = "EVENT_SWORD_GLOW_MORGANA_DESC"
+icon = "res://assets/portraits/morgana/smirk.png"
+tone = "morgana"
+effects = {"stats": {"attack_damage": 0.3, "max_vigor": -0.2}}
+
+[sub_resource type="Resource" id="sword_glow"]
+script = ExtResource("2_event")
+id = &"sword_glow"
+title = "EVENT_SWORD_GLOW_TITLE"
+options = Array[ExtResource("3_option")]([SubResource("sword_glow_merlin"), SubResource("sword_glow_morgana")])
+
+[sub_resource type="Resource" id="wheat_cart_merlin"]
+script = ExtResource("3_option")
+title = "EVENT_WHEAT_CART_MERLIN"
+desc = "EVENT_WHEAT_CART_MERLIN_DESC"
+icon = "res://assets/portraits/merlin/proud.png"
+tone = "merlin"
+effects = {"bonus_trick_levels": 1}
+
+[sub_resource type="Resource" id="wheat_cart_morgana"]
+script = ExtResource("3_option")
+title = "EVENT_WHEAT_CART_MORGANA"
+desc = "EVENT_WHEAT_CART_MORGANA_DESC"
+icon = "res://assets/portraits/morgana/smirk.png"
+tone = "morgana"
+effects = {"snacks": 25, "vigor_keep_ratio": 0.5}
+
+[sub_resource type="Resource" id="wheat_cart"]
+script = ExtResource("2_event")
+id = &"wheat_cart"
+title = "EVENT_WHEAT_CART_TITLE"
+options = Array[ExtResource("3_option")]([SubResource("wheat_cart_merlin"), SubResource("wheat_cart_morgana")])
+
+[sub_resource type="Resource" id="sausage_merlin"]
+script = ExtResource("3_option")
+title = "EVENT_SAUSAGE_MERLIN"
+desc = "EVENT_SAUSAGE_MERLIN_DESC"
+icon = "res://assets/portraits/merlin/proud.png"
+tone = "merlin"
+effects = {"trick_choices": 1}
+
+[sub_resource type="Resource" id="sausage_morgana"]
+script = ExtResource("3_option")
+title = "EVENT_SAUSAGE_MORGANA"
+desc = "EVENT_SAUSAGE_MORGANA_DESC"
+icon = "res://assets/portraits/morgana/smirk.png"
+tone = "morgana"
+effects = {"stats": {"move_speed": 0.25, "damage_taken_mult": 0.25}}
+
+[sub_resource type="Resource" id="sausage"]
+script = ExtResource("2_event")
+id = &"sausage"
+title = "EVENT_SAUSAGE_TITLE"
+options = Array[ExtResource("3_option")]([SubResource("sausage_merlin"), SubResource("sausage_morgana")])
+
+[sub_resource type="Resource" id="purple_feather_merlin"]
+script = ExtResource("3_option")
+title = "EVENT_PURPLE_FEATHER_MERLIN"
+desc = "EVENT_PURPLE_FEATHER_MERLIN_DESC"
+icon = "res://assets/portraits/merlin/proud.png"
+tone = "merlin"
+effects = {"stats": {"damage_taken_mult": -0.15}, "heal_ratio": 0.3}
+
+[sub_resource type="Resource" id="purple_feather_morgana"]
+script = ExtResource("3_option")
+title = "EVENT_PURPLE_FEATHER_MORGANA"
+desc = "EVENT_PURPLE_FEATHER_MORGANA_DESC"
+icon = "res://assets/portraits/morgana/smirk.png"
+tone = "morgana"
+effects = {"stats": {"attack_damage": 0.45, "max_vigor": -0.25}}
+
+[sub_resource type="Resource" id="purple_feather"]
+script = ExtResource("2_event")
+id = &"purple_feather"
+title = "EVENT_PURPLE_FEATHER_TITLE"
+options = Array[ExtResource("3_option")]([SubResource("purple_feather_merlin"), SubResource("purple_feather_morgana")])
+
+[sub_resource type="Resource" id="crow_whisper_merlin"]
+script = ExtResource("3_option")
+title = "EVENT_CROW_WHISPER_MERLIN"
+desc = "EVENT_CROW_WHISPER_MERLIN_DESC"
+icon = "res://assets/portraits/merlin/proud.png"
+tone = "merlin"
+effects = {"stats": {"exp_mult": 0.25, "pickup_radius": 0.3}}
+
+[sub_resource type="Resource" id="crow_whisper_morgana"]
+script = ExtResource("3_option")
+title = "EVENT_CROW_WHISPER_MORGANA"
+desc = "EVENT_CROW_WHISPER_MORGANA_DESC"
+icon = "res://assets/portraits/morgana/smirk.png"
+tone = "morgana"
+effects = {"stats": {"attack_interval": -0.15, "max_vigor": -0.2}}
+
+[sub_resource type="Resource" id="crow_whisper"]
+script = ExtResource("2_event")
+id = &"crow_whisper"
+title = "EVENT_CROW_WHISPER_TITLE"
+options = Array[ExtResource("3_option")]([SubResource("crow_whisper_merlin"), SubResource("crow_whisper_morgana")])
+
+[sub_resource type="Resource" id="bridge_mist_merlin"]
+script = ExtResource("3_option")
+title = "EVENT_BRIDGE_MIST_MERLIN"
+desc = "EVENT_BRIDGE_MIST_MERLIN_DESC"
+icon = "res://assets/portraits/merlin/proud.png"
+tone = "merlin"
+effects = {"heal_ratio": 0.4, "snacks": 10}
+
+[sub_resource type="Resource" id="bridge_mist_morgana"]
+script = ExtResource("3_option")
+title = "EVENT_BRIDGE_MIST_MORGANA"
+desc = "EVENT_BRIDGE_MIST_MORGANA_DESC"
+icon = "res://assets/portraits/morgana/smirk.png"
+tone = "morgana"
+effects = {"stats": {"attack_damage": 0.4, "damage_taken_mult": 0.3}}
+
+[sub_resource type="Resource" id="bridge_mist"]
+script = ExtResource("2_event")
+id = &"bridge_mist"
+title = "EVENT_BRIDGE_MIST_TITLE"
+options = Array[ExtResource("3_option")]([SubResource("bridge_mist_merlin"), SubResource("bridge_mist_morgana")])
+
+[sub_resource type="Resource" id="star_shower_merlin"]
+script = ExtResource("3_option")
+title = "EVENT_STAR_SHOWER_MERLIN"
+desc = "EVENT_STAR_SHOWER_MERLIN_DESC"
+icon = "res://assets/portraits/merlin/proud.png"
+tone = "merlin"
+effects = {"trick_choices": 2}
+
+[sub_resource type="Resource" id="star_shower_morgana"]
+script = ExtResource("3_option")
+title = "EVENT_STAR_SHOWER_MORGANA"
+desc = "EVENT_STAR_SHOWER_MORGANA_DESC"
+icon = "res://assets/portraits/morgana/smirk.png"
+tone = "morgana"
+effects = {"snacks": 40, "stats": {"max_vigor": -0.15}}
+
+[sub_resource type="Resource" id="star_shower"]
+script = ExtResource("2_event")
+id = &"star_shower"
+title = "EVENT_STAR_SHOWER_TITLE"
+options = Array[ExtResource("3_option")]([SubResource("star_shower_merlin"), SubResource("star_shower_morgana")])
+
+[sub_resource type="Resource" id="moon_pool_merlin"]
+script = ExtResource("3_option")
+title = "EVENT_MOON_POOL_MERLIN"
+desc = "EVENT_MOON_POOL_MERLIN_DESC"
+icon = "res://assets/portraits/merlin/proud.png"
+tone = "merlin"
+effects = {"heal_ratio": 1.0, "snacks": 10}
+
+[sub_resource type="Resource" id="moon_pool_morgana"]
+script = ExtResource("3_option")
+title = "EVENT_MOON_POOL_MORGANA"
+desc = "EVENT_MOON_POOL_MORGANA_DESC"
+icon = "res://assets/portraits/morgana/smirk.png"
+tone = "morgana"
+effects = {"stats": {"attack_damage": 0.5, "move_speed": -0.15}}
+
+[sub_resource type="Resource" id="moon_pool"]
+script = ExtResource("2_event")
+id = &"moon_pool"
+title = "EVENT_MOON_POOL_TITLE"
+options = Array[ExtResource("3_option")]([SubResource("moon_pool_merlin"), SubResource("moon_pool_morgana")])
+
+[resource]
+script = ExtResource("1_table")
+events = Array[ExtResource("2_event")]([SubResource("sword_glow"), SubResource("wheat_cart"), SubResource("sausage"), SubResource("purple_feather"), SubResource("crow_whisper"), SubResource("bridge_mist"), SubResource("star_shower"), SubResource("moon_pool")])
+level_events = {&"1-1": &"sword_glow", &"1-2": &"wheat_cart", &"1-3": &"sausage", &"1-4": &"purple_feather", &"1-5": &"crow_whisper", &"1-6": &"bridge_mist"}
+after_wave = {}
+endless_pool = Array[StringName]([&"sword_glow", &"wheat_cart", &"sausage", &"purple_feather", &"crow_whisper", &"bridge_mist", &"star_shower", &"moon_pool"])

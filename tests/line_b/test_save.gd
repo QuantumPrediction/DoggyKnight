@@ -24,10 +24,10 @@ func test_only_known_fields_are_saved() -> void:
 	var raw: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(SAVE_PATH))
 	var keys := raw.keys()
 	keys.sort()
-	assert_eq(keys, ["best_stars", "camp_pending", "chapter_cleared", "difficulty", "haptics_on", "level_index",
-			"music_on", "snacks", "sound_on", "story_seen", "tutorial_done", "version"],
+	assert_eq(keys, ["best_stars", "camp_pending", "chapter_cleared", "difficulty", "endless_best", "haptics_on",
+			"level_index", "meta_upgrades", "music_on", "snacks", "sound_on", "story_seen", "tutorial_done", "version"],
 			"只存遊戲進度與設定,沒有任何個人資料")
-	assert_eq(raw["version"], 3.0)
+	assert_eq(raw["version"], 4.0)
 
 
 func test_overwrite_keeps_latest() -> void:

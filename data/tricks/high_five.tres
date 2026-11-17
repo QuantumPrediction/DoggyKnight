@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="TrickData" format=3]
+
+[ext_resource type="Script" path="res://core/data/trick_data.gd" id="1_trick"]
+[ext_resource type="Texture2D" path="res://assets/icons/tricks/high_five.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_trick")
+id = &"high_five"
+display_name = "TRICK_HIGH_FIVE_NAME"
+description = "TRICK_HIGH_FIVE_DESC"
+icon = ExtResource("2_icon")
+stat_modifiers = {"pickup_radius": 1.5, "exp_mult": 0.6}
+is_ability = true
+max_level = 1
+evolution_partner = &""
+evolves_into = &""
+is_evolution = true
