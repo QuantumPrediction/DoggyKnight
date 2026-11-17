@@ -80,6 +80,8 @@ func test_chapter_files() -> void:
 		assert_eq(chapter.number, n)
 		assert_eq(chapter.display_name, "CHAPTER_%d" % n)
 		assert_ne(tr(chapter.display_name), chapter.display_name, "章名有翻譯")
+		# BV6:結算與章節進度不寫死「第一章」(C 線可以用 tr("UI_CHAPTER_PROGRESS_ANY") % [tr("CHAPTER_SHORT_N"), …])
+		assert_ne(tr("CHAPTER_SHORT_%d" % n), "CHAPTER_SHORT_%d" % n, "短章名")
 		assert_eq(chapter.level_count(), 6, "每章 6 關")
 		assert_eq(chapter.camp_after, [1, 3] as Array[int], "每章 2 次營地(第 2、4 關之後)")
 		for m in 6:
@@ -94,6 +96,9 @@ func test_chapter_files() -> void:
 	assert_eq(_chapter(2).boss_music, &"boss_2")
 	assert_eq(_chapter(3).field_music, &"field_3")
 	assert_eq(_chapter(3).boss_music, &"boss_3")
+	for key: String in ["UI_CHAPTER_PROGRESS_ANY", "UI_CHAPTER_CLEARED_ANY", "UI_CHAPTER_UNLOCKED"]:
+		assert_ne(tr(key), key, "%s 有翻譯" % key)
+	assert_eq(tr("UI_CHAPTER_PROGRESS_ANY") % [tr("CHAPTER_SHORT_2"), 3, 6], "第二章 3/6")
 
 
 func test_levels_follow_the_table() -> void:
