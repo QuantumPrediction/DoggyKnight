@@ -21,15 +21,15 @@ extends RefCounted
 ## 整數欄位(例如 max_vigor、attack_damage)四捨五入。任何數值都不會低於 0;
 ## damage_taken_mult 不會低於 DifficultyData.min_damage_taken_mult。
 ## stat_modifiers 也可以有不是 StatBlock 欄位的「額外加成」(EXTRA_KEYS,例如嗅嗅的暴擊率):
-## 這裡不套用,由 A 線用 TrickDeck.extra_bonus(鍵) 讀取目前的總和。
+## 這裡不套用;效果由 A 線自己實作(資料只是記錄數值,TrickDeck.extra_bonus(鍵) 可以讀總和)。
 ## 能力類把戲(is_ability)的效果由 A 線聽 trick_chosen / trick_evolved 後啟用;
 ## 有 stat_modifiers 的進化把戲(例如旋風尾的移動速度)數值部分仍由 B 線套用。
 
 const TRICK_DIR: String = "res://data/tricks"
-## 不是 StatBlock 欄位的額外加成(A 線讀取):
+## 不是 StatBlock 欄位的額外加成(A 線實作,B 線不套用):
 ##   crit_chance  暴擊率(相加,0.08 = +8%)
 ##   snack_chance 敵人掉零食的機率(相乘的加成,0.5 = +50%)
-##   snack_heal   吃到零食回復的活力(B 線在 snack_collected 時呼叫主角的 heal)
+##   snack_heal   吃到零食回復的活力(A 線回復)
 const EXTRA_KEYS: Array[StringName] = [&"crit_chance", &"snack_chance", &"snack_heal"]
 ## 安全下限(不是手感數值):摩根娜的誘惑選很多次也不會讓活力上限變 0、攻擊間隔變 0。
 const SAFETY_FLOORS: Dictionary = {&"max_vigor": 10, &"attack_interval": 0.15, &"move_speed": 20.0}

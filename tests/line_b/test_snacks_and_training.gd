@@ -260,3 +260,22 @@ func test_training_opens_from_title_and_saves_on_close() -> void:
 	assert_eq(read_save()["snacks"], 200 - MetaUpgradeTable.load_default().get_entry(&"vitality").costs[0])
 	assert_true(await start_new_game())
 	assert_true(GameState.player_stats.max_vigor > GameState.BASE_STATS.max_vigor, "下一輪就生效")
+
+
+func test_boss_chest_after_the_fight_becomes_snacks() -> void:
+	var progression := RunProgression.new()
+	progression.setup(load(DIFFICULTY) as DifficultyData, 5)
+	add_child(progression)
+	var rewards := RunRewards.new()
+	rewards.setup(_economy(), progression, 5)
+	add_child(rewards)
+	rewards.begin_level()         # 寶箱還算(結算畫面之前)
+	progression.end_level()       # 但已經不能選把戲
+	GameState.snacks = 0
+	EventBus.chest_collected.emit(2)
+	assert_false(progression.is_choice_open())
+	assert_eq(GameState.snacks, _economy().chest_snack_amount(2) * 2, "把戲換成零食")
+	EventBus.snack_collected.emit(1)
+	assert_eq(GameState.vigor, GameState.player_stats.max_vigor, "B 線不做挖寶的回復(A 線做)")
+	rewards.queue_free()
+	progression.queue_free()

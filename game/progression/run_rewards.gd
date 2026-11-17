@@ -3,11 +3,13 @@ extends Node
 ## 零食與寶箱(v2.4 BV2、BV4)。由 FlowMain 擁有;只在關卡進行中(begin_level 到 end_level)才算。
 ## 數值在 data/progression/economy.tres(EconomyData)。
 ##
-## - snack_collected(amount)(A 線):GameState.snacks += amount;學了「挖寶」時每次另外回復
-##   TrickDeck.extra_bonus(&"snack_heal") 活力(呼叫主角的 heal)。
+## - snack_collected(amount)(A 線):GameState.snacks += amount。「挖寶」的掉落機率與吃零食回復活力
+##   都由 A 線自己做(B 線不重複回復)。
 ## - enemy_died:每 kills_per_snack 隻 +1 零食。
 ## - chest_collected(tier)(A 線):普通寶箱 = 回復活力(chest_heal_ratio)或零食(活力已滿一定是零食);
 ##   精英、頭目寶箱 = 零食 + 一次把戲三選一(RunProgression.offer_bonus_choice,可能出現進化)。
+##   頭目寶箱可能在 level_completed 之後約 1 秒才被撿到:結算畫面出現之前都照樣給(遊戲暫停到選完);
+##   已經不能選把戲時,把戲換成同樣數目的零食。
 ## - 零食每次改變都發 EventBus.snacks_changed(總數);關卡開始時也發一次,讓 HUD 有初始值。
 ## 存檔由 FlowMain 負責(過關、切到背景等)。
 
@@ -106,9 +108,6 @@ func _on_snack_collected(amount: int) -> void:
 	if not _active:
 		return
 	add_snacks(amount)
-	var bonus := roundi(TrickDeck.extra_bonus(&"snack_heal"))
-	if bonus > 0:
-		heal(bonus)
 
 
 func _on_enemy_died(_enemy_id: StringName, _position: Vector2, _exp_value: int) -> void:
@@ -131,5 +130,7 @@ func _on_chest_collected(tier: int) -> void:
 			add_snacks(economy.chest_snack_amount(0))
 		return
 	add_snacks(economy.chest_snack_amount(tier))
-	if progression != null:
-		progression.offer_bonus_choice(economy.chest_choice_count(tier))
+	var choices := economy.chest_choice_count(tier)
+	if choices > 0 and (progression == null or not progression.offer_bonus_choice(choices)):
+		add_snacks(economy.chest_snack_amount(tier) * choices)     # 不能選把戲了:換成零食
+
