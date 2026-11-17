@@ -29,11 +29,21 @@ func test_reset_run_starts_a_fresh_run() -> void:
 	GameState.reset_run()
 	assert_eq(GameState.vigor, GameState.player_stats.max_vigor)
 	assert_eq(GameState.hero_level, 1)
-	assert_eq(GameState.chapter, 1)
 	assert_eq(GameState.level_index, 0)
 	assert_eq(GameState.active_tricks.size(), 0)
 	assert_eq(GameState.next_level_bonus, 0.0)
 	assert_eq(GameState.satisfaction, 0)
+
+
+## v2.6:章由標題畫面在新遊戲前設定,reset_run() 不可以把它改回第 1 章;通關章數也不重設。
+func test_reset_run_keeps_the_chosen_chapter() -> void:
+	GameState.chapter = 3
+	GameState.chapters_cleared = 2
+	GameState.reset_run()
+	assert_eq(GameState.chapter, 3)
+	assert_eq(GameState.chapters_cleared, 2)
+	GameState.chapter = 1
+	GameState.chapters_cleared = 0
 
 
 func test_reset_run_keeps_save_data_and_settings() -> void:

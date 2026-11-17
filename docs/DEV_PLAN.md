@@ -430,6 +430,48 @@ func reset_run() -> void
 
 **營地訓練**:升級 id `vitality`(活力上限)、`strength`(攻擊)、`agility`(速度)、`loyalty`(忠誠度累積)、`luck`(寶箱與零食機率),每項 5 級,資料在 `data/progression/meta_upgrades.tres`(B 線),介面 `game/camp/training.tscn`(D 線,營地與標題都可以打開)。
 
+### 4.13 三章合約(v2.6,四條線必讀)
+
+**章節模式**(像同類型手機遊戲的「章節」):三章,每章 6 關、2 次營地;**每章是獨立的一輪**(等級 1、沒有把戲),營地訓練的永久升級會帶過去。故事、角色與插畫見 `docs/STORY.md` 第 9 至 13 節。
+
+**GameState**
+
+- `chapter`(1 至 3):這一輪的章。標題畫面在發出 `new_game_pressed` 之前設定;`reset_run()` 不改它。B 線存進存檔(「繼續冒險」回到正確的章)。
+- `chapters_cleared`(0 至 3,新欄位):已打完的最高章數,隨存檔保存。打完第 N 章時 B 線設 `chapters_cleared = max(chapters_cleared, N)`,並保持 `chapter_cleared = true`(第一章通關仍然是解鎖困難模式與無盡試煉的條件)。舊存檔:`chapter_cleared` 為 true 時視為 `chapters_cleared = 1`。
+- 可以選的章:`1` 至 `min(chapters_cleared + 1, 3)`。
+
+**資料(B 線)**
+
+- `data/levels/chapter_<N>.tres`(ChapterData),關卡 `data/levels/level_<N>_<M>.tres`,id `"N-M"`,`display_name` `"LEVEL_N_M"`(翻譯已加)。章名翻譯鍵 `CHAPTER_N`(已加)。
+- 對白段落 `data/story/<段落 id>.tres`;第 N 章(N ≥ 2)的段落 id 是 `cN_prologue`、`cNlM_before`、`cNlM_after`、`cN_camp1`、`cN_camp2`、`cN_teaser`。
+- `LevelData.music`(新欄位):背景音樂 id;空白時一般關 `field`、頭目關 `boss`。第二章 `field_2`、`boss_2`,第三章 `field_3`、`boss_3`(C 線做音樂)。
+- 頭目與最後一關的 id 一律以 `-6` 結尾;中頭目在 `-4`。
+
+**新敵人(A 線,`data/enemies/<id>.tres`;圖 `assets/sprites/<代號>/`,佔位版已放好)**
+
+| id | 圖的代號 | 格子 | 必要動畫 | 說明 |
+| --- | --- | --- | --- | --- |
+| `gargoyle` | gargoyle | 32 | idle、run、attack、hurt、swoop、stone | 石像鬼:飛行俯衝;每隔一段時間變成石頭(打不動、推不動) |
+| `gargoyle_elite` | gargoyle(放大) | — | — | 中頭目石像鬼統領(2-4) |
+| `spellbook` | spellbook | 24 | idle、run、attack、hurt、cast | 魔法書:保持距離,射出扇形光球 |
+| `foxfire` | foxfire | 16 | idle、run、attack、hurt、burst | 狐火:成群、追蹤;靠近後預警圈再爆開 |
+| `shadow_wolf` | shadow_wolf | 32 | idle、run、attack、hurt、dash、down | 影狼:成群繞圈,紅線預警後衝鋒 |
+| `phantom_knight` | black_knight(半透明紫色) | — | — | 中頭目幻影黑騎士(3-4):更快、生命較少 |
+| `green_knight` | green_knight | 64 | idle、run、attack、hurt、whip、summon、hat_off、down | 第二章頭目綠騎士 |
+| `morgana` | morgana | 64 | idle、run、attack、hurt、cast、teleport、down | 最終頭目摩根娜 |
+
+投射物特效(佔位版已放好,C 線原地替換):`assets/fx/magic_orb`、`thorn`、`fox_flame`、`moon_orb`(動畫 `default`)。敵人名字的翻譯鍵 `ENEMY_<ID 大寫>` 已加。
+
+**新同伴**:`lancelot`(柴犬長槍騎士,`data/companions/lancelot.tres`,圖 `assets/sprites/lancelot/`:idle、run、attack、hurt、dash)。`LevelData.companions` 可以同時有兩位同伴(`[&"bulldog", &"lancelot"]`)。
+
+**其他新圖**:`assets/sprites/lady_lake/`(湖中仙女,營地用:idle、run、cast);背景 `castle_town`、`castle_courtyard`、`royal_library`、`castle_wall`、`magic_garden`、`green_chapel`、`misty_lake`、`fairy_forest`、`stone_circle`、`crystal_cave`、`morgana_tower`、`tower_top`;頭像與插畫見 `docs/STORY.md` 第 10、11 節。全部由 `tests/core/test_v26_contract.gd` 檢查。
+
+**難度**:`data/enemies/difficulty_scaling.tres` 增加每章的倍率(A 線),故事模式依 `GameState.chapter` 套用,和每關的遞增相乘。
+
+**標題畫面**:`chapters_cleared ≥ 1` 時顯示選章(左右箭頭或三張章節卡;未解鎖的章顯示鎖頭)。按「新遊戲」前設定 `GameState.chapter`。
+
+**營地**:第 N 章的營地播放 `cN_camp1`、`cN_camp2`(第一章仍是 `camp1`、`camp2`);第三章由湖中仙女代替梅林;蘭斯洛特從第二章第一次營地起出現在營地。
+
 ---
 
 ## 5. 所有線共同遵守的規則
@@ -840,3 +882,76 @@ func reset_run() -> void
 - [ ] CR4 標題主視覺與 App 圖示重畫。
 - [ ] CR5 特效重畫:配合新尺寸。
 - [ ] CR6 截圖比較(重畫前、重畫後),並確認全部合約測試通過。
+
+## 19. 三章與背景、標題再修(v2.6)
+
+**背景:** 擁有人要求「至少 3 章」、「頭目再加強」、「再修一輪背景和標題」,並問玩法是否跟隨同類型的熱門作品。決定:保留「移動閃避、停下自動攻擊」的核心,沿用同類型作品的「章節」結構(每章獨立一輪、逐章解鎖、章節越後越難),但保留我們的特色(近戰、故事、同伴、營地,沒有抽卡)。合約見 4.13;故事見 `docs/STORY.md` 第 9 至 13 節。**不要建置 APK**(擁有人要求到最後才建置)。
+
+C 線這次分成兩個工作階段:**C 世界**(背景、標題、插畫、音樂、失敗提示)與 **C 角色**(角色圖、頭像、投射物特效)。兩者都在 `line-c` 的目錄內工作,但只改各自的檔案;`tools/pixel/build_all.py` 由整合工作階段合併。
+
+### A 線任務
+
+- [ ] AV1 `gargoyle` 石像鬼:飛行、紅線預警後俯衝;每約 4 秒變成石頭 1.5 秒(播 `stone`,打不動、推不動、受擊顯示「鏘」);生命約烏鴉的 2.5 倍。
+- [ ] AV2 `spellbook` 魔法書:與金毛保持 70 至 110 像素;預警後射出 3 顆(困難或後段 5 顆)扇形光球(`magic_orb`),光球之間留有可以鑽過的空隙。
+- [ ] AV3 `foxfire` 狐火:3 至 5 隻成群生成、追蹤、很脆(一下打倒);接近金毛或追了 4 秒後停下,地上亮預警圈 0.6 秒再爆開(打倒的不會爆)。
+- [ ] AV4 `shadow_wolf` 影狼:成群在外圍繞圈,輪流以紅線預警後直線衝鋒;倒下播 `down` 後散成落葉(不是受傷)。
+- [ ] AV5 中頭目:`gargoyle_elite`(2-4,石像鬼放大 1.5 倍、生命高、半血時召喚 2 隻石像鬼)與 `phantom_knight`(3-4,沿用黑騎士行為,速度 ×1.3、預警 ×0.8、生命約黑騎士 60%、半透明紫色)。兩者都發出 `boss_appeared`。
+- [ ] AV6 `green_knight` 綠騎士(2-6):藤鞭(長紅線預警後橫掃)、荊棘環(8 至 12 根 `thorn` 放射)、召喚 2 隻稻草人;半血時播 `hat_off`(葉子帽掉下,可愛不受傷),之後速度 +25%、藤鞭連續兩次。
+- [ ] AV7 `morgana` 摩根娜(3-6,最終頭目,三個階段):瞬間移動(目的地先亮月光圈 0.7 秒)、狐火雨(5 至 8 個預警圈後落下 `fox_flame`)、扇形 `moon_orb`;66% 起召喚 2 個鏡像分身(一下打散,只會射較弱的光球);33% 起加入旋轉的月光束(紅線預警)。倒下播 `down`(坐在地上,不是受傷)。
+- [ ] AV8 同伴 `lancelot`:每約 3 秒向最近的敵人突刺(`dash`)再回到金毛身邊;和貝德維爾可以同時在場、互不重疊;不會被打倒(同貝德維爾的規則)。
+- [ ] AV9 每章難度:`difficulty_scaling.tres` 加 `chapter_hp_mult`、`chapter_damage_mult`(初始值 1.0、1.3、1.6 與 1.0、1.2、1.4),故事模式依 `GameState.chapter` 套用;測試。
+- [ ] AV10 每個新敵人與頭目在測試場地可以被打倒;頭目各有至少一個「看到預警就躲得開」的測試。
+
+### B 線任務
+
+- [ ] BV1 `chapter_2.tres`、`chapter_3.tres` 與 12 關(背景、同伴、波次、`par_time`、`damage_budget`、`music`、對白)。關卡表:
+
+| 關 | 背景 | 同伴 | 主要敵人 |
+| --- | --- | --- | --- |
+| 2-1 | castle_town | 貝德維爾 | 石像鬼(教學)、稻草人、烏鴉 |
+| 2-2 | castle_courtyard | 貝德維爾 | 石像鬼、空盔甲兵、弓兵 |
+| 2-3 | royal_library | 貝德維爾、蘭斯洛特 | 魔法書(教學)、石像鬼 |
+| 2-4 | castle_wall | 同上 | 中頭目石像鬼統領 + 弓兵 |
+| 2-5 | magic_garden | 同上 | 魔法書、石像鬼、精英稻草人 |
+| 2-6 | green_chapel | 同上 | 綠騎士 |
+| 3-1 | misty_lake | 同上 | 狐火(教學)、烏鴉 |
+| 3-2 | fairy_forest | 同上 | 影狼(教學)、狐火 |
+| 3-3 | stone_circle | 同上 | 影狼、魔法書、石像鬼 |
+| 3-4 | crystal_cave | 同上 | 中頭目幻影黑騎士 + 狐火 |
+| 3-5 | morgana_tower | 同上 | 全部混合(最難的一般關) |
+| 3-6 | tower_top | 同上 | 摩根娜 |
+
+- [ ] BV2 依 `docs/STORY.md` 第 12 節建立第二、三章的 `data/story/*.tres`(沿用 BS1 的產生器)。
+- [ ] BV3 流程:依 `GameState.chapter` 載入章;每章的開場繪本、結局、預告;打完第 N 章更新 `chapters_cleared`;存檔記住章(存檔版本 +1,舊存檔轉換);「繼續冒險」回到正確的章與關。
+- [ ] BV4 每關的音樂用 `LevelData.music`(空白時沿用 `field`、`boss`;音樂檔不存在時退回 `field`、`boss`)。
+- [ ] BV5 無盡試煉:`chapters_cleared ≥ 2` 時加入第二章的敵人與背景,`≥ 3` 時加入第三章的。
+- [ ] BV6 結算與章節進度的文字依章顯示(不要寫死「第一章」);`stub_title` 沙盒加選章。
+- [ ] BV7 測試:三章各自可以從第 1 關玩到結局(用測試替身快轉);存檔轉換。
+
+### C 世界任務(背景、標題、插畫、音樂、失敗畫面)
+
+- [ ] CW1 **第一章背景再修**(擁有人要求):6 張背景的遠景、中景、前景重畫,更有層次;石橋鋪面降低亮度與雜訊,不要搶走角色;戰鬥區保持清楚。
+- [ ] CW2 12 張新背景(4.13 的清單),每張有不同的色調與時段,並有會動的細節(旗幟飄動、書本浮動、螢火蟲、湖霧、水晶閃光、塔頂閃電)。第二章偏暖色石造城堡,第三章偏冷色月光與迷霧。
+- [ ] CW3 **標題再修**(擁有人要求):修正山的條紋明暗;標題主視覺更精緻;選章介面(4.13);標題背景隨最高已解鎖的章改變(第一章山丘、第二章城堡、第三章湖上高塔)。
+- [ ] CW4 11 張新插畫(`docs/STORY.md` 第 11 節)。
+- [ ] CW5 音樂 `field_2`、`boss_2`、`field_3`、`boss_3`(`tools/pixel/music_gen.py`),風格分別是城堡、綠騎士(輕快)、迷霧湖(神秘)、摩根娜(緊張而有點悲傷)。
+- [ ] CW6 失敗畫面的提示依章選(第二章用 1 至 10、13;第三章用全部);結算與 HUD 的章名不要寫死。
+
+### C 角色任務(角色圖、頭像、特效)
+
+- [ ] CC1 8 個新角色圖(4.13 的表),畫風與 v2.5 一致(左上光源、彩色描邊、2 至 3 層明暗、每格腳底對齊)。頭目要一眼認得:綠騎士的圓灌木葉子帽、摩根娜的紫斗篷與新月法杖。
+- [ ] CC2 5 位新說話者的頭像(`docs/STORY.md` 第 10 節),`morgana_true` 是第一次露出真面目的摩根娜。
+- [ ] CC3 投射物特效 `magic_orb`、`thorn`、`fox_flame`、`moon_orb`;石像鬼變石頭的「石屑」與影狼散成落葉的粒子(`assets/fx/particles/`)。
+- [ ] CC4 黑騎士的每格往上移 8 像素(擁有人回報黑騎士太貼近場地下緣),確認動畫腳底仍然對齊。
+- [ ] CC5 `docs/ART_BRIEF.md` 由整合工作階段更新;C 角色只需在 status 檔列出新檔案。
+
+### D 線任務
+
+- [ ] DV1 營地依章播放對白(4.13);第三章由湖中仙女代替梅林(圖 `assets/sprites/lady_lake/`),點她說 `CAMP_LADY_01` 至 `CAMP_LADY_04`;第二章起營地多了蘭斯洛特,點他說 `CAMP_LANCELOT_01` 至 `CAMP_LANCELOT_04`(D 線撰寫,語氣見 `docs/STORY.md`)。
+- [ ] DV2 營地的場景依章變化(第一章草地夜空、第二章城牆下的營火、第三章湖邊洞口與月光),用程式畫的元素即可。
+- [ ] DV3 新小遊戲一個,在第二、三章的營地輪流出現,例如「叫醒騎士」(依節奏點擊打瞌睡的騎士)或「湖面跳石」;結果一樣影響下一關加成。
+- [ ] DV4 手機檢查:頭目與分身同時在場時的效能(在 `tests/line_d/` 量測節點數與每幀時間),不需要建置 APK。
+
+### 整合工作階段
+
+- [ ] 合併五個工作階段;試玩機器人擴充為三章各打一次;依數據調整每章倍率;更新 `docs/ART_BRIEF.md`、`docs/integration_report.md`;PR 合併到 `main`。
