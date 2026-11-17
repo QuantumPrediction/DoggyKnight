@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_diff")
 exp_first_level_up = 5
-exp_step_per_level = 3
+exp_step_per_level = 4
 trick_offer_count = 3
 trick_pool = Array[StringName]([&"sit", &"wag", &"fetch", &"shake", &"spin", &"bark", &"pounce", &"roll", &"dig", &"sniff", &"play_dead", &"zoomies"])
 min_damage_taken_mult = 0.2
