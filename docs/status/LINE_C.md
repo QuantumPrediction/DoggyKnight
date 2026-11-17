@@ -180,7 +180,7 @@
 - 黑騎士的影子:`assets/backgrounds/actor_shadows.gd`(C 世界的檔案,我沒有動)把影子畫在格子底部,現在會比黑騎士的腳低 8 像素。請在 `_shadow_for()` 算 `feet` 時減掉 `spr.sprite_frames.get_meta(&"foot_lift", 0) * scale_abs.y`(只多一行)。幻影黑騎士也用同一張圖,一起修好。
 - 會飛的新敵人(`gargoyle`、`spellbook`、`foxfire`)的影子:`actor_shadows.gd` 的 `FLYERS` 目前只有 `"/crow/"`,建議加上 `"/gargoyle/"`、`"/spellbook/"`、`"/foxfire/"`。
 - 綠騎士與摩根娜沒有上移,腳在格子底部(和其他角色、影子的約定一樣)。如果擁有人也覺得她們太靠近下緣,用同樣的做法(畫上移 + `foot_lift`)即可。
-- `hat_off` 之後綠騎士的 `idle`、`run` 等仍然戴著帽子(合約只有一組動畫)。如果 A 線想要脫帽後的樣子,可以提出申請加動畫(例如 `idle_nohat`),我很快就能畫。
+- 已加綠騎士第二階段(脫帽後)的 `idle_bare`、`run_bare`、`attack_bare`、`hurt_bare`、`whip_bare`、`summon_bare`:格數與速度和戴帽版一樣,頭上是光禿禿的樹籬加一根小嫩芽,表情調皮(眨一隻眼、吐舌頭),不是受傷。A 線在 `hat_off` 之後有 `<動畫>_bare` 就改播它。
 - 蘭斯洛特的頭像臉朝左(他在對白框右邊)。如果之後把他加進 `dialogue_box.gd` 的 `LEFT_SPEAKERS`,要把頭像改成臉朝右(`art_v26_cast.portrait()` 不翻轉即可)。
 - `docs/ART_BRIEF.md` 的尺寸表請整合更新:新角色見上,投射物 `magic_orb` 12×12,其他三個 16×16。
 
