@@ -153,3 +153,41 @@
 
 - 對白的說話聲音量(`dialogue_config.tres` 的 `blip_volume_db`)與新的 `evolve`、`chest_open` 音效最好在真的手機喇叭上聽一次再決定。
 - 正式上架前,第二章可以沿用同一套頭像與繪本工具,為圓桌騎士畫新的角色。
+
+## C 角色 v2.6(DEV_PLAN 第 19 節 CC1 至 CC4)
+
+**已完成**
+
+- CC1 八個新角色圖,全部由 `tools/pixel/art_v26_cast.py` 用 v2.5 的同一套畫法產生(左上光源、彩色外框、2 至 3 層明暗、走路的角色每格腳底對齊):
+  - `assets/sprites/gargoyle/`(32):灰石小翅膀、長角、紫色發光眼睛;`stone` 是縮起翅膀的灰色石像(眼睛不發光,第二格有一點反光)。
+  - `assets/sprites/spellbook/`(24):紫色魔法書,封面上有一雙眼睛,一開一合像嘴巴,書頁拍動;`cast` 張大,發光的符文飄出來。
+  - `assets/sprites/foxfire/`(16):紫粉色小火焰,頭上兩個狐狸耳朵尖、可愛的眼睛;`burst` 是閃一下變成一圈小星星。
+  - `assets/sprites/shadow_wolf/`(32):深靛色影狼,發光的眼睛,背上飄紫色煙;`down` 先趴下冒星星,再散成一小堆落葉(不是受傷)。
+  - `assets/sprites/green_knight/`(64):樹籬修剪成的大騎士,頭上圓圓的灌木「葉子帽」插著紫色荊棘(帽上有小花),手拿藤鞭;`whip` 舉高再橫掃,`summon` 舉起藤鞭冒綠色光點,`hat_off` 帽子彈飛、落地後紫荊棘從帽子裡跳出來(可愛,沒受傷),`down` 坐在草地上笑。
+  - `assets/sprites/morgana/`(64):紅褐色狐狸女巫,紫斗篷、高領、白色胸毛、大尾巴,新月法杖;`teleport` 紫煙把她包起來後散掉;`down` 坐在地上、耳朵垂下、掉一滴眼淚,法杖放在旁邊(不是受傷)。
+  - `assets/sprites/lancelot/`(32):柴犬騎士,銀色輕甲、藍羽頭盔(耳朵從頭盔穿出來)、捲尾巴、長槍與藍色小旗;`dash` 是長槍突刺。
+  - `assets/sprites/lady_lake/`(32):白色薩摩耶,淡藍色水波長裙,三顆水珠繞著她飄;`cast` 舉起手,手上聚成一顆湖水球。
+- CC2 頭像(48×48,和 v2.3 頭像同一種繪本畫法,臉朝左,因為這五位都坐在對白框右邊):`assets/portraits/lancelot/{normal,happy,serious,surprised}.png`、`gargoyle/normal.png`、`green_knight/normal.png`、`lady_lake/{normal,smile,worried}.png`、`morgana_true/{normal,angry,sad,smile}.png`(摩根娜的真面目,背景是和剪影版同一個月亮)。
+- CC3 投射物(動畫 `default`、循環、朝右畫):`assets/fx/magic_orb/`(12)、`thorn/`(16)、`fox_flame/`(16)、`moon_orb/`(16),各有自己的 png(不再借用箭的圖)。一次性粒子 `assets/fx/particles/stone_chips.tscn`(灰色石屑,圖 `tex/stone_chip.png`)與 `shadow_leaves.tscn`(落葉,圖 `tex/leaf.png`),照舊的粒子場景格式。
+- CC4 黑騎士每一格往上移 8 像素(腳底由第 62 列改到第 54 列)。為了讓頭盔與羽飾不被切掉,腿短了 4 像素、羽飾改成往後掃;往下指的劍短一點,不會插進地面。`black_knight_frames.tres` 多了 `metadata/foot_lift = 8`。在石橋背景上確認過:黑騎士站到最下面時,腳離戰鬥區下緣 8 像素(截圖 `tests/line_c/shots_v26/v26_cast_4.png`,紅線是下緣)。
+- 其他新檔:`tests/line_c/test_art_v26_cast.gd`(調色盤、格子、腳底對齊、頭目辨識、投射物、粒子、黑騎士上移)、`tests/line_c/cast_v26_gallery.tscn/.gd`(圖庫與截圖工具,點畫面換頁)、`tests/line_c/shots_v26/`(五張截圖)。`tools/pixel/art_v25_knights.py` 改了黑騎士;`tools/pixel/build_all.py` 加了一行呼叫 `art_v26_cast.write_all()`。
+- `tools/run_tests.sh core` 61 項、`tools/run_tests.sh line_c` 115 項全部通過。
+
+**進行中**:沒有。
+
+**被甚麼卡住 / 給 C 世界與整合的說明**
+
+- 黑騎士的影子:`assets/backgrounds/actor_shadows.gd`(C 世界的檔案,我沒有動)把影子畫在格子底部,現在會比黑騎士的腳低 8 像素。請在 `_shadow_for()` 算 `feet` 時減掉 `spr.sprite_frames.get_meta(&"foot_lift", 0) * scale_abs.y`(只多一行)。幻影黑騎士也用同一張圖,一起修好。
+- 會飛的新敵人(`gargoyle`、`spellbook`、`foxfire`)的影子:`actor_shadows.gd` 的 `FLYERS` 目前只有 `"/crow/"`,建議加上 `"/gargoyle/"`、`"/spellbook/"`、`"/foxfire/"`。
+- 綠騎士與摩根娜沒有上移,腳在格子底部(和其他角色、影子的約定一樣)。如果擁有人也覺得她們太靠近下緣,用同樣的做法(畫上移 + `foot_lift`)即可。
+- `hat_off` 之後綠騎士的 `idle`、`run` 等仍然戴著帽子(合約只有一組動畫)。如果 A 線想要脫帽後的樣子,可以提出申請加動畫(例如 `idle_nohat`),我很快就能畫。
+- 蘭斯洛特的頭像臉朝左(他在對白框右邊)。如果之後把他加進 `dialogue_box.gd` 的 `LEFT_SPEAKERS`,要把頭像改成臉朝右(`art_v26_cast.portrait()` 不翻轉即可)。
+- `docs/ART_BRIEF.md` 的尺寸表請整合更新:新角色見上,投射物 `magic_orb` 12×12,其他三個 16×16。
+
+**下一步**
+
+- 整合後在真正的關卡裡看一次(尤其是綠騎士的藤鞭範圍與摩根娜的新月法杖),再微調。
+
+**需要擁有人決定的事**
+
+- 看 `tests/line_c/shots_v26/` 的截圖,或執行 `godot --path . res://tests/line_c/cast_v26_gallery.tscn`(點畫面換頁),告訴我哪個角色還不喜歡。

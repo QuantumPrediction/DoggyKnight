@@ -458,7 +458,7 @@ def flame_paint(c: Canvas, shape: set, cx: float, cy: float, r: float, outline: 
 def foxfire_frame(sway: float = 0.0, bob: int = 0, lean: float = 0.0, r: float = 4.6, eyes: str = "open",
                   mouth: str = "smile", sparks=(), stars_at=()) -> Canvas:
     c = Canvas(16, 16)
-    cx, cy = 8.0 + lean, 10.0 + bob
+    cx, cy = 8.0 + lean, 9.0 + bob
     tip = (cx - 4.5 - lean * 1.5 + sway, cy - r - 4.0 + abs(sway) * 0.5)
     shape = flame_shape(cx, cy, r, tip)
     shape = {(x, y) for (x, y) in shape if 0 <= x < 16 and 0 <= y < 16}
@@ -894,7 +894,7 @@ def lady_frame(bob: int = 0, lean: float = 0.0, wave: float = 0.0, trail: float 
     f.add(union(ellipse(cx - 6.5 - trail, by + 1, 2.6, 3.4), ellipse(cx - 7.5 - trail, by - 1.5, 2.0, 2.0)), SAMOYED,
           bias=0.1)
     # dress: a long bell that flows to the ground, the hem rippling like water
-    hem = GROUND
+    hem = GROUND + 0.6
     pts = [(cx - 3.5, by - 3), (cx + 3.5, by - 3), (cx + 6.5, hem - 3), (cx + 7.5 - trail * 0.3, hem)]
     for i in range(8):
         x = cx + 7.5 - trail * 0.3 - i * (15.5 + trail) / 7
