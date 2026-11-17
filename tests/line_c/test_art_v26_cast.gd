@@ -12,7 +12,8 @@ const GROUNDED: Dictionary = {
 	"lancelot": [&"idle", &"run", &"attack", &"hurt", &"dash"],
 	"shadow_wolf": [&"idle", &"run", &"attack", &"hurt"],
 	"lady_lake": [&"idle", &"run", &"cast"],
-	"green_knight": [&"idle", &"run", &"attack", &"hurt", &"whip", &"summon", &"hat_off"],
+	"green_knight": [&"idle", &"run", &"attack", &"hurt", &"whip", &"summon", &"hat_off", &"idle_bare", &"run_bare",
+			&"attack_bare", &"hurt_bare", &"whip_bare", &"summon_bare"],
 	"morgana": [&"idle", &"hurt"],
 }
 const PORTRAITS: Dictionary = {
@@ -159,3 +160,17 @@ func _has(img: Image, col: Color) -> bool:
 			if p.a > 0.5 and p.to_html(false) == col.to_html(false):
 				return true
 	return false
+
+
+func test_green_knight_has_bare_phase_two() -> void:
+	# 葉子帽掉了以後(第二階段)A 線改播 <動畫>_bare:格數、速度、循環與戴帽版一樣,頭上沒有帽子與紫荊棘
+	var frames := load("res://assets/sprites/green_knight/green_knight_frames.tres") as SpriteFrames
+	for anim: StringName in [&"idle", &"run", &"attack", &"hurt", &"whip", &"summon"]:
+		var bare := StringName(String(anim) + "_bare")
+		assert_true(frames.has_animation(bare), "綠騎士有 %s" % bare)
+		if not frames.has_animation(bare):
+			continue
+		assert_eq(frames.get_frame_count(bare), frames.get_frame_count(anim), "%s 的格數" % bare)
+		assert_eq(frames.get_animation_speed(bare), frames.get_animation_speed(anim), "%s 的速度" % bare)
+		assert_eq(frames.get_animation_loop(bare), frames.get_animation_loop(anim), "%s 的循環" % bare)
+		assert_false(_has(frames.get_frame_texture(bare, 0).get_image(), PaletteColors.VIOLET), "%s 沒有紫荊棘" % bare)

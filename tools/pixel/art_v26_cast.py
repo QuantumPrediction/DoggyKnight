@@ -1122,6 +1122,11 @@ def gk_frame(bob: int = 0, lean: float = 0.0, legs=((0, 0.0), (0, 0.0)), hand=(4
         for x0 in (ex, ex + 4):
             f.dots([(x0, ey - 1), (x0 + 1, ey - 1), (x0, ey), (x0 + 1, ey)], "leaf_l")
             f.dot(x0, ey - 1, "white")
+    elif face == "cheeky":
+        f.dots([(ex - 1, ey), (ex, ey - 1), (ex + 1, ey - 1), (ex + 2, ey)], "leaf_l")
+        f.dots([(ex + 4, ey - 1), (ex + 5, ey - 1), (ex + 4, ey), (ex + 5, ey)], "leaf_l")
+        f.dot(ex + 4, ey - 1, "yellow")
+        f.glow(ex + 6, ey, alpha_px("leaf_l", 100))
     elif face in ("happy", "squint"):
         for x0 in (ex, ex + 4):
             f.dots([(x0 - 1, ey), (x0, ey - 1), (x0 + 1, ey - 1), (x0 + 2, ey)], "yellow" if face == "happy"
@@ -1137,14 +1142,22 @@ def gk_frame(bob: int = 0, lean: float = 0.0, legs=((0, 0.0), (0, 0.0)), hand=(4
         f.dots([(ex + 1, ey + 3), (ex + 4, ey + 3), (ex + 1, ey + 4), (ex + 4, ey + 4)], "leaf_l")
     elif face == "focus":
         f.dots([(ex + 1, ey + 3), (ex + 2, ey + 3), (ex + 3, ey + 3), (ex + 4, ey + 3)], "leaf_l")
+    elif face == "cheeky":
+        f.dots([(ex, ey + 3), (ex + 1, ey + 4), (ex + 2, ey + 4), (ex + 3, ey + 4), (ex + 4, ey + 3), (ex + 5, ey + 2)],
+               "leaf_l")
+        f.dots([(ex + 2, ey + 5), (ex + 3, ey + 5)], "pink")
     elif face == "squint":
         f.dots([(ex + 1, ey + 4), (ex + 2, ey + 3), (ex + 3, ey + 4), (ex + 4, ey + 3)], "leaf_l")
     # hat (or a little sprout once the hat is off)
     if hat == "on":
         leaf_hat(f, hx - 0.5, hy - 9.5, hat_tilt)
     elif hat == "off":
-        sp = {(hxi - 1, hyi - 8): "leaf_d", (hxi - 1, hyi - 9): "leaf", (hxi - 2, hyi - 10): "leaf_l",
-              (hxi, hyi - 10): "leaf", (hxi - 3, hyi - 10): "leaf"}
+        # the bare hedge head: a small leaf sprout on top that sways as he moves
+        sw = 1 if hat_tilt > 3 else (-1 if hat_tilt < -3 else 0)
+        sx0, sy0 = hxi - 1, hyi - 8
+        sp = {(sx0, sy0): "leaf_d", (sx0, sy0 - 1): "leaf_d", (sx0 + sw, sy0 - 2): "leaf",
+              (sx0 + sw - 1, sy0 - 3): "leaf", (sx0 + sw - 2, sy0 - 3): "leaf_l", (sx0 + sw - 2, sy0 - 4): "leaf_l",
+              (sx0 + sw + 1, sy0 - 3): "leaf", (sx0 + sw + 2, sy0 - 3): "spring", (sx0 + sw + 2, sy0 - 4): "leaf_l"}
         f.pix(sp, VINE)
     if hat_at is not None:
         leaf_hat(f, hat_at[0], hat_at[1], hat_tilt, thorn=hat_at[2] if len(hat_at) > 2 else True)
@@ -1168,8 +1181,25 @@ def _leaf_bits(f: Fig, pts) -> None:
         f.glow(x + 1, y, "leaf_l" if i % 2 else col)
 
 
+BARE_FACES = {"grin": "cheeky", "focus": "focus", "laugh": "laugh", "happy": "cheeky", "squint": "squint"}
+
+
 def green_knight() -> list[Anim]:
-    G = gk_frame
+    out = _gk_anims(False)
+    bare = _gk_anims(True)
+    # phase 2 (after hat_off): the same moves with the bare hedge head and its little sprout (`<anim>_bare`)
+    for a in bare:
+        if a.name in ("idle", "run", "attack", "hurt", "whip", "summon"):
+            out.append(Anim(a.name + "_bare", a.frames, a.fps, a.loop, list(a.durations)))
+    return out
+
+
+def _gk_anims(bare: bool) -> list[Anim]:
+    def G(**kw) -> Fig:
+        if bare:
+            kw["hat"] = "off"
+            kw["face"] = BARE_FACES.get(kw.get("face", "grin"), kw.get("face", "grin"))
+        return gk_frame(**kw)
     idle = [G(), G(bob=1, whip_k=0.5, hat_tilt=4), G(bob=1, whip_k=1.0, hat_tilt=6, face="happy"),
             G(whip_k=0.5, hat_tilt=2)]
     run_legs = [((0, -4.0), (0, 4.0)), ((3, -2.0), (0, 2.0)), ((5, 1.0), (0, -1.0)),
@@ -1202,8 +1232,14 @@ def green_knight() -> list[Anim]:
                G(face="squint", hat="off", hat_at=(9, 51, False), hat_tilt=0,
                  extra=lambda f: _thorn_pop(f, 9, 38)),
                G(face="laugh", hat="off", hat_at=(9, 52, False), extra=lambda f: _thorn_pop(f, 9, 32, fade=True))]
-    down = [gk_down(0), gk_down(1)]
     r = lambda fs: [x.render() for x in fs]  # noqa: E731
+    if bare:
+        return [anim("idle", r(idle), 4.0, True), anim("run", r(run), 10.0, True),
+                anim("attack", r(attack), 12.0, False, [1.2, 0.8, 1.0, 1.0]),
+                anim("hurt", r(hurt), 6.0, False, [1.0, 3.0]),
+                anim("whip", r(whip), 12.0, False, [1.5, 0.8, 1.0, 1.0]),
+                anim("summon", r(summon), 8.0, False)]
+    down = [gk_down(0), gk_down(1)]
     return [anim("idle", r(idle), 4.0, True), anim("run", r(run), 10.0, True),
             anim("attack", r(attack), 12.0, False, [1.2, 0.8, 1.0, 1.0]),
             anim("hurt", r(hurt), 6.0, False, [1.0, 3.0]),
