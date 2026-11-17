@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="DialogueScript" format=3]
+
+[ext_resource type="Script" path="res://core/data/dialogue_script.gd" id="1_script"]
+[ext_resource type="Script" path="res://core/data/dialogue_line.gd" id="2_line"]
+[ext_resource type="Texture2D" path="res://assets/story/c3_prologue_1.png" id="3_c3_prologue_1"]
+[ext_resource type="Texture2D" path="res://assets/story/c3_prologue_2.png" id="4_c3_prologue_2"]
+
+[sub_resource type="Resource" id="line_01"]
+script = ExtResource("2_line")
+speaker = &"narrator"
+expression = &""
+text_key = "STORY_C3_PROLOGUE_01"
+illustration = ExtResource("3_c3_prologue_1")
+
+[sub_resource type="Resource" id="line_02"]
+script = ExtResource("2_line")
+speaker = &"narrator"
+expression = &""
+text_key = "STORY_C3_PROLOGUE_02"
+illustration = ExtResource("3_c3_prologue_1")
+
+[sub_resource type="Resource" id="line_03"]
+script = ExtResource("2_line")
+speaker = &"narrator"
+expression = &""
+text_key = "STORY_C3_PROLOGUE_03"
+illustration = ExtResource("4_c3_prologue_2")
+
+[sub_resource type="Resource" id="line_04"]
+script = ExtResource("2_line")
+speaker = &"lady_lake"
+expression = &"normal"
+text_key = "STORY_C3_PROLOGUE_04"
+illustration = ExtResource("4_c3_prologue_2")
+
+[resource]
+script = ExtResource("1_script")
+id = &"c3_prologue"
+lines = Array[ExtResource("2_line")]([SubResource("line_01"), SubResource("line_02"), SubResource("line_03"), SubResource("line_04")])
+skippable = true
