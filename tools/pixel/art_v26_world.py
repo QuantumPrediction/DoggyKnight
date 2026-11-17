@@ -189,6 +189,109 @@ def frame_arena(img: Canvas, seed: int, ramp: tuple[str, str, str, str], outline
     K.calm_vignette(img, 8)
 
 
+# --------------------------------------------------------------------------
+# v2.6 polish: crafted chapter 3 floors (texture, large soft value shifts, soft edges, edge decor)
+# --------------------------------------------------------------------------
+
+def calm_k(x: int, y: int, fade: int = 22) -> float:
+    """0 outside the arena, rising to 1 at `fade` px inside it: how calm the floor must be here."""
+    if not in_arena(x, y):
+        return 0.0
+    d = min(x - AX0, AX1 - 1 - x, y - AY0, AY1 - 1 - y)
+    return min(1.0, d / fade)
+
+
+def textured_floor(img: Canvas, rect: tuple[int, int, int, int], ramp: tuple[str, str, str], seed: int,
+                   scale: float = 46.0, spread: float = 0.13, calm_spread: float = 0.2, mask=None) -> None:
+    """Large soft value shifts (dark / mid / light, clustered edges). Inside the arena the dark and light
+    patches thin out smoothly towards the middle, so there is no hard border where the arena starts."""
+    dark, mid, light = ramp
+    x0, y0, x1, y1 = rect
+    for y in range(max(0, y0), min(img.h, y1)):
+        for x in range(max(0, x0), min(img.w, x1)):
+            if mask is not None and not mask(x, y):
+                continue
+            k = calm_k(x, y)
+            n = fbm(x, y, seed, scale, 3) + AW._cluster(x, y, seed) * 0.05
+            lo = 0.5 - spread - calm_spread * k
+            hi = 0.5 + spread + calm_spread * k
+            img.set(x, y, dark if n < lo else (light if n > hi else mid))
+
+
+def blades(img: Canvas, rect: tuple[int, int, int, int], seed: int, density: float = 0.035, mask=None,
+           calm: float = 0.6) -> None:
+    """Grass / moss material: short 2-3 px strokes one step darker with a one-step lighter tip
+    (fewer towards the middle of the arena)."""
+    rng = random.Random(seed)
+    x0, y0, x1, y1 = rect
+    n = int((x1 - x0) * (y1 - y0) * density / 3)
+    for _ in range(n):
+        x, y = rng.randrange(x0, x1), rng.randrange(y0, y1)
+        if (mask is not None and not mask(x, y)) or rng.random() < calm_k(x, y) * calm:
+            continue
+        base = name_at(img, x, y)
+        if base is None:
+            continue
+        lean = rng.choice((-1, 0, 0, 1))
+        h = rng.randrange(2, 4)
+        for j in range(h):
+            img.set(x + (lean if j == h - 1 else 0), y - j, K.dk(base))
+        img.set(x + lean, y - h, K.lt(base))
+
+
+def pebbles(img: Canvas, rect: tuple[int, int, int, int], n: int, seed: int, cols=("slate", "ash", "fog"),
+            mask=None, calm: float = 0.8) -> None:
+    """Small rounded stones: a 3x2 body with a lit top-left pixel and a dark underside."""
+    rng = random.Random(seed)
+    x0, y0, x1, y1 = rect
+    for _ in range(n):
+        x, y = rng.randrange(x0, x1), rng.randrange(y0, y1)
+        if (mask is not None and not mask(x, y)) or rng.random() < calm_k(x, y) * calm:
+            continue
+        w = rng.choice((2, 3, 3, 4))
+        for dx in range(w):
+            img.set(x + dx, y, cols[1])
+            img.set(x + dx, y + 1, cols[0])
+        img.set(x, y, cols[2])
+
+
+def root(img: Canvas, x: float, y: float, ang: float, length: int, seed: int, width: float = 2.6,
+         cols=("umber", "brown_d", "brown")) -> None:
+    """A tree root creeping over the floor: a tapering band, dark underside, lit top edge."""
+    rng = random.Random(seed)
+    for i in range(length):
+        w = max(1.0, width * (1 - i / length))
+        ang += rng.uniform(-0.18, 0.18)
+        x += math.cos(ang)
+        y += math.sin(ang) * 0.7
+        for t in range(int(w) + 1):
+            img.set(int(x), int(y) + t, cols[1])
+        img.set(int(x), int(y), cols[2])
+        img.set(int(x), int(y) + int(w) + 1, cols[0])
+
+
+def shard(img: Canvas, x: int, y: int, ramp=("water_d", "water", "sky_l"), h: int = 4) -> None:
+    """A tiny crystal shard poking out of the floor (lit left facet, glint)."""
+    for j in range(h):
+        img.set(x, y - j, ramp[2] if j < h - 1 else "white")
+        if j < h - 1:
+            img.set(x + 1, y - j, ramp[1])
+    img.set(x + 2, y, ramp[0])
+    img.set(x - 1, y, ramp[0])
+
+
+def vein(img: Canvas, x: float, y: float, length: int, seed: int, cols=("water", "sky")) -> None:
+    """A faint crystal vein in the rock floor (1 px wandering line, brighter in its middle)."""
+    rng = random.Random(seed)
+    ang = rng.uniform(0, 2 * math.pi)
+    for i in range(length):
+        ang += rng.uniform(-0.5, 0.5)
+        x += math.cos(ang)
+        y += math.sin(ang)
+        img.set(int(x), int(y), cols[1] if length // 3 < i < 2 * length // 3 else cols[0])
+
+
+
 def steps(img: Canvas, x0: int, x1: int, y: int, n: int, ramp: tuple[str, str, str], depth: int = 4) -> None:
     """Stairs going down towards the viewer: each step a lit tread and a shaded riser."""
     for k in range(n):
@@ -890,11 +993,31 @@ def scene_misty_lake() -> Scene26:
         sy = AY0 - 10 + int(2 * math.sin(x / 17.0))
         for y in range(sy, sy + 8):
             img.set(x, y, "stone" if y < sy + 2 else "stone_l" if y < sy + 3 else "dirt")
-    AW.paint_ground(img, (0, AY0 - 2, IMG_W, IMG_H), ("deep", "teal", "leaf_d"), 3103, scale=26, tufts=0.45,
-                    max_light=0.2, max_dark=0.16)
-    calm_ground(img, ("teal", "leaf_d", "grass"), 3104)
-    frame_arena(img, 3105, ("deep", "teal", "leaf_d", "grass"), "navy")
-    K.calm_vignette(img, 10)
+    textured_floor(img, (0, AY0 - 2, IMG_W, IMG_H), ("teal", "leaf_d", "grass"), 3103)
+
+    def shore(x: int, y: int) -> bool:
+        return y < AY0 + 16 + 10 * AW.fbm(x, 0, 3106, 20, 2) + 4 * math.sin(x / 13.0)
+    textured_floor(img, (0, AY0 - 4, IMG_W, AY0 + 34), ("slate", "stone", "stone_l"), 3107, scale=20, spread=0.1,
+                   calm_spread=0.05, mask=shore)
+    pebbles(img, (0, AY0 - 4, IMG_W, AY0 + 34), 260, 3108, ("slate", "ash", "fog"), mask=shore, calm=0.3)
+    for x in range(IMG_W):
+        for y in range(AY0 - 4, AY0 + 36):
+            if not shore(x, y) and shore(x, y - 1):
+                img.set(x, y, "moss_d")
+                if x % 3:
+                    img.set(x, y + 1, "moss_d")
+    blades(img, (0, AY0 + 6, IMG_W, IMG_H), 3109, 0.04, mask=lambda x, y: not shore(x, y))
+    AW.sprinkle_flowers(img, (0, AY0 + 30, IMG_W, IMG_H), 26, 3110, ["white", "lilac", "sky_l"],
+                        mask=lambda x, y: calm_k(x, y) < 0.5)
+    for (x, y) in ((AX0 + 4, AY0 + 4), (AX1 - 30, AY0 + 2), (AX0 + 2, AY1 - 30), (AX1 - 22, AY1 - 18)):
+        AW.place(img, AW.rock(x * 7 + y, 12, 8, ("slate", "ash", "fog", "white"), "navy", "moss"), x, y,
+                 shadow=(1.0, -1), shadow_dx=3)
+    for (x, y) in ((AX0 - 4, AY0 + 40), (AX1 - 6, AY0 + 90), (AX0 - 2, AY0 + 150)):
+        img.blit(K.reeds(x + y, 12), x, y)
+    for (cx, cy) in ((AX0 + 30, AY0 + 10), (AX1 - 48, AY0 + 16)):
+        for (x, y) in P.ellipse(cx, cy, 9, 3):
+            img.set(x, y, "water_d" if y > cy else "sky")
+        img.hline(cx - 4, cx + 1, cy - 1, "sky_l")
     # the jetty and a rowing boat on the right, reeds and rocks along the shore
     for y in range(86, AY0 - 2):
         for x in range(232, 248):
@@ -977,21 +1100,35 @@ def scene_fairy_forest() -> Scene26:
             y = AY0 + 30 + k * 70 + side * 20
             img.blit(K.mushroom_glow(k, cap=("plum", "violet", "lilac")), tx + (12 if side == 0 else -18), y)
     # clearing: moss, a fairy ring of mushrooms round the edge
-    AW.paint_ground(img, (AX0 - 30, AY0 - 6, AX1 + 30, IMG_H), ("deep", "teal", "leaf_d"), 3205, scale=24, tufts=0.4,
-                    max_light=0.16, max_dark=0.2)
-    calm_ground(img, ("forest", "teal", "leaf_d"), 3206)
-    crng = random.Random(3208)
-    for _ in range(14):
-        cx, cy = crng.randrange(AX0 + 6, AX1 - 6), crng.randrange(AY0 + 6, AY1 - 6)
-        if AX0 + 30 < cx < AX1 - 30 and AY0 + 30 < cy < AY1 - 30:
+    textured_floor(img, (AX0 - 34, AY0 - 6, AX1 + 34, IMG_H), ("forest", "teal", "leaf_d"), 3205)
+    blades(img, (AX0 - 34, AY0 - 6, AX1 + 34, IMG_H), 3206, 0.05)
+    # fallen leaves and moss clumps at the edges
+    lrng = random.Random(3208)
+    for _ in range(120):
+        x, y = lrng.randrange(AX0 - 30, AX1 + 30), lrng.randrange(AY0, AY1 + 20)
+        if lrng.random() < calm_k(x, y) * 0.95:
             continue
-        for _ in range(5):
-            fx, fy = cx + crng.randrange(-5, 6), cy + crng.randrange(-4, 5)
-            img.set(fx, fy, crng.choice(("lilac", "sky_l", "spring")))
-            img.set(fx, fy + 1, "deep")
-    frame_arena(img, 3207, ("navy", "deep", "teal", "leaf_d"), "ink")
-    K.calm_vignette(img, 12)
-    K.edge_shadow(img, AY0, 6)
+        col = lrng.choice(("moss_d", "brown", "dusk", "moss_d"))
+        img.set(x, y, col)
+        img.set(x + 1, y, K.dk(col))
+    # big roots creeping in from the giant trees
+    for k, (x, y, a) in enumerate(((AX0 - 8, AY0 + 30, 0.25), (AX0 - 8, AY0 + 130, -0.2), (AX0 - 8, AY1 - 30, 0.3),
+                                   (AX1 + 6, AY0 + 60, math.pi - 0.2), (AX1 + 6, AY0 + 170, math.pi + 0.25),
+                                   (MIDX - 40, AY0 - 2, 1.2), (MIDX + 50, AY0 - 2, 1.9))):
+        root(img, x, y, a, 30 + (k % 3) * 8, 3209 + k, width=4.0)
+    # a fairy ring of glowing mushrooms round the clearing (sparse, inside the edge)
+    for k in range(26):
+        a = k / 26 * 2 * math.pi
+        x = int(MIDX + math.cos(a) * 80)
+        y = int((AY0 + AY1) / 2 + 4 + math.sin(a) * 104)
+        cap = ("teal", "sky", "sky_l") if k % 3 else ("plum", "violet", "lilac")
+        img.set(x, y, cap[1])
+        img.set(x + 1, y, cap[2])
+        img.set(x - 1, y, cap[0])
+        img.set(x, y + 1, "haze")
+        if k % 6 == 0:
+            sc.anim("mushroom_pulse", x - 2, y - 1, k % 6, 0.7)
+    K.edge_shadow(img, AY0, 5)
     rng = random.Random(3205)
     for k in range(34):
         a = k / 34 * 2 * math.pi
@@ -1049,12 +1186,21 @@ def scene_stone_circle() -> Scene26:
         img.vline(x - 11, AY0 - 2 - h - 7, AY0 - 2 - h + 1, "ink")
         img.vline(x + 34, AY0 - 2 - h - 7, AY0 - 2 - h + 1, "ink")
     # plateau grass, a pale ring path
-    AW.paint_ground(img, (0, AY0 - 6, IMG_W, IMG_H), ("deep", "teal", "leaf_d"), 3302, scale=26, tufts=0.4,
-                    max_light=0.16, max_dark=0.2)
-    calm_ground(img, ("forest", "teal", "leaf_d"), 3303)
-    frame_arena(img, 3304, ("navy", "deep", "teal", "leaf_d"), "ink", rocks=True)
-    rune_ring(img, MIDX, (AY0 + AY1) // 2 + 6, 70, "teal", "grass", ticks=20, width=1.6)
-    K.calm_vignette(img, 12)
+    textured_floor(img, (0, AY0 - 6, IMG_W, IMG_H), ("forest", "teal", "leaf_d"), 3302)
+    blades(img, (0, AY0 - 6, IMG_W, IMG_H), 3303, 0.045)
+    ccx, ccy = MIDX, (AY0 + AY1) // 2 + 6
+
+    def paved(x: int, y: int) -> bool:
+        d = math.hypot((x + 0.5 - ccx) / 84, (y + 0.5 - ccy) / 108)
+        return d + (AW.fbm(x, y, 3304, 10, 2) - 0.5) * 0.35 < 0.92
+    K.flagstones(img, (AX0 - 10, AY0 - 6, AX1 + 10, AY1 + 6), ("ash", "ash"), "slate", 3305, mask=paved,
+                 lip="fog", worn="stone", worn_rate=0.25, crack_rate=0.06)
+    K.soft_patches(img, (AX0 - 10, AY0, AX1 + 10, AY1), "teal", 3306, cover=0.08, scale=10, only=("slate",))
+    rune_ring(img, ccx, ccy, 70, "slate", "teal", ticks=20, width=1.4)
+    for k in range(14):
+        a = k / 14 * 2 * math.pi
+        px, py = int(ccx + math.cos(a) * 92), int(ccy + math.sin(a) * 118)
+        img.blit(AW.rock(3307 + k, 8, 5, ("navy", "slate", "ash", "fog"), "ink", "teal"), px - 4, py - 3)
     K.edge_shadow(img, AY0 - 6, 5, 0, IMG_W)
     # small standing stones round the plateau with glowing runes
     spots = [(20, 190), (262, 200), (14, 280), (268, 290), (24, 360), (258, 372), (90, 398), (190, 400)]
@@ -1130,9 +1276,25 @@ def scene_crystal_cave() -> Scene26:
     # floor
     AW.paint_ground(img, (0, AY0 - 4, IMG_W, IMG_H), ("navy", "slate", "ash"), 3404, scale=30, tufts=0.0,
                     max_light=0.12, max_dark=0.14)
-    calm_ground(img, ("slate", "ash", "fog"), 3405, tufts=0.0)
-    K.soft_patches(img, (AX0, AY0, AX1, AY1), "slate", 3407, cover=0.08, scale=22, only=("ash",))
-    K.calm_vignette(img, 12)
+    textured_floor(img, (AX0 - 30, AY0 - 4, AX1 + 30, AY1 + 30), ("slate", "ash", "stone"), 3405, scale=38)
+    # worn tile seams: big irregular slabs of the cave floor, only one step darker
+    K.flagstones(img, (AX0 - 30, AY0 - 4, AX1 + 30, AY1 + 30), ("ash", "ash"), "slate", 3406, widths=(22, 36),
+                 heights=(18, 26), crack_rate=0.0,
+                 mask=lambda x, y: name_at(img, x, y) == "ash" and AW.fbm(x, y, 3407, 30, 2) > 0.42)
+    pebbles(img, (AX0 - 30, AY0 - 4, AX1 + 30, AY1 + 30), 160, 3408, ("navy", "slate", "ash"), calm=0.9)
+    vrng = random.Random(3409)
+    for k in range(18):
+        x, y = vrng.randrange(AX0 - 20, AX1 + 20), vrng.randrange(AY0, AY1 + 20)
+        if calm_k(x, y) > 0.7:
+            continue
+        vein(img, x, y, vrng.randrange(10, 24), 3410 + k, ("water", "sky") if k % 3 else ("violet", "lilac"))
+    for k in range(30):
+        x, y = vrng.randrange(AX0 - 26, AX1 + 26), vrng.randrange(AY0, AY1 + 26)
+        if calm_k(x, y) > 0.35:
+            continue
+        shard(img, x, y, ("water_d", "water", "sky_l") if k % 3 else ("plum", "violet", "lilac"), 3 + k % 3)
+    for i, (x, y) in enumerate(((AX0 + 6, AY0 + 14), (AX1 - 16, AY0 + 70), (AX0 + 10, AY1 - 50), (AX1 - 14, AY1 - 14))):
+        sc.anim("glint_cyan" if i % 2 else "glint_violet", x, y, i * 2, 0.5 + i * 0.1)
     K.edge_shadow(img, AY0 - 4, 7, 0, IMG_W)
     # side clusters and stalagmites, a pool at the bottom
     for (x, y, cols) in ((8, 220, "cyan"), (262, 250, "violet"), (12, 330, "violet"), (256, 350, "cyan")):

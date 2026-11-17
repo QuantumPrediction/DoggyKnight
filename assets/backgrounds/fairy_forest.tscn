@@ -97,7 +97,47 @@ frame = 2
 speed_scale = 0.8
 centered = false
 
-[node name="wisp_9" type="AnimatedSprite2D" parent="Anim"]
+[node name="mushroom_pulse_9" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(168, 187)
+sprite_frames = ExtResource("2_anim_mushroom_pulse")
+autoplay = "default"
+frame = 0
+speed_scale = 0.7
+centered = false
+
+[node name="mushroom_pulse_10" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(97, 290)
+sprite_frames = ExtResource("2_anim_mushroom_pulse")
+autoplay = "default"
+frame = 0
+speed_scale = 0.7
+centered = false
+
+[node name="mushroom_pulse_11" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(10, 211)
+sprite_frames = ExtResource("2_anim_mushroom_pulse")
+autoplay = "default"
+frame = 0
+speed_scale = 0.7
+centered = false
+
+[node name="mushroom_pulse_12" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(59, 89)
+sprite_frames = ExtResource("2_anim_mushroom_pulse")
+autoplay = "default"
+frame = 0
+speed_scale = 0.7
+centered = false
+
+[node name="mushroom_pulse_13" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(158, 138)
+sprite_frames = ExtResource("2_anim_mushroom_pulse")
+autoplay = "default"
+frame = 0
+speed_scale = 0.7
+centered = false
+
+[node name="wisp_14" type="AnimatedSprite2D" parent="Anim"]
 position = Vector2(8, 32)
 sprite_frames = ExtResource("3_anim_wisp")
 autoplay = "default"
@@ -105,7 +145,7 @@ frame = 0
 speed_scale = 0.6
 centered = false
 
-[node name="wisp_10" type="AnimatedSprite2D" parent="Anim"]
+[node name="wisp_15" type="AnimatedSprite2D" parent="Anim"]
 position = Vector2(68, 12)
 sprite_frames = ExtResource("3_anim_wisp")
 autoplay = "default"
@@ -113,7 +153,7 @@ frame = 1
 speed_scale = 0.75
 centered = false
 
-[node name="wisp_11" type="AnimatedSprite2D" parent="Anim"]
+[node name="wisp_16" type="AnimatedSprite2D" parent="Anim"]
 position = Vector2(128, 38)
 sprite_frames = ExtResource("3_anim_wisp")
 autoplay = "default"
@@ -121,7 +161,7 @@ frame = 2
 speed_scale = 0.9
 centered = false
 
-[node name="wisp_12" type="AnimatedSprite2D" parent="Anim"]
+[node name="wisp_17" type="AnimatedSprite2D" parent="Anim"]
 position = Vector2(178, 52)
 sprite_frames = ExtResource("3_anim_wisp")
 autoplay = "default"
@@ -129,7 +169,7 @@ frame = 3
 speed_scale = 0.6
 centered = false
 
-[node name="wisp_13" type="AnimatedSprite2D" parent="Anim"]
+[node name="wisp_18" type="AnimatedSprite2D" parent="Anim"]
 position = Vector2(28, 322)
 sprite_frames = ExtResource("3_anim_wisp")
 autoplay = "default"
@@ -137,7 +177,7 @@ frame = 4
 speed_scale = 0.75
 centered = false
 
-[node name="wisp_14" type="AnimatedSprite2D" parent="Anim"]
+[node name="wisp_19" type="AnimatedSprite2D" parent="Anim"]
 position = Vector2(148, 332)
 sprite_frames = ExtResource("3_anim_wisp")
 autoplay = "default"
@@ -145,7 +185,7 @@ frame = 5
 speed_scale = 0.9
 centered = false
 
-[node name="wisp_15" type="AnimatedSprite2D" parent="Anim"]
+[node name="wisp_20" type="AnimatedSprite2D" parent="Anim"]
 position = Vector2(-42, 112)
 sprite_frames = ExtResource("3_anim_wisp")
 autoplay = "default"
@@ -153,7 +193,7 @@ frame = 0
 speed_scale = 0.6
 centered = false
 
-[node name="wisp_16" type="AnimatedSprite2D" parent="Anim"]
+[node name="wisp_21" type="AnimatedSprite2D" parent="Anim"]
 position = Vector2(214, 212)
 sprite_frames = ExtResource("3_anim_wisp")
 autoplay = "default"

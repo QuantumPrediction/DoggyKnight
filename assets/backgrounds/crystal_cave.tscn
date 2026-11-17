@@ -71,7 +71,39 @@ frame = 4
 speed_scale = 0.7
 centered = false
 
-[node name="glint_cyan_5" type="AnimatedSprite2D" parent="Anim"]
+[node name="glint_violet_5" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(8, 86)
+sprite_frames = ExtResource("3_anim_glint_violet")
+autoplay = "default"
+frame = 0
+speed_scale = 0.5
+centered = false
+
+[node name="glint_cyan_6" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(162, 142)
+sprite_frames = ExtResource("2_anim_glint_cyan")
+autoplay = "default"
+frame = 2
+speed_scale = 0.6
+centered = false
+
+[node name="glint_violet_7" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(12, 246)
+sprite_frames = ExtResource("3_anim_glint_violet")
+autoplay = "default"
+frame = 4
+speed_scale = 0.7
+centered = false
+
+[node name="glint_cyan_8" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(164, 282)
+sprite_frames = ExtResource("2_anim_glint_cyan")
+autoplay = "default"
+frame = 6
+speed_scale = 0.8
+centered = false
+
+[node name="glint_cyan_9" type="AnimatedSprite2D" parent="Anim"]
 position = Vector2(-48, 112)
 sprite_frames = ExtResource("2_anim_glint_cyan")
 autoplay = "default"
@@ -79,7 +111,7 @@ frame = 2
 speed_scale = 0.8
 centered = false
 
-[node name="glint_violet_6" type="AnimatedSprite2D" parent="Anim"]
+[node name="glint_violet_10" type="AnimatedSprite2D" parent="Anim"]
 position = Vector2(206, 142)
 sprite_frames = ExtResource("3_anim_glint_violet")
 autoplay = "default"
@@ -87,7 +119,7 @@ frame = 7
 speed_scale = 0.8
 centered = false
 
-[node name="glint_violet_7" type="AnimatedSprite2D" parent="Anim"]
+[node name="glint_violet_11" type="AnimatedSprite2D" parent="Anim"]
 position = Vector2(-44, 222)
 sprite_frames = ExtResource("3_anim_glint_violet")
 autoplay = "default"
@@ -95,7 +127,7 @@ frame = 4
 speed_scale = 0.8
 centered = false
 
-[node name="glint_cyan_8" type="AnimatedSprite2D" parent="Anim"]
+[node name="glint_cyan_12" type="AnimatedSprite2D" parent="Anim"]
 position = Vector2(200, 242)
 sprite_frames = ExtResource("2_anim_glint_cyan")
 autoplay = "default"
@@ -103,7 +135,7 @@ frame = 5
 speed_scale = 0.8
 centered = false
 
-[node name="night_glint_9" type="AnimatedSprite2D" parent="Anim"]
+[node name="night_glint_13" type="AnimatedSprite2D" parent="Anim"]
 position = Vector2(40, 358)
 sprite_frames = ExtResource("4_anim_night_glint")
 autoplay = "default"
@@ -111,7 +143,7 @@ frame = 0
 speed_scale = 0.8
 centered = false
 
-[node name="night_glint_10" type="AnimatedSprite2D" parent="Anim"]
+[node name="night_glint_14" type="AnimatedSprite2D" parent="Anim"]
 position = Vector2(58, 366)
 sprite_frames = ExtResource("4_anim_night_glint")
 autoplay = "default"
@@ -119,7 +151,7 @@ frame = 1
 speed_scale = 0.8
 centered = false
 
-[node name="night_glint_11" type="AnimatedSprite2D" parent="Anim"]
+[node name="night_glint_15" type="AnimatedSprite2D" parent="Anim"]
 position = Vector2(76, 358)
 sprite_frames = ExtResource("4_anim_night_glint")
 autoplay = "default"
@@ -127,7 +159,7 @@ frame = 2
 speed_scale = 0.8
 centered = false
 
-[node name="night_glint_12" type="AnimatedSprite2D" parent="Anim"]
+[node name="night_glint_16" type="AnimatedSprite2D" parent="Anim"]
 position = Vector2(94, 366)
 sprite_frames = ExtResource("4_anim_night_glint")
 autoplay = "default"
@@ -135,7 +167,7 @@ frame = 3
 speed_scale = 0.8
 centered = false
 
-[node name="night_glint_13" type="AnimatedSprite2D" parent="Anim"]
+[node name="night_glint_17" type="AnimatedSprite2D" parent="Anim"]
 position = Vector2(112, 358)
 sprite_frames = ExtResource("4_anim_night_glint")
 autoplay = "default"
@@ -143,7 +175,7 @@ frame = 4
 speed_scale = 0.8
 centered = false
 
-[node name="night_glint_14" type="AnimatedSprite2D" parent="Anim"]
+[node name="night_glint_18" type="AnimatedSprite2D" parent="Anim"]
 position = Vector2(130, 366)
 sprite_frames = ExtResource("4_anim_night_glint")
 autoplay = "default"
