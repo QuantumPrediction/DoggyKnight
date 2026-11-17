@@ -2,12 +2,12 @@ class_name SaveStore
 extends RefCounted
 ## 存檔(B9、BP6、BS6)。存在本機 user://,不連網,不存任何個人資料或裝置識別碼。
 ##
-## 檔案格式(JSON,第 4 版):
+## 檔案格式(JSON,第 5 版):
 ##   {"version": 4, "level_index": 2, "snacks": 0, "sound_on": true, "music_on": true,
 ##    "haptics_on": true, "tutorial_done": true, "best_stars": {"1-1": 3, "1-2": 2, "1-1:hard": 1},
 ##    "camp_pending": false, "difficulty": "normal", "chapter_cleared": false,
 ##    "story_seen": {"prologue": true, "l1_before": true},
-##    "meta_upgrades": {"strength": 2, "luck": 1}, "endless_best": 12}
+##    "meta_upgrades": {"strength": 2, "luck": 1}, "endless_best": 12, "chapter": 2, "chapters_cleared": 1}
 ##   level_index:下次「繼續冒險」要從哪一關開始(0 起算;0 = 沒有可以繼續的進度)。
 ##   camp_pending:上一關過關後應該先進營地(結算畫面出現後 App 被關掉,繼續時先回到營地)。
 ##   best_stars:每關最佳星數(鍵是關卡 id 字串,困難模式加 ":hard";值 0 至 3)。
@@ -17,8 +17,12 @@ extends RefCounted
 ##   snacks:零食總數(v2.4 起真的會增減:擊倒、寶箱、過關、復活、營地訓練)。
 ##   meta_upgrades(v4):營地訓練等級 {升級 id: 0 至 MAX_META_LEVEL}。
 ##   endless_best(v4):無盡試煉最佳波數。
-## 向下相容:第 1、2、3 版存檔都可以讀,缺的欄位用預設值;
-## 但第 1 版存檔已經到達第 2 關以後,表示玩家玩過第一關,tutorial_done 視為 true。
+##   chapter(v5):這一輪冒險的章(1 至 3;「繼續冒險」回到這一章,level_index 是這一章裡的關卡)。
+##   chapters_cleared(v5):已打完的最高章數(0 至 3)。
+## 向下相容:第 1 至 4 版存檔都可以讀,缺的欄位用預設值;
+## 但第 1 版存檔已經到達第 2 關以後,表示玩家玩過第一關,tutorial_done 視為 true;
+## 第 4 版以前沒有 chapters_cleared:chapter_cleared 為 true 時視為 chapters_cleared = 1(DEV_PLAN 4.13)。
+## chapters_cleared ≥ 1 時 chapter_cleared 一定是 true(第一章通關仍是困難模式與無盡試煉的條件)。
 ##
 ## 防止存檔損毀:先把完整內容寫到「<路徑>.tmp」,關檔之後才改名成正式檔名。
 ## App 在寫入中途被系統強制關閉時,正式存檔仍是上一次的完整版本;
@@ -26,12 +30,14 @@ extends RefCounted
 ##
 ## 寫入是同步的(不用 await),所以在 app_backgrounded 裡呼叫可以立即完成。
 
-const VERSION: int = 4
+const VERSION: int = 5
 ## 營地訓練等級的上限(存檔清理用;實際上限在 data/progression/meta_upgrades.tres)。
 const MAX_META_LEVEL: int = 99
 const DEFAULT_PATH: String = "user://save.json"
 const MAX_STARS: int = 3
 const DIFFICULTIES: Array[String] = ["normal", "hard"]
+## v2.6:章數(DEV_PLAN 4.13)。
+const CHAPTER_COUNT: int = 3
 
 var path: String
 ## 只給測試用:模擬「寫暫存檔寫到一半 App 就被關掉」。為 true 時 write() 只寫一半就停。
@@ -62,6 +68,8 @@ static func defaults() -> Dictionary:
 		"story_seen": {},
 		"meta_upgrades": {},
 		"endless_best": 0,
+		"chapter": 1,
+		"chapters_cleared": 0,
 	}
 
 
@@ -123,6 +131,8 @@ func read() -> Dictionary:
 	result["version"] = version
 	if version < 2 and not raw.has("tutorial_done") and int(result["level_index"]) > 0:
 		result["tutorial_done"] = true     # 舊存檔已過了第一關:玩家懂得操作
+	if not raw.has("chapters_cleared") and result["chapter_cleared"]:
+		result["chapters_cleared"] = 1     # 第 4 版以前:打完第一章 = 已打完 1 章
 	return result
 
 
@@ -139,6 +149,7 @@ func delete() -> void:
 ## 只留認識的欄位,型別不對或超出範圍就用預設值。
 static func sanitize(raw: Dictionary) -> Dictionary:
 	var d := defaults()
+	var cleared := clampi(_int_field(raw, "chapters_cleared", d["chapters_cleared"]), 0, CHAPTER_COUNT)
 	return {
 		"level_index": _int_field(raw, "level_index", d["level_index"]),
 		"snacks": _int_field(raw, "snacks", d["snacks"]),
@@ -149,10 +160,12 @@ static func sanitize(raw: Dictionary) -> Dictionary:
 		"best_stars": _stars_field(raw.get("best_stars", {})),
 		"camp_pending": _bool_field(raw, "camp_pending", d["camp_pending"]),
 		"difficulty": _difficulty_field(raw.get("difficulty", d["difficulty"])),
-		"chapter_cleared": _bool_field(raw, "chapter_cleared", d["chapter_cleared"]),
+		"chapter_cleared": _bool_field(raw, "chapter_cleared", d["chapter_cleared"]) or cleared >= 1,
 		"story_seen": _seen_field(raw.get("story_seen", {})),
 		"meta_upgrades": _meta_field(raw.get("meta_upgrades", {})),
 		"endless_best": _int_field(raw, "endless_best", d["endless_best"]),
+		"chapter": clampi(_int_field(raw, "chapter", d["chapter"]), 1, CHAPTER_COUNT),
+		"chapters_cleared": cleared,
 	}
 
 

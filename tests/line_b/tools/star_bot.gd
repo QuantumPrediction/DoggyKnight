@@ -6,6 +6,7 @@ extends Node
 ## 執行(headless,約 2 分鐘):
 ##   godot --headless --path . res://tests/line_b/tools/star_bot.tscn -- --seed=7
 ## 參數與試玩機器人相同(--seed=、--speed=)。另加 --hard:當作已打完第一章,用困難模式玩(v2.3 BS4)。
+## v2.6:--chapter=N:當作已打完第 N − 1 章,玩第 N 章(要試玩機器人也能玩完第 N 章)。
 
 const BOT_SCENE: String = "res://tests/integration/playthrough_bot.tscn"
 
@@ -25,6 +26,13 @@ func _ready() -> void:
 		GameState.chapter_cleared = true
 		GameState.difficulty = &"hard"
 		print("STAR 困難模式")
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--chapter="):
+			var n := clampi(arg.trim_prefix("--chapter=").to_int(), 1, 3)
+			GameState.chapters_cleared = maxi(GameState.chapters_cleared, n - 1)
+			GameState.chapter_cleared = GameState.chapter_cleared or n > 1
+			GameState.chapter = n
+			print("STAR 第 %d 章" % n)
 	_flow = bot.get(&"flow") as FlowMain
 	if _flow == null:
 		push_error("star_bot: 試玩機器人沒有建立流程")

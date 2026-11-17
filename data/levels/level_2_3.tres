@@ -1,0 +1,111 @@
+[gd_resource type="Resource" script_class="LevelData" format=3]
+
+[ext_resource type="Script" path="res://core/data/level_data.gd" id="1_level"]
+[ext_resource type="Script" path="res://core/data/wave_data.gd" id="2_wave"]
+[ext_resource type="Script" path="res://core/data/spawn_entry.gd" id="3_spawn"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/royal_library.tscn" id="4_bg"]
+[ext_resource type="Resource" path="res://data/story/c2l3_before.tres" id="5_before"]
+[ext_resource type="Resource" path="res://data/story/c2l3_after.tres" id="6_after"]
+
+[sub_resource type="Resource" id="wave1_spawn1"]
+script = ExtResource("3_spawn")
+enemy_id = &"spellbook"
+count = 1
+delay = 0.0
+pattern = &"line_top"
+
+[sub_resource type="Resource" id="wave1_spawn2"]
+script = ExtResource("3_spawn")
+enemy_id = &"spellbook"
+count = 2
+delay = 7.0
+pattern = &"edges"
+
+[sub_resource type="Resource" id="wave1"]
+script = ExtResource("2_wave")
+spawns = Array[ExtResource("3_spawn")]([SubResource("wave1_spawn1"), SubResource("wave1_spawn2")])
+
+[sub_resource type="Resource" id="wave2_spawn1"]
+script = ExtResource("3_spawn")
+enemy_id = &"gargoyle"
+count = 2
+delay = 0.0
+pattern = &"corners"
+
+[sub_resource type="Resource" id="wave2_spawn2"]
+script = ExtResource("3_spawn")
+enemy_id = &"spellbook"
+count = 2
+delay = 5.0
+pattern = &"edges"
+
+[sub_resource type="Resource" id="wave2_spawn3"]
+script = ExtResource("3_spawn")
+enemy_id = &"scarecrow"
+count = 4
+delay = 10.0
+pattern = &"surround"
+
+[sub_resource type="Resource" id="wave2_spawn4"]
+script = ExtResource("3_spawn")
+enemy_id = &"gargoyle"
+count = 2
+delay = 14.0
+pattern = &"corners"
+
+[sub_resource type="Resource" id="wave2"]
+script = ExtResource("2_wave")
+spawns = Array[ExtResource("3_spawn")]([SubResource("wave2_spawn1"), SubResource("wave2_spawn2"), SubResource("wave2_spawn3"), SubResource("wave2_spawn4")])
+
+[sub_resource type="Resource" id="wave3_spawn1"]
+script = ExtResource("3_spawn")
+enemy_id = &"spellbook"
+count = 2
+delay = 1.5
+pattern = &"line_top"
+
+[sub_resource type="Resource" id="wave3_spawn2"]
+script = ExtResource("3_spawn")
+enemy_id = &"gargoyle"
+count = 3
+delay = 5.0
+pattern = &"corners"
+
+[sub_resource type="Resource" id="wave3_spawn3"]
+script = ExtResource("3_spawn")
+enemy_id = &"spellbook"
+count = 2
+delay = 10.0
+pattern = &"edges"
+
+[sub_resource type="Resource" id="wave3_spawn4"]
+script = ExtResource("3_spawn")
+enemy_id = &"gargoyle"
+count = 2
+delay = 13.0
+pattern = &"corners"
+
+[sub_resource type="Resource" id="wave3_spawn5"]
+script = ExtResource("3_spawn")
+enemy_id = &"scarecrow"
+count = 3
+delay = 16.0
+pattern = &"surround"
+
+[sub_resource type="Resource" id="wave3"]
+script = ExtResource("2_wave")
+spawns = Array[ExtResource("3_spawn")]([SubResource("wave3_spawn1"), SubResource("wave3_spawn2"), SubResource("wave3_spawn3"), SubResource("wave3_spawn4"), SubResource("wave3_spawn5")])
+
+[resource]
+script = ExtResource("1_level")
+id = &"2-3"
+display_name = "LEVEL_2_3"
+waves = Array[ExtResource("2_wave")]([SubResource("wave1"), SubResource("wave2"), SubResource("wave3")])
+is_boss = false
+companions = Array[StringName]([&"bulldog", &"lancelot"])
+background = ExtResource("4_bg")
+par_time = 76.0
+damage_budget = 30
+story_before = ExtResource("5_before")
+story_after = ExtResource("6_after")
+music = &"field_2"

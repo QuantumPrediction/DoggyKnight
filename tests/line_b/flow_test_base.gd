@@ -5,6 +5,7 @@ extends TestCase
 const MAIN_SCENE: String = "res://game/flow/main.tscn"
 const SAVE_PATH: String = "user://test_line_b_save.json"
 const CHAPTER_1: String = "res://data/levels/chapter_1.tres"
+const CHAPTER_PATH: String = "res://data/levels/chapter_%d.tres"
 const DIFFICULTY: String = "res://game/progression/difficulty.tres"
 const MusicRecorder := preload("res://tests/line_b/music_recorder.gd")
 
@@ -40,6 +41,8 @@ static func reset_settings() -> void:
 	GameState.mode = &"story"
 	GameState.meta_upgrades = {}
 	GameState.endless_best = 0
+	GameState.chapter = 1
+	GameState.chapters_cleared = 0
 
 
 ## 測試用難度:所有等待都接近 0、不播轉場,測試跑得快。
@@ -60,11 +63,15 @@ func fast_difficulty() -> DifficultyData:
 	return d
 
 
-## 第一章的複本,但每組敵人的 delay 都是 0(敵人數目與波次不變)。
+## 第 number 章(預設第一章)的複本,但每組敵人的 delay 都是 0(敵人數目與波次不變)。
 ## with_story = false(預設):不帶任何對白(舊的流程測試不受故事影響);true:帶上 data/story/ 的全部對白。
-func fast_chapter(with_story: bool = false) -> ChapterData:
-	var source := load(CHAPTER_1) as ChapterData
+func fast_chapter(with_story: bool = false, number: int = 1) -> ChapterData:
+	var source := load(CHAPTER_PATH % number) as ChapterData
 	var chapter := ChapterData.new()
+	chapter.number = source.number
+	chapter.display_name = source.display_name
+	chapter.field_music = source.field_music
+	chapter.boss_music = source.boss_music
 	chapter.camp_after = source.camp_after.duplicate()
 	if with_story:
 		chapter.prologue = source.prologue
@@ -78,6 +85,7 @@ func fast_chapter(with_story: bool = false) -> ChapterData:
 		copy.background = level.background
 		copy.par_time = level.par_time
 		copy.damage_budget = level.damage_budget
+		copy.music = level.music
 		if with_story:
 			copy.story_before = level.story_before
 			copy.story_after = level.story_after
@@ -108,6 +116,7 @@ func make_flow(keep_save: bool = false, rng_seed: int = 1234, with_story: bool =
 	f.rng_seed = rng_seed
 	f.difficulty = fast_difficulty()
 	f.chapter = fast_chapter(with_story)
+	f.chapters = [f.chapter, fast_chapter(with_story, 2), fast_chapter(with_story, 3)] as Array[ChapterData]
 	if not with_events:
 		f.events = LevelEventTable.new()
 	f.platform_name = "Linux"
