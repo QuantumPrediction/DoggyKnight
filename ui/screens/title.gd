@@ -22,6 +22,7 @@ extends Control
 ##   按「開始冒險」(與難度選擇之後)先設定 GameState.chapter 再發 new_game_pressed;沒有選章列時一律第 1 章。
 ## - 標題背景隨最高已開啟的章改變:第一章山丘與石中劍、第二章卡美洛城堡、第三章湖上的高塔
 ##   (assets/ui/title_bg.png、title_bg_2.png、title_bg_3.png);站在前面的角色、閃光與飄落物也跟著換。
+## - 章名與「第 N 章 完成!」下面有一塊半透明的深色底(CaptionBacking),在任何背景上都看得清楚。
 
 signal new_game_pressed
 signal continue_pressed
@@ -70,6 +71,7 @@ var _clouds: Array[TextureRect] = []
 var _cloud_x: Array[float] = []
 var _logo: TextureRect
 var _subtitle: Label
+var _caption_bg: Panel
 var _goldie: Control
 var _bulldog: Control
 var _merlin: Control
@@ -108,6 +110,15 @@ func _ready() -> void:
 	_logo = UiKit.texture_rect(preload("res://assets/ui/logo_2x.png"))
 	_logo.name = "Logo"
 	add_child(_logo)
+	_caption_bg = Panel.new()
+	_caption_bg.name = "CaptionBacking"
+	_caption_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var box := StyleBoxFlat.new()
+	box.bg_color = Color(PaletteColors.INK, 0.55)
+	box.set_corner_radius_all(3)
+	box.anti_aliasing = false
+	_caption_bg.add_theme_stylebox_override(&"panel", box)
+	add_child(_caption_bg)
 	_subtitle = UiKit.label(_chapter_name(backdrop_chapter), &"LabelLight")
 	add_child(_subtitle)
 	var cast: Array = CHAPTER_LOOKS[backdrop_chapter]["cast"]
@@ -500,6 +511,13 @@ func _layout() -> void:
 	_merlin.position = _goldie.position + Vector2(50, 8)
 	_cleared_label.size = _cleared_label.get_minimum_size()
 	_cleared_label.position = Vector2(floorf(cx - _cleared_label.size.x * 0.5), _subtitle.position.y + _subtitle.size.y + 1.0)
+	var cap := Rect2(_subtitle.position, _subtitle.size)
+	if _cleared_label.visible:
+		cap = cap.merge(Rect2(_cleared_label.position, _cleared_label.size))
+	cap = cap.grow_individual(5, 0, 5, 1)
+	_caption_bg.position = cap.position.floor()
+	_caption_bg.size = cap.size.ceil()
+	_caption_bg.modulate.a = _subtitle.modulate.a
 	difficulty_panel.size = difficulty_panel.get_combined_minimum_size()
 	difficulty_panel.position = Vector2(floorf(cx - difficulty_panel.size.x * 0.5),
 			floorf(bottom - difficulty_panel.size.y + 4.0))
