@@ -19,12 +19,15 @@ What it writes (paths are the contracts of DEV_PLAN 4.6 / 4.9 — never rename t
   assets/fx/<name>/<name>.png + _frames.tres       slash, hit_spark, exp_orb, ultimate_slash, dizzy_stars, dust
   assets/fx/particles/<name>.tscn + tex/*.png     11 one-shot CPUParticles2D effects (DEV_PLAN 4.10)
   assets/icons/tricks/<id>.png                    sit, wag, fetch, shake, spin, bark (16x16)
+                                                  + v2.4 pounce, roll, dig, sniff, play_dead, zoomies and the
+                                                  golden-framed evolutions (art_v24.py)
+  assets/sprites/chest, assets/fx/snack           v2.4 treasure chest and snack (art_v24.py)
   assets/tiles/chapter1_tiles.png                 16x16 tile set
   assets/backgrounds/<name>.png + .tscn           sword_stone, wheat_field, meadow, farm_fence, crow_forest, bridge
   assets/backgrounds/anim/*                       animated layers and ambient particle textures
   assets/ui/*.png                                 buttons, panels, HUD icons, logo
   assets/app_icon/*.png                           app icons, store graphics, boot splash
-  assets/sfx/<id>.wav                             the 23 sound effects
+  assets/sfx/<id>.wav                             the sound effects (sfx_gen.IDS)
   assets/music/<id>.wav (+ .import)               7 music tracks (4 seamless loops, 3 jingles; QOA import)
   ui/theme/palette_colors.gd                      the palette as GDScript constants
   ui/theme/main_theme.tres                        the UI theme (font, buttons, panels)
@@ -51,6 +54,7 @@ import art_particles  # noqa: E402
 import art_portraits  # noqa: E402
 import art_story  # noqa: E402
 import art_ui  # noqa: E402
+import art_v24  # noqa: E402
 import art_world  # noqa: E402
 import music_gen  # noqa: E402
 import paint  # noqa: E402
@@ -143,6 +147,7 @@ def main() -> None:
         sheets["fx_" + name] = anims
     art_particles.write_all()
     art_ui.write_all()
+    art_v24.write_all()                                          # v2.4 icons, chest, snack, UI (CV1, CV4)
     art_ui.write_theme()
     art_world.write_all()
     goldie_idle = sheets["goldie"][0].frames[0]

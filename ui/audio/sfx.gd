@@ -15,6 +15,8 @@ const IDS: Array[StringName] = [
 	&"crit", &"combo", &"boss_roar", &"star", &"whoosh", &"heal", &"pet", &"perfect", &"countdown",
 	# v2.3(DEV_PLAN 第 16 節 CS8):talk 是對白的說話聲(對白框用音高區分角色)
 	&"talk", &"page_turn", &"arrow_shot", &"husk_clank", &"captain_shout", &"magic",
+	# v2.4(DEV_PLAN 第 17 節 CV6)
+	&"chest_open", &"evolve", &"snack", &"revive", &"event",
 ]
 const VOICES: int = 12
 const MIN_INTERVAL: float = 0.04
@@ -22,7 +24,7 @@ const MAX_SAME: int = 3
 ## 每次播放時音高隨機變化的幅度(只套用在常重複的音效)。
 const PITCH_JITTER: Dictionary = {
 	&"swing": 0.06, &"hit": 0.08, &"enemy_down": 0.06, &"pickup": 0.04, &"scroll": 0.08, &"crit": 0.04,
-	&"pet": 0.05, &"arrow_shot": 0.06, &"husk_clank": 0.06,
+	&"pet": 0.05, &"arrow_shot": 0.06, &"husk_clank": 0.06, &"snack": 0.08,
 }
 
 var _players: Array[AudioStreamPlayer] = []
