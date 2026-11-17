@@ -11,3 +11,7 @@ description = "TRICK_FETCH_DESC"
 icon = ExtResource("2_icon")
 stat_modifiers = {"pickup_radius": 0.5, "exp_mult": 0.2}
 is_ability = false
+max_level = 3
+evolution_partner = &"shake"
+evolves_into = &"high_five"
+is_evolution = false

@@ -15,10 +15,20 @@ extends Resource
 @export_group("Tricks")
 ## 升級時給玩家選的把戲數目。
 @export var trick_offer_count: int = 3
-## 可以抽到的把戲(id,對應 data/tricks/<id>.tres)。
-@export var trick_pool: Array[StringName] = [&"sit", &"wag", &"fetch", &"shake", &"spin", &"bark"]
+## 可以抽到的基本把戲(id,對應 data/tricks/<id>.tres)。進化把戲不放這裡(由 evolves_into 找到)。
+@export var trick_pool: Array[StringName] = [&"sit", &"wag", &"fetch", &"shake", &"spin", &"bark",
+		&"pounce", &"roll", &"dig", &"sniff", &"play_dead", &"zoomies"]
 ## 「坐下」疊很多次時,受到的傷害倍率最低只會降到這個值(避免完全無敵)。
 @export var min_damage_taken_mult: float = 0.2
+## v2.4:已經學過、還沒到上限的把戲,在三選一中出現的機會是其他把戲的這麼多倍
+## (讓把戲比較容易練滿、進化;1.0 = 平均)。
+@export var owned_trick_weight: float = 1.0
+
+@export_group("Events")
+## v2.4 抉擇事件:一波清空後等這麼多秒(遊戲時間)才出現,讓經驗珠先飛完。
+@export var event_delay: float = 0.6
+## 沒有事件介面(ui/event_choice/event_choice.tscn)時,等這麼多秒(真實時間)自動選第一項。
+@export var event_auto_pick_delay: float = 0.5
 
 @export_group("Waves")
 ## 開場(intro_duration)結束後,第一波出現前再等的秒數。
@@ -34,7 +44,7 @@ extends Resource
 
 ## 這些敵人所在的一波開始時改播頭目音樂(boss)並播 boss_warning(1-4 的稻草人隊長;
 ## 頭目關本身一開始就播 boss)。
-@export var boss_music_enemies: Array[StringName] = [&"scarecrow_captain"]
+@export var boss_music_enemies: Array[StringName] = [&"scarecrow_captain", &"black_knight"]
 
 @export_group("Hard mode")
 ## 困難模式(GameState.difficulty == &"hard")每組敵人多加 floor(數目 × 這個比例) 隻
