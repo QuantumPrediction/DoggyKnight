@@ -87,6 +87,18 @@ func heal(amount: int) -> void:
 	EventBus.vigor_changed.emit(GameState.vigor, GameState.player_stats.max_vigor)
 
 
+## v2.4 復活(DEV_PLAN 17 AV4):醒來、活力回到上限、短暫無敵。
+func revive() -> void:
+	if not downed:
+		return
+	downed = false
+	if GameState.vigor <= 0:
+		GameState.vigor = GameState.player_stats.max_vigor
+	_invulnerable = INVULNERABLE_TIME * 2.0
+	_play(&"idle")
+	EventBus.vigor_changed.emit(GameState.vigor, GameState.player_stats.max_vigor)
+
+
 func _fall_asleep() -> void:
 	downed = true
 	_sprite.visible = true

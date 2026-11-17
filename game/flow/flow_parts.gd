@@ -20,6 +20,10 @@ const TRANSITION: String = "res://ui/transition/transition.tscn"
 const TUTORIAL: String = "res://ui/hints/tutorial.tscn"
 ## v2.3 對白框(DEV_PLAN 4.11):不存在時略過全部故事。
 const DIALOGUE: String = "res://ui/dialogue/dialogue_box.tscn"
+## v2.4 抉擇事件介面(DEV_PLAN 4.12,C 線):不存在時事件自動選第一項。
+const EVENT_CHOICE: String = "res://ui/event_choice/event_choice.tscn"
+## v2.4 營地訓練介面(D 線):標題的 training_pressed 打開;不存在時略過。
+const TRAINING: String = "res://game/camp/training.tscn"
 
 const STUB_DIR: String = "res://game/flow/stubs"
 
@@ -37,6 +41,8 @@ const STAND_INS: Dictionary = {
 	TRANSITION: STUB_DIR + "/stub_transition.tscn",
 	TUTORIAL: STUB_DIR + "/stub_tutorial.tscn",
 	DIALOGUE: STUB_DIR + "/stub_dialogue_box.tscn",
+	EVENT_CHOICE: STUB_DIR + "/stub_event_choice.tscn",
+	TRAINING: STUB_DIR + "/stub_training.tscn",
 }
 
 
@@ -49,7 +55,7 @@ static func scene_for(path: String, force_stand_in: bool = false) -> PackedScene
 	return try_load(STAND_INS.get(path, ""))
 
 
-## 可有可無的零件(轉場、教學提示、對白框):force_stand_in = true 時用替身;否則只用正式零件,
+## 可有可無的零件(轉場、教學提示、對白框、事件介面、訓練介面):force_stand_in = true 時用替身;否則只用正式零件,
 ## 不存在就傳回 null(呼叫的一方略過這個步驟)。
 static func optional_scene(path: String, force_stand_in: bool = false) -> PackedScene:
 	if force_stand_in:

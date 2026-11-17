@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="EndlessData" format=3]
+
+[ext_resource type="Script" path="res://game/progression/endless_data.gd" id="1_endless"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/sword_stone.tscn" id="2_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/wheat_field.tscn" id="3_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/meadow.tscn" id="4_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/farm_fence.tscn" id="5_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/crow_forest.tscn" id="6_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/bridge.tscn" id="7_bg"]
+
+[resource]
+script = ExtResource("1_endless")
+level_id = &"endless"
+display_name = "LEVEL_ENDLESS"
+backgrounds = Array[PackedScene]([ExtResource("2_bg"), ExtResource("3_bg"), ExtResource("4_bg"), ExtResource("5_bg"), ExtResource("6_bg"), ExtResource("7_bg")])
+companions = Array[StringName]([&"bulldog"])
+enemy_ids = Array[StringName]([&"scarecrow", &"crow", &"scarecrow_archer", &"scarecrow_elite", &"armored_husk"])
+enemy_costs = Array[int]([1, 1, 2, 3, 3])
+enemy_unlock_wave = Array[int]([1, 2, 3, 4, 6])
+enemy_weights = Array[float]([3.0, 2.0, 1.5, 1.0, 1.0])
+budget_base = 6.0
+budget_per_wave = 1.6
+max_enemies_per_wave = 24
+groups_min = 2
+groups_max = 4
+group_gap = 4.5
+patterns = Array[StringName]([&"edges", &"line_top", &"corners", &"surround"])
+surround_from_wave = 3
+boss_every = 5
+mini_boss_id = &"scarecrow_captain"
+boss_id = &"black_knight"
+escort_ratio = 0.35
+boss_escort_from = 20
+event_every = 10
+hard_from_wave = 16

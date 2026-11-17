@@ -23,12 +23,18 @@ extends Node
 ## - v2.3:含有 DifficultyData.boss_music_enemies(稻草人隊長)的一波開始時,播 boss_warning 並發
 ##   本地訊號 boss_wave_began(FlowMain 改播頭目音樂)。
 ## - v2.3 困難模式(difficulty_mode == &"hard"):每組多加 DifficultyData.hard_extra() 隻(頭目、中頭目除外)。
+## - v2.4:一波清空時另發本地訊號 wave_done(index)(抉擇事件、無盡試煉用)。
+##   hold() / release():金毛倒下時先停住(不放新敵人、不計時),復活後從原處繼續;真的結束才 stop()。
+##   endless = true(無盡試煉):wave_started 的 total 是 0(沒有總數);FlowMain 在每波開始時把下一波
+##   加到 level.waves,所以永遠有下一波。
 
 signal all_waves_cleared()
 ## 第 index 波開始(與 EventBus.wave_started 同時發出;LevelSession 用來知道開場結束)。
 signal wave_began(index: int)
 ## 有中頭目(稻草人隊長)的一波開始(v2.3)。頭目關(LevelData.is_boss)不發這個訊號。
 signal boss_wave_began(index: int)
+## 第 index 波清空(與 EventBus.wave_cleared 同時發出,v2.4)。
+signal wave_done(index: int)
 
 enum Phase { IDLE, WAITING, IN_WAVE, DONE }
 
@@ -45,6 +51,8 @@ var difficulty: DifficultyData
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 ## &"normal" 或 &"hard"(LevelSession 依 GameState.difficulty 設定)。
 var difficulty_mode: StringName = &"normal"
+## v2.4 無盡試煉:wave_started 的 total 發 0。
+var endless: bool = false
 
 var _phase: Phase = Phase.IDLE
 var _wave: int = 0                       # 目前的波次(1 起算;0 = 還沒開始)
@@ -60,6 +68,7 @@ var _not_yet_in_tree: Array[Node] = []   # spawn_enemy 傳回、但還沒進場�
 var _point_order: Array[int] = []
 var _point_cursor: int = 0
 var _corner_turn: int = 0
+var _held: bool = false
 
 
 func setup(level_data: LevelData, arena_node: Node, curve: DifficultyData, random: RandomNumberGenerator = null) -> void:
@@ -86,7 +95,21 @@ func start(initial_delay: float = -1.0) -> void:
 ## 停止生成(例如金毛倒下)。已在場上的敵人不受影響;還沒冒出來的預警記號會移除。
 func stop() -> void:
 	_phase = Phase.IDLE
+	_held = false
 	_clear_wave_state()
+
+
+## 暫時停住(金毛倒下):不放敵人、不計時,預警記號留在原處。release() 從原處繼續。
+func hold() -> void:
+	_held = true
+
+
+func release() -> void:
+	_held = false
+
+
+func is_held() -> bool:
+	return _held
 
 
 func current_wave() -> int:
@@ -140,6 +163,8 @@ func _physics_process(delta: float) -> void:
 
 ## 讓時間前進 delta 秒(_physics_process 每格呼叫;測試可以關掉物理處理後自己呼叫)。
 func step(delta: float) -> void:
+	if _held:
+		return
 	match _phase:
 		Phase.WAITING:
 			_timer -= delta
@@ -166,7 +191,7 @@ func _start_wave(number: int) -> void:
 	# 依出現時間排序;時間相同時保持資料檔裡的次序。
 	_pending.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		return a["time"] < b["time"] or (a["time"] == b["time"] and a["order"] < b["order"]))
-	EventBus.wave_started.emit(number, total_waves())
+	EventBus.wave_started.emit(number, 0 if endless else total_waves())
 	wave_began.emit(number)
 	var mini_boss := not level.is_boss and has_boss_music(wave)
 	if level.is_boss or mini_boss:
@@ -285,6 +310,7 @@ func _finish_wave() -> void:
 	_not_yet_in_tree.clear()
 	_clear_wave_state()
 	EventBus.wave_cleared.emit(_wave)
+	wave_done.emit(_wave)
 	if _wave >= total_waves():
 		_phase = Phase.DONE
 		all_waves_cleared.emit()
