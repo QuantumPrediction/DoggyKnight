@@ -1,6 +1,7 @@
 extends Node2D
 ## 同伴(鬥牛犬)的替身。正式版:game/actors/companions/bulldog.tscn(A 線)。
 ## 群組 "companion";跟在金毛身邊,偶爾咬一下附近的敵人(6 點傷害)。
+## v2.6:第二位同伴(蘭斯洛特)跟在另一邊,兩位不會疊在一起。
 
 const FOLLOW_OFFSET: Vector2 = Vector2(-16, 6)
 const FOLLOW_SPEED: float = 55.0
@@ -13,6 +14,7 @@ var arena: Node
 
 var _sprite: AnimatedSprite2D
 var _cooldown: float = 0.0
+var _offset: Vector2 = FOLLOW_OFFSET
 
 
 func configure(id: StringName, arena_node: Node) -> void:
@@ -21,6 +23,8 @@ func configure(id: StringName, arena_node: Node) -> void:
 
 
 func _ready() -> void:
+	if not get_tree().get_nodes_in_group(&"companion").is_empty():
+		_offset = Vector2(-FOLLOW_OFFSET.x, FOLLOW_OFFSET.y)
 	add_to_group(&"companion")
 	_sprite = AnimatedSprite2D.new()
 	var path := "res://assets/sprites/%s/%s_frames.tres" % [companion_id, companion_id]
@@ -34,7 +38,7 @@ func _physics_process(delta: float) -> void:
 	var player: Node2D = arena.call(&"get_player") if arena != null else null
 	if player == null:
 		return
-	var target := player.global_position + FOLLOW_OFFSET
+	var target := player.global_position + _offset
 	var to_target := target - global_position
 	if to_target.length() > 2.0:
 		global_position += to_target.limit_length(FOLLOW_SPEED * delta)

@@ -6,14 +6,18 @@ extends RefCounted
 ## 之後每一波開始時,FlowMain 呼叫 append_next(level),把下一波加到 level.waves 的最後,
 ## 所以 WaveSpawner 永遠有下一波可以放(它在一波清空時才看還有沒有下一波)。
 ## 同一個種子永遠產生同一串波次(測試用)。
+## v2.6(BV5):tier = 已打完的章數(GameState.chapters_cleared,至少 1);只用 tier 以內各章的敵人、
+## 頭目與背景(EndlessData.enemy_chapter 等)。
 
 var data: EndlessData
 var rng: RandomNumberGenerator
+var tier: int = 1
 
 
-func _init(endless: EndlessData, random: RandomNumberGenerator) -> void:
+func _init(endless: EndlessData, random: RandomNumberGenerator, chapters_cleared: int = 1) -> void:
 	data = endless
 	rng = random
+	tier = maxi(1, chapters_cleared)
 
 
 func make_level() -> LevelData:
@@ -22,8 +26,9 @@ func make_level() -> LevelData:
 	level.display_name = data.display_name
 	level.is_boss = false
 	level.companions = data.companions.duplicate()
-	if not data.backgrounds.is_empty():
-		level.background = data.backgrounds[rng.randi_range(0, data.backgrounds.size() - 1)]
+	var backgrounds := data.backgrounds_for(tier)
+	if not backgrounds.is_empty():
+		level.background = backgrounds[rng.randi_range(0, backgrounds.size() - 1)]
 	level.par_time = 0.0
 	level.damage_budget = 0
 	level.waves.append(make_wave(1))
@@ -44,11 +49,11 @@ func append_next(level: LevelData) -> void:
 func make_wave(wave: int) -> WaveData:
 	var result := WaveData.new()
 	var budget := data.budget_for(wave)
-	var boss := data.boss_for_wave(wave)
+	var boss := data.boss_for_wave(wave, tier)
 	if boss != &"":
 		result.spawns.append(_entry(boss, 1, 0.0, &"edges"))
 		var escort := 0.0
-		if boss == data.mini_boss_id or wave >= data.boss_escort_from:
+		if not data.is_main_boss_wave(wave) or wave >= data.boss_escort_from:
 			escort = budget * data.escort_ratio
 		_fill(result, wave, escort, 3.0)
 		return result
@@ -65,7 +70,7 @@ func _fill(wave_data: WaveData, wave: int, budget: float, start_delay: float) ->
 	var remaining := budget
 	# 這一波新解鎖的敵人一定出現。
 	for i in data.enemy_ids.size():
-		if i < data.enemy_unlock_wave.size() and data.enemy_unlock_wave[i] == wave:
+		if i < data.enemy_unlock_wave.size() and data.enemy_unlock_wave[i] == wave and _in_tier(i):
 			picks.append(data.enemy_ids[i])
 			remaining -= float(_cost(i))
 	var guard := 0
@@ -112,9 +117,13 @@ func _unlocked(wave: int) -> Array[int]:
 	var result: Array[int] = []
 	for i in data.enemy_ids.size():
 		var unlock := data.enemy_unlock_wave[i] if i < data.enemy_unlock_wave.size() else 1
-		if wave >= unlock:
+		if wave >= unlock and _in_tier(i):
 			result.append(i)
 	return result
+
+
+func _in_tier(index: int) -> bool:
+	return data.enemy_chapter_of(index) <= tier
 
 
 func _cost(index: int) -> int:

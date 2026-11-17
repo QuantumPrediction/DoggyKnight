@@ -7,17 +7,31 @@
 [ext_resource type="PackedScene" path="res://assets/backgrounds/farm_fence.tscn" id="5_bg"]
 [ext_resource type="PackedScene" path="res://assets/backgrounds/crow_forest.tscn" id="6_bg"]
 [ext_resource type="PackedScene" path="res://assets/backgrounds/bridge.tscn" id="7_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/castle_town.tscn" id="8_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/castle_courtyard.tscn" id="9_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/royal_library.tscn" id="10_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/castle_wall.tscn" id="11_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/magic_garden.tscn" id="12_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/green_chapel.tscn" id="13_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/misty_lake.tscn" id="14_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/fairy_forest.tscn" id="15_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/stone_circle.tscn" id="16_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/crystal_cave.tscn" id="17_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/morgana_tower.tscn" id="18_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/tower_top.tscn" id="19_bg"]
 
 [resource]
 script = ExtResource("1_endless")
 level_id = &"endless"
 display_name = "LEVEL_ENDLESS"
-backgrounds = Array[PackedScene]([ExtResource("2_bg"), ExtResource("3_bg"), ExtResource("4_bg"), ExtResource("5_bg"), ExtResource("6_bg"), ExtResource("7_bg")])
+backgrounds = Array[PackedScene]([ExtResource("2_bg"), ExtResource("3_bg"), ExtResource("4_bg"), ExtResource("5_bg"), ExtResource("6_bg"), ExtResource("7_bg"), ExtResource("8_bg"), ExtResource("9_bg"), ExtResource("10_bg"), ExtResource("11_bg"), ExtResource("12_bg"), ExtResource("13_bg"), ExtResource("14_bg"), ExtResource("15_bg"), ExtResource("16_bg"), ExtResource("17_bg"), ExtResource("18_bg"), ExtResource("19_bg")])
+background_chapter = Array[int]([1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3])
 companions = Array[StringName]([&"bulldog"])
-enemy_ids = Array[StringName]([&"scarecrow", &"crow", &"scarecrow_archer", &"scarecrow_elite", &"armored_husk"])
-enemy_costs = Array[int]([1, 1, 2, 3, 3])
-enemy_unlock_wave = Array[int]([1, 2, 3, 4, 6])
-enemy_weights = Array[float]([3.0, 2.0, 1.5, 1.0, 1.0])
+enemy_ids = Array[StringName]([&"scarecrow", &"crow", &"scarecrow_archer", &"scarecrow_elite", &"armored_husk", &"gargoyle", &"spellbook", &"foxfire", &"shadow_wolf"])
+enemy_costs = Array[int]([1, 1, 2, 3, 3, 2, 2, 1, 2])
+enemy_unlock_wave = Array[int]([1, 2, 3, 4, 6, 3, 5, 4, 7])
+enemy_weights = Array[float]([3.0, 2.0, 1.5, 1.0, 1.0, 1.2, 1.0, 1.5, 1.2])
+enemy_chapter = Array[int]([1, 1, 1, 1, 1, 2, 2, 3, 3])
 budget_base = 6.0
 budget_per_wave = 1.6
 max_enemies_per_wave = 24
@@ -29,6 +43,10 @@ surround_from_wave = 3
 boss_every = 5
 mini_boss_id = &"scarecrow_captain"
 boss_id = &"black_knight"
+extra_mini_bosses = Array[StringName]([&"gargoyle_elite", &"phantom_knight"])
+extra_mini_boss_chapter = Array[int]([2, 3])
+extra_bosses = Array[StringName]([&"green_knight", &"morgana"])
+extra_boss_chapter = Array[int]([2, 3])
 escort_ratio = 0.35
 boss_escort_from = 20
 event_every = 10

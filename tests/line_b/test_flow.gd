@@ -11,6 +11,8 @@ const RESULT_KEYS: Array[String] = [
 	"difficulty",
 	# DEV_PLAN 4.12(v2.4)
 	"mode", "snacks", "snacks_earned", "snack_bonus", "revive_cost", "can_revive", "event_tone",
+	# DEV_PLAN 4.13(v2.6)
+	"chapter", "chapter_name", "chapters_cleared", "chapter_count", "next_chapter_unlocked",
 ]
 
 

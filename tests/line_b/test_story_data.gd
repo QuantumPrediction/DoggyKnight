@@ -1,19 +1,47 @@
 extends "res://tests/line_b/flow_test_base.gd"
 ## BS1、BS7:data/story/*.tres 與 docs/STORY.md 第 5 節逐句一致;六關與第一章接上正確的段落。
+## v2.6(BV2):第 12 節的第二、三章段落也一樣逐句核對;十八關與三章都接上自己那一章的段落。
 ## STORY.md 改了之後,用 tests/line_b/tools/build_story.tscn 重新產生資料檔。
 
 const StoryDoc := preload("res://tests/line_b/story_doc.gd")
 const STORY_DIR: String = "res://data/story/"
-## docs/STORY.md 第 5 節的段落(依次序)。
-const SCRIPT_IDS: Array[String] = ["prologue", "l1_before", "l1_after", "l2_before", "l2_after", "camp1",
+## docs/STORY.md 第 5 節(第一章)的段落(依次序)。
+const CHAPTER_1_IDS: Array[String] = ["prologue", "l1_before", "l1_after", "l2_before", "l2_after", "camp1",
 		"l3_before", "l3_after", "l4_before", "l4_after", "camp2", "l5_before", "l5_after", "l6_before",
 		"l6_after", "teaser"]
 const SPEAKERS: Array[String] = ["goldie", "bulldog", "merlin", "black_knight", "morgana", "scarecrow_captain",
-		"crow", "narrator"]
-const LEVEL_FILES: Array[String] = [
-	"res://data/levels/level_1_1.tres", "res://data/levels/level_1_2.tres", "res://data/levels/level_1_3.tres",
-	"res://data/levels/level_1_4.tres", "res://data/levels/level_1_5.tres", "res://data/levels/level_1_6.tres",
-]
+		"crow", "narrator",
+		# v2.6(docs/STORY.md 第 10 節)
+		"lancelot", "gargoyle", "green_knight", "lady_lake", "morgana_true"]
+const CHAPTER_COUNT: int = 3
+
+
+## 第 n 章的段落 id(依 docs/STORY.md 的次序):第一章是第 5 節;第 N 章(N ≥ 2)是第 12 節的
+## cN_prologue、cNl1_before、cNl1_after、cNl2_before、cNl2_after、cN_camp1、……、cNl6_after、cN_teaser。
+static func chapter_script_ids(n: int) -> Array[String]:
+	if n == 1:
+		return CHAPTER_1_IDS.duplicate()
+	var ids: Array[String] = ["c%d_prologue" % n]
+	for m in range(1, 7):
+		ids.append("c%dl%d_before" % [n, m])
+		ids.append("c%dl%d_after" % [n, m])
+		if m == 2 or m == 4:
+			ids.append("c%d_camp%d" % [n, 1 if m == 2 else 2])
+	ids.append("c%d_teaser" % n)
+	return ids
+
+
+static func all_script_ids() -> Array[String]:
+	var ids: Array[String] = []
+	for n in range(1, CHAPTER_COUNT + 1):
+		ids.append_array(chapter_script_ids(n))
+	return ids
+
+
+## 第 n 章第 m 關開打前 / 過關後的段落 id。
+static func level_script_id(n: int, m: int, after: bool) -> String:
+	var part := "after" if after else "before"
+	return "l%d_%s" % [m, part] if n == 1 else "c%dl%d_%s" % [n, m, part]
 
 
 func _load_script(id: String) -> DialogueScript:
@@ -26,11 +54,17 @@ func _load_script(id: String) -> DialogueScript:
 func test_story_md_has_the_expected_scripts() -> void:
 	var doc := StoryDoc.parse()
 	var ids: Array = doc.keys()
-	assert_eq(ids, SCRIPT_IDS as Array, "STORY.md 第 5 節的段落與次序")
-	var total := 0
-	for id: String in doc:
-		total += (doc[id] as Array).size()
-	assert_true(total >= 60, "STORY.md 至少 60 句(實際 %d)" % total)
+	assert_eq(ids, all_script_ids() as Array, "STORY.md 第 5 節與第 12 節的段落與次序(三章)")
+	assert_eq(all_script_ids().size(), 16 * CHAPTER_COUNT, "每章 16 段")
+	var per_chapter: Array[int] = []
+	for n in range(1, CHAPTER_COUNT + 1):
+		var total := 0
+		for id in chapter_script_ids(n):
+			total += (doc.get(id, []) as Array).size()
+		per_chapter.append(total)
+	assert_true(per_chapter[0] >= 60, "第一章至少 60 句(實際 %d)" % per_chapter[0])
+	for n in range(2, CHAPTER_COUNT + 1):
+		assert_true(per_chapter[n - 1] >= 50, "第 %d 章至少 50 句(實際 %d)" % [n, per_chapter[n - 1]])
 
 
 func test_every_script_matches_story_md_line_by_line() -> void:
@@ -59,7 +93,7 @@ func test_every_script_matches_story_md_line_by_line() -> void:
 
 
 func test_lines_have_text_portraits_and_pictures() -> void:
-	for id in SCRIPT_IDS:
+	for id in all_script_ids():
 		var script := _load_script(id)
 		if script == null:
 			continue
@@ -77,26 +111,36 @@ func test_lines_have_text_portraits_and_pictures() -> void:
 
 
 func test_levels_and_chapter_use_the_right_scripts() -> void:
-	for i in LEVEL_FILES.size():
-		var level := load(LEVEL_FILES[i]) as LevelData
-		var n := i + 1
-		assert_not_null(level.story_before, "%s 有開打前的對白" % level.id)
-		assert_not_null(level.story_after, "%s 有過關後的對白" % level.id)
-		if level.story_before != null:
-			assert_eq(level.story_before.id, StringName("l%d_before" % n), "%s 的 story_before" % level.id)
-			assert_eq(level.story_before.resource_path, STORY_DIR + "l%d_before.tres" % n)
-		if level.story_after != null:
-			assert_eq(level.story_after.id, StringName("l%d_after" % n), "%s 的 story_after" % level.id)
-	var chapter := load(CHAPTER_1) as ChapterData
-	assert_not_null(chapter.prologue, "第一章有開場繪本")
-	assert_not_null(chapter.teaser, "第一章有第二章預告")
-	if chapter.prologue != null:
-		assert_eq(chapter.prologue.id, &"prologue")
-	if chapter.teaser != null:
-		assert_eq(chapter.teaser.id, &"teaser")
-	# D 線的營地讀這兩個檔案(DEV_PLAN 4.11)
-	assert_eq(_load_script("camp1").id, &"camp1")
-	assert_eq(_load_script("camp2").id, &"camp2")
+	for n in range(1, CHAPTER_COUNT + 1):
+		var chapter := load(CHAPTER_PATH % n) as ChapterData
+		assert_eq(chapter.level_count(), 6, "第 %d 章六關" % n)
+		for m in range(1, 7):
+			var level := chapter.get_level(m - 1)
+			var before := level_script_id(n, m, false)
+			var after := level_script_id(n, m, true)
+			assert_not_null(level.story_before, "%s 有開打前的對白" % level.id)
+			assert_not_null(level.story_after, "%s 有過關後的對白" % level.id)
+			if level.story_before != null:
+				assert_eq(level.story_before.id, StringName(before), "%s 的 story_before" % level.id)
+				assert_eq(level.story_before.resource_path, STORY_DIR + before + ".tres")
+			if level.story_after != null:
+				assert_eq(level.story_after.id, StringName(after), "%s 的 story_after" % level.id)
+				assert_eq(level.story_after.resource_path, STORY_DIR + after + ".tres")
+		var prologue := "prologue" if n == 1 else "c%d_prologue" % n
+		var teaser := "teaser" if n == 1 else "c%d_teaser" % n
+		assert_not_null(chapter.prologue, "第 %d 章有開場繪本" % n)
+		assert_not_null(chapter.teaser, "第 %d 章有預告" % n)
+		if chapter.prologue != null:
+			assert_eq(chapter.prologue.id, StringName(prologue))
+		if chapter.teaser != null:
+			assert_eq(chapter.teaser.id, StringName(teaser))
+		# D 線的營地讀這些檔案(DEV_PLAN 4.11、4.13)
+		for camp in [1, 2]:
+			var id := "camp%d" % camp if n == 1 else "c%d_camp%d" % [n, camp]
+			var script := _load_script(id)
+			assert_not_null(script, "%s.tres 存在" % id)
+			if script != null:
+				assert_eq(script.id, StringName(id))
 
 
 func test_real_dialogue_box_has_the_contract() -> void:

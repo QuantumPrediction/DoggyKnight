@@ -29,8 +29,11 @@ func setup(data: Dictionary) -> void:
 	result = data
 	Sfx.play(&"clear")      # 與 C 線的正式畫面相同:畫面出現時自己播音效
 	var final: bool = data.get("is_final", false)
-	StubUI.add_label(_column, "THE END" if final else "CLEAR!", StubUI.ACCENT, 16)
-	StubUI.add_label(_column, "Level %s%s" % [data.get("level_id", ""),
+	StubUI.add_label(_column, ("CHAPTER %d CLEAR!" % int(data.get("chapter", 1))) if final else "CLEAR!",
+			StubUI.ACCENT, 16)
+	if data.get("next_chapter_unlocked", false):
+		StubUI.add_label(_column, "Chapter %d unlocked!" % (int(data.get("chapter", 1)) + 1), StubUI.ACCENT)
+	StubUI.add_label(_column, "Chapter %d  Level %s%s" % [int(data.get("chapter", 1)), data.get("level_id", ""),
 			"  [HARD]" if data.get("difficulty", &"normal") == &"hard" else ""])
 	var stars := int(data.get("stars", 0))
 	StubUI.add_label(_column, "%s  (best %d)%s" % ["*".repeat(stars) + "-".repeat(3 - stars),

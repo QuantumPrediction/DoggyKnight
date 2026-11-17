@@ -66,6 +66,21 @@ extends Node
 ##   - 無盡試煉:標題的 endless_pressed(GameState.mode = &"endless",通關後才有)→ start_endless():
 ##     EndlessWaves 一波接一波產生,每 5 波頭目、每 10 波抉擇事件;倒下(沒有復活)就結束,
 ##     「再試一次」= 新的一輪無盡試煉。每清一波就更新 GameState.endless_best 並存檔。
+##
+## v2.6 三章(DEV_PLAN 4.13、第 19 節 BV3 至 BV6):
+##   - chapters[N - 1] = 第 N 章(data/levels/chapter_<N>.tres)。每章是獨立的一輪(等級 1、沒有把戲;
+##     營地訓練帶過去)。這一輪的章 = _run_chapter = GameState.chapter;chapter = 這一章的 ChapterData。
+##   - 新遊戲:標題在 new_game_pressed 之前設定 GameState.chapter;只能選 1 至 max_selectable_chapter()
+##     (= min(chapters_cleared + 1, 3)),超過就用最高可選的章。播這一章的開場繪本(cN_prologue)。
+##   - 打完第 N 章的最後一關:GameState.chapters_cleared = max(chapters_cleared, N),chapter_cleared = true,
+##     立即存檔;結局 → 結算 → 這一章的預告(cN_teaser)→ 回標題。回標題前 GameState.chapter 改成
+##     剛解鎖的下一章(標題預設選它)。
+##   - 存檔第 5 版記住這一輪的章(chapter)與 chapters_cleared;「繼續冒險」回到存檔的章與關,
+##     不理標題上選了哪一章。舊存檔:chapter_cleared → chapters_cleared = 1(SaveStore)。
+##   - 音樂:每關 LevelData.music;空白時用這一章的 field_music / boss_music;中頭目那一波播
+##     boss_music。音樂檔不存在時退回 field / boss(_track_or)。
+##   - 結算資料多了 chapter、chapter_name、chapters_cleared、chapter_count、next_chapter_unlocked。
+##   - 無盡試煉:EndlessWaves 用 tier = chapters_cleared(打完第二、三章才加入那一章的敵人與背景)。
 
 signal state_changed(new_state: State)
 
@@ -78,14 +93,23 @@ const HARD: StringName = &"hard"
 const STORY_MUSIC: StringName = &"story"
 
 const DEFAULT_CHAPTER: String = "res://data/levels/chapter_1.tres"
+## v2.6:第 N 章的資料檔。
+const CHAPTER_PATH: String = "res://data/levels/chapter_%d.tres"
+const CHAPTER_COUNT: int = 3
+const FIELD_MUSIC: StringName = &"field"
+const BOSS_MUSIC: StringName = &"boss"
+const MUSIC_DIR: String = "res://assets/music/"
 const DEFAULT_DIFFICULTY: String = "res://game/progression/difficulty.tres"
 const DEFAULT_ECONOMY: String = "res://data/progression/economy.tres"
 const DEFAULT_ENDLESS: String = "res://data/levels/endless.tres"
 const STORY_MODE: StringName = &"story"
 const ENDLESS_MODE: StringName = &"endless"
 
-## 這一章的關卡;留空就用第一章。
+## 目前這一輪的章(執行時依 GameState.chapter 換成 chapters 裡的那一章)。
+## 在加進場景樹之前設定的話,當作第一章的替代(舊的測試用法)。
 @export var chapter: ChapterData
+## v2.6:三章,chapters[0] = 第一章;留空就載入 data/levels/chapter_1.tres 至 chapter_3.tres。
+@export var chapters: Array[ChapterData] = []
 ## 難度參數;留空就用 game/progression/difficulty.tres。
 @export var difficulty: DifficultyData
 ## v2.4 零食經濟;留空就用 data/progression/economy.tres。
@@ -132,6 +156,8 @@ var _session_waiting: bool = false
 var _pause_when_ready: bool = false
 ## 這一輪冒險的難度(存檔;「繼續冒險」時寫回 GameState.difficulty)。
 var _run_difficulty: StringName = NORMAL
+## v2.6:這一輪冒險的章(1 至 3;存檔;「繼續冒險」時寫回 GameState.chapter)。
+var _run_chapter: int = 1
 ## 這一關開打前要先播 story_before(新的一關、繼續冒險;重試時為 false)。
 var _story_before_pending: bool = false
 ## 轉場露出後要播的整頁故事(開場繪本、預告),與播完之後要做的事。
@@ -172,8 +198,7 @@ var _training: Node
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	if chapter == null:
-		chapter = load(DEFAULT_CHAPTER) as ChapterData
+	_init_chapters()
 	if difficulty == null:
 		difficulty = load(DEFAULT_DIFFICULTY) as DifficultyData
 	if economy == null:
@@ -373,6 +398,32 @@ func get_run_difficulty() -> StringName:
 	return _run_difficulty
 
 
+## v2.6:這一輪冒險的章(1 至 3;「繼續冒險」會回到這一章)。
+func get_run_chapter() -> int:
+	return _run_chapter
+
+
+## v2.6:有幾章的資料(正式遊戲是 3)。
+func chapter_count() -> int:
+	var count := 0
+	for data in chapters:
+		if data == null:
+			break
+		count += 1
+	return maxi(1, count)
+
+
+## v2.6:第 number 章的資料(1 起算;沒有那一章時傳回第一章)。
+func get_chapter_data(number: int) -> ChapterData:
+	var index := clampi(number, 1, chapter_count()) - 1
+	return chapters[index] if index < chapters.size() and chapters[index] != null else chapter
+
+
+## v2.6:標題可以選的最高章 = min(chapters_cleared + 1, 章數)(DEV_PLAN 4.13)。
+func max_selectable_chapter() -> int:
+	return clampi(GameState.chapters_cleared + 1, 1, chapter_count())
+
+
 ## v2.4:抉擇事件開著(遊戲暫停中,等 event_chosen)。試玩機器人與測試可以用
 ## EventBus.event_chosen.emit(get_open_event_id(), 0) 或 choose_event(0) 選第一項。
 func is_event_open() -> bool:
@@ -427,6 +478,8 @@ func save_now() -> bool:
 		# 無盡試煉進行中:存檔先記下這一輪清了幾波(App 被關掉也不遺失);GameState.endless_best
 		# 等倒下(或離開)才更新,HUD 才能比較「新紀錄!」。
 		"endless_best": maxi(GameState.endless_best, _endless_run_waves()),
+		"chapter": _run_chapter,
+		"chapters_cleared": GameState.chapters_cleared,
 	})
 
 
@@ -435,7 +488,10 @@ func _load_save() -> void:
 	if data.is_empty():
 		_reached_level = 0
 		_camp_pending = false
+		_use_chapter(mini(GameState.chapter, max_selectable_chapter()))
 		return
+	GameState.chapters_cleared = data["chapters_cleared"]
+	_use_chapter(mini(int(data["chapter"]), max_selectable_chapter()))
 	_reached_level = clampi(data["level_index"], 0, maxi(0, chapter.level_count() - 1))
 	_camp_pending = data["camp_pending"] and _reached_level > 0 and chapter.has_camp_after(_reached_level - 1)
 	GameState.snacks = data["snacks"]
@@ -479,9 +535,11 @@ func show_title() -> void:
 
 ## 新遊戲:重設這一輪(數值、把戲、等級、活力、下一關加成),播開場繪本,從第 1 關開始。
 ## 難度用標題畫面設定的 GameState.difficulty(還沒打完第一章時一律 normal)。
+## v2.6:章用標題畫面設定的 GameState.chapter(只能選已解鎖的章,否則用最高可選的章)。
 ## 舊的進度立即作廢(開場繪本播到一半 App 被關掉,也不會「繼續」舊的那一輪)。
 func start_new_game() -> void:
 	_end_endless_mode()
+	_use_chapter(mini(GameState.chapter, max_selectable_chapter()))
 	GameState.reset_run()
 	progression.reset_run()
 	_prepare_run()
@@ -502,6 +560,7 @@ func start_new_game() -> void:
 func continue_game() -> void:
 	var index := _reached_level
 	_end_endless_mode()
+	_use_chapter(_run_chapter)                  # 存檔那一輪的章(不理標題上選了哪一章)
 	GameState.reset_run()
 	progression.reset_run()
 	_prepare_run()
@@ -618,7 +677,7 @@ func _begin_level() -> void:
 
 
 func _on_boss_wave_started(_index: int) -> void:
-	_music(&"play", [&"boss"])
+	_music(&"play", [_chapter_boss_track()])
 
 
 func _on_intro_finished() -> void:
@@ -632,7 +691,8 @@ func _on_level_cleared() -> void:
 	_reached_level = 0 if chapter.is_last(_level_index) else _level_index + 1
 	_camp_pending = chapter.has_camp_after(_level_index) and _reached_level > 0
 	if chapter.is_last(_level_index):
-		GameState.chapter_cleared = true    # 打完第一章:解鎖困難模式(立即存檔)
+		GameState.chapter_cleared = true    # 打完一章(第一章:解鎖困難模式與無盡試煉;立即存檔)
+		GameState.chapters_cleared = maxi(GameState.chapters_cleared, _run_chapter)   # 解鎖下一章
 	_clear_record = _record_stars(level)
 	var bonus := economy.clear_reward(_clear_record["stars"], _run_difficulty == HARD)
 	_clear_record["snack_bonus"] = bonus
@@ -746,6 +806,11 @@ func _build_result(victory: bool) -> Dictionary:
 		"revive_cost": economy.revive_cost(_level_index),
 		"can_revive": not victory and _can_revive(economy.revive_cost(_level_index)),
 		"event_tone": String(level_events.last_choice.get("tone", "")),
+		"chapter": _run_chapter,
+		"chapter_name": chapter.display_name,
+		"chapters_cleared": GameState.chapters_cleared,
+		"chapter_count": chapter_count(),
+		"next_chapter_unlocked": victory and chapter.is_last(_level_index) and _run_chapter < chapter_count(),
 	}
 
 
@@ -782,6 +847,11 @@ func _build_endless_result() -> Dictionary:
 		"endless_wave": cleared,
 		"endless_best": GameState.endless_best,
 		"endless_new_best": cleared > _endless_best_before,
+		"chapter": 0,
+		"chapter_name": "",
+		"chapters_cleared": GameState.chapters_cleared,
+		"chapter_count": chapter_count(),
+		"next_chapter_unlocked": false,
 	}
 
 
@@ -808,14 +878,41 @@ func _enter_camp() -> void:
 	_camp_holder.add_child(_camp)
 
 
-## 結算(第一章完)之後:第二章預告 → 回標題。chapter_cleared 已在打敗黑騎士時設定;這裡再存一次。
+## 結算(一章完)之後:這一章的預告 → 回標題。chapter_cleared、chapters_cleared 已在打敗頭目時設定;
+## 這裡再存一次。v2.6:標題預設選剛解鎖的下一章(第三章打完就留在第三章)。
 func _finish_chapter() -> void:
 	GameState.chapter_cleared = true
+	GameState.chapters_cleared = maxi(GameState.chapters_cleared, _run_chapter)
+	var teaser := chapter.teaser
+	_use_chapter(mini(_run_chapter + 1, max_selectable_chapter()))
 	save_now()
-	if can_play_story(chapter.teaser):
-		_show_page_story(chapter.teaser, _go.bind(show_title))
+	if can_play_story(teaser):
+		_show_page_story(teaser, _go.bind(show_title))
 	else:
 		show_title()
+
+
+# --- 章(v2.6) ---
+
+## chapters 留空時載入 data/levels/chapter_1.tres 至 chapter_3.tres;在加進場景樹之前放了 chapter 的話,
+## 用它當第一章(測試)。
+func _init_chapters() -> void:
+	if chapters.is_empty():
+		for number in range(1, CHAPTER_COUNT + 1):
+			var path := CHAPTER_PATH % number
+			chapters.append(load(path) as ChapterData if ResourceLoader.exists(path) else null)
+		if chapter != null:
+			chapters[0] = chapter
+	if chapters[0] == null:
+		chapters[0] = chapter if chapter != null else load(DEFAULT_CHAPTER) as ChapterData
+	chapter = chapters[0]
+
+
+## 這一輪用第 number 章(1 至 chapter_count())。
+func _use_chapter(number: int) -> void:
+	_run_chapter = clampi(number, 1, chapter_count())
+	GameState.chapter = _run_chapter
+	chapter = get_chapter_data(_run_chapter)
 
 
 ## 移除目前的關卡、營地、畫面,取消暫停。
@@ -1008,9 +1105,41 @@ func _freeze_world(frozen: bool) -> void:
 	_world.set_deferred(&"process_mode", Node.PROCESS_MODE_DISABLED if frozen else Node.PROCESS_MODE_PAUSABLE)
 
 
-## 這一關的曲子:頭目關 boss,其他 field。
+## 這一關的曲子(v2.6 BV4):LevelData.music;空白時這一章的 field_music / boss_music;
+## 音樂檔不存在時退回 field / boss。無盡試煉一律 field。
 func _level_track(level: LevelData) -> StringName:
-	return &"boss" if level != null and level.is_boss else &"field"
+	var boss := level != null and level.is_boss
+	var fallback := BOSS_MUSIC if boss else FIELD_MUSIC
+	if is_endless() or level == null:
+		return fallback
+	var wanted := level.music
+	if wanted == &"":
+		wanted = chapter.boss_music if boss else chapter.field_music
+	return _track_or(wanted, fallback)
+
+
+## 這一章的頭目曲(中頭目那一波);不存在時 boss。
+func _chapter_boss_track() -> StringName:
+	if is_endless():
+		return BOSS_MUSIC
+	return _track_or(chapter.boss_music, BOSS_MUSIC)
+
+
+## wanted 這首曲子存在就用它,否則用 fallback。
+func _track_or(wanted: StringName, fallback: StringName) -> StringName:
+	if wanted == &"" or wanted == fallback:
+		return fallback
+	return wanted if has_music_track(wanted) else fallback
+
+
+## 曲子存在嗎:音樂播放器有 has_track() 就問它(測試的假播放器),否則找 assets/music/<id>.ogg / .wav。
+func has_music_track(track: StringName) -> bool:
+	if music != null and is_instance_valid(music) and music.has_method(&"has_track"):
+		return bool(music.call(&"has_track", track))
+	for ext: String in ["ogg", "wav"]:
+		if ResourceLoader.exists("%s%s.%s" % [MUSIC_DIR, track, ext]):
+			return true
+	return false
 
 
 # --- 教學提示(BP4) ---
@@ -1114,7 +1243,7 @@ func _on_failure_revive() -> void:
 	progression.resume_level()
 	rewards.resume_level()
 	_set_state(State.LEVEL)
-	_music(&"play", [&"boss" if _endless_boss_music else _level_track(_current_level())])
+	_music(&"play", [BOSS_MUSIC if _endless_boss_music else _level_track(_current_level())])
 	save_now()
 
 
@@ -1153,7 +1282,7 @@ func start_endless() -> void:
 	GameState.mode = ENDLESS_MODE
 	GameState.difficulty = NORMAL
 	_prepare_run()
-	_endless_waves = EndlessWaves.new(endless_data, _spawn_rng)
+	_endless_waves = EndlessWaves.new(endless_data, _spawn_rng, GameState.chapters_cleared)
 	var level := _endless_waves.make_level()
 	_endless_waves.ensure_waves(level, 2)
 	_endless_best_before = GameState.endless_best
