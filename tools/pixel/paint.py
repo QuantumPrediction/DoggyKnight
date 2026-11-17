@@ -181,7 +181,9 @@ DARKER = {
     "leaf_d": "forest", "forest": "forest_d", "forest_d": "night_d", "sky_l": "sky", "sky": "water",
     "water": "water_d", "water_d": "night", "night": "night_d", "night_d": "ink", "lilac": "violet",
     "violet": "plum", "plum": "ink", "peach": "dirt", "dirt": "gold_d", "dusk": "plum", "moss": "moss_d",
-    "moss_d": "forest",
+    "moss_d": "forest", "coral": "red", "wine": "plum", "fog": "ash", "ash": "slate", "slate": "ink",
+    "spring": "leaf", "grass": "leaf_d", "teal": "forest_d", "deep": "night_d", "azure": "sky", "haze": "sky_l",
+    "amber": "orange", "umber": "ink", "navy": "ink", "sand": "dirt",
 }
 LIGHTER = {
     "ink": "iron", "iron": "steel_d", "steel_d": "steel", "steel": "steel_l", "steel_l": "white",
@@ -190,7 +192,9 @@ LIGHTER = {
     "forest_d": "forest", "forest": "leaf_d", "leaf_d": "leaf", "leaf": "leaf_l", "night_d": "night",
     "night": "water_d", "water_d": "water", "water": "sky", "sky": "sky_l", "stone_d": "stone",
     "stone": "stone_l", "stone_l": "white", "dusk": "rose", "rose": "pink", "dirt": "peach", "moss_d": "moss",
-    "moss": "leaf_l",
+    "moss": "leaf_l", "wine": "red_d", "coral": "pink", "fog": "white", "ash": "fog", "slate": "ash",
+    "grass": "leaf", "spring": "leaf_l", "teal": "grass", "deep": "teal", "azure": "sky_l", "haze": "white",
+    "amber": "yellow", "umber": "brown_d", "navy": "night_d", "sand": "cream",
 }
 
 
@@ -290,7 +294,7 @@ def P_ALPHA(name: str, a: int) -> tuple[int, int, int, int]:
     return (r, g, b, a)
 
 
-def rim_light(c: Canvas, side: tuple[int, int] = (1, 0), skip: tuple[str, ...] = ("ink",)) -> Canvas:
+def rim_light(c: Canvas, side: tuple[int, int] = (1, 0), skip: tuple[str, ...] = ("ink", "navy")) -> Canvas:
     """v2.3 (CS5) rim light: silhouette pixels whose outer neighbour (past the ink outline) on `side`
     is empty get one palette step lighter - a thin backlight edge that lifts dark figures off dark ground."""
     out = c.copy()
@@ -300,6 +304,6 @@ def rim_light(c: Canvas, side: tuple[int, int] = (1, 0), skip: tuple[str, ...] =
             n = name_at(c, x, y)
             if n is None or n in skip:
                 continue
-            if name_at(c, x + dx, y + dy) == "ink" and c.get(x + 2 * dx, y + 2 * dy) is None:
+            if name_at(c, x + dx, y + dy) in ("ink", "navy") and c.get(x + 2 * dx, y + 2 * dy) is None:
                 out.set(x, y, LIGHTER.get(n, n))
     return out

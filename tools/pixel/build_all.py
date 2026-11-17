@@ -10,7 +10,7 @@ Then let Godot pick up new or changed files:
     godot --headless --path . --import
 
 What it writes (paths are the contracts of DEV_PLAN 4.6 / 4.9 — never rename them):
-  assets/palette.png                              the 40-colour palette
+  assets/palette.png                              the 55-colour palette
   assets/sprites/<code>/<code>.png + _frames.tres  goldie, bulldog, scarecrow, crow, black_knight,
                                                   scarecrow_archer, armored_husk, scarecrow_captain, merlin (v2.3)
   assets/fx/{arrow,sword_wave,pitchfork}/*        v2.3 projectiles
@@ -47,27 +47,35 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import art_brand  # noqa: E402
 import art_cast  # noqa: E402
-import art_enemies  # noqa: E402
 import art_fx  # noqa: E402
-import art_heroes  # noqa: E402
 import art_particles  # noqa: E402
 import art_portraits  # noqa: E402
 import art_story  # noqa: E402
 import art_ui  # noqa: E402
 import art_v24  # noqa: E402
 import art_world  # noqa: E402
+import art_v25_bulldog  # noqa: E402
+import art_v25_foes  # noqa: E402
+import art_v25_goldie  # noqa: E402
+import art_v25_knights  # noqa: E402
 import music_gen  # noqa: E402
 import paint  # noqa: E402
 import sfx_gen  # noqa: E402
 from palette import PALETTE, rgba  # noqa: E402
 from pixel import Canvas, build_sheet, contact_sheet, res_path, write_text  # noqa: E402
 
+# v2.5 (CR1): the full redraw at higher resolution (tools/pixel/rig.py + art_v25_*.py). The v2.2-v2.4
+# generators (art_heroes, art_enemies, art_cast) stay as the source of animation names and timings.
 CHARACTERS = {
-    "goldie": (art_heroes.goldie_v2, (24, 24)),
-    "bulldog": (art_heroes.bulldog_v2, (24, 24)),
-    "scarecrow": (art_enemies.scarecrow_v2, (24, 24)),
-    "crow": (art_enemies.crow_v2, (16, 16)),
-    "black_knight": (art_enemies.black_knight_v2, (48, 48)),
+    "goldie": (art_v25_goldie.goldie_v25, (32, 32)),
+    "bulldog": (art_v25_bulldog.bulldog_v25, (32, 32)),
+    "scarecrow": (art_v25_foes.scarecrow_v25, (32, 32)),
+    "crow": (art_v25_foes.crow_v25, (24, 24)),
+    "black_knight": (art_v25_knights.black_knight_v25, (64, 64)),
+    "scarecrow_archer": (art_v25_foes.archer_v25, (32, 32)),
+    "armored_husk": (art_v25_knights.husk_v25, (32, 32)),
+    "scarecrow_captain": (art_v25_foes.captain_v25, (48, 48)),
+    "merlin": (art_v25_knights.merlin_v25, (32, 32)),
 }
 
 
@@ -128,10 +136,6 @@ def main() -> None:
     write_palette()
     sheets = {}
     for code, (fn, size) in CHARACTERS.items():
-        anims = with_rim(code, fn())
-        build_sheet("res://assets/sprites/%s" % code, code, anims, size)
-        sheets[code] = anims
-    for code, (fn, size) in art_cast.SPRITES.items():          # v2.3 cast (CS4)
         anims = with_rim(code, fn())
         build_sheet("res://assets/sprites/%s" % code, code, anims, size)
         sheets[code] = anims

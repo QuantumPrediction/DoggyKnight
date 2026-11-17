@@ -1,8 +1,10 @@
-"""The single 40-colour palette of 金毛騎士 (DEV_PLAN 第 10 節「美術方向」).
+"""The single 55-colour palette of 金毛騎士 (DEV_PLAN 第 10 節「美術方向」).
 
 v1 had 32 colours; v2.2 (M3 polish) added 8 mood colours (peach, rose, dusk, night,
 night_d, moss, moss_d, dirt) for the late-afternoon farm, the dusk forest and the
-stormy night bridge. Every sprite, tile, icon and UI texture uses only these colours (FX may use them
+stormy night bridge. v2.5 (full art redraw) added 15 colours: darker/lighter ends for the hue-shifted ramps (wine, coral,
+fog, ash, umber, navy), coloured outline darks, calmer arena greens (spring, grass, teal, deep), sky haze
+(azure, haze), warm light (amber), stone (slate) and path sand. Every sprite, tile, icon and UI texture uses only these colours (FX may use them
 with transparency). tests/line_c/test_line_c_art.gd checks this.
 Order matters: it is the order of the swatches in assets/palette.png and of the
 constants in ui/theme/palette_colors.gd.
@@ -59,6 +61,22 @@ PALETTE: list[tuple[str, str]] = [
     ("moss", "a8b850"),
     ("moss_d", "6d8a3c"),
     ("dirt", "c9a06e"),
+    # v2.5 (CR1-CR3) full redraw: hue-shifted ramp extensions, coloured outlines, calmer grass, haze
+    ("wine", "6e2248"),
+    ("coral", "ff7b6b"),
+    ("fog", "cdc6d9"),
+    ("ash", "958ca8"),
+    ("spring", "a6d85c"),
+    ("grass", "62ad4e"),
+    ("teal", "2f7a68"),
+    ("deep", "173a3a"),
+    ("azure", "a2e0f5"),
+    ("haze", "e6f4e4"),
+    ("amber", "ffb347"),
+    ("slate", "524a5e"),
+    ("umber", "3e2421"),
+    ("navy", "1c1d3a"),
+    ("sand", "e8d3a2"),
 ]
 
 COLORS: dict[str, str] = dict(PALETTE)
