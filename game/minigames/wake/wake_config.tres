@@ -1,0 +1,51 @@
+[gd_resource type="Resource" script_class="WakeMinigameConfig" format=3]
+
+[ext_resource type="Script" path="res://game/minigames/wake/wake_minigame_config.gd" id="1_config"]
+[ext_resource type="Resource" path="res://game/minigames/wake/wake_grading.tres" id="2_grading"]
+[ext_resource type="PackedScene" path="res://assets/fx/particles/star_burst.tscn" id="3_star"]
+[ext_resource type="PackedScene" path="res://assets/fx/particles/sparkle.tscn" id="4_sparkle"]
+
+[resource]
+script = ExtResource("1_config")
+minigame_id = &"wake"
+grading = ExtResource("2_grading")
+duration_sec = 15.0
+countdown_sec = 3.0
+results_delay_sec = 1.2
+results_min_sec = 1.4
+results_auto_close_sec = 0.0
+resume_on_foreground = false
+time_warning_sec = 3.0
+results_star_interval_sec = 0.35
+star_fx = ExtResource("3_star")
+lane_count = 3
+bpm_start = 88.0
+bpm_end = 116.0
+first_beat_sec = 1.6
+last_note_margin_sec = 0.5
+rest_chance = 0.22
+same_lane_chance = 0.15
+offbeat_from_ratio = 0.55
+offbeat_chance = 0.18
+approach_beats = 2.0
+rng_seed = 0
+perfect_window_sec = 0.07
+good_window_sec = 0.15
+early_miss_window_sec = 0.3
+perfect_points = 10
+good_points = 6
+combo_step = 5
+combo_bonus = 5
+wake_sec = 0.6
+beat_sfx = &"countdown"
+beat_volume_db = -14.0
+perfect_sfx = &"perfect"
+good_sfx = &"pet"
+cheer_sfx = &"bark"
+wake_fx = ExtResource("4_sparkle")
+hint_play_sec = 2.0
+ring_start_radius = 36.0
+ring_end_radius = 20.0
+knight_scale = 2.0
+pad_bottom_margin = 28.0
+pad_height = 30.0

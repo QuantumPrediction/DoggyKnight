@@ -10,6 +10,7 @@
 [ext_resource type="SpriteFrames" path="res://assets/sprites/merlin/merlin_frames.tres" id="8_merlin"]
 [ext_resource type="PackedScene" path="res://assets/fx/particles/sparkle.tscn" id="9_sparkle"]
 [ext_resource type="PackedScene" path="res://game/camp/training.tscn" id="10_training"]
+[ext_resource type="PackedScene" path="res://game/minigames/wake/wake_minigame.tscn" id="11_wake"]
 
 [resource]
 script = ExtResource("1_config")
@@ -61,6 +62,9 @@ camp_numbers = Dictionary[int, int]({
 })
 chapter_story_path_format = "res://data/story/c%d_camp%d.tres"
 bulldog_from_chapter = 2
+minigame_rotation_from_chapter = 2
+minigame_rotation = Array[PackedScene]([ExtResource("2_minigame"), ExtResource("11_wake")])
+minigame_rotation_keys = PackedStringArray("UI_CAMP_MINIGAME", "UI_CAMP_MINIGAME_WAKE")
 lancelot_from_chapter = 2
 lancelot_idle_animation = &"idle"
 lancelot_tap_animation = &"attack"
