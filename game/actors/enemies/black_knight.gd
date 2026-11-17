@@ -19,6 +19,9 @@ extends BossBase
 ## - 第二階段:重劈之後放出劍氣——先畫直線預警,再沿線射出弧形的劍氣(EnemyProjectile,
 ##   data/enemies/projectiles/sword_wave.tres;穿透、鬥牛犬的盾擋得住)。
 ## - 第二階段的召喚改為 2 隻空盔甲兵(armored_husk)。
+##
+## v2.6(AV5):中頭目幻影黑騎士(phantom_knight.tscn,3-4)用同一個腳本:action_speed_scale(動作速度 ×1.3)、
+## tell_scale(預警 ×0.8)、phantom(半透明紫色、輕輕閃爍、倒下時散成紫色霧,沒有盔甲碎片)。
 
 enum Phase { INTRO, IDLE, CHASE, CHARGE_TELL, CHARGE, CHARGE_RECOVER, SLAM_TELL, SLAM_RECOVER,
 		SUMMON_TELL, SUMMON_RECOVER, ROAR, WAVE_TELL, WAVE_RECOVER }
@@ -59,6 +62,10 @@ const MAGIC_LIGHT := Color(0.8, 0.55, 1.0)
 @export var wave_telegraph: float = 0.7          ## 劍氣的直線預警(× 第二階段與難度倍數)
 @export var wave_pause: float = 0.3              ## 重劈打下去到劍氣預警出現的秒數
 @export var wave_recover: float = 0.45
+@export_group("幻影(v2.6 AV5)")
+@export var tell_scale: float = 1.0              ## 所有預警再 × 這個(幻影黑騎士 0.8)
+@export var action_speed_scale: float = 1.0      ## 走路、衝鋒速度再 × 這個(幻影黑騎士 1.3)
+@export var phantom: bool = false                ## 半透明閃爍;倒下時散成紫色霧(沒有盔甲碎片)
 @export_group("召喚")
 @export var summon_enemy: StringName = &"scarecrow"
 @export var summon_enemy_phase2: StringName = &"armored_husk"   ## 第二階段召喚空盔甲兵(AS4)
@@ -158,6 +165,14 @@ func _on_activated() -> void:
 
 func _is_enraging() -> bool:
 	return phase == Phase.ROAR
+
+
+func _tell_time(base: float) -> float:
+	return super(base) * tell_scale
+
+
+func _speed_mult() -> float:
+	return super() * action_speed_scale
 
 
 func _ai(delta: float) -> void:
@@ -481,6 +496,9 @@ func _enter_phase_two() -> void:
 
 
 func _tick_boss(_delta: float) -> bool:
+	if phantom and sprite != null and state == State.ACTIVE:
+		# 幻影:輕輕地閃爍。
+		sprite.modulate = Color(tint, tint.a * (0.85 + 0.15 * sin(_age * 4.0)))
 	if boss_phase >= 2:
 		# 第二階段:盔甲一直發著脈動的紅光。
 		var pulse := 0.5 + 0.5 * sin(_age * 6.0)
@@ -505,11 +523,14 @@ func _cancel_attack() -> void:
 			sprite.play()
 
 
-## 盔甲爆開(真正倒下的一刻):散落的盔甲、白光、震波。
+## 盔甲爆開(真正倒下的一刻):散落的盔甲、白光、震波。幻影黑騎士:散成紫色霧。
 func _on_died() -> void:
 	if sprite != null:
 		sprite.visible = false
 	queue_redraw()
+	if phantom:
+		_vanish_into_mist()
+		return
 	var remains := REMAINS_SCRIPT.new() as Node2D
 	remains.set(&"flip", facing.x < 0.0)
 	remains.set(&"sprite_frames", sprite.sprite_frames if sprite != null else null)
@@ -525,6 +546,20 @@ func _on_died() -> void:
 	CombatFx.particles(self, &"shockwave", global_position, true, true)
 	CombatFx.sfx(&"whoosh", &"swing")
 	# 保險:召喚的小怪一定一起倒下(倒下演出開始時已經處理,這裡處理演出被略過的情況)。
+	_drop_summons()
+
+
+const MIST_COLORS: Array[Color] = [Color(0.72, 0.5, 1.0, 0.9), Color(0.9, 0.8, 1.0, 0.8), Color(0.45, 0.3, 0.75, 0.9)]
+
+
+func _vanish_into_mist() -> void:
+	BitsScatter.burst(self, global_position + Vector2(0, -_frame_size.y * 0.2), BitsScatter.Kind.MIST, MIST_COLORS, 16)
+	var feel := CombatFx.feel()
+	CombatFx.trauma(self, feel.trauma_boss_defeat * 0.5)
+	CombatFx.ring(self, global_position, 6.0, 52.0, 0.5, Color(MAGIC_LIGHT, 0.9), 2.0)
+	CombatFx.ring(self, global_position, 4.0, 70.0, 0.6, Color(1, 1, 1, 0.5), 1.0)
+	CombatFx.particles(self, &"sparkle", global_position + Vector2(0, -_frame_size.y * 0.2), false, true)
+	CombatFx.sfx(&"magic", &"whoosh")
 	_drop_summons()
 
 
