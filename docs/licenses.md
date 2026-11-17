@@ -97,3 +97,10 @@ D 線 M3(2026-11-16):營地新增的金毛像素圖(`game/camp/art/`,由 `game/c
 | 新角色與投射物(稻草人弓兵、空盔甲兵、稻草人隊長、梅林;箭、劍氣、乾草叉)、對白框與繪本框、困難標記 | `assets/sprites/`、`assets/fx/`、`assets/ui/` | 本專案以 `tools/pixel/art_cast.py`、`art_ui.py` 程式繪製 | 本專案原創 | 是 | 否 | C 線,2026-11-16 |
 | 光暈精靈、前景剪影、暗角、雨幕、角色投影、閃電 | `assets/fx/lights/`、`assets/backgrounds/` | 本專案以 `tools/pixel/art_light.py` 程式繪製;投影與閃電由 `assets/backgrounds/*.gd` 即時繪製 | 本專案原創 | 是 | 否 | C 線,2026-11-16 |
 | 6 個新音效(talk、page_turn、arrow_shot、husk_clank、captain_shout、magic)與故事音樂 `story`(旋律原創) | `assets/sfx/`、`assets/music/` | 本專案以 `tools/pixel/sfx_gen.py`、`music_gen.py` 程式合成 | 本專案原創 | 是 | 否 | C 線,2026-11-16 |
+
+## v2.4(玩法深度,C 線新增)
+
+| 素材 | 用在哪裡 | 來源網址 | 授權 | 是否允許商用 | 需要在遊戲內列出 | 核對人與日期 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 10 個新把戲圖示(撲擊、打滾、挖寶、嗅嗅、裝死、暴衝;四個金框進化把戲)、寶箱、零食、進化卡片、梅林與摩根娜的事件卡片、金色緞帶、紫色按鈕、HUD 零食/波數/獎盃小圖示。只參考同類遊戲的玩法機制,名稱與美術全部原創 | `assets/icons/tricks/`、`assets/sprites/chest/`、`assets/fx/snack/`、`assets/ui/` | 本專案以 `tools/pixel/art_v24.py` 程式繪製 | 本專案原創 | 是 | 否 | C 線,2026-11-17 |
+| 5 個新音效(chest_open、evolve、snack、revive、event) | `assets/sfx/` | 本專案以 `tools/pixel/sfx_gen.py` 程式合成 | 本專案原創 | 是 | 否 | C 線,2026-11-17 |

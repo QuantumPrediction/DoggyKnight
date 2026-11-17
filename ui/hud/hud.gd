@@ -9,6 +9,9 @@ extends Control
 ## - 畫面中段:關卡標題卡(level_started)、過關慶祝橫幅與彩紙(level_completed)、
 ##   必殺技切入畫面(ultimate_used)、「等級 N!」彈出文字(leveled_up)
 ## - 戰鬥區右下角:必殺技按鈕(忠誠度滿時出現,按下發 ultimate_requested)
+## v2.4(CV2、CV5):底板最下一行是零食數(snacks_changed,增加時彈一下);無盡試煉
+##   (GameState.mode == &"endless")時同一行右邊顯示目前波數與最佳紀錄,波次橫幅改成「第 N 波」,
+##   超過最佳紀錄時出「新紀錄!」;把戲進化演出(trick_evolved,ui/hud/evolution_show.gd)。
 ## 只有暫停與必殺技兩個按鈕會攔觸控(群組 ui_touch_blocker);其他元件都是 MOUSE_FILTER_IGNORE,
 ## A 線的搖桿照常運作。位置依 SafeArea 安全區排列。可調數值在 ui/hud/hud_config.tres。
 
@@ -24,6 +27,8 @@ const BOSS_BANNER_HOLD: float = 2.2
 const ULTIMATE_INSET: Vector2 = Vector2(6, 6)
 const ULTIMATE_BOTTOM_CLEARANCE: float = 14.0
 const BOSS_LEVEL_SUFFIX: String = "1-6"
+## 底板第四行(零食、無盡波數)的高度;下面的頭目血條、連擊、橫幅都往下移這麼多。
+const INFO_ROW_H: float = 12.0
 
 var level_badge: TextureRect
 var level_label: Label
@@ -42,6 +47,13 @@ var cut_in: CutIn
 var level_pop: Label
 var celebration: PanelContainer
 var celebration_label: Label
+var snack_icon: TextureRect
+var snack_label: Label
+var wave_icon: TextureRect
+var wave_label: Label
+var best_icon: TextureRect
+var best_label: Label
+var evolution: EvolutionShow
 
 var _plate: NinePatchRect
 var _bar_icons: Array[TextureRect] = []
@@ -55,6 +67,9 @@ var _time: float = 0.0
 var _pop_tween: Tween
 var _celebration_tween: Tween
 var _celebrating: bool = false
+var _snacks: int = -1
+var _snack_tween: Tween
+var _endless_record_shown: bool = false
 
 
 func _ready() -> void:
@@ -75,6 +90,7 @@ func _ready() -> void:
 	EventBus.boss_appeared.connect(_on_boss_appeared)
 	EventBus.combo_changed.connect(_on_combo_changed)
 	EventBus.player_damaged.connect(_on_player_damaged)
+	EventBus.snacks_changed.connect(_on_snacks_changed)
 	get_viewport().size_changed.connect(relayout)
 	_set_level(GameState.hero_level)
 	_on_vigor_changed(GameState.vigor, GameState.player_stats.max_vigor if GameState.player_stats else 100)
@@ -83,6 +99,8 @@ func _ready() -> void:
 	exp_bar.snap_to_value()
 	loyalty_bar.set_values(0, 1)
 	loyalty_bar.snap_to_value()
+	set_snacks(GameState.snacks, false)
+	_refresh_endless(0)
 	relayout()
 
 
@@ -129,6 +147,7 @@ func _build() -> void:
 	loyalty_bar = _make_bar("LoyaltyBar", PaletteColors.GOLD, PaletteColors.GOLD_L, PaletteColors.GOLD_D,
 			preload("res://assets/ui/icon_paw.png"), 5)
 	loyalty_bar.flash_when_full = true
+	_build_info_row()
 
 	pause_button = UiKit.button("", &"ButtonAlt", Vector2(26, 26))
 	pause_button.name = "PauseButton"
@@ -196,6 +215,32 @@ func _build() -> void:
 	cut_in.name = "CutIn"
 	add_child(cut_in)
 
+	evolution = EvolutionShow.new()
+	evolution.name = "Evolution"
+	add_child(evolution)
+
+
+## 底板最下一行:零食(左)與無盡試煉的波數、最佳紀錄(右)。
+func _build_info_row() -> void:
+	snack_icon = UiKit.texture_rect(preload("res://assets/ui/icon_snack.png"))
+	snack_icon.name = "SnackIcon"
+	add_child(snack_icon)
+	snack_label = UiKit.label("0", &"LabelLight", HORIZONTAL_ALIGNMENT_LEFT)
+	snack_label.name = "SnackLabel"
+	add_child(snack_label)
+	wave_icon = UiKit.texture_rect(preload("res://assets/ui/icon_wave.png"))
+	wave_icon.name = "WaveIcon"
+	add_child(wave_icon)
+	wave_label = UiKit.label("0", &"LabelLight", HORIZONTAL_ALIGNMENT_LEFT)
+	wave_label.name = "WaveLabel"
+	add_child(wave_label)
+	best_icon = UiKit.texture_rect(preload("res://assets/ui/icon_trophy.png"))
+	best_icon.name = "BestIcon"
+	add_child(best_icon)
+	best_label = UiKit.label("0", &"LabelLight", HORIZONTAL_ALIGNMENT_LEFT)
+	best_label.name = "BestLabel"
+	add_child(best_label)
+
 
 func _make_bar(bar_name: String, fill: Color, light: Color, dark: Color, icon: Texture2D, height: int) -> PixelBar:
 	var icon_rect := UiKit.texture_rect(icon)
@@ -249,13 +294,15 @@ func apply_layout(safe: Rect2, game: Rect2) -> void:
 		bar.position = Vector2(bar_x + icon_w, y + floorf((9.0 - bar.size.y) * 0.5))
 		y += 8.0
 	_plate.position = Vector2(bar_x - 3, top_left.y - 2)
-	_plate.size = Vector2(bar_w + icon_w + 6, 28)
+	_plate.size = Vector2(bar_w + icon_w + 6, 28 + INFO_ROW_H)
+	_layout_info_row(bar_x, y, _plate.position.x + _plate.size.x - 3.0)
 
 	var boss_w := floorf(minf(160.0, safe.size.x - MARGIN * 2 - 8))
 	boss_bar.layout(boss_w)
-	boss_bar.position = Vector2(floorf(safe.get_center().x - boss_w * 0.5), top_left.y + 32)
+	boss_bar.position = Vector2(floorf(safe.get_center().x - boss_w * 0.5), top_left.y + 32 + INFO_ROW_H)
 
-	combo.position = Vector2(floorf(safe.end.x - MARGIN - combo.size.x), top_left.y + (56.0 if boss_bar.visible else 32.0))
+	combo.position = Vector2(floorf(safe.end.x - MARGIN - combo.size.x),
+			top_left.y + INFO_ROW_H + (56.0 if boss_bar.visible else 32.0))
 
 	_layout_banner(safe)
 
@@ -274,8 +321,21 @@ func apply_layout(safe: Rect2, game: Rect2) -> void:
 func _layout_banner(safe: Rect2) -> void:
 	banner.size = banner.get_minimum_size()
 	var cx := safe.position.x + safe.size.x * 0.5
-	var y := safe.position.y + (62.0 if boss_bar.visible or _boss_level else 40.0)
+	var y := safe.position.y + INFO_ROW_H + (62.0 if boss_bar.visible or _boss_level else 40.0)
 	banner.position = Vector2(floorf(cx - banner.size.x * 0.5), floorf(y))
+
+
+## 零食在左;無盡試煉時波數與最佳紀錄靠右。y 是第四行的頂端,right 是底板內側的右緣。
+func _layout_info_row(x: float, y: float, right: float) -> void:
+	snack_icon.position = Vector2(x, y + 1.0)
+	for l: Label in [snack_label, wave_label, best_label]:
+		l.size = l.get_minimum_size()
+	snack_label.position = Vector2(x + 11.0, y - 1.0)
+	snack_label.pivot_offset = Vector2(0, snack_label.size.y * 0.5)
+	best_label.position = Vector2(floorf(right - best_label.size.x), y - 1.0)
+	best_icon.position = Vector2(best_label.position.x - 10.0, y + 1.0)
+	wave_label.position = Vector2(floorf(best_icon.position.x - 4.0 - wave_label.size.x), y - 1.0)
+	wave_icon.position = Vector2(wave_label.position.x - 10.0, y + 1.0)
 
 
 func _layout_celebration(safe: Rect2) -> void:
@@ -426,7 +486,9 @@ func _on_level_started(level_id: StringName) -> void:
 	celebration.visible = false
 	boss_bar.reset()
 	combo.set_count(0)
-	_boss_level = is_boss_level(level_id)
+	_boss_level = is_boss_level(level_id) and not is_endless()
+	_endless_record_shown = false
+	_refresh_endless(0)
 	var id := String(level_id)
 	var key := "LEVEL_" + id.replace("-", "_").to_upper()
 	var chapter_key := "CHAPTER_" + (id.split("-")[0] if id.contains("-") else "1")
@@ -443,6 +505,9 @@ func _on_level_started(level_id: StringName) -> void:
 
 
 func _on_wave_started(index: int, total: int) -> void:
+	if is_endless():
+		_on_endless_wave(index)
+		return
 	if _boss_level:
 		return      # 頭目關只顯示「頭目來了!」
 	var delay := 0.0
@@ -452,6 +517,62 @@ func _on_wave_started(index: int, total: int) -> void:
 		queue_banner(tr("UI_WAVE_FINAL"), BANNER_HOLD, true, delay)
 	else:
 		queue_banner(tr("UI_WAVE") % [index, total], BANNER_HOLD, false, delay)
+
+
+# --------------------------------------------------------------------------
+# v2.4:零食與無盡試煉
+# --------------------------------------------------------------------------
+
+func _on_snacks_changed(total: int) -> void:
+	set_snacks(total, true)
+
+
+## 顯示零食數;animate 時(增加)數字與圖示彈一下。
+func set_snacks(total: int, animate: bool) -> void:
+	var gained := _snacks >= 0 and total > _snacks
+	_snacks = total
+	snack_label.text = str(maxi(total, 0))
+	snack_label.size = snack_label.get_minimum_size()
+	if not (animate and gained) or not is_inside_tree():
+		return
+	if _snack_tween != null and _snack_tween.is_valid():
+		_snack_tween.kill()
+	snack_icon.pivot_offset = snack_icon.size * 0.5
+	_snack_tween = create_tween().set_ignore_time_scale(true)
+	_snack_tween.tween_property(snack_label, "scale", Vector2(1.4, 1.4), 0.06)
+	_snack_tween.parallel().tween_property(snack_icon, "scale", Vector2(1.5, 1.5), 0.06)
+	_snack_tween.parallel().tween_property(snack_label, "modulate", Color(PaletteColors.YELLOW), 0.06)
+	_snack_tween.tween_property(snack_label, "scale", Vector2.ONE, 0.16).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	_snack_tween.parallel().tween_property(snack_icon, "scale", Vector2.ONE, 0.16).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	_snack_tween.parallel().tween_property(snack_label, "modulate", Color.WHITE, 0.3)
+
+
+static func is_endless() -> bool:
+	return GameState.mode == &"endless"
+
+
+## 無盡試煉的波數與最佳紀錄(故事模式時隱藏)。
+func _refresh_endless(wave: int) -> void:
+	var on := is_endless()
+	for c: CanvasItem in [wave_icon, wave_label, best_icon, best_label]:
+		c.visible = on
+	if not on:
+		return
+	wave_label.text = str(wave)
+	var record := wave > GameState.endless_best and GameState.endless_best > 0
+	best_label.text = str(maxi(GameState.endless_best, wave))
+	best_label.modulate = Color(PaletteColors.YELLOW) if record else Color.WHITE
+	relayout()
+
+
+func _on_endless_wave(index: int) -> void:
+	_refresh_endless(index)
+	var delay := 0.3 if title_card.is_playing() else 0.0
+	if index > GameState.endless_best and GameState.endless_best > 0 and not _endless_record_shown:
+		_endless_record_shown = true
+		queue_banner(tr("UI_ENDLESS_NEW_BEST") % index, BANNER_HOLD, false, delay)
+	else:
+		queue_banner(tr("UI_ENDLESS_WAVE") % index, BANNER_HOLD, false, delay)
 
 
 func _on_boss_phase_changed(phase: int) -> void:

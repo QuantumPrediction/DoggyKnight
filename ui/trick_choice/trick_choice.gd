@@ -6,6 +6,8 @@ extends Control
 ## 卡片出現後短暫不接受點擊,避免玩家原本按著畫面的手指一放開就誤選。
 ## CP5:卡片一張接一張翻進來、閃一下光;右上角標示「NEW」(還沒學過)或「Lv2」(選了會變第幾層,
 ## 由 GameState.active_tricks 數)。選中的卡片彈一下,其他卡片淡出。
+## v2.4(CV1):TrickData.is_evolution 的卡片是金色的「進化!」樣式:金色卡片、金色緞帶標記、
+## 大圖示下面顯示合成它的兩個把戲小圖示(甲 + 乙),卡片會閃金光。
 
 const INPUT_DELAY: float = 0.35
 const CARD_SIZE: Vector2 = Vector2(168, 54)
@@ -89,6 +91,13 @@ static func learned_count(id: StringName) -> int:
 	return GameState.active_tricks.count(id)
 
 
+## 卡片右上角的標記文字(依把戲資料):進化把戲是「進化!」,其他同 badge_text。
+static func badge_text_for(trick: TrickData) -> String:
+	if trick != null and trick.is_evolution:
+		return tr_static("UI_TRICK_EVOLVE")
+	return badge_text(trick.id if trick != null else &"")
+
+
 ## 卡片右上角的標記文字:沒學過是「NEW」,學過 n 次就是「Lv(n+1)」。
 static func badge_text(id: StringName) -> String:
 	var n := learned_count(id)
@@ -107,8 +116,9 @@ func _on_card_pressed(index: int) -> void:
 
 
 func _make_card(trick: TrickData) -> Button:
+	var evolution := trick.is_evolution
 	var card := Button.new()
-	card.theme_type_variation = &"CardButton"
+	card.theme_type_variation = &"CardEvolve" if evolution else &"CardButton"
 	card.focus_mode = Control.FOCUS_NONE
 	card.custom_minimum_size = CARD_SIZE
 	card.size = CARD_SIZE
@@ -120,7 +130,8 @@ func _make_card(trick: TrickData) -> Button:
 		if ResourceLoader.exists(path):
 			icon_tex = load(path) as Texture2D
 	var icon := UiKit.texture_rect(icon_tex, ICON_SCALE)
-	icon.position = Vector2(6, floorf((CARD_SIZE.y - 32) * 0.5))
+	# 進化卡片的大圖示往上移,下面放「甲 + 乙」兩個原把戲的小圖示
+	icon.position = Vector2(6, 3.0 if evolution else floorf((CARD_SIZE.y - 32) * 0.5))
 	icon.size = Vector2(32, 32)
 	card.add_child(icon)
 	var text_x := 43.0
@@ -136,17 +147,51 @@ func _make_card(trick: TrickData) -> Button:
 	desc.position = Vector2(text_x, 21)
 	desc.size = Vector2(text_w, 30)
 	card.add_child(desc)
+	if evolution:
+		_add_evolution_parts(card, trick, text_x, desc)
 	var badge := PanelContainer.new()
 	badge.name = "Badge"
-	badge.theme_type_variation = &"Ribbon" if learned_count(trick.id) == 0 else &"PanelDark"
+	if evolution:
+		badge.theme_type_variation = &"RibbonGold"
+	else:
+		badge.theme_type_variation = &"Ribbon" if learned_count(trick.id) == 0 else &"PanelDark"
 	badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var badge_label := UiKit.label(badge_text(trick.id), &"LabelLight")
+	var badge_label := UiKit.label(badge_text_for(trick), &"LabelLight")
 	badge_label.name = "Text"
 	badge.add_child(badge_label)
 	card.add_child(badge)
 	badge.size = badge.get_minimum_size()
 	badge.position = Vector2(CARD_SIZE.x - badge.size.x + 2, -5)
+	if evolution:
+		# 標記一直輕輕跳動,卡片閃金光
+		badge.pivot_offset = badge.size * 0.5
+		var bt := badge.create_tween().set_loops()
+		bt.tween_property(badge, "scale", Vector2(1.12, 1.12), 0.35).set_trans(Tween.TRANS_SINE)
+		bt.tween_property(badge, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_SINE)
+		var gt := card.create_tween().set_loops()
+		gt.tween_interval(0.9)
+		gt.tween_property(card, "self_modulate", Color(1.35, 1.25, 0.9), 0.15)
+		gt.tween_property(card, "self_modulate", Color.WHITE, 0.3)
 	return card
+
+
+## 進化卡片:大圖示下面顯示「甲 + 乙」兩個原把戲的小圖示。
+func _add_evolution_parts(card: Button, trick: TrickData, text_x: float, desc: Label) -> void:
+	var parents := EvolutionInfo.parents_of(trick.id)
+	if parents.size() < 2:
+		return
+	var row := HBoxContainer.new()
+	row.name = "Parents"
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_theme_constant_override(&"separation", 0)
+	for i in parents.size():
+		if i > 0:
+			row.add_child(UiKit.label("+", &"LabelSoft"))
+		row.add_child(UiKit.texture_rect(EvolutionInfo.icon_of(parents[i])))
+	card.add_child(row)
+	row.size = row.get_combined_minimum_size()
+	row.position = Vector2(floorf(maxf(2.0, (text_x - row.size.x) * 0.5)), 36)
+	desc.add_theme_color_override(&"font_color", PaletteColors.BROWN_D)
 
 
 func _layout() -> void:
