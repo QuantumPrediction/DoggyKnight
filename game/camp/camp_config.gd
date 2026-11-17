@@ -11,6 +11,8 @@ extends Resource
 @export var canvas_layer: int = 15
 ## 小遊戲的場景。日後加入大胃王等小遊戲時,換這裡或加入口。
 @export var minigame_scene: PackedScene
+## 營地訓練介面(v2.4 DV1)。留空時用 game/camp/training.tscn。
+@export var training_scene: PackedScene
 ## 每次進營地可以玩幾次小遊戲(避免無限刷獎勵)。0 表示不限。
 @export var minigame_plays_per_visit: int = 1
 ## 「即將開放」等提示停留的秒數。

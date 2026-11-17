@@ -120,3 +120,12 @@ func test_rewards_on_real_game_state() -> void:
 	assert_eq(GameState.vigor, 10 + roundi(0.75 * GameState.player_stats.max_vigor))
 	assert_eq(GameState.satisfaction, 60)
 	assert_almost_eq(GameState.next_level_bonus, 0.10)
+
+
+func test_snacks_skipped_when_state_has_no_snacks_field() -> void:
+	# v2.4 DV2:舊的假狀態沒有 snacks 欄位,獎勵照樣套用,零食記 0。
+	var g := _grading()
+	var s := _state(0, 0)
+	var rewards := g.apply_rewards(3, s)
+	assert_eq(rewards["snacks"], 0)
+	assert_eq(s.vigor, 100)

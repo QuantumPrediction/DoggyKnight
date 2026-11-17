@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="TrainingConfig" format=3]
+
+[ext_resource type="Script" path="res://game/camp/training_config.gd" id="1_config"]
+[ext_resource type="SpriteFrames" path="res://assets/fx/snack/snack_frames.tres" id="2_snack"]
+[ext_resource type="PackedScene" path="res://assets/fx/particles/star_burst.tscn" id="3_star"]
+[ext_resource type="PackedScene" path="res://assets/fx/particles/sparkle.tscn" id="4_sparkle"]
+
+[resource]
+script = ExtResource("1_config")
+upgrade_paths = PackedStringArray("res://data/progression/meta_upgrades.tres", "res://game/camp/training_upgrades.tres")
+snack_frames = ExtResource("2_snack")
+panel_max_width = 176.0
+row_height = 38.0
+row_gap = 3
+price_tag_size = Vector2(38, 15)
+close_button_size = Vector2(132, 26)
+bottom_margin = 20.0
+open_sec = 0.3
+upgrade_sfx = &"level_up"
+upgrade_haptic = &"light"
+star_burst_particles = ExtResource("3_star")
+sparkle_particles = ExtResource("4_sparkle")
+flash_sec = 0.45
+floater_sec = 1.0
+counter_sec = 0.4
