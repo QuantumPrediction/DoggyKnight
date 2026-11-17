@@ -22,6 +22,9 @@ var best_stars: Dictionary = {}   # v2.2:每關最佳星數 {關卡 id: 0 至 3}
 var difficulty: StringName = &"normal"   # v2.3:&"normal" 或 &"hard";新遊戲時由標題畫面設定,隨存檔保存
 var chapter_cleared: bool = false # v2.3:打完第一章(解鎖困難模式),隨存檔保存
 var story_seen: Dictionary = {}   # v2.3:看過的對白段落 {段落 id: true},隨存檔保存
+var mode: StringName = &"story"   # v2.4:&"story"(第一章)或 &"endless"(無盡試煉)
+var meta_upgrades: Dictionary = {}   # v2.4:營地訓練的永久等級 {升級 id: 等級},隨存檔保存
+var endless_best: int = 0         # v2.4:無盡試煉最佳波數,隨存檔保存
 
 
 func _ready() -> void:

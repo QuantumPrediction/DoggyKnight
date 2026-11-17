@@ -18,6 +18,8 @@ signal exp_collected(amount: int)          # 拾取經驗珠(原始值;exp_mult 
 signal boss_hp_changed(current: int, maximum: int)   # v2.2:頭目出場時與每次受傷時發出(HUD 頭目血條)
 signal combo_changed(count: int)            # v2.2:連擊數改變;0 = 連擊中斷
 signal boss_appeared(enemy_id: StringName)  # v2.3:頭目或中頭目出場(HUD 頭目血條顯示名字)
+signal chest_collected(tier: int)           # v2.4:金毛拾取寶箱(0 普通、1 精英、2 頭目);B 線給獎勵
+signal snack_collected(amount: int)         # v2.4:拾取零食(B 線累計進 GameState.snacks)
 
 # 流程與成長(B 線發出)
 signal level_started(level_id: StringName)
@@ -30,11 +32,15 @@ signal leveled_up(new_level: int)
 signal trick_offered(options: Array)        # Array[TrickData]
 signal trick_chosen(trick_id: StringName)   # 由 C 線的選擇介面發出
 signal game_paused(paused: bool)            # B 線發出;C 線暫停畫面聽這個
+signal trick_evolved(evolution_id: StringName)   # v2.4:把戲進化(C 線演出;A 線改用進化後的能力)
+signal event_offered(event_id: StringName, options: Array)   # v2.4:關卡中途的抉擇事件;options 是 Array[Dictionary]
+signal snacks_changed(total: int)           # v2.4:零食總數改變
 
 # 介面(C 線發出)
 signal ultimate_requested()                 # HUD 的必殺技按鈕被按下;A 線執行後發 ultimate_used
 signal resume_requested()                   # 暫停畫面的「繼續」
 signal quit_to_title_requested()            # 暫停畫面的「回標題」
+signal event_chosen(event_id: StringName, option_index: int)  # v2.4:抉擇事件的選擇(C 線的事件介面發出)
 
 # 營地與小遊戲(D 線發出)
 signal camp_entered()
