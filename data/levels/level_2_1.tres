@@ -18,24 +18,17 @@ pattern = &"line_top"
 script = ExtResource("3_spawn")
 enemy_id = &"gargoyle"
 count = 2
-delay = 6.0
+delay = 7.0
 pattern = &"edges"
-
-[sub_resource type="Resource" id="wave1_spawn3"]
-script = ExtResource("3_spawn")
-enemy_id = &"gargoyle"
-count = 2
-delay = 12.0
-pattern = &"corners"
 
 [sub_resource type="Resource" id="wave1"]
 script = ExtResource("2_wave")
-spawns = Array[ExtResource("3_spawn")]([SubResource("wave1_spawn1"), SubResource("wave1_spawn2"), SubResource("wave1_spawn3")])
+spawns = Array[ExtResource("3_spawn")]([SubResource("wave1_spawn1"), SubResource("wave1_spawn2")])
 
 [sub_resource type="Resource" id="wave2_spawn1"]
 script = ExtResource("3_spawn")
 enemy_id = &"scarecrow"
-count = 4
+count = 3
 delay = 1.5
 pattern = &"line_top"
 
@@ -67,14 +60,14 @@ pattern = &"corners"
 [sub_resource type="Resource" id="wave3_spawn2"]
 script = ExtResource("3_spawn")
 enemy_id = &"scarecrow"
-count = 4
+count = 3
 delay = 4.0
 pattern = &"surround"
 
 [sub_resource type="Resource" id="wave3_spawn3"]
 script = ExtResource("3_spawn")
 enemy_id = &"gargoyle"
-count = 2
+count = 1
 delay = 9.0
 pattern = &"edges"
 

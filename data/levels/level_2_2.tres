@@ -42,7 +42,7 @@ pattern = &"corners"
 [sub_resource type="Resource" id="wave2_spawn2"]
 script = ExtResource("3_spawn")
 enemy_id = &"scarecrow"
-count = 4
+count = 2
 delay = 5.0
 pattern = &"line_top"
 
@@ -60,7 +60,7 @@ spawns = Array[ExtResource("3_spawn")]([SubResource("wave2_spawn1"), SubResource
 [sub_resource type="Resource" id="wave3_spawn1"]
 script = ExtResource("3_spawn")
 enemy_id = &"armored_husk"
-count = 2
+count = 1
 delay = 1.5
 pattern = &"line_top"
 
@@ -81,7 +81,7 @@ pattern = &"edges"
 [sub_resource type="Resource" id="wave3_spawn4"]
 script = ExtResource("3_spawn")
 enemy_id = &"scarecrow"
-count = 3
+count = 2
 delay = 13.0
 pattern = &"surround"
 
