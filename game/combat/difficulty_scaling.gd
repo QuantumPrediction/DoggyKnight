@@ -18,7 +18,12 @@ const RANGED: StringName = &"ranged"
 
 @export var modes: Array[EnemyDifficulty] = []
 
+var _ramped: Dictionary = {}
+
 @export_group("挑戰曲線(依關卡,AS7)")
+## v2.4 整合:故事模式每關的敵人生命與傷害倍數(第 1 關起算;第 1 關保持溫和,之後逐步加強)。
+@export var hp_ramp_by_level: PackedFloat32Array = PackedFloat32Array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+@export var damage_ramp_by_level: PackedFloat32Array = PackedFloat32Array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
 @export var melee_slots_by_level: PackedInt32Array = PackedInt32Array([2, 3, 3, 3, 4, 4])
 @export var ranged_slots_by_level: PackedInt32Array = PackedInt32Array([1, 1, 1, 2, 2, 2])
 @export var crossfire_from_level: int = 3        ## 從第幾關(0 起算)開始交叉火力;< 0 = 不用
@@ -40,9 +45,29 @@ static func get_default() -> DifficultyScaling:
 	return _loaded
 
 
-## 目前難度(GameState.difficulty)的倍數。
+## 目前難度(GameState.difficulty)的倍數,再乘上故事模式該關的成長曲線(hp/damage_ramp_by_level)。
 static func current_mode() -> EnemyDifficulty:
-	return get_default().mode(GameState.difficulty)
+	var scaling := get_default()
+	var base := scaling.mode(GameState.difficulty)
+	var index := GameState.level_index if GameState.mode == &"story" else -1
+	var hp_k := _ramp(scaling.hp_ramp_by_level, index)
+	var dmg_k := _ramp(scaling.damage_ramp_by_level, index)
+	if is_equal_approx(hp_k, 1.0) and is_equal_approx(dmg_k, 1.0):
+		return base
+	var key := "%s:%d" % [base.id, index]
+	if not scaling._ramped.has(key):
+		var m := base.duplicate() as EnemyDifficulty
+		m.hp_mult *= hp_k
+		m.boss_hp_mult *= hp_k
+		m.damage_mult *= dmg_k
+		scaling._ramped[key] = m
+	return scaling._ramped[key]
+
+
+static func _ramp(values: PackedFloat32Array, index: int) -> float:
+	if index < 0 or values.is_empty():
+		return 1.0
+	return values[mini(index, values.size() - 1)]
 
 
 func mode(mode_id: StringName) -> EnemyDifficulty:

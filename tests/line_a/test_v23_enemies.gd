@@ -348,8 +348,8 @@ func test_black_knight_announces_and_phase_two_sword_wave_and_husks() -> void:
 func test_hard_mode_scales_stats_and_telegraphs_without_touching_the_data_file() -> void:
 	make_arena()
 	var mode := DifficultyScaling.get_default().mode(&"hard")
-	assert_almost_eq(mode.hp_mult, 1.5, 0.05, "困難:生命約 ×1.5")
-	assert_almost_eq(mode.damage_mult, 1.4, 0.05, "困難:傷害約 ×1.4")
+	assert_almost_eq(mode.hp_mult, 1.8, 0.05, "困難:生命約 ×1.8")
+	assert_almost_eq(mode.damage_mult, 1.75, 0.05, "困難:傷害約 ×1.75")
 	assert_almost_eq(mode.telegraph_mult, 0.8, 0.05, "困難:預警約 ×0.8")
 	var normal := spawn(&"scarecrow", Vector2(40, 100)) as ScarecrowEnemy
 	assert_eq(normal.hp, 25)
