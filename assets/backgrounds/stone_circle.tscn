@@ -1,20 +1,25 @@
 [gd_scene format=3]
 
-[ext_resource type="Texture2D" path="res://assets/backgrounds/sword_stone.png" id="1_bg"]
-[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/flower_pink_frames.tres" id="2_anim_flower_pink"]
-[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/flower_white_frames.tres" id="3_anim_flower_white"]
-[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/flower_yellow_frames.tres" id="4_anim_flower_yellow"]
-[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/grass_tuft_frames.tres" id="5_anim_grass_tuft"]
-[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/sword_glint_frames.tres" id="6_anim_sword_glint"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_mote.png" id="7_p_mote"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/stone_circle.png" id="1_bg"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/glint_star_frames.tres" id="2_anim_glint_star"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/rune_cyan_frames.tres" id="3_anim_rune_cyan"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_mist.png" id="4_p_mist"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_spark_cyan.png" id="5_p_spark_cyan"]
 [ext_resource type="Script" path="res://assets/backgrounds/actor_shadows.gd" id="80_shadows"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/sword_stone_fg.png" id="81_fg"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/stone_circle_fg.png" id="81_fg"]
+[ext_resource type="PackedScene" path="res://assets/fx/lights/magic.tscn" id="84_light_magic"]
 [ext_resource type="PackedScene" path="res://assets/fx/lights/sun.tscn" id="84_light_sun"]
-[ext_resource type="PackedScene" path="res://assets/fx/lights/sword.tscn" id="84_light_sword"]
+
+[sub_resource type="CanvasItemMaterial" id="Mat_add"]
+blend_mode = 1
 
 [sub_resource type="Gradient" id="Gradient_fade"]
 offsets = PackedFloat32Array(0, 0.15, 0.8, 1)
 colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_blink"]
+offsets = PackedFloat32Array(0, 0.2, 0.35, 0.5, 0.65, 0.8, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0.2, 1, 1, 1, 1, 1, 1, 1, 0.3, 1, 1, 1, 1, 1, 1, 1, 0)
 
 [node name="Background" type="Node2D"]
 
@@ -25,165 +30,200 @@ position = Vector2(-62, -88)
 
 [node name="Anim" type="Node2D" parent="."]
 
-[node name="sword_glint_0" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(86, 15)
-sprite_frames = ExtResource("6_anim_sword_glint")
+[node name="rune_cyan_0" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-35, 87)
+sprite_frames = ExtResource("3_anim_rune_cyan")
 autoplay = "default"
 frame = 0
+speed_scale = 0.6
+centered = false
+
+[node name="rune_cyan_1" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(208, 93)
+sprite_frames = ExtResource("3_anim_rune_cyan")
+autoplay = "default"
+frame = 1
+speed_scale = 0.7
+centered = false
+
+[node name="rune_cyan_2" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-41, 177)
+sprite_frames = ExtResource("3_anim_rune_cyan")
+autoplay = "default"
+frame = 2
+speed_scale = 0.8
+centered = false
+
+[node name="rune_cyan_3" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(214, 183)
+sprite_frames = ExtResource("3_anim_rune_cyan")
+autoplay = "default"
+frame = 3
+speed_scale = 0.6
+centered = false
+
+[node name="rune_cyan_4" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-31, 257)
+sprite_frames = ExtResource("3_anim_rune_cyan")
+autoplay = "default"
+frame = 4
+speed_scale = 0.7
+centered = false
+
+[node name="rune_cyan_5" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(204, 265)
+sprite_frames = ExtResource("3_anim_rune_cyan")
+autoplay = "default"
+frame = 5
+speed_scale = 0.8
+centered = false
+
+[node name="rune_cyan_6" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(35, 295)
+sprite_frames = ExtResource("3_anim_rune_cyan")
+autoplay = "default"
+frame = 0
+speed_scale = 0.6
+centered = false
+
+[node name="rune_cyan_7" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(136, 293)
+sprite_frames = ExtResource("3_anim_rune_cyan")
+autoplay = "default"
+frame = 1
+speed_scale = 0.7
+centered = false
+
+[node name="glint_star_8" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-22, -68)
+sprite_frames = ExtResource("2_anim_glint_star")
+autoplay = "default"
+frame = 0
+speed_scale = 0.6
+centered = false
+
+[node name="glint_star_9" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(28, -28)
+sprite_frames = ExtResource("2_anim_glint_star")
+autoplay = "default"
+frame = 2
+speed_scale = 0.7
+centered = false
+
+[node name="glint_star_10" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(88, -74)
+sprite_frames = ExtResource("2_anim_glint_star")
+autoplay = "default"
+frame = 4
+speed_scale = 0.8
+centered = false
+
+[node name="glint_star_11" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(208, -8)
+sprite_frames = ExtResource("2_anim_glint_star")
+autoplay = "default"
+frame = 6
+speed_scale = 0.9
+centered = false
+
+[node name="glint_star_12" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-42, 2)
+sprite_frames = ExtResource("2_anim_glint_star")
+autoplay = "default"
+frame = 8
 speed_scale = 1
-centered = false
-
-[node name="grass_tuft_1" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(8, 58)
-sprite_frames = ExtResource("5_anim_grass_tuft")
-autoplay = "default"
-frame = 0
-speed_scale = 0.8
-centered = false
-
-[node name="grass_tuft_2" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(38, 62)
-sprite_frames = ExtResource("5_anim_grass_tuft")
-autoplay = "default"
-frame = 1
-speed_scale = 0.95
-centered = false
-
-[node name="grass_tuft_3" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(134, 60)
-sprite_frames = ExtResource("5_anim_grass_tuft")
-autoplay = "default"
-frame = 2
-speed_scale = 1.1
-centered = false
-
-[node name="grass_tuft_4" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(164, 62)
-sprite_frames = ExtResource("5_anim_grass_tuft")
-autoplay = "default"
-frame = 3
-speed_scale = 0.8
-centered = false
-
-[node name="grass_tuft_5" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(16, 304)
-sprite_frames = ExtResource("5_anim_grass_tuft")
-autoplay = "default"
-frame = 0
-speed_scale = 0.95
-centered = false
-
-[node name="grass_tuft_6" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(142, 306)
-sprite_frames = ExtResource("5_anim_grass_tuft")
-autoplay = "default"
-frame = 1
-speed_scale = 1.1
-centered = false
-
-[node name="grass_tuft_7" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(68, 308)
-sprite_frames = ExtResource("5_anim_grass_tuft")
-autoplay = "default"
-frame = 2
-speed_scale = 0.8
-centered = false
-
-[node name="flower_white_8" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-38, 340)
-sprite_frames = ExtResource("3_anim_flower_white")
-autoplay = "default"
-frame = 0
-speed_scale = 0.9
-centered = false
-
-[node name="flower_pink_9" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(56, 356)
-sprite_frames = ExtResource("2_anim_flower_pink")
-autoplay = "default"
-frame = 1
-speed_scale = 1.1
-centered = false
-
-[node name="flower_yellow_10" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(114, 348)
-sprite_frames = ExtResource("4_anim_flower_yellow")
-autoplay = "default"
-frame = 2
-speed_scale = 0.9
-centered = false
-
-[node name="flower_pink_11" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(214, 332)
-sprite_frames = ExtResource("2_anim_flower_pink")
-autoplay = "default"
-frame = 3
-speed_scale = 1.1
-centered = false
-
-[node name="flower_yellow_12" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-16, 32)
-sprite_frames = ExtResource("4_anim_flower_yellow")
-autoplay = "default"
-frame = 0
-speed_scale = 0.9
-centered = false
-
-[node name="flower_white_13" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(200, 38)
-sprite_frames = ExtResource("3_anim_flower_white")
-autoplay = "default"
-frame = 1
-speed_scale = 1.1
 centered = false
 
 [node name="Ambient" type="Node2D" parent="."]
 
-[node name="mote_0" type="CPUParticles2D" parent="Ambient"]
+[node name="spark_cyan_0" type="CPUParticles2D" parent="Ambient"]
 position = Vector2(95, 170)
-amount = 10
-lifetime = 4
-preprocess = 4
+amount = 12
+lifetime = 5
+preprocess = 5
 randomness = 0.5
-texture = ExtResource("7_p_mote")
+texture = ExtResource("5_p_spark_cyan")
 emission_shape = 3
 emission_rect_extents = Vector2(105, 210)
-direction = Vector2(0, -4)
-spread = 180
+direction = Vector2(0, -1)
+spread = 20
+gravity = Vector2(0, 0)
+initial_velocity_min = 3
+initial_velocity_max = 6
+material = SubResource("Mat_add")
+color_ramp = SubResource("Gradient_blink")
+
+[node name="mist_1" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(110, 290)
+amount = 8
+lifetime = 8
+preprocess = 8
+randomness = 0.5
+texture = ExtResource("4_p_mist")
+emission_shape = 3
+emission_rect_extents = Vector2(150, 90)
+direction = Vector2(1, 0)
+spread = 10
 gravity = Vector2(0, 0)
 initial_velocity_min = 2
-initial_velocity_max = 5
+initial_velocity_max = 4
 color_ramp = SubResource("Gradient_fade")
-
-[node name="Light" type="Node2D" parent="."]
-
-[node name="Shaft_0" type="Polygon2D" parent="Light"]
-color = Color(1, 0.97, 0.82, 0.06)
-polygon = PackedVector2Array(30, -90, 60, -90, 360, 430, 330, 430)
-
-[node name="Shaft_1" type="Polygon2D" parent="Light"]
-color = Color(1, 0.97, 0.82, 0.08)
-polygon = PackedVector2Array(70, -90, 86, -90, 386, 430, 370, 430)
-
-[node name="Shaft_2" type="Polygon2D" parent="Light"]
-color = Color(1, 0.97, 0.82, 0.05)
-polygon = PackedVector2Array(-60, -90, -38, -90, 262, 430, 240, 430)
-
-[node name="Shaft_3" type="Polygon2D" parent="Light"]
-color = Color(1, 0.97, 0.82, 0.04)
-polygon = PackedVector2Array(160, -90, 178, -90, 478, 430, 460, 430)
 
 [node name="Lights" type="Node2D" parent="."]
 
-[node name="sword_0" parent="Lights" instance=ExtResource("84_light_sword")]
-position = Vector2(90, 21)
-base_alpha = 0.45
+[node name="magic_0" parent="Lights" instance=ExtResource("84_light_magic")]
+modulate = Color(0.4, 0.8, 1, 0.5)
+position = Vector2(-36, 90)
+base_alpha = 0.225
 seed_offset = 0
 
-[node name="sun_1" parent="Lights" instance=ExtResource("84_light_sun")]
-position = Vector2(-40, -70)
-base_alpha = 0.22
-seed_offset = 0
+[node name="magic_1" parent="Lights" instance=ExtResource("84_light_magic")]
+modulate = Color(0.4, 0.8, 1, 0.5)
+position = Vector2(206, 98)
+base_alpha = 0.225
+seed_offset = 0.74
+
+[node name="magic_2" parent="Lights" instance=ExtResource("84_light_magic")]
+modulate = Color(0.4, 0.8, 1, 0.5)
+position = Vector2(-42, 180)
+base_alpha = 0.225
+seed_offset = 2.96
+
+[node name="magic_3" parent="Lights" instance=ExtResource("84_light_magic")]
+modulate = Color(0.4, 0.8, 1, 0.5)
+position = Vector2(212, 188)
+base_alpha = 0.225
+seed_offset = 1.48
+
+[node name="magic_4" parent="Lights" instance=ExtResource("84_light_magic")]
+modulate = Color(0.4, 0.8, 1, 0.5)
+position = Vector2(-32, 260)
+base_alpha = 0.225
+seed_offset = 2.96
+
+[node name="magic_5" parent="Lights" instance=ExtResource("84_light_magic")]
+modulate = Color(0.4, 0.8, 1, 0.5)
+position = Vector2(202, 270)
+base_alpha = 0.225
+seed_offset = 2.22
+
+[node name="magic_6" parent="Lights" instance=ExtResource("84_light_magic")]
+modulate = Color(0.4, 0.8, 1, 0.5)
+position = Vector2(34, 298)
+base_alpha = 0.225
+seed_offset = 2.96
+
+[node name="magic_7" parent="Lights" instance=ExtResource("84_light_magic")]
+modulate = Color(0.4, 0.8, 1, 0.5)
+position = Vector2(134, 298)
+base_alpha = 0.225
+seed_offset = 2.96
+
+[node name="sun_8" parent="Lights" instance=ExtResource("84_light_sun")]
+modulate = Color(0.6, 0.75, 1, 0.5)
+position = Vector2(148, -42)
+base_alpha = 0.264
+seed_offset = 2.22
 
 [node name="Shadows" type="Node2D" parent="."]
 script = ExtResource("80_shadows")
@@ -198,4 +238,4 @@ centered = false
 position = Vector2(-62, -88)
 
 [node name="Mood" type="CanvasModulate" parent="."]
-color = Color(1, 0.985, 0.95, 1)
+color = Color(0.88, 0.92, 1, 1)
