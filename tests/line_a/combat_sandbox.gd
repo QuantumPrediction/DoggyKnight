@@ -10,13 +10,16 @@ extends Node2D
 ## Esc(= Android 返回鍵)暫停 / 繼續。所有按鈕都在群組 ui_touch_blocker,按按鈕不會觸發搖桿。
 ## v2.3:Arch 弓兵、Husk 空盔甲兵、Capt 稻草人隊長;Hard 切換一般 / 困難模式(之後生成的敵人);
 ## Lv+ 切換關卡編號(1 至 6:同時進攻的上限、交叉火力、夾擊隨關卡增加)。上方小字顯示 N/H 與 L 幾。
+## v2.4:+Pnc 撲擊、+Rol 打滾、+PDd 裝死、+Zoo 暴衝、+Dig 挖寶、+Snf 嗅嗅;Evo 依次進化
+## (旋風尾 → 獅王吼 → 擊掌連打 → 流星撲擊);Chest 生成一個精英寶箱;Rev 讓金毛睡著再用 revive() 叫醒;
+## Luck 切換 luck 0 / 5。上方小字顯示寶箱數(CH)與零食數(SN)。
 
 const ARENA_SCENE: PackedScene = preload("res://game/combat/arena.tscn")
 const BLOCKER_GROUP: StringName = &"ui_touch_blocker"
 const FONT_SIZE := 8
-const BUTTON_SIZE := Vector2(34, 13)
-const BUTTON_COLUMNS := 5
-const BUTTON_GAP := 2.0
+const BUTTON_SIZE := Vector2(28, 12)
+const BUTTON_COLUMNS := 6
+const BUTTON_GAP := 1.5
 const ULT_SIZE := Vector2(28, 28)
 
 var arena: CombatArena
@@ -35,6 +38,9 @@ var _combo: int = 0
 var _best_combo: int = 0
 var _boss_hp: Vector2i = Vector2i.ZERO
 var _spawn_index: int = 0
+var _chests: int = 0
+var _snacks: int = 0
+var _evo_index: int = 0
 
 
 func _ready() -> void:
@@ -61,6 +67,12 @@ func _ready() -> void:
 		_refresh())
 	EventBus.boss_hp_changed.connect(func(current: int, maximum: int) -> void:
 		_boss_hp = Vector2i(current, maximum)
+		_refresh())
+	EventBus.chest_collected.connect(func(_tier: int) -> void:
+		_chests += 1
+		_refresh())
+	EventBus.snack_collected.connect(func(amount: int) -> void:
+		_snacks += amount
 		_refresh())
 	EventBus.back_requested.connect(_toggle_pause)
 	EventBus.app_backgrounded.connect(func() -> void: _set_paused(true))
@@ -118,6 +130,45 @@ func _add_trick(trick_id: StringName) -> void:
 	GameState.active_tricks.append(trick_id)
 
 
+## 依次進化(B 線的做法:把進化 id 加進 active_tricks、移除兩個原把戲,再發 trick_evolved)。
+func _evolve_next() -> void:
+	var ids: Array = AbilitySet.EVOLUTION_SOURCES.keys()
+	var evo: StringName = ids[_evo_index % ids.size()]
+	_evo_index += 1
+	for source: StringName in AbilitySet.EVOLUTION_SOURCES[evo]:
+		GameState.active_tricks.erase(source)
+	GameState.active_tricks.append(evo)
+	EventBus.trick_evolved.emit(evo)
+	_refresh.call_deferred()
+
+
+func _spawn_chest() -> void:
+	var player := arena.get_player() as Node2D
+	var at := Vector2(Layout.ARENA_RECT.get_center().x, Layout.ARENA_RECT.position.y + 60)
+	if player != null and player.global_position.distance_to(at) < 40.0:
+		at.y += 90.0
+	arena.spawn_chest(at, 1)
+
+
+func _knock_out_and_revive() -> void:
+	var player := arena.get_player() as GoldiePlayer
+	if player == null:
+		return
+	if not player.is_downed():
+		player.invuln_left = 0.0
+		GameState.vigor = 1
+		player.take_damage(9999)
+		await get_tree().create_timer(1.0).timeout
+	if is_instance_valid(player):
+		player.revive()
+
+
+func _toggle_luck() -> void:
+	var luck := int(GameState.meta_upgrades.get(&"luck", 0))
+	GameState.meta_upgrades[&"luck"] = 0 if luck > 0 else 5
+	_refresh()
+
+
 func _fill_loyalty() -> void:
 	var player := arena.get_player() as GoldiePlayer
 	if player != null:
@@ -141,6 +192,9 @@ func _reset() -> void:
 	_combo = 0
 	_best_combo = 0
 	_boss_hp = Vector2i.ZERO
+	_chests = 0
+	_snacks = 0
+	_evo_index = 0
 	_new_arena()
 
 
@@ -197,6 +251,16 @@ func _build_ui() -> void:
 		["Capt", _spawn_captain],
 		["Hard", _toggle_hard],
 		["Lv+", _next_level],
+		["+Pnc", _add_trick.bind(&"pounce")],
+		["+Rol", _add_trick.bind(&"roll")],
+		["+PDd", _add_trick.bind(&"play_dead")],
+		["+Zoo", _add_trick.bind(&"zoomies")],
+		["Evo", _evolve_next],
+		["+Dig", _add_trick.bind(&"dig")],
+		["+Snf", _add_trick.bind(&"sniff")],
+		["Chest", _spawn_chest],
+		["Rev", _knock_out_and_revive],
+		["Luck", _toggle_luck],
 	]
 	for action: Array in actions:
 		var button := _make_button(action[0])
@@ -256,12 +320,16 @@ func _refresh() -> void:
 	var tricks := "-"
 	var player := arena.get_player() as GoldiePlayer if arena != null else null
 	if player != null and player.abilities != null:
-		tricks = "shk%d spn%d brk%d" % [player.abilities.stacks(&"shake"), player.abilities.stacks(&"spin"),
-				player.abilities.stacks(&"bark")]
-	_readout.text = "VIG %d/%d EXP %d LOY %d/%d CB %d/%d %s L%d\nKO %d %s P%d %d/%d foes %d" % [
+		var parts: PackedStringArray = []
+		for id: StringName in AbilitySet.ABILITY_IDS:
+			var n := player.abilities.stacks(id)
+			if n > 0:
+				parts.append("%s%d" % [String(id).substr(0, 3), n])
+		tricks = " ".join(parts) if not parts.is_empty() else "-"
+	_readout.text = "VIG %d/%d EXP %d LOY %d/%d CB %d/%d %s L%d CH%d SN%d\nKO %d P%d %d/%d foes %d %s" % [
 		_vigor.x, _vigor.y, _exp, int(_loyalty.x), int(_loyalty.y), _combo, _best_combo,
-		"H" if GameState.difficulty == &"hard" else "N", GameState.level_index + 1, _kills, tricks,
-		_boss_phase, _boss_hp.x, _boss_hp.y, get_tree().get_nodes_in_group(&"enemy").size()]
+		"H" if GameState.difficulty == &"hard" else "N", GameState.level_index + 1, _chests, _snacks, _kills,
+		_boss_phase, _boss_hp.x, _boss_hp.y, get_tree().get_nodes_in_group(&"enemy").size(), tricks]
 	if _ult_button != null:
 		_ult_button.disabled = _loyalty.x < _loyalty.y
 

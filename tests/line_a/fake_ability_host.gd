@@ -26,3 +26,10 @@ func ability_stun(target: Node2D, duration: float) -> void:
 
 func ability_visual(kind: StringName, radius: float) -> void:
 	visuals.append([kind, radius])
+
+
+var projectiles: Array = []    ## [種類, 傷害](v2.4 擊掌連打)
+
+
+func ability_projectile(kind: StringName, damage: int) -> void:
+	projectiles.append([kind, damage])

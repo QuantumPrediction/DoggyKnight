@@ -30,6 +30,11 @@ trap 'rm -rf "$IMPORT_LOG" "$TEST_LOG" "$TEST_DATA_HOME"' EXIT
 echo "== 匯入資源 =="
 timeout "$TIMEOUT" "$GODOT" --headless --path . --import >"$IMPORT_LOG" 2>&1
 import_status=$?
+# 新加入的資源互相引用時,第一次匯入可能因次序報錯(例如主題引用尚未匯入的圖);再匯入一次。
+if [ "$import_status" -eq 0 ] && grep -qE "SCRIPT ERROR|Parse Error|non-existent resource" "$IMPORT_LOG"; then
+	timeout "$TIMEOUT" "$GODOT" --headless --path . --import >"$IMPORT_LOG" 2>&1
+	import_status=$?
+fi
 if [ "$import_status" -ne 0 ]; then
 	cat "$IMPORT_LOG"
 	echo "匯入失敗(代碼 $import_status)。" >&2

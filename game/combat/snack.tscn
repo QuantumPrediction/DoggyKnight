@@ -1,0 +1,12 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/combat/snack.gd" id="1_snack"]
+[ext_resource type="SpriteFrames" path="res://assets/fx/snack/snack_frames.tres" id="2_frames"]
+
+[node name="Snack" type="Node2D" groups=["snack"]]
+script = ExtResource("1_snack")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_frames")
+animation = &"default"
+autoplay = "default"
