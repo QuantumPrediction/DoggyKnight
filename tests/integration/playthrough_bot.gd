@@ -11,7 +11,8 @@ extends Node
 ## 加截圖(需要畫面):
 ##   xvfb-run -a godot --path . --rendering-driver opengl3 --audio-driver Dummy \
 ##     res://tests/integration/playthrough_bot.tscn -- --shots=/tmp/playthrough_shots
-## 其他參數:--speed=4(倍速,預設 4)、--seed=7
+## 其他參數:--speed=4(倍速,預設 4)、--seed=7、--chapter=2(v2.6:玩第幾章,預設 1;會先把前面的章當作已通關)、
+##   --hard(困難模式)
 
 const SAVE_PATH: String = "user://playthrough_bot_save.json"
 const TIMEOUT_MS: int = 600000
@@ -23,6 +24,8 @@ var flow: FlowMain
 var shots_dir: String = ""
 var speed: float = 4.0
 var rng_seed: int = 7
+var chapter: int = 1
+var hard: bool = false
 
 var _downs: int = 0
 var _ultimates: int = 0
@@ -41,6 +44,10 @@ func _ready() -> void:
 			speed = float(arg.trim_prefix("--speed="))
 		elif arg.begins_with("--seed="):
 			rng_seed = int(arg.trim_prefix("--seed="))
+		elif arg.begins_with("--chapter="):
+			chapter = clampi(int(arg.trim_prefix("--chapter=")), 1, 3)
+		elif arg == "--hard":
+			hard = true
 	if not shots_dir.is_empty():
 		DirAccess.make_dir_recursive_absolute(shots_dir)
 	_run()
@@ -58,6 +65,12 @@ func _run() -> void:
 	EventBus.level_started.connect(func(_id: StringName) -> void: _level_clock = 0.0)
 	await _frames(10)
 	await _shot("00_title")
+	# 標題畫面在 new_game_pressed 之前設定章與難度(DEV_PLAN 4.11、4.13);機器人直接設定。
+	GameState.chapters_cleared = maxi(GameState.chapters_cleared, chapter - 1)
+	GameState.chapter_cleared = GameState.chapter_cleared or chapter > 1 or hard
+	GameState.chapter = chapter
+	GameState.difficulty = &"hard" if hard else &"normal"
+	print("== 第 %d 章%s ==" % [chapter, "(困難)" if hard else ""])
 	flow.get_screen().emit_signal(&"new_game_pressed")
 	Engine.time_scale = speed
 	var started := Time.get_ticks_msec()
