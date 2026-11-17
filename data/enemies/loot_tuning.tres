@@ -6,6 +6,10 @@
 script = ExtResource("1_loot")
 guaranteed_chests = {
 &"black_knight": 2,
+&"gargoyle_elite": 2,
+&"green_knight": 2,
+&"morgana": 2,
+&"phantom_knight": 2,
 &"scarecrow_captain": 2,
 &"scarecrow_elite": 1
 }
@@ -26,6 +30,10 @@ dig_snack_bonus = 0.5
 snack_chance_max = 0.85
 guaranteed_snacks = {
 &"black_knight": 5,
+&"gargoyle_elite": 3,
+&"green_knight": 5,
+&"morgana": 6,
+&"phantom_knight": 3,
 &"scarecrow_captain": 3,
 &"scarecrow_elite": 2
 }

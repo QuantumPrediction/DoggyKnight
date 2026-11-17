@@ -103,6 +103,16 @@ func test_green_knight_hat_off_at_half_then_faster_double_whip_and_kneels_when_d
 	assert_eq(_count_in(arena.get_ground_layer(), LeafHat), 1, "葉子帽掉在地上")
 	await wait_until(func() -> bool: return gk.phase != GreenKnightBoss.Phase.HAT_OFF, 120)
 	assert_almost_eq(gk._speed_mult() / speed1, 1.25, 0.01, "之後速度 +25%")
+	# C 線的沒戴帽子版本(<動畫>_bare):有就播,沒有就播原本的。
+	var frames := gk.sprite.sprite_frames.duplicate() as SpriteFrames
+	if not frames.has_animation(&"idle_bare"):
+		frames.add_animation(&"idle_bare")
+		frames.add_frame(&"idle_bare", frames.get_frame_texture(&"idle", 0))
+	gk.sprite.sprite_frames = frames
+	assert_eq(gk.bare_animation(&"idle"), &"idle_bare", "帽子掉了:播 idle_bare")
+	assert_eq(gk.bare_animation(&"hat_off"), &"hat_off", "沒有 _bare 版本就播原本的")
+	gk._play(&"idle", true)
+	assert_eq(gk.sprite.animation, &"idle_bare")
 	assert_eq(gk.current_thorn_count(), gk.thorn_count_phase2)
 	assert_true(gk.current_thorn_count() <= 12)
 	gk.set_physics_process(false)

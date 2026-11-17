@@ -13,6 +13,8 @@ extends BossBase
 ## 半血:播 hat_off——葉子帽掉到地上(LeafHat,可愛、不是受傷),停下來笑一下(無敵、鏡頭震動、手機震動),
 ##   之後速度 +25%(phase2_speed_mult)、藤鞭連續兩次。
 ## 倒下:單膝跪下(down),留在場上笑著(DefeatPose),叫來的稻草人兵一起倒下。
+## 帽子掉下之後,有 `<動畫>_bare`(C 線的沒戴帽子版本:idle_bare、run_bare、attack_bare、hurt_bare、
+## whip_bare、summon_bare)就播那個,沒有就播原本的動畫(_play 統一處理)。
 
 enum Phase { INTRO, IDLE, CHASE, WHIP_TELL, WHIP_RECOVER, THORN_TELL, THORN_RECOVER, SUMMON_TELL,
 		SUMMON_RECOVER, HAT_OFF }
@@ -150,6 +152,19 @@ func _ai(delta: float) -> void:
 				_go_idle()
 
 
+## 帽子掉下之後改播 `<動畫>_bare`(有的話)。
+func _play(anim: StringName, restart: bool = false) -> void:
+	super(bare_animation(anim), restart)
+
+
+## anim 在現在的樣子(有沒有戴帽子)要播哪一個動畫。
+func bare_animation(anim: StringName) -> StringName:
+	if hat_on or sprite == null or sprite.sprite_frames == null:
+		return anim
+	var bare := StringName(String(anim) + "_bare")
+	return bare if sprite.sprite_frames.has_animation(bare) else anim
+
+
 # --- 選招 -----------------------------------------------------------------------
 
 func _next_move() -> void:
@@ -224,7 +239,8 @@ func _lash() -> void:
 	_phase_left = rest(whip_recover) * (0.5 if _whips_left > 0 else 1.0)
 	if sprite != null:
 		sprite.position = _sprite_base_offset
-		sprite.play(&"whip")
+		_play(&"whip")
+		sprite.play()
 	var end := global_position + _whip_dir * _whip_len
 	for victim in victims():
 		if EnemyProjectile.segment_distance(global_position, end, victim.global_position) <= whip_width * 0.5 + radius_of(victim):

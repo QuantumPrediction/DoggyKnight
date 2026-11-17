@@ -190,6 +190,8 @@ func _uses_separation() -> bool:
 
 func _on_died() -> void:
 	_leaves_done = false
+	_flash_left = 0.0
+	_set_flash(0.0)
 	_play(&"down", true)
 	CombatFx.particles(self, &"footstep_dust", global_position + Vector2(0, 4), true)
 
