@@ -1,6 +1,6 @@
 # 美術規格表(給美術師或 AI 繪圖用)
 
-更新:2026-11-17。由整合工作階段從專案檔案自動整理。**換圖規則**:檔案放回同一路徑、同一尺寸、同一動畫格數與次序;程式不用改。全部只畫朝右(朝左由程式鏡像)。像素圖不可有半透明模糊邊(粒子特效除外);每格角色的腳底位置要一致。
+更新:2026-11-17(v2.5 重畫後)。由整合工作階段從專案檔案自動整理。**換圖規則**:檔案放回同一路徑、同一尺寸、同一動畫格數與次序;程式不用改。全部只畫朝右(朝左由程式鏡像)。像素圖不可有半透明模糊邊(粒子特效除外);每格角色的腳底位置要一致。
 
 ## 風格
 
@@ -14,25 +14,25 @@
 | 檔案 | 每格尺寸 | 動畫(名稱與格數) |
 | --- | --- | --- |
 | `assets/fx/arrow/arrow.png` | 16x16 | default 2格(循環) |
-| `assets/fx/dizzy_stars/dizzy_stars.png` | 16x10 | default 6格(循環) |
-| `assets/fx/dust/dust.png` | 8x8 | default 4格 |
+| `assets/fx/dizzy_stars/dizzy_stars.png` | 20x12 | default 6格(循環) |
+| `assets/fx/dust/dust.png` | 12x12 | default 4格 |
 | `assets/fx/exp_orb/exp_orb.png` | 12x12 | default 6格(循環) |
-| `assets/fx/hit_spark/hit_spark.png` | 16x16 | default 4格 |
+| `assets/fx/hit_spark/hit_spark.png` | 20x20 | default 4格 |
 | `assets/fx/pitchfork/pitchfork.png` | 16x16 | default 4格(循環) |
 | `assets/fx/slash/slash.png` | 32x32 | default 4格 |
 | `assets/fx/snack/snack.png` | 8x8 | default 2格(循環) |
 | `assets/fx/sword_wave/sword_wave.png` | 24x24 | default 3格(循環) |
 | `assets/fx/ultimate_slash/ultimate_slash.png` | 64x64 | default 6格 |
-| `assets/sprites/armored_husk/armored_husk.png` | 24x24 | idle 2格(循環)、run 4格(循環)、attack 3格、hurt 1格、dash 2格(循環)、down 1格 |
-| `assets/sprites/black_knight/black_knight.png` | 48x48 | idle 4格(循環)、run 6格(循環)、attack 4格、hurt 2格、charge 3格(循環)、slam 4格、down 2格 |
-| `assets/sprites/bulldog/bulldog.png` | 24x24 | idle 4格(循環)、run 6格(循環)、attack 4格、hurt 2格、guard 2格(循環)、victory 4格(循環) |
+| `assets/sprites/armored_husk/armored_husk.png` | 32x32 | idle 4格(循環)、run 6格(循環)、attack 3格、hurt 1格、dash 2格(循環)、down 1格 |
+| `assets/sprites/black_knight/black_knight.png` | 64x64 | idle 4格(循環)、run 6格(循環)、attack 4格、hurt 2格、charge 3格(循環)、slam 4格、down 2格 |
+| `assets/sprites/bulldog/bulldog.png` | 32x32 | idle 4格(循環)、run 6格(循環)、attack 4格、hurt 2格、guard 2格(循環)、victory 4格(循環) |
 | `assets/sprites/chest/chest.png` | 24x24 | idle 2格(循環)、open 3格 |
-| `assets/sprites/crow/crow.png` | 16x16 | idle 4格(循環)、run 6格(循環)、attack 4格、hurt 2格 |
-| `assets/sprites/goldie/goldie.png` | 24x24 | idle 6格(循環)、run 6格(循環)、attack 4格、hurt 2格、sleep 2格(循環)、victory 4格(循環) |
-| `assets/sprites/merlin/merlin.png` | 24x24 | idle 2格(循環)、run 4格(循環)、cast 3格 |
-| `assets/sprites/scarecrow/scarecrow.png` | 24x24 | idle 4格(循環)、run 6格(循環)、attack 4格、hurt 2格 |
-| `assets/sprites/scarecrow_archer/scarecrow_archer.png` | 24x24 | idle 2格(循環)、run 4格(循環)、attack 3格、hurt 1格、aim 2格(循環) |
-| `assets/sprites/scarecrow_captain/scarecrow_captain.png` | 32x32 | idle 2格(循環)、run 4格(循環)、attack 3格、hurt 1格、throw 3格、rally 2格(循環)、down 1格 |
+| `assets/sprites/crow/crow.png` | 24x24 | idle 4格(循環)、run 6格(循環)、attack 4格、hurt 2格 |
+| `assets/sprites/goldie/goldie.png` | 32x32 | idle 6格(循環)、run 6格(循環)、attack 4格、hurt 2格、sleep 2格(循環)、victory 4格(循環) |
+| `assets/sprites/merlin/merlin.png` | 32x32 | idle 4格(循環)、run 6格(循環)、cast 3格 |
+| `assets/sprites/scarecrow/scarecrow.png` | 32x32 | idle 4格(循環)、run 6格(循環)、attack 4格、hurt 2格 |
+| `assets/sprites/scarecrow_archer/scarecrow_archer.png` | 32x32 | idle 4格(循環)、run 6格(循環)、attack 3格、hurt 1格、aim 2格(循環) |
+| `assets/sprites/scarecrow_captain/scarecrow_captain.png` | 48x48 | idle 4格(循環)、run 6格(循環)、attack 3格、hurt 1格、throw 3格、rally 2格(循環)、down 1格 |
 
 圖表排列:每一列是一個動畫(依上表次序),每一欄是一格;對應的 `_frames.tres` 由 `tools/pixel/` 重新產生,或請整合工作階段依新圖表更新。
 
