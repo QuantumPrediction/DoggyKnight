@@ -3,8 +3,11 @@
 assets/story/<id>.png, 160x120, opaque, palette colours only. Same storybook framing as v2.3 (soft
 printed-page rim), but the v2.6 look: clean colour bands instead of noisy dither, the v2.5 sprites for
 Goldie, Bedivere and Merlin, and recoloured Goldie sprites for the new dogs (Lancelot the shiba,
-the white samoyed Lady of the Lake, Morgana the red fox in her violet cloak). The Green Knight is
-painted here as a big friendly hedge with a round leafy hat.
+the white samoyed Lady of the Lake, Morgana the red fox in her violet cloak, the Green Knight) come from
+the C 角色 rig (art_v26_cast: the same frames as assets/sprites/<id>/), rendered here with poses chosen
+for each page. Only Goldie, Lancelot and Bedivere carry weapons, and only where the scene wants them;
+Morgana carries her crescent staff (it lies on the floor in c3_ending_1); the other knights and the
+Green Knight are empty-pawed.
 
     python3 tools/pixel/art_v26_story.py [ids...] [--preview DIR]
 """
@@ -20,6 +23,7 @@ sys.dont_write_bytecode = True
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import art_story as S  # noqa: E402
+import art_v26_cast as C  # noqa: E402
 import art_v25_bulldog  # noqa: E402
 import art_v25_goldie  # noqa: E402
 import art_v25_knights  # noqa: E402
@@ -43,6 +47,9 @@ def sprites() -> dict:
         _CACHE["goldie"] = art_v25_goldie.goldie_v25()
         _CACHE["bulldog"] = art_v25_bulldog.bulldog_v25()
         _CACHE["merlin"] = art_v25_knights.merlin_v25()
+        _CACHE["lancelot"] = C.lancelot()
+        _CACHE["lady"] = C.lady_lake()
+        _CACHE["morgana"] = C.morgana()
     return _CACHE
 
 
@@ -61,11 +68,37 @@ MORGANA = {"gold_l": "orange", "gold": "gold_d", "gold_d": "brown", "brown": "br
 
 
 def dog(kind: str, anim: str = "idle", i: int = 0, flip: bool = False) -> Canvas:
-    if kind in ("goldie", "bulldog", "merlin"):
-        img = frame(kind, anim, i)
-    else:
-        img = S.recolor(frame("goldie", anim, i), {"lancelot": LANCELOT, "lady": LADY, "morgana": MORGANA}[kind])
+    """A frame of the game's own sprites (goldie, bulldog, merlin, lancelot, lady, morgana)."""
+    img = frame(kind, anim, i)
     return img.flipped() if flip else img
+
+
+def goldie_free(eyes: str = "happy", mouth: str = "smile", paw_up: bool = False, run: int = -1, bob: int = 0,
+                pal: dict | None = None) -> Canvas:
+    """Goldie (or a recoloured knight) without the sword: standing, waving / stretching, or running."""
+    kw: dict = dict(eyes=eyes, mouth=mouth, sword_on=False, bob=bob)
+    if paw_up:
+        kw.update(arm_to=(20.5, 12.5), ear_dy=-1, cape_lift=0.3, tail_ang=100)
+    if run >= 0:
+        legs = [((0, -3.0), (0, 3.0)), ((1, -1.5), (0, 1.0)), ((3, 0.5), (0, -1.5)),
+                ((0, 3.0), (0, -3.0)), ((0, 1.0), (1, -1.5)), ((0, -1.5), (3, 0.5))][run % 6]
+        kw.update(lean=0.5, legs=legs, cape_lift=0.8, tail_ang=140, mouth="tongue")
+    img = art_v25_goldie.goldie_frame(**kw).render()
+    return S.recolor(img, pal) if pal else img
+
+
+def stick(c: Canvas, x: int, y: int, ln: int = 14, slope: int = 7) -> None:
+    """A fetch stick (brown twig with a leaf)."""
+    for k in range(ln):
+        c.set(x + k, y + k // slope, "brown" if k % 4 else "gold_d")
+        c.set(x + k, y + 1 + k // slope, "brown_d")
+    c.set(x + ln - 3, y - 1 + (ln - 3) // slope, "leaf")
+    c.set(x + ln - 2, y - 1 + (ln - 2) // slope, "leaf_l")
+
+
+def green_knight_real(face: str = "happy") -> Canvas:
+    """The Green Knight from the C 角色 rig, empty-handed (no vine whip): 64x64."""
+    return C.gk_frame(face=face, whip=None, hat_tilt=4).render()
 
 
 def page(base: str) -> Canvas:
@@ -226,8 +259,8 @@ def c2_ending_1() -> Canvas:
     hedge = AW.hedge_strip(W, 2301, flowers=["red", "pink", "white", "yellow", "lilac"], flower_every=2, h=16)
     c.blit(hedge, 0, 44)
     AW.sprinkle_flowers(c, (0, 62, W, H), 70, 2302, ["red", "pink", "white", "yellow", "lilac"])
-    gk = green_knight()
-    c.blit(gk, 56, 40)
+    gk = green_knight_real("happy")
+    c.blit(gk, 48, 36)
     sparkle_burst(c, 78, 50, 46, 2303, 44, cols=("white", "lilac", "yellow"))
     for (x, y) in ((34, 30), (122, 26), (100, 54), (52, 60)):
         P.star4(c, x, y, "lilac", 2, "white")
@@ -249,10 +282,10 @@ def c2_ending_2() -> Canvas:
              "red_d": "plum", "coral": "lilac", "wine": "plum"}]
     xs = [8, 34, 100, 126]
     for i, x in enumerate(xs):
-        img = S.recolor(frame("goldie", "victory", 1 + i % 2), furs[(i + 1) % len(furs)])
+        img = goldie_free(eyes="blink" if i % 2 else "happy", mouth="open", paw_up=True, pal=furs[(i + 1) % len(furs)])
         c.blit(img.flipped() if x > 80 else img, x, 48 + (i % 2) * 3)
     c.blit(dog("bulldog", "victory", 1), 40, 58)
-    c.blit(dog("lancelot", "victory", 2, True), 90, 58)
+    c.blit(dog("lancelot", "idle", 2, True), 90, 58)
     c.blit(dog("goldie", "victory", 1), 64, 52)
     for k in range(40):
         rng = random.Random(2400 + k)
@@ -403,7 +436,7 @@ def c3_prologue_2() -> Canvas:
         for x in range(80 - 16 + k * 2, 80 + 16 - k * 2):
             if (x + k) % 3 == 0:
                 c.set(x, y, "sky_l")
-    lady = dog("lady", "victory", 1)
+    lady = dog("lady", "cast", 1)
     c.blit(lady.scaled(2), 48, 26)
     for (x, y) in ((40, 40), (118, 36), (60, 22), (104, 20), (34, 70), (126, 66)):
         P.star4(c, x, y, "sky_l", 1, "white")
@@ -430,19 +463,17 @@ def c3_ending_1() -> Canvas:
     c.blit(K.crenels(W, 9, 6, 9, ("slate", "ash", "fog"), "navy"), 0, 62)
     for x in range(W):
         c.set(x, 72, "slate")
-    mor = dog("morgana", "hurt", 1, True)
-    c.blit(mor.scaled(2), 92, 52)
-    # the dropped crescent staff
-    for k in range(26):
-        c.set(70 + k, 106 - k // 6, "brown")
-    for (x, y) in P.ellipse(98, 101, 4, 4) - P.ellipse(100, 100, 3.5, 3.5):
-        c.set(x, y, "yellow")
-    gol = dog("goldie", "idle", 0)
-    c.blit(gol.scaled(2), 22, 54)
-    # the stick in Goldie's mouth
-    for k in range(14):
-        c.set(66 + k, 76 + k // 7, "brown" if k % 4 else "brown_d")
-    c.set(80, 78, "leaf")
+    mor = C.morgana_down(1).flipped()
+    c.blit(mor, 86, 46)
+    gol = goldie_free(eyes="happy", mouth="smile")
+    c.blit(gol.scaled(2), 20, 52)
+    # the stick in Goldie's mouth, offered to Morgana
+    for k in range(22):
+        y = 76 + k // 11
+        c.set(56 + k, y, "brown" if k % 5 else "gold_d")
+        c.set(56 + k, y + 1, "brown_d")
+    c.set(76, 75, "leaf")
+    c.set(77, 75, "leaf_l")
     T.sun_glow(c, 132, 58, rings=((5, "white"), (9, "cream")), only=("peach", "rose", "cream"))
     S.vignette(c, density=0.4)
     return c
@@ -457,12 +488,12 @@ def c3_ending_2() -> Canvas:
             if abs(x - 80) < 8 + y * 0.4 and AW.name_at(c, x, y) in ("brown", "brown_d", "gold_d"):
                 c.set(x, y, K.lt(AW.name_at(c, x, y)))
     round_table(c, 80, 92, 64, 16)
-    xs = [(6, {}), (30, LANCELOT), (104, MORGANA), (128, LADY)]
-    for i, (x, pal) in enumerate(xs):
-        img = S.recolor(frame("goldie", "idle", i % 2), pal) if pal else frame("bulldog", "victory", 1)
-        c.blit(img.flipped() if x > 80 else img, x, 56)
-    c.blit(dog("merlin", "cast", 1, True), 104, 40)
-    gol = dog("goldie", "victory", 1)
+    c.blit(dog("merlin", "idle", 1), 2, 44)
+    c.blit(dog("bulldog", "victory", 1), 10, 58)
+    c.blit(dog("lancelot", "idle", 0), 34, 56)
+    c.blit(dog("morgana", "idle", 0, True), 100, 26)
+    c.blit(dog("lady", "idle", 1, True), 90, 58)
+    gol = goldie_free(eyes="happy", mouth="smile")
     c.blit(gol, 64, 48)
     crown = ["y.y.y", "yyyyy", "ygrgy"]
     c.stamp(crown, 74, 46, {"y": "yellow", "g": "gold", "r": "red"}, outline="brown_d")
@@ -491,10 +522,12 @@ def c3_ending_3() -> Canvas:
         c.set(70 + k, 30 - k // 3, "brown_d" if k % 3 else "brown")
     for k in range(6):
         c.set(56 + k * 2, 40 - k * 2, "cream")
-    cast = [("goldie", "run", 2, False, 54, 64), ("bulldog", "run", 1, False, 22, 72), ("lancelot", "run", 3, False, 86, 76),
-            ("morgana", "run", 0, True, 112, 70), ("lady", "idle", 1, True, 130, 82), ("merlin", "cast", 1, True, 2, 84)]
-    for (kind, anim, i, flip, x, y) in cast:
-        c.blit(dog(kind, anim, i, flip), x, y)
+    c.blit(goldie_free(run=2), 54, 64)
+    c.blit(dog("bulldog", "run", 1), 22, 74)
+    c.blit(dog("lancelot", "run", 3), 84, 76)
+    c.blit(dog("morgana", "idle", 1, True), 98, 52)
+    c.blit(dog("lady", "idle", 1, True), 132, 82)
+    c.blit(dog("merlin", "idle", 1), 2, 84)
     S.vignette(c, density=0.35)
     return c
 
