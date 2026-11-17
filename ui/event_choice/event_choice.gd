@@ -158,6 +158,9 @@ func _make_card(opt: Dictionary, index: int) -> Button:
 	var text_x := 61.0
 	var text_w := CARD_SIZE.x - text_x - 5.0
 	var tone_key := "UI_EVENT_MORGANA" if morgana else ("UI_EVENT_MERLIN" if tone == &"merlin" else "")
+	# v2.6:第三章梅林被抓走了,祝福改由湖中仙女給(docs/STORY.md 第 13 節)
+	if tone_key == "UI_EVENT_MERLIN" and GameState.mode == &"story" and GameState.chapter == 3:
+		tone_key = "UI_EVENT_LADY"
 	var tone_label := UiKit.label(tr(tone_key) if tone_key != "" else "", soft, HORIZONTAL_ALIGNMENT_LEFT)
 	tone_label.name = "Tone"
 	tone_label.position = Vector2(text_x, 3)

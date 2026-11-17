@@ -100,11 +100,14 @@ func test_every_new_enemy_can_be_defeated() -> void:
 func test_chapter_multipliers_stack_with_the_level_ramp_in_story_mode_only() -> void:
 	var scaling := DifficultyScaling.get_default()
 	assert_eq(scaling.chapter_hp_mult.size(), 3)
-	for i in 3:
-		assert_almost_eq(scaling.chapter_hp(i + 1), [1.0, 1.3, 1.6][i], 0.001, "第 %d 章生命倍率" % (i + 1))
+	# 倍率由整合工作階段依試玩調整,從資料讀取(第一章固定 ×1.0,之後每章遞增)
+	assert_almost_eq(scaling.chapter_hp(1), 1.0, 0.001, "第一章生命 ×1.0")
 	assert_almost_eq(scaling.chapter_damage(1), 1.0, 0.001, "第一章傷害 ×1.0")
-	assert_almost_eq(scaling.chapter_damage(2), 1.2, 0.001, "第二章傷害 ×1.2")
-	assert_almost_eq(scaling.chapter_damage(3), 1.4, 0.001, "第三章傷害 ×1.4")
+	for i in range(2, 4):
+		assert_true(scaling.chapter_hp(i) > scaling.chapter_hp(i - 1), "第 %d 章生命倍率遞增" % i)
+		assert_true(scaling.chapter_damage(i) > scaling.chapter_damage(i - 1), "第 %d 章傷害倍率遞增" % i)
+	var hp3 := scaling.chapter_hp(3)
+	var dmg3 := scaling.chapter_damage(3)
 	make_arena()
 	GameState.level_index = 2
 	var ramp_hp := scaling.hp_ramp_by_level[2]
@@ -113,15 +116,16 @@ func test_chapter_multipliers_stack_with_the_level_ramp_in_story_mode_only() -> 
 	assert_eq(c1.max_hp, roundi(25 * ramp_hp), "第一章:只有每關的遞增")
 	GameState.chapter = 3
 	var c3 := spawn(&"scarecrow", Vector2(140, 100))
-	assert_eq(c3.max_hp, roundi(25 * ramp_hp * 1.6), "第三章:章倍率 × 每關遞增")
-	assert_eq(c3.data.contact_damage, roundi(8 * ramp_dmg * 1.4))
+	assert_eq(c3.max_hp, roundi(25 * ramp_hp * hp3), "第三章:章倍率 × 每關遞增")
+	assert_eq(c3.data.contact_damage, roundi(8 * ramp_dmg * dmg3))
 	var boss := spawn(&"green_knight", Vector2(90, 140))
-	assert_eq(boss.max_hp, roundi(700 * ramp_hp * 1.6), "頭目也套用章倍率")
-	assert_eq(boss.scaled_damage(10), roundi(10 * ramp_dmg * 1.4), "不在資料檔的傷害也套用")
+	var boss_base := (load("res://data/enemies/green_knight.tres") as EnemyData).max_hp
+	assert_eq(boss.max_hp, roundi(boss_base * ramp_hp * hp3), "頭目也套用章倍率")
+	assert_eq(boss.scaled_damage(10), roundi(10 * ramp_dmg * dmg3), "不在資料檔的傷害也套用")
 	GameState.difficulty = &"hard"
 	var hard := spawn(&"scarecrow", Vector2(40, 200))
 	var hard_mode := scaling.mode(&"hard")
-	assert_eq(hard.max_hp, roundi(25 * hard_mode.hp_mult * ramp_hp * 1.6), "和困難模式也相乘")
+	assert_eq(hard.max_hp, roundi(25 * hard_mode.hp_mult * ramp_hp * hp3), "和困難模式也相乘")
 	GameState.difficulty = &"normal"
 	GameState.mode = &"endless"
 	var endless := spawn(&"scarecrow", Vector2(140, 200))
