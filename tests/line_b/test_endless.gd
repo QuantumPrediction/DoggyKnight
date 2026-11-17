@@ -100,7 +100,7 @@ func test_endless_run_goes_on_and_records_best() -> void:
 	assert_eq(started.last_args(), [&"endless"])
 	assert_eq(read_save()["level_index"], 0, "故事進度不受影響")
 	assert_true(await wait_until(func() -> bool:
-		if flow.is_choice_open():
+		if flow.is_trick_choice_open():
 			EventBus.trick_chosen.emit(flow.progression.get_current_offer()[0].id)
 		elif flow.state == FlowMain.State.LEVEL:
 			flow.get_arena().call(&"debug_kill_all")
@@ -134,7 +134,7 @@ func test_endless_event_every_ten_waves() -> void:
 	var offered := watch_signal(EventBus.event_offered)
 	assert_true(await _start_endless())
 	assert_true(await wait_until(func() -> bool:
-		if flow.is_choice_open():
+		if flow.is_trick_choice_open():
 			EventBus.trick_chosen.emit(flow.progression.get_current_offer()[0].id)
 		elif flow.state == FlowMain.State.LEVEL and not flow.is_event_open():
 			flow.get_arena().call(&"debug_kill_all")

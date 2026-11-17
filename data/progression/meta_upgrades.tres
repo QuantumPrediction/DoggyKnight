@@ -9,8 +9,8 @@ id = &"vitality"
 name_key = "TRAINING_VITALITY_NAME"
 desc_key = "TRAINING_VITALITY_DESC"
 max_level = 5
-costs = Array[int]([15, 30, 50, 80, 120])
-per_level = 0.08
+costs = Array[int]([10, 20, 35, 55, 80])
+per_level = 0.1
 stat = &"max_vigor"
 
 [sub_resource type="Resource" id="up_strength"]
@@ -19,8 +19,8 @@ id = &"strength"
 name_key = "TRAINING_STRENGTH_NAME"
 desc_key = "TRAINING_STRENGTH_DESC"
 max_level = 5
-costs = Array[int]([20, 35, 55, 85, 130])
-per_level = 0.06
+costs = Array[int]([10, 20, 35, 55, 80])
+per_level = 0.08
 stat = &"attack_damage"
 
 [sub_resource type="Resource" id="up_agility"]
@@ -29,8 +29,8 @@ id = &"agility"
 name_key = "TRAINING_AGILITY_NAME"
 desc_key = "TRAINING_AGILITY_DESC"
 max_level = 5
-costs = Array[int]([15, 30, 50, 80, 120])
-per_level = 0.04
+costs = Array[int]([8, 16, 28, 45, 65])
+per_level = 0.05
 stat = &"move_speed"
 
 [sub_resource type="Resource" id="up_loyalty"]
@@ -39,8 +39,8 @@ id = &"loyalty"
 name_key = "TRAINING_LOYALTY_NAME"
 desc_key = "TRAINING_LOYALTY_DESC"
 max_level = 5
-costs = Array[int]([15, 30, 50, 80, 120])
-per_level = 0.08
+costs = Array[int]([8, 16, 28, 45, 65])
+per_level = 0.1
 stat = &""
 
 [sub_resource type="Resource" id="up_luck"]
@@ -49,8 +49,8 @@ id = &"luck"
 name_key = "TRAINING_LUCK_NAME"
 desc_key = "TRAINING_LUCK_DESC"
 max_level = 5
-costs = Array[int]([20, 35, 55, 85, 130])
-per_level = 0.1
+costs = Array[int]([12, 24, 40, 60, 90])
+per_level = 0.15
 stat = &""
 
 [resource]

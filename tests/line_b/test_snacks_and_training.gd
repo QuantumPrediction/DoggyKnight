@@ -33,9 +33,9 @@ func test_meta_upgrade_table_matches_the_contract() -> void:
 func test_purchase_spends_snacks_and_emits_snacks_changed() -> void:
 	var table := MetaUpgradeTable.load_default()
 	var changed := watch_signal(EventBus.snacks_changed)
-	GameState.snacks = 10
+	GameState.snacks = 5
 	assert_false(table.purchase(&"strength"), "零食不夠")
-	assert_eq(GameState.snacks, 10)
+	assert_eq(GameState.snacks, 5)
 	GameState.snacks = 100
 	var cost := table.next_cost(&"strength")
 	assert_true(table.purchase(&"strength"))
@@ -148,7 +148,7 @@ func test_normal_chest_heals_or_gives_snacks() -> void:
 		elif GameState.snacks > snacks:
 			snacked += 1
 	assert_true(healed > 0 and snacked > 0, "回復與零食都會出現(%d / %d)" % [healed, snacked])
-	assert_false(flow.is_choice_open(), "普通寶箱不給把戲")
+	assert_false(flow.is_trick_choice_open(), "普通寶箱不給把戲")
 
 
 func test_elite_chest_offers_a_trick_choice() -> void:
@@ -158,14 +158,14 @@ func test_elite_chest_offers_a_trick_choice() -> void:
 	var offered := watch_signal(EventBus.trick_offered)
 	GameState.snacks = 0
 	EventBus.chest_collected.emit(1)
-	assert_true(flow.is_choice_open(), "精英寶箱:把戲三選一")
+	assert_true(flow.is_trick_choice_open(), "精英寶箱:把戲三選一")
 	assert_true(get_tree().paused)
 	await wait_frames(1)
 	assert_eq(offered.count, 1)
 	assert_eq(GameState.snacks, _economy().chest_snack_amount(1))
 	var options: Array = offered.last_args()[0]
 	EventBus.trick_chosen.emit((options[0] as TrickData).id)
-	assert_false(flow.is_choice_open())
+	assert_false(flow.is_trick_choice_open())
 	assert_false(get_tree().paused)
 	assert_eq(flow.progression.tricks_this_level.size(), 1)
 

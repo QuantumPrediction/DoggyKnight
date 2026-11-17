@@ -300,7 +300,15 @@ func get_hud() -> Node:
 	return _hud
 
 
+## 目前要玩家選擇的介面:平常是把戲選擇;v2.4 抉擇事件開著時傳回事件介面(有 choose(index),
+## 讓只會「點第一張卡」的試玩機器人與整合測試也能繼續)。只要把戲選擇介面:get_trick_choice_ui()。
 func get_trick_choice() -> Node:
+	if _event_open and _event_ui != null and is_instance_valid(_event_ui):
+		return _event_ui
+	return _trick_choice
+
+
+func get_trick_choice_ui() -> Node:
 	return _trick_choice
 
 
@@ -324,8 +332,15 @@ func is_pause_open() -> bool:
 	return _pause_open
 
 
+## 正在選擇(升級或寶箱的把戲三選一,或 v2.4 的抉擇事件;遊戲暫停中)。
+## 只問把戲:is_trick_choice_open();只問事件:is_event_open()。
 func is_choice_open() -> bool:
+	return _choice_open or _event_open
+
+
+func is_trick_choice_open() -> bool:
 	return _choice_open
+
 
 
 ## 正在轉場(由按下按鈕到新畫面完全露出)。

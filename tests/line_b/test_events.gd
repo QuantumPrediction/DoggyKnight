@@ -9,11 +9,11 @@ const LEVELS: Array[String] = [
 
 func _wait_event() -> bool:
 	return await wait_until(func() -> bool:
-		if flow.state == FlowMain.State.LEVEL and not flow.is_event_open() and not flow.is_choice_open():
+		if flow.state == FlowMain.State.LEVEL and not flow.is_event_open() and not flow.is_trick_choice_open():
 			var arena := flow.get_arena()
 			if arena != null:
 				arena.call(&"debug_kill_all")
-		if flow.is_choice_open():
+		if flow.is_trick_choice_open():
 			var offer := flow.progression.get_current_offer()
 			if not offer.is_empty():
 				EventBus.trick_chosen.emit(offer[0].id)
@@ -74,7 +74,11 @@ func test_event_appears_between_waves_and_pauses_until_chosen() -> void:
 	await wait_frames(5)
 	assert_true(flow.is_event_open(), "有介面時不會自動選")
 	GameState.vigor = 5
-	EventBus.event_chosen.emit(&"sword_glow", 0)
+	# 只會「點第一張卡」的試玩機器人:is_choice_open() 與 get_trick_choice() 也涵蓋事件
+	assert_true(flow.is_choice_open())
+	assert_false(flow.is_trick_choice_open())
+	assert_eq(flow.get_trick_choice(), flow.get_event_ui())
+	flow.get_trick_choice().call(&"choose", 0)
 	assert_false(flow.is_event_open())
 	assert_false(get_tree().paused)
 	assert_eq(GameState.vigor, GameState.player_stats.max_vigor, "梅林:活力回滿")
@@ -119,7 +123,7 @@ func test_event_waits_for_trick_choice_and_can_give_tricks() -> void:
 	# 正在選把戲時事件排隊
 	flow.progression.offer_bonus_choice(1)
 	await wait_frames(1)
-	assert_true(flow.is_choice_open())
+	assert_true(flow.is_trick_choice_open())
 	var event := LevelEventTable.load_default().get_event(&"sausage")
 	flow.level_events.offer(event)
 	assert_false(flow.is_event_open(), "把戲選完才出現")
@@ -128,7 +132,7 @@ func test_event_waits_for_trick_choice_and_can_give_tricks() -> void:
 	assert_true(get_tree().paused)
 	EventBus.event_chosen.emit(&"sausage", 0)
 	assert_false(flow.is_event_open())
-	assert_true(flow.is_choice_open(), "梅林:馬上學一個把戲(遊戲維持暫停)")
+	assert_true(flow.is_trick_choice_open(), "梅林:馬上學一個把戲(遊戲維持暫停)")
 	assert_true(get_tree().paused)
 	await wait_frames(1)
 	EventBus.trick_chosen.emit(flow.progression.get_current_offer()[0].id)

@@ -154,7 +154,7 @@ func _auto_step() -> void:
 	if flow.is_event_open():
 		EventBus.event_chosen.emit(flow.get_open_event_id(), 0)
 		return
-	if flow.is_choice_open():
+	if flow.is_trick_choice_open():
 
 		var offer := flow.progression.get_current_offer()
 		if not offer.is_empty():
