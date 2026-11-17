@@ -183,6 +183,6 @@ options = Array[ExtResource("3_option")]([SubResource("moon_pool_merlin"), SubRe
 [resource]
 script = ExtResource("1_table")
 events = Array[ExtResource("2_event")]([SubResource("sword_glow"), SubResource("wheat_cart"), SubResource("sausage"), SubResource("purple_feather"), SubResource("crow_whisper"), SubResource("bridge_mist"), SubResource("star_shower"), SubResource("moon_pool")])
-level_events = {&"1-1": &"sword_glow", &"1-2": &"wheat_cart", &"1-3": &"sausage", &"1-4": &"purple_feather", &"1-5": &"crow_whisper", &"1-6": &"bridge_mist"}
+level_events = {&"1-1": &"sword_glow", &"1-2": &"wheat_cart", &"1-3": &"sausage", &"1-4": &"purple_feather", &"1-5": &"crow_whisper", &"1-6": &"bridge_mist", &"2-1": &"wheat_cart", &"2-2": &"sausage", &"2-3": &"crow_whisper", &"2-4": &"purple_feather", &"2-5": &"moon_pool", &"2-6": &"star_shower", &"3-1": &"bridge_mist", &"3-2": &"crow_whisper", &"3-3": &"star_shower", &"3-4": &"purple_feather", &"3-5": &"moon_pool", &"3-6": &"sword_glow"}
 after_wave = {}
 endless_pool = Array[StringName]([&"sword_glow", &"wheat_cart", &"sausage", &"purple_feather", &"crow_whisper", &"bridge_mist", &"star_shower", &"moon_pool"])
