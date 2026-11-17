@@ -5,12 +5,14 @@ extends Node
 ## 曲目檔:assets/music/<id>.wav(由 tools/pixel/music_gen.py 程式作曲、生成;QOA 壓縮匯入)。
 ## 找不到檔案時安靜略過,所以各線不必等 C 線。
 ##
-## - 循環曲目(title、field、boss、camp,v2.3 加 story:開場繪本、結局與預告)無縫循環;換曲時交叉淡入淡出。
+## - 循環曲目(title、field、boss、camp,v2.3 加 story:開場繪本、結局與預告;v2.6 加第二章 field_2、boss_2,
+##   第三章 field_3、boss_3)無縫循環;換曲時交叉淡入淡出。
 ## - 短曲(victory、fail、chapter_clear)只播一次,播完就安靜(不會自己接回原本的曲子)。
 ## - 遵守 GameState.music_on(切換後呼叫 Music.refresh())。暫停時繼續播放,可以壓低音量。
 ## - 可調數值(音量、壓低幅度、淡入淡出秒數、個別曲目微調)在 ui/audio/music_config.tres。
 
-const LOOPS: Array[StringName] = [&"title", &"field", &"boss", &"camp", &"story"]
+const LOOPS: Array[StringName] = [&"title", &"field", &"boss", &"camp", &"story", &"field_2", &"boss_2",
+		&"field_3", &"boss_3"]
 const JINGLES: Array[StringName] = [&"victory", &"fail", &"chapter_clear"]
 const CONFIG_PATH: String = "res://ui/audio/music_config.tres"
 const SILENT_DB: float = -60.0

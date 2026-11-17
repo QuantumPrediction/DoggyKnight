@@ -8,7 +8,7 @@ note:duration tokens on a 16th-note grid (see parse()):
     bass     NES-style 16-step triangle
     drums    k = kick, s = snare, h = closed hat, o = open hat, c = crash, t = tom, . = rest
 
-Loops (title, field, boss, camp, story) are rendered seamlessly: note tails and the echo
+Loops (title, field, boss, camp, story; v2.6 field_2, boss_2, field_3, boss_3) are rendered seamlessly: note tails and the echo
 wrap around from the end to the start, so the last sample flows into the first.
 Their .import files set Godot's WAV importer to Forward loop over the whole file and
 QOA compression. Jingles (victory, fail, chapter_clear) play once and end in silence.
@@ -499,9 +499,103 @@ def chapter_clear() -> Song:
                 lead2=_harmonise(lead, -5), lead2_gain=0.10)
 
 
+# --------------------------------------------------------------------------
+# v2.6 (CW5): chapter 2 and chapter 3 field and boss themes
+# --------------------------------------------------------------------------
+
+def field_2() -> Song:
+    """Chapter 2 (Camelot): a stately castle march in F major, 124 BPM, harpsichord-like arpeggios
+    and a snare-roll march beat. 16 bars."""
+    prog = [("F", 16), ("C", 16), ("Dm", 16), ("Bb", 16), ("F", 16), ("C", 16), ("Bb", 8), ("C", 8), ("F", 16),
+            ("Dm", 16), ("Bb", 16), ("F", 16), ("C", 16), ("Dm", 16), ("Bb", 16), ("Gm", 8), ("C", 8), ("F", 16)]
+    lead = """
+    C5:4 F5:4 A5:6 G5:2 | G5:4 E5:4 C5:8 | D5:2 E5:2 F5:4 A5:4 D6:4 | C6:6 Bb5:2 A5:4 F5:4 |
+    A5:4 C6:4 F6:6 E6:2 | D6:4 C6:4 G5:8 | Bb5:4 A5:2 G5:2 C6:4 Bb5:2 G5:2 | A5:12 r:4 |
+    F5:4 A5:4 D6:6 C6:2 | Bb5:4 F5:4 D5:8 | C5:2 D5:2 F5:4 A5:4 C6:4 | E6:6 D6:2 C6:4 G5:4 |
+    A5:4 F5:4 D5:4 F5:4 | D6:6 C6:2 Bb5:4 F5:4 | G5:4 Bb5:2 A5:2 G5:4 E5:4 | F5:8 C5:4 A4:4
+    """
+    harmony = arp(prog, 4, [0, 1, 2, 1], 2)
+    bass = bass_line(prog, 2, [(0, 4), (7, 4), (12, 4), (7, 4)])
+    bar = "k.h.s.h.k.k.s.h."
+    roll = "k.h.s.h.k.s.s.ss"
+    drums = (bar * 3 + roll) * 4
+    drums = "c" + drums[1:]
+    return Song(124, 16, 16, True, lead, harmony, bass, drums, lead_duty=0.25, harm_duty=0.125,
+                lead_gain=0.28, harm_gain=0.11, bass_gain=0.34, drum_gain=0.24, echo=0.25, echo_steps=3,
+                lead2=_harmonise(lead, -5), lead2_gain=0.06)
+
+
+def boss_2() -> Song:
+    """Chapter 2 boss (the Green Knight): a bouncy, playful E minor gallop, 150 BPM, dotted rhythms and
+    off-beat stabs - a duel that is also a game. 16 bars."""
+    prog = [("Em", 16), ("D", 16), ("C", 16), ("B7", 16), ("Em", 16), ("D", 16), ("C", 16), ("D", 16),
+            ("G", 16), ("D", 16), ("Em", 16), ("C", 16), ("Am", 16), ("D", 16), ("B7", 16), ("Em", 16)]
+    lead = """
+    E5:3 F#5:1 G5:3 A5:1 B5:4 G5:4 | A5:3 G5:1 F#5:3 E5:1 D5:4 F#5:4 | G5:3 A5:1 G5:3 E5:1 C5:4 E5:4 |
+    D#5:4 F#5:4 B5:6 A5:2 | G5:3 F#5:1 E5:3 F#5:1 G5:4 B5:4 | A5:3 B5:1 A5:3 F#5:1 D5:8 |
+    E5:2 G5:2 C6:4 B5:2 A5:2 G5:4 | F#5:4 A5:4 D6:8 | B5:3 A5:1 G5:3 A5:1 B5:4 D6:4 |
+    C6:3 B5:1 A5:3 B5:1 A5:4 F#5:4 | G5:3 F#5:1 E5:3 F#5:1 G5:4 E5:4 | C6:4 B5:2 A5:2 G5:4 E5:4 |
+    A5:3 B5:1 C6:3 B5:1 A5:4 E5:4 | F#5:3 G5:1 A5:3 G5:1 F#5:4 D5:4 | D#5:2 F#5:2 A5:4 B5:2 A5:2 F#5:4 |
+    E5:8 B4:4 E5:4
+    """
+    harmony = stabs(prog, 4, ".x.x")
+    bass = bass_line(prog, 2, [(0, 2), (0, 2), (7, 2), (12, 2)])
+    bar = "k.hhs.h.k.hhs.hh"
+    fill = "k.hhs.h.k.s.ssss"
+    drums = (bar * 3 + fill) * 4
+    drums = "c" + drums[1:]
+    return Song(150, 16, 16, True, lead, harmony, bass, drums, lead_duty=0.25, harm_duty=0.25,
+                lead_gain=0.29, harm_gain=0.10, bass_gain=0.33, drum_gain=0.28, echo=0.18, echo_steps=3,
+                lead2=_harmonise(lead, -3), lead2_gain=0.06)
+
+
+def field_3() -> Song:
+    """Chapter 3 (the misty lake): mysterious and airy, A minor, 92 BPM. A soft triangle melody over a
+    slow music-box arpeggio with a long echo, very light drums. 16 bars."""
+    prog = [("Am", 16), ("F", 16), ("G", 16), ("Em", 16), ("Am", 16), ("F", 16), ("Dm", 16), ("E", 16),
+            ("F", 16), ("G", 16), ("Am", 16), ("Em", 16), ("F", 16), ("Dm", 16), ("Esus4", 8), ("E", 8), ("Am", 16)]
+    lead = """
+    E5:6 A5:2 B5:4 C6:4 | A5:8 r:4 F5:4 | G5:6 B5:2 D6:4 B5:4 | E5:12 r:4 |
+    A4:4 C5:4 E5:4 A5:4 | C6:6 B5:2 A5:8 | F5:4 A5:4 D6:4 C6:4 | B5:8 G#5:8 |
+    A5:4 C6:4 F6:6 E6:2 | D6:4 B5:4 G5:8 | C6:6 B5:2 A5:4 E5:4 | G5:8 r:4 B4:4 |
+    C5:4 F5:4 A5:6 G5:2 | F5:4 D5:4 A5:8 | A5:4 B5:4 G#5:8 | A5:12 r:4
+    """
+    harmony = arp(prog, 4, [0, 2, 4, 2, 1, 2, 3, 2], 2)
+    bass = bass_line(prog, 2, [(0, 8), (7, 8)])
+    bar = "k.......h.....h."
+    drums = (bar * 3 + "k.......h...h.hh") * 4
+    return Song(92, 16, 16, True, lead, harmony, bass, drums, lead_duty=0.5, harm_duty=0.125,
+                lead_gain=0.25, harm_gain=0.10, bass_gain=0.26, drum_gain=0.14, echo=0.4, echo_steps=6,
+                lead_vib=0.02, lead_release=0.3, harm_release=0.3, lead_kind="tri", harm_decay=6.0,
+                target_rms=0.12)
+
+
+def boss_3() -> Song:
+    """Chapter 3 boss (Morgana): tense but a little sad, C (harmonic) minor, 144 BPM, a driving 16th bass
+    under a long, sighing melody. 16 bars."""
+    prog = [("Cm", 16), ("Ab", 16), ("Fm", 16), ("G", 16), ("Cm", 16), ("Ab", 16), ("Bb", 16), ("G", 16),
+            ("Ab", 16), ("Bb", 16), ("Gm", 16), ("Cm", 16), ("Fm", 16), ("G", 16), ("Ab", 8), ("G", 8), ("Cm", 16)]
+    lead = """
+    C5:4 Eb5:4 G5:6 F5:2 | Eb5:4 C5:4 Ab4:8 | F5:4 Ab5:4 C6:6 Bb5:2 | B5:8 G5:4 D5:4 |
+    Eb5:2 F5:2 G5:4 C6:4 G5:4 | Ab5:6 G5:2 F5:4 Eb5:4 | D5:4 F5:4 Bb5:4 D6:4 | B5:4 C6:2 B5:2 G5:8 |
+    C6:6 Bb5:2 Ab5:4 Eb5:4 | D6:6 C6:2 Bb5:4 F5:4 | G5:4 Bb5:4 D6:4 C6:2 Bb5:2 | C6:8 G5:4 Eb5:4 |
+    F5:2 G5:2 Ab5:4 C6:4 Ab5:4 | B4:2 D5:2 G5:4 B5:4 D6:4 | Eb6:4 D6:2 C6:2 B5:4 D6:4 | C6:8 r:4 G4:4
+    """
+    harmony = arp(prog, 4, [0, 2, 1, 2], 1)
+    bass = bass_line(prog, 2, [(0, 1), (0, 1), (12, 1), (0, 1)])
+    bar = "k.hhs.hkk.hhs.hh"
+    fill = "k.hhs.hkk.s.ssst"
+    drums = (bar * 3 + fill) * 4
+    drums = "c" + drums[1:]
+    return Song(144, 16, 16, True, lead, harmony, bass, drums, lead_duty=0.5, harm_duty=0.125,
+                lead_gain=0.28, harm_gain=0.07, bass_gain=0.30, drum_gain=0.28, echo=0.28, echo_steps=3,
+                harm_decay=12.0, lead_vib=0.016, lead2=_harmonise(lead, -12), lead2_gain=0.08)
+
+
 SONGS = {"title": title, "field": field, "boss": boss, "camp": camp, "story": story,
-         "victory": victory, "fail": fail, "chapter_clear": chapter_clear}
-LOOPS = ("title", "field", "boss", "camp", "story")
+         "victory": victory, "fail": fail, "chapter_clear": chapter_clear,
+         "field_2": field_2, "boss_2": boss_2, "field_3": field_3, "boss_3": boss_3}
+LOOPS = ("title", "field", "boss", "camp", "story", "field_2", "boss_2", "field_3", "boss_3")
 
 
 def write_wav(path: str, samples: list[float]) -> None:

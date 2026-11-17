@@ -5,7 +5,9 @@ extends Control
 ## 金毛只是累得睡著了(可愛,不受傷):睡覺動畫 + Zzz、「呼嚕…呼嚕…」、夜空的小星星一閃一閃。
 ## 顯示時播放 fail 音效(B 線已經在播失敗短曲時就不重複)。
 ## 「再試一次」是最大的主要按鈕,會輕輕跳動,讓玩家 2 秒內回到戰鬥。
-## v2.3(CS7):梅林的小頭像與一句隨機提示 tr("STORY_TIP_%02d" % n)(n = 1 至 8,不會連續兩次相同)。
+## v2.3(CS7):梅林的小頭像與一句隨機提示 tr("STORY_TIP_%02d" % n)(不會連續兩次相同)。
+## v2.6(CW6,docs/STORY.md 第 13 節):提示依 GameState.chapter 選:第一章 1 至 8;第二章 1 至 10 與 13;
+## 第三章 1 至 14。
 ## v2.4(CV5,DEV_PLAN 4.12):結果字典的 can_revive 為 true 時,最上面多一個金色的
 ## 「用 N 個零食復活」按鈕(N = revive_cost,按鈕上有零食圖示),按下播 revive 音效並發 revive_pressed;
 ## 這時「再試一次」改為藍色次要按鈕,梅林的小提示換成「金毛吃了零食就會醒來!」。can_revive 為 false 或沒有這個鍵時完全不顯示。
@@ -15,7 +17,7 @@ signal title_pressed
 signal revive_pressed
 
 const PANEL_WIDTH: float = 160.0
-const TIP_COUNT: int = 8
+const TIP_COUNT: int = 14
 const PORTRAIT_FRAME: Texture2D = preload("res://assets/ui/portrait_frame.png")
 
 static var _last_tip: int = 0
@@ -132,15 +134,27 @@ func _tip_row() -> Control:
 	return row
 
 
+## 這一章可以抽的提示編號。
+static func tips_for_chapter(chapter: int) -> Array[int]:
+	var out: Array[int] = []
+	var last := 8 if chapter <= 1 else (10 if chapter == 2 else TIP_COUNT)
+	for i in range(1, last + 1):
+		out.append(i)
+	if chapter == 2:
+		out.append(13)
+	return out
+
+
 static func _pick_tip() -> int:
-	var n := randi_range(1, TIP_COUNT)
+	var pool := tips_for_chapter(GameState.chapter)
+	var n := pool[randi_range(0, pool.size() - 1)]
 	if n == _last_tip:
-		n = n % TIP_COUNT + 1
+		n = pool[(pool.find(n) + 1) % pool.size()]
 	_last_tip = n
 	return n
 
 
-## 顯示第 n 句提示(1 至 8;測試也用這個)。
+## 顯示第 n 句提示(1 至 14;測試也用這個)。
 func set_tip(n: int) -> void:
 	tip_index = clampi(n, 1, TIP_COUNT)
 	if tip_label != null:
