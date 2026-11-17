@@ -215,6 +215,8 @@ func test_title_after_clearing_asks_for_difficulty() -> void:
 
 
 func test_failure_shows_merlin_and_a_tip() -> void:
+	var chapter_before := GameState.chapter
+	GameState.chapter = 1   # v2.6:提示依章選;第一章是 1 至 8
 	var f := (load("res://ui/screens/failure.tscn") as PackedScene).instantiate() as Control
 	_add(f)
 	f.call(&"setup", {"time_sec": 30.0, "kills": 3})
@@ -230,6 +232,7 @@ func test_failure_shows_merlin_and_a_tip() -> void:
 		var k: int = f.call(&"_pick_tip")
 		assert_ne(k, last, "不會連續兩次同一句")
 		last = k
+	GameState.chapter = chapter_before
 
 
 func test_results_hard_badge() -> void:

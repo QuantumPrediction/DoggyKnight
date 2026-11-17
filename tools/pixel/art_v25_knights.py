@@ -46,6 +46,14 @@ def glow_ring(f: Fig, x: int, y: int, r: int, col: str, a: int) -> None:
 # black knight (64)
 # --------------------------------------------------------------------------
 
+# v2.6 (CC4): the owner found the knight too close to the arena's bottom edge, so every frame stands
+# 8 px higher in its cell (feet on row 54 instead of 62). To keep the helm and plume inside the cell the
+# legs are 4 px shorter (the body moves up 4) and the plume sweeps back instead of up.
+# The sheet carries `metadata/foot_lift = 8` so the ground shadow can follow (actor_shadows.gd).
+LIFT = 8
+BODY_DY = -4          # body-attached coordinates (hands, smears, stars) move up 4
+GROUND_DY = -LIFT     # ground-attached coordinates (dust, fallen armour) move up 8
+
 def greatsword(f: Fig, hx: float, hy: float, deg: float, length: int = 26) -> None:
     a = -math.radians(deg)
     dx, dy = math.cos(a), math.sin(a)
@@ -74,13 +82,13 @@ def greatsword(f: Fig, hx: float, hy: float, deg: float, length: int = 26) -> No
     f.pix(px, DARK)
 
 
-def knight_frame(bob: int = 0, lean: float = 0.0, legs=((0, 0.0), (0, 0.0)), sword_at=(43, 44),
-                 sword_deg: float = -70.0, sword_len: int = 24, sword_front: bool = True, cape_wave: float = 0.0,
+def knight_frame(bob: int = 0, lean: float = 0.0, legs=((0, 0.0), (0, 0.0)), sword_at=(43, 44 + BODY_DY),
+                 sword_deg: float = -64.0, sword_len: int = 17, sword_front: bool = True, cape_wave: float = 0.0,
                  cape_lift: float = 0.0, visor: int = 2, plume: float = 0.0, head_dy: int = 0, extra=None) -> Fig:
     f = Fig(64, 64, seed=41)
-    ground = 62
+    ground = 62 - LIFT
     cx = 29.0 + lean
-    by = 38.0 + bob
+    by = 38.0 + bob + BODY_DY
     # tattered cape
     hem = ground - 2 - cape_lift * 8
     back = cx - 17 - cape_lift * 6
@@ -153,9 +161,9 @@ def knight_frame(bob: int = 0, lean: float = 0.0, legs=((0, 0.0), (0, 0.0)), swo
     f.recolor({(int(hx - 2), y) for y in range(int(hy - 8), int(hy - 2))}, "steel_d")
     # plume
     px, py = hx - 1, hy - 9
-    pl = union(capsule(px, py, px - 5, py - 4 - plume, 2.2), capsule(px - 5, py - 4 - plume, px - 11, py - 2 - plume,
-                                                                     1.8),
-               capsule(px - 11, py - 2 - plume, px - 14, py + 2 - plume * 0.5, 1.3))
+    pr = plume * 0.5
+    pl = union(capsule(px, py, px - 5, py - 2 - pr, 2.2), capsule(px - 5, py - 2 - pr, px - 11, py - 0.5 - pr, 1.8),
+               capsule(px - 11, py - 0.5 - pr, px - 14, py + 3 - pr * 0.5, 1.3))
     f.add(pl, PLUME, centre=(px - 6, py - 5), radius=(7, 4), bias=0.1)
     # front pauldron (layered plates)
     sxp, syp = cx + 9, by - 8
@@ -183,8 +191,8 @@ def knight_down(k: int):
     f = Fig(64, 64, seed=43)
     if k == 0:
         # kneeling: one knee down, sword planted
-        return knight_frame(bob=8, lean=-1, legs=((0, -2.0), (3, 4.0)), sword_at=(42, 52), sword_deg=-88,
-                            sword_len=12, visor=1, head_dy=2, cape_lift=0).render()
+        return knight_frame(bob=8, lean=-1, legs=((0, -2.0), (3, 4.0)), sword_at=(42, 52 + BODY_DY), sword_deg=-88,
+                            sword_len=5, visor=1, head_dy=2, cape_lift=0).render()
     # empty armour pieces scattered, a violet wisp rising from the helm
     f.add(poly([(6, 60), (14, 54), (28, 54), (34, 60)]), CAPE, bias=0.05)
     f.add(union(ellipse(20, 56, 9, 4.5), rect(12, 56, 17, 4)), DARK, centre=(17, 52), radius=(10, 6), bias=0.1)
@@ -204,6 +212,7 @@ def knight_down(k: int):
 
 def black_knight_v25() -> list:
     old = art_enemies.black_knight_v2()
+    b, g = BODY_DY, GROUND_DY
     fr = {}
     fr["idle"] = [knight_frame().render(), knight_frame(bob=1, cape_wave=0.6, plume=0.5).render(),
                   knight_frame(bob=1, cape_wave=1.0, plume=1.0, visor=1).render(),
@@ -212,31 +221,34 @@ def black_knight_v25() -> list:
                 ((0, 4.0), (0, -4.0)), ((0, 2.0), (2, -2.0)), ((0, -1.0), (4, 1.0))]
     run_bob = [0, 1, -1, 0, 1, -1]
     fr["run"] = [knight_frame(bob=run_bob[i], lean=1, legs=run_legs[i], cape_lift=0.35, cape_wave=i % 3,
-                              plume=1.5, sword_at=(44, 46 + run_bob[i]), sword_deg=-35).render() for i in range(6)]
+                              plume=1.5, sword_at=(44, 46 + b + run_bob[i]), sword_deg=-35).render() for i in range(6)]
     fr["attack"] = [
-        knight_frame(lean=-2, sword_at=(36, 26), sword_deg=110, sword_front=False, plume=1).render(),
-        knight_frame(lean=1, sword_at=(45, 34), sword_deg=20, plume=2, cape_lift=0.2,
-                     extra=lambda f: _arc(f, 31, 36, 16, 26, 20, 100)).render(),
-        knight_frame(lean=2, sword_at=(46, 44), sword_deg=-40, plume=1, cape_lift=0.15,
-                     extra=lambda f: _arc(f, 31, 36, 16, 26, -45, 30)).render(),
-        knight_frame(lean=1, sword_at=(44, 46), sword_deg=-60).render(),
+        knight_frame(lean=-2, sword_at=(36, 26 + b), sword_deg=122, sword_len=19, sword_front=False,
+                     plume=1).render(),
+        knight_frame(lean=1, sword_at=(45, 34 + b), sword_deg=20, plume=2, cape_lift=0.2,
+                     extra=lambda f: _arc(f, 31, 36 + b, 16, 26, 20, 100)).render(),
+        knight_frame(lean=2, sword_at=(46, 44 + b), sword_deg=-40, plume=1, cape_lift=0.15,
+                     extra=lambda f: _arc(f, 31, 36 + b, 16, 26, -45, 30)).render(),
+        knight_frame(lean=1, sword_at=(44, 46 + b), sword_deg=-60).render(),
     ]
-    fr["hurt"] = [knight_frame(lean=-3, head_dy=1, visor=1, extra=lambda f: stars(f, [(18, 8), (44, 6)])).render(),
+    fr["hurt"] = [knight_frame(lean=-3, head_dy=1, visor=1,
+                               extra=lambda f: stars(f, [(18, 8 + b), (44, 6 + b)])).render(),
                   knight_frame(lean=-2, visor=1).render()]
-    fr["charge"] = [knight_frame(lean=3, bob=b, legs=lg, sword_at=(46, 40 + b), sword_deg=-8, sword_len=22,
+    fr["charge"] = [knight_frame(lean=3, bob=bb, legs=lg, sword_at=(46, 40 + b + bb), sword_deg=-8, sword_len=22,
                                  cape_lift=0.6, cape_wave=i, plume=2.5,
-                                 extra=(lambda f, i=i: dust(f, [(8 - i, 60, 2.5), (14 + i, 61, 1.8)]))).render()
-                    for i, (b, lg) in enumerate(((0, ((0, -4.0), (0, 4.0))), (1, ((2, -1.0), (0, 1.0))),
-                                                 (-1, ((0, 4.0), (0, -4.0)))))]
+                                 extra=(lambda f, i=i: dust(f, [(8 - i, 60 + g, 2.5), (14 + i, 61 + g, 1.8)]))).render()
+                    for i, (bb, lg) in enumerate(((0, ((0, -4.0), (0, 4.0))), (1, ((2, -1.0), (0, 1.0))),
+                                                  (-1, ((0, 4.0), (0, -4.0)))))]
     fr["slam"] = [
-        knight_frame(lean=-2, bob=-1, sword_at=(34, 22), sword_deg=95, sword_front=False, plume=2).render(),
-        knight_frame(lean=1, sword_at=(44, 30), sword_deg=40, plume=2, visor=2).render(),
-        knight_frame(lean=2, bob=2, sword_at=(45, 46), sword_deg=-80, sword_len=16, plume=0,
-                     extra=lambda f: dust(f, [(41, 61, 3.5), (52, 61, 3.0), (35, 62, 2.2)])).render(),
-        knight_frame(lean=2, bob=2, sword_at=(45, 46), sword_deg=-80, sword_len=16, plume=0,
-                     extra=lambda f: dust(f, [(38, 61, 2.4), (55, 60, 2.2)])).render(),
+        knight_frame(lean=-2, bob=-1, sword_at=(33, 21 + b), sword_deg=140, sword_len=18, sword_front=False,
+                     plume=2).render(),
+        knight_frame(lean=1, sword_at=(44, 30 + b), sword_deg=40, plume=2, visor=2).render(),
+        knight_frame(lean=2, bob=2, sword_at=(45, 46 + b), sword_deg=-80, sword_len=12, plume=0,
+                     extra=lambda f: dust(f, [(41, 61 + g, 3.5), (52, 61 + g, 3.0), (35, 62 + g, 2.2)])).render(),
+        knight_frame(lean=2, bob=2, sword_at=(45, 46 + b), sword_deg=-80, sword_len=12, plume=0,
+                     extra=lambda f: dust(f, [(38, 61 + g, 2.4), (55, 60 + g, 2.2)])).render(),
     ]
-    fr["down"] = [knight_down(0), knight_down(1)]
+    fr["down"] = [knight_down(0), knight_down(1).shifted(0, GROUND_DY)]
     return frames_like(old, fr)
 
 

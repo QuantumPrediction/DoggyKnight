@@ -1,6 +1,6 @@
 # 美術規格表(給美術師或 AI 繪圖用)
 
-更新:2026-11-17(v2.5 重畫後)。由整合工作階段從專案檔案自動整理。**換圖規則**:檔案放回同一路徑、同一尺寸、同一動畫格數與次序;程式不用改。全部只畫朝右(朝左由程式鏡像)。像素圖不可有半透明模糊邊(粒子特效除外);每格角色的腳底位置要一致。
+更新:2026-11-17(v2.6 三章之後)。由整合工作階段從專案檔案自動整理。**換圖規則**:檔案放回同一路徑、同一尺寸、同一動畫格數與次序;程式不用改。全部只畫朝右(朝左由程式鏡像)。像素圖不可有半透明模糊邊(粒子特效除外);每格角色的腳底位置要一致。
 
 ## 風格
 
@@ -17,22 +17,34 @@
 | `assets/fx/dizzy_stars/dizzy_stars.png` | 20x12 | default 6格(循環) |
 | `assets/fx/dust/dust.png` | 12x12 | default 4格 |
 | `assets/fx/exp_orb/exp_orb.png` | 12x12 | default 6格(循環) |
+| `assets/fx/fox_flame/fox_flame.png` | 16x16 | default 4格(循環) |
 | `assets/fx/hit_spark/hit_spark.png` | 20x20 | default 4格 |
+| `assets/fx/magic_orb/magic_orb.png` | 12x12 | default 4格(循環) |
+| `assets/fx/moon_orb/moon_orb.png` | 16x16 | default 4格(循環) |
 | `assets/fx/pitchfork/pitchfork.png` | 16x16 | default 4格(循環) |
 | `assets/fx/slash/slash.png` | 32x32 | default 4格 |
 | `assets/fx/snack/snack.png` | 8x8 | default 2格(循環) |
 | `assets/fx/sword_wave/sword_wave.png` | 24x24 | default 3格(循環) |
+| `assets/fx/thorn/thorn.png` | 16x16 | default 2格(循環) |
 | `assets/fx/ultimate_slash/ultimate_slash.png` | 64x64 | default 6格 |
 | `assets/sprites/armored_husk/armored_husk.png` | 32x32 | idle 4格(循環)、run 6格(循環)、attack 3格、hurt 1格、dash 2格(循環)、down 1格 |
 | `assets/sprites/black_knight/black_knight.png` | 64x64 | idle 4格(循環)、run 6格(循環)、attack 4格、hurt 2格、charge 3格(循環)、slam 4格、down 2格 |
 | `assets/sprites/bulldog/bulldog.png` | 32x32 | idle 4格(循環)、run 6格(循環)、attack 4格、hurt 2格、guard 2格(循環)、victory 4格(循環) |
 | `assets/sprites/chest/chest.png` | 24x24 | idle 2格(循環)、open 3格 |
 | `assets/sprites/crow/crow.png` | 24x24 | idle 4格(循環)、run 6格(循環)、attack 4格、hurt 2格 |
+| `assets/sprites/foxfire/foxfire.png` | 16x16 | idle 4格(循環)、run 4格(循環)、attack 3格、hurt 2格、burst 4格 |
+| `assets/sprites/gargoyle/gargoyle.png` | 32x32 | idle 4格(循環)、run 4格(循環)、attack 4格、hurt 2格、swoop 2格(循環)、stone 2格(循環) |
 | `assets/sprites/goldie/goldie.png` | 32x32 | idle 6格(循環)、run 6格(循環)、attack 4格、hurt 2格、sleep 2格(循環)、victory 4格(循環) |
+| `assets/sprites/green_knight/green_knight.png` | 64x64 | idle 4格(循環)、run 6格(循環)、attack 4格、hurt 2格、whip 4格、summon 3格、hat_off 4格、down 2格、idle_bare 4格(循環)、run_bare 6格(循環)、attack_bare 4格、hurt_bare 2格、whip_bare 4格、summon_bare 3格 |
+| `assets/sprites/lady_lake/lady_lake.png` | 32x32 | idle 4格(循環)、run 6格(循環)、cast 3格 |
+| `assets/sprites/lancelot/lancelot.png` | 32x32 | idle 4格(循環)、run 6格(循環)、attack 4格、hurt 2格、dash 2格(循環) |
 | `assets/sprites/merlin/merlin.png` | 32x32 | idle 4格(循環)、run 6格(循環)、cast 3格 |
+| `assets/sprites/morgana/morgana.png` | 64x64 | idle 4格(循環)、run 6格(循環)、attack 4格、hurt 2格、cast 4格、teleport 4格、down 2格 |
 | `assets/sprites/scarecrow/scarecrow.png` | 32x32 | idle 4格(循環)、run 6格(循環)、attack 4格、hurt 2格 |
 | `assets/sprites/scarecrow_archer/scarecrow_archer.png` | 32x32 | idle 4格(循環)、run 6格(循環)、attack 3格、hurt 1格、aim 2格(循環) |
 | `assets/sprites/scarecrow_captain/scarecrow_captain.png` | 48x48 | idle 4格(循環)、run 6格(循環)、attack 3格、hurt 1格、throw 3格、rally 2格(循環)、down 1格 |
+| `assets/sprites/shadow_wolf/shadow_wolf.png` | 32x32 | idle 4格(循環)、run 6格(循環)、attack 4格、hurt 2格、dash 2格(循環)、down 4格 |
+| `assets/sprites/spellbook/spellbook.png` | 24x24 | idle 4格(循環)、run 4格(循環)、attack 3格、hurt 2格、cast 3格 |
 
 圖表排列:每一列是一個動畫(依上表次序),每一欄是一格;對應的 `_frames.tres` 由 `tools/pixel/` 重新產生,或請整合工作階段依新圖表更新。
 
@@ -45,22 +57,45 @@
 | `assets/portraits/bulldog/normal.png` | 48x48 |
 | `assets/portraits/bulldog/serious.png` | 48x48 |
 | `assets/portraits/crow/normal.png` | 48x48 |
+| `assets/portraits/gargoyle/normal.png` | 48x48 |
 | `assets/portraits/goldie/happy.png` | 48x48 |
 | `assets/portraits/goldie/normal.png` | 48x48 |
 | `assets/portraits/goldie/serious.png` | 48x48 |
 | `assets/portraits/goldie/surprised.png` | 48x48 |
 | `assets/portraits/goldie/tired.png` | 48x48 |
+| `assets/portraits/green_knight/normal.png` | 48x48 |
+| `assets/portraits/lady_lake/normal.png` | 48x48 |
+| `assets/portraits/lady_lake/smile.png` | 48x48 |
+| `assets/portraits/lady_lake/worried.png` | 48x48 |
+| `assets/portraits/lancelot/happy.png` | 48x48 |
+| `assets/portraits/lancelot/normal.png` | 48x48 |
+| `assets/portraits/lancelot/serious.png` | 48x48 |
+| `assets/portraits/lancelot/surprised.png` | 48x48 |
 | `assets/portraits/merlin/normal.png` | 48x48 |
 | `assets/portraits/merlin/proud.png` | 48x48 |
 | `assets/portraits/merlin/surprised.png` | 48x48 |
 | `assets/portraits/merlin/worried.png` | 48x48 |
 | `assets/portraits/morgana/smirk.png` | 48x48 |
+| `assets/portraits/morgana_true/angry.png` | 48x48 |
+| `assets/portraits/morgana_true/normal.png` | 48x48 |
+| `assets/portraits/morgana_true/sad.png` | 48x48 |
+| `assets/portraits/morgana_true/smile.png` | 48x48 |
 | `assets/portraits/scarecrow_captain/angry.png` | 48x48 |
 
 ## 繪本插畫
 
 | 檔案 | 尺寸 |
 | --- | --- |
+| `assets/story/c2_ending_1.png` | 160x120 |
+| `assets/story/c2_ending_2.png` | 160x120 |
+| `assets/story/c2_ending_3.png` | 160x120 |
+| `assets/story/c2_prologue_1.png` | 160x120 |
+| `assets/story/c2_prologue_2.png` | 160x120 |
+| `assets/story/c3_ending_1.png` | 160x120 |
+| `assets/story/c3_ending_2.png` | 160x120 |
+| `assets/story/c3_ending_3.png` | 160x120 |
+| `assets/story/c3_prologue_1.png` | 160x120 |
+| `assets/story/c3_prologue_2.png` | 160x120 |
 | `assets/story/ending_1.png` | 160x120 |
 | `assets/story/ending_2.png` | 160x120 |
 | `assets/story/ending_3.png` | 160x120 |
@@ -69,6 +104,7 @@
 | `assets/story/prologue_3.png` | 160x120 |
 | `assets/story/prologue_4.png` | 160x120 |
 | `assets/story/teaser_1.png` | 160x120 |
+| `assets/story/teaser_2.png` | 160x120 |
 
 ## 把戲圖示
 
@@ -111,14 +147,38 @@
 | --- | --- |
 | `assets/backgrounds/bridge.png` | 304x512 |
 | `assets/backgrounds/bridge_fg.png` | 304x512 |
+| `assets/backgrounds/castle_courtyard.png` | 304x512 |
+| `assets/backgrounds/castle_courtyard_fg.png` | 304x512 |
+| `assets/backgrounds/castle_town.png` | 304x512 |
+| `assets/backgrounds/castle_town_fg.png` | 304x512 |
+| `assets/backgrounds/castle_wall.png` | 304x512 |
+| `assets/backgrounds/castle_wall_fg.png` | 304x512 |
 | `assets/backgrounds/crow_forest.png` | 304x512 |
 | `assets/backgrounds/crow_forest_fg.png` | 304x512 |
+| `assets/backgrounds/crystal_cave.png` | 304x512 |
+| `assets/backgrounds/crystal_cave_fg.png` | 304x512 |
+| `assets/backgrounds/fairy_forest.png` | 304x512 |
+| `assets/backgrounds/fairy_forest_fg.png` | 304x512 |
 | `assets/backgrounds/farm_fence.png` | 304x512 |
 | `assets/backgrounds/farm_fence_fg.png` | 304x512 |
+| `assets/backgrounds/green_chapel.png` | 304x512 |
+| `assets/backgrounds/green_chapel_fg.png` | 304x512 |
+| `assets/backgrounds/magic_garden.png` | 304x512 |
+| `assets/backgrounds/magic_garden_fg.png` | 304x512 |
 | `assets/backgrounds/meadow.png` | 304x512 |
 | `assets/backgrounds/meadow_fg.png` | 304x512 |
+| `assets/backgrounds/misty_lake.png` | 304x512 |
+| `assets/backgrounds/misty_lake_fg.png` | 304x512 |
+| `assets/backgrounds/morgana_tower.png` | 304x512 |
+| `assets/backgrounds/morgana_tower_fg.png` | 304x512 |
+| `assets/backgrounds/royal_library.png` | 304x512 |
+| `assets/backgrounds/royal_library_fg.png` | 304x512 |
+| `assets/backgrounds/stone_circle.png` | 304x512 |
+| `assets/backgrounds/stone_circle_fg.png` | 304x512 |
 | `assets/backgrounds/sword_stone.png` | 304x512 |
 | `assets/backgrounds/sword_stone_fg.png` | 304x512 |
+| `assets/backgrounds/tower_top.png` | 304x512 |
+| `assets/backgrounds/tower_top_fg.png` | 304x512 |
 | `assets/backgrounds/wheat_field.png` | 304x512 |
 | `assets/backgrounds/wheat_field_fg.png` | 304x512 |
 

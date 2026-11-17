@@ -7,10 +7,17 @@ extends Node2D
 ## - 被點(Camp.tap_merlin):立刻施法一次;要說的話由 Camp 顯示在對話泡泡裡。
 ## 圖用 C 線的 assets/sprites/merlin/merlin_frames.tres(idle、run、cast);C 線原地替換,這裡不用改。
 ## 位置是梅林圖的中心(畫面邏輯像素)。圖朝右畫,merlin_flip 時朝左。
+## v2.6 DV1:第三章由湖中仙女坐在同一個位置(Camp 建立時換 frames、glow_color、tip;其他數值沿用梅林的)。
 
 signal cast_started()
 
 var config: CampConfig
+## 用哪一套圖(梅林或湖中仙女)。
+var frames: SpriteFrames
+## 施法時的光的顏色。
+var glow_color: Color = Color(0.55, 0.75, 1.0, 0.35)
+## 施法時光的位置(相對圖中心,圖的像素;朝右時)。
+var tip: Vector2 = Vector2(9, -7)
 ## 這次施法還剩幾秒(> 0 = 正在施法)。
 var casting_left: float = 0.0
 ## 施法次數(測試用)。
@@ -24,24 +31,29 @@ var _rng := RandomNumberGenerator.new()
 var _frame_size: Vector2 = Vector2(24, 24)
 
 
-func _init(p_config: CampConfig = null) -> void:
+func _init(p_config: CampConfig = null, p_frames: SpriteFrames = null) -> void:
 	config = p_config
 	name = "Merlin"
+	if config != null:
+		frames = p_frames if p_frames != null else config.merlin_frames
+		glow_color = config.merlin_glow_color
+		tip = config.merlin_staff_tip
 
 
 func _ready() -> void:
 	if config == null:
 		config = CampConfig.new()
+		frames = config.merlin_frames
 	_rng.seed = 23
 	_sprite = AnimatedSprite2D.new()
 	_sprite.name = "Sprite"
-	_sprite.sprite_frames = config.merlin_frames
+	_sprite.sprite_frames = frames
 	_sprite.scale = Vector2(-config.merlin_scale if config.merlin_flip else config.merlin_scale, config.merlin_scale)
 	add_child(_sprite)
-	if config.merlin_frames != null:
+	if frames != null:
 		var anim := _pick(config.merlin_idle_animation)
 		if anim != &"":
-			var tex := config.merlin_frames.get_frame_texture(anim, 0)
+			var tex := frames.get_frame_texture(anim, 0)
 			if tex != null:
 				_frame_size = tex.get_size()
 	_play(config.merlin_idle_animation)
@@ -101,7 +113,7 @@ func current_animation() -> StringName:
 
 ## 手杖頂端的位置(畫面邏輯像素)。
 func staff_tip() -> Vector2:
-	var local := config.merlin_staff_tip
+	var local := tip
 	if config.merlin_flip:
 		local.x = -local.x
 	return position + local * config.merlin_scale
@@ -120,7 +132,6 @@ func sprite_rect() -> Rect2:
 
 
 func _pick(anim: StringName) -> StringName:
-	var frames := config.merlin_frames
 	if frames == null:
 		return &""
 	if anim != &"" and frames.has_animation(anim):
@@ -142,7 +153,7 @@ func _draw_glow() -> void:
 	var t := 1.0 - casting_left / maxf(config.merlin_cast_sec, 0.05)
 	var strength := sin(t * PI)
 	var c := (staff_tip() - position).round()
-	var color := config.merlin_glow_color
+	var color := glow_color
 	for i in 3:
 		var r := roundf((4.0 + i * 3.0) * (0.7 + 0.3 * strength))
 		_glow.draw_circle(c, r, Color(color, color.a * strength * (1.0 - i * 0.3)))

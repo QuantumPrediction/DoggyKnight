@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ProjectileData" format=3]
+
+[ext_resource type="Script" path="res://game/combat/projectile_data.gd" id="1_data"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"moon_orb"
+fx = &"moon_orb"
+damage = 10
+speed = 85.0
+max_range = 220.0
+hit_radius = 3.0
+pierce = false
+returns = false
+blockable = true
+visual_scale = 1.0
+trail_color = Color(0.8, 0.85, 1, 0.6)
+end_fade_time = 0.25

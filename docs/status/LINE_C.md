@@ -2,6 +2,46 @@
 
 最後更新:2026-11-17(v2.5 美術全面重畫 CR1 至 CR6 完成)
 
+## C 世界 v2.6(DEV_PLAN 第 19 節 CW1 至 CW6)
+
+最後更新:2026-11-17。另一個工作階段「C 角色」負責角色圖、頭像與特效,這裡只列 C 世界的部分。
+
+### 已完成
+
+- CW1 第一章背景再修:六張背景的最上方換成真正的遠景(天空、左邊亮右邊暗的山、遠處的卡美洛、霧濛濛的山丘),中間加一排比較淡的樹,和近處的樹分出前後;前景沿用。石橋的鋪面改成兩個接近的中間色(石色、灰紫),去掉亮白的石板,火把光、水窪也調暗,角色和紅色預警更清楚。產生器:`tools/pixel/art_v26_ch1.py`。
+- CW2 十二張新背景(`tools/pixel/art_v26_world.py`,共用工具 `art_v26_kit.py`):
+  - 第二章(暖色石造城堡):城下町(早晨,房子的山牆、紫色荊棘、睡著的狗狗冒 Zzz、市集攤子)、城堡中庭(正午,大門、紅屋頂塔、修剪樹、噴泉)、王家書庫(燭光,兩層書架、月光窗、會飛的魔法書、蠟燭)、城牆之上(夕陽,遠山、塔頂、石像鬼雕像、火把與火盆)、魔法花園(金色午後,割草條紋、樹籬、被荊棘纏住的玫瑰拱門、睡蓮池)、綠色禮拜堂(陰天,長草的古墓禮拜堂、綠光圓窗、石圈小徑、落葉)。
+  - 第三章(冷色月光與迷霧):迷霧湖畔(黎明前,湖霧、島上尖塔、碼頭小船、蘆葦)、妖精森林(夜,大樹、發光蘑菇、小精靈光點、月光)、月光石陣(滿月、巨石門、會發光的符文)、水晶洞窟(青色與紫色水晶、閃光、滴水)、摩根娜之塔(紫色石牆、月光窗、漂浮蠟燭與光球、螺旋樓梯)、塔頂(暴風雨夜、雲海、閃電、火盆、紫旗)。
+  - 每張都有會動的東西(旗子、書、蠟燭、閃光、符文、霧、精靈)、環境粒子(不超過 100 個)、光暈精靈、角色投影、最上層前景;戰鬥區的地面一律是安靜的中間色。根節點仍是 Node2D,檔名不變(原地替換佔位版)。
+- CW3 標題:山改成每座山一面亮一面暗(以前每一行依坡度換色,所以有條紋);三張標題背景:第一章山丘與石中劍、第二章卡美洛城堡、第三章夜晚湖上的高塔(`assets/ui/title_bg.png`、`title_bg_2.png`、`title_bg_3.png`,產生器 `art_v26_title.py`)。背景隨「最高已開啟的章」換,站在前面的角色也換(第二章:貝德維爾、金毛、蘭斯洛特;第三章:蘭斯洛特、金毛、湖中仙女)。選章(合約 4.13):打完第一章後按鈕上方出現「◀ 章名 ▶」,可以選 1 至 min(已打完+1, 3);還沒開啟的章顯示鎖頭、「開始冒險」變灰;按下(與選難度之後)先設定 `GameState.chapter` 再發 `new_game_pressed`。舊存檔(只有 `chapter_cleared`)當作打完第一章。只用觸控、直向、在安全區內。
+- CW4 十一張新插畫(`art_v26_story.py`,160×120,只用調色盤):沉睡的卡美洛、圓桌睡成一片、荊棘化成光點的花園、騎士醒來坐滿圓桌、紫霧飄進梅林房間、湖與高塔(預告)、清晨迷霧湖、湖中仙女從水中升起、塔頂的金毛與摩根娜、加冕禮、夕陽下大家一起撿樹枝。
+- CW5 音樂(`music_gen.py`):`field_2`(F 大調城堡進行曲)、`boss_2`(E 小調、輕快跳躍的綠騎士戰)、`field_3`(A 小調、神秘的迷霧湖,三角波旋律加長回音)、`boss_3`(C 小調、緊張又有點悲傷的摩根娜戰)。都是無縫循環、QOA 匯入;`Music` 已把它們列為循環曲。
+- CW6:失敗畫面的提示依章抽(第一章 1 至 8、第二章 1 至 10 與 13、第三章 1 至 14);結算的標題是「第 N 章 完」(第三章「全劇終」),進度是「第 N 章 m/6」(章從 `result.chapter`、`level_id` 或 `GameState.chapter` 來)。HUD 的章名本來就依關卡 id 顯示,不用改。新增翻譯鍵 `UI_CHAPTER_SHORT_1..3`、`UI_CHAPTER_PROGRESS_N`、`UI_CHAPTER_END`、`UI_GAME_END`、`UI_CHAPTER_CLEARED_N`、`UI_ALL_CHAPTERS_CLEARED`。
+- 整合通知處理:`assets/backgrounds/actor_shadows.gd` 讀 SpriteFrames 的 `metadata/foot_lift`(黑騎士 8),影子跟著往上;`FLYERS` 加 gargoyle、spellbook、foxfire。
+- 測試:新增 `tests/line_c/test_v26_world.gd`(新背景規格、戰鬥區地面安靜、選章、依章的背景、提示、結算文字、新音樂);`tools/run_tests.sh line_c` 全部通過。
+
+怎樣看:
+
+- 截圖工具:`xvfb-run -a godot --path . --rendering-driver opengl3 res://tests/line_c/world_shots.tscn -- --out=資料夾 --bgs=all --titles=0,1,2,3`(每張背景放幾個角色,標題依已打完的章數)。
+- 只重畫 C 世界的檔案(不會動到角色圖):`python3 tools/pixel/art_v26_world.py`、`art_v26_ch1.py`、`art_v26_title.py`、`art_v26_story.py`、`python3 tools/pixel/music_gen.py field_2 boss_2 field_3 boss_3`,再 `godot --headless --path . --import`。
+
+### 再修一輪(合併整合分支之後)
+
+- 第三章的四個戰鬥區地面重畫:迷霧湖畔是濕的小石子湖岸漸漸變成有草的地面(小水窪、長青苔的石頭、蘆葦);妖精森林是青苔地面,大樹根從邊緣伸進來,邊緣有一圈發光蘑菇與落葉;月光石陣在石圈裡鋪上月光下的石板,邊緣的石縫長草;水晶洞窟是大塊的岩石地板,有淡淡的水晶紋路與邊緣的小水晶碎片。四張的中間都保持安靜,邊緣慢慢變化,不再有硬的深色框。
+- 標題:章名與「第 N 章 完成!」下面加了半透明深色底,三張背景上都看得清楚;已用 C 角色的正式蘭斯洛特與湖中仙女確認畫面。
+- 十一張插畫改用 C 角色的正式設計(蘭斯洛特、湖中仙女、綠騎士、摩根娜);只有金毛、蘭斯洛特、貝德維爾拿武器;摩根娜拿新月法杖,c3_ending_1 法杖掉在地上、她坐著;金毛叼著樹枝遞給她;其他騎士和綠騎士空手。
+
+### 給整合工作階段
+
+- `tools/pixel/build_all.py` 加了四個 import 與四行呼叫(在 `art_brand.write_all` 之後,所以會蓋過舊的標題背景與第一章背景)。
+- 我把分支快轉到 `claude/sleepy-hawking-8cvkvl` 的 v2.6 佔位版(11d0246)後才開始。
+- 全部測試裡 `tests/line_b/test_story_data.gd` 有一項失敗(STORY.md 第 5 節的段落清單多了第二、三章),是 B 線的範圍。
+
+### 還可以再做 / 需要擁有人決定的事
+
+- (已處理)插畫改用 C 角色的正式設計。
+- 長手機才看得到第一章背景最上面的遠景;一般 180×320 的畫面上方被 HUD 蓋住的部分只多了一排淡淡的中景樹。
+
 ## 已完成
 
 ### 本輪(v2.5 美術全面重畫,DEV_PLAN 第 18 節)
@@ -153,3 +193,41 @@
 
 - 對白的說話聲音量(`dialogue_config.tres` 的 `blip_volume_db`)與新的 `evolve`、`chest_open` 音效最好在真的手機喇叭上聽一次再決定。
 - 正式上架前,第二章可以沿用同一套頭像與繪本工具,為圓桌騎士畫新的角色。
+
+## C 角色 v2.6(DEV_PLAN 第 19 節 CC1 至 CC4)
+
+**已完成**
+
+- CC1 八個新角色圖,全部由 `tools/pixel/art_v26_cast.py` 用 v2.5 的同一套畫法產生(左上光源、彩色外框、2 至 3 層明暗、走路的角色每格腳底對齊):
+  - `assets/sprites/gargoyle/`(32):灰石小翅膀、長角、紫色發光眼睛;`stone` 是縮起翅膀的灰色石像(眼睛不發光,第二格有一點反光)。
+  - `assets/sprites/spellbook/`(24):紫色魔法書,封面上有一雙眼睛,一開一合像嘴巴,書頁拍動;`cast` 張大,發光的符文飄出來。
+  - `assets/sprites/foxfire/`(16):紫粉色小火焰,頭上兩個狐狸耳朵尖、可愛的眼睛;`burst` 是閃一下變成一圈小星星。
+  - `assets/sprites/shadow_wolf/`(32):深靛色影狼,發光的眼睛,背上飄紫色煙;`down` 先趴下冒星星,再散成一小堆落葉(不是受傷)。
+  - `assets/sprites/green_knight/`(64):樹籬修剪成的大騎士,頭上圓圓的灌木「葉子帽」插著紫色荊棘(帽上有小花),手拿藤鞭;`whip` 舉高再橫掃,`summon` 舉起藤鞭冒綠色光點,`hat_off` 帽子彈飛、落地後紫荊棘從帽子裡跳出來(可愛,沒受傷),`down` 坐在草地上笑。
+  - `assets/sprites/morgana/`(64):紅褐色狐狸女巫,紫斗篷、高領、白色胸毛、大尾巴,新月法杖;`teleport` 紫煙把她包起來後散掉;`down` 坐在地上、耳朵垂下、掉一滴眼淚,法杖放在旁邊(不是受傷)。
+  - `assets/sprites/lancelot/`(32):柴犬騎士,銀色輕甲、藍羽頭盔(耳朵從頭盔穿出來)、捲尾巴、長槍與藍色小旗;`dash` 是長槍突刺。
+  - `assets/sprites/lady_lake/`(32):白色薩摩耶,淡藍色水波長裙,三顆水珠繞著她飄;`cast` 舉起手,手上聚成一顆湖水球。
+- CC2 頭像(48×48,和 v2.3 頭像同一種繪本畫法,臉朝左,因為這五位都坐在對白框右邊):`assets/portraits/lancelot/{normal,happy,serious,surprised}.png`、`gargoyle/normal.png`、`green_knight/normal.png`、`lady_lake/{normal,smile,worried}.png`、`morgana_true/{normal,angry,sad,smile}.png`(摩根娜的真面目,背景是和剪影版同一個月亮)。
+- CC3 投射物(動畫 `default`、循環、朝右畫):`assets/fx/magic_orb/`(12)、`thorn/`(16)、`fox_flame/`(16)、`moon_orb/`(16),各有自己的 png(不再借用箭的圖)。一次性粒子 `assets/fx/particles/stone_chips.tscn`(灰色石屑,圖 `tex/stone_chip.png`)與 `shadow_leaves.tscn`(落葉,圖 `tex/leaf.png`),照舊的粒子場景格式。
+- CC4 黑騎士每一格往上移 8 像素(腳底由第 62 列改到第 54 列)。為了讓頭盔與羽飾不被切掉,腿短了 4 像素、羽飾改成往後掃;往下指的劍短一點,不會插進地面。`black_knight_frames.tres` 多了 `metadata/foot_lift = 8`。在石橋背景上確認過:黑騎士站到最下面時,腳離戰鬥區下緣 8 像素(截圖 `tests/line_c/shots_v26/v26_cast_4.png`,紅線是下緣)。
+- 其他新檔:`tests/line_c/test_art_v26_cast.gd`(調色盤、格子、腳底對齊、頭目辨識、投射物、粒子、黑騎士上移)、`tests/line_c/cast_v26_gallery.tscn/.gd`(圖庫與截圖工具,點畫面換頁)、`tests/line_c/shots_v26/`(五張截圖)。`tools/pixel/art_v25_knights.py` 改了黑騎士;`tools/pixel/build_all.py` 加了一行呼叫 `art_v26_cast.write_all()`。
+- `tools/run_tests.sh core` 61 項、`tools/run_tests.sh line_c` 115 項全部通過。
+
+**進行中**:沒有。
+
+**被甚麼卡住 / 給 C 世界與整合的說明**
+
+- 黑騎士的影子:`assets/backgrounds/actor_shadows.gd`(C 世界的檔案,我沒有動)把影子畫在格子底部,現在會比黑騎士的腳低 8 像素。請在 `_shadow_for()` 算 `feet` 時減掉 `spr.sprite_frames.get_meta(&"foot_lift", 0) * scale_abs.y`(只多一行)。幻影黑騎士也用同一張圖,一起修好。
+- 會飛的新敵人(`gargoyle`、`spellbook`、`foxfire`)的影子:`actor_shadows.gd` 的 `FLYERS` 目前只有 `"/crow/"`,建議加上 `"/gargoyle/"`、`"/spellbook/"`、`"/foxfire/"`。
+- 綠騎士與摩根娜沒有上移,腳在格子底部(和其他角色、影子的約定一樣)。如果擁有人也覺得她們太靠近下緣,用同樣的做法(畫上移 + `foot_lift`)即可。
+- 已加綠騎士第二階段(脫帽後)的 `idle_bare`、`run_bare`、`attack_bare`、`hurt_bare`、`whip_bare`、`summon_bare`:格數與速度和戴帽版一樣,頭上是光禿禿的樹籬加一根小嫩芽,表情調皮(眨一隻眼、吐舌頭),不是受傷。A 線在 `hat_off` 之後有 `<動畫>_bare` 就改播它。
+- 蘭斯洛特的頭像臉朝左(他在對白框右邊)。如果之後把他加進 `dialogue_box.gd` 的 `LEFT_SPEAKERS`,要把頭像改成臉朝右(`art_v26_cast.portrait()` 不翻轉即可)。
+- `docs/ART_BRIEF.md` 的尺寸表請整合更新:新角色見上,投射物 `magic_orb` 12×12,其他三個 16×16。
+
+**下一步**
+
+- 整合後在真正的關卡裡看一次(尤其是綠騎士的藤鞭範圍與摩根娜的新月法杖),再微調。
+
+**需要擁有人決定的事**
+
+- 看 `tests/line_c/shots_v26/` 的截圖,或執行 `godot --path . res://tests/line_c/cast_v26_gallery.tscn`(點畫面換頁),告訴我哪個角色還不喜歡。

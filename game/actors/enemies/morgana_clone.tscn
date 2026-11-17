@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/actors/enemies/morgana_clone.gd" id="1_script"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/morgana/morgana_frames.tres" id="2_frames"]
+
+[node name="MorganaClone" type="CharacterBody2D" groups=["enemy"]]
+collision_layer = 8
+collision_mask = 1
+motion_mode = 1
+script = ExtResource("1_script")
+body_radius = 10.0
+tint = Color(0.72, 0.8, 1, 0.55)
+knockback_mult = 0.5
+separation_radius = 26.0
+spawn_time = 0.5
+death_time = 0.25
+max_exp_orbs = 1
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_frames")
+animation = &"idle"

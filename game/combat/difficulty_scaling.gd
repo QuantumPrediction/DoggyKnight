@@ -10,6 +10,8 @@ extends Resource
 ##    - 交叉火力(crossfire_from_level 起):近戰敵人開始預警時,冷卻快好的弓兵立刻瞄準同一個目標。
 ##    - 夾擊(pincer_from_level 起):一隻近戰敵人開始預警時,附近等著的同伴也一起出手(從不同方向)。
 ##    陣列比關卡少時,用最後一個值。
+## 3. v2.6 每章倍率(AV9):故事模式依 GameState.chapter(1 至 3)再乘 chapter_hp_mult、chapter_damage_mult,
+##    和每關的成長曲線相乘(第 N 章第 M 關的生命 = 難度 × 章倍率 × 關倍率)。無盡試煉不套用。
 
 const PATH := "res://data/enemies/difficulty_scaling.tres"
 const NORMAL: StringName = &"normal"
@@ -31,6 +33,11 @@ var _ramped: Dictionary = {}
 @export var pincer_from_level: int = 4           ## 從第幾關(0 起算)開始夾擊;< 0 = 不用
 @export var pincer_reach: float = 16.0           ## 等著的同伴離自己的攻擊距離不到這麼遠,才會一起出手
 
+@export_group("每章倍率(v2.6 AV9)")
+## 故事模式第 1、2、3 章的敵人生命與傷害倍數(頭目也一樣);和 hp/damage_ramp_by_level 相乘。
+@export var chapter_hp_mult: PackedFloat32Array = PackedFloat32Array([1.0, 1.3, 1.6])
+@export var chapter_damage_mult: PackedFloat32Array = PackedFloat32Array([1.0, 1.2, 1.4])
+
 ## 測試用:換一份(null = 回到資料檔)。
 static var override: DifficultyScaling
 static var _loaded: DifficultyScaling
@@ -45,16 +52,19 @@ static func get_default() -> DifficultyScaling:
 	return _loaded
 
 
-## 目前難度(GameState.difficulty)的倍數,再乘上故事模式該關的成長曲線(hp/damage_ramp_by_level)。
+## 目前難度(GameState.difficulty)的倍數,再乘上故事模式該關的成長曲線(hp/damage_ramp_by_level)
+## 與該章的倍率(chapter_hp_mult、chapter_damage_mult,v2.6)。
 static func current_mode() -> EnemyDifficulty:
 	var scaling := get_default()
 	var base := scaling.mode(GameState.difficulty)
-	var index := GameState.level_index if GameState.mode == &"story" else -1
-	var hp_k := _ramp(scaling.hp_ramp_by_level, index)
-	var dmg_k := _ramp(scaling.damage_ramp_by_level, index)
+	var story := GameState.mode == &"story"
+	var index := GameState.level_index if story else -1
+	var chapter := GameState.chapter if story else 0
+	var hp_k := _ramp(scaling.hp_ramp_by_level, index) * scaling.chapter_hp(chapter)
+	var dmg_k := _ramp(scaling.damage_ramp_by_level, index) * scaling.chapter_damage(chapter)
 	if is_equal_approx(hp_k, 1.0) and is_equal_approx(dmg_k, 1.0):
 		return base
-	var key := "%s:%d" % [base.id, index]
+	var key := "%s:%d:%d" % [base.id, chapter, index]
 	if not scaling._ramped.has(key):
 		var m := base.duplicate() as EnemyDifficulty
 		m.hp_mult *= hp_k
@@ -62,6 +72,15 @@ static func current_mode() -> EnemyDifficulty:
 		m.damage_mult *= dmg_k
 		scaling._ramped[key] = m
 	return scaling._ramped[key]
+
+
+## 第 chapter 章(1 起算)的生命倍數;0 或找不到 = 1.0。陣列比章少時用最後一個值。
+func chapter_hp(chapter: int) -> float:
+	return _ramp(chapter_hp_mult, chapter - 1)
+
+
+func chapter_damage(chapter: int) -> float:
+	return _ramp(chapter_damage_mult, chapter - 1)
 
 
 static func _ramp(values: PackedFloat32Array, index: int) -> float:

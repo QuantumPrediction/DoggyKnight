@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://core/data/enemy_data.gd" id="1_data"]
+[ext_resource type="PackedScene" path="res://game/actors/enemies/shadow_wolf.tscn" id="2_scene"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"shadow_wolf"
+display_name = "ENEMY_SHADOW_WOLF"
+scene = ExtResource("2_scene")
+max_hp = 40
+contact_damage = 10
+move_speed = 52.0
+exp_value = 3

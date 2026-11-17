@@ -7,6 +7,14 @@ extends Control
 ## - GROUND:草地、營火旁的空地、圓桌、木頭椅、卸下的盔甲與劍、營火(木柴、石頭、跳動的火焰)。
 ## - GLOW:營火的光暈(加亮混合,會閃爍),照在金毛、鬥牛犬與地面上。
 ## 位置(horizon_y、fire_spot 等)由 Camp._layout() 設定。
+##
+## v2.6 DV2:場景依章變化(chapter):
+## - 1 草地夜空:遠山、卡美洛城堡剪影、松樹、草地與小花。
+## - 2 城牆下的營火:石砌城牆(雉堞、塔樓、亮著的窗、飄動的圓桌旗、牆上的火把、殘留的紫色荊棘)、石板地。
+## - 3 湖邊洞口與月光:滿月、湖面的月光倒影與水波、湖霧、遠方小島上的摩根娜之塔、
+##   左邊的岩石洞口(會閃的水晶)、湖邊的蘆葦與鵝卵石。
+## 顏色:CampConfig 的 sky_*、ground_* 由 Camp 依 chapter_palettes 換好;這裡另外讀 chapter_palettes 的
+## wall_color、rock_color、water_color、crystal_color 等(沒有寫時用下面的預設值)。
 
 enum Part { SKY, GROUND, GLOW }
 
@@ -21,6 +29,10 @@ var fire_spot: Vector2 = Vector2.ZERO
 var table_spot: Vector2 = Vector2.ZERO
 var log_spot: Vector2 = Vector2.ZERO
 var moon_spot: Vector2 = Vector2.ZERO
+## 場景的上緣(標題與活力條下面);城牆與洞口不會高過這裡太多。
+var top_y: float = 70.0
+## v2.6:第幾章的場景(1 至 3)。
+var chapter: int = 1
 
 ## 流星:{"pos": Vector2, "vel": Vector2, "age": float, "life": float}
 var meteors: Array[Dictionary] = []
@@ -28,9 +40,10 @@ var _next_meteor: float = 2.0
 var _rng := RandomNumberGenerator.new()
 
 
-func _init(p_part: Part = Part.SKY, p_config: CampConfig = null) -> void:
+func _init(p_part: Part = Part.SKY, p_config: CampConfig = null, p_chapter: int = 1) -> void:
 	part = p_part
 	config = p_config
+	chapter = clampi(p_chapter, 1, 3)
 	name = String(Part.keys()[p_part]).capitalize()
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -123,12 +136,20 @@ func _draw_sky() -> void:
 		var cloud_color := Color(config.sky_bottom_color.lightened(0.12), 0.35)
 		for puff: Vector3 in [Vector3(0, 0, 9), Vector3(10, -3, 7), Vector3(-10, 1, 6), Vector3(18, 1, 5)]:
 			_draw_ellipse(Vector2(roundf(cloud_x) + puff.x, cloud_y + puff.y), Vector2(puff.z * 1.4, puff.z * 0.55), cloud_color)
-	# 月亮(新月)與月暈
+	# 月亮(新月;第三章是又大又圓的滿月)與月暈
 	var moon := moon_spot
-	draw_circle(moon, 14.0, Color(1, 0.95, 0.75, 0.05))
-	draw_circle(moon, 11.0, Color(1, 0.95, 0.75, 0.07))
-	draw_circle(moon, 9.0, Color("fff3c4"))
-	draw_circle(moon + Vector2(4, -2), 8.0, config.sky_top_color.lerp(config.sky_bottom_color, 0.15))
+	if chapter == 3:
+		draw_circle(moon, 20.0, Color(0.8, 0.95, 1, 0.05))
+		draw_circle(moon, 15.0, Color(0.8, 0.95, 1, 0.08))
+		draw_circle(moon, 11.0, Color("f4fbff"))
+		draw_circle(moon + Vector2(-3, -2), 3.0, Color("dce9f2"))
+		draw_circle(moon + Vector2(4, 3), 2.0, Color("dce9f2"))
+		draw_circle(moon + Vector2(2, -5), 1.5, Color("e6f0f7"))
+	else:
+		draw_circle(moon, 14.0, Color(1, 0.95, 0.75, 0.05))
+		draw_circle(moon, 11.0, Color(1, 0.95, 0.75, 0.07))
+		draw_circle(moon, 9.0, Color("fff3c4"))
+		draw_circle(moon + Vector2(4, -2), 8.0, config.sky_top_color.lerp(config.sky_bottom_color, 0.15))
 	# 流星
 	for m: Dictionary in meteors:
 		var t := float(m["age"]) / float(m["life"])
@@ -139,6 +160,13 @@ func _draw_sky() -> void:
 			var a := alpha * (1.0 - k / 14.0)
 			draw_rect(Rect2((head + back * k).round(), Vector2.ONE), Color(1, 0.97, 0.85, a))
 		draw_rect(Rect2(head.round() - Vector2.ONE * 0.5, Vector2(2, 2)), Color(1, 1, 1, alpha))
+	match chapter:
+		2:
+			_draw_castle_wall()
+			return
+		3:
+			_draw_lake_and_cave()
+			return
 	# 遠山
 	var far := config.sky_bottom_color.darkened(0.25)
 	var hills := PackedVector2Array([Vector2(0, horizon), Vector2(0, horizon - 16), Vector2(screen.x * 0.18, horizon - 28),
@@ -200,8 +228,13 @@ func _draw_ground() -> void:
 	# 營火旁踩平的空地
 	_draw_ellipse(fire_spot + Vector2(0, 10), Vector2(64, 16), config.ground_color.lerp(Color("5a4a32"), 0.45))
 	_draw_ellipse(fire_spot + Vector2(0, 10), Vector2(46, 10), config.ground_color.lerp(Color("6a5638"), 0.5))
-	# 草(隨風輕輕搖)
-	for i in 34:
+	if chapter == 2:
+		_draw_cobbles()
+	elif chapter == 3:
+		_draw_shore()
+	# 草(隨風輕輕搖;第二章是石板地,只有幾撮;第三章是湖邊,少一點)
+	var tufts := 34 if chapter == 1 else (8 if chapter == 2 else 18)
+	for i in tufts:
 		var tuft := Vector2(fmod(i * 53.0 + 5.0, screen.x), horizon + 6.0 + fmod(i * 31.0, maxf(screen.y - horizon - 8.0, 8.0)))
 		if absf(tuft.x - fire_spot.x) < 60.0 and absf(tuft.y - fire_spot.y - 10.0) < 14.0:
 			continue
@@ -336,6 +369,274 @@ func _draw_fire() -> void:
 		draw_colored_polygon(PackedVector2Array([base + Vector2(-3, 0), base + Vector2(side * 2.0, -hh), base + Vector2(3, 0)]), config.fire_colors[0])
 
 
+# --- 第二章:城牆下的營火 ---
+
+## 城牆的上緣(畫面邏輯像素)。
+func wall_top() -> float:
+	return roundf(horizon_y - clampf((horizon_y - top_y) * 0.62, 34.0, 64.0))
+
+
+## 牆上兩支火把的位置(火焰的底部)。光暈(GLOW)也用。
+func torch_spots() -> Array[Vector2]:
+	var screen := SafeArea.get_screen_size()
+	var y := roundf(lerpf(wall_top(), horizon_y, 0.42))
+	return [Vector2(roundf(screen.x * 0.16), y), Vector2(roundf(screen.x * 0.5) + 4.0, y)]
+
+
+func _draw_castle_wall() -> void:
+	var screen := SafeArea.get_screen_size()
+	var horizon := horizon_y
+	var top := wall_top()
+	var stone: Color = _pc("wall_color", Color("6a5f74"))
+	var dark := stone.darkened(0.3)
+	var light := stone.lightened(0.18)
+	# 牆後遠處的城堡屋頂與塔尖(更暗,襯出城牆)
+	var far := config.sky_bottom_color.darkened(0.35)
+	for spire: Vector3 in [Vector3(0.3, 16, 7), Vector3(0.62, 24, 9), Vector3(0.9, 12, 6)]:
+		var x := roundf(screen.x * spire.x)
+		draw_rect(Rect2(x - spire.z * 0.5, top - spire.y, spire.z, spire.y), far)
+		draw_colored_polygon(PackedVector2Array([Vector2(x - spire.z * 0.5 - 1, top - spire.y), Vector2(x, top - spire.y - 9),
+			Vector2(x + spire.z * 0.5 + 1, top - spire.y)]), far)
+		var lit := 0.5 + 0.5 * sin(time * 0.8 + spire.x * 9.0)
+		draw_rect(Rect2(x - 1, top - spire.y + 4, 2, 3), Color(1, 0.8, 0.4, 0.4 + 0.5 * lit))
+	# 牆身與雉堞
+	draw_rect(Rect2(0, top, screen.x, horizon - top), stone)
+	var merlon := 8.0
+	var gap := 6.0
+	var x0 := -fmod(screen.x * 0.5, merlon + gap)
+	var mx := x0
+	while mx < screen.x:
+		draw_rect(Rect2(mx, top - 6, merlon, 6), stone)
+		draw_rect(Rect2(mx, top - 6, merlon, 1), light)
+		draw_rect(Rect2(mx + merlon - 1, top - 6, 1, 6), dark)
+		mx += merlon + gap
+	draw_rect(Rect2(0, top, screen.x, 1), light)
+	# 石塊(每行 6 像素,上下錯開半塊)
+	var row := 0
+	var y := top + 3.0
+	while y < horizon - 1.0:
+		draw_rect(Rect2(0, y, screen.x, 1), dark)
+		var offset := 6.0 if row % 2 == 0 else 0.0
+		var bx := offset
+		while bx < screen.x:
+			draw_rect(Rect2(bx, y + 1, 1, 5), dark)
+			# 每塊石頭左上角一點點亮面
+			if int(bx + y) % 3 == 0:
+				draw_rect(Rect2(bx + 1, y + 1, 3, 1), light)
+			bx += 12.0
+		y += 6.0
+		row += 1
+	# 牆腳的陰影
+	draw_rect(Rect2(0, horizon - 3, screen.x, 3), Color(0, 0, 0, 0.25))
+	# 右邊的塔樓:比牆高,有亮著的窗與旗子
+	var tower_x := roundf(screen.x * 0.8)
+	var tower_w := 26.0
+	var tower_top := top - 22.0
+	draw_rect(Rect2(tower_x - tower_w * 0.5, tower_top, tower_w, horizon - tower_top), stone.darkened(0.08))
+	draw_rect(Rect2(tower_x - tower_w * 0.5, tower_top, 1, horizon - tower_top), light)
+	draw_rect(Rect2(tower_x + tower_w * 0.5 - 2, tower_top, 2, horizon - tower_top), dark)
+	for i in 3:
+		var cx := tower_x - tower_w * 0.5 + i * 10.0
+		draw_rect(Rect2(cx, tower_top - 5, 6, 5), stone.darkened(0.08))
+		draw_rect(Rect2(cx, tower_top - 5, 6, 1), light)
+	var window := Rect2(tower_x - 3, tower_top + 8, 6, 8)
+	var lamp := 0.75 + 0.25 * sin(time * 3.1) * sin(time * 1.7)
+	draw_rect(window.grow(1), dark)
+	draw_rect(window, Color(1, 0.78, 0.38, lamp))
+	draw_rect(Rect2(window.position + Vector2(0, -1), Vector2(6, 1)), dark)
+	draw_rect(Rect2(window.position.x + 2, window.position.y, 1, 8), dark)
+	# 塔頂的圓桌旗(藍底金圈,飄動)
+	var pole := Vector2(tower_x, tower_top - 18)
+	draw_rect(Rect2(pole, Vector2(1, 13)), Color("3a2a2a"))
+	var flag_blue: Color = _pc("banner_color", Color("3d5aa8"))
+	for k in 7:
+		var wave := roundf(sin(time * 5.0 - k * 0.8) * 1.0)
+		draw_rect(Rect2(pole + Vector2(1 + k, wave), Vector2(1, 5)), flag_blue if k < 6 else flag_blue.darkened(0.2))
+	draw_rect(Rect2(pole + Vector2(3, 2 + roundf(sin(time * 5.0 - 2.4))), Vector2(2, 1)), Color("ffe066"))
+	# 牆上掛的長旗(兩面,下襬隨風擺)
+	for b: float in [0.33, 0.66]:
+		var bx2 := roundf(screen.x * b)
+		var banner_top := top + 4.0
+		var length := clampf((horizon - top) * 0.45, 14.0, 24.0)
+		draw_rect(Rect2(bx2 - 6, banner_top - 1, 12, 2), Color("8a6a3a"))
+		for k in 10:
+			var sway := roundf(sin(time * 2.2 + b * 7.0) * (k / 10.0) * 1.5)
+			draw_rect(Rect2(bx2 - 5 + sway, banner_top + 1 + k * length / 10.0, 10, ceilf(length / 10.0) + 1), flag_blue)
+		var tip := banner_top + 1 + length + roundf(sin(time * 2.2 + b * 7.0) * 1.5)
+		draw_colored_polygon(PackedVector2Array([Vector2(bx2 - 5, tip), Vector2(bx2, tip + 4), Vector2(bx2 + 5, tip)]), flag_blue)
+		# 圓桌紋章:金色的圓
+		var c := Vector2(bx2 + roundf(sin(time * 2.2 + b * 7.0) * 0.7), banner_top + length * 0.5)
+		draw_arc(c, 3.0, 0, TAU, 12, Color("ffe066"), 1.0)
+	# 殘留的紫色荊棘(午睡咒):從左下爬上牆,尖刺一閃一閃
+	var thorn: Color = _pc("thorn_color", Color("7a3a9a"))
+	var vine_x := roundf(screen.x * 0.04)
+	for k in 14:
+		var vy := horizon - 2.0 - k * 3.0
+		if vy < top + 2.0:
+			break
+		var vx := vine_x + roundf(sin(k * 0.9) * 4.0) + k * 1.0
+		draw_rect(Rect2(vx, vy, 2, 3), thorn)
+		if k % 3 == 1:
+			draw_rect(Rect2(vx + 2, vy, 2, 1), thorn.lightened(0.2))
+		if k % 4 == 2:
+			draw_rect(Rect2(vx - 2, vy + 1, 2, 1), thorn.lightened(0.2))
+	# 火把(支架與火焰)
+	for t: Vector2 in torch_spots():
+		draw_rect(Rect2(t + Vector2(-1, 0), Vector2(3, 6)), Color("3a2a2a"))
+		draw_rect(Rect2(t + Vector2(-3, 5), Vector2(7, 1)), Color("3a2a2a"))
+		var h := 5.0 + roundf(1.5 * sin(time * 11.0 + t.x))
+		draw_colored_polygon(PackedVector2Array([t + Vector2(-3, 0), t + Vector2(roundf(sin(time * 6.0 + t.x)), -h), t + Vector2(4, 0)]),
+			config.fire_colors[1] if config.fire_colors.size() > 1 else Color("ff9a2e"))
+		draw_rect(Rect2(t + Vector2(0, -2), Vector2(1, 2)), Color("ffe36a"))
+
+
+## 第二章的地面:城牆前的石板地。
+func _draw_cobbles() -> void:
+	# 越遠(越靠近城牆)石板越扁,有透視感;顏色很淡,不搶角色的眼。石板之間有空隙,偶爾冒一撮草。
+	var screen := SafeArea.get_screen_size()
+	var light := config.ground_light_color
+	var y := horizon_y + 3.0
+	var r := 0
+	# 只鋪到營火下面一點(再往下是選單,地面保持素色)
+	var bottom := minf(screen.y, fire_spot.y + 44.0)
+	while y < bottom:
+		var depth := clampf((y - horizon_y) / 60.0, 0.0, 1.0)
+		var fade := 1.0 - clampf((y - fire_spot.y) / 44.0, 0.0, 1.0)
+		var h := roundf(lerpf(2.0, 5.0, depth))
+		var x := -float((r * 7) % 11)
+		var k := 0
+		while x < screen.x:
+			var w := roundf(lerpf(6.0, 11.0, depth)) + float((r * 5 + k * 3) % 4)
+			var skip := (r * 7 + k * 5) % 6 == 0
+			var near_fire := absf(x + w * 0.5 - fire_spot.x) < 52.0 and absf(y - fire_spot.y - 10.0) < 13.0
+			if not skip and not near_fire:
+				draw_rect(Rect2(x + 1, y, w - 2, h), Color(light, 0.14 * fade))
+				draw_rect(Rect2(x + 1, y, w - 2, 1), Color(light.lightened(0.25), 0.2 * fade))
+			x += w
+			k += 1
+		y += h + 2.0
+		r += 1
+
+
+# --- 第三章:湖邊洞口與月光 ---
+
+## 湖面的上緣(遠岸)。
+func lake_top() -> float:
+	return roundf(horizon_y - clampf((horizon_y - top_y) * 0.5, 24.0, 44.0))
+
+
+func _draw_lake_and_cave() -> void:
+	var screen := SafeArea.get_screen_size()
+	var horizon := horizon_y
+	var lake := lake_top()
+	var water: Color = _pc("water_color", Color("1d3a5c"))
+	var far := config.sky_bottom_color.darkened(0.35)
+	# 遠岸的森林(小小的圓頂樹影)
+	var shore := PackedVector2Array([Vector2(0, lake + 1)])
+	for i in 25:
+		var x := screen.x * i / 24.0
+		shore.append(Vector2(roundf(x), lake - 4.0 - roundf(absf(sin(i * 1.7)) * 5.0 + (i % 3))))
+	shore.append(Vector2(screen.x, lake + 1))
+	draw_colored_polygon(shore, far)
+	# 湖中小島上的摩根娜之塔(窗口的紫光慢慢明暗)
+	var tower_x := roundf(screen.x * 0.6)
+	var island := far.darkened(0.2)
+	_draw_ellipse(Vector2(tower_x, lake + 1), Vector2(14, 3), island)
+	draw_rect(Rect2(tower_x - 3, lake - 34, 6, 34), island)
+	draw_rect(Rect2(tower_x - 5, lake - 36, 10, 3), island)
+	draw_colored_polygon(PackedVector2Array([Vector2(tower_x - 5, lake - 36), Vector2(tower_x, lake - 50), Vector2(tower_x + 5, lake - 36)]), island)
+	var glow := 0.5 + 0.5 * sin(time * 1.3)
+	draw_rect(Rect2(tower_x - 1, lake - 30, 2, 3), Color(0.75, 0.45, 1.0, 0.5 + 0.5 * glow))
+	draw_circle(Vector2(tower_x, lake - 29), 4.0, Color(0.75, 0.45, 1.0, 0.12 * glow))
+	# 湖面:遠深近淺的色帶
+	var bands := 5
+	for i in bands:
+		var y0 := lake + roundf((horizon - lake) * i / bands)
+		var y1 := lake + roundf((horizon - lake) * (i + 1) / bands)
+		draw_rect(Rect2(0, y0, screen.x, y1 - y0 + 1), water.lerp(water.lightened(0.18), float(i) / bands))
+	# 水波(短短的亮線,左右慢慢移動)
+	for i in 16:
+		var wy := lake + 2.0 + fmod(i * 7.0, maxf(horizon - lake - 3.0, 1.0))
+		var wx := fmod(i * 37.0 + time * (3.0 + (i % 3)), screen.x + 12.0) - 6.0
+		var a := 0.25 + 0.2 * sin(time * 2.0 + i)
+		draw_rect(Rect2(roundf(wx), roundf(wy), 4 + (i % 3) * 2, 1), Color(0.75, 0.9, 1.0, a))
+	# 湖霧:半透明的帶子慢慢飄
+	for i in 3:
+		var mist_x := fmod(i * 70.0 + time * (4.0 + i * 1.5), screen.x + 80.0) - 40.0
+		var mist_y := lake + 2.0 + i * 4.0
+		_draw_ellipse(Vector2(roundf(mist_x), mist_y), Vector2(34, 3), Color(0.85, 0.92, 1.0, 0.1))
+	# 左邊的岩石洞口
+	_draw_cave(screen, horizon)
+	# 湖邊的蘆葦(右邊)
+	for i in 5:
+		var rx := roundf(screen.x * (0.86 + i * 0.03))
+		var h := 10.0 + float(i % 3) * 4.0
+		var sway := 1.0 if sin(time * 1.4 + i) > 0.2 else 0.0
+		draw_rect(Rect2(rx, horizon - h, 1, h), Color("2f4a3a"))
+		draw_rect(Rect2(rx + sway, horizon - h - 4, 2, 4), Color("6a4a2a"))
+
+
+func _draw_cave(screen: Vector2, horizon: float) -> void:
+	var rock: Color = _pc("rock_color", Color("39405e"))
+	var w := screen.x
+	var top := minf(top_y - 6.0, horizon - 70.0)
+	var outer := PackedVector2Array([
+		Vector2(0, horizon + 4), Vector2(0, top), Vector2(w * 0.1, top + 4), Vector2(w * 0.22, top + 12),
+		Vector2(w * 0.3, top + 26), Vector2(w * 0.34, horizon - 22), Vector2(w * 0.38, horizon - 8), Vector2(w * 0.4, horizon + 4),
+	])
+	draw_colored_polygon(outer, rock)
+	# 被月光照到的岩石邊緣(右邊,月亮在右上)
+	for i in range(2, outer.size() - 1):
+		var a := outer[i]
+		var b := outer[i + 1]
+		var steps := int(a.distance_to(b) / 2.0)
+		for k in steps:
+			var pt := a.lerp(b, float(k) / maxf(steps, 1)).round()
+			draw_rect(Rect2(pt + Vector2(-2, 0), Vector2(2, 1)), rock.lightened(0.28))
+	# 岩石的裂紋
+	for crack: Vector4 in [Vector4(0.06, 0.25, 6, 4), Vector4(0.18, 0.12, 5, 3), Vector4(0.27, 0.45, 4, 5)]:
+		var c := Vector2(roundf(w * crack.x), roundf(lerpf(top, horizon, crack.y)))
+		draw_rect(Rect2(c, Vector2(crack.z, 1)), rock.darkened(0.25))
+		draw_rect(Rect2(c + Vector2(crack.z - 1, 1), Vector2(1, crack.w)), rock.darkened(0.25))
+	# 洞口(更深的黑)
+	var mouth := PackedVector2Array([
+		Vector2(w * 0.04, horizon + 2), Vector2(w * 0.06, horizon - 24), Vector2(w * 0.12, horizon - 38),
+		Vector2(w * 0.2, horizon - 36), Vector2(w * 0.26, horizon - 20), Vector2(w * 0.29, horizon + 2),
+	])
+	draw_colored_polygon(mouth, Color("0d0f1e"))
+	# 洞口的水晶(一閃一閃)
+	var crystal: Color = _pc("crystal_color", Color("7fe6ff"))
+	var crystals: Array[Vector3] = [Vector3(0.07, -20, 5), Vector3(0.25, -16, 6), Vector3(0.13, -36, 4), Vector3(0.31, -6, 4), Vector3(0.03, -8, 3)]
+	for i in crystals.size():
+		var cr := crystals[i]
+		var base := Vector2(roundf(w * cr.x), horizon + cr.y)
+		var shine := 0.55 + 0.45 * sin(time * (1.6 + i * 0.37) + i * 2.0)
+		var col := crystal if i % 2 == 0 else Color("c99bff")
+		draw_colored_polygon(PackedVector2Array([base + Vector2(-2, 0), base + Vector2(0, -cr.z), base + Vector2(2, 0), base + Vector2(0, 2)]),
+			Color(col, 0.6 + 0.4 * shine))
+		draw_rect(Rect2(base + Vector2(0, -cr.z + 1), Vector2(1, 2)), Color(1, 1, 1, shine))
+
+
+## 第三章的地面:湖邊的鵝卵石與濕沙。
+func _draw_shore() -> void:
+	var screen := SafeArea.get_screen_size()
+	draw_rect(Rect2(0, horizon_y, screen.x, 3), Color(_pc("sand_color", Color("5a5a6a")), 0.6))
+	for i in 22:
+		var p := Vector2(fmod(i * 41.0 + 11.0, screen.x), horizon_y + 6.0 + fmod(i * 23.0, maxf(screen.y - horizon_y - 10.0, 8.0)))
+		if absf(p.x - fire_spot.x) < 58.0 and absf(p.y - fire_spot.y - 10.0) < 14.0:
+			continue
+		var size := Vector2(3 + (i % 3), 2)
+		draw_rect(Rect2(p.round(), size), Color("6f7690"))
+		draw_rect(Rect2(p.round(), Vector2(size.x - 1, 1)), Color("9aa2bb"))
+
+
+## 讀這一章的額外顏色(CampConfig.chapter_palettes[chapter][key]);沒有時用 fallback。
+func _pc(key: String, fallback: Color) -> Color:
+	var palette: Dictionary = config.chapter_palettes.get(chapter, {})
+	var value: Variant = palette.get(key, fallback)
+	return value if value is Color else fallback
+
+
 # --- 光暈 ---
 
 func _draw_glow() -> void:
@@ -348,6 +649,23 @@ func _draw_glow() -> void:
 		draw_circle(c, r, Color(config.glow_color.r, config.glow_color.g, config.glow_color.b, strength * (0.6 + i * 0.25)))
 	# 地面上的暖光(扁橢圓)
 	_draw_ellipse(c + Vector2(0, 16), Vector2(54, 10) * flicker, Color(config.glow_color, strength))
+	if chapter == 2:
+		# 牆上火把的小光暈
+		for t: Vector2 in torch_spots():
+			for i in 3:
+				draw_circle(t + Vector2(0, -3), roundf((14.0 - i * 4.0) * flicker), Color(1.0, 0.55, 0.2, 0.05 + i * 0.03))
+	elif chapter == 3:
+		# 湖面的月光倒影:月亮下方一段一段閃爍的亮線
+		var lake := lake_top()
+		var x := moon_spot.x
+		var y := lake + 1.0
+		var k := 0
+		while y < horizon_y - 1.0:
+			var half := 2.0 + k * 1.2 + roundf(sin(time * 3.0 + k * 1.3) * 1.5)
+			var a := 0.18 + 0.12 * sin(time * 2.4 + k * 0.9)
+			draw_rect(Rect2(roundf(x - half + sin(time * 1.1 + k) * 1.5), roundf(y), roundf(half * 2.0), 1), Color(0.75, 0.9, 1.0, a))
+			y += 2.0
+			k += 1
 
 
 func _draw_ellipse(center: Vector2, radii: Vector2, color: Color) -> void:

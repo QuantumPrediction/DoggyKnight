@@ -17,6 +17,19 @@ const STAND_IN_STATS: Dictionary = {
 			"frames": &"scarecrow", "tint": Color(1.0, 0.65, 0.65)},
 	&"black_knight": {"max_hp": 450, "move_speed": 32.0, "contact_damage": 18, "exp_value": 20, "radius": 18.0,
 			"summon_every": 10.0},
+	# v2.6(DEV_PLAN 4.13):A 線的資料檔還沒合併時,沙盒用這些替身數值。
+	&"gargoyle": {"max_hp": 30, "move_speed": 40.0, "contact_damage": 8, "exp_value": 2, "radius": 9.0},
+	&"gargoyle_elite": {"max_hp": 380, "move_speed": 36.0, "contact_damage": 12, "exp_value": 14, "radius": 14.0,
+			"frames": &"gargoyle", "tint": Color(1.0, 0.8, 1.0), "summon_every": 12.0},
+	&"spellbook": {"max_hp": 22, "move_speed": 26.0, "contact_damage": 7, "exp_value": 2, "radius": 7.0},
+	&"foxfire": {"max_hp": 1, "move_speed": 44.0, "contact_damage": 6, "exp_value": 1, "radius": 5.0},
+	&"shadow_wolf": {"max_hp": 30, "move_speed": 46.0, "contact_damage": 9, "exp_value": 2, "radius": 9.0},
+	&"phantom_knight": {"max_hp": 470, "move_speed": 42.0, "contact_damage": 18, "exp_value": 18, "radius": 18.0,
+			"frames": &"black_knight", "tint": Color(0.8, 0.6, 1.0, 0.7), "summon_every": 10.0},
+	&"green_knight": {"max_hp": 900, "move_speed": 32.0, "contact_damage": 20, "exp_value": 25, "radius": 22.0,
+			"summon_every": 10.0},
+	&"morgana": {"max_hp": 1000, "move_speed": 34.0, "contact_damage": 20, "exp_value": 30, "radius": 20.0,
+			"summon_every": 9.0},
 }
 const SEPARATION: float = 30.0
 const WINDUP: float = 0.4               ## 揮擊前的預警(DEV_PLAN A5 的 0.4 秒)

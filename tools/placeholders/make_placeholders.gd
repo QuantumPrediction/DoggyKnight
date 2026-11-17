@@ -64,6 +64,40 @@ const CHARACTERS: Dictionary = {
 			["down", 1, 1.0, false, Color("c9ada7")],
 		],
 	},
+	# v2.6 第二、三章(只用 --only 產生,不會蓋掉已有的正式美術)
+	"gargoyle": {"size": 32, "color": Color("8a8f98"), "anims": [
+			["idle", 2, 4.0, true, Color("c9ced6")], ["run", 4, 10.0, true, Color("7ec850")],
+			["attack", 3, 12.0, false, Color("ffffff")], ["hurt", 1, 1.0, false, Color("ffd34d")],
+			["swoop", 2, 12.0, true, Color("ff7b54")], ["stone", 2, 4.0, true, Color("5d6168")]]},
+	"spellbook": {"size": 24, "color": Color("7b4fa0"), "anims": [
+			["idle", 2, 6.0, true, Color("e6c36a")], ["run", 4, 10.0, true, Color("7ec850")],
+			["attack", 3, 12.0, false, Color("ffffff")], ["hurt", 1, 1.0, false, Color("ffd34d")],
+			["cast", 3, 10.0, false, Color("b58cff")]]},
+	"foxfire": {"size": 16, "color": Color("9a6bff"), "anims": [
+			["idle", 2, 8.0, true, Color("e3d3ff")], ["run", 4, 12.0, true, Color("7ec850")],
+			["attack", 3, 12.0, false, Color("ffffff")], ["hurt", 1, 1.0, false, Color("ffd34d")],
+			["burst", 3, 14.0, false, Color("ff7bd5")]]},
+	"shadow_wolf": {"size": 32, "color": Color("3b3556"), "anims": [
+			["idle", 2, 4.0, true, Color("8a7fc0")], ["run", 4, 12.0, true, Color("7ec850")],
+			["attack", 3, 12.0, false, Color("ffffff")], ["hurt", 1, 1.0, false, Color("ffd34d")],
+			["dash", 2, 12.0, true, Color("ff7b54")], ["down", 1, 1.0, false, Color("c9ada7")]]},
+	"green_knight": {"size": 64, "color": Color("3f8f4a"), "anims": [
+			["idle", 2, 3.0, true, Color("a6e07a")], ["run", 4, 8.0, true, Color("7ec850")],
+			["attack", 3, 10.0, false, Color("ffffff")], ["hurt", 1, 1.0, false, Color("ffd34d")],
+			["whip", 3, 10.0, false, Color("ff7b54")], ["summon", 3, 8.0, false, Color("b58cff")],
+			["hat_off", 3, 8.0, false, Color("f2d16b")], ["down", 1, 1.0, false, Color("c9ada7")]]},
+	"morgana": {"size": 64, "color": Color("b8562f"), "anims": [
+			["idle", 2, 4.0, true, Color("b58cff")], ["run", 4, 8.0, true, Color("7ec850")],
+			["attack", 3, 10.0, false, Color("ffffff")], ["hurt", 1, 1.0, false, Color("ffd34d")],
+			["cast", 3, 10.0, false, Color("9a6bff")], ["teleport", 3, 12.0, false, Color("e3d3ff")],
+			["down", 1, 1.0, false, Color("c9ada7")]]},
+	"lancelot": {"size": 32, "color": Color("d9893f"), "anims": [
+			["idle", 2, 4.0, true, Color("fff1c9")], ["run", 4, 10.0, true, Color("7ec850")],
+			["attack", 3, 12.0, false, Color("ffffff")], ["hurt", 1, 1.0, false, Color("ffd34d")],
+			["dash", 2, 12.0, true, Color("6fa8dc")]]},
+	"lady_lake": {"size": 32, "color": Color("f2f4f8"), "anims": [
+			["idle", 2, 3.0, true, Color("8fd3ff")], ["run", 4, 8.0, true, Color("7ec850")],
+			["cast", 3, 8.0, false, Color("b8f0ff")]]},
 }
 
 ## 16×16 的佔位 App 圖示,放大 16 倍成 256×256。不透明(iOS 規定圖示不可透明)。
@@ -103,6 +137,14 @@ const FX: Dictionary = {
 
 
 func _initialize() -> void:
+	# v2.6:`-- --only=id1,id2` 只產生指定角色(不動特效與圖示)
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--only="):
+			for id in arg.trim_prefix("--only=").split(","):
+				_make_character(id, CHARACTERS[id])
+			print("Placeholders written (only).")
+			quit(0)
+			return
 	for id: String in CHARACTERS:
 		_make_character(id, CHARACTERS[id])
 	for fx_name: String in FX:

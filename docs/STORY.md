@@ -1,4 +1,4 @@
-# 《金毛騎士》第一章「石中劍」故事設定與對白
+# 《金毛騎士》故事設定與對白(第一章「石中劍」、第二章「圓桌騎士」、第三章「湖中仙女」)
 
 版本:v2.3,2026-11-16,整合工作階段撰寫。擁有人要求「故事要夠豐富、好玩」。
 
@@ -205,3 +205,341 @@
 - 營地:第一次進入營地播 `camp1`,第二次播 `camp2`(每次營地只播一次)。
 - 1-6 過關:慶祝 → `l6_after`(結局,含插畫)→ 結算(第一章完)→ `teaser` → 回標題。
 - 每段對白都可以點「略過」;已看過的段落記在 `GameState.story_seen`(存檔),但再玩一次時仍然播放(玩家可以略過)。
+
+---
+
+# 第二章「圓桌騎士」與第三章「湖中仙女」(v2.6)
+
+版本:v2.6,2026-11-17,整合工作階段撰寫。擁有人要求「至少 3 章」。基調、對白長度、「狗不會受傷」等規則同第 1 節。
+
+## 9. 三章的大綱
+
+| 章 | 名稱 | 一句話 | 頭目 | 新同伴 |
+| --- | --- | --- | --- | --- |
+| 1 | 石中劍 | 金毛拔出石中劍,前往卡美洛,在石橋打敗黑騎士 | 黑騎士 | 貝德維爾(1-3 起) |
+| 2 | 圓桌騎士 | 摩根娜用「百年午睡咒」讓全城沉睡;金毛叫醒騎士、坐滿圓桌 | 綠騎士(中頭目:石像鬼統領) | 蘭斯洛特(2-3 起) |
+| 3 | 湖中仙女 | 梅林被抓;湖中仙女帶路,渡過迷霧湖,登上摩根娜之塔 | 摩根娜(中頭目:幻影黑騎士) | (貝德維爾與蘭斯洛特一起) |
+
+**結局的意思**:金毛沒有「消滅」摩根娜,而是邀請她一起玩撿樹枝。她一直很孤單:圓桌從來沒有邀請過她。這呼應金毛在第一章營地說的「我只想大家都可以安心地玩撿樹枝」。
+
+**每章是獨立的一輪**(像同類型手機遊戲的「章節」):從等級 1、沒有把戲開始;營地訓練(永久升級)會帶過去。打完第 N 章解鎖第 N+1 章;標題畫面可以選章。
+
+## 10. 第二、三章的新角色(C 線畫頭像 48×48)
+
+| speaker 代號 | 名字(名牌) | 設定 | 頭像表情 |
+| --- | --- | --- | --- |
+| `lancelot` | 蘭斯洛特 | 柴犬騎士,銀色輕甲、藍色羽飾頭盔、長槍。驕傲、快、嘴巴壞,但重視榮譽;第二章 2-3 起成為第二位同伴。 | `normal`、`happy`、`serious`、`surprised` |
+| `gargoyle` | 石像鬼統領 | 城牆上的大石像鬼,灰色石頭身體、小翅膀、長角;被控制時眼睛發紫光,清醒後變回溫和的守護者。 | `normal` |
+| `green_knight` | 綠騎士 | 花園的守護者,樹籬修剪成的巨大騎士,頭上戴著一頂「葉子帽」(圓圓的灌木),手拿藤鞭。豪爽、愛笑、愛玩遊戲。中咒時葉子帽上插著紫色荊棘。 | `normal` |
+| `lady_lake` | 湖中仙女 | 白色薩摩耶,穿著像水波一樣的淡藍長裙,身邊有小水珠繞著飄。溫柔、知道很多往事。 | `normal`、`smile`、`worried` |
+| `morgana_true` | 摩根娜 | 第三章第一次露出真面目的狐狸女巫:紅褐色毛、九分優雅一分寂寞、紫色斗篷、新月法杖。第二章與 3-5 之前仍用 `morgana`(紫色剪影,名牌「神秘的聲音」)。 | `normal`、`angry`、`sad`、`smile` |
+
+## 11. 第二、三章的繪本插畫(C 線,`assets/story/<id>.png`,160×120)
+
+| id | 畫面 |
+| --- | --- |
+| `c2_prologue_1` | 清晨的卡美洛城,紫色荊棘爬滿城牆,街上的狗狗睡成一團 |
+| `c2_prologue_2` | 圓桌旁的騎士們趴在桌上睡覺,頭上冒著「Zzz」 |
+| `c2_ending_1` | 綠騎士的紫色荊棘碎成光點,花園開滿花 |
+| `c2_ending_2` | 騎士們伸懶腰醒來,圓桌坐滿,金毛在中間 |
+| `c2_ending_3` | 夜晚,紫色的霧從窗戶飄進梅林的房間(梅林睡著,只見帽子) |
+| `teaser_2` | 迷霧湖與湖中央小島上的高塔(第三章預告) |
+| `c3_prologue_1` | 清晨的迷霧湖,遠方小島上有一座尖塔 |
+| `c3_prologue_2` | 湖面發光,白色薩摩耶仙女從水中升起 |
+| `c3_ending_1` | 塔頂,摩根娜坐在地上,法杖落地;金毛叼著一根樹枝遞給她 |
+| `c3_ending_2` | 加冕禮:金毛戴上王冠,圓桌坐滿騎士,摩根娜也坐在其中一個位子 |
+| `c3_ending_3` | 夕陽下的草地,大家(包括摩根娜)一起玩撿樹枝 |
+
+## 12. 第二、三章的對白腳本
+
+格式同第 5 節。文字見 `i18n/story.csv`。第一章的 `teaser` 文字改為「第二章已經開啟」。
+
+### `c2_prologue`:第二章開場繪本(第二章新遊戲時,2-1 之前)
+
+| 鍵 | speaker | 表情 | 插畫 |
+| --- | --- | --- | --- |
+| STORY_C2_PROLOGUE_01 | narrator |  | c2_prologue_1 |
+| STORY_C2_PROLOGUE_02 | narrator |  | c2_prologue_1 |
+| STORY_C2_PROLOGUE_03 | narrator |  | c2_prologue_2 |
+| STORY_C2_PROLOGUE_04 | narrator |  | c2_prologue_2 |
+| STORY_C2_PROLOGUE_05 | narrator |  | c2_prologue_2 |
+
+### `c2l1_before`:2-1 城下町
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C2L1_BEFORE_01 | goldie | surprised |
+| STORY_C2L1_BEFORE_02 | merlin | worried |
+| STORY_C2L1_BEFORE_03 | bulldog | serious |
+| STORY_C2L1_BEFORE_04 | merlin | normal |
+
+### `c2l1_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C2L1_AFTER_01 | goldie | normal |
+| STORY_C2L1_AFTER_02 | merlin | worried |
+| STORY_C2L1_AFTER_03 | bulldog | serious |
+
+### `c2l2_before`:2-2 城堡中庭:蘭斯洛特登場
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C2L2_BEFORE_01 | lancelot | serious |
+| STORY_C2L2_BEFORE_02 | goldie | happy |
+| STORY_C2L2_BEFORE_03 | lancelot | serious |
+| STORY_C2L2_BEFORE_04 | bulldog | serious |
+| STORY_C2L2_BEFORE_05 | lancelot | normal |
+
+### `c2l2_after`:蘭斯洛特加入(2-3 起成為第二位同伴)
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C2L2_AFTER_01 | lancelot | surprised |
+| STORY_C2L2_AFTER_02 | goldie | happy |
+| STORY_C2L2_AFTER_03 | lancelot | happy |
+| STORY_C2L2_AFTER_04 | merlin | proud |
+
+### `c2_camp1`:第二章第一次營地
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C2_CAMP1_01 | lancelot | normal |
+| STORY_C2_CAMP1_02 | bulldog | happy |
+| STORY_C2_CAMP1_03 | goldie | tired |
+| STORY_C2_CAMP1_04 | merlin | normal |
+
+### `c2l3_before`:2-3 王家書庫
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C2L3_BEFORE_01 | merlin | surprised |
+| STORY_C2L3_BEFORE_02 | lancelot | serious |
+| STORY_C2L3_BEFORE_03 | merlin | normal |
+| STORY_C2L3_BEFORE_04 | goldie | serious |
+
+### `c2l3_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C2L3_AFTER_01 | merlin | proud |
+| STORY_C2L3_AFTER_02 | merlin | worried |
+| STORY_C2L3_AFTER_03 | lancelot | normal |
+| STORY_C2L3_AFTER_04 | bulldog | serious |
+
+### `c2l4_before`:2-4 城牆之上:石像鬼統領
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C2L4_BEFORE_01 | crow | normal |
+| STORY_C2L4_BEFORE_02 | gargoyle | normal |
+| STORY_C2L4_BEFORE_03 | gargoyle | normal |
+| STORY_C2L4_BEFORE_04 | goldie | serious |
+| STORY_C2L4_BEFORE_05 | lancelot | serious |
+
+### `c2l4_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C2L4_AFTER_01 | gargoyle | normal |
+| STORY_C2L4_AFTER_02 | goldie | happy |
+| STORY_C2L4_AFTER_03 | merlin | normal |
+
+### `c2_camp2`:第二章第二次營地
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C2_CAMP2_01 | lancelot | normal |
+| STORY_C2_CAMP2_02 | goldie | normal |
+| STORY_C2_CAMP2_03 | lancelot | happy |
+| STORY_C2_CAMP2_04 | bulldog | happy |
+
+### `c2l5_before`:2-5 魔法花園
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C2L5_BEFORE_01 | merlin | worried |
+| STORY_C2L5_BEFORE_02 | goldie | surprised |
+| STORY_C2L5_BEFORE_03 | lancelot | serious |
+
+### `c2l5_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C2L5_AFTER_01 | goldie | surprised |
+| STORY_C2L5_AFTER_02 | merlin | worried |
+
+### `c2l6_before`:2-6 綠色禮拜堂:綠騎士
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C2L6_BEFORE_01 | green_knight | normal |
+| STORY_C2L6_BEFORE_02 | goldie | happy |
+| STORY_C2L6_BEFORE_03 | green_knight | normal |
+| STORY_C2L6_BEFORE_04 | green_knight | normal |
+| STORY_C2L6_BEFORE_05 | lancelot | serious |
+| STORY_C2L6_BEFORE_06 | goldie | serious |
+
+### `c2l6_after`:第二章結局
+
+| 鍵 | speaker | 表情 | 插畫 |
+| --- | --- | --- | --- |
+| STORY_C2L6_AFTER_01 | narrator |  | c2_ending_1 |
+| STORY_C2L6_AFTER_02 | green_knight | normal |  |
+| STORY_C2L6_AFTER_03 | narrator |  | c2_ending_2 |
+| STORY_C2L6_AFTER_04 | lancelot | happy |  |
+| STORY_C2L6_AFTER_05 | merlin | proud |  |
+| STORY_C2L6_AFTER_06 | narrator |  | c2_ending_3 |
+| STORY_C2L6_AFTER_07 | morgana | smirk |  |
+
+### `c2_teaser`:第三章預告
+
+| 鍵 | speaker | 表情 | 插畫 |
+| --- | --- | --- | --- |
+| STORY_C2_TEASER_01 | narrator |  | teaser_2 |
+
+### `c3_prologue`:第三章開場繪本(第三章新遊戲時,3-1 之前)
+
+| 鍵 | speaker | 表情 | 插畫 |
+| --- | --- | --- | --- |
+| STORY_C3_PROLOGUE_01 | narrator |  | c3_prologue_1 |
+| STORY_C3_PROLOGUE_02 | narrator |  | c3_prologue_1 |
+| STORY_C3_PROLOGUE_03 | narrator |  | c3_prologue_2 |
+| STORY_C3_PROLOGUE_04 | lady_lake | normal | c3_prologue_2 |
+
+### `c3l1_before`:3-1 迷霧湖畔:湖中仙女
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C3L1_BEFORE_01 | lady_lake | normal |
+| STORY_C3L1_BEFORE_02 | goldie | serious |
+| STORY_C3L1_BEFORE_03 | lady_lake | worried |
+| STORY_C3L1_BEFORE_04 | bulldog | serious |
+
+### `c3l1_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C3L1_AFTER_01 | lancelot | normal |
+| STORY_C3L1_AFTER_02 | lady_lake | normal |
+
+### `c3l2_before`:3-2 妖精森林
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C3L2_BEFORE_01 | goldie | surprised |
+| STORY_C3L2_BEFORE_02 | lady_lake | worried |
+| STORY_C3L2_BEFORE_03 | lancelot | serious |
+
+### `c3l2_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C3L2_AFTER_01 | bulldog | normal |
+| STORY_C3L2_AFTER_02 | goldie | normal |
+| STORY_C3L2_AFTER_03 | lady_lake | normal |
+
+### `c3_camp1`:第三章第一次營地
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C3_CAMP1_01 | lady_lake | normal |
+| STORY_C3_CAMP1_02 | goldie | normal |
+| STORY_C3_CAMP1_03 | lady_lake | worried |
+| STORY_C3_CAMP1_04 | lancelot | serious |
+| STORY_C3_CAMP1_05 | lady_lake | normal |
+
+### `c3l3_before`:3-3 月光石陣
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C3L3_BEFORE_01 | lady_lake | normal |
+| STORY_C3L3_BEFORE_02 | crow | normal |
+| STORY_C3L3_BEFORE_03 | goldie | serious |
+
+### `c3l3_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C3L3_AFTER_01 | lancelot | surprised |
+| STORY_C3L3_AFTER_02 | lady_lake | normal |
+| STORY_C3L3_AFTER_03 | goldie | surprised |
+
+### `c3l4_before`:3-4 水晶洞窟:幻影黑騎士
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C3L4_BEFORE_01 | goldie | surprised |
+| STORY_C3L4_BEFORE_02 | black_knight | normal |
+| STORY_C3L4_BEFORE_03 | bulldog | serious |
+| STORY_C3L4_BEFORE_04 | lady_lake | worried |
+
+### `c3l4_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C3L4_AFTER_01 | black_knight | normal |
+| STORY_C3L4_AFTER_02 | goldie | serious |
+| STORY_C3L4_AFTER_03 | lady_lake | normal |
+
+### `c3_camp2`:第三章第二次營地
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C3_CAMP2_01 | bulldog | normal |
+| STORY_C3_CAMP2_02 | goldie | normal |
+| STORY_C3_CAMP2_03 | lancelot | surprised |
+| STORY_C3_CAMP2_04 | goldie | happy |
+| STORY_C3_CAMP2_05 | lady_lake | smile |
+
+### `c3l5_before`:3-5 摩根娜之塔
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C3L5_BEFORE_01 | morgana | smirk |
+| STORY_C3L5_BEFORE_02 | morgana | smirk |
+| STORY_C3L5_BEFORE_03 | lancelot | serious |
+
+### `c3l5_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C3L5_AFTER_01 | merlin | worried |
+| STORY_C3L5_AFTER_02 | goldie | happy |
+
+### `c3l6_before`:3-6 塔頂:摩根娜(最終頭目)
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C3L6_BEFORE_01 | morgana_true | normal |
+| STORY_C3L6_BEFORE_02 | morgana_true | angry |
+| STORY_C3L6_BEFORE_03 | merlin | worried |
+| STORY_C3L6_BEFORE_04 | goldie | serious |
+| STORY_C3L6_BEFORE_05 | merlin | normal |
+
+### `c3l6_after`:最終結局
+
+| 鍵 | speaker | 表情 | 插畫 |
+| --- | --- | --- | --- |
+| STORY_C3L6_AFTER_01 | narrator |  | c3_ending_1 |
+| STORY_C3L6_AFTER_02 | morgana_true | sad |  |
+| STORY_C3L6_AFTER_03 | goldie | happy |  |
+| STORY_C3L6_AFTER_04 | morgana_true | sad |  |
+| STORY_C3L6_AFTER_05 | merlin | proud |  |
+| STORY_C3L6_AFTER_06 | narrator |  | c3_ending_2 |
+| STORY_C3L6_AFTER_07 | goldie | happy |  |
+| STORY_C3L6_AFTER_08 | morgana_true | smile |  |
+| STORY_C3L6_AFTER_09 | narrator |  | c3_ending_3 |
+| STORY_C3L6_AFTER_10 | narrator |  | c3_ending_3 |
+
+### `c3_teaser`:全破之後(結算之後、回標題之前)
+
+| 鍵 | speaker | 表情 | 插畫 |
+| --- | --- | --- | --- |
+| STORY_C3_TEASER_01 | narrator |  | c3_ending_3 |
+
+## 13. 第二、三章的失敗提示與播放規則
+
+- 失敗提示增加 `STORY_TIP_09` 至 `STORY_TIP_14`(新敵人與頭目)。失敗畫面可以只抽目前這一章用得上的提示,也可以全部隨機。
+- 播放規則同第 8 節,段落 id 換成這一章的:第 N 章新遊戲 → `cN_prologue`(第一章是 `prologue`)→ N-1 場地 → `cNl1_before` → ……;營地第一次 `cN_camp1`、第二次 `cN_camp2`;最後一關過關 → `cNl6_after` → 結算 → `cN_teaser` → 回標題。
+- 營地與故事裡的梅林:第三章 3-5 過關之前梅林不在隊伍裡(被抓走了),營地改由湖中仙女站在梅林的位置;第三章營地點她會說 `CAMP_LADY_01` 至 `CAMP_LADY_04`(D 線撰寫)。

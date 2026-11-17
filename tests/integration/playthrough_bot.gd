@@ -11,7 +11,8 @@ extends Node
 ## 加截圖(需要畫面):
 ##   xvfb-run -a godot --path . --rendering-driver opengl3 --audio-driver Dummy \
 ##     res://tests/integration/playthrough_bot.tscn -- --shots=/tmp/playthrough_shots
-## 其他參數:--speed=4(倍速,預設 4)、--seed=7
+## 其他參數:--speed=4(倍速,預設 4)、--seed=7、--chapter=2(v2.6:玩第幾章,預設 1;會先把前面的章當作已通關)、
+##   --hard(困難模式)
 
 const SAVE_PATH: String = "user://playthrough_bot_save.json"
 const TIMEOUT_MS: int = 600000
@@ -23,6 +24,8 @@ var flow: FlowMain
 var shots_dir: String = ""
 var speed: float = 4.0
 var rng_seed: int = 7
+var chapter: int = 1
+var hard: bool = false
 
 var _downs: int = 0
 var _ultimates: int = 0
@@ -41,6 +44,10 @@ func _ready() -> void:
 			speed = float(arg.trim_prefix("--speed="))
 		elif arg.begins_with("--seed="):
 			rng_seed = int(arg.trim_prefix("--seed="))
+		elif arg.begins_with("--chapter="):
+			chapter = clampi(int(arg.trim_prefix("--chapter=")), 1, 3)
+		elif arg == "--hard":
+			hard = true
 	if not shots_dir.is_empty():
 		DirAccess.make_dir_recursive_absolute(shots_dir)
 	_run()
@@ -58,6 +65,12 @@ func _run() -> void:
 	EventBus.level_started.connect(func(_id: StringName) -> void: _level_clock = 0.0)
 	await _frames(10)
 	await _shot("00_title")
+	# 標題畫面在 new_game_pressed 之前設定章與難度(DEV_PLAN 4.11、4.13);機器人直接設定。
+	GameState.chapters_cleared = maxi(GameState.chapters_cleared, chapter - 1)
+	GameState.chapter_cleared = GameState.chapter_cleared or chapter > 1 or hard
+	GameState.chapter = chapter
+	GameState.difficulty = &"hard" if hard else &"normal"
+	print("== 第 %d 章%s ==" % [chapter, "(困難)" if hard else ""])
 	flow.get_screen().emit_signal(&"new_game_pressed")
 	Engine.time_scale = speed
 	var started := Time.get_ticks_msec()
@@ -185,10 +198,16 @@ func _play_camp() -> void:
 		await get_tree().process_frame
 		if minigame.state == MinigameBase.State.PLAYING:
 			swipe_timer -= get_process_delta_time()
-			var scroll := minigame as ScrollMinigame
-			if swipe_timer <= 0.0 and scroll.ink_state == ScrollMinigame.Ink.NONE:
-				swipe_timer = 0.22
-				scroll.simulate_swipe(70.0)
+			if minigame is WakeMinigame:   # v2.6:第二、三章的「叫醒騎士」節奏小遊戲(D 線)
+				var wake := minigame as WakeMinigame
+				for n: Dictionary in wake.notes:
+					if int(n["result"]) == WakeMinigame.Hit.NONE and wake.play_elapsed >= float(n["time"]) - 0.02:
+						wake.tap_lane(int(n["lane"]))
+			elif minigame is ScrollMinigame:
+				var scroll := minigame as ScrollMinigame
+				if swipe_timer <= 0.0 and scroll.ink_state == ScrollMinigame.Ink.NONE:
+					swipe_timer = 0.22
+					scroll.simulate_swipe(70.0)
 			if not shot_taken and minigame.play_elapsed > 4.0:
 				shot_taken = true
 				await _shot("05_minigame")

@@ -14,6 +14,8 @@ extends CharacterBody2D
 ## - 過關(level_completed)時跳起歡呼(有 victory 動畫就用),冒愛心。
 ## - 盾撞敵人時跳出淡藍色的傷害數字。慢動作時動作跟著變慢。
 ##
+## v2.6(AV8):和蘭斯洛特同時在場時互相推開(CompanionSpacing),不會疊在一起。
+##
 ## v2.3(AS1、AS5):舉盾時擋得住箭、劍氣、乾草叉(投射物碰到盾就呼叫 block_projectile()):
 ## 「鏘!」一聲、盾發亮、火花與光圈、頭上冒「鏘!」,不受傷也不累積暈眩。
 
@@ -58,6 +60,9 @@ const GUARD_COLOR := Color(0.55, 0.8, 1.0, 0.6)
 @export var block_reach: float = 5.0             ## 舉盾時,投射物離身體邊緣這麼近就被擋下
 @export var clang_cooldown: float = 0.35         ## 「鏘!」泡泡的最短間隔
 @export var block_flash_time: float = 0.25
+@export_group("和其他同伴保持距離(v2.6)")
+@export var spacing_gap: float = 4.0             ## 和其他同伴的身體之間至少留這麼多像素
+@export var spacing_speed: float = 40.0
 
 var data: CompanionData
 var companion_id: StringName = &"bulldog"
@@ -130,6 +135,9 @@ func _physics_process(delta: float) -> void:
 	else:
 		_think(player)
 		desired = _act(delta, player)
+		if mode == Mode.FOLLOW or mode == Mode.APPROACH:
+			# v2.6:和蘭斯洛特同時在場時互不重疊。
+			desired += CompanionSpacing.push(self, body_radius, spacing_gap, false) * spacing_speed
 	velocity = velocity.move_toward(desired, accel * delta)
 	var real_velocity := velocity
 	velocity *= ts

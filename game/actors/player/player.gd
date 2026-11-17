@@ -891,7 +891,12 @@ func _nearest_enemy(max_distance: float) -> Node2D:
 		if not _is_valid_target(enemy):
 			continue
 		var d := global_position.distance_to(enemy.global_position) - _radius_of(enemy)
-		if d <= max_distance and d < best_distance:
+		if d > max_distance:
+			continue
+		# v2.6:變成石頭的石像鬼打不動,附近有別的敵人時先打別的。
+		if enemy.has_method(&"is_stone") and bool(enemy.call(&"is_stone")):
+			d += tuning.stone_target_penalty
+		if d < best_distance:
 			best = enemy
 			best_distance = d
 	return best

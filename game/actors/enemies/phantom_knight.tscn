@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://game/actors/enemies/black_knight.tscn" id="1_base"]
+
+[node name="PhantomKnight" instance=ExtResource("1_base")]
+tint = Color(0.78, 0.62, 1, 0.72)
+intro_walk_time = 1.2
+tell_scale = 0.8
+action_speed_scale = 1.3
+phantom = true
+summon_enemy = &"foxfire"
+summon_enemy_phase2 = &"foxfire"
+summon_count = 3
+max_summons_alive = 3
+max_summons_alive_phase2 = 3
+defeat_time_scale = 0.7
+defeat_slowmo_scale = 0.6
+defeat_impact = 0.7

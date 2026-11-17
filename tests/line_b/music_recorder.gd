@@ -1,8 +1,14 @@
 extends RefCounted
 ## 給 B 線測試用的假音樂播放器:方法與 Music Autoload 相同(play / stop / set_ducked / refresh),
 ## 只把每次呼叫記下來,例如 ["play:title", "play:field", "duck:true", "duck:false", "play:victory"]。
+## v2.6:has_track(track) 讓 FlowMain 知道曲子在不在(預設全部都在;放進 missing 的就當作沒有檔案)。
 
 var calls: PackedStringArray = []
+var missing: PackedStringArray = []
+
+
+func has_track(track: StringName) -> bool:
+	return not missing.has(String(track))
 
 
 func play(track: StringName, _fade: float = 0.6) -> void:

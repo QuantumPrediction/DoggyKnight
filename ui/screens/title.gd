@@ -15,6 +15,14 @@ extends Control
 ##   再發 endless_pressed。「開始冒險」「繼續冒險」會把 mode 設回 &"story"。
 ## - 「訓練」發 training_pressed(B 線打開 D 線的 game/camp/training.tscn)。和「製作名單」並排在最下面。
 ## - 按鈕最多三行:「繼續冒險」/「開始冒險」+「無盡試煉」/「訓練」+「製作名單」(180×320 加瀏海也放得下)。
+##
+## v2.6(CW3,DEV_PLAN 4.13):
+## - 選章:已打完的章數(chapters_cleared;舊存檔只有 chapter_cleared 時當作 1)≥ 1 時,按鈕上方出現
+##   「◀ 章名 ▶」。可以選 1 至 min(已打完 + 1, 3);還沒開啟的章顯示鎖頭、「開始冒險」不能按。
+##   按「開始冒險」(與難度選擇之後)先設定 GameState.chapter 再發 new_game_pressed;沒有選章列時一律第 1 章。
+## - 標題背景隨最高已開啟的章改變:第一章山丘與石中劍、第二章卡美洛城堡、第三章湖上的高塔
+##   (assets/ui/title_bg.png、title_bg_2.png、title_bg_3.png);站在前面的角色、閃光與飄落物也跟著換。
+## - 章名與「第 N 章 完成!」下面有一塊半透明的深色底(CaptionBacking),在任何背景上都看得清楚。
 
 signal new_game_pressed
 signal continue_pressed
@@ -28,6 +36,17 @@ const CLOUD_SPEEDS: Array[float] = [3.0, 2.0, 4.5]
 const SPARKLE: PackedScene = preload("res://assets/fx/particles/sparkle.tscn")
 ## 背景圖(304×512)上石中劍劍尖的位置。
 const SWORD_TIP_IN_BACKDROP: Vector2 = Vector2(213, 220)
+const MAX_CHAPTER: int = 3
+const ARROW_BUTTON: Vector2 = Vector2(28, 26)
+## 每章的標題:背景圖、左/中/右三位角色(右邊的面向左)、飄落物、雲的顏色。
+const CHAPTER_LOOKS: Dictionary = {
+	1: {"bg": "res://assets/ui/title_bg.png", "cast": ["bulldog", "goldie", "merlin"], "petal": "p_petal",
+			"cloud": Color(1, 1, 1, 1)},
+	2: {"bg": "res://assets/ui/title_bg_2.png", "cast": ["bulldog", "goldie", "lancelot"], "petal": "p_petal",
+			"cloud": Color(1.0, 0.9, 0.82, 1)},
+	3: {"bg": "res://assets/ui/title_bg_3.png", "cast": ["lancelot", "goldie", "lady_lake"], "petal": "p_firefly",
+			"cloud": Color(0.55, 0.6, 0.8, 0.7)},
+}
 
 var continue_button: Button
 var new_game_button: Button
@@ -38,6 +57,13 @@ var normal_button: Button
 var hard_button: Button
 var back_button: Button
 var difficulty_panel: PanelContainer
+var chapter_select: HBoxContainer
+var prev_chapter_button: Button
+var next_chapter_button: Button
+var chapter_label: Label
+var chapter_lock: TextureRect
+var selected_chapter: int = 1
+var backdrop_chapter: int = 1
 
 var _has_save: bool = false
 var _backdrop: TextureRect
@@ -45,6 +71,7 @@ var _clouds: Array[TextureRect] = []
 var _cloud_x: Array[float] = []
 var _logo: TextureRect
 var _subtitle: Label
+var _caption_bg: Panel
 var _goldie: Control
 var _bulldog: Control
 var _merlin: Control
@@ -62,7 +89,9 @@ var _next_sparkle: float = 2.0
 
 func _ready() -> void:
 	UiKit.setup_root(self)
-	_backdrop = UiKit.backdrop(preload("res://assets/ui/title_bg.png"))
+	backdrop_chapter = unlocked_chapters()
+	selected_chapter = backdrop_chapter
+	_backdrop = UiKit.backdrop(_backdrop_texture(backdrop_chapter))
 	add_child(_backdrop)
 	for i in 3:
 		var cloud := UiKit.texture_rect(load("res://assets/ui/cloud_%d.png" % i) as Texture2D)
@@ -81,25 +110,37 @@ func _ready() -> void:
 	_logo = UiKit.texture_rect(preload("res://assets/ui/logo_2x.png"))
 	_logo.name = "Logo"
 	add_child(_logo)
-	_subtitle = UiKit.label(tr("CHAPTER_1"), &"LabelLight")
+	_caption_bg = Panel.new()
+	_caption_bg.name = "CaptionBacking"
+	_caption_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var box := StyleBoxFlat.new()
+	box.bg_color = Color(PaletteColors.INK, 0.55)
+	box.set_corner_radius_all(3)
+	box.anti_aliasing = false
+	_caption_bg.add_theme_stylebox_override(&"panel", box)
+	add_child(_caption_bg)
+	_subtitle = UiKit.label(_chapter_name(backdrop_chapter), &"LabelLight")
 	add_child(_subtitle)
-	_bulldog = UiKit.sprite_box("res://assets/sprites/bulldog/bulldog_frames.tres", &"idle", 2)
+	var cast: Array = CHAPTER_LOOKS[backdrop_chapter]["cast"]
+	_bulldog = _cast_box(cast[0], false)
 	_bulldog.name = "Bulldog"
 	add_child(_bulldog)
-	_merlin = UiKit.sprite_box("res://assets/sprites/merlin/merlin_frames.tres", &"idle", 2)
+	_merlin = _cast_box(cast[2], true)
 	_merlin.name = "Merlin"
 	var merlin_sprite := _merlin.get_node_or_null(^"Sprite") as AnimatedSprite2D
 	if merlin_sprite != null:
-		merlin_sprite.flip_h = true
 		merlin_sprite.animation_finished.connect(func() -> void: merlin_sprite.play(&"idle"))
 	add_child(_merlin)
-	_goldie = UiKit.sprite_box("res://assets/sprites/goldie/goldie_frames.tres", &"idle", 2)   # v2.5:32 px 的圖放大 2 倍
+	_goldie = _cast_box(cast[1], false)   # v2.5:32 px 的圖放大 2 倍
 	_goldie.name = "Goldie"
 	add_child(_goldie)
-	_cleared_label = UiKit.label(tr("UI_CHAPTER_CLEARED"), &"LabelPop")
+	_cleared_label = UiKit.label(_cleared_text(), &"LabelPop")
 	_cleared_label.name = "ChapterCleared"
-	_cleared_label.visible = GameState.chapter_cleared
+	_cleared_label.visible = effective_cleared() >= 1
 	add_child(_cleared_label)
+	_glint.visible = backdrop_chapter == 1
+	for cloud in _clouds:
+		cloud.modulate = CHAPTER_LOOKS[backdrop_chapter]["cloud"]
 
 	_buttons = VBoxContainer.new()
 	_buttons.add_theme_constant_override(&"separation", int(UiKit.GAP))
@@ -145,11 +186,119 @@ func _ready() -> void:
 			&"LabelLight", HORIZONTAL_ALIGNMENT_RIGHT)
 	add_child(_version)
 
+	_build_chapter_select()
 	_build_difficulty_panel()
 	_apply_save_state()
 	get_viewport().size_changed.connect(_layout)
 	_layout()
 	_play_intro()
+
+
+## 章節選擇列(v2.6):◀ [鎖頭] 章名 ▶。
+func _build_chapter_select() -> void:
+	chapter_select = HBoxContainer.new()
+	chapter_select.name = "ChapterSelect"
+	chapter_select.add_theme_constant_override(&"separation", 4)
+	chapter_select.alignment = BoxContainer.ALIGNMENT_CENTER
+	add_child(chapter_select)
+	prev_chapter_button = UiKit.button("◀", &"ButtonAlt", ARROW_BUTTON)
+	prev_chapter_button.name = "PrevChapter"
+	prev_chapter_button.pressed.connect(func() -> void: select_chapter(selected_chapter - 1))
+	chapter_select.add_child(prev_chapter_button)
+	var card := PanelContainer.new()
+	card.name = "ChapterCard"
+	card.custom_minimum_size = Vector2(108, 26)
+	card.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	chapter_select.add_child(card)
+	var inner := HBoxContainer.new()
+	inner.alignment = BoxContainer.ALIGNMENT_CENTER
+	inner.add_theme_constant_override(&"separation", 2)
+	inner.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	card.add_child(inner)
+	var lock_tex: Texture2D = null
+	if ResourceLoader.exists("res://assets/ui/icon_lock.png"):
+		lock_tex = load("res://assets/ui/icon_lock.png") as Texture2D
+	chapter_lock = UiKit.texture_rect(lock_tex)
+	chapter_lock.name = "Lock"
+	chapter_lock.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	inner.add_child(chapter_lock)
+	chapter_label = UiKit.label("", &"")
+	chapter_label.name = "ChapterName"
+	inner.add_child(chapter_label)
+	next_chapter_button = UiKit.button("▶", &"ButtonAlt", ARROW_BUTTON)
+	next_chapter_button.name = "NextChapter"
+	next_chapter_button.pressed.connect(func() -> void: select_chapter(selected_chapter + 1))
+	chapter_select.add_child(next_chapter_button)
+
+
+## 已打完的章數(舊存檔只有 chapter_cleared 時當作 1)。
+static func effective_cleared() -> int:
+	return clampi(maxi(GameState.chapters_cleared, 1 if GameState.chapter_cleared else 0), 0, MAX_CHAPTER)
+
+
+## 可以選的最高章:min(已打完 + 1, 3)。
+static func unlocked_chapters() -> int:
+	return mini(effective_cleared() + 1, MAX_CHAPTER)
+
+
+## 選章(1 至 3);超過已開啟的章時顯示鎖頭,「開始冒險」不能按。
+func select_chapter(n: int) -> void:
+	selected_chapter = clampi(n, 1, MAX_CHAPTER)
+	var locked := is_chapter_locked(selected_chapter)
+	if chapter_label != null:
+		chapter_label.text = _chapter_name(selected_chapter)
+		chapter_label.theme_type_variation = &"LabelSoft" if locked else &""
+		chapter_lock.visible = locked
+		prev_chapter_button.disabled = selected_chapter <= 1
+		next_chapter_button.disabled = selected_chapter >= MAX_CHAPTER
+	if new_game_button != null:
+		new_game_button.disabled = locked and _chapter_select_shown()
+	if is_node_ready():
+		_layout()
+
+
+func is_chapter_locked(n: int) -> bool:
+	return n > unlocked_chapters()
+
+
+## 「開始冒險」要玩的章:沒有選章列時一律第 1 章。
+func chosen_chapter() -> int:
+	return selected_chapter if _chapter_select_shown() else 1
+
+
+func _chapter_select_shown() -> bool:
+	return effective_cleared() >= 1
+
+
+func _chapter_name(n: int) -> String:
+	var key := "CHAPTER_%d" % n
+	return tr(key) if tr(key) != key else tr("CHAPTER_1")
+
+
+func _cleared_text() -> String:
+	var n := effective_cleared()
+	if n >= MAX_CHAPTER:
+		return tr("UI_ALL_CHAPTERS_CLEARED")
+	return tr("UI_CHAPTER_CLEARED_N") % tr("UI_CHAPTER_SHORT_%d" % maxi(n, 1))
+
+
+func _backdrop_texture(chapter: int) -> Texture2D:
+	var path: String = CHAPTER_LOOKS[chapter]["bg"]
+	if ResourceLoader.exists(path):
+		return load(path) as Texture2D
+	return load("res://assets/ui/title_bg.png") as Texture2D
+
+
+## 站在標題前面的角色(2 倍大);沒有圖的角色退回鬥牛犬。flip:面向左。
+func _cast_box(code: String, flip: bool) -> Control:
+	var path := "res://assets/sprites/%s/%s_frames.tres" % [code, code]
+	if not ResourceLoader.exists(path):
+		path = "res://assets/sprites/bulldog/bulldog_frames.tres"
+	var box := UiKit.sprite_box(path, &"idle", 2)
+	var spr := box.get_node_or_null(^"Sprite") as AnimatedSprite2D
+	if spr != null:
+		spr.flip_h = flip
+	return box
 
 
 func _build_difficulty_panel() -> void:
@@ -185,6 +334,9 @@ func _centered(c: Control) -> CenterContainer:
 
 ## 「開始冒險」:打完第一章才問難度,否則直接用一般難度。
 func _on_new_game() -> void:
+	if is_chapter_locked(chosen_chapter()):
+		return
+	GameState.chapter = chosen_chapter()
 	if GameState.chapter_cleared:
 		show_difficulty(true)
 	else:
@@ -194,6 +346,8 @@ func _on_new_game() -> void:
 func show_difficulty(on: bool) -> void:
 	difficulty_panel.visible = on
 	_buttons.visible = not on
+	if chapter_select != null:
+		chapter_select.visible = _chapter_select_shown() and not on
 	if on:
 		difficulty_panel.pivot_offset = difficulty_panel.size * 0.5
 		difficulty_panel.scale = Vector2(0.9, 0.9)
@@ -217,6 +371,7 @@ func _on_endless() -> void:
 func _start(difficulty: StringName) -> void:
 	GameState.difficulty = difficulty
 	GameState.mode = &"story"
+	GameState.chapter = chosen_chapter()
 	difficulty_panel.visible = false
 	_buttons.visible = true
 	new_game_pressed.emit()
@@ -233,7 +388,11 @@ func setup(has_save: bool) -> void:
 func _apply_save_state() -> void:
 	continue_button.visible = _has_save
 	endless_button.visible = GameState.chapter_cleared
-	_cleared_label.visible = GameState.chapter_cleared
+	_cleared_label.visible = effective_cleared() >= 1
+	_cleared_label.text = _cleared_text()
+	if chapter_select != null:
+		chapter_select.visible = _chapter_select_shown() and not difficulty_panel.visible
+		select_chapter(selected_chapter)
 	# 有存檔時「繼續」是主要按鈕(金色),「開始冒險」改為次要(藍色)。
 	new_game_button.theme_type_variation = &"ButtonAlt" if _has_save else &""
 
@@ -241,7 +400,7 @@ func _apply_save_state() -> void:
 func _make_petals() -> CPUParticles2D:
 	var p := CPUParticles2D.new()
 	p.name = "Petals"
-	p.texture = load("res://assets/backgrounds/anim/p_petal.png")
+	p.texture = load("res://assets/backgrounds/anim/%s.png" % CHAPTER_LOOKS[backdrop_chapter]["petal"])
 	p.amount = 10
 	p.lifetime = 7.0
 	p.preprocess = 7.0
@@ -271,8 +430,13 @@ func _play_intro() -> void:
 	t.tween_property(_logo, "scale", Vector2.ONE, 0.14)
 	t.tween_property(_subtitle, "modulate:a", 1.0, 0.25)
 	t.tween_callback(func() -> void: _intro_done = true)
+	var fading: Array[Control] = []
+	if chapter_select != null:
+		fading.append(chapter_select)
 	for i in _buttons.get_child_count():
-		var b := _buttons.get_child(i) as Control
+		fading.append(_buttons.get_child(i) as Control)
+	for i in fading.size():
+		var b := fading[i]
 		b.modulate.a = 0.0
 		var bt := create_tween()
 		bt.tween_interval(0.2 + 0.08 * i)
@@ -333,14 +497,27 @@ func _layout() -> void:
 	_buttons.size = _buttons.get_minimum_size()
 	var bottom := minf(safe.end.y, screen.y) - 24.0
 	_buttons.position = Vector2(floorf(cx - _buttons.size.x * 0.5), floorf(bottom - _buttons.size.y))
+	var cast_floor := _buttons.position.y
+	if chapter_select != null and chapter_select.visible:
+		chapter_select.size = chapter_select.get_combined_minimum_size()
+		chapter_select.position = Vector2(floorf(cx - chapter_select.size.x * 0.5),
+				floorf(_buttons.position.y - chapter_select.size.y - UiKit.GAP))
+		cast_floor = chapter_select.position.y
 	# 金毛站在小丘上(背景圖中心 = 畫面中心),鬥牛犬在她左後方;石中劍在右邊的小坡上
 	var center := (screen * 0.5).floor()
 	_goldie.position = center + Vector2(-34, -14)
-	_goldie.position.y = minf(_goldie.position.y, _buttons.position.y - _goldie.size.y - 2.0)
+	_goldie.position.y = minf(_goldie.position.y, cast_floor - _goldie.size.y - 2.0)
 	_bulldog.position = _goldie.position + Vector2(-50, 10)
 	_merlin.position = _goldie.position + Vector2(50, 8)
 	_cleared_label.size = _cleared_label.get_minimum_size()
 	_cleared_label.position = Vector2(floorf(cx - _cleared_label.size.x * 0.5), _subtitle.position.y + _subtitle.size.y + 1.0)
+	var cap := Rect2(_subtitle.position, _subtitle.size)
+	if _cleared_label.visible:
+		cap = cap.merge(Rect2(_cleared_label.position, _cleared_label.size))
+	cap = cap.grow_individual(5, 0, 5, 1)
+	_caption_bg.position = cap.position.floor()
+	_caption_bg.size = cap.size.ceil()
+	_caption_bg.modulate.a = _subtitle.modulate.a
 	difficulty_panel.size = difficulty_panel.get_combined_minimum_size()
 	difficulty_panel.position = Vector2(floorf(cx - difficulty_panel.size.x * 0.5),
 			floorf(bottom - difficulty_panel.size.y + 4.0))

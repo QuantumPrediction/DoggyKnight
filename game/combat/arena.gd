@@ -201,7 +201,11 @@ func spawn_companion(companion_id: StringName) -> Node:
 	if companion.has_method(&"setup"):
 		companion.call(&"setup", data)
 	var anchor := player.position if player != null else Layout.PLAYER_START
-	companion.position = CombatMath.clamp_to_arena(anchor + companion_offset, 8.0)
+	# v2.6:第二位同伴站在金毛的另一邊(兩位同伴不會疊在一起)。
+	var offset := companion_offset
+	if get_companions().size() % 2 == 1:
+		offset.x = -offset.x
+	companion.position = CombatMath.clamp_to_arena(anchor + offset, 8.0)
 	entities.add_child(companion)
 	if not companion.is_in_group(COMPANION_GROUP):
 		companion.add_to_group(COMPANION_GROUP)
@@ -220,6 +224,15 @@ func set_background(scene: PackedScene) -> void:
 
 func get_player() -> Node2D:
 	return player
+
+
+## 場上的同伴(v2.6:最多兩位同時在場)。
+func get_companions() -> Array[Node]:
+	var result: Array[Node] = []
+	for node in entities.get_children():
+		if node.is_in_group(COMPANION_GROUP) and not node.is_queued_for_deletion():
+			result.append(node)
+	return result
 
 
 # --- 其他方法(A 線內部使用) ----------------------------------------------------------
