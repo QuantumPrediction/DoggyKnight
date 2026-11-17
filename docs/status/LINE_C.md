@@ -123,7 +123,12 @@
 
 ## 被甚麼卡住
 
-- 沒有卡住。給其他線與整合的接線說明(不需要改合約):
+- 沒有卡住。v2.5 給整合的說明:
+  - 角色格子變大(金毛、貝德維爾、稻草人、弓兵、空盔甲兵、梅林 32;烏鴉 24;隊長 48;黑騎士 64),仍然置中、腳在格子底下一兩列,所以畫面上的腳比原點低一些(32 格約 +14、黑騎士約 +30,以前是 +10、+22);影子自動跟上。碰撞圓與攻擊範圍沒有改,角色看起來比碰撞圓大約 25%(刻意的)。若覺得黑騎士在戰鬥區最下面時太靠近邊緣,可以把它的 Sprite 往上移 8 像素或加大 `body_radius`(A 線的檔案,我沒有動)。
+  - 特效大小:`hit_spark` 16→20、`dust` 8→12、`dizzy_stars` 16×10→20×12;`slash`、`ultimate_slash`、`exp_orb`、投射物不變。`docs/ART_BRIEF.md` 的尺寸表需要整合更新(那個檔案不是 C 線的)。
+  - 調色盤 40→55 色,`PaletteColors` 多了 15 個常數,舊的完全不變。
+  - 自動試玩(`playthrough_bot.tscn --shots`)從頭打到黑騎士,沒有腳本錯誤;1-4 倒下一次後重試過關,和重畫前一樣。
+- 給其他線與整合的接線說明(v2.4,不需要改合約):
   - B 線:
     - 抉擇事件介面 `ui/event_choice/event_choice.tscn` 請放在第 20 層(和把戲選擇一樣)。選項字典照 4.12:`title`、`desc` 是翻譯鍵,`icon` 是圖示路徑(可留空),`tone` 是 `"merlin"` 或 `"morgana"`。機器人可以直接呼叫它的 `choose(index)`。
     - 進化把戲的名稱我用 `TRICK_<ID>_NAME`(例如 `TRICK_TORNADO_TAIL_NAME`),請照這個命名加文字;進化演出會讀 `data/tricks/*.tres` 的 `evolves_into` 與 `evolution_partner` 找出兩個原把戲(還沒有資料檔時用 4.12 的表)。進化把戲的 `TrickData` 請設 `is_evolution = true`,卡片才會是金色「進化!」樣式。
