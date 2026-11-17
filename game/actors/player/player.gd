@@ -252,7 +252,7 @@ func revive() -> void:
 	CombatFx.particles(self, &"heart", head, false, true)
 	CombatFx.ring(self, global_position, 4.0, tuning.revive_push_radius, 0.45, Color(1.0, 0.9, 0.45, 0.95), 2.0)
 	CombatFx.ring(self, global_position, 2.0, tuning.revive_push_radius * 0.6, 0.3, Color(1.0, 1.0, 0.85, 0.8), 1.0)
-	CombatFx.sfx(&"revive", &"heal")
+	# 音效 revive 由 C 線的失敗畫面在按下復活時播放,這裡不重複播。
 	CombatFx.haptic(feel.haptic_player_hit)
 	_push_enemies(tuning.revive_push_radius, tuning.revive_push_speed, tuning.revive_stun_time)
 	_emit_vigor()
@@ -417,9 +417,16 @@ func add_loyalty(amount: float) -> void:
 	if _downed or amount <= 0.0:
 		return
 	var before := loyalty
-	loyalty = minf(tuning.loyalty_max, loyalty + amount)
+	loyalty = minf(tuning.loyalty_max, loyalty + amount * loyalty_gain_mult())
 	if loyalty != before:
 		_emit_loyalty()
+
+
+## 營地訓練「忠誠」帶來的忠誠度累積倍數(1 = 沒有加成)。
+func loyalty_gain_mult() -> float:
+	var upgrades := GameState.meta_upgrades
+	var level: int = int(upgrades.get(&"loyalty", upgrades.get("loyalty", 0)))
+	return 1.0 + tuning.loyalty_meta_bonus_per_level * float(maxi(0, level))
 
 
 func can_use_ultimate() -> bool:

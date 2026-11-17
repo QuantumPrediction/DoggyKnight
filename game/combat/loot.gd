@@ -37,6 +37,11 @@ static func luck_level() -> int:
 	return 0
 
 
+## luck 帶來的機率倍數(1 = 沒有加成)。
+static func luck_mult() -> float:
+	return 1.0 + tuning().luck_bonus_per_level * float(luck_level())
+
+
 static func dig_stacks() -> int:
 	return GameState.active_tricks.count(DIG_ID)
 
@@ -44,14 +49,13 @@ static func dig_stacks() -> int:
 ## 一般敵人掉寶箱的機率。
 static func chest_chance() -> float:
 	var t := tuning()
-	return clampf(t.chest_chance + t.chest_chance_per_luck * float(luck_level()), 0.0, t.chest_chance_max)
+	return clampf(t.chest_chance * luck_mult(), 0.0, t.chest_chance_max)
 
 
 ## 一般敵人掉零食的機率。
 static func snack_chance() -> float:
 	var t := tuning()
-	var base := t.snack_chance + t.snack_chance_per_luck * float(luck_level())
-	return clampf(base * (1.0 + t.dig_snack_bonus * float(dig_stacks())), 0.0, t.snack_chance_max)
+	return clampf(t.snack_chance * luck_mult() * (1.0 + t.dig_snack_bonus * float(dig_stacks())), 0.0, t.snack_chance_max)
 
 
 ## 必掉的寶箱等級(-1 = 不是必掉)。guaranteed_chests 優先;其次精英 1 級、頭目 2 級。

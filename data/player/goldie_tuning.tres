@@ -28,6 +28,7 @@ ultimate_invuln_time = 0.6
 ultimate_hitstop_time = 0.12
 ultimate_knockback_speed = 180.0
 footstep_interval = 0.22
+loyalty_meta_bonus_per_level = 0.1
 revive_vigor_ratio = 1.0
 revive_wake_time = 0.5
 revive_invuln_time = 2.5

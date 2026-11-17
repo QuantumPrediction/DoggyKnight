@@ -14,10 +14,9 @@ func _tuning(chest: float, snack: float) -> LootTuning:
 	var t := LOOT.duplicate() as LootTuning
 	t.chest_chance = chest
 	t.chest_chance_max = maxf(chest, t.chest_chance_max)
-	t.chest_chance_per_luck = 0.0
 	t.snack_chance = snack
 	t.snack_chance_max = maxf(snack, t.snack_chance_max)
-	t.snack_chance_per_luck = 0.0
+	t.luck_bonus_per_level = 0.0
 	Loot.set_tuning(t)
 	return t
 
@@ -37,7 +36,7 @@ func test_luck_and_dig_raise_drop_chances() -> void:
 	assert_true(chest0 < 0.05, "一般敵人極少掉寶箱")
 	GameState.meta_upgrades = {"luck": 3}
 	assert_eq(Loot.luck_level(), 3, "鍵是 String 也讀得到")
-	assert_almost_eq(Loot.chest_chance(), LOOT.chest_chance + 3.0 * LOOT.chest_chance_per_luck, 0.0001, "luck 提高寶箱機率")
+	assert_almost_eq(Loot.chest_chance(), LOOT.chest_chance * 1.45, 0.0001, "luck 每級 +15%")
 	assert_true(Loot.snack_chance() > snack0, "luck 提高零食機率")
 	GameState.meta_upgrades = {&"luck": 0}
 	GameState.active_tricks.assign([&"dig"])
@@ -186,3 +185,12 @@ func test_revive_is_cute_and_pushes_enemies_away() -> void:
 	assert_true(player.global_position.distance_to(at) > 2.0, "醒來後可以動")
 	player.take_damage(30)
 	assert_eq(GameState.vigor, GameState.player_stats.max_vigor, "無敵中不受傷")
+
+
+func test_loyalty_training_speeds_up_loyalty_gain() -> void:
+	make_arena()
+	player.add_loyalty(10.0)
+	assert_almost_eq(player.loyalty, 10.0, 0.001)
+	GameState.meta_upgrades = {"loyalty": 3}
+	player.add_loyalty(10.0)
+	assert_almost_eq(player.loyalty, 23.0, 0.001, "忠誠訓練每級 +10%")
