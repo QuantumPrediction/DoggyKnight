@@ -3,10 +3,12 @@ extends Node2D
 ##
 ## 每一格在群組 player、companion、enemy 的節點腳下畫一個像素橢圓影子,大小依角色的動畫格子
 ## (子節點 "Sprite" 的目前格)。A 線不用改任何東西;敵人倒下時立即離開 enemy 群組,影子也跟著消失。
-## 會飛的(烏鴉)影子落在下方的地面,比較淡。
+## 會飛的(烏鴉,v2.6 加石像鬼、魔法書、狐火)影子落在下方的地面,比較淡。
+## v2.6:SpriteFrames 有 metadata foot_lift(每格往上移的像素,例如黑騎士 8)時,影子也往上移同樣多,
+## 仍然在腳底。
 
 const GROUPS: Array[StringName] = [&"player", &"companion", &"enemy"]
-const FLYERS: PackedStringArray = ["/crow/"]
+const FLYERS: PackedStringArray = ["/crow/", "/gargoyle/", "/spellbook/", "/foxfire/"]
 
 @export var color: Color = Color(0.165, 0.106, 0.176, 0.4)
 @export var width_ratio: float = 0.66
@@ -14,6 +16,7 @@ const FLYERS: PackedStringArray = ["/crow/"]
 @export var flyer_drop: float = 7.0
 
 var _frame_size: Dictionary = {}   # SpriteFrames 的 instance id -> 第一格大小
+var _foot_lift: Dictionary = {}    # SpriteFrames 的 instance id -> metadata foot_lift(像素)
 
 
 func _process(_delta: float) -> void:
@@ -38,6 +41,7 @@ func _shadow_for(body: Node2D) -> void:
 	var scale_abs := Vector2.ONE
 	var alpha := color.a
 	var flyer := false
+	var lift := 0.0
 	var spr := body.get_node_or_null(^"Sprite") as AnimatedSprite2D
 	if spr != null and spr.sprite_frames != null:
 		if not spr.visible:
@@ -46,14 +50,16 @@ func _shadow_for(body: Node2D) -> void:
 		if not _frame_size.has(key):
 			var tex := spr.sprite_frames.get_frame_texture(&"idle", 0) if spr.sprite_frames.has_animation(&"idle") else null
 			_frame_size[key] = tex.get_size() if tex != null else size
+			_foot_lift[key] = float(spr.sprite_frames.get_meta(&"foot_lift", 0.0))
 		size = _frame_size[key]
+		lift = _foot_lift[key]
 		pos = spr.global_position
 		scale_abs = spr.global_scale.abs()
 		alpha *= clampf(spr.modulate.a * body.modulate.a, 0.0, 1.0)
 		for f in FLYERS:
 			if spr.sprite_frames.resource_path.contains(f):
 				flyer = true
-	var feet := pos + Vector2(0, size.y * scale_abs.y * 0.5 - 2.0)
+	var feet := pos + Vector2(0, (size.y * 0.5 - lift) * scale_abs.y - 2.0)
 	var w := maxi(4, roundi(size.x * scale_abs.x * width_ratio))
 	if flyer:
 		feet.y += flyer_drop

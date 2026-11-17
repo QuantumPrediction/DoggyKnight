@@ -11,6 +11,8 @@ extends Control
 ## 「新紀錄!」彈出。按「繼續」隨時可以離開。過關短曲(B 線呼叫 Music.play(&"victory"))
 ## 正在播時不再播 clear 音效,避免兩段音樂疊在一起。
 ## v2.3(CS7):result.difficulty == &"hard" 時,面板右上角有紅色「困難」標記。
+## v2.6(CW6):章名不寫死。章 = result.chapter,沒有時從 level_id(「2-3」的 2)推出,再沒有就用
+## GameState.chapter。最後一關的標題是「第 N 章 完」(第三章是「全劇終」),進度列是「第 N 章 m/6」。
 
 signal continue_pressed
 
@@ -179,6 +181,28 @@ func stars() -> int:
 	return clampi(int(_result.get("stars", 0)), 0, 3)
 
 
+## 這次結算是第幾章(1 至 3)。
+static func chapter_of(result: Dictionary) -> int:
+	if result.has("chapter"):
+		return clampi(int(result["chapter"]), 1, 3)
+	var id := String(result.get("level_id", ""))
+	if id.contains("-") and id.split("-")[0].is_valid_int():
+		return clampi(int(id.split("-")[0]), 1, 3)
+	return clampi(GameState.chapter, 1, 3)
+
+
+## 「第一章」「第二章」「第三章」。
+static func chapter_short(chapter: int) -> String:
+	return TranslationServer.translate("UI_CHAPTER_SHORT_%d" % clampi(chapter, 1, 3))
+
+
+## 打完一章的標題:「第 N 章 完」,打完第三章是「全劇終」。
+static func final_title(chapter: int) -> String:
+	if chapter >= 3:
+		return TranslationServer.translate("UI_GAME_END")
+	return TranslationServer.translate("UI_CHAPTER_END") % chapter_short(chapter)
+
+
 func has_stars() -> bool:
 	return _result.has("stars")
 
@@ -186,7 +210,7 @@ func has_stars() -> bool:
 func _apply() -> void:
 	var is_final: bool = _result.get("is_final", false)
 	hard_badge.visible = StringName(str(_result.get("difficulty", "normal"))) == &"hard"
-	title_label.text = tr("UI_THE_END") if is_final else tr("UI_LEVEL_CLEAR")
+	title_label.text = final_title(chapter_of(_result)) if is_final else tr("UI_LEVEL_CLEAR")
 	var level_name := String(_result.get("level_name", ""))
 	level_label.text = tr(level_name) if not level_name.is_empty() else ""
 	time_value.text = UiKit.format_time(float(_result.get("time_sec", 0.0)))
@@ -228,7 +252,7 @@ func _apply() -> void:
 		var idx := int(_result["level_index"])
 		var total := int(_result["level_count"])
 		progress.set_progress(idx, total)
-		progress_label.text = tr("UI_CHAPTER_PROGRESS") % [mini(idx + 1, total), total]
+		progress_label.text = tr("UI_CHAPTER_PROGRESS_N") % [chapter_short(chapter_of(_result)), mini(idx + 1, total), total]
 	_layout()
 	_start_show.call_deferred()
 

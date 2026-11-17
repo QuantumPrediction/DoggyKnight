@@ -1,15 +1,24 @@
 [gd_scene format=3]
 
-[ext_resource type="Texture2D" path="res://assets/backgrounds/wheat_field.png" id="1_bg"]
-[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/wheat_row_frames.tres" id="2_anim_wheat_row"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_chaff.png" id="3_p_chaff"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/green_chapel.png" id="1_bg"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/rune_cyan_frames.tres" id="2_anim_rune_cyan"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_firefly_green.png" id="3_p_firefly_green"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_leaf_green.png" id="4_p_leaf_green"]
 [ext_resource type="Script" path="res://assets/backgrounds/actor_shadows.gd" id="80_shadows"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/wheat_field_fg.png" id="81_fg"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/green_chapel_fg.png" id="81_fg"]
+[ext_resource type="PackedScene" path="res://assets/fx/lights/magic.tscn" id="84_light_magic"]
 [ext_resource type="PackedScene" path="res://assets/fx/lights/sun.tscn" id="84_light_sun"]
+
+[sub_resource type="CanvasItemMaterial" id="Mat_add"]
+blend_mode = 1
 
 [sub_resource type="Gradient" id="Gradient_fade"]
 offsets = PackedFloat32Array(0, 0.15, 0.8, 1)
 colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_blink"]
+offsets = PackedFloat32Array(0, 0.2, 0.35, 0.5, 0.65, 0.8, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0.2, 1, 1, 1, 1, 1, 1, 1, 0.3, 1, 1, 1, 1, 1, 1, 1, 0)
 
 [node name="Background" type="Node2D"]
 
@@ -20,430 +29,82 @@ position = Vector2(-62, -88)
 
 [node name="Anim" type="Node2D" parent="."]
 
-[node name="wheat_row_0" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-66, 56)
-sprite_frames = ExtResource("2_anim_wheat_row")
+[node name="rune_cyan_0" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(72, 36)
+sprite_frames = ExtResource("2_anim_rune_cyan")
 autoplay = "default"
 frame = 0
-speed_scale = 1
+speed_scale = 0.7
 centered = false
 
-[node name="wheat_row_1" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-66, 38)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 2
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_2" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-66, 290)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 4
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_3" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-66, 308)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 6
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_4" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-18, 56)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 3
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_5" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-18, 38)
-sprite_frames = ExtResource("2_anim_wheat_row")
+[node name="rune_cyan_1" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(105, 38)
+sprite_frames = ExtResource("2_anim_rune_cyan")
 autoplay = "default"
 frame = 5
-speed_scale = 1
+speed_scale = 0.7
 centered = false
 
-[node name="wheat_row_6" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-18, 290)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 7
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_7" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-18, 308)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 1
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_8" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(30, 56)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 6
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_9" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(30, 38)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 0
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_10" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(30, 290)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 2
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_11" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(30, 308)
-sprite_frames = ExtResource("2_anim_wheat_row")
+[node name="rune_cyan_2" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(88, 24)
+sprite_frames = ExtResource("2_anim_rune_cyan")
 autoplay = "default"
 frame = 4
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_12" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(78, 38)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 3
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_13" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(78, 308)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 7
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_14" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(126, 56)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 4
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_15" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(126, 38)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 6
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_16" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(126, 290)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 0
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_17" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(126, 308)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 2
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_18" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(174, 56)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 7
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_19" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(174, 38)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 1
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_20" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(174, 290)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 3
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_21" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(174, 308)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 5
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_22" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(222, 56)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 2
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_23" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(222, 38)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 4
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_24" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(222, 290)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 6
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_25" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(222, 308)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 0
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_26" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-44, 72)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 0
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_27" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(176, 72)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 4
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_28" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-44, 90)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 1
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_29" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(176, 90)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 5
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_30" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-44, 108)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 2
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_31" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(176, 108)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 6
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_32" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-44, 126)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 3
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_33" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(176, 126)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 7
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_34" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-44, 144)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 4
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_35" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(176, 144)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 0
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_36" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-44, 162)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 5
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_37" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(176, 162)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 1
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_38" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-44, 180)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 6
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_39" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(176, 180)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 2
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_40" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-44, 198)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 7
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_41" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(176, 198)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 3
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_42" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-44, 216)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 0
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_43" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(176, 216)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 4
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_44" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-44, 234)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 1
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_45" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(176, 234)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 5
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_46" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-44, 252)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 2
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_47" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(176, 252)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 6
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_48" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-44, 270)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 3
-speed_scale = 1
-centered = false
-
-[node name="wheat_row_49" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(176, 270)
-sprite_frames = ExtResource("2_anim_wheat_row")
-autoplay = "default"
-frame = 7
-speed_scale = 1
+speed_scale = 0.7
 centered = false
 
 [node name="Ambient" type="Node2D" parent="."]
 
-[node name="chaff_0" type="CPUParticles2D" parent="Ambient"]
-position = Vector2(95, 170)
+[node name="leaf_green_0" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(100, 120)
+amount = 8
+lifetime = 6
+preprocess = 6
+randomness = 0.5
+texture = ExtResource("4_p_leaf_green")
+emission_shape = 3
+emission_rect_extents = Vector2(120, 180)
+direction = Vector2(1, 0.5)
+spread = 20
+gravity = Vector2(0, 3)
+initial_velocity_min = 8
+initial_velocity_max = 12
+angular_velocity_min = -90.0
+angular_velocity_max = 90.0
+angle_min = -180.0
+angle_max = 180.0
+color_ramp = SubResource("Gradient_fade")
+
+[node name="firefly_green_1" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(95, 180)
 amount = 8
 lifetime = 5
 preprocess = 5
 randomness = 0.5
-texture = ExtResource("3_p_chaff")
+texture = ExtResource("3_p_firefly_green")
 emission_shape = 3
-emission_rect_extents = Vector2(105, 210)
-direction = Vector2(1, 0)
-spread = 25
-gravity = Vector2(0, 1)
-initial_velocity_min = 8
-initial_velocity_max = 14
-color_ramp = SubResource("Gradient_fade")
+emission_rect_extents = Vector2(105, 220)
+direction = Vector2(0, -1)
+spread = 180
+gravity = Vector2(0, 0)
+initial_velocity_min = 2
+initial_velocity_max = 5
+material = SubResource("Mat_add")
+color_ramp = SubResource("Gradient_blink")
 
 [node name="Lights" type="Node2D" parent="."]
 
-[node name="sun_0" parent="Lights" instance=ExtResource("84_light_sun")]
-position = Vector2(210, -60)
-base_alpha = 0.242
-seed_offset = 0
+[node name="magic_0" parent="Lights" instance=ExtResource("84_light_magic")]
+modulate = Color(0.5, 1, 0.6, 0.5)
+position = Vector2(90, 9)
+base_alpha = 0.4
+seed_offset = 0.37
+
+[node name="sun_1" parent="Lights" instance=ExtResource("84_light_sun")]
+modulate = Color(0.8, 1, 0.8, 0.5)
+position = Vector2(90, -78)
+base_alpha = 0.132
+seed_offset = 1.48
 
 [node name="Shadows" type="Node2D" parent="."]
 script = ExtResource("80_shadows")
@@ -458,4 +119,4 @@ centered = false
 position = Vector2(-62, -88)
 
 [node name="Mood" type="CanvasModulate" parent="."]
-color = Color(1, 0.97, 0.9, 1)
+color = Color(0.95, 1, 0.95, 1)
