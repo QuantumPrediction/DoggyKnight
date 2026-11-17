@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="GargoyleTuning" format=3]
+
+[ext_resource type="Script" path="res://game/actors/enemies/gargoyle_tuning.gd" id="1_tuning"]
+
+[resource]
+script = ExtResource("1_tuning")
+fly_height = 12.0
+hover_distance = 72.0
+orbit_speed = 0.55
+swoop_telegraph = 0.85
+swoop_speed = 135.0
+swoop_overshoot = 30.0
+swoop_max_distance = 190.0
+hit_radius = 11.0
+recover_time = 1.0
+swoop_cooldown_min = 1.4
+swoop_cooldown_max = 2.2
+first_swoop_min = 0.6
+first_swoop_max = 1.0
+stone_interval = 5.5
+stone_jitter = 0.15
+stone_time = 1.2
+clang_cooldown = 0.4

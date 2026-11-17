@@ -1,0 +1,31 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/actors/enemies/gargoyle_elite.gd" id="1_script"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/gargoyle/gargoyle_frames.tres" id="2_frames"]
+
+[node name="GargoyleElite" type="CharacterBody2D" groups=["enemy"]]
+collision_layer = 8
+collision_mask = 1
+motion_mode = 1
+script = ExtResource("1_script")
+body_radius = 11.0
+visual_scale = 1.5
+tint = Color(0.88, 0.84, 1, 1)
+elite = true
+knockback_mult = 0.0
+separation_radius = 26.0
+separation_speed = 12.0
+spawn_time = 1.0
+death_time = 0.1
+max_exp_orbs = 4
+phase2_telegraph_mult = 0.85
+phase2_speed_mult = 1.15
+defeat_time_scale = 0.6
+defeat_slowmo_scale = 0.5
+defeat_impact = 0.6
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_frames")
+animation = &"idle"

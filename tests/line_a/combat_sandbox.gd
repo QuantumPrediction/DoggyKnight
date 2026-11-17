@@ -13,6 +13,9 @@ extends Node2D
 ## v2.4:+Pnc 撲擊、+Rol 打滾、+PDd 裝死、+Zoo 暴衝、+Dig 挖寶、+Snf 嗅嗅;Evo 依次進化
 ## (旋風尾 → 獅王吼 → 擊掌連打 → 流星撲擊);Chest 生成一個精英寶箱;Rev 讓金毛睡著再用 revive() 叫醒;
 ## Luck 切換 luck 0 / 5。上方小字顯示寶箱數(CH)與零食數(SN)。
+## v2.6:Pg 切換按鈕頁。第 2 頁:Garg 石像鬼、Book 魔法書、Fox 一群狐火、Wolf 三隻影狼、GElt 石像鬼統領、
+## Phan 幻影黑騎士、GrnK 綠騎士、Morg 摩根娜、Lanc 蘭斯洛特、Dog 鬥牛犬、Ch+ 切換章(1 至 3,章倍率);
+## 上方小字的 C 幾是目前的章。
 
 const ARENA_SCENE: PackedScene = preload("res://game/combat/arena.tscn")
 const BLOCKER_GROUP: StringName = &"ui_touch_blocker"
@@ -41,6 +44,8 @@ var _spawn_index: int = 0
 var _chests: int = 0
 var _snacks: int = 0
 var _evo_index: int = 0
+var _page: int = 0
+var _pages: Array[Array] = []
 
 
 func _ready() -> void:
@@ -113,6 +118,20 @@ func _spawn_boss() -> void:
 
 func _spawn_captain() -> void:
 	arena.spawn_enemy(&"scarecrow_captain", Vector2(Layout.ARENA_RECT.get_center().x, Layout.ARENA_RECT.position.y + 50))
+
+
+func _spawn_top(enemy_id: StringName) -> void:
+	arena.spawn_enemy(enemy_id, Vector2(Layout.ARENA_RECT.get_center().x, Layout.ARENA_RECT.position.y + 50))
+
+
+func _next_chapter() -> void:
+	GameState.chapter = GameState.chapter % 3 + 1
+	_refresh()
+
+
+func _toggle_page() -> void:
+	_page = (_page + 1) % maxi(1, _pages.size())
+	_layout_ui()
 
 
 func _toggle_hard() -> void:
@@ -262,10 +281,36 @@ func _build_ui() -> void:
 		["Rev", _knock_out_and_revive],
 		["Luck", _toggle_luck],
 	]
-	for action: Array in actions:
-		var button := _make_button(action[0])
-		button.pressed.connect(action[1])
-		_buttons.append(button)
+	var page_two: Array = [
+		["Garg", _spawn.bind(&"gargoyle")],
+		["Book", _spawn.bind(&"spellbook")],
+		["Fox", _spawn_many.bind(&"foxfire", 4)],
+		["Wolf", _spawn_many.bind(&"shadow_wolf", 3)],
+		["GElt", _spawn_top.bind(&"gargoyle_elite")],
+		["Phan", _spawn_top.bind(&"phantom_knight")],
+		["GrnK", _spawn_top.bind(&"green_knight")],
+		["Morg", _spawn_top.bind(&"morgana")],
+		["Lanc", func() -> void: arena.spawn_companion(&"lancelot")],
+		["Dog", func() -> void: arena.spawn_companion(&"bulldog")],
+		["Ch+", _next_chapter],
+		["Hard", _toggle_hard],
+		["Loyal", _fill_loyalty],
+		["Heal", _heal],
+		["Reset", _reset],
+		["Win", func() -> void: EventBus.level_completed.emit(&"sandbox")],
+		["Lv+", _next_level],
+	]
+	_pages.clear()
+	for page: Array in [actions, page_two]:
+		var buttons: Array[Button] = []
+		var pager := _make_button("Pg")
+		pager.pressed.connect(_toggle_page)
+		buttons.append(pager)
+		for action: Array in page:
+			var button := _make_button(action[0])
+			button.pressed.connect(action[1])
+			buttons.append(button)
+		_pages.append(buttons)
 
 	_ult_button = _make_button("ULT")
 	_ult_button.disabled = true
@@ -298,6 +343,12 @@ func _layout_ui() -> void:
 	_readout.position = Vector2(left, top)
 	_readout.size = Vector2(176, 20)
 	_readout.autowrap_mode = TextServer.AUTOWRAP_OFF
+	_buttons.clear()
+	for p in _pages.size():
+		for b: Button in _pages[p]:
+			b.visible = p == _page
+			if p == _page:
+				_buttons.append(b)
 	for i in _buttons.size():
 		var col := i % BUTTON_COLUMNS
 		@warning_ignore("integer_division")
@@ -326,9 +377,9 @@ func _refresh() -> void:
 			if n > 0:
 				parts.append("%s%d" % [String(id).substr(0, 3), n])
 		tricks = " ".join(parts) if not parts.is_empty() else "-"
-	_readout.text = "VIG %d/%d EXP %d LOY %d/%d CB %d/%d %s L%d CH%d SN%d\nKO %d P%d %d/%d foes %d %s" % [
+	_readout.text = "VIG %d/%d EXP %d LOY %d/%d CB %d/%d %s C%d L%d CH%d SN%d\nKO %d P%d %d/%d foes %d %s" % [
 		_vigor.x, _vigor.y, _exp, int(_loyalty.x), int(_loyalty.y), _combo, _best_combo,
-		"H" if GameState.difficulty == &"hard" else "N", GameState.level_index + 1, _chests, _snacks, _kills,
+		"H" if GameState.difficulty == &"hard" else "N", GameState.chapter, GameState.level_index + 1, _chests, _snacks, _kills,
 		_boss_phase, _boss_hp.x, _boss_hp.y, get_tree().get_nodes_in_group(&"enemy").size(), tricks]
 	if _ult_button != null:
 		_ult_button.disabled = _loyalty.x < _loyalty.y
