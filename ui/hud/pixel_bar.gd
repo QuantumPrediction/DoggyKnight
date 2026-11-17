@@ -129,6 +129,14 @@ func _draw() -> void:
 		draw_rect(Rect2(inner.position, Vector2(fill_w, 1)), light)
 		if inner.size.y >= 4:
 			draw_rect(Rect2(inner.position + Vector2(0, inner.size.y - 1), Vector2(fill_w, 1)), fill_dark)
+		# v2.5 (CR3):亮面的小反光(左上兩格)與填色前端的一條亮邊,像一管有光澤的液體
+		if fill_w >= 4.0:
+			draw_rect(Rect2(inner.position + Vector2(1, 0), Vector2(2, 1)), PaletteColors.WHITE)
+		if fill_w >= 2.0 and fill_w < inner.size.x:
+			draw_rect(Rect2(inner.position.x + fill_w - 1, inner.position.y, 1, inner.size.y - 1), light)
+	# v2.5 (CR3):空槽上緣一列內陰影,看起來是凹進去的槽
+	if fill_w < inner.size.x:
+		draw_rect(Rect2(inner.position.x + fill_w, inner.position.y, inner.size.x - fill_w, 1), Color(PaletteColors.INK, 0.5))
 	if segments > 1:
 		for i in range(1, segments):
 			var x := floorf(inner.position.x + inner.size.x * i / segments)

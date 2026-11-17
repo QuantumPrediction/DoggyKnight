@@ -308,33 +308,27 @@ def landscape(w: int, h: int, horizon: int, seed: int = 0, castle_x: float = 0.3
     rolling meadow hills (opaque). Clouds are animated separately on the title screen."""
     import art_world as aw
     c = Canvas(w, h, rgba("sky"))
-    # sky: deep blue at the top, pale near the horizon, short dithered steps between bands
-    bands = [("water", 0.0), ("sky", 0.22), ("sky_l", 0.62), ("cream", 0.9)]
+    # sky (v2.5): clean hue-shifted bands from deep blue to warm haze; each band edge gently waves
+    # (no dithering), and the sunrise glow is a few soft concentric rings
+    bands = [("water", 0.0), ("sky", 0.16), ("azure", 0.42), ("sky_l", 0.6), ("haze", 0.78), ("cream", 0.92)]
     for y in range(horizon):
-        t = y / max(1, horizon)
         for x in range(w):
+            t = (y + 2.0 * math.sin(x / 13.0 + y * 0.05) + 1.2 * math.sin(x / 5.0)) / max(1, horizon)
             col = bands[0][0]
-            for i in range(len(bands) - 1):
-                n0, t0 = bands[i]
-                n1, t1 = bands[i + 1]
-                if t >= t1:
-                    col = n1
-                elif t >= t0:
-                    edge = (t - (t1 - 0.06)) / 0.06
-                    col = n1 if edge > 0 and aw.bayer(x, y) < edge else n0
-                    break
+            for n, t0 in bands:
+                if t >= t0:
+                    col = n
             c.set(x, y, col)
-    # sunrise glow
     sx, sy = w * sun_x, horizon - 6
+    rings = [(16, "white"), (26, "cream"), (40, "haze")]
     for y in range(max(0, int(sy - 60)), horizon):
         for x in range(w):
-            d = math.hypot((x - sx) / 1.6, y - sy)
-            if d < 18:
-                c.set(x, y, "white")
-            elif d < 30 and aw.bayer(x, y) < (30 - d) / 12:
-                c.set(x, y, "white")
-            elif d < 52 and aw.bayer(x, y) < (52 - d) / 30 and aw.name_at(c, x, y) in ("sky_l", "sky"):
-                c.set(x, y, "cream" if aw.name_at(c, x, y) == "sky_l" else "sky_l")
+            d = math.hypot((x - sx) / 1.6, y - sy) + math.sin(x / 4.0 + y / 3.0) * 0.8
+            for r, col in rings:
+                if d < r:
+                    if col != "haze" or aw.name_at(c, x, y) in ("sky_l", "azure", "haze"):
+                        c.set(x, y, col)
+                    break
     if clouds:
         for (fx, fy, r) in ((0.15, 0.25, 7), (0.72, 0.18, 9), (0.5, 0.45, 6)):
             cl = cloud(int(r * 4), int(r * 1.8), seed + int(fx * 10))
@@ -433,7 +427,7 @@ def title_background(sword_stone: Canvas, tree: Canvas, bush: Canvas) -> Canvas:
     for x in range(150, 304):
         top = int(272 - 16 * math.exp(-((x - 214) / 34.0) ** 2))
         for y in range(top, 300):
-            c.set(x, y, "leaf_l" if y < top + 2 else ("leaf" if aw.bayer(x, y) > 0.2 else "leaf_l"))
+            c.set(x, y, "leaf_l" if y < top + 2 else ("spring" if y < top + 5 else "leaf"))
         c.set(x, top - 1, "leaf_d")
     stone = aw.sword_in_stone()
     aw.soft_light(c, 214, 262, 40, 14, +1, 0.5)
