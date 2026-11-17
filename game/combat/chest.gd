@@ -172,8 +172,8 @@ func _draw() -> void:
 		fade = clampf(_linger_left / maxf(tuning.chest_open_linger, 0.001), 0.0, 1.0)
 	var lift := _sprite.position.y if _sprite != null else 0.0
 	draw_set_transform(Vector2(0, 1), 0.0, Vector2(1.0, 0.45))
-	draw_circle(Vector2.ZERO, 13.0 + 2.0 * float(tier), Color(glow, glow.a * 0.5 * pulse * fade))
-	draw_circle(Vector2.ZERO, 8.0, Color(glow, glow.a * 0.8 * pulse * fade))
+	draw_circle(Vector2.ZERO, 13.0 + 2.0 * float(tier), Color(glow, glow.a * 0.7 * pulse * fade))
+	draw_circle(Vector2.ZERO, 8.0, Color(glow, minf(1.0, glow.a * 1.1) * pulse * fade))
 	draw_set_transform(Vector2.ZERO)
 	if phase == Phase.POP:
 		return
@@ -182,7 +182,7 @@ func _draw() -> void:
 	if phase == Phase.OPEN:
 		beam_w += 10.0 * (1.0 - fade)
 	var beam := Rect2(Vector2(-beam_w * 0.5, -beam_h + lift - 4.0), Vector2(beam_w, beam_h))
-	draw_rect(_snap(beam), Color(glow, 0.18 * pulse * fade))
+	draw_rect(_snap(beam), Color(glow, 0.28 * pulse * fade))
 	draw_rect(_snap(beam.grow_individual(-beam_w * 0.3, 0, -beam_w * 0.3, 0)), Color(1, 1, 1, 0.12 * pulse * fade))
 
 

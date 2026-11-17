@@ -563,9 +563,10 @@ func ability_visual(kind: StringName, radius: float) -> void:
 			# 獅王吼:比吠叫大一倍的三圈金色聲波、地上的震波、鏡頭震動。
 			_hop_left = HOP_TIME * 1.4
 			sprite.scale = Vector2(1.2, 0.85)
-			CombatFx.ring(self, global_position, 6.0, radius, 0.5, Color(1.0, 0.7, 0.2, 0.95), 3.0)
-			CombatFx.ring(self, global_position, 4.0, radius * 0.72, 0.4, Color(1.0, 0.85, 0.35, 0.85), 2.0)
-			CombatFx.ring(self, global_position, 2.0, radius * 0.45, 0.3, Color(1.0, 0.95, 0.6, 0.8), 1.0)
+			# 聲波畫在地面層(角色之下),不會蓋住金毛與敵人的預警。
+			CombatFx.ring(self, global_position, 6.0, radius, 0.5, Color(1.0, 0.7, 0.2, 0.95), 3.0, true)
+			CombatFx.ring(self, global_position, 4.0, radius * 0.72, 0.4, Color(1.0, 0.85, 0.35, 0.85), 2.0, true)
+			CombatFx.ring(self, global_position, 2.0, radius * 0.45, 0.3, Color(1.0, 0.95, 0.6, 0.8), 1.0, true)
 			CombatFx.ring(self, global_position, 2.0, radius * 0.3, 0.2, Color(1.0, 0.85, 0.4, 0.35), 1.0, true, true)
 			CombatFx.particles(self, &"shockwave", global_position, true, true)
 			CombatFx.trauma(self, feel.trauma_player_hit * 0.8)
