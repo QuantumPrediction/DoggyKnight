@@ -17,6 +17,13 @@ extends Node
 ## 每次進營地只播一次(玩完小遊戲回來不會再播);對白檔不存在時略過,直接顯示選單。
 ## 畫面:放在 CanvasLayer(CampConfig.canvas_layer)內,用 SafeArea 排版,
 ## 填滿任何大小的畫面(180×320 至 196×426 等),畫面大小改變時重新排版。
+##
+## v2.6 三章(DEV_PLAN 4.13、19 DV1 至 DV3),依 GameState.chapter:
+## - 對白:第一章 camp1、camp2;第 N 章(N ≥ 2)cN_camp1、cN_camp2(CampConfig.chapter_story_path_format)。
+## - 第二章起鬥牛犬一開始就在、蘭斯洛特站在圓桌右後方(點他說 CAMP_LANCELOT_XX)。
+## - 第三章梅林被抓走了:湖中仙女坐在梅林的位置(點她說 CAMP_LADY_XX)。
+## - 場景:第一章草地夜空、第二章城牆下的營火、第三章湖邊洞口與月光(CampScenery.chapter)。
+## - 小遊戲:第二章起「拉扯王室卷軸」與「叫醒騎士」輪流(CampConfig.minigame_rotation)。
 
 const DEFAULT_GOLDIE_FRAMES_PATH: String = "res://game/camp/art/camp_goldie_frames.tres"
 const FALLBACK_GOLDIE_FRAMES_PATH: String = "res://assets/sprites/goldie/goldie_frames.tres"
@@ -28,6 +35,8 @@ const DIALOGUE_BOX_PATH: String = "res://ui/dialogue/dialogue_box.tscn"
 const MERLIN_FRAMES_PATH: String = "res://assets/sprites/merlin/merlin_frames.tres"
 const TRAINING_PATH: String = "res://game/camp/training.tscn"
 const SNACK_FRAMES_PATH: String = "res://assets/fx/snack/snack_frames.tres"
+const LANCELOT_FRAMES_PATH: String = "res://assets/sprites/lancelot/lancelot_frames.tres"
+const LADY_FRAMES_PATH: String = "res://assets/sprites/lady_lake/lady_lake_frames.tres"
 
 ## 小遊戲開始時發出(給沙盒與測試看)。
 signal minigame_opened(minigame: MinigameBase)
@@ -36,8 +45,10 @@ signal minigame_closed(score: int, grade: int)
 signal goldie_petted(rewarded: bool)
 ## 營地故事播完(或略過),選單出現。沒有故事時不發出。
 signal story_finished()
-## 梅林說了一句話(翻譯鍵)。
+## 梅林(第三章是湖中仙女)說了一句話(翻譯鍵)。
 signal merlin_spoke(key: String)
+## v2.6:蘭斯洛特說了一句話(翻譯鍵)。
+signal lancelot_spoke(key: String)
 ## v2.4:訓練介面打開、關閉;在訓練裡買了一級(B 線想立即套用時可以聽這個)。
 signal training_opened(training: CampTraining)
 signal training_closed()
@@ -55,8 +66,10 @@ var pet_rewards: int = 0
 var story_override: DialogueScript
 ## 這次營地有沒有播過故事。
 var story_played: bool = false
-## 這次營地點梅林的次數(有說話的)。
+## 這次營地點梅林(或湖中仙女)的次數(有說話的)。
 var merlin_taps: int = 0
+## 這次營地點蘭斯洛特的次數(有說話的)。
+var lancelot_taps: int = 0
 
 var _layer: CanvasLayer
 var _root: Control
@@ -111,9 +124,15 @@ var _merlin: CampMerlin
 var _merlin_zone: Control
 var _merlin_bubble: MinigameSpeechBubble
 var _last_merlin_tap: float = -100.0
-var _merlin_bag: PackedStringArray = []
-var _merlin_last_line: String = ""
+var _lancelot: CampLancelot
+var _lancelot_zone: Control
+var _last_lancelot_tap: float = -100.0
+## 每位說話的人的「抽籤袋」:{說話的人: {"bag": PackedStringArray, "last": String}}
+var _line_bags: Dictionary = {}
 var _line_rng := RandomNumberGenerator.new()
+## 這次營地用的小遊戲(依章輪流)與它的按鈕文字。
+var _minigame_scene: PackedScene
+var _minigame_key: String = "UI_CAMP_MINIGAME"
 
 
 func _ready() -> void:
@@ -161,6 +180,15 @@ func _load_defaults() -> void:
 	if config.training_scene == null and ResourceLoader.exists(TRAINING_PATH):
 		config = config.duplicate() as CampConfig
 		config.training_scene = load(TRAINING_PATH) as PackedScene
+	if (config.lancelot_frames == null and ResourceLoader.exists(LANCELOT_FRAMES_PATH)) \
+			or (config.lady_frames == null and ResourceLoader.exists(LADY_FRAMES_PATH)):
+		config = config.duplicate() as CampConfig
+		if config.lancelot_frames == null and ResourceLoader.exists(LANCELOT_FRAMES_PATH):
+			config.lancelot_frames = load(LANCELOT_FRAMES_PATH) as SpriteFrames
+		if config.lady_frames == null and ResourceLoader.exists(LADY_FRAMES_PATH):
+			config.lady_frames = load(LADY_FRAMES_PATH) as SpriteFrames
+	_apply_chapter_palette()
+	_pick_minigame()
 	if ResourceLoader.exists(SNACK_FRAMES_PATH):
 		var snack := load(SNACK_FRAMES_PATH) as SpriteFrames
 		if snack != null and snack.has_animation(&"default") and snack.get_frame_count(&"default") > 0:
@@ -224,8 +252,33 @@ func get_merlin() -> CampMerlin:
 	return _merlin
 
 
+## 營地的對話泡泡(梅林、湖中仙女與蘭斯洛特共用一個:一次只有一個人說話)。
 func get_merlin_bubble() -> MinigameSpeechBubble:
 	return _merlin_bubble
+
+
+func get_lancelot() -> CampLancelot:
+	return _lancelot
+
+
+## 蘭斯洛特是否在營地(第二章起)。
+func is_lancelot_visible() -> bool:
+	return _lancelot != null and _lancelot.visible
+
+
+## 第三章:坐在梅林位置的是湖中仙女。
+func is_lady_present() -> bool:
+	return config.lady_from_chapter > 0 and GameState.chapter >= config.lady_from_chapter
+
+
+## 這次營地是這一章的第幾次營地(1 或 2;不是營地的 level_index 傳回 0)。
+func camp_number() -> int:
+	return int(config.camp_numbers.get(GameState.level_index, 0))
+
+
+## 這次營地的小遊戲場景(依章輪流,見 CampConfig.minigame_rotation)。
+func current_minigame_scene() -> PackedScene:
+	return _minigame_scene
 
 
 ## 營地自己的對白框(ui/dialogue/dialogue_box.tscn 的實例)。
@@ -244,14 +297,25 @@ func skip_story() -> void:
 		_dialogue.call(&"skip")
 
 
-## 這次營地要播的對白:story_override,或 CampConfig.story_paths[GameState.level_index] 的檔案。沒有時傳回 null。
+## 這次營地要播的對白:story_override,或依章的對白檔(story_path())。沒有時傳回 null。
 func story_script() -> DialogueScript:
 	if story_override != null:
 		return story_override
-	var path: String = config.story_paths.get(GameState.level_index, "")
+	var path := story_path()
 	if path == "" or not ResourceLoader.exists(path):
 		return null
 	return load(path) as DialogueScript
+
+
+## 這次營地的對白檔路徑:第一章 CampConfig.story_paths[GameState.level_index](camp1、camp2);
+## 第 N 章(N ≥ 2)chapter_story_path_format(cN_camp1、cN_camp2)。不是營地的 level_index 傳回空字串。
+func story_path() -> String:
+	if GameState.chapter >= 2 and config.chapter_story_path_format != "":
+		var number := camp_number()
+		if number <= 0:
+			return ""
+		return config.chapter_story_path_format % [GameState.chapter, number]
+	return config.story_paths.get(GameState.level_index, "")
 
 
 ## 按下「拉扯王室卷軸」。測試與沙盒也可以直接呼叫。
@@ -262,10 +326,10 @@ func open_minigame() -> void:
 	if config.minigame_plays_per_visit > 0 and minigame_plays >= config.minigame_plays_per_visit:
 		_show_toast(tr("CAMP_MINIGAME_DONE"))
 		return
-	if config.minigame_scene == null:
+	if _minigame_scene == null:
 		_show_toast(tr("UI_COMING_SOON"))
 		return
-	_minigame = config.minigame_scene.instantiate() as MinigameBase
+	_minigame = _minigame_scene.instantiate() as MinigameBase
 	if _minigame == null:
 		push_error("CampConfig.minigame_scene 的根節點必須繼承 MinigameBase")
 		return
@@ -365,7 +429,7 @@ func tap_merlin() -> String:
 		return ""
 	if _time - _last_merlin_tap < config.merlin_tap_cooldown_sec:
 		return ""
-	var key := _next_merlin_line()
+	var key := _next_line(&"lady_lake" if is_lady_present() else &"merlin", host_lines())
 	if key == "":
 		return ""
 	_last_merlin_tap = _time
@@ -376,6 +440,31 @@ func tap_merlin() -> String:
 	_merlin_bubble.show_text(tr(key), _merlin.speech_anchor(), config.merlin_bubble_sec)
 	merlin_spoke.emit(key)
 	return key
+
+
+## 點蘭斯洛特(第二章起):轉一下長槍、閃光、揮槍音效、輕震,對話泡泡說一句 CAMP_LANCELOT_XX。
+## 傳回說的那一句的翻譯鍵;沒有說話時傳回空字串。
+func tap_lancelot() -> String:
+	if has_left or _minigame != null or _story_playing or _training != null or not is_lancelot_visible():
+		return ""
+	if _time - _last_lancelot_tap < config.merlin_tap_cooldown_sec:
+		return ""
+	var key := _next_line(&"lancelot", config.lancelot_lines)
+	if key == "":
+		return ""
+	_last_lancelot_tap = _time
+	lancelot_taps += 1
+	_lancelot.poke()
+	Sfx.play(config.lancelot_sfx)
+	Haptics.play(&"light")
+	_merlin_bubble.show_text(tr(key), _lancelot.speech_anchor(), config.merlin_bubble_sec)
+	lancelot_spoke.emit(key)
+	return key
+
+
+## 坐在圓桌後面的人(梅林,第三章是湖中仙女)會說的話。
+func host_lines() -> PackedStringArray:
+	return config.lady_lines if is_lady_present() else config.merlin_lines
 
 
 func is_merlin_visible() -> bool:
@@ -421,27 +510,54 @@ func _end_story() -> void:
 	story_finished.emit()
 
 
-## 隨機取一句,一輪說完才重複,而且不會連續兩次說同一句。
-func _next_merlin_line() -> String:
-	var lines := config.merlin_lines
+## 隨機取一句,一輪說完才重複,而且不會連續兩次說同一句(每位說話的人各有一個抽籤袋)。
+func _next_line(speaker: StringName, lines: PackedStringArray) -> String:
 	if lines.is_empty():
 		return ""
-	if _merlin_bag.is_empty():
-		var bag := lines.duplicate()
+	var state: Dictionary = _line_bags.get(speaker, {"bag": PackedStringArray(), "last": ""})
+	var bag: PackedStringArray = state["bag"]
+	if bag.is_empty():
+		bag = lines.duplicate()
 		for i in range(bag.size() - 1, 0, -1):
 			var j := _line_rng.randi_range(0, i)
 			var tmp := bag[i]
 			bag[i] = bag[j]
 			bag[j] = tmp
-		if bag.size() > 1 and bag[0] == _merlin_last_line:
+		if bag.size() > 1 and bag[0] == String(state["last"]):
 			var first := bag[0]
 			bag[0] = bag[bag.size() - 1]
 			bag[bag.size() - 1] = first
-		_merlin_bag = bag
-	var key := _merlin_bag[0]
-	_merlin_bag.remove_at(0)
-	_merlin_last_line = key
+	var key := bag[0]
+	bag.remove_at(0)
+	_line_bags[speaker] = {"bag": bag, "last": key}
 	return key
+
+
+## 依章挑這次營地的小遊戲:第一章(或沒有輪流設定時)用 minigame_scene;
+## 第二章起用 minigame_rotation[(章 + 第幾次營地) % 數量]。
+func _pick_minigame() -> void:
+	_minigame_scene = config.minigame_scene
+	_minigame_key = "UI_CAMP_MINIGAME"
+	var rotation := config.minigame_rotation
+	if GameState.chapter < config.minigame_rotation_from_chapter or rotation.is_empty():
+		return
+	var index := (GameState.chapter + maxi(camp_number(), 1)) % rotation.size()
+	if rotation[index] == null:
+		return
+	_minigame_scene = rotation[index]
+	if index < config.minigame_rotation_keys.size() and config.minigame_rotation_keys[index] != "":
+		_minigame_key = config.minigame_rotation_keys[index]
+
+
+## v2.6 DV2:把這一章的顏色(CampConfig.chapter_palettes)套到一份複製的設定上。
+func _apply_chapter_palette() -> void:
+	var palette: Dictionary = config.chapter_palettes.get(GameState.chapter, {})
+	if palette.is_empty():
+		return
+	config = config.duplicate() as CampConfig
+	for key: String in palette:
+		if key in config:
+			config.set(key, palette[key])
 
 
 # --- 小遊戲 ---
@@ -492,14 +608,21 @@ func _on_training_closed() -> void:
 	training_closed.emit()
 
 
+func _lancelot_present() -> bool:
+	return config.lancelot_frames != null and config.lancelot_from_chapter > 0 and GameState.chapter >= config.lancelot_from_chapter
+
+
 func _set_camp_visible(value: bool) -> void:
 	for node: CanvasItem in [_sky, _ground, _glow, _actors, _front, _stats, _title, _vigor_label, _satisfaction_label, _bonus_label, _menu]:
 		node.visible = value
 	_pet_zone.visible = value
 	_bulldog_zone.visible = value and is_bulldog_visible()
 	if _merlin != null:
-		_merlin.visible = value and config.merlin_frames != null
+		_merlin.visible = value and _merlin.frames != null
 	_merlin_zone.visible = value and is_merlin_visible()
+	if _lancelot != null:
+		_lancelot.visible = value and _lancelot_present()
+	_lancelot_zone.visible = value and is_lancelot_visible()
 	if not value:
 		_toast.visible = false
 		_merlin_bubble.hide_bubble()
@@ -616,13 +739,26 @@ func _build() -> void:
 	_layer.add_child(_root)
 	_root.resized.connect(_layout)
 
-	_sky = CampScenery.new(CampScenery.Part.SKY, config)
+	_sky = CampScenery.new(CampScenery.Part.SKY, config, GameState.chapter)
 	_root.add_child(_sky)
 	# 梅林畫在夜空與地面之間:地面上的圓桌會蓋住他的下半身,看起來就是坐在桌子後面。
-	_merlin = CampMerlin.new(config)
-	_merlin.visible = config.merlin_frames != null
+	# 第三章由湖中仙女坐在同一個位置(梅林被抓走了)。
+	if is_lady_present():
+		_merlin = CampMerlin.new(config, config.lady_frames)
+		_merlin.name = "LadyLake"
+		_merlin.glow_color = config.lady_glow_color
+		_merlin.tip = config.lady_cast_tip
+		if config.lady_frames == null:
+			_merlin.frames = null
+	else:
+		_merlin = CampMerlin.new(config)
+	_merlin.visible = _merlin.frames != null
 	_root.add_child(_merlin)
-	_ground = CampScenery.new(CampScenery.Part.GROUND, config)
+	# 蘭斯洛特(第二章起)站在圓桌右後方,同樣被桌面遮住下半身。
+	_lancelot = CampLancelot.new(config)
+	_lancelot.visible = _lancelot_present()
+	_root.add_child(_lancelot)
+	_ground = CampScenery.new(CampScenery.Part.GROUND, config, GameState.chapter)
 	_root.add_child(_ground)
 
 	_actors = Node2D.new()
@@ -639,7 +775,8 @@ func _build() -> void:
 	_bulldog.name = "Bulldog"
 	_bulldog.sprite_frames = config.bulldog_frames
 	_bulldog.scale = Vector2.ONE * config.bulldog_scale
-	_bulldog.visible = config.bulldog_frames != null and GameState.level_index >= config.bulldog_from_level_index
+	_bulldog.visible = config.bulldog_frames != null and (GameState.level_index >= config.bulldog_from_level_index \
+			or (config.bulldog_from_chapter > 0 and GameState.chapter >= config.bulldog_from_chapter))
 	if config.bulldog_frames != null:
 		for anim: StringName in [config.bulldog_animation, &"idle"]:
 			if config.bulldog_frames.has_animation(anim):
@@ -653,7 +790,7 @@ func _build() -> void:
 	_smoke = _make_smoke()
 	_actors.add_child(_smoke)
 
-	_glow = CampScenery.new(CampScenery.Part.GLOW, config)
+	_glow = CampScenery.new(CampScenery.Part.GLOW, config, GameState.chapter)
 	_root.add_child(_glow)
 
 	_front = Control.new()
@@ -696,12 +833,14 @@ func _build() -> void:
 	_bulldog_zone.visible = is_bulldog_visible()
 	_merlin_zone = _make_touch_zone("MerlinZone", tap_merlin)
 	_merlin_zone.visible = is_merlin_visible()
+	_lancelot_zone = _make_touch_zone("LancelotZone", tap_lancelot)
+	_lancelot_zone.visible = is_lancelot_visible()
 
 	_menu = VBoxContainer.new()
 	_menu.name = "Menu"
 	_menu.add_theme_constant_override(&"separation", config.button_gap)
 	_root.add_child(_menu)
-	_minigame_button = _make_menu_button("MinigameButton", tr("UI_CAMP_MINIGAME"), Color("c0603a"), Color("3a1a10"), open_minigame)
+	_minigame_button = _make_menu_button("MinigameButton", tr(_minigame_key), Color("c0603a"), Color("3a1a10"), open_minigame)
 	# 中間一列:「訓練」(v2.4)與「同伴」各佔一半,選單的高度不變。
 	var middle := HBoxContainer.new()
 	middle.name = "MiddleRow"
@@ -863,6 +1002,7 @@ func _layout() -> void:
 		part.table_spot = table_spot
 		part.log_spot = _bulldog_spot + Vector2(0, 22)
 		part.moon_spot = Vector2(screen.x - 28.0, roundf(lerpf(stats_y + 36.0, table_spot.y, 0.3)))
+		part.top_y = stats_y + 40.0
 		part.queue_redraw()
 	_goldie.position = goldie_spot
 	_bulldog.position = _bulldog_spot
@@ -879,8 +1019,20 @@ func _layout() -> void:
 	# 只有桌面以上看得到的部分可以點(桌面約在圓桌中心上方 12 像素)
 	var merlin_bottom := minf(merlin_rect.end.y, table_spot.y - 4.0)
 	var merlin_zone := Rect2(merlin_rect.position, Vector2(merlin_rect.size.x, merlin_bottom - merlin_rect.position.y)).grow(config.merlin_touch_margin)
+	_lancelot.position = table_spot + config.lancelot_offset
+	var lancelot_rect := _lancelot.sprite_rect()
+	var lancelot_bottom := minf(lancelot_rect.end.y, table_spot.y - 4.0)
+	var lancelot_zone := Rect2(lancelot_rect.position, Vector2(lancelot_rect.size.x, lancelot_bottom - lancelot_rect.position.y)).grow(config.lancelot_touch_margin)
+	if is_lancelot_visible() and is_merlin_visible() and lancelot_zone.intersects(merlin_zone):
+		# 兩人的圖有透明的邊,範圍會重疊:從兩人中間切開(梅林在左、蘭斯洛特在右)。
+		var split := roundf((_merlin.position.x + _lancelot.position.x) * 0.5)
+		merlin_zone.size.x = maxf(0.0, split - merlin_zone.position.x)
+		lancelot_zone.size.x = maxf(0.0, lancelot_zone.end.x - split)
+		lancelot_zone.position.x = split
 	_merlin_zone.position = merlin_zone.position
 	_merlin_zone.size = merlin_zone.size
+	_lancelot_zone.position = lancelot_zone.position
+	_lancelot_zone.size = lancelot_zone.size
 	_merlin_bubble.move_to(_merlin.speech_anchor())
 	var bulldog_size := Vector2(24, 24) * config.bulldog_scale
 	var bulldog_rect := Rect2(_bulldog_spot - bulldog_size * 0.5, bulldog_size).grow(2.0)
@@ -898,6 +1050,9 @@ func _layout() -> void:
 func _draw_front() -> void:
 	# 螢火蟲:在草地與夜空交界附近慢慢飛,一閃一閃
 	var area := Rect2(0, _sky.horizon_y - 50.0, SafeArea.get_screen_size().x, 110.0)
+	# 第三章是湖邊的藍色小水光(chapter_palettes 的 firefly_color)
+	var palette: Dictionary = config.chapter_palettes.get(GameState.chapter, {})
+	var bug: Color = palette.get("firefly_color", Color(0.95, 1.0, 0.6))
 	for f in _fireflies:
 		var t := _time * f.w
 		var pos := area.position + Vector2(f.x * area.size.x + sin(t + f.z) * 10.0, f.y * area.size.y + cos(t * 1.3 + f.z) * 6.0)
@@ -905,8 +1060,8 @@ func _draw_front() -> void:
 		if absf(pos.x - _fire_spot.x) < 18.0 and absf(pos.y - _fire_spot.y) < 30.0:
 			continue
 		var p := pos.round()
-		_front.draw_rect(Rect2(p - Vector2(1, 1), Vector2(3, 3)), Color(0.85, 1.0, 0.45, 0.18 * glow))
-		_front.draw_rect(Rect2(p, Vector2.ONE), Color(0.95, 1.0, 0.6, 0.35 + 0.65 * glow))
+		_front.draw_rect(Rect2(p - Vector2(1, 1), Vector2(3, 3)), Color(bug.darkened(0.1), 0.18 * glow))
+		_front.draw_rect(Rect2(p, Vector2.ONE), Color(bug, 0.35 + 0.65 * glow))
 	# 鬥牛犬的「汪!」
 	if _bark_left > 0.0 and is_bulldog_visible():
 		var at := (_bulldog_spot + Vector2(10, -34)).round()
