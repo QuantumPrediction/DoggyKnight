@@ -426,6 +426,8 @@ func reset_run() -> void
 
 **新資源(佔位版已放好,C 線原地替換)**:寶箱 `assets/sprites/chest/chest_frames.tres`(idle、open,24×24)、零食 `assets/fx/snack/snack_frames.tres`(default)。
 
+**介面新增(場景訊號,補充 4.9)**:失敗畫面 `revive_pressed`(只在結果字典 `can_revive` 為 true 時顯示按鈕);標題 `endless_pressed`(通關後才顯示,按下前設定 `GameState.mode = &"endless"`)與 `training_pressed`(開啟 D 線的訓練介面)。
+
 **營地訓練**:升級 id `vitality`(活力上限)、`strength`(攻擊)、`agility`(速度)、`loyalty`(忠誠度累積)、`luck`(寶箱與零食機率),每項 5 級,資料在 `data/progression/meta_upgrades.tres`(B 線),介面 `game/camp/training.tscn`(D 線,營地與標題都可以打開)。
 
 ---
@@ -799,7 +801,7 @@ func reset_run() -> void
 - [ ] BV1 六個新把戲與四個進化的資料檔;進化規則;升級與寶箱的三選一會在條件達成時出現進化選項(標「進化!」)。
 - [ ] BV2 寶箱獎勵:普通 = 回復或零食;精英與頭目 = 一次把戲三選一(可能是進化)。
 - [ ] BV3 抉擇事件:每關一次,在中段兩波之間發 `event_offered`:「梅林的祝福」(例如回滿活力 / 下一個把戲升兩級)與「摩根娜的誘惑」(例如攻擊 +30% 但活力上限 −20%)。選項表放資料檔,每關不同;遊戲暫停到選完。介面不存在時自動選第一項。
-- [ ] BV4 零食經濟:擊倒、寶箱、星級都給零食,發 `snacks_changed`;倒下時可以花零食復活一次(每關一次,價格放資料檔);失敗畫面要顯示「用 N 個零食復活」(與 C 線協調:結果字典加 `revive_cost`、`can_revive`,失敗畫面發新訊號?——不加訊號:失敗畫面呼叫 `retry_pressed` 以外的第三個訊號 `revive_pressed`,屬場景介面,記在 4.9 的介面表)。
+- [ ] BV4 零食經濟:擊倒、寶箱、星級都給零食,發 `snacks_changed`;倒下時可以花零食復活一次(每關一次,價格放資料檔)。結果字典加 `revive_cost`、`can_revive`;失敗畫面的新訊號 `revive_pressed`(見 4.12 介面)→ 扣零食、`player.revive()`、回到戰鬥。
 - [ ] BV5 營地訓練資料 `data/progression/meta_upgrades.tres` 與套用:新遊戲 `reset_run()` 之後套用 `GameState.meta_upgrades`;存檔第 4 版(`meta_upgrades`、`endless_best`、零食)。
 - [ ] BV6 無盡試煉(`mode = &"endless"`):通關後在標題選擇;隨機背景;一波接一波,越來越強,每 5 波一個中頭目或頭目,每 10 波一個抉擇事件;倒下就結束,紀錄最佳波數與獲得零食。
 - [ ] BV7 用機器人調整:一般模式難度維持 v2.3 的目標;進化在第一章大約能完成一至兩次。
