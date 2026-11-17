@@ -9,11 +9,13 @@
 [ext_resource type="PackedScene" path="res://ui/dialogue/dialogue_box.tscn" id="7_dialogue"]
 [ext_resource type="SpriteFrames" path="res://assets/sprites/merlin/merlin_frames.tres" id="8_merlin"]
 [ext_resource type="PackedScene" path="res://assets/fx/particles/sparkle.tscn" id="9_sparkle"]
+[ext_resource type="PackedScene" path="res://game/camp/training.tscn" id="10_training"]
 
 [resource]
 script = ExtResource("1_config")
 canvas_layer = 15
 minigame_scene = ExtResource("2_minigame")
+training_scene = ExtResource("10_training")
 minigame_plays_per_visit = 1
 toast_sec = 1.6
 music_track = &"camp"

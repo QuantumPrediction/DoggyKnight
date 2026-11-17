@@ -3,6 +3,7 @@ extends Node
 ## 一次性粒子特效(每 1.2 秒重播)、六個場地背景(含會動的元素與氣氛色)。
 ## v2.3:新角色(弓兵、空盔甲兵、稻草人隊長、梅林)、投射物、全部頭像、八張繪本插畫、光暈精靈;
 ## 背景頁的角色在各自的群組裡,所以看得到腳下的投影。
+## v2.4:「v2.4」頁:寶箱(idle、open)、零食、全部 16 個把戲圖示(含金框的進化把戲,放大 2 倍)。
 ## 用畫面下方的 ◀ ▶ 換頁(觸控或滑鼠)。這是開發工具,文字不翻譯。
 ##
 ## 執行:godot --path . res://tests/line_c/gallery.tscn
@@ -29,6 +30,8 @@ const STORY_PAGES: Array[String] = ["prologue_1", "prologue_2", "prologue_3", "p
 const LIGHTS: Array[String] = ["torch", "campfire", "lantern", "magic", "eye_violet", "visor_blue", "sword", "ultimate"]
 const FX: Array[String] = ["slash", "hit_spark", "exp_orb", "ultimate_slash", "dizzy_stars", "dust"]
 const TRICKS: Array[String] = ["sit", "wag", "fetch", "shake", "spin", "bark"]
+const TRICKS_V24: Array[String] = ["sit", "wag", "fetch", "shake", "spin", "bark", "pounce", "roll", "dig", "sniff",
+		"play_dead", "zoomies", "tornado_tail", "lion_roar", "high_five", "meteor_pounce"]
 const BACKGROUNDS: Array[String] = ["sword_stone", "wheat_field", "meadow", "farm_fence", "crow_forest", "bridge"]
 const PARTICLES: Array[String] = ["hit_burst", "straw_bits", "feathers", "confetti", "level_up_pillar", "shockwave",
 		"sparkle", "ultimate_burst", "footstep_dust", "heart", "star_burst"]
@@ -77,6 +80,7 @@ func _ready() -> void:
 	for c in CHARACTERS:
 		_pages.append(_character_page.bind(c))
 	_pages.append(_fx_page)
+	_pages.append(_v24_page)
 	_pages.append(_particles_page)
 	for spec in PORTRAIT_PAGES:
 		_pages.append(_portrait_page.bind(spec))
@@ -171,6 +175,24 @@ func _fx_page() -> void:
 	for fx in PROJECTILES:
 		var box := UiKit.sprite_box("res://assets/fx/%s/%s_frames.tres" % [fx, fx], &"default", 2)
 		g.add_child(_cell(box, fx))
+
+
+func _v24_page() -> void:
+	_backdrop(PaletteColors.LEAF_D)
+	_title.text = "v2.4 chest, snack, tricks(%d/%d)" % [page + 1, _pages.size()]
+	var g := _grid(3)
+	for anim: StringName in [&"idle", &"open"]:
+		g.add_child(_cell(UiKit.sprite_box("res://assets/sprites/chest/chest_frames.tres", anim, 2), "chest " + anim))
+	g.add_child(_cell(UiKit.sprite_box("res://assets/fx/snack/snack_frames.tres", &"default", 3), "snack"))
+	var icons := GridContainer.new()
+	icons.columns = 4
+	icons.add_theme_constant_override(&"h_separation", 3)
+	icons.add_theme_constant_override(&"v_separation", 3)
+	for t in TRICKS_V24:
+		icons.add_child(UiKit.texture_rect(load("res://assets/icons/tricks/%s.png" % t) as Texture2D, 2))
+	var safe := SafeArea.get_safe_rect()
+	icons.position = safe.position + Vector2(6, 120)
+	_page_root.add_child(icons)
 
 
 func _portrait_page(spec: Array) -> void:

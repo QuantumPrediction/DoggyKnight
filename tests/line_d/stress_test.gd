@@ -21,6 +21,13 @@ extends Node2D
 ## - 對白插畫(--dialogue):戰鬥上面再蓋一個正在顯示繪本插畫與頭像的對白框(真正的遊戲在對白時戰鬥會停,
 ##   這是最壞情況)。
 ##
+## v2.4(DV3,預設開啟,--no-loot 關掉):
+## - 寶箱:場上 CHEST_COUNT 個寶箱(C 線的 chest_frames:idle → open),每 CHEST_OPEN_EVERY 秒打開一個
+##   (star_burst + sparkle,底下有光暈),打開後換個位置再放一個。
+## - 零食:一直保持 SNACK_TARGET 個零食(snack_frames),從敵人身上掉出、被吸向金毛,吃到時 sparkle。
+## - 進化把戲:金毛身邊一直有 EVOLVE_ORBITERS 個繞圈的劍氣(像旋風尾),每 EVOLVE_BURST_EVERY 秒
+##   一次進化演出(level_up_pillar + star_burst + 幾個 sparkle,受特效上限限制)。
+##
 ## 每 2 秒在標準輸出印一行數字;跑滿 bench_seconds 後印出總結(含特效統計)。
 ## 注意:雲端環境沒有 GPU。無畫面(headless)時量到的是 CPU 端(腳本、物理、粒子模擬)的負擔;
 ## Xvfb + llvmpipe 是軟體算繪,不能代表手機。手機上的數字要在實機上量(用「Android Sandbox」匯出設定裝到手機)。
@@ -29,7 +36,8 @@ extends Node2D
 ##   godot --path . res://tests/line_d/stress_test.tscn
 ##   godot --headless --path . res://tests/line_d/stress_test.tscn -- --bench-seconds=20 --quit-when-done
 ## 參數:--no-fx(不放特效,對照用)、--no-caps(特效不設上限,看最壞情況)、--uncapped-fps(不鎖 60,看餘裕)、
-##       --no-glow、--no-projectiles(關掉 v2.3 的光暈、投射物)、--dialogue(加上對白框與插畫)
+##       --no-glow、--no-projectiles(關掉 v2.3 的光暈、投射物)、--dialogue(加上對白框與插畫)、
+##       --no-loot(關掉 v2.4 的寶箱、零食、進化特效)
 
 const ARENA_PATH: String = "res://game/combat/arena.tscn"
 const ENEMY_DATA_PATH: String = "res://data/enemies/scarecrow.tres"
@@ -55,6 +63,18 @@ const GLOW_FOLLOWERS: int = 12
 const GLOW_TORCHES: int = 4
 const DIALOGUE_BOX_PATH: String = "res://ui/dialogue/dialogue_box.tscn"
 const ILLUSTRATION_PATH: String = "res://assets/story/prologue_1.png"
+## v2.4(DV3):寶箱、零食、進化特效。
+const CHEST_FRAMES_PATH: String = "res://assets/sprites/chest/chest_frames.tres"
+const SNACK_FRAMES_PATH: String = "res://assets/fx/snack/snack_frames.tres"
+const ORBIT_FRAMES_PATH: String = "res://assets/fx/sword_wave/sword_wave_frames.tres"
+const CHEST_COUNT: int = 3
+const CHEST_OPEN_EVERY: float = 1.5
+const CHEST_OPEN_SEC: float = 1.2
+const SNACK_TARGET: int = 12
+const SNACK_SPEED: float = 140.0
+const EVOLVE_ORBITERS: int = 6
+const EVOLVE_ORBIT_RADIUS: float = 26.0
+const EVOLVE_BURST_EVERY: float = 5.0
 
 ## 建議的同時存在上限(每種特效)。數量以 C 線現在的粒子數計算;C 線加大粒子數時,上限要相應調低。
 const FX_CAPS: Dictionary = {
@@ -76,6 +96,7 @@ const FX_TIMED: Array = [[&"shockwave", 4.0], [&"level_up_pillar", 6.0], [&"ulti
 @export var with_glow: bool = true
 @export var with_projectiles: bool = true
 @export var with_dialogue: bool = false
+@export var with_loot: bool = true
 
 var using_real_arena: bool = false
 var _arena: Node
@@ -121,6 +142,16 @@ var _glow_torches: Array[Sprite2D] = []
 var _glow_big: Sprite2D
 var _glow_peak: int = 0
 var _dialogue: CanvasLayer
+var _loot_layer: Node2D
+var _chests: Array[AnimatedSprite2D] = []
+var _chest_timer: float = 0.0
+var _chests_opened: int = 0
+var _snack_frames: SpriteFrames
+var _snacks_eaten: int = 0
+var _orbiters: Array[Node2D] = []
+var _evolve_timer: float = 0.0
+var _evolve_bursts: int = 0
+var _loot_peak: int = 0
 
 
 func _ready() -> void:
@@ -142,12 +173,15 @@ func _ready() -> void:
 			with_projectiles = false
 		elif arg == "--dialogue":
 			with_dialogue = true
+		elif arg == "--no-loot":
+			with_loot = false
 	_build_enemy_mix()
 	_build_world()
 	_load_fx()
 	_build_projectiles()
 	_build_glow()
 	_build_dialogue()
+	_build_loot()
 	_build_readout()
 	if using_real_arena:
 		EventBus.enemy_died.connect(_on_enemy_died)
@@ -171,6 +205,8 @@ func _process(delta: float) -> void:
 		_run_projectiles()
 	if with_glow:
 		_run_glow()
+	if with_loot:
+		_run_loot(delta)
 	var fps := Engine.get_frames_per_second()
 	var process_ms := Performance.get_monitor(Performance.TIME_PROCESS) * 1000.0
 	var physics_ms := Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS) * 1000.0
@@ -181,8 +217,8 @@ func _process(delta: float) -> void:
 		_physics_ms.append(physics_ms)
 	var count := get_tree().get_nodes_in_group(&"enemy").size()
 	var alive := _fx_layer.get_child_count() if _fx_layer != null else 0
-	_label.text = "FPS %d  enemies %d  fx %d\nshots %d  glow %d\nprocess %.2f ms  physics %.2f ms\n%s" % [
-		fps, count, alive, _projectiles_alive(), _glows_alive(), process_ms, physics_ms,
+	_label.text = "FPS %d  enemies %d  fx %d\nshots %d  glow %d  loot %d\nprocess %.2f ms  physics %.2f ms\n%s" % [
+		fps, count, alive, _projectiles_alive(), _glows_alive(), _loot_alive(), process_ms, physics_ms,
 		"real arena" if using_real_arena else "stand-in enemies"]
 	_report_timer += delta
 	if _report_timer >= 2.0:
@@ -221,6 +257,8 @@ func _print_summary(count: int) -> void:
 	print("[stress] V2.3 projectiles=%s stand_in_spawned=%d hits=%d peak=%d real_peak=%d glow=%s peak_glow=%d glow_source=%s dialogue=%s" % [
 		with_projectiles, _projectiles_spawned, _projectile_hits, _projectile_peak, _real_projectile_peak,
 		with_glow, _glow_peak, _glow_source, with_dialogue and _dialogue != null])
+	print("[stress] V2.4 loot=%s chests_opened=%d snacks_eaten=%d evolve_bursts=%d orbiters=%d peak_loot_nodes=%d" % [
+		with_loot, _chests_opened, _snacks_eaten, _evolve_bursts, _orbiters.size(), _loot_peak])
 
 
 static func _avg(values: PackedFloat32Array) -> float:
@@ -433,6 +471,118 @@ static func _make_glow_texture() -> Texture2D:
 	tex.width = 32
 	tex.height = 32
 	return tex
+
+
+# --- 寶箱、零食、進化(DV3) ---
+
+func _build_loot() -> void:
+	_loot_layer = Node2D.new()
+	_loot_layer.name = "Loot"
+	_loot_layer.z_index = 3
+	add_child(_loot_layer)
+	if not with_loot:
+		return
+	var chest_frames: SpriteFrames = load(CHEST_FRAMES_PATH) if ResourceLoader.exists(CHEST_FRAMES_PATH) else null
+	_snack_frames = load(SNACK_FRAMES_PATH) if ResourceLoader.exists(SNACK_FRAMES_PATH) else null
+	for i in CHEST_COUNT:
+		var chest := AnimatedSprite2D.new()
+		chest.name = "Chest%d" % i
+		chest.sprite_frames = chest_frames
+		chest.position = _random_point(i * 7 + 3)
+		if chest_frames != null and chest_frames.has_animation(&"idle"):
+			chest.play(&"idle")
+		chest.set_meta(&"open_left", 0.0)
+		_loot_layer.add_child(chest)
+		if _glow_texture != null:
+			var glow := Sprite2D.new()
+			glow.texture = _glow_texture
+			glow.modulate = Color(1.0, 0.85, 0.4, 0.6)
+			var mat := CanvasItemMaterial.new()
+			mat.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+			glow.material = mat
+			glow.show_behind_parent = true
+			chest.add_child(glow)
+		_chests.append(chest)
+	var orbit_frames: SpriteFrames = load(ORBIT_FRAMES_PATH) if ResourceLoader.exists(ORBIT_FRAMES_PATH) else null
+	for i in EVOLVE_ORBITERS:
+		var orb := AnimatedSprite2D.new()
+		orb.name = "Orbiter%d" % i
+		orb.sprite_frames = orbit_frames
+		if orbit_frames != null and orbit_frames.has_animation(&"default"):
+			orb.play(&"default")
+		_loot_layer.add_child(orb)
+		_orbiters.append(orb)
+	_evolve_timer = EVOLVE_BURST_EVERY * 0.5
+
+
+func _run_loot(delta: float) -> void:
+	var hero := _hero_position()
+	# 寶箱:輪流打開,打開後換位置
+	_chest_timer -= delta
+	if _chest_timer <= 0.0 and not _chests.is_empty():
+		_chest_timer = CHEST_OPEN_EVERY
+		var chest := _chests[_chests_opened % _chests.size()]
+		_chests_opened += 1
+		chest.set_meta(&"open_left", CHEST_OPEN_SEC)
+		if chest.sprite_frames != null and chest.sprite_frames.has_animation(&"open"):
+			chest.play(&"open")
+		spawn_fx(&"star_burst", chest.position)
+		spawn_fx(&"sparkle", chest.position + Vector2(0, -6))
+	for i in _chests.size():
+		var chest := _chests[i]
+		var left := float(chest.get_meta(&"open_left"))
+		if left > 0.0:
+			left -= delta
+			chest.set_meta(&"open_left", left)
+			if left <= 0.0:
+				chest.position = _random_point(_chests_opened * 5 + i)
+				if chest.sprite_frames != null and chest.sprite_frames.has_animation(&"idle"):
+					chest.play(&"idle")
+	# 零食:從敵人身上掉出,被吸向金毛
+	var snacks := get_tree().get_nodes_in_group(&"stress_snack")
+	var enemies := get_tree().get_nodes_in_group(&"enemy")
+	var missing := SNACK_TARGET - snacks.size()
+	for i in missing:
+		var snack := AnimatedSprite2D.new()
+		snack.sprite_frames = _snack_frames
+		if _snack_frames != null and _snack_frames.has_animation(&"default"):
+			snack.play(&"default")
+		snack.position = (enemies[_rng.randi() % enemies.size()] as Node2D).global_position if not enemies.is_empty() \
+				else _random_point(_rng.randi() % 50)
+		snack.set_meta(&"delay", _rng.randf_range(0.2, 0.8))
+		snack.add_to_group(&"stress_snack")
+		_loot_layer.add_child(snack)
+	for node in snacks:
+		var snack := node as AnimatedSprite2D
+		var delay := float(snack.get_meta(&"delay"))
+		if delay > 0.0:
+			snack.set_meta(&"delay", delay - delta)
+			continue
+		snack.position = snack.position.move_toward(hero, SNACK_SPEED * delta)
+		if snack.position.distance_to(hero) < 6.0:
+			_snacks_eaten += 1
+			spawn_fx(&"sparkle", hero + Vector2(0, -8))
+			snack.remove_from_group(&"stress_snack")
+			snack.queue_free()
+	# 進化:繞身旋轉的劍氣,定時的進化演出
+	for i in _orbiters.size():
+		var angle := _elapsed * 5.0 + TAU * i / _orbiters.size()
+		_orbiters[i].position = hero + Vector2(cos(angle), sin(angle)) * EVOLVE_ORBIT_RADIUS
+		_orbiters[i].rotation = angle + PI * 0.5
+	_evolve_timer -= delta
+	if _evolve_timer <= 0.0:
+		_evolve_timer = EVOLVE_BURST_EVERY
+		_evolve_bursts += 1
+		spawn_fx(&"level_up_pillar", hero)
+		spawn_fx(&"star_burst", hero + Vector2(0, -10))
+		for k in 3:
+			spawn_fx(&"sparkle", hero + Vector2(_rng.randf_range(-14, 14), _rng.randf_range(-18, 2)))
+	_loot_peak = maxi(_loot_peak, _loot_alive())
+
+
+## 寶箱、零食、繞身劍氣的節點數。
+func _loot_alive() -> int:
+	return _loot_layer.get_child_count() if _loot_layer != null else 0
 
 
 # --- 對白插畫(DS4,--dialogue) ---

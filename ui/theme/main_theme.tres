@@ -12,6 +12,15 @@
 [ext_resource type="Texture2D" path="res://assets/ui/card_pressed.png" id="10_card_pressed"]
 [ext_resource type="Texture2D" path="res://assets/ui/ribbon.png" id="11_ribbon"]
 [ext_resource type="Texture2D" path="res://assets/ui/ribbon.png" id="12_ribbon_big"]
+[ext_resource type="Texture2D" path="res://assets/ui/card_evolve_normal.png" id="13_card_evolve_normal"]
+[ext_resource type="Texture2D" path="res://assets/ui/card_evolve_pressed.png" id="14_card_evolve_pressed"]
+[ext_resource type="Texture2D" path="res://assets/ui/card_merlin_normal.png" id="15_card_merlin_normal"]
+[ext_resource type="Texture2D" path="res://assets/ui/card_merlin_pressed.png" id="16_card_merlin_pressed"]
+[ext_resource type="Texture2D" path="res://assets/ui/card_morgana_normal.png" id="17_card_morgana_normal"]
+[ext_resource type="Texture2D" path="res://assets/ui/card_morgana_pressed.png" id="18_card_morgana_pressed"]
+[ext_resource type="Texture2D" path="res://assets/ui/ribbon_gold.png" id="19_ribbon_gold"]
+[ext_resource type="Texture2D" path="res://assets/ui/button_violet_normal.png" id="20_button_violet_normal"]
+[ext_resource type="Texture2D" path="res://assets/ui/button_violet_pressed.png" id="21_button_violet_pressed"]
 
 [sub_resource type="StyleBoxTexture" id="Style_button_normal"]
 content_margin_left = 6.0
@@ -134,6 +143,105 @@ texture_margin_top = 4.0
 texture_margin_right = 8.0
 texture_margin_bottom = 5.0
 
+[sub_resource type="StyleBoxTexture" id="Style_card_evolve_normal"]
+content_margin_left = 6.0
+content_margin_top = 5.0
+content_margin_right = 6.0
+content_margin_bottom = 5.0
+texture = ExtResource("13_card_evolve_normal")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="Style_card_evolve_pressed"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+texture = ExtResource("14_card_evolve_pressed")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="Style_card_merlin_normal"]
+content_margin_left = 6.0
+content_margin_top = 5.0
+content_margin_right = 6.0
+content_margin_bottom = 5.0
+texture = ExtResource("15_card_merlin_normal")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="Style_card_merlin_pressed"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+texture = ExtResource("16_card_merlin_pressed")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="Style_card_morgana_normal"]
+content_margin_left = 6.0
+content_margin_top = 5.0
+content_margin_right = 6.0
+content_margin_bottom = 5.0
+texture = ExtResource("17_card_morgana_normal")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="Style_card_morgana_pressed"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+texture = ExtResource("18_card_morgana_pressed")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="Style_ribbon_gold"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+texture = ExtResource("19_ribbon_gold")
+texture_margin_left = 8.0
+texture_margin_top = 4.0
+texture_margin_right = 8.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="Style_button_violet_normal"]
+content_margin_left = 6.0
+content_margin_top = 3.0
+content_margin_right = 6.0
+content_margin_bottom = 5.0
+texture = ExtResource("20_button_violet_normal")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="Style_button_violet_pressed"]
+content_margin_left = 6.0
+content_margin_top = 4.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+texture = ExtResource("21_button_violet_pressed")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
 [sub_resource type="StyleBoxEmpty" id="Style_empty"]
 
 [sub_resource type="StyleBoxFlat" id="Style_scroll"]
@@ -183,6 +291,37 @@ CardButton/styles/hover = SubResource("Style_card_normal")
 CardButton/styles/pressed = SubResource("Style_card_pressed")
 CardButton/styles/hover_pressed = SubResource("Style_card_pressed")
 CardButton/styles/disabled = SubResource("Style_card_normal")
+CardEvolve/base_type = &"Button"
+CardEvolve/styles/normal = SubResource("Style_card_evolve_normal")
+CardEvolve/styles/hover = SubResource("Style_card_evolve_normal")
+CardEvolve/styles/pressed = SubResource("Style_card_evolve_pressed")
+CardEvolve/styles/hover_pressed = SubResource("Style_card_evolve_pressed")
+CardEvolve/styles/disabled = SubResource("Style_card_evolve_normal")
+CardMerlin/base_type = &"Button"
+CardMerlin/styles/normal = SubResource("Style_card_merlin_normal")
+CardMerlin/styles/hover = SubResource("Style_card_merlin_normal")
+CardMerlin/styles/pressed = SubResource("Style_card_merlin_pressed")
+CardMerlin/styles/hover_pressed = SubResource("Style_card_merlin_pressed")
+CardMerlin/styles/disabled = SubResource("Style_card_merlin_normal")
+CardMorgana/base_type = &"Button"
+CardMorgana/styles/normal = SubResource("Style_card_morgana_normal")
+CardMorgana/styles/hover = SubResource("Style_card_morgana_normal")
+CardMorgana/styles/pressed = SubResource("Style_card_morgana_pressed")
+CardMorgana/styles/hover_pressed = SubResource("Style_card_morgana_pressed")
+CardMorgana/styles/disabled = SubResource("Style_card_morgana_normal")
+ButtonViolet/base_type = &"Button"
+ButtonViolet/colors/font_color = Color(1.0000, 0.9804, 0.9412, 1.00)
+ButtonViolet/colors/font_hover_color = Color(1.0000, 0.9804, 0.9412, 1.00)
+ButtonViolet/colors/font_pressed_color = Color(1.0000, 0.9804, 0.9412, 1.00)
+ButtonViolet/colors/font_hover_pressed_color = Color(1.0000, 0.9804, 0.9412, 1.00)
+ButtonViolet/colors/font_focus_color = Color(1.0000, 0.9804, 0.9412, 1.00)
+ButtonViolet/colors/font_shadow_color = Color(0.1647, 0.1059, 0.1765, 1.00)
+ButtonViolet/constants/shadow_offset_x = 1
+ButtonViolet/constants/shadow_offset_y = 1
+ButtonViolet/styles/normal = SubResource("Style_button_violet_normal")
+ButtonViolet/styles/hover = SubResource("Style_button_violet_normal")
+ButtonViolet/styles/pressed = SubResource("Style_button_violet_pressed")
+ButtonViolet/styles/hover_pressed = SubResource("Style_button_violet_pressed")
 Label/colors/font_color = Color(0.1647, 0.1059, 0.1765, 1.00)
 Label/constants/line_spacing = 1
 LabelLight/base_type = &"Label"
@@ -220,6 +359,8 @@ Ribbon/base_type = &"PanelContainer"
 Ribbon/styles/panel = SubResource("Style_ribbon")
 RibbonBig/base_type = &"PanelContainer"
 RibbonBig/styles/panel = SubResource("Style_ribbon_big")
+RibbonGold/base_type = &"PanelContainer"
+RibbonGold/styles/panel = SubResource("Style_ribbon_gold")
 VScrollBar/styles/scroll = SubResource("Style_scroll")
 VScrollBar/styles/grabber = SubResource("Style_grabber")
 VScrollBar/styles/grabber_highlight = SubResource("Style_grabber")

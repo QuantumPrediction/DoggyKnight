@@ -7,6 +7,7 @@ extends Node
 ##   播完才有選單。點金毛可以摸摸頭;點圓桌後面的梅林,他會說一句話。
 ## - 「第二次營地」:同上,但 GameState.level_index = 3(1-4 之後),播 camp2,鬥牛犬坐在營火旁。
 ##   B 線的 data/story/camp1.tres、camp2.tres 還沒有時,用 docs/STORY.md 的同一段對白(在這裡用程式建立)。
+## - 「訓練(送 50 個零食)」(v2.4):像從標題打開一樣,單獨打開營地訓練介面;先送 50 個零食方便試買。
 ## - 「壓力測試」:開啟 tests/line_d/stress_test.tscn(40 隻敵人與 FPS)。
 ## - 「模擬瀏海」:切換 SafeArea.simulate_notch。
 ## 視窗失去焦點 = 切到背景(小遊戲會暫停);回來後點一下繼續。
@@ -17,6 +18,9 @@ extends Node
 
 const CAMP_SCENE: PackedScene = preload("res://game/camp/camp.tscn")
 const STRESS_SCENE_PATH: String = "res://tests/line_d/stress_test.tscn"
+const TRAINING_SCENE_PATH: String = "res://game/camp/training.tscn"
+## 「訓練」按鈕先送的零食。
+const SANDBOX_GIFT_SNACKS: int = 50
 ## docs/STORY.md 第 5 節的營地對白(B 線的對白檔還沒有時,沙盒用這兩段)。
 const DEMO_STORY: Dictionary = {
 	1: [&"camp1", [["STORY_CAMP1_01", &"merlin", &"proud"], ["STORY_CAMP1_02", &"merlin", &"proud"],
@@ -196,6 +200,25 @@ func _note(text: String) -> void:
 	print("[camp_sandbox] ", text)
 
 
+## 單獨打開訓練介面(像 B 線從標題的 training_pressed 打開:放在第 30 層,收到 closed 後移除)。
+func open_training() -> void:
+	if _camp != null:
+		return
+	GameState.snacks += SANDBOX_GIFT_SNACKS
+	EventBus.snacks_changed.emit(GameState.snacks)
+	var layer := CanvasLayer.new()
+	layer.layer = 30
+	add_child(layer)
+	var training := (load(TRAINING_SCENE_PATH) as PackedScene).instantiate() as CampTraining
+	training.upgraded.connect(func(id: StringName, level: int) -> void:
+		_note("training: %s → Lv.%d, snacks=%d" % [id, level, GameState.snacks]))
+	training.closed.connect(func() -> void:
+		_note("training closed: meta_upgrades=%s" % GameState.meta_upgrades)
+		layer.queue_free())
+	layer.add_child(training)
+	_note("training opened (snacks=%d)" % GameState.snacks)
+
+
 func _build_menu() -> void:
 	_menu_layer = CanvasLayer.new()
 	_menu_layer.layer = 1
@@ -220,6 +243,9 @@ func _build_menu() -> void:
 	var camp2_button := MinigameUi.make_button(tr("CAMP_SANDBOX_CAMP2"), size, 11, Color("c0603a"), Color("3a1a10"))
 	camp2_button.pressed.connect(enter_camp.bind(3))
 	_menu.add_child(camp2_button)
+	var training_button := MinigameUi.make_button(tr("CAMP_SANDBOX_TRAINING"), size, 11, Color("3a5a8a"), Color("12243a"))
+	training_button.pressed.connect(open_training)
+	_menu.add_child(training_button)
 	var stress_button := MinigameUi.make_button(tr("CAMP_SANDBOX_STRESS"), size, 11, Color("5a5670"), Color("24203a"))
 	stress_button.pressed.connect(func() -> void: get_tree().change_scene_to_file(STRESS_SCENE_PATH))
 	_menu.add_child(stress_button)

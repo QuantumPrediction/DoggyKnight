@@ -2,9 +2,10 @@ extends TestCase
 ## 標題、結算、失敗、製作名單(C10):DEV_PLAN 4.9 的方法與訊號。
 
 const SCREENS: Dictionary = {
-	"res://ui/screens/title.tscn": [["setup"], ["new_game_pressed", "continue_pressed", "credits_pressed"]],
+	"res://ui/screens/title.tscn": [["setup"], ["new_game_pressed", "continue_pressed", "credits_pressed",
+			"endless_pressed", "training_pressed"]],
 	"res://ui/screens/results.tscn": [["setup"], ["continue_pressed"]],
-	"res://ui/screens/failure.tscn": [["setup"], ["retry_pressed", "title_pressed"]],
+	"res://ui/screens/failure.tscn": [["setup"], ["retry_pressed", "title_pressed", "revive_pressed"]],
 	"res://ui/screens/credits.tscn": [[], ["closed"]],
 }
 

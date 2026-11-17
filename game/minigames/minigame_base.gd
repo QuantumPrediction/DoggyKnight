@@ -339,6 +339,9 @@ func _end_play() -> void:
 	var target: Object = reward_target if reward_target != null else get_node_or_null(^"/root/GameState")
 	if target != null:
 		rewards = config.grading.apply_rewards(grade, target)
+		# v2.4:零食入帳後通知 HUD 與存檔(只在真正的 GameState 上發出;測試用的假狀態不發)。
+		if int(rewards.get("snacks", 0)) > 0 and target == get_node_or_null(^"/root/GameState"):
+			EventBus.snacks_changed.emit(int(target.get(&"snacks")))
 	EventBus.minigame_finished.emit(config.minigame_id, score, grade)
 	finished.emit(score, grade)
 	Haptics.play(&"medium")
@@ -357,6 +360,8 @@ func _show_results() -> void:
 		lines.append(tr("MINIGAME_REWARD_SATISFACTION") % int(rewards["satisfaction"]))
 	if rewards.has("bonus") and float(rewards["bonus"]) > 0.0:
 		lines.append(tr("MINIGAME_REWARD_BONUS") % roundi(float(rewards["bonus"]) * 100.0))
+	if int(rewards.get("snacks", 0)) > 0:
+		lines.append(tr("MINIGAME_REWARD_SNACKS") % int(rewards["snacks"]))
 	_results_reward_label.text = "\n".join(lines)
 	_results_extra_label.text = "\n".join(_result_extra_lines())
 	_results_extra_label.visible = _results_extra_label.text != ""

@@ -6,6 +6,7 @@ const SFX_IDS: Array[StringName] = [   # DEV_PLAN 4.9 與 4.10 的固定 id
 	&"boss_warning", &"ultimate", &"clear", &"fail", &"ui_tap", &"scroll", &"ink",
 	&"crit", &"combo", &"boss_roar", &"star", &"whoosh", &"heal", &"pet", &"perfect", &"countdown",
 	&"talk", &"page_turn", &"arrow_shot", &"husk_clank", &"captain_shout", &"magic",   # v2.3 CS8
+	&"chest_open", &"evolve", &"snack", &"revive", &"event",   # v2.4 CV6
 ]
 
 var _sound_before: bool
