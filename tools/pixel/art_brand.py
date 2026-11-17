@@ -245,7 +245,7 @@ def monochrome(fg: Canvas) -> Canvas:
             out.px[i] = (255, 255, 255, 255)
     # keep the eyes and nose readable as holes
     for i, p in enumerate(fg.px):
-        if p is not None and p[:3] == rgba("ink")[:3]:
+        if p is not None and p[:3] in (rgba("ink")[:3], rgba("umber")[:3]):
             out.px[i] = None
     out2 = Canvas(fg.w, fg.h)
     for i, p in enumerate(fg.px):
@@ -458,8 +458,8 @@ def feature_graphic(goldie_frame: Canvas, bulldog_frame: Canvas, sword_stone: Ca
     c = landscape(256, 125, 74, seed=10, castle_x=0.06, sun_x=0.25, clouds=True)
     stone = aw.sword_in_stone()
     aw.place(c, stone, 140, 62, shadow=(0.9, -4))
-    c.blit(goldie_frame.scaled(2), 178, 64)
-    c.blit(bulldog_frame.scaled(2), 210, 72)
+    c.blit(bulldog_frame.scaled(2), 196, 62)
+    c.blit(goldie_frame.scaled(2), 166, 60)
     lg = logo(3)
     c.blit(lg, 10, 18)
     return c.scaled(4)
@@ -470,7 +470,7 @@ def splash_image(goldie_frame: Canvas) -> Canvas:
     c = landscape(180, 320, 196, seed=2, castle_x=0.62, sun_x=0.5, clouds=True)
     lg = logo(2)
     c.blit(lg, (180 - lg.w) // 2, 100)
-    c.blit(goldie_frame.scaled(2), 66, 212)
+    c.blit(goldie_frame.scaled(2), 58, 200)
     return c.scaled(4)
 
 
@@ -481,14 +481,20 @@ def write_clouds() -> None:
 
 def write_all(goldie_frame: Canvas, bulldog_frame: Canvas, sword_stone: Canvas,
               tree: Canvas | None = None, bush: Canvas | None = None) -> None:
-    master = icon_master()
+    # v2.5 (CR4): the icon portrait is painted twice (64 px for the big icons, 32 px for the master),
+    # never downscaled; the v2.2 32 px grid (icon_character) is kept only for reference.
+    import art_v25_brand
+    master = icon_background(32)
+    master.blit(art_v25_brand.icon_portrait(32), 0, 0)
     master.save(res_path("res://assets/app_icon/icon_master_32.png"), opaque=True)
-    master.scaled(8).save(res_path("res://assets/app_icon/icon.png"), opaque=True)
-    master.scaled(32).save(res_path("res://assets/app_icon/icon_1024.png"), opaque=True)
-    master.scaled(16).save(res_path("res://assets/app_icon/play_icon_512.png"), opaque=True)
-    fg = icon_character()
+    big = icon_background(64)
+    fg = art_v25_brand.icon_portrait(64)
+    big.blit(fg, 0, 0)
+    big.scaled(4).save(res_path("res://assets/app_icon/icon.png"), opaque=True)
+    big.scaled(16).save(res_path("res://assets/app_icon/icon_1024.png"), opaque=True)
+    big.scaled(8).save(res_path("res://assets/app_icon/play_icon_512.png"), opaque=True)
     adaptive_layer(fg).save(res_path("res://assets/app_icon/android_foreground.png"))
-    fill_scaled(icon_background(32), 432).save(res_path("res://assets/app_icon/android_background.png"), opaque=True)
+    fill_scaled(icon_background(64), 432).save(res_path("res://assets/app_icon/android_background.png"), opaque=True)
     adaptive_layer(monochrome(fg)).save(res_path("res://assets/app_icon/android_monochrome.png"))
     feature_graphic(goldie_frame, bulldog_frame, sword_stone).save(
         res_path("res://assets/app_icon/feature_graphic_1024x500.png"), opaque=True)

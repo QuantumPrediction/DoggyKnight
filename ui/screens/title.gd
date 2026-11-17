@@ -93,7 +93,7 @@ func _ready() -> void:
 		merlin_sprite.flip_h = true
 		merlin_sprite.animation_finished.connect(func() -> void: merlin_sprite.play(&"idle"))
 	add_child(_merlin)
-	_goldie = UiKit.sprite_box("res://assets/sprites/goldie/goldie_frames.tres", &"idle", 3)
+	_goldie = UiKit.sprite_box("res://assets/sprites/goldie/goldie_frames.tres", &"idle", 2)   # v2.5:32 px 的圖放大 2 倍
 	_goldie.name = "Goldie"
 	add_child(_goldie)
 	_cleared_label = UiKit.label(tr("UI_CHAPTER_CLEARED"), &"LabelPop")
@@ -335,10 +335,10 @@ func _layout() -> void:
 	_buttons.position = Vector2(floorf(cx - _buttons.size.x * 0.5), floorf(bottom - _buttons.size.y))
 	# 金毛站在小丘上(背景圖中心 = 畫面中心),鬥牛犬在她左後方;石中劍在右邊的小坡上
 	var center := (screen * 0.5).floor()
-	_goldie.position = center + Vector2(-44, -24)
+	_goldie.position = center + Vector2(-34, -14)
 	_goldie.position.y = minf(_goldie.position.y, _buttons.position.y - _goldie.size.y - 2.0)
-	_bulldog.position = _goldie.position + Vector2(-38, 22)
-	_merlin.position = _goldie.position + Vector2(62, 20)
+	_bulldog.position = _goldie.position + Vector2(-40, 8)
+	_merlin.position = _goldie.position + Vector2(44, 6)
 	_cleared_label.size = _cleared_label.get_minimum_size()
 	_cleared_label.position = Vector2(floorf(cx - _cleared_label.size.x * 0.5), _subtitle.position.y + _subtitle.size.y + 1.0)
 	difficulty_panel.size = difficulty_panel.get_combined_minimum_size()

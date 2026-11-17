@@ -215,9 +215,27 @@ def hud_icon(name: str) -> Canvas:
 # 9-slice textures (Godot StyleBoxTexture, margins noted in main_theme.tres)
 # --------------------------------------------------------------------------
 
+# v2.5 (CR3): coloured outlines matched to each face colour (not black), bevelled borders lit from the
+# top-left, a lit left edge and a darker lip at the bottom, all 9-slice safe (stretch rows/columns stay uniform).
+FRAME_OUTLINE = {
+    "gold_l": "umber", "gold": "umber", "orange": "umber", "cream": "umber", "stone": "slate", "sky": "navy",
+    "sky_l": "navy", "water": "navy", "red": "wine", "plum": "ink", "violet": "ink", "dusk": "ink",
+    "night_d": "ink",
+}
+FRAME_DARKER = {
+    "gold_d": "brown", "gold": "gold_d", "brown": "brown_d", "brown_d": "umber", "stone_d": "slate",
+    "water_d": "night", "water": "water_d", "violet": "plum", "plum": "ink", "red_d": "wine", "orange": "gold_d",
+    "lilac": "violet", "yellow": "gold", "sky": "water", "white": "fog",
+}
+
+
 def framed(w: int, h: int, outline: str, border: str | None, fill: str, top: str | None = None,
            bottom: str | None = None, corner: int = 2, inner_glint: str | None = None) -> Canvas:
-    """Rounded pixel box: outline, optional 1 px inner border, fill, top highlight and bottom shadow."""
+    """Rounded pixel box: coloured outline, bevelled 1 px inner border (light top-left, dark bottom-right),
+    fill with a top highlight row, a lit left column and a 2 px bottom lip (the button's depth)."""
+    base_fill = fill.split("@")[0]
+    if outline == "ink" and base_fill in FRAME_OUTLINE:
+        outline = FRAME_OUTLINE[base_fill]
     c = Canvas(w, h)
     for y in range(h):
         for x in range(w):
@@ -229,20 +247,29 @@ def framed(w: int, h: int, outline: str, border: str | None, fill: str, top: str
             if edge:
                 c.set(x, y, outline)
             elif border and (cx == 1 or cy == 1 or cx + cy == corner):
-                c.set(x, y, border)
+                dark_side = (x > w // 2 and cx <= cy) or (y > h // 2 and cy <= cx)
+                c.set(x, y, FRAME_DARKER.get(border, border) if dark_side else border)
             else:
                 c.set(x, y, fill)
     inset = 2 if border else 1
     if top:
         for x in range(inset + 1, w - inset - 1):
             c.set(x, inset, top)
+        if "@" not in fill:
+            for y in range(inset + 1, h - inset - (3 if bottom and h > 12 else 2)):
+                c.set(inset, y, top)
     if bottom:
         for x in range(inset, w - inset):
             c.set(x, h - inset - 1, bottom)
             if h > 12:
-                c.set(x, h - inset - 2, bottom)
-    if inner_glint:
-        c.set(inset + 1, inset + 1, inner_glint)
+                c.set(x, h - inset - 2, FRAME_DARKER.get(bottom, bottom) if False else bottom)
+        if h > 12 and "@" not in fill:
+            for x in range(inset + 1, w - inset - 1):
+                c.set(x, h - inset - 3, fill)
+    glint = inner_glint or (("white" if top else None) if "@" not in fill else None)
+    if glint and w >= 10 and h >= 10:
+        c.set(inset + 1, inset + 1, glint)
+        c.set(inset + 2, inset + 1, glint)
     return c
 
 

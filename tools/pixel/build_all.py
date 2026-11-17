@@ -55,6 +55,7 @@ import art_ui  # noqa: E402
 import art_v24  # noqa: E402
 import art_world  # noqa: E402
 import art_v25_bulldog  # noqa: E402
+import art_v25_fx  # noqa: E402
 import art_v25_foes  # noqa: E402
 import art_v25_goldie  # noqa: E402
 import art_v25_knights  # noqa: E402
@@ -145,7 +146,7 @@ def main() -> None:
         sheets["fx_" + name] = anims
     art_portraits.write_all()                                    # v2.3 portraits (CS2)
     art_story.write_all()                                        # v2.3 storybook pages (CS3)
-    for name, (fn, size) in art_fx.ALL.items():
+    for name, (fn, size) in art_v25_fx.ALL.items():          # v2.5 (CR5) redrawn effects
         anims = fn()
         build_sheet("res://assets/fx/%s" % name, name, anims, size)
         sheets["fx_" + name] = anims
