@@ -290,3 +290,105 @@ func test_captain_wave_switches_to_boss_music() -> void:
 		_auto_step()
 		return waves.count > 0 and waves.last_args()[0] == captain_wave))
 	assert_eq(music_log.tracks(), PackedStringArray(["boss"]), "隊長那一波開始時改播頭目音樂")
+
+
+# --- BW4(v2.7,DEV_PLAN 第 20 節) ---
+
+const FADING_BOX: String = "res://tests/line_b/fading_dialogue_box.tscn"
+
+
+## 對白框在畫面上嗎(播放中,或播完之後還在淡出)。測試自己判斷,不用 FlowMain 的 is_dialogue_showing()。
+func _box_visible(box: Node) -> bool:
+	if box == null or not is_instance_valid(box):
+		return false
+	if box.has_method(&"is_fading"):
+		return bool(box.call(&"is_active")) or bool(box.call(&"is_fading"))
+	var root := box.get_node_or_null(^"DialogueRoot") as CanvasItem      # C 線的正式對白框
+	return root != null and root.visible and root.modulate.a > 0.0
+
+
+## BW4:試玩截圖裡,3-1 過關後的對白(蘭斯洛特)蓋在結算畫面上。原因:對白框(第 40 層)播完之後
+## 還要淡出一下(正式對白框約 0.18 秒),但結算畫面(第 30 層)在播完的同一格就加上去了,所以淡出的
+## 那幾格對白框疊在結算之上。docs/STORY.md 第 8 節:過關慶祝 → story_after → 結算;現在等對白框
+## 完全看不見才出結算。開打前的對白也一樣:淡出之後才發 level_started(標題卡)。
+## 用會淡出的測試替身與 C 線的正式對白框(存在的話)各驗一次,重現的是 3-1。
+func test_results_wait_until_the_story_after_dialogue_has_faded() -> void:
+	var scenes: Array[PackedScene] = [load(FADING_BOX) as PackedScene]
+	if FlowParts.has_real(FlowParts.DIALOGUE):
+		scenes.append(FlowParts.try_load(FlowParts.DIALOGUE))
+	else:
+		print("    略過正式對白框(ui/dialogue/dialogue_box.tscn 不存在),只用測試替身")
+	for scene in scenes:
+		await _check_story_after_then_results(scene)
+
+
+func _check_story_after_then_results(scene: PackedScene) -> void:
+	var where := scene.resource_path.get_file()
+	reset_settings()
+	GameState.chapters_cleared = 2
+	GameState.chapter_cleared = true
+	GameState.chapter = 3
+	make_flow(false, 1234, true, false, scene)
+	await wait_frames(1)
+	var box := flow.get_dialogue_box()
+	assert_not_null(box, where)
+	if box == null:
+		return
+	var seen := {"overlap_frames": 0, "results_with_box": false, "title_card_with_box": false}
+	var watch := func() -> void:
+		if flow != null and is_instance_valid(flow) and flow.state == FlowMain.State.RESULTS \
+				and flow.get_screen() != null and _box_visible(box):
+			seen["overlap_frames"] = int(seen["overlap_frames"]) + 1
+	var on_state := func(s: FlowMain.State) -> void:
+		if s == FlowMain.State.RESULTS:
+			seen["results_with_box"] = _box_visible(box)
+	var on_level := func(_id: StringName) -> void:
+		seen["title_card_with_box"] = bool(seen["title_card_with_box"]) or _box_visible(box)
+	_hook(get_tree().process_frame, watch)
+	_hook(flow.state_changed, on_state)
+	_hook(EventBus.level_started, on_level)
+	flow.get_screen().emit_signal(&"new_game_pressed")
+	assert_true(await _wait_story(&"c3_prologue"), where)
+	skip_dialogue()
+	assert_true(await _wait_story(&"c3l1_before"), where)
+	skip_dialogue()
+	assert_true(await wait_until(in_level), where)
+	assert_false(seen["title_card_with_box"], "%s:開打前的對白淡出之後才出標題卡" % where)
+	assert_true(await _play_until_story_or_end(), where)
+	assert_eq(flow.get_story_id(), &"c3l1_after", "%s:3-1 過關後的對白" % where)
+	assert_eq(flow.chapter.get_level(0).story_after.lines[0].speaker, &"lancelot", "第一句是蘭斯洛特")
+	skip_dialogue()
+	await wait_frames(1)
+	assert_true(_box_visible(box), "%s:對白框還在淡出" % where)
+	assert_eq(flow.state, FlowMain.State.STORY, "%s:淡出期間還不出結算" % where)
+	assert_null(flow.get_screen(), "%s:結算畫面還沒加上" % where)
+	assert_true(await wait_until(func() -> bool: return flow.state == FlowMain.State.RESULTS, 3.0), where)
+	assert_false(seen["results_with_box"], "%s:結算出現時對白框已經看不見" % where)
+	await wait_frames(3)
+	assert_eq(seen["overlap_frames"], 0, "%s:沒有任何一格同時看到結算與對白框" % where)
+	assert_not_null(flow.get_screen(), where)
+	assert_eq(flow.get_last_result()["level_id"], &"3-1")
+	flow.queue_free()
+	flow = null
+	await wait_frames(2)
+
+
+## BW4:對白框一直不隱藏(淡出很久或壞掉)也不會卡住:最多等 story_fade_wait 秒。
+func test_a_box_that_never_hides_does_not_block_the_results() -> void:
+	make_flow(false, 1234, true, false, load(FADING_BOX) as PackedScene)
+	await wait_frames(1)
+	flow.get_dialogue_box().set(&"fade_sec", 30.0)
+	flow.difficulty.story_fade_wait = 0.25
+	flow.get_screen().emit_signal(&"new_game_pressed")
+	assert_true(await _wait_story(&"prologue"))
+	skip_dialogue()
+	assert_true(await _wait_story(&"l1_before"))
+	skip_dialogue()
+	assert_true(await wait_until(in_level, 2.0), "最多等 story_fade_wait 秒就開始")
+	assert_true(await _play_until_story_or_end())
+	assert_eq(flow.get_story_id(), &"l1_after")
+	var started := Time.get_ticks_msec()
+	skip_dialogue()
+	assert_true(await wait_until(func() -> bool: return flow.state == FlowMain.State.RESULTS, 2.0),
+			"最多等 story_fade_wait 秒就出結算")
+	assert_true(Time.get_ticks_msec() - started >= 200, "有等對白框")

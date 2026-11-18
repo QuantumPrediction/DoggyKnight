@@ -1,10 +1,10 @@
 class_name ChapterData
 extends Resource
-## 一章的關卡次序與營地位置(B1、B8)。data/levels/chapter_<N>.tres(v2.6:三章,DEV_PLAN 4.13)。
+## 一章的關卡次序與營地位置(B1、B8)。data/levels/chapter_<N>.tres(v2.7:六章,DEV_PLAN 4.13、4.14)。
 
-## v2.6:第幾章(1 至 3)。
+## 第幾章(1 至 GameState.CHAPTER_COUNT)。
 @export var number: int = 1
-## v2.6:章名的翻譯鍵(CHAPTER_1 至 CHAPTER_3)。結算、HUD 用 tr() 顯示。
+## 章名的翻譯鍵(CHAPTER_1 至 CHAPTER_6)。結算、HUD 用 tr() 顯示。
 @export var display_name: String = "CHAPTER_1"
 ## 依次序排列的關卡。GameState.level_index 就是這個陣列的索引(0 = 第 1 關)。
 @export var levels: Array[LevelData] = []

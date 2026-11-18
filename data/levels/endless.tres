@@ -19,19 +19,37 @@
 [ext_resource type="PackedScene" path="res://assets/backgrounds/crystal_cave.tscn" id="17_bg"]
 [ext_resource type="PackedScene" path="res://assets/backgrounds/morgana_tower.tscn" id="18_bg"]
 [ext_resource type="PackedScene" path="res://assets/backgrounds/tower_top.tscn" id="19_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/golden_beach.tscn" id="20_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/sea_cliffs.tscn" id="21_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/pirate_ship.tscn" id="22_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/coral_reef.tscn" id="23_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/sunken_city.tscn" id="24_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/sunken_palace.tscn" id="25_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/snowfield.tscn" id="26_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/ice_cave.tscn" id="27_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/hot_springs.tscn" id="28_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/avalanche_pass.tscn" id="29_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/volcano.tscn" id="30_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/dragon_nest.tscn" id="31_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/camlann_field.tscn" id="32_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/shadow_camp.tscn" id="33_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/occupied_town.tscn" id="34_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/throne_hall.tscn" id="35_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/avalon_gate.tscn" id="36_bg"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/avalon_hill.tscn" id="37_bg"]
 
 [resource]
 script = ExtResource("1_endless")
 level_id = &"endless"
 display_name = "LEVEL_ENDLESS"
-backgrounds = Array[PackedScene]([ExtResource("2_bg"), ExtResource("3_bg"), ExtResource("4_bg"), ExtResource("5_bg"), ExtResource("6_bg"), ExtResource("7_bg"), ExtResource("8_bg"), ExtResource("9_bg"), ExtResource("10_bg"), ExtResource("11_bg"), ExtResource("12_bg"), ExtResource("13_bg"), ExtResource("14_bg"), ExtResource("15_bg"), ExtResource("16_bg"), ExtResource("17_bg"), ExtResource("18_bg"), ExtResource("19_bg")])
-background_chapter = Array[int]([1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3])
+backgrounds = Array[PackedScene]([ExtResource("2_bg"), ExtResource("3_bg"), ExtResource("4_bg"), ExtResource("5_bg"), ExtResource("6_bg"), ExtResource("7_bg"), ExtResource("8_bg"), ExtResource("9_bg"), ExtResource("10_bg"), ExtResource("11_bg"), ExtResource("12_bg"), ExtResource("13_bg"), ExtResource("14_bg"), ExtResource("15_bg"), ExtResource("16_bg"), ExtResource("17_bg"), ExtResource("18_bg"), ExtResource("19_bg"), ExtResource("20_bg"), ExtResource("21_bg"), ExtResource("22_bg"), ExtResource("23_bg"), ExtResource("24_bg"), ExtResource("25_bg"), ExtResource("26_bg"), ExtResource("27_bg"), ExtResource("28_bg"), ExtResource("29_bg"), ExtResource("30_bg"), ExtResource("31_bg"), ExtResource("32_bg"), ExtResource("33_bg"), ExtResource("34_bg"), ExtResource("35_bg"), ExtResource("36_bg"), ExtResource("37_bg")])
+background_chapter = Array[int]([1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6])
 companions = Array[StringName]([&"bulldog"])
-enemy_ids = Array[StringName]([&"scarecrow", &"crow", &"scarecrow_archer", &"scarecrow_elite", &"armored_husk", &"gargoyle", &"spellbook", &"foxfire", &"shadow_wolf"])
-enemy_costs = Array[int]([1, 1, 2, 3, 3, 2, 2, 1, 2])
-enemy_unlock_wave = Array[int]([1, 2, 3, 4, 6, 3, 5, 4, 7])
-enemy_weights = Array[float]([3.0, 2.0, 1.5, 1.0, 1.0, 1.2, 1.0, 1.5, 1.2])
-enemy_chapter = Array[int]([1, 1, 1, 1, 1, 2, 2, 3, 3])
+enemy_ids = Array[StringName]([&"scarecrow", &"crow", &"scarecrow_archer", &"scarecrow_elite", &"armored_husk", &"gargoyle", &"spellbook", &"foxfire", &"shadow_wolf", &"crab", &"jellyfish", &"snowman", &"salamander", &"shadow_knight", &"lantern_wisp"])
+enemy_costs = Array[int]([1, 1, 2, 3, 3, 2, 2, 1, 2, 2, 2, 2, 2, 3, 2])
+enemy_unlock_wave = Array[int]([1, 2, 3, 4, 6, 3, 5, 4, 7, 4, 5, 3, 6, 7, 8])
+enemy_weights = Array[float]([3.0, 2.0, 1.5, 1.0, 1.0, 1.2, 1.0, 1.5, 1.2, 1.2, 1.0, 1.2, 1.0, 0.8, 0.6])
+enemy_chapter = Array[int]([1, 1, 1, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6])
 budget_base = 6.0
 budget_per_wave = 1.6
 max_enemies_per_wave = 24
@@ -43,10 +61,10 @@ surround_from_wave = 3
 boss_every = 5
 mini_boss_id = &"scarecrow_captain"
 boss_id = &"black_knight"
-extra_mini_bosses = Array[StringName]([&"gargoyle_elite", &"phantom_knight"])
-extra_mini_boss_chapter = Array[int]([2, 3])
-extra_bosses = Array[StringName]([&"green_knight", &"morgana"])
-extra_boss_chapter = Array[int]([2, 3])
+extra_mini_bosses = Array[StringName]([&"gargoyle_elite", &"phantom_knight", &"crab_elite", &"snowman_elite", &"mordred_duel"])
+extra_mini_boss_chapter = Array[int]([2, 3, 4, 5, 6])
+extra_bosses = Array[StringName]([&"green_knight", &"morgana", &"kraken", &"red_dragon", &"white_dragon", &"mordred"])
+extra_boss_chapter = Array[int]([2, 3, 4, 5, 5, 6])
 escort_ratio = 0.35
 boss_escort_from = 20
 event_every = 10

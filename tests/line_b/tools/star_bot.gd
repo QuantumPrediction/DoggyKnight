@@ -28,7 +28,7 @@ func _ready() -> void:
 		print("STAR 困難模式")
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--chapter="):
-			var n := clampi(arg.trim_prefix("--chapter=").to_int(), 1, 3)
+			var n := clampi(arg.trim_prefix("--chapter=").to_int(), 1, GameState.CHAPTER_COUNT)
 			GameState.chapters_cleared = maxi(GameState.chapters_cleared, n - 1)
 			GameState.chapter_cleared = GameState.chapter_cleared or n > 1
 			GameState.chapter = n

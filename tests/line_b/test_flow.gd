@@ -13,6 +13,8 @@ const RESULT_KEYS: Array[String] = [
 	"mode", "snacks", "snacks_earned", "snack_bonus", "revive_cost", "can_revive", "event_tone",
 	# DEV_PLAN 4.13(v2.6)
 	"chapter", "chapter_name", "chapters_cleared", "chapter_count", "next_chapter_unlocked",
+	# DEV_PLAN 4.14(v2.7):打完最後一章(第六章)= 全劇終
+	"game_complete",
 ]
 
 

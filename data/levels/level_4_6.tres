@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="LevelData" format=3]
+
+[ext_resource type="Script" path="res://core/data/level_data.gd" id="1_level"]
+[ext_resource type="Script" path="res://core/data/wave_data.gd" id="2_wave"]
+[ext_resource type="Script" path="res://core/data/spawn_entry.gd" id="3_spawn"]
+[ext_resource type="PackedScene" path="res://assets/backgrounds/sunken_palace.tscn" id="4_bg"]
+[ext_resource type="Resource" path="res://data/story/c4l6_before.tres" id="5_before"]
+[ext_resource type="Resource" path="res://data/story/c4l6_after.tres" id="6_after"]
+
+[sub_resource type="Resource" id="wave1_spawn1"]
+script = ExtResource("3_spawn")
+enemy_id = &"kraken"
+count = 1
+delay = 0.0
+pattern = &"line_top"
+
+[sub_resource type="Resource" id="wave1"]
+script = ExtResource("2_wave")
+spawns = Array[ExtResource("3_spawn")]([SubResource("wave1_spawn1")])
+
+[resource]
+script = ExtResource("1_level")
+id = &"4-6"
+display_name = "LEVEL_4_6"
+waves = Array[ExtResource("2_wave")]([SubResource("wave1")])
+is_boss = true
+companions = Array[StringName]([&"bulldog", &"tristan"])
+background = ExtResource("4_bg")
+par_time = 74.0
+damage_budget = 46
+story_before = ExtResource("5_before")
+story_after = ExtResource("6_after")
+music = &"boss_4"

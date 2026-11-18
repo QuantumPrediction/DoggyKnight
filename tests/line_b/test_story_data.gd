@@ -1,6 +1,7 @@
 extends "res://tests/line_b/flow_test_base.gd"
 ## BS1、BS7:data/story/*.tres 與 docs/STORY.md 第 5 節逐句一致;六關與第一章接上正確的段落。
 ## v2.6(BV2):第 12 節的第二、三章段落也一樣逐句核對;十八關與三章都接上自己那一章的段落。
+## v2.7(BW2):第 17 節的第四至六章也一樣;章數由 GameState.CHAPTER_COUNT 產生(六章、三十六關、96 段)。
 ## STORY.md 改了之後,用 tests/line_b/tools/build_story.tscn 重新產生資料檔。
 
 const StoryDoc := preload("res://tests/line_b/story_doc.gd")
@@ -12,11 +13,14 @@ const CHAPTER_1_IDS: Array[String] = ["prologue", "l1_before", "l1_after", "l2_b
 const SPEAKERS: Array[String] = ["goldie", "bulldog", "merlin", "black_knight", "morgana", "scarecrow_captain",
 		"crow", "narrator",
 		# v2.6(docs/STORY.md 第 10 節)
-		"lancelot", "gargoyle", "green_knight", "lady_lake", "morgana_true"]
-const CHAPTER_COUNT: int = 3
+		"lancelot", "gargoyle", "green_knight", "lady_lake", "morgana_true",
+		# v2.7(docs/STORY.md 第 15 節)
+		"tristan", "gawain", "kraken", "red_dragon", "white_dragon", "mordred"]
+## 章數一律跟 GameState.CHAPTER_COUNT(DEV_PLAN 4.14),不在測試裡另外寫死。
+const CHAPTER_COUNT: int = GameState.CHAPTER_COUNT
 
 
-## 第 n 章的段落 id(依 docs/STORY.md 的次序):第一章是第 5 節;第 N 章(N ≥ 2)是第 12 節的
+## 第 n 章的段落 id(依 docs/STORY.md 的次序):第一章是第 5 節;第 N 章(N ≥ 2)是第 12、17 節的
 ## cN_prologue、cNl1_before、cNl1_after、cNl2_before、cNl2_after、cN_camp1、……、cNl6_after、cN_teaser。
 static func chapter_script_ids(n: int) -> Array[String]:
 	if n == 1:
@@ -54,7 +58,7 @@ func _load_script(id: String) -> DialogueScript:
 func test_story_md_has_the_expected_scripts() -> void:
 	var doc := StoryDoc.parse()
 	var ids: Array = doc.keys()
-	assert_eq(ids, all_script_ids() as Array, "STORY.md 第 5 節與第 12 節的段落與次序(三章)")
+	assert_eq(ids, all_script_ids() as Array, "STORY.md 第 5、12、17 節的段落與次序(%d 章)" % CHAPTER_COUNT)
 	assert_eq(all_script_ids().size(), 16 * CHAPTER_COUNT, "每章 16 段")
 	var per_chapter: Array[int] = []
 	for n in range(1, CHAPTER_COUNT + 1):
