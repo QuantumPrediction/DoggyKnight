@@ -2,6 +2,10 @@
 
 這是一款像素風手機 RPG 的原型:金毛尋回犬騎士帶著同伴打小怪、升級、打頭目。**最終目標是上架 App Store(iOS)與 Google Play(Android)。** 原型階段不公開上架,但一切按手機與商店的標準來做。完整計劃在 `docs/DEV_PLAN.md`,**動手前先讀它**;商店規定在 `docs/STORE_RELEASE.md`。
 
+## Windows 接手補充（2026-11-18）
+
+擁有人已要求接手本 repo 並提供 Windows `.exe`，後續研究 Steam 版本。`codex/windows-playtest` 是整合分支，可修改桌面輸入、教學、匯出及相應測試所需的跨線檔案；本輪保留觸控與手機路徑。這項授權補充早期「只做手機」的範圍，詳見 `docs/WINDOWS_HANDOVER.md`。引擎仍固定為 4.7.2。
+
 ## 你是哪一條線
 
 擁有人會在開場指示中告訴你是 Phase 0、A、B、C、D、整合還是上架(M4)。只做那一線的任務。

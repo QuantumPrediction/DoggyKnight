@@ -59,6 +59,7 @@ var joystick: TouchJoystick
 var _downed: bool = false
 var _override_active: bool = false
 var _override_vector: Vector2 = Vector2.ZERO
+var _keyboard_wait_for_release: bool = false
 var _attack_cooldown: float = 0.0
 var _windup_left: float = -1.0
 var _attack_target: Node2D
@@ -266,7 +267,26 @@ func revive() -> void:
 func get_move_input() -> Vector2:
 	if _override_active:
 		return _override_vector
+	var keyboard := Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
+	# 暫停或切換視窗後要先放開移動鍵,避免回到遊戲時意外衝進敵群。
+	if _keyboard_wait_for_release:
+		if keyboard == Vector2.ZERO:
+			_keyboard_wait_for_release = false
+		keyboard = Vector2.ZERO
+	if keyboard != Vector2.ZERO:
+		return keyboard
 	return joystick.get_vector() if joystick != null else Vector2.ZERO
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if not get_tree().paused and event.is_action_pressed(&"ultimate") and not event.is_echo():
+		get_viewport().set_input_as_handled()
+		EventBus.ultimate_requested.emit()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PAUSED or what == NOTIFICATION_APPLICATION_FOCUS_OUT:
+		_keyboard_wait_for_release = true
 
 
 ## 測試與自動試玩用:用程式代替搖桿。
