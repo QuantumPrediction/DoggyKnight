@@ -608,23 +608,43 @@ def scene_avalon_hill() -> Scene26:
             continue
         for y in range(y0, y0 + 4):
             img.set(x, y, "peach" if y == y0 else ("stone_l" if y < y0 + 3 else "stone"))
-    # the hilltop: warm green grass, calm; a ring of white flowers round it
-    W.textured_floor(img, (0, 148, IMG_W, IMG_H), ("leaf_d", "leaf", "spring"), 6605, scale=46,
+    # the hilltop: sunset-warm grass (golden green, warm-lit patches, golden light spilling down from the lake
+    # side), a faint circle of flat old stones, fallen apple blossom drifting in from the edges; calm centre
+    W.textured_floor(img, (0, 148, IMG_W, IMG_H), ("leaf", "spring", "leaf_l"), 6605, scale=48,
                      mask=lambda x, y: y > shore(x) + 3 and not (abs(x - MIDX) < 10 and y < 158))
+    for y in range(150, 246):
+        for x in range(IMG_W):
+            if name_at(img, x, y) != "spring":
+                continue
+            v = (y - 150) / 96 + (fbm(x, y, 6608, 20, 2) - 0.5) * 0.5 + AW._cluster(x, y, 6608) * 0.06
+            if v < 0.34:
+                img.set(x, y, "leaf_l")
     W.blades(img, (0, 150, IMG_W, IMG_H), 6606, 0.045, mask=lambda x, y: y > shore(x) + 4)
+    K.edge_shadow(img, 152, 3, 0, IMG_W)
+    for k in range(38):
+        a = k / 38 * 2 * math.pi
+        cx, cy = MIDX + math.cos(a) * 86, MIDY + 6 + math.sin(a) * 110
+        st = Canvas(8, 5)
+        for (px, py) in P.ellipse(4, 2.3, 3.6, 2.0):
+            st.set(px, py, "stone_l" if py < 2 else ("stone" if px < 5 else "stone_d"))
+        st.set(2, 1, "white")
+        AW.place(img, st, int(cx) - 4, int(cy) - 2, shadow=(0.9, -1), shadow_dx=1)
+
+    def petal(r: random.Random) -> Canvas:
+        c = Canvas(3, 2)
+        col = r.choice(("pink", "pink", "white", "peach"))
+        c.set(0, 0, col)
+        c.set(1, 0, "white" if col != "white" else "pink")
+        c.set(1, 1, col)
+        if r.random() < 0.5:
+            c.set(2, 1, col)
+        return c
+    K7.scatter_props(img, (0, 156, IMG_W, IMG_H), 700, 6607, petal, calm=0.95)
     for (cx, cy) in ((AX0 + 10, AY0 + 30), (AX1 - 12, AY0 + 30), (AX0 + 10, AY1 - 6), (AX1 - 12, AY1 - 6),
                      (AX0 - 20, MIDY), (AX1 + 16, MIDY)):
-        AW.sprinkle_flowers(img, (cx - 10, cy - 6, cx + 10, cy + 6), 9, cx * 3 + cy, ["white", "pink", "white"])
-    K7.leaf_litter(img, (0, 156, IMG_W, IMG_H), 220, 6607, cols=("pink", "white", "peach", "pink"), calm=0.98)
-    K.edge_shadow(img, 152, 3, 0, IMG_W)
-    # the hilltop's faint old circle, and drifts of fallen blossom near its rim
-    W.rune_ring(img, MIDX, MIDY + 6, 84, "spring", "leaf_l", ticks=16, width=1.0)
-    for k in range(10):
-        a = k / 10 * 2 * math.pi + 0.3
-        cx, cy = MIDX + math.cos(a) * 96, MIDY + 6 + math.sin(a) * 124
-        K7.soft_disc(img, cx, cy, 9, 4, "spring", seed=6650 + k, only=("leaf",))
-        AW.sprinkle_flowers(img, (int(cx) - 8, int(cy) - 4, int(cx) + 8, int(cy) + 4), 3, 6660 + k,
-                            ["white", "pink"])
+        K7.soft_disc(img, cx, cy, 11, 5, "leaf_l", seed=cx + cy, only=("leaf", "spring"))
+        K7.scatter_props(img, (cx - 12, cy - 6, cx + 12, cy + 6), 14, cx * 3 + cy, petal, calm=0.0)
+        AW.sprinkle_flowers(img, (cx - 10, cy - 6, cx + 10, cy + 6), 5, cx * 5 + cy, ["white", "pink", "white"])
     # old standing stones at four points of the ring
     for (x, y, h) in ((AX0 + 2, AY0 + 6, 18), (AX1 - 14, AY0 + 6, 20), (AX0 + 2, AY1 - 28, 18), (AX1 - 14, AY1 - 28, 20)):
         AW.place(img, K.menhir(h, x, ("stone_d", "stone", "stone_l"), "iron", rune="gold_l"), x, y,
@@ -637,7 +657,8 @@ def scene_avalon_hill() -> Scene26:
             k = (yy - (y + t.h - 6)) / 76
             half = t.w * 0.32 * (1 - k * 0.5)
             for xx in range(int(cx - half + k * 10), int(cx + half + k * 10)):
-                if AW._cluster(xx, yy, 6640) * 0.8 + k < 0.95 and name_at(img, xx, yy) in ("leaf", "spring", "leaf_l"):
+                if AW._cluster(xx, yy, 6640) * 0.8 + k < 0.95 and name_at(img, xx, yy) in ("leaf", "spring", "leaf_l",
+                                                                                         "moss"):
                     AW.shade(img, xx, yy, -1)
         AW.place(img, t, x, y, shadow=(1.0, -2), shadow_dx=6)
     for (x, y) in ((AX0 - 34, 214), (AX1 - 4, 250)):
@@ -666,13 +687,15 @@ def scene_avalon_hill() -> Scene26:
                                    (AX0 - 6, AY1 - 50, "flower_pink"), (AX1 + 4, AY1 - 20, "flower_white"))):
         sc.anim(k, x, y, i % 4, 0.9)
     sc.light("sun", MIDX, hz - 4, 1.5, tint=(1.0, 0.75, 0.5))
+    for (x, y) in ((AX0 + 20, AY0 + 40), (AX1 - 20, AY0 + 60)):
+        sc.light("sun", x, y, 0.8, tint=(1.0, 0.7, 0.45))
     sc.particle(kind="blossom", amount=20, lifetime=6.0, rect=(-20, -60, 220, 300), velocity=(1, 0.5), spread=25,
                 speed=(8, 14), gravity=(0, 2), colour_fade=True, spin=True)
     sc.particle(kind="petal", amount=8, lifetime=6.0, rect=(-20, -60, 220, 300), velocity=(1, 0.4), spread=25,
                 speed=(10, 16), gravity=(0, 2), colour_fade=True, spin=True)
     sc.particle(glow=True, kind="spark_gold", amount=8, lifetime=4.0, rect=(-10, -40, 200, 380), velocity=(0, -1),
                 spread=180, speed=(1, 3), gravity=(0, 0), blink=True)
-    sc.modulate = (1.0, 0.95, 0.9)
+    sc.modulate = (1.0, 0.9, 0.8)
     return sc
 
 

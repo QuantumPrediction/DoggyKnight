@@ -239,28 +239,49 @@ def scene_ice_cave() -> Scene26:
     for (x, y) in ((40, 120), (250, 100), (96, 136), (214, 130)):
         K7.glow_crack(img, x, y, 10, x + y)
         sc.light("lantern", x + 2, y + 2, 0.45, tint=(1.0, 0.6, 0.3))
-    # floor: cracked ice plates, frost drifts round the edge
-    K7.voronoi_stones(img, (0, 150, IMG_W, IMG_H), 27, ("azure", "azure"), "sky_l", 5204, squash=0.75)
+    # floor: thick old ice in a cool mid grey-blue (not bright: actors and red telegraphs read first), broken
+    # frost-white cracks, pale reflections, hoar-frost creeping in from the walls, darker plates towards the
+    # walls for depth; the middle stays calm
+    K7.voronoi_stones(img, (0, 150, IMG_W, IMG_H), 26, ("steel", "steel"), "steel_l", 5204, squash=0.75)
+    for y in range(150, IMG_H):
+        for x in range(IMG_W):
+            if name_at(img, x, y) == "steel_l" and fbm(x, y, 5208, 9, 2) < 0.6 + W.calm_k(x, y, 60) * 0.1:
+                img.set(x, y, "steel")
+            d = max(AX0 - 4 - x, x - (AX1 + 3), 0)
+            if d > 0 and name_at(img, x, y) == "steel" and d + 5 * AW._cluster(x, y, 5209) > 8:
+                img.set(x, y, "steel_d")
+    # two soft diagonal sheens where the light from the waterfall slides over polished ice
+    for y in range(156, IMG_H):
+        for x in range(IMG_W):
+            if name_at(img, x, y) != "steel":
+                continue
+            u = (x + y * 0.8) % 150
+            band = min(abs(u - 30), abs(u - 52) + 4)
+            if band + (fbm(x, y, 5210, 10, 2) - 0.5) * 10 + AW._cluster(x, y, 5210) * 2 < 4:
+                img.set(x, y, "steel_l")
     for (x, y) in ((AX0 + 8, AY0 + 70), (AX1 - 14, AY0 + 150), (AX0 + 14, AY1 - 30), (AX1 - 20, AY0 + 20)):
         K7.glow_crack(img, x, y, 9, x * 7 + y)
         sc.light("lantern", x + 2, y + 1, 0.4, tint=(1.0, 0.6, 0.3))
     rng = random.Random(5205)
-    for _ in range(46):
+    for _ in range(60):
         x, y = rng.randrange(0, IMG_W - 12), rng.randrange(156, IMG_H)
-        if rng.random() < W.calm_k(x, y) * 0.9:
+        if rng.random() < W.calm_k(x, y, 40) * 0.95:
             continue
-        ln = rng.randrange(4, 10)
+        ln = rng.randrange(4, 9)
         for k in range(ln):
-            if name_at(img, x + k, y - k // 2) == "azure":
-                img.set(x + k, y - k // 2, "sky_l" if k < ln - 2 else "white")
+            if name_at(img, x + k, y - k // 2) in ("steel", "steel_d"):
+                img.set(x + k, y - k // 2, "steel_l" if k < ln - 1 else "azure")
     for y in range(150, IMG_H):
         for x in range(IMG_W):
-            k2 = W.calm_k(x, y, 34)
-            n = fbm(x, y, 5206, 18, 3) + AW._cluster(x, y, 5206) * 0.06
-            if n > 0.58 + k2 * 0.35:
-                img.set(x, y, "white" if n > 0.66 + k2 * 0.35 else "steel_l")
-    K.edge_shadow(img, 150, 6, 0, IMG_W)
-    K.calm_vignette(img, 10)
+            k2 = W.calm_k(x, y, 40)
+            n = fbm(x * 0.8, y, 5206, 16, 3) + AW._cluster(x, y, 5206) * 0.06
+            if n > 0.6 + k2 * 0.4:
+                img.set(x, y, "white" if n > 0.68 + k2 * 0.4 else "steel_l")
+    for x in range(IMG_W):
+        h = 3 + int(3 * fbm(x, 0, 5207, 6, 2) + 2 * AW._cluster(x, 150, 5207))
+        for y in range(150, 150 + h):
+            img.set(x, y, "white" if y < 150 + h - 1 else "steel_l")
+    K.edge_shadow(img, 156, 6, 0, IMG_W)
     # ice crystals and blocks round the edges, a frozen chest, a stuck snowball pile
     for (x, y, h) in ((AX0 - 30, AY0 + 30, 26), (AX1 + 4, AY0 + 10, 30), (AX0 - 26, AY1 - 50, 22), (AX1 + 6, AY1 - 40, 28),
                       (AX0 + 2, AY0 - 6, 14), (AX1 - 16, AY1 - 8, 16)):
@@ -299,7 +320,7 @@ def scene_ice_cave() -> Scene26:
                 spread=180, speed=(1, 3), gravity=(0, 0), blink=True)
     sc.particle(kind="snow", amount=10, lifetime=6.0, rect=(-10, -40, 200, 380), velocity=(0.2, 1), spread=40,
                 speed=(2, 5), gravity=(0, 0), colour_fade=True)
-    sc.modulate = (0.88, 0.93, 1.0)
+    sc.modulate = (0.92, 0.95, 1.0)
     return sc
 
 
@@ -438,17 +459,17 @@ def scene_avalanche_pass() -> Scene26:
     K.peaks_layer(img, 80, [(MIDX - 30, 40, 40), (MIDX + 26, 34, 36)], "steel_l", "fog", rim="white", seed=5402)
     # cliffs converging on the pass: heaps of dark boulders with snow on their tops, narrowing upwards
     def cliff_l(y: float) -> float:
-        return 70 + max(0.0, 170 - y) * 0.42 + 3 * math.sin(y / 9.0)
+        return 70 + max(0.0, 170 - y) * 0.42 - max(0.0, y - 262) * 0.9 + 3 * math.sin(y / 9.0)
 
     def cliff_r(y: float) -> float:
-        return 234 - max(0.0, 170 - y) * 0.42 + 3 * math.sin(y / 11.0 + 2)
+        return 234 - max(0.0, 170 - y) * 0.42 + max(0.0, y - 268) * 0.9 + 3 * math.sin(y / 11.0 + 2)
 
-    for y in range(40, 300):
+    for y in range(40, 370):
         for x in range(IMG_W):
             if x < cliff_l(y) or x > cliff_r(y):
                 img.set(x, y, "iron" if (x < cliff_l(y) - 10 or x > cliff_r(y) + 10) else "slate")
     rng0 = random.Random(5403)
-    for y in range(40, 300, 9):
+    for y in range(40, 370, 9):
         for side in (0, 1):
             edge = cliff_l(y) if side == 0 else cliff_r(y)
             x = edge - rng0.randrange(14, 24) if side == 0 else edge - rng0.randrange(0, 8)
@@ -481,21 +502,57 @@ def scene_avalanche_pass() -> Scene26:
             img.set(x, y, "white" if y < bottom - 5 else ("steel_l" if y < bottom - 2 else "steel"))
         img.set(x, int(top), "steel_l")
     K7.icicles(img, 50, 260, 96, 5404, ("steel_l", "white", "white"), 7)
-    # the path: packed snow, wind-swept, calm in the middle
-    snow_ground(img, (0, 96, IMG_W, IMG_H), 5405, ("ash", "fog", "steel_l"),
-                mask=lambda x, y: y >= 300 or cliff_l(y) <= x <= cliff_r(y))
-    for x in range(IMG_W):
-        for y in range(96, 150):
-            if cliff_l(y) <= x <= cliff_r(y) and name_at(img, x, y) == "fog" and fbm(x, y, 5407, 14, 2) > 0.38 + (y - 96) / 140:
-                img.set(x, y, "steel_l")
-    rng = random.Random(5406)
-    for _ in range(80):
-        x, y = rng.randrange(0, IMG_W - 14), rng.randrange(150, IMG_H)
-        if rng.random() < W.calm_k(x, y) * 0.95 or name_at(img, x, y) not in ("fog", "steel_l"):
+    # the path: packed snow (one cool tone), a blue shade along the cliff feet, wind drifts with a lit crest and
+    # a soft shadow under them near the edges, sledge runners and paw prints; the middle stays calm
+    def on_path(x: int, y: int) -> bool:
+        return y >= 370 or cliff_l(y) <= x <= cliff_r(y)
+
+    for y in range(96, IMG_H):
+        for x in range(IMG_W):
+            if not on_path(x, y):
+                continue
+            col = "steel_l"
+            edge = min(x - cliff_l(y), cliff_r(y) - x) if y < 370 else 99
+            if edge < 7 + 3 * AW._cluster(x, y, 5405):
+                col = "fog" if edge > 3 else "steel"
+            img.set(x, y, col)
+    for y in range(96, IMG_H):
+        for x in range(IMG_W):
+            if name_at(img, x, y) != "steel_l":
+                continue
+            k = W.calm_k(x, y, 46)
+            n = fbm(x * 0.7, y * 1.6, 5406, 22, 3) + AW._cluster(x, y, 5406) * 0.05
+            if n > 0.6 + k * 0.4:
+                img.set(x, y, "white")
+    for y in range(IMG_H - 1, 96, -1):
+        for x in range(IMG_W):
+            if name_at(img, x, y) == "white" and name_at(img, x, y + 1) == "steel_l" and name_at(img, x, y + 2) == "steel_l":
+                img.set(x, y + 1, "fog")
+    rng = random.Random(5407)
+    for _ in range(90):
+        x, y = rng.randrange(0, IMG_W - 8), rng.randrange(110, IMG_H)
+        if rng.random() < W.calm_k(x, y, 40) * 0.97 or name_at(img, x, y) != "steel_l":
             continue
-        for k in range(rng.randrange(6, 14)):
-            if name_at(img, x + k, y) in ("fog", "steel_l"):
-                img.set(x + k, y, "steel_l" if name_at(img, x + k, y) == "fog" else "white")
+        ln = rng.randrange(3, 7)
+        for k in range(ln):
+            if name_at(img, x + k, y) == "steel_l":
+                img.set(x + k, y, "white")
+            if name_at(img, x + k, y + 1) == "steel_l" and 0 < k < ln - 1:
+                img.set(x + k, y + 1, "fog")
+    # a sledge's two runners curving down the pass, broken where the wind has filled them in
+    for y in range(104, IMG_H):
+        cx = 104 + 9 * math.sin(y / 46.0) + y * 0.02
+        for dx in (0, 6):
+            x = int(cx + dx)
+            if on_path(x, y) and (y // 5) % 7 != 3 and name_at(img, x, y) in ("steel_l", "white"):
+                img.set(x, y, "fog")
+    # paw prints wandering beside the runners (somebody walked the sledge up)
+    for k in range(34):
+        y = 112 + k * 9
+        x = int(206 - 10 * math.sin(y / 40.0)) + (3 if k % 2 else -3)
+        for (dx, dy) in ((0, 0), (1, 0), (0, 1), (1, 1), (-1, -1), (2, -1)):
+            if name_at(img, x + dx, y + dy) in ("steel_l", "white"):
+                img.set(x + dx, y + dy, "fog")
     # boulders from the last avalanche, snow piles against the cliffs
     for (x, y, w, h) in ((AX0 - 26, AY0 + 30, 26, 16), (AX1 + 2, AY0 + 80, 24, 14), (AX0 - 20, AY1 - 50, 22, 14),
                          (AX1 - 2, AY1 - 20, 26, 15), (AX0 + 2, AY0 + 2, 16, 10), (AX1 - 20, AY0 - 2, 14, 9)):
@@ -681,26 +738,59 @@ def scene_dragon_nest() -> Scene26:
     K7.lava_river(img, [(MIDX + 30, 70), (MIDX + 50, 110), (MIDX + 40, 150)], 8, 5604)
     K7.lava_river(img, [(270, 80), (262, 120), (275, 152)], 7, 5605)
     sc.anim("lava_flow", MIDX + 34, 110, 0, 1.0)
-    # the nest: summit rock floor (snowy left, warm rock right) inside a ring of huge twigs
-    def side_mix(x: int, y: int) -> float:
-        return (x - MIDX) / 18.0 + (fbm(x, y, 5606, 30, 2) - 0.5) * 2.4
+    # the nest: the summit floor turns from the white dragon's snow (left) through slush and wet, steaming rock
+    # with a meltwater rivulet (a gentle S down the middle) into the red dragon's warm stone, lit by embers
+    # (right); both halves stay calm, the detail lives at the edges
+    def seam(y: float) -> float:
+        return MIDX + 12 * math.sin((y - 150) / 64.0) - 4
 
     for y in range(150, IMG_H):
+        sx = seam(y)
         for x in range(IMG_W):
-            s = side_mix(x, y)
-            if s < 0:
+            d = x + 0.5 - sx + AW._cluster(x, y, 5606) * 1.2
+            if d < -7:
                 col = "steel_l"
-                if fbm(x, y, 5607, 40, 2) > 0.62 and W.calm_k(x, y) < 0.6:
-                    col = "white"
+            elif d < -3:
+                col = "fog"
+            elif d < 5:
+                col = "stone_d"
             else:
                 col = "stone"
-                if fbm(x, y, 5608, 40, 2) > 0.62 and W.calm_k(x, y) < 0.6:
-                    col = "stone_d"
             img.set(x, y, col)
+        for k in (-1, 0):
+            xx = int(sx + 1 + 1.2 * math.sin(y / 5.0)) + k
+            img.set(xx, y, "steel" if k else ("azure" if (y // 3) % 4 == 0 else "steel"))
     for y in range(150, IMG_H):
         for x in range(IMG_W):
-            if side_mix(x, y) < 0 <= side_mix(x + 1, y):
-                img.set(x, y, "fog")
+            k = W.calm_k(x, y, 44)
+            n = fbm(x, y, 5607, 22, 3) + AW._cluster(x, y, 5607) * 0.06
+            here = name_at(img, x, y)
+            if here == "steel_l" and n > 0.6 + k * 0.4:
+                img.set(x, y, "white")
+            elif here == "stone" and n > 0.6 + k * 0.4:
+                img.set(x, y, "stone_d")
+    for y in range(IMG_H - 1, 150, -1):
+        for x in range(IMG_W):
+            if name_at(img, x, y) == "white" and name_at(img, x, y + 1) == "steel_l":
+                img.set(x, y + 1, "fog")
+    rng = random.Random(5611)
+    for k in range(40):
+        x, y = rng.randrange(MIDX + 40, IMG_W), rng.randrange(156, IMG_H)
+        if W.calm_k(x, y, 40) > 0.55:
+            continue
+        K7.glow_crack(img, x, y, rng.randrange(8, 16), 5612 + k)
+    for k in range(26):
+        x, y = rng.randrange(0, MIDX - 30), rng.randrange(156, IMG_H)
+        if W.calm_k(x, y, 40) > 0.35:
+            continue
+        W.shard(img, x, y, ("water", "azure", "sky_l"), 3 + k % 3)
+    for (y, f) in ((AY0 - 12, 0), (AY1 - 26, 3)):
+        sc.anim("steam", int(seam(y + 20)) - 6, y, f, 0.6)
+    for (y, f) in ((AY0 + 40, 0), (AY0 + 130, 2), (AY1 - 40, 4)):
+        sc.anim("water_glint", int(seam(y)) - 2, y, f, 0.7)
+    for y in (AY0 + 30, AY0 + 120, AY1 - 30):
+        sc.light("torch", AX1 + 4, y, 0.55)
+        sc.light("magic", AX0 - 4, y, 0.4, tint=(0.5, 0.9, 1.0))
     # nest ring: woven branches round an ellipse
     ccx, ccy, rx, ry = MIDX, MIDY + 4, 106, 132
     rng = random.Random(5609)

@@ -227,6 +227,18 @@ position = Vector2(90, 20)
 base_alpha = 0.33
 seed_offset = 0.74
 
+[node name="sun_1" parent="Lights" instance=ExtResource("84_light_sun")]
+modulate = Color(1, 0.7, 0.45, 0.5)
+position = Vector2(22, 112)
+base_alpha = 0.176
+seed_offset = 2.96
+
+[node name="sun_2" parent="Lights" instance=ExtResource("84_light_sun")]
+modulate = Color(1, 0.7, 0.45, 0.5)
+position = Vector2(158, 132)
+base_alpha = 0.176
+seed_offset = 0
+
 [node name="Shadows" type="Node2D" parent="."]
 script = ExtResource("80_shadows")
 
@@ -240,4 +252,4 @@ centered = false
 position = Vector2(-62, -88)
 
 [node name="Mood" type="CanvasModulate" parent="."]
-color = Color(1, 0.95, 0.9, 1)
+color = Color(1, 0.9, 0.8, 1)
