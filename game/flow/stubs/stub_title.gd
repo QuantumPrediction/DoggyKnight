@@ -6,7 +6,8 @@ extends Control
 ##   v2.4(DEV_PLAN 4.12):通關後多一個「Endless」按鈕(先設定 GameState.mode = &"endless" 才發
 ##   endless_pressed);「Training」按鈕發 training_pressed。
 ##   v2.6(DEV_PLAN 4.13):GameState.chapters_cleared ≥ 1 時顯示選章「<  Chapter N  >」;只能選
-##   1 至 min(chapters_cleared + 1, 3)。按「New Game」/「Hard」先設定 GameState.chapter 才發 new_game_pressed。
+##   1 至 min(chapters_cleared + 1, GameState.CHAPTER_COUNT)(v2.7:最多第六章)。按「New Game」/「Hard」
+##   先設定 GameState.chapter 才發 new_game_pressed。
 
 signal new_game_pressed()
 signal continue_pressed()
@@ -15,7 +16,6 @@ signal endless_pressed()
 signal training_pressed()
 
 const StubUI := preload("res://game/flow/stubs/stub_ui.gd")
-const CHAPTER_COUNT: int = 3
 
 var _continue_button: Button
 var _hard_button: Button
@@ -67,9 +67,9 @@ func _process(_delta: float) -> void:
 	_refresh_chapter()
 
 
-## 可以選的最高章(DEV_PLAN 4.13)。
+## 可以選的最高章(DEV_PLAN 4.13、4.14)。
 func max_chapter() -> int:
-	return clampi(GameState.chapters_cleared + 1, 1, CHAPTER_COUNT)
+	return clampi(GameState.chapters_cleared + 1, 1, GameState.CHAPTER_COUNT)
 
 
 ## 選上一章(step = -1)或下一章(+1);未解鎖的章選不到。

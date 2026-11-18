@@ -1,0 +1,28 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/actors/enemies/boss_echo.gd" id="1_script"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/black_knight/black_knight_frames.tres" id="2_frames"]
+
+[node name="EchoBlackKnight" type="CharacterBody2D" groups=["enemy"]]
+collision_layer = 8
+collision_mask = 1
+motion_mode = 1
+script = ExtResource("1_script")
+kind = 0
+attack_anim = &"charge"
+line_width = 20.0
+line_length = 130.0
+body_radius = 10.0
+visual_scale = 0.7
+tint = Color(0.78, 0.62, 1, 0.68)
+knockback_mult = 0.4
+separation_radius = 24.0
+spawn_time = 0.8
+death_time = 0.25
+max_exp_orbs = 1
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_frames")
+animation = &"idle"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="SnowmanTuning" format=3]
+
+[ext_resource type="Script" path="res://game/actors/enemies/snowman_tuning.gd" id="1_tuning"]
+
+[resource]
+script = ExtResource("1_tuning")
+keep_min = 60.0
+keep_max = 100.0
+retreat_distance = 44.0
+retreat_speed_mult = 1.15
+strafe_speed_mult = 0.5
+strafe_switch_min = 1.2
+strafe_switch_max = 2.4
+throw_range = 140.0
+throw_telegraph = 0.45
+min_flight = 0.6
+arc_height = 40.0
+balls_per_throw = 1
+ball_spread = 28.0
+throw_interval = 2.8
+throw_interval_jitter = 0.15
+first_throw_min = 0.8
+first_throw_max = 1.6
+release_time = 0.35

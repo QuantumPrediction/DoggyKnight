@@ -63,6 +63,8 @@ const GARGOYLES: int = 2
 const HITS_PER_SEC: float = 8.0
 const SPARKLES_PER_SEC: float = 3.0
 const FX_CAPS: Dictionary = {&"hit_burst": 8, &"sparkle": 6, &"star_burst": 2}
+## 同伴跟在金毛旁邊的位置(第幾位同伴 → 相對金毛)。v2.7:最多 4 位。
+const COMPANION_OFFSETS: Array[Vector2] = [Vector2(-22, 8), Vector2(22, 8), Vector2(-14, 24), Vector2(14, 24)]
 
 @export var bench_seconds: float = 10.0
 @export var load_mult: int = 1
@@ -72,6 +74,9 @@ const FX_CAPS: Dictionary = {&"hit_burst": 8, &"sparkle": 6, &"star_burst": 2}
 @export var with_minions: bool = true
 
 var using_real_arena: bool = false
+## v2.7:印出來的標籤與同伴(子類別 dragon_stress_test.gd 換成四位同伴)。
+var tag: String = "boss-stress"
+var companion_ids: Array[StringName] = [&"bulldog", &"lancelot"]
 var _arena: Node
 var _player: Node2D
 var _companions: Array[Node2D] = []
@@ -129,10 +134,9 @@ func _ready() -> void:
 			with_minions = false
 		elif arg == "--uncapped-fps":
 			Engine.max_fps = 0
-	for key: String in ["boss", "foxfire", "wolf", "gargoyle", "goldie", "bulldog", "lancelot", "moon_orb", "fox_flame", "thorn"]:
-		var path: String = {"boss": BOSS_FRAMES_PATH, "foxfire": FOXFIRE_FRAMES_PATH, "wolf": WOLF_FRAMES_PATH,
-			"gargoyle": GARGOYLE_FRAMES_PATH, "goldie": GOLDIE_FRAMES_PATH, "bulldog": BULLDOG_FRAMES_PATH,
-			"lancelot": LANCELOT_FRAMES_PATH, "moon_orb": MOON_ORB_PATH, "fox_flame": FOX_FLAME_PATH, "thorn": THORN_PATH}[key]
+	var paths := _frame_paths()
+	for key: String in paths:
+		var path: String = paths[key]
 		_frames[key] = load(path) as SpriteFrames if ResourceLoader.exists(path) else null
 	for fx_name: StringName in FX_CAPS:
 		var fx_path := FX_DIR + String(fx_name) + ".tscn"
@@ -146,8 +150,8 @@ func _ready() -> void:
 	_build_readout()
 	for key: String in ["teleport", "fan", "clone_fan", "rain", "beam", "thorn"]:
 		_timers[key] = 0.3
-	print("[boss-stress] real_arena=%s load=%d clones=%s beam=%s glow=%s minions=%d renderer=%s display=%s max_fps=%d" % [
-		using_real_arena, load_mult, with_clones, with_beam, with_glow, minion_count(),
+	print("[%s] real_arena=%s load=%d clones=%s beam=%s glow=%s minions=%d renderer=%s display=%s max_fps=%d" % [
+		tag, using_real_arena, load_mult, with_clones, with_beam, with_glow, minion_count(),
 		ProjectSettings.get_setting("rendering/renderer/rendering_method"), DisplayServer.get_name(), Engine.max_fps])
 
 
@@ -173,13 +177,13 @@ func _process(delta: float) -> void:
 	_report_timer += delta
 	if _report_timer >= 2.0:
 		_report_timer = 0.0
-		print("[boss-stress] t=%.0fs fps=%d nodes=%d shots=%d minions=%d process=%.2fms physics=%.2fms" % [
-			_elapsed, Engine.get_frames_per_second(), nodes, shots, minion_count(), process_ms, physics_ms])
+		print("[%s] t=%.0fs fps=%d nodes=%d shots=%d minions=%d process=%.2fms physics=%.2fms" % [
+			tag, _elapsed, Engine.get_frames_per_second(), nodes, shots, minion_count(), process_ms, physics_ms])
 	if not _done and _elapsed >= bench_seconds + 1.0:
 		_done = true
 		var r := report()
-		print("[boss-stress] SUMMARY load=%d seconds=%.0f peak_nodes=%d peak_shots=%d peak_minions=%d avg_cpu=%.2fms p99_cpu=%.2fms avg_frame=%.2fms p99_frame=%.2fms avg_fps=%.1f min_fps=%.0f shots_spawned=%d hits=%d" % [
-			load_mult, bench_seconds, r["peak_nodes"], r["peak_shots"], r["peak_minions"], r["avg_cpu_ms"], r["p99_cpu_ms"],
+		print("[%s] SUMMARY load=%d seconds=%.0f peak_nodes=%d peak_shots=%d peak_minions=%d avg_cpu=%.2fms p99_cpu=%.2fms avg_frame=%.2fms p99_frame=%.2fms avg_fps=%.1f min_fps=%.0f shots_spawned=%d hits=%d" % [
+			tag, load_mult, bench_seconds, r["peak_nodes"], r["peak_shots"], r["peak_minions"], r["avg_cpu_ms"], r["p99_cpu_ms"],
 			r["avg_frame_ms"], r["p99_frame_ms"], r["avg_fps"], r["min_fps"], shots_spawned, shot_hits])
 		if _quit_when_done:
 			get_tree().quit()
@@ -231,12 +235,28 @@ static func _p99(sorted: PackedFloat32Array) -> float:
 
 # --- 場地 ---
 
+## 要載入的圖:代號 → SpriteFrames 的路徑(子類別可以加)。
+func _frame_paths() -> Dictionary:
+	return {"boss": BOSS_FRAMES_PATH, "foxfire": FOXFIRE_FRAMES_PATH, "wolf": WOLF_FRAMES_PATH,
+		"gargoyle": GARGOYLE_FRAMES_PATH, "goldie": GOLDIE_FRAMES_PATH, "bulldog": BULLDOG_FRAMES_PATH,
+		"lancelot": LANCELOT_FRAMES_PATH, "moon_orb": MOON_ORB_PATH, "fox_flame": FOX_FLAME_PATH, "thorn": THORN_PATH}
+
+
+func _background_path() -> String:
+	return BACKGROUND_PATH
+
+
+## 場上的同伴(真正的或替身)。
+func companions() -> Array[Node2D]:
+	return _companions
+
+
 func _build_world() -> void:
 	var camera := Camera2D.new()
 	camera.position = SafeArea.GAME_CENTER
 	add_child(camera)
 	camera.make_current()
-	var bg_scene: PackedScene = load(BACKGROUND_PATH) if ResourceLoader.exists(BACKGROUND_PATH) else null
+	var bg_scene: PackedScene = load(_background_path()) if ResourceLoader.exists(_background_path()) else null
 	if ResourceLoader.exists(ARENA_PATH):
 		_arena = (load(ARENA_PATH) as PackedScene).instantiate()
 		add_child(_arena)
@@ -245,7 +265,7 @@ func _build_world() -> void:
 			if bg_scene != null and _arena.has_method(&"set_background"):
 				_arena.call(&"set_background", bg_scene)
 			_player = _arena.call(&"get_player") as Node2D
-			for id: StringName in [&"bulldog", &"lancelot"]:
+			for id: StringName in companion_ids:
 				var companion: Node2D = null
 				if ResourceLoader.exists("res://data/companions/%s.tres" % id):
 					companion = _arena.call(&"spawn_companion", id) as Node2D
@@ -262,8 +282,8 @@ func _build_world() -> void:
 			add_child(bg)
 		_add_walls()
 		_player = _stand_in_sprite("goldie", Layout.PLAYER_START)
-		for id: String in ["bulldog", "lancelot"]:
-			_companions.append(_stand_in_sprite(id, Layout.PLAYER_START))
+		for id: StringName in companion_ids:
+			_companions.append(_stand_in_sprite(String(id), Layout.PLAYER_START))
 	_warnings = Node2D.new()
 	_warnings.name = "Warnings"
 	_warnings.z_index = 2
@@ -313,7 +333,7 @@ func _move_player(_delta: float) -> void:
 	for i in _companions.size():
 		var c := _companions[i]
 		if c != null and is_instance_valid(c):
-			c.global_position = _player.global_position + Vector2(-22.0 if i == 0 else 22.0, 8.0)
+			c.global_position = _player.global_position + COMPANION_OFFSETS[i % COMPANION_OFFSETS.size()]
 
 
 # --- 頭目與分身 ---
@@ -403,18 +423,20 @@ func run_patterns(delta: float) -> void:
 		_run_beam(delta)
 
 
-func _fire_fan(from: Vector2, count: int, spread: float, frames_key: String, speed: float, glow: float) -> void:
+func _fire_fan(from: Vector2, count: int, spread: float, frames_key: String, speed: float, glow: float,
+		glow_color: Color = Color(0.6, 0.85, 1.0, 0.4)) -> void:
 	var aim := (_player.global_position - from).normalized() if _player != null else Vector2.DOWN
 	for i in count:
 		var a := -spread * 0.5 + spread * i / maxf(count - 1, 1)
 		var shot := _fire_shot(frames_key, from, aim.rotated(a) * speed, 3.0, 0.0, 4.0)
 		if with_glow and glow > 0.0:
-			_add_glow(shot, glow, Color(0.6, 0.85, 1.0, 0.4))
+			_add_glow(shot, glow, glow_color)
 
 
-func _fire_shot(frames_key: String, from: Vector2, velocity: Vector2, life: float, delay: float, radius: float) -> Area2D:
+func _fire_shot(frames_key: String, from: Vector2, velocity: Vector2, life: float, delay: float, radius: float,
+		friendly: bool = false) -> Area2D:
 	var shot := BossShot.new()
-	shot.setup(_frames.get(frames_key), from, velocity, life, delay, radius)
+	shot.setup(_frames.get(frames_key), from, velocity, life, delay, radius, friendly)
 	shot.hit.connect(func() -> void: shot_hits += 1)
 	_shots.add_child(shot)
 	shots_spawned += 1
@@ -548,6 +570,7 @@ func _build_readout() -> void:
 # --- 替身類別 ---
 
 ## 投射物替身:直線飛、可以先等一下(狐火雨的預警),碰到主角或同伴、或時間到就消失。不造成傷害。
+## v2.7:friendly = true 時是我方的投射物(崔斯坦的音符),碰到敵人才消失。
 class BossShot:
 	extends Area2D
 	signal hit()
@@ -556,14 +579,15 @@ class BossShot:
 	var delay: float = 0.0
 	var _sprite: AnimatedSprite2D
 
-	func setup(frames: SpriteFrames, from: Vector2, p_velocity: Vector2, p_life: float, p_delay: float, radius: float) -> void:
+	func setup(frames: SpriteFrames, from: Vector2, p_velocity: Vector2, p_life: float, p_delay: float, radius: float,
+			friendly: bool = false) -> void:
 		position = from
 		velocity = p_velocity
 		life = p_life
 		delay = p_delay
 		rotation = velocity.angle() if velocity != Vector2.ZERO else 0.0
-		collision_layer = Layers.ENEMY_ATTACK
-		collision_mask = Layers.PLAYER | Layers.COMPANION
+		collision_layer = Layers.PLAYER_ATTACK if friendly else Layers.ENEMY_ATTACK
+		collision_mask = Layers.ENEMY if friendly else Layers.PLAYER | Layers.COMPANION
 		monitorable = false
 		monitoring = delay <= 0.0
 		var shape := CollisionShape2D.new()

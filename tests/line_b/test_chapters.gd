@@ -1,7 +1,9 @@
 extends "res://tests/line_b/flow_test_base.gd"
 ## v2.6 BV3 至 BV7(DEV_PLAN 4.13、第 19 節):三章的流程。全部用替身(替身場地、替身敵人、替身對白框),
 ## 所以 A 線的新敵人還沒合併也能跑。
-## - 三章各自可以從第 1 關玩到結局、預告、回標題;打完第 N 章 chapters_cleared = N。
+## v2.7 BW3 至 BW7(DEV_PLAN 4.14、第 20 節):章數改用 GameState.CHAPTER_COUNT(六章);第六章結算「全劇終」
+## (game_complete);存檔第 6 版;每章同伴(最多四位);第四至六章的音樂與無盡試煉。
+## - 每一章各自可以從第 1 關玩到結局、預告、回標題;打完第 N 章 chapters_cleared = N。
 ## - 只能選已解鎖的章;存檔記住章;「繼續冒險」回到存檔的章與關;舊存檔轉換。
 ## - 每章的音樂(field_2 / boss_2 …),音樂檔不存在時退回 field / boss。
 ## - 無盡試煉依 chapters_cleared 加入第二、三章的敵人、頭目與背景。
@@ -70,7 +72,8 @@ func _expected_stories(n: int) -> PackedStringArray:
 
 
 func test_each_chapter_plays_from_level_1_to_the_ending() -> void:
-	for n in [1, 2, 3]:
+	var last := GameState.CHAPTER_COUNT
+	for n in range(1, last + 1):
 		reset_settings()
 		GameState.chapters_cleared = n - 1
 		GameState.chapter_cleared = n > 1
@@ -90,17 +93,18 @@ func test_each_chapter_plays_from_level_1_to_the_ending() -> void:
 		for i in results.size():
 			assert_eq(results[i]["chapter"], n)
 			assert_eq(results[i]["chapter_name"], "CHAPTER_%d" % n)
-			assert_eq(results[i]["chapter_count"], 3)
+			assert_eq(results[i]["chapter_count"], last)
 			assert_eq(results[i]["is_final"], i == 5)
-			assert_eq(results[i]["next_chapter_unlocked"], i == 5 and n < 3, "第 %d 章結算:解鎖下一章" % n)
+			assert_eq(results[i]["next_chapter_unlocked"], i == 5 and n < last, "第 %d 章結算:解鎖下一章" % n)
+			assert_eq(results[i]["game_complete"], i == 5 and n == last, "第 %d 章結算:全劇終只在最後一章" % n)
 			assert_eq(results[i]["level_count"], 6)
 		assert_eq(results[5]["chapters_cleared"], n, "結算時已經記下")
 		assert_eq(GameState.chapters_cleared, n, "打完第 %d 章" % n)
 		assert_true(GameState.chapter_cleared, "chapter_cleared 保持 true")
 		var saved := read_save()
 		assert_eq(saved["chapters_cleared"], n, "存檔記下 chapters_cleared")
-		assert_eq(GameState.chapter, mini(n + 1, 3), "標題預設選剛解鎖的章")
-		assert_eq(saved["chapter"], mini(n + 1, 3))
+		assert_eq(GameState.chapter, mini(n + 1, last), "標題預設選剛解鎖的章(全破之後留在最後一章)")
+		assert_eq(saved["chapter"], mini(n + 1, last))
 		assert_false(flow.has_save(), "一章完成:沒有要繼續的關卡")
 		assert_eq(flow.state, FlowMain.State.TITLE)
 		flow.queue_free()
@@ -217,13 +221,13 @@ func test_old_saves_convert_to_chapters_cleared() -> void:
 	data = store.read()
 	assert_eq(data["chapters_cleared"], 0)
 	assert_eq(data["chapter_cleared"], false)
-	# 不合理的值:章限制在 1 至 3,chapters_cleared 0 至 3;chapters_cleared ≥ 1 一定 chapter_cleared
+	# 不合理的值:章限制在 1 至 CHAPTER_COUNT,chapters_cleared 0 至 CHAPTER_COUNT;chapters_cleared ≥ 1 一定 chapter_cleared
 	file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
-	file.store_string(JSON.stringify({"version": 5, "chapter": 7, "chapters_cleared": 9, "chapter_cleared": false}))
+	file.store_string(JSON.stringify({"version": 6, "chapter": 9, "chapters_cleared": 9, "chapter_cleared": false}))
 	file.close()
 	data = store.read()
-	assert_eq(data["chapter"], 3)
-	assert_eq(data["chapters_cleared"], 3)
+	assert_eq(data["chapter"], GameState.CHAPTER_COUNT)
+	assert_eq(data["chapters_cleared"], GameState.CHAPTER_COUNT)
 	assert_eq(data["chapter_cleared"], true)
 	file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	file.store_string(JSON.stringify({"version": 5, "chapter": "x", "chapters_cleared": -2}))
@@ -231,7 +235,7 @@ func test_old_saves_convert_to_chapters_cleared() -> void:
 	data = store.read()
 	assert_eq(data["chapter"], 1)
 	assert_eq(data["chapters_cleared"], 0)
-	# 舊存檔開機:第一章第 4 關可以繼續,標題可以選到第二章;寫回時是第 5 版
+	# 舊存檔開機:第一章第 4 關可以繼續,標題可以選到第二章;寫回時是最新版(第 6 版)
 	file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	file.store_string(JSON.stringify({"version": 4, "level_index": 3, "chapter_cleared": true}))
 	file.close()
@@ -307,6 +311,24 @@ func test_chapter_music_and_fallback() -> void:
 	assert_eq(flow.call(&"_level_track", blank), &"boss_2")
 
 
+## BV4、BW5:每章的一般關播 field_N、頭目關播 boss_N(第一章 field / boss);曲子不存在時退回 field / boss。
+func test_every_chapter_has_its_music_with_fallback() -> void:
+	make_flow()
+	await wait_frames(1)
+	for n in range(1, GameState.CHAPTER_COUNT + 1):
+		var data := flow.get_chapter_data(n)
+		var field := &"field" if n == 1 else StringName("field_%d" % n)
+		var boss := &"boss" if n == 1 else StringName("boss_%d" % n)
+		music_log.missing = PackedStringArray()
+		for m in 5:
+			assert_eq(flow.call(&"_level_track", data.get_level(m)), field, "%s 播 %s" % [data.get_level(m).id, field])
+		assert_eq(flow.call(&"_level_track", data.get_level(5)), boss, "%d-6 播 %s" % [n, boss])
+		music_log.missing = PackedStringArray([String(field), String(boss)])
+		assert_eq(flow.call(&"_level_track", data.get_level(0)), &"field", "%s 不存在 → field" % field)
+		assert_eq(flow.call(&"_level_track", data.get_level(5)), &"boss", "%s 不存在 → boss" % boss)
+	music_log.missing = PackedStringArray()
+
+
 func test_real_music_files_decide_the_fallback() -> void:
 	make_flow()
 	await wait_frames(1)
@@ -368,6 +390,45 @@ func test_endless_adds_later_chapter_enemies_and_bosses() -> void:
 	assert_eq(data.boss_for_wave(15), &"scarecrow_captain")
 
 
+## BW5:打完第四至六章,無盡試煉再加入那一章的敵人、中頭目與頭目(雙龍各自單獨出場)。
+func test_endless_adds_chapters_4_to_6() -> void:
+	var by_chapter: Dictionary = {
+		4: [&"crab", &"jellyfish"],
+		5: [&"snowman", &"salamander"],
+		6: [&"shadow_knight", &"lantern_wisp"],
+	}
+	for tier in range(3, GameState.CHAPTER_COUNT + 1):
+		var seen := _enemies_seen(tier)
+		for chapter: int in by_chapter:
+			for kind: StringName in by_chapter[chapter]:
+				assert_eq(seen.has(kind), tier >= chapter, "打完第 %d 章:%s %s" % [tier, kind,
+						"出現" if tier >= chapter else "還沒出現"])
+	var data := load(ENDLESS) as EndlessData
+	var minis: Array = []
+	for wave in [5, 15, 25, 35, 45, 55, 65]:
+		minis.append(data.boss_for_wave(wave, 6))
+	assert_eq(minis, [&"scarecrow_captain", &"gargoyle_elite", &"phantom_knight", &"crab_elite", &"snowman_elite",
+			&"mordred_duel", &"scarecrow_captain"], "打完六章:中頭目輪流")
+	var bosses: Array = []
+	for wave in [10, 20, 30, 40, 50, 60, 70, 80]:
+		bosses.append(data.boss_for_wave(wave, 6))
+	assert_eq(bosses, [&"black_knight", &"green_knight", &"morgana", &"kraken", &"red_dragon", &"white_dragon",
+			&"mordred", &"black_knight"], "打完六章:頭目輪流(雙龍各自一次,一次只有一條)")
+	assert_eq(data.boss_for_wave(40, 4), &"kraken", "打完第四章:章魚王")
+	assert_eq(data.boss_for_wave(50, 4), &"black_knight", "打完第四章:還沒有龍")
+	assert_eq(data.boss_for_wave(35, 4), &"crab_elite")
+	# 雙龍在無盡試煉只出一條:頭目波只有一個頭目
+	var gen := _gen(6)
+	for wave in [50, 60]:
+		var dragons := 0
+		for e in gen.make_wave(wave).spawns:
+			if e.enemy_id == &"red_dragon" or e.enemy_id == &"white_dragon":
+				dragons += e.count
+		assert_eq(dragons, 1, "第 %d 波只有一條龍" % wave)
+	for tier in range(1, GameState.CHAPTER_COUNT + 1):
+		assert_eq(data.backgrounds_for(tier).size(), 6 * tier, "打完第 %d 章:%d 張背景" % [tier, 6 * tier])
+
+
 func test_endless_backgrounds_follow_chapters_cleared() -> void:
 	var tier1 := {}
 	var tier3 := {}
@@ -389,13 +450,13 @@ func test_endless_backgrounds_follow_chapters_cleared() -> void:
 
 func test_endless_run_uses_chapters_cleared() -> void:
 	GameState.chapter_cleared = true
-	GameState.chapters_cleared = 3
+	GameState.chapters_cleared = GameState.CHAPTER_COUNT
 	make_flow()
 	await wait_frames(1)
 	flow.get_screen().call(&"_endless")
 	assert_true(await wait_until(in_level))
 	var waves := flow.get(&"_endless_waves") as EndlessWaves
-	assert_eq(waves.tier, 3)
+	assert_eq(waves.tier, GameState.CHAPTER_COUNT, "打完六章:tier 6")
 	assert_eq(music_log.tracks()[-1], "field", "無盡試煉播 field")
 
 
@@ -424,3 +485,163 @@ func test_stand_in_title_picks_only_unlocked_chapters() -> void:
 	assert_eq(GameState.chapter, 2, "按「新遊戲」之前設定 GameState.chapter")
 	assert_true(await wait_until(in_level))
 	assert_eq(started.last_args(), [&"2-1"])
+
+
+## BW7:替身標題可以選到第六章(打完第五章之後),再按也不會超過 CHAPTER_COUNT。
+func test_stand_in_title_goes_up_to_the_last_chapter() -> void:
+	GameState.chapters_cleared = GameState.CHAPTER_COUNT - 1
+	GameState.chapter_cleared = true
+	make_flow()
+	await wait_frames(1)
+	var title := flow.get_screen()
+	assert_eq(title.call(&"max_chapter"), GameState.CHAPTER_COUNT)
+	for i in GameState.CHAPTER_COUNT + 2:
+		title.call(&"pick_chapter", 1)
+	assert_eq(title.get(&"selected_chapter"), GameState.CHAPTER_COUNT, "最多第六章")
+	GameState.chapters_cleared = GameState.CHAPTER_COUNT
+	await wait_frames(1)
+	title.call(&"pick_chapter", 1)
+	assert_eq(title.get(&"selected_chapter"), GameState.CHAPTER_COUNT, "全破之後也只到第六章")
+	assert_eq(flow.max_selectable_chapter(), GameState.CHAPTER_COUNT)
+	var started := watch_signal(EventBus.level_started)
+	title.call(&"_new_game", &"normal")
+	assert_true(await wait_until(in_level))
+	assert_eq(started.last_args(), [&"6-1"])
+	assert_eq(get_tree().get_node_count_in_group(&"companion"), 2, "6-1:貝德維爾與蘭斯洛特")
+
+
+# --- v2.7 六章(BW3、BW7) ---
+
+## BW3:第 5 版存檔(三章的版本)照樣讀得到;打完第三章(那時候的全破)的存檔,標題預設選剛開放的第四章。
+func test_version_5_saves_open_chapter_4() -> void:
+	var store := SaveStore.new(SAVE_PATH)
+	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	file.store_string(JSON.stringify({"version": 5, "level_index": 0, "chapter": 3, "chapters_cleared": 3,
+			"chapter_cleared": true, "snacks": 40, "best_stars": {"3-6": 2}}))
+	file.close()
+	var data := store.read()
+	assert_eq(data["version"], 5)
+	assert_eq(data["chapters_cleared"], 3)
+	assert_eq(data["chapter"], 4, "第 5 版全破:標題預設選第四章")
+	assert_eq(data["snacks"], 40)
+	assert_eq(data["best_stars"], {"3-6": 2})
+	# 第 5 版、第三章還在進行中:照樣回到第三章
+	file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	file.store_string(JSON.stringify({"version": 5, "level_index": 2, "chapter": 3, "chapters_cleared": 3,
+			"chapter_cleared": true}))
+	file.close()
+	data = store.read()
+	assert_eq(data["chapter"], 3, "第三章重玩到一半:繼續第三章")
+	assert_eq(data["level_index"], 2)
+	# 第 6 版:章 4 至 6 照樣保存
+	assert_true(store.write_data({"level_index": 4, "chapter": 6, "chapters_cleared": 5, "chapter_cleared": true}))
+	data = store.read()
+	assert_eq(data["version"], SaveStore.VERSION)
+	assert_eq(SaveStore.VERSION, 6)
+	assert_eq(data["chapter"], 6)
+	assert_eq(data["chapters_cleared"], 5)
+	# 開機:第 5 版全破的存檔 → 標題可以選到第四章、預設第四章;沒有要繼續的關卡
+	file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	file.store_string(JSON.stringify({"version": 5, "level_index": 0, "chapter": 3, "chapters_cleared": 3,
+			"chapter_cleared": true}))
+	file.close()
+	make_flow(true)
+	await wait_frames(1)
+	assert_false(flow.has_save())
+	assert_eq(flow.max_selectable_chapter(), 4)
+	assert_eq(GameState.chapter, 4)
+	var started := watch_signal(EventBus.level_started)
+	assert_true(await start_new_game())
+	assert_eq(started.last_args(), [&"4-1"])
+	assert_eq(read_save()["version"], 6, "寫回時是第 6 版")
+	assert_eq(read_save()["chapter"], 4)
+
+
+## BW3:「繼續冒險」回到第四至六章的正確關卡;每章的同伴(4-3 崔斯坦加入、5-1 只有蘭斯洛特、6-6 四位全員)。
+func test_continue_into_later_chapters_with_their_companions() -> void:
+	var cases: Array = [
+		[4, 2, &"4-3", [&"bulldog", &"tristan"]],
+		[5, 0, &"5-1", [&"lancelot"]],
+		[5, 2, &"5-3", [&"lancelot", &"gawain"]],
+		[6, 5, &"6-6", [&"bulldog", &"lancelot", &"tristan", &"gawain"]],
+	]
+	for row: Array in cases:
+		reset_settings()
+		SaveStore.new(SAVE_PATH).write_data({"level_index": row[1], "chapter": row[0], "chapters_cleared": row[0] - 1,
+				"chapter_cleared": true})
+		make_flow(true)
+		await wait_frames(1)
+		var started := watch_signal(EventBus.level_started)
+		if int(row[1]) > 0:
+			flow.get_screen().emit_signal(&"continue_pressed")
+			assert_true(await wait_until(in_level))
+		else:
+			GameState.chapter = row[0]
+			assert_true(await start_new_game())
+		assert_eq(started.last_args(), [row[2]])
+		assert_eq(GameState.chapter, row[0])
+		await wait_frames(2)
+		var ids: Array[StringName] = []
+		for node in get_tree().get_nodes_in_group(&"companion"):
+			ids.append(StringName(node.get(&"companion_id")))
+		ids.sort()
+		var want: Array[StringName] = []
+		want.assign(row[3])
+		want.sort()
+		assert_eq(ids, want, "%s 的同伴" % row[2])
+		flow.queue_free()
+		flow = null
+		await wait_frames(2)
+
+
+## BW3:第六章的最後一關 = 全劇終(game_complete);之後播 c6_teaser(全破之後的訊息)再回標題,
+## 標題停在第六章。替身結算顯示「THE END」。
+func test_clearing_chapter_6_is_the_end_of_the_story() -> void:
+	SaveStore.new(SAVE_PATH).write_data({"level_index": 5, "chapter": 6, "chapters_cleared": 5,
+			"chapter_cleared": true})
+	make_flow(true, 1234, true)
+	await wait_frames(1)
+	flow.get_screen().emit_signal(&"continue_pressed")
+	assert_true(await wait_until(func() -> bool:
+		if flow.state == FlowMain.State.STORY:
+			skip_dialogue()
+		elif flow.state == FlowMain.State.LEVEL:
+			_auto_step()
+		return flow.state == FlowMain.State.RESULTS, 10.0))
+	var result := flow.get_last_result()
+	assert_eq(result["level_id"], &"6-6")
+	assert_true(result["is_final"])
+	assert_true(result["game_complete"], "全劇終")
+	assert_false(result["next_chapter_unlocked"], "沒有第七章")
+	assert_eq(result["chapters_cleared"], GameState.CHAPTER_COUNT)
+	assert_eq(GameState.chapters_cleared, GameState.CHAPTER_COUNT)
+	assert_true(_screen_has_text(flow.get_screen(), "THE END"), "替身結算:THE END")
+	assert_true(_stories.has("c6l6_after"), "結局在結算之前")
+	flow.get_screen().emit_signal(&"continue_pressed")
+	assert_true(await wait_until(func() -> bool: return flow.is_story_playing() and flow.get_story_id() == &"c6_teaser"),
+			"結算之後:全破之後的訊息")
+	skip_dialogue()
+	assert_true(await wait_until(func() -> bool: return flow.state == FlowMain.State.TITLE))
+	assert_eq(GameState.chapter, GameState.CHAPTER_COUNT, "標題停在第六章")
+	assert_eq(read_save()["chapters_cleared"], GameState.CHAPTER_COUNT)
+	assert_false(flow.has_save())
+
+
+## 其他章的最後一關不是全劇終。
+func test_only_the_last_chapter_is_the_end() -> void:
+	make_flow()
+	await wait_frames(1)
+	for n in range(1, GameState.CHAPTER_COUNT + 1):
+		assert_eq(flow.is_final_chapter(n), n == GameState.CHAPTER_COUNT, "第 %d 章" % n)
+	assert_eq(flow.chapter_count(), GameState.CHAPTER_COUNT)
+
+
+func _screen_has_text(node: Node, text: String) -> bool:
+	if node == null:
+		return false
+	if node is Label and (node as Label).text.contains(text):
+		return true
+	for child in node.get_children():
+		if _screen_has_text(child, text):
+			return true
+	return false

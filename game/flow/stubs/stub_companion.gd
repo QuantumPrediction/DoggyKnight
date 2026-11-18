@@ -2,8 +2,11 @@ extends Node2D
 ## 同伴(鬥牛犬)的替身。正式版:game/actors/companions/bulldog.tscn(A 線)。
 ## 群組 "companion";跟在金毛身邊,偶爾咬一下附近的敵人(6 點傷害)。
 ## v2.6:第二位同伴(蘭斯洛特)跟在另一邊,兩位不會疊在一起。
+## v2.7:最多四位(6-6):第三、四位跟在後面左右兩邊。
 
 const FOLLOW_OFFSET: Vector2 = Vector2(-16, 6)
+## 第 1 至 4 位同伴跟在金毛的哪裡。
+const SLOTS: Array[Vector2] = [Vector2(-16, 6), Vector2(16, 6), Vector2(-10, 18), Vector2(10, 18)]
 const FOLLOW_SPEED: float = 55.0
 const ATTACK_RANGE: float = 22.0
 const ATTACK_INTERVAL: float = 1.0
@@ -23,8 +26,8 @@ func configure(id: StringName, arena_node: Node) -> void:
 
 
 func _ready() -> void:
-	if not get_tree().get_nodes_in_group(&"companion").is_empty():
-		_offset = Vector2(-FOLLOW_OFFSET.x, FOLLOW_OFFSET.y)
+	var others := get_tree().get_nodes_in_group(&"companion").size()
+	_offset = SLOTS[others % SLOTS.size()]
 	add_to_group(&"companion")
 	_sprite = AnimatedSprite2D.new()
 	var path := "res://assets/sprites/%s/%s_frames.tres" % [companion_id, companion_id]

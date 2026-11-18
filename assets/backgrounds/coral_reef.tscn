@@ -1,0 +1,332 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/backgrounds/coral_reef.png" id="1_bg"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/anemone_frames.tres" id="2_anim_anemone"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/anemone_violet_frames.tres" id="3_anim_anemone_violet"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/bubbles_frames.tres" id="4_anim_bubbles"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/caustic_frames.tres" id="5_anim_caustic"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/fish_blue_frames.tres" id="6_anim_fish_blue"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/fish_gold_frames.tres" id="7_anim_fish_gold"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/kelp_frames.tres" id="8_anim_kelp"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/kelp_gold_frames.tres" id="9_anim_kelp_gold"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_bubble.png" id="10_p_bubble"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_mote.png" id="11_p_mote"]
+[ext_resource type="Script" path="res://assets/backgrounds/actor_shadows.gd" id="80_shadows"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/coral_reef_fg.png" id="81_fg"]
+[ext_resource type="PackedScene" path="res://assets/fx/lights/sun.tscn" id="84_light_sun"]
+
+[sub_resource type="Gradient" id="Gradient_fade"]
+offsets = PackedFloat32Array(0, 0.15, 0.8, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="Background" type="Node2D"]
+
+[node name="Image" type="Sprite2D" parent="."]
+texture = ExtResource("1_bg")
+centered = false
+position = Vector2(-62, -88)
+
+[node name="Anim" type="Node2D" parent="."]
+
+[node name="kelp_gold_0" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-38, 16)
+sprite_frames = ExtResource("9_anim_kelp_gold")
+autoplay = "default"
+frame = 0
+speed_scale = 0.6
+centered = false
+
+[node name="kelp_1" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-4, 10)
+sprite_frames = ExtResource("8_anim_kelp")
+autoplay = "default"
+frame = 1
+speed_scale = 0.72
+centered = false
+
+[node name="kelp_2" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(38, 16)
+sprite_frames = ExtResource("8_anim_kelp")
+autoplay = "default"
+frame = 2
+speed_scale = 0.84
+centered = false
+
+[node name="kelp_gold_3" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(134, 12)
+sprite_frames = ExtResource("9_anim_kelp_gold")
+autoplay = "default"
+frame = 3
+speed_scale = 0.6
+centered = false
+
+[node name="kelp_4" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(170, 18)
+sprite_frames = ExtResource("8_anim_kelp")
+autoplay = "default"
+frame = 4
+speed_scale = 0.72
+centered = false
+
+[node name="kelp_5" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(208, 14)
+sprite_frames = ExtResource("8_anim_kelp")
+autoplay = "default"
+frame = 5
+speed_scale = 0.84
+centered = false
+
+[node name="kelp_gold_6" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-52, 132)
+sprite_frames = ExtResource("9_anim_kelp_gold")
+autoplay = "default"
+frame = 0
+speed_scale = 0.6
+centered = false
+
+[node name="kelp_7" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(214, 212)
+sprite_frames = ExtResource("8_anim_kelp")
+autoplay = "default"
+frame = 1
+speed_scale = 0.72
+centered = false
+
+[node name="kelp_8" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-56, 292)
+sprite_frames = ExtResource("8_anim_kelp")
+autoplay = "default"
+frame = 2
+speed_scale = 0.84
+centered = false
+
+[node name="kelp_gold_9" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(218, 312)
+sprite_frames = ExtResource("9_anim_kelp_gold")
+autoplay = "default"
+frame = 3
+speed_scale = 0.6
+centered = false
+
+[node name="anemone_10" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(18, 52)
+sprite_frames = ExtResource("2_anim_anemone")
+autoplay = "default"
+frame = 0
+speed_scale = 0.8
+centered = false
+
+[node name="anemone_violet_11" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(142, 56)
+sprite_frames = ExtResource("3_anim_anemone_violet")
+autoplay = "default"
+frame = 1
+speed_scale = 0.8
+centered = false
+
+[node name="anemone_12" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-22, 162)
+sprite_frames = ExtResource("2_anim_anemone")
+autoplay = "default"
+frame = 2
+speed_scale = 0.8
+centered = false
+
+[node name="anemone_violet_13" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(200, 148)
+sprite_frames = ExtResource("3_anim_anemone_violet")
+autoplay = "default"
+frame = 3
+speed_scale = 0.8
+centered = false
+
+[node name="anemone_14" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(68, 64)
+sprite_frames = ExtResource("2_anim_anemone")
+autoplay = "default"
+frame = 0
+speed_scale = 0.8
+centered = false
+
+[node name="fish_blue_15" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-22, -32)
+sprite_frames = ExtResource("6_anim_fish_blue")
+autoplay = "default"
+frame = 0
+speed_scale = 0.6
+centered = false
+
+[node name="fish_gold_16" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(118, -12)
+sprite_frames = ExtResource("7_anim_fish_gold")
+autoplay = "default"
+frame = 2
+speed_scale = 0.7
+centered = false
+
+[node name="fish_blue_17" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(48, -48)
+sprite_frames = ExtResource("6_anim_fish_blue")
+autoplay = "default"
+frame = 4
+speed_scale = 0.8
+centered = false
+
+[node name="fish_gold_18" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(188, -38)
+sprite_frames = ExtResource("7_anim_fish_gold")
+autoplay = "default"
+frame = 6
+speed_scale = 0.9
+centered = false
+
+[node name="fish_blue_19" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(88, 16)
+sprite_frames = ExtResource("6_anim_fish_blue")
+autoplay = "default"
+frame = 8
+speed_scale = 1
+centered = false
+
+[node name="bubbles_20" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-10, 112)
+sprite_frames = ExtResource("4_anim_bubbles")
+autoplay = "default"
+frame = 0
+speed_scale = 0.7
+centered = false
+
+[node name="bubbles_21" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(182, 212)
+sprite_frames = ExtResource("4_anim_bubbles")
+autoplay = "default"
+frame = 3
+speed_scale = 0.7
+centered = false
+
+[node name="bubbles_22" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(108, 24)
+sprite_frames = ExtResource("4_anim_bubbles")
+autoplay = "default"
+frame = 6
+speed_scale = 0.7
+centered = false
+
+[node name="caustic_23" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(4, 106)
+sprite_frames = ExtResource("5_anim_caustic")
+autoplay = "default"
+frame = 0
+speed_scale = 0.6
+centered = false
+
+[node name="caustic_24" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(160, 172)
+sprite_frames = ExtResource("5_anim_caustic")
+autoplay = "default"
+frame = 1
+speed_scale = 0.6
+centered = false
+
+[node name="caustic_25" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(6, 246)
+sprite_frames = ExtResource("5_anim_caustic")
+autoplay = "default"
+frame = 2
+speed_scale = 0.6
+centered = false
+
+[node name="caustic_26" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(160, 262)
+sprite_frames = ExtResource("5_anim_caustic")
+autoplay = "default"
+frame = 3
+speed_scale = 0.6
+centered = false
+
+[node name="caustic_27" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-28, 222)
+sprite_frames = ExtResource("5_anim_caustic")
+autoplay = "default"
+frame = 0
+speed_scale = 0.6
+centered = false
+
+[node name="caustic_28" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(192, 132)
+sprite_frames = ExtResource("5_anim_caustic")
+autoplay = "default"
+frame = 1
+speed_scale = 0.6
+centered = false
+
+[node name="Ambient" type="Node2D" parent="."]
+
+[node name="bubble_0" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(90, 190)
+amount = 14
+lifetime = 5
+preprocess = 5
+randomness = 0.5
+texture = ExtResource("10_p_bubble")
+emission_shape = 3
+emission_rect_extents = Vector2(100, 190)
+direction = Vector2(0, -1)
+spread = 10
+gravity = Vector2(0, -2)
+initial_velocity_min = 8
+initial_velocity_max = 14
+color_ramp = SubResource("Gradient_fade")
+
+[node name="mote_1" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(95, 170)
+amount = 12
+lifetime = 5
+preprocess = 5
+randomness = 0.5
+texture = ExtResource("11_p_mote")
+emission_shape = 3
+emission_rect_extents = Vector2(105, 210)
+direction = Vector2(1, 0)
+spread = 180
+gravity = Vector2(0, 0)
+initial_velocity_min = 1
+initial_velocity_max = 3
+color_ramp = SubResource("Gradient_fade")
+
+[node name="Light" type="Node2D" parent="."]
+
+[node name="Shaft_0" type="Polygon2D" parent="Light"]
+color = Color(0.8, 1, 1, 0.07)
+polygon = PackedVector2Array(-20, -90, 2, -90, 302, 430, 280, 430)
+
+[node name="Shaft_1" type="Polygon2D" parent="Light"]
+color = Color(0.8, 1, 1, 0.06)
+polygon = PackedVector2Array(40, -90, 54, -90, 354, 430, 340, 430)
+
+[node name="Shaft_2" type="Polygon2D" parent="Light"]
+color = Color(0.8, 1, 1, 0.05)
+polygon = PackedVector2Array(110, -90, 128, -90, 428, 430, 410, 430)
+
+[node name="Lights" type="Node2D" parent="."]
+
+[node name="sun_0" parent="Lights" instance=ExtResource("84_light_sun")]
+modulate = Color(0.7, 1, 1, 0.5)
+position = Vector2(60, -88)
+base_alpha = 0.176
+seed_offset = 1.48
+
+[node name="Shadows" type="Node2D" parent="."]
+script = ExtResource("80_shadows")
+
+[node name="Foreground" type="Node2D" parent="."]
+z_index = 50
+z_as_relative = false
+
+[node name="Image" type="Sprite2D" parent="Foreground"]
+texture = ExtResource("81_fg")
+centered = false
+position = Vector2(-62, -88)
+
+[node name="Mood" type="CanvasModulate" parent="."]
+color = Color(0.88, 0.97, 1, 1)

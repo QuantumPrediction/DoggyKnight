@@ -18,11 +18,16 @@ extends Control
 ##
 ## v2.6(CW3,DEV_PLAN 4.13):
 ## - 選章:已打完的章數(chapters_cleared;舊存檔只有 chapter_cleared 時當作 1)≥ 1 時,按鈕上方出現
-##   「◀ 章名 ▶」。可以選 1 至 min(已打完 + 1, 3);還沒開啟的章顯示鎖頭、「開始冒險」不能按。
+##   「◀ 章名 ▶」。可以選 1 至 min(已打完 + 1, 章數);還沒開啟的章顯示鎖頭、「開始冒險」不能按。
 ##   按「開始冒險」(與難度選擇之後)先設定 GameState.chapter 再發 new_game_pressed;沒有選章列時一律第 1 章。
 ## - 標題背景隨最高已開啟的章改變:第一章山丘與石中劍、第二章卡美洛城堡、第三章湖上的高塔
 ##   (assets/ui/title_bg.png、title_bg_2.png、title_bg_3.png);站在前面的角色、閃光與飄落物也跟著換。
 ## - 章名與「第 N 章 完成!」下面有一塊半透明的深色底(CaptionBacking),在任何背景上都看得清楚。
+##
+## v2.7(CW8,DEV_PLAN 4.14):
+## - 章數一律用 GameState.CHAPTER_COUNT(= 6),不寫死:可以選 1 至 min(已打完 + 1, CHAPTER_COUNT)。
+## - 第四至六章的標題背景:海邊(title_bg_4)、雙龍雪山(title_bg_5)、阿瓦隆夕陽(title_bg_6);
+##   站在前面的角色與飄落物也跟著換(第四章崔斯坦、第五章高文與飄雪、第六章蘋果花瓣)。
 
 signal new_game_pressed
 signal continue_pressed
@@ -36,7 +41,6 @@ const CLOUD_SPEEDS: Array[float] = [3.0, 2.0, 4.5]
 const SPARKLE: PackedScene = preload("res://assets/fx/particles/sparkle.tscn")
 ## 背景圖(304×512)上石中劍劍尖的位置。
 const SWORD_TIP_IN_BACKDROP: Vector2 = Vector2(213, 220)
-const MAX_CHAPTER: int = 3
 const ARROW_BUTTON: Vector2 = Vector2(28, 26)
 ## 每章的標題:背景圖、左/中/右三位角色(右邊的面向左)、飄落物、雲的顏色。
 const CHAPTER_LOOKS: Dictionary = {
@@ -46,6 +50,12 @@ const CHAPTER_LOOKS: Dictionary = {
 			"cloud": Color(1.0, 0.9, 0.82, 1)},
 	3: {"bg": "res://assets/ui/title_bg_3.png", "cast": ["lancelot", "goldie", "lady_lake"], "petal": "p_firefly",
 			"cloud": Color(0.55, 0.6, 0.8, 0.7)},
+	4: {"bg": "res://assets/ui/title_bg_4.png", "cast": ["bulldog", "goldie", "tristan"], "petal": "p_petal",
+			"cloud": Color(1, 1, 1, 1)},
+	5: {"bg": "res://assets/ui/title_bg_5.png", "cast": ["lancelot", "goldie", "gawain"], "petal": "p_snow",
+			"cloud": Color(1.0, 0.92, 0.9, 0.85)},
+	6: {"bg": "res://assets/ui/title_bg_6.png", "cast": ["lancelot", "goldie", "bulldog"], "petal": "p_blossom",
+			"cloud": Color(1.0, 0.78, 0.74, 0.75)},
 }
 
 var continue_button: Button
@@ -121,7 +131,7 @@ func _ready() -> void:
 	add_child(_caption_bg)
 	_subtitle = UiKit.label(_chapter_name(backdrop_chapter), &"LabelLight")
 	add_child(_subtitle)
-	var cast: Array = CHAPTER_LOOKS[backdrop_chapter]["cast"]
+	var cast: Array = _look(backdrop_chapter)["cast"]
 	_bulldog = _cast_box(cast[0], false)
 	_bulldog.name = "Bulldog"
 	add_child(_bulldog)
@@ -140,7 +150,7 @@ func _ready() -> void:
 	add_child(_cleared_label)
 	_glint.visible = backdrop_chapter == 1
 	for cloud in _clouds:
-		cloud.modulate = CHAPTER_LOOKS[backdrop_chapter]["cloud"]
+		cloud.modulate = _look(backdrop_chapter)["cloud"]
 
 	_buttons = VBoxContainer.new()
 	_buttons.add_theme_constant_override(&"separation", int(UiKit.GAP))
@@ -233,24 +243,32 @@ func _build_chapter_select() -> void:
 
 ## 已打完的章數(舊存檔只有 chapter_cleared 時當作 1)。
 static func effective_cleared() -> int:
-	return clampi(maxi(GameState.chapters_cleared, 1 if GameState.chapter_cleared else 0), 0, MAX_CHAPTER)
+	return clampi(maxi(GameState.chapters_cleared, 1 if GameState.chapter_cleared else 0), 0, GameState.CHAPTER_COUNT)
 
 
-## 可以選的最高章:min(已打完 + 1, 3)。
+## 可以選的最高章:min(已打完 + 1, CHAPTER_COUNT)。
 static func unlocked_chapters() -> int:
-	return mini(effective_cleared() + 1, MAX_CHAPTER)
+	return mini(effective_cleared() + 1, GameState.CHAPTER_COUNT)
 
 
-## 選章(1 至 3);超過已開啟的章時顯示鎖頭,「開始冒險」不能按。
+## 這一章的標題外觀(背景、角色、飄落物、雲);沒有設定的章用最接近的前一章。
+static func _look(chapter: int) -> Dictionary:
+	for n in range(clampi(chapter, 1, GameState.CHAPTER_COUNT), 0, -1):
+		if CHAPTER_LOOKS.has(n):
+			return CHAPTER_LOOKS[n]
+	return CHAPTER_LOOKS[1]
+
+
+## 選章(1 至 CHAPTER_COUNT);超過已開啟的章時顯示鎖頭,「開始冒險」不能按。
 func select_chapter(n: int) -> void:
-	selected_chapter = clampi(n, 1, MAX_CHAPTER)
+	selected_chapter = clampi(n, 1, GameState.CHAPTER_COUNT)
 	var locked := is_chapter_locked(selected_chapter)
 	if chapter_label != null:
 		chapter_label.text = _chapter_name(selected_chapter)
 		chapter_label.theme_type_variation = &"LabelSoft" if locked else &""
 		chapter_lock.visible = locked
 		prev_chapter_button.disabled = selected_chapter <= 1
-		next_chapter_button.disabled = selected_chapter >= MAX_CHAPTER
+		next_chapter_button.disabled = selected_chapter >= GameState.CHAPTER_COUNT
 	if new_game_button != null:
 		new_game_button.disabled = locked and _chapter_select_shown()
 	if is_node_ready():
@@ -277,13 +295,13 @@ func _chapter_name(n: int) -> String:
 
 func _cleared_text() -> String:
 	var n := effective_cleared()
-	if n >= MAX_CHAPTER:
+	if n >= GameState.CHAPTER_COUNT:
 		return tr("UI_ALL_CHAPTERS_CLEARED")
 	return tr("UI_CHAPTER_CLEARED_N") % tr("UI_CHAPTER_SHORT_%d" % maxi(n, 1))
 
 
 func _backdrop_texture(chapter: int) -> Texture2D:
-	var path: String = CHAPTER_LOOKS[chapter]["bg"]
+	var path: String = _look(chapter)["bg"]
 	if ResourceLoader.exists(path):
 		return load(path) as Texture2D
 	return load("res://assets/ui/title_bg.png") as Texture2D
@@ -400,7 +418,10 @@ func _apply_save_state() -> void:
 func _make_petals() -> CPUParticles2D:
 	var p := CPUParticles2D.new()
 	p.name = "Petals"
-	p.texture = load("res://assets/backgrounds/anim/%s.png" % CHAPTER_LOOKS[backdrop_chapter]["petal"])
+	var petal_path := "res://assets/backgrounds/anim/%s.png" % _look(backdrop_chapter)["petal"]
+	if not ResourceLoader.exists(petal_path):
+		petal_path = "res://assets/backgrounds/anim/p_petal.png"
+	p.texture = load(petal_path)
 	p.amount = 10
 	p.lifetime = 7.0
 	p.preprocess = 7.0

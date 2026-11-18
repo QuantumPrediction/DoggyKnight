@@ -99,11 +99,13 @@ func test_every_new_enemy_can_be_defeated() -> void:
 
 func test_chapter_multipliers_stack_with_the_level_ramp_in_story_mode_only() -> void:
 	var scaling := DifficultyScaling.get_default()
-	assert_eq(scaling.chapter_hp_mult.size(), 3)
-	# 倍率由整合工作階段依試玩調整,從資料讀取(第一章固定 ×1.0,之後每章遞增)
+	# v2.7(AW8):每章一個值(GameState.CHAPTER_COUNT = 6)。倍率由整合工作階段依試玩調整,
+	# 從資料讀取(第一章固定 ×1.0,之後每章遞增)。
+	assert_eq(scaling.chapter_hp_mult.size(), GameState.CHAPTER_COUNT, "每章一個生命倍率")
+	assert_eq(scaling.chapter_damage_mult.size(), GameState.CHAPTER_COUNT, "每章一個傷害倍率")
 	assert_almost_eq(scaling.chapter_hp(1), 1.0, 0.001, "第一章生命 ×1.0")
 	assert_almost_eq(scaling.chapter_damage(1), 1.0, 0.001, "第一章傷害 ×1.0")
-	for i in range(2, 4):
+	for i in range(2, GameState.CHAPTER_COUNT + 1):
 		assert_true(scaling.chapter_hp(i) > scaling.chapter_hp(i - 1), "第 %d 章生命倍率遞增" % i)
 		assert_true(scaling.chapter_damage(i) > scaling.chapter_damage(i - 1), "第 %d 章傷害倍率遞增" % i)
 	var hp3 := scaling.chapter_hp(3)

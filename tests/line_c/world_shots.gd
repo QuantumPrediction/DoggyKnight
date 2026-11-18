@@ -1,5 +1,5 @@
 extends Node
-## C 世界截圖工具(v2.6,不是自動化測試):把背景(放幾個角色)與標題畫面截成 3 倍大的 PNG。
+## C 世界截圖工具(v2.6、v2.7,不是自動化測試):把背景(放幾個角色)與標題畫面截成 3 倍大的 PNG。
 ##
 ## 執行(需要畫面,雲端用 Xvfb):
 ##   xvfb-run -a godot --path . --rendering-driver opengl3 --audio-driver Dummy \
@@ -8,7 +8,10 @@ extends Node
 
 const ALL_BGS: Array[String] = ["sword_stone", "wheat_field", "meadow", "farm_fence", "crow_forest", "bridge",
 		"castle_town", "castle_courtyard", "royal_library", "castle_wall", "magic_garden", "green_chapel",
-		"misty_lake", "fairy_forest", "stone_circle", "crystal_cave", "morgana_tower", "tower_top"]
+		"misty_lake", "fairy_forest", "stone_circle", "crystal_cave", "morgana_tower", "tower_top",
+		"golden_beach", "sea_cliffs", "pirate_ship", "coral_reef", "sunken_city", "sunken_palace",
+		"snowfield", "ice_cave", "hot_springs", "avalanche_pass", "volcano", "dragon_nest",
+		"camlann_field", "shadow_camp", "occupied_town", "throne_hall", "avalon_gate", "avalon_hill"]
 
 var out_dir: String = "/tmp/world_shots"
 var bgs: Array[String] = []

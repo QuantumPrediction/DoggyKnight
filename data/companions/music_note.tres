@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ProjectileData" format=3]
+
+[ext_resource type="Script" path="res://game/combat/projectile_data.gd" id="1_data"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"music_note"
+fx = &"music_note"
+damage = 5
+speed = 120.0
+max_range = 130.0
+hit_radius = 3.0
+pierce = false
+returns = false
+spin_speed = 9.0
+blockable = false
+visual_scale = 1.0
+trail_color = Color(0.7, 0.9, 1, 0.7)
+end_fade_time = 0.25

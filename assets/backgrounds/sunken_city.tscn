@@ -1,0 +1,300 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/backgrounds/sunken_city.png" id="1_bg"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/bubbles_frames.tres" id="2_anim_bubbles"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/fish_blue_frames.tres" id="3_anim_fish_blue"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/fish_gold_frames.tres" id="4_anim_fish_gold"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/kelp_frames.tres" id="5_anim_kelp"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/orb_cyan_frames.tres" id="6_anim_orb_cyan"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_bubble.png" id="7_p_bubble"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_mote.png" id="8_p_mote"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_spark_cyan.png" id="9_p_spark_cyan"]
+[ext_resource type="Script" path="res://assets/backgrounds/actor_shadows.gd" id="80_shadows"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/sunken_city_fg.png" id="81_fg"]
+[ext_resource type="PackedScene" path="res://assets/fx/lights/magic.tscn" id="84_light_magic"]
+
+[sub_resource type="CanvasItemMaterial" id="Mat_add"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_fade"]
+offsets = PackedFloat32Array(0, 0.15, 0.8, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_blink"]
+offsets = PackedFloat32Array(0, 0.2, 0.35, 0.5, 0.65, 0.8, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0.2, 1, 1, 1, 1, 1, 1, 1, 0.3, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="Background" type="Node2D"]
+
+[node name="Image" type="Sprite2D" parent="."]
+texture = ExtResource("1_bg")
+centered = false
+position = Vector2(-62, -88)
+
+[node name="Anim" type="Node2D" parent="."]
+
+[node name="kelp_0" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-52, 16)
+sprite_frames = ExtResource("5_anim_kelp")
+autoplay = "default"
+frame = 0
+speed_scale = 0.5
+centered = false
+
+[node name="kelp_1" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(34, 14)
+sprite_frames = ExtResource("5_anim_kelp")
+autoplay = "default"
+frame = 1
+speed_scale = 0.6
+centered = false
+
+[node name="kelp_2" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(144, 18)
+sprite_frames = ExtResource("5_anim_kelp")
+autoplay = "default"
+frame = 2
+speed_scale = 0.7
+centered = false
+
+[node name="kelp_3" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(220, 12)
+sprite_frames = ExtResource("5_anim_kelp")
+autoplay = "default"
+frame = 3
+speed_scale = 0.5
+centered = false
+
+[node name="kelp_4" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-42, 212)
+sprite_frames = ExtResource("5_anim_kelp")
+autoplay = "default"
+frame = 4
+speed_scale = 0.6
+centered = false
+
+[node name="kelp_5" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(212, 132)
+sprite_frames = ExtResource("5_anim_kelp")
+autoplay = "default"
+frame = 5
+speed_scale = 0.7
+centered = false
+
+[node name="bubbles_6" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-2, 8)
+sprite_frames = ExtResource("2_anim_bubbles")
+autoplay = "default"
+frame = 0
+speed_scale = 0.6
+centered = false
+
+[node name="bubbles_7" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(178, 6)
+sprite_frames = ExtResource("2_anim_bubbles")
+autoplay = "default"
+frame = 2
+speed_scale = 0.6
+centered = false
+
+[node name="bubbles_8" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-8, 142)
+sprite_frames = ExtResource("2_anim_bubbles")
+autoplay = "default"
+frame = 4
+speed_scale = 0.6
+centered = false
+
+[node name="bubbles_9" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(184, 276)
+sprite_frames = ExtResource("2_anim_bubbles")
+autoplay = "default"
+frame = 6
+speed_scale = 0.6
+centered = false
+
+[node name="fish_blue_10" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-32, -48)
+sprite_frames = ExtResource("3_anim_fish_blue")
+autoplay = "default"
+frame = 0
+speed_scale = 0.5
+centered = false
+
+[node name="fish_blue_11" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(138, -28)
+sprite_frames = ExtResource("3_anim_fish_blue")
+autoplay = "default"
+frame = 3
+speed_scale = 0.5
+centered = false
+
+[node name="fish_gold_12" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(68, -68)
+sprite_frames = ExtResource("4_anim_fish_gold")
+autoplay = "default"
+frame = 6
+speed_scale = 0.5
+centered = false
+
+[node name="orb_cyan_13" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(42, 30)
+sprite_frames = ExtResource("6_anim_orb_cyan")
+autoplay = "default"
+frame = 0
+speed_scale = 0.7
+centered = false
+
+[node name="orb_cyan_14" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(134, 30)
+sprite_frames = ExtResource("6_anim_orb_cyan")
+autoplay = "default"
+frame = 1
+speed_scale = 0.7
+centered = false
+
+[node name="orb_cyan_15" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-14, 78)
+sprite_frames = ExtResource("6_anim_orb_cyan")
+autoplay = "default"
+frame = 2
+speed_scale = 0.7
+centered = false
+
+[node name="orb_cyan_16" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(188, 78)
+sprite_frames = ExtResource("6_anim_orb_cyan")
+autoplay = "default"
+frame = 3
+speed_scale = 0.7
+centered = false
+
+[node name="orb_cyan_17" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-14, 290)
+sprite_frames = ExtResource("6_anim_orb_cyan")
+autoplay = "default"
+frame = 4
+speed_scale = 0.7
+centered = false
+
+[node name="orb_cyan_18" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(188, 290)
+sprite_frames = ExtResource("6_anim_orb_cyan")
+autoplay = "default"
+frame = 5
+speed_scale = 0.7
+centered = false
+
+[node name="Ambient" type="Node2D" parent="."]
+
+[node name="bubble_0" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(90, 190)
+amount = 12
+lifetime = 5
+preprocess = 5
+randomness = 0.5
+texture = ExtResource("7_p_bubble")
+emission_shape = 3
+emission_rect_extents = Vector2(100, 190)
+direction = Vector2(0, -1)
+spread = 10
+gravity = Vector2(0, -2)
+initial_velocity_min = 6
+initial_velocity_max = 12
+color_ramp = SubResource("Gradient_fade")
+
+[node name="mote_1" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(95, 170)
+amount = 12
+lifetime = 6
+preprocess = 6
+randomness = 0.5
+texture = ExtResource("8_p_mote")
+emission_shape = 3
+emission_rect_extents = Vector2(105, 210)
+direction = Vector2(1, 0.2)
+spread = 180
+gravity = Vector2(0, 0)
+initial_velocity_min = 1
+initial_velocity_max = 3
+color_ramp = SubResource("Gradient_fade")
+
+[node name="spark_cyan_2" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(95, 170)
+amount = 6
+lifetime = 4
+preprocess = 4
+randomness = 0.5
+texture = ExtResource("9_p_spark_cyan")
+emission_shape = 3
+emission_rect_extents = Vector2(105, 210)
+direction = Vector2(0, -1)
+spread = 180
+gravity = Vector2(0, 0)
+initial_velocity_min = 1
+initial_velocity_max = 3
+material = SubResource("Mat_add")
+color_ramp = SubResource("Gradient_blink")
+
+[node name="Light" type="Node2D" parent="."]
+
+[node name="Shaft_0" type="Polygon2D" parent="Light"]
+color = Color(0.7, 0.95, 1, 0.045)
+polygon = PackedVector2Array(-10, -90, 6, -90, 306, 430, 290, 430)
+
+[node name="Shaft_1" type="Polygon2D" parent="Light"]
+color = Color(0.7, 0.95, 1, 0.04)
+polygon = PackedVector2Array(70, -90, 82, -90, 382, 430, 370, 430)
+
+[node name="Lights" type="Node2D" parent="."]
+
+[node name="magic_0" parent="Lights" instance=ExtResource("84_light_magic")]
+modulate = Color(0.4, 0.95, 1, 0.5)
+position = Vector2(45, 35)
+base_alpha = 0.275
+seed_offset = 0.74
+
+[node name="magic_1" parent="Lights" instance=ExtResource("84_light_magic")]
+modulate = Color(0.4, 0.95, 1, 0.5)
+position = Vector2(137, 35)
+base_alpha = 0.275
+seed_offset = 2.22
+
+[node name="magic_2" parent="Lights" instance=ExtResource("84_light_magic")]
+modulate = Color(0.4, 0.95, 1, 0.5)
+position = Vector2(-11, 83)
+base_alpha = 0.275
+seed_offset = 2.96
+
+[node name="magic_3" parent="Lights" instance=ExtResource("84_light_magic")]
+modulate = Color(0.4, 0.95, 1, 0.5)
+position = Vector2(191, 83)
+base_alpha = 0.275
+seed_offset = 0.74
+
+[node name="magic_4" parent="Lights" instance=ExtResource("84_light_magic")]
+modulate = Color(0.4, 0.95, 1, 0.5)
+position = Vector2(-11, 295)
+base_alpha = 0.275
+seed_offset = 0
+
+[node name="magic_5" parent="Lights" instance=ExtResource("84_light_magic")]
+modulate = Color(0.4, 0.95, 1, 0.5)
+position = Vector2(191, 295)
+base_alpha = 0.275
+seed_offset = 1.48
+
+[node name="Shadows" type="Node2D" parent="."]
+script = ExtResource("80_shadows")
+
+[node name="Foreground" type="Node2D" parent="."]
+z_index = 50
+z_as_relative = false
+
+[node name="Image" type="Sprite2D" parent="Foreground"]
+texture = ExtResource("81_fg")
+centered = false
+position = Vector2(-62, -88)
+
+[node name="Mood" type="CanvasModulate" parent="."]
+color = Color(0.86, 0.94, 1, 1)

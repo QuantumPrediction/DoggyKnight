@@ -23,6 +23,9 @@ const GOLDIE_FRAMES_PATH: String = "res://assets/sprites/goldie/goldie_frames.tr
 const MERLIN_FRAMES_PATH: String = "res://assets/sprites/merlin/merlin_frames.tres"
 ## 卷軸上的一行是幾像素(淡淡的字線、條目編號都對齊這個間距)。
 const LINE_GAP: float = 8.0
+## 自動試玩(bot_step):每隔幾秒滑一次、每次滑多遠(和整合試玩機器人一樣)。
+const BOT_SWIPE_SEC: float = 0.22
+const BOT_SWIPE_PX: float = 70.0
 
 var pulled_px: float = 0.0
 var ink_state: Ink = Ink.NONE
@@ -68,6 +71,7 @@ var _score_bump: float = 0.0
 var _merlin: AnimatedSprite2D
 var _merlin_bubble: MinigameSpeechBubble
 var _merlin_time: float = -1.0
+var _bot_timer: float = 0.0
 
 # 版面(畫面的邏輯像素),由 _on_layout 計算。
 var _roll_y: float = 30.0
@@ -290,6 +294,16 @@ func next_ink_stop_at() -> float:
 	if next_blot >= blots.size():
 		return INF
 	return blots[next_blot] - _stop_margin()
+
+
+## v2.7:自動試玩(MinigameBase.bot_step):每 bot_swipe_sec 秒往下滑一次,墨水漬停住時不動。
+func bot_step(delta: float) -> void:
+	if state != State.PLAYING:
+		return
+	_bot_timer -= delta
+	if _bot_timer <= 0.0 and ink_state == Ink.NONE:
+		_bot_timer = BOT_SWIPE_SEC
+		simulate_swipe(BOT_SWIPE_PX)
 
 
 ## 分數 = 拉出的長度(公分)+ 每次「完美!」的加分。

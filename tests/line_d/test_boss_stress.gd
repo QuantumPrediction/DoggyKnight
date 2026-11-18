@@ -69,3 +69,57 @@ func test_load_multiplier_scales_everything() -> void:
 	await wait_frames(2)
 	assert_eq(_stress.call(&"clone_count"), 4)
 	assert_eq(_stress.call(&"minion_count"), 24)
+
+
+# --- v2.7 DW4:雙龍 + 四位同伴(tests/line_d/dragon_stress_test.tscn) ---
+
+const DRAGON_SCENE := "res://tests/line_d/dragon_stress_test.tscn"
+
+
+func test_twin_dragons_and_four_companions_are_on_the_field() -> void:
+	_stress = (load(DRAGON_SCENE) as PackedScene).instantiate()
+	add_child(_stress)
+	await wait_frames(3)
+	assert_eq(_stress.call(&"dragon_count"), 2, "紅龍與白龍")
+	assert_eq((_stress.call(&"companions") as Array).size(), 4, "四位同伴")
+	assert_eq(_stress.call(&"minion_count"), 7, "火蜥蜴 4 + 雪人 3")
+	for dragon_name: String in ["RedDragon", "WhiteDragon"]:
+		var dragon := _stress.find_child(dragon_name, true, false) as AnimatedSprite2D
+		assert_not_null(dragon, dragon_name)
+		assert_not_null(dragon.sprite_frames, "%s 用 C 線的圖(或佔位圖)" % dragon_name)
+	for i in 80:
+		_stress.call(&"run_patterns", 0.1)
+	assert_true(int(_stress.get(&"breaths")) >= 4, "兩條龍輪流吐息(%d)" % _stress.get(&"breaths"))
+	assert_true(int(_stress.get(&"shots_spawned")) >= 80, "很多投射物(%d)" % _stress.get(&"shots_spawned"))
+	var stand_ins: PackedStringArray = _stress.call(&"stand_in_ids")
+	if stand_ins.has("tristan"):
+		assert_true(int(_stress.get(&"notes_fired")) >= 3, "崔斯坦的替身射音符")
+	if stand_ins.has("gawain"):
+		assert_true(int(_stress.get(&"slams")) >= 1, "高文的替身敲大鐵鎚")
+
+
+func test_red_dragon_sulks_while_white_dragon_roars() -> void:
+	_stress = (load(DRAGON_SCENE) as PackedScene).instantiate()
+	add_child(_stress)
+	await wait_frames(1)
+	var seen := false
+	for i in 140:
+		_stress.call(&"run_patterns", 0.1)
+		if bool(_stress.get(&"sulking")):
+			seen = true
+			break
+	assert_true(seen, "每一輪最後幾秒紅龍坐下生悶氣")
+	var red := _stress.find_child("RedDragon", true, false) as AnimatedSprite2D
+	var white := _stress.find_child("WhiteDragon", true, false) as AnimatedSprite2D
+	assert_eq(red.animation, &"sulk", "紅龍 sulk(生悶氣,不是受傷)")
+	assert_eq(white.animation, &"roar", "白龍 roar")
+
+
+func test_dragon_scene_measures_frame_time() -> void:
+	_stress = (load(DRAGON_SCENE) as PackedScene).instantiate()
+	add_child(_stress)
+	for i in 90:
+		await wait_frames(1)
+	var r: Dictionary = _stress.call(&"report")
+	assert_true(int(r["peak_nodes"]) > 120, "節點數(%d)" % r["peak_nodes"])
+	assert_true(int(r["samples"]) > 0)

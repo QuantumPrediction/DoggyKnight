@@ -42,8 +42,17 @@ func announce() -> void:
 	if appeared:
 		return
 	appeared = true
-	var id := data.id if data != null else StringName(name.to_snake_case())
-	EventBus.boss_appeared.emit(id)
+	EventBus.boss_appeared.emit(boss_bar_id())
+	emit_hp()
+
+
+## HUD 頭目血條顯示的名字(boss_appeared 的 id;HUD 用 tr("ENEMY_" + 大寫))。雙龍改成合在一起的名字。
+func boss_bar_id() -> StringName:
+	return data.id if data != null else StringName(name.to_snake_case())
+
+
+## 發 boss_hp_changed(頭目血條)。雙龍改成兩條龍的生命加起來。
+func emit_hp() -> void:
 	EventBus.boss_hp_changed.emit(hp, max_hp)
 
 
@@ -57,7 +66,7 @@ func begin_spawn(duration: float = -1.0) -> void:
 func _on_activated() -> void:
 	announce()
 	EventBus.boss_phase_changed.emit(boss_phase)
-	EventBus.boss_hp_changed.emit(hp, max_hp)
+	emit_hp()
 
 
 ## 無敵:出場時、怒吼(_is_enraging)時、倒下演出時。這時受到的傷害一律無效。
@@ -98,7 +107,7 @@ func _speed_mult() -> float:
 # --- 生命與第二階段 -----------------------------------------------------------------
 
 func _on_damaged(_amount: int) -> void:
-	EventBus.boss_hp_changed.emit(hp, max_hp)
+	emit_hp()
 	if boss_phase == 1 and hp > 0 and float(hp) <= float(max_hp) * phase2_threshold:
 		boss_phase = 2
 		EventBus.boss_phase_changed.emit(2)
@@ -107,6 +116,10 @@ func _on_damaged(_amount: int) -> void:
 
 func _enter_phase_two() -> void:
 	pass
+
+
+func _on_healed(_amount: int) -> void:
+	emit_hp()
 
 
 # --- 召喚 -----------------------------------------------------------------------

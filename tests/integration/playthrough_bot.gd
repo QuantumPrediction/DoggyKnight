@@ -45,7 +45,7 @@ func _ready() -> void:
 		elif arg.begins_with("--seed="):
 			rng_seed = int(arg.trim_prefix("--seed="))
 		elif arg.begins_with("--chapter="):
-			chapter = clampi(int(arg.trim_prefix("--chapter=")), 1, 3)
+			chapter = clampi(int(arg.trim_prefix("--chapter=")), 1, GameState.CHAPTER_COUNT)
 		elif arg == "--hard":
 			hard = true
 	if not shots_dir.is_empty():
@@ -118,6 +118,10 @@ func _play_level() -> void:
 	var level_id := String(flow.get_session().level.id) if flow.get_session() != null else ""
 	if _level_clock > 6.0:
 		await _shot_once("level_" + level_id, "01_level_%s" % level_id)
+	if _level_clock > 22.0:   # 關卡標題卡早已消失,拍戰鬥正激烈的一刻
+		await _shot_once("level_mid_" + level_id, "01_level_%s_mid" % level_id)
+	if _level_clock > 40.0:   # 頭目戰比較長:再拍一張,頭目與預警都在畫面上
+		await _shot_once("level_late_" + level_id, "01_level_%s_late" % level_id)
 	_press_ultimate_if_ready()
 	_steer()
 
@@ -157,6 +161,7 @@ func _steer() -> void:
 		if targetable and distance < nearest_distance:
 			nearest_distance = distance
 			nearest = enemy
+	danger += _telegraph_escape(player.global_position)
 	var direction := Vector2.ZERO
 	if danger != Vector2.ZERO:
 		direction = danger.normalized()
@@ -166,6 +171,44 @@ func _steer() -> void:
 	elif nearest != null and nearest_distance > ATTACK_DISTANCE:
 		direction = (nearest.global_position - player.global_position).normalized()
 	player.call(&"set_move_override", direction)
+
+
+## v2.7:新頭目(章魚王、雙龍、莫德雷德等)把預警直接放在場上(AttackTelegraph,群組 combat_fx),
+## 不在敵人的 _telegraph 欄位裡。像真人玩家一樣看地上的紅圈、扇形與紅線:站在裡面(或很接近)就往外閃。
+const TELEGRAPH_MARGIN: float = 10.0
+
+
+func _telegraph_escape(at: Vector2) -> Vector2:
+	var push := Vector2.ZERO
+	for node in get_tree().get_nodes_in_group(&"combat_fx"):
+		var mark := node as AttackTelegraph
+		if mark == null or not is_instance_valid(mark) or not mark.visible:
+			continue
+		var origin := mark.global_position
+		var urgency := 1.0 + mark.progress * 2.0
+		match mark.shape:
+			AttackTelegraph.Shape.CIRCLE:
+				var offset := at - origin
+				var r := mark.radius * absf(mark.global_scale.x) + TELEGRAPH_MARGIN
+				if offset.length() < r:
+					push += (offset.normalized() if offset.length() > 0.5 else Vector2.RIGHT) * (r - offset.length() + 4.0) * urgency
+			AttackTelegraph.Shape.LINE:
+				var dir := mark.global_transform.basis_xform(mark.direction).normalized()
+				var rel := at - origin
+				var along := rel.dot(dir)
+				var side := rel.dot(dir.orthogonal())
+				var half := mark.width * 0.5 + TELEGRAPH_MARGIN
+				if along > -TELEGRAPH_MARGIN and along < mark.length + TELEGRAPH_MARGIN and absf(side) < half:
+					var away := dir.orthogonal() * (1.0 if side >= 0.0 else -1.0)
+					push += away * (half - absf(side) + 4.0) * urgency * 2.0
+			AttackTelegraph.Shape.SECTOR:
+				var dir := mark.global_transform.basis_xform(mark.direction).normalized()
+				var rel := at - origin
+				var r := mark.radius + TELEGRAPH_MARGIN
+				if rel.length() < r and absf(dir.angle_to(rel)) < mark.half_angle + 0.25:
+					var side := 1.0 if dir.cross(rel) >= 0.0 else -1.0
+					push += (dir.orthogonal() * side + rel.normalized()).normalized() * (r - rel.length() + 4.0) * urgency
+	return push
 
 
 func _on_results() -> void:
@@ -192,22 +235,12 @@ func _play_camp() -> void:
 	camp.call(&"open_minigame")
 	await _frames(5)
 	var minigame := camp.call(&"get_minigame") as MinigameBase
-	var swipe_timer := 0.0
 	var shot_taken := false
 	while minigame != null and is_instance_valid(minigame) and minigame.state != MinigameBase.State.CLOSED:
 		await get_tree().process_frame
 		if minigame.state == MinigameBase.State.PLAYING:
-			swipe_timer -= get_process_delta_time()
-			if minigame is WakeMinigame:   # v2.6:第二、三章的「叫醒騎士」節奏小遊戲(D 線)
-				var wake := minigame as WakeMinigame
-				for n: Dictionary in wake.notes:
-					if int(n["result"]) == WakeMinigame.Hit.NONE and wake.play_elapsed >= float(n["time"]) - 0.02:
-						wake.tap_lane(int(n["lane"]))
-			elif minigame is ScrollMinigame:
-				var scroll := minigame as ScrollMinigame
-				if swipe_timer <= 0.0 and scroll.ink_state == ScrollMinigame.Ink.NONE:
-					swipe_timer = 0.22
-					scroll.simulate_swipe(70.0)
+			# v2.7:每個小遊戲都有 bot_step()(D 線,MinigameBase),捲軸、叫醒騎士、接住跳跳魚都會自己玩
+			minigame.bot_step(get_process_delta_time())
 			if not shot_taken and minigame.play_elapsed > 4.0:
 				shot_taken = true
 				await _shot("05_minigame")

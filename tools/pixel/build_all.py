@@ -64,7 +64,10 @@ import art_v26_ch1  # noqa: E402
 import art_v26_story  # noqa: E402
 import art_v26_title  # noqa: E402
 import art_v26_world  # noqa: E402
+import art_v27_title  # noqa: E402
+import art_v27_world  # noqa: E402
 import music_gen  # noqa: E402
+import music_v27  # noqa: E402
 import paint  # noqa: E402
 import sfx_gen  # noqa: E402
 from palette import PALETTE, rgba  # noqa: E402
@@ -146,6 +149,7 @@ def main() -> None:
         build_sheet("res://assets/sprites/%s" % code, code, anims, size)
         sheets[code] = anims
     art_v26_cast.write_all()                                     # v2.6 C 角色: new cast, portraits, FX, knight lift
+    __import__("art_v27_cast").write_all()                       # v2.7 C 角色: chapter 4-6 cast, portraits, FX
     for name, (fn, size) in art_cast.PROJECTILES.items():
         anims = fn()
         build_sheet("res://assets/fx/%s" % name, name, anims, size)
@@ -170,9 +174,13 @@ def main() -> None:
     art_v26_ch1.write_all()
     art_v26_title.write_all()
     art_v26_story.write_all()
+    art_v27_world.write_all()                                    # v2.7 (C 世界): chapter 4-6 backgrounds
+    art_v27_title.write_all()                                    # v2.7 (C 世界): title backdrops 4-6
+    __import__("art_v27_story").write_all()                      # v2.7 C 繪本: chapter 4-6 storybook pages
     sfx_gen.write_all()
     if "--no-music" not in sys.argv:
         music_gen.write_all()
+        music_v27.write_all()                                    # v2.7 (C 世界): field_4 ... boss_6
     write_ofl_text()
 
     if preview_dir:

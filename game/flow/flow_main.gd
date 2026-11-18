@@ -4,7 +4,7 @@ extends Node
 ##
 ## 流程:標題 →(新遊戲:開場繪本 prologue)→ 關卡 →(升級選把戲)→ 過關結算 →(1-2、1-4 之後)營地 → 下一關
 ##       金毛倒下 → 失敗結算 → 再試一次(立即回到戰鬥,不重播對白)或回標題
-##       打敗黑騎士(1-6)→ 結局對白 → 結算(is_final = true)→ 第二章預告 teaser → 回標題
+##       打敗這一章的頭目(N-6)→ 結局對白 → 結算(is_final = true)→ 這一章的預告 → 回標題
 ## 所有畫面切換都在這個檔案裡,而且都經過轉場(_go:蓋住 → 換畫面 → 露出;見 FlowTransition)。
 ## 過關與失敗的結算畫面直接疊在場地上(不蓋住),讓慶祝與結算連成一氣。
 ##
@@ -71,7 +71,7 @@ extends Node
 ##   - chapters[N - 1] = 第 N 章(data/levels/chapter_<N>.tres)。每章是獨立的一輪(等級 1、沒有把戲;
 ##     營地訓練帶過去)。這一輪的章 = _run_chapter = GameState.chapter;chapter = 這一章的 ChapterData。
 ##   - 新遊戲:標題在 new_game_pressed 之前設定 GameState.chapter;只能選 1 至 max_selectable_chapter()
-##     (= min(chapters_cleared + 1, 3)),超過就用最高可選的章。播這一章的開場繪本(cN_prologue)。
+##     (= min(chapters_cleared + 1, GameState.CHAPTER_COUNT)),超過就用最高可選的章。播這一章的開場繪本(cN_prologue)。
 ##   - 打完第 N 章的最後一關:GameState.chapters_cleared = max(chapters_cleared, N),chapter_cleared = true,
 ##     立即存檔;結局 → 結算 → 這一章的預告(cN_teaser)→ 回標題。回標題前 GameState.chapter 改成
 ##     剛解鎖的下一章(標題預設選它)。
@@ -81,7 +81,15 @@ extends Node
 ##     boss_music。音樂檔不存在時退回 field / boss(_track_or)。
 ##   - 結算資料多了 chapter、chapter_name、chapters_cleared、chapter_count、next_chapter_unlocked。
 ##   - 無盡試煉:EndlessWaves 用 tier = chapters_cleared(打完第二、三章才加入那一章的敵人與背景)。
-
+##
+## v2.7 六章(DEV_PLAN 4.14、第 20 節 BW1 至 BW7):
+##   - 章數一律是 GameState.CHAPTER_COUNT(= 6),這個檔案不再寫死章數:載入 chapter_1 至 chapter_6、
+##     可以選的章、存檔(SaveStore 第 6 版)、結算的 chapter_count 都用它。
+##   - 結算資料多了 game_complete:打完最後一章(第六章)的最後一關 = true(C 線的結算顯示「全劇終」
+##     UI_GAME_END;其他章的最後一關顯示「第 N 章 完」)。之後照樣播 c6_teaser(全破之後的訊息)再回標題。
+##   - BW4:過關後的對白(story_after)播完,要等對白框淡出(看不見)才出結算;開打前的對白也一樣,
+##     等淡出之後才發 level_started(標題卡)。正式對白框淡出約 0.18 秒;最多等 story_fade_wait 秒。
+##   - 無盡試煉:tier 最高到 6,打完第四至六章再加入那一章的敵人、頭目與背景(data/levels/endless.tres)。
 signal state_changed(new_state: State)
 
 ## SWITCHING:轉場中(舊畫面不再接受按鈕,新畫面還沒出現)。
@@ -93,9 +101,8 @@ const HARD: StringName = &"hard"
 const STORY_MUSIC: StringName = &"story"
 
 const DEFAULT_CHAPTER: String = "res://data/levels/chapter_1.tres"
-## v2.6:第 N 章的資料檔。
+## v2.6:第 N 章的資料檔(N = 1 至 GameState.CHAPTER_COUNT)。
 const CHAPTER_PATH: String = "res://data/levels/chapter_%d.tres"
-const CHAPTER_COUNT: int = 3
 const FIELD_MUSIC: StringName = &"field"
 const BOSS_MUSIC: StringName = &"boss"
 const MUSIC_DIR: String = "res://assets/music/"
@@ -108,7 +115,7 @@ const ENDLESS_MODE: StringName = &"endless"
 ## 目前這一輪的章(執行時依 GameState.chapter 換成 chapters 裡的那一章)。
 ## 在加進場景樹之前設定的話,當作第一章的替代(舊的測試用法)。
 @export var chapter: ChapterData
-## v2.6:三章,chapters[0] = 第一章;留空就載入 data/levels/chapter_1.tres 至 chapter_3.tres。
+## chapters[0] = 第一章;留空就載入 data/levels/chapter_1.tres 至 chapter_<GameState.CHAPTER_COUNT>.tres。
 @export var chapters: Array[ChapterData] = []
 ## 難度參數;留空就用 game/progression/difficulty.tres。
 @export var difficulty: DifficultyData
@@ -120,6 +127,8 @@ const ENDLESS_MODE: StringName = &"endless"
 @export var events: LevelEventTable
 ## v2.4 無盡試煉;留空就用 data/levels/endless.tres。
 @export var endless_data: EndlessData
+## v2.7(BW4 測試用):對白框的場景;留空就用 ui/dialogue/dialogue_box.tscn(use_stand_ins 時用替身)。
+@export var dialogue_scene: PackedScene
 ## 存檔位置(測試與沙盒用別的檔名,才不會蓋掉正式存檔)。
 @export var save_path: String = SaveStore.DEFAULT_PATH
 ## true:一律用 game/flow/stubs/ 的替身(沙盒用,不受別線影響)。
@@ -156,7 +165,7 @@ var _session_waiting: bool = false
 var _pause_when_ready: bool = false
 ## 這一輪冒險的難度(存檔;「繼續冒險」時寫回 GameState.difficulty)。
 var _run_difficulty: StringName = NORMAL
-## v2.6:這一輪冒險的章(1 至 3;存檔;「繼續冒險」時寫回 GameState.chapter)。
+## v2.6:這一輪冒險的章(1 至 GameState.CHAPTER_COUNT;存檔;「繼續冒險」時寫回 GameState.chapter)。
 var _run_chapter: int = 1
 ## 這一關開打前要先播 story_before(新的一關、繼續冒險;重試時為 false)。
 var _story_before_pending: bool = false
@@ -398,19 +407,24 @@ func get_run_difficulty() -> StringName:
 	return _run_difficulty
 
 
-## v2.6:這一輪冒險的章(1 至 3;「繼續冒險」會回到這一章)。
+## v2.6:這一輪冒險的章(1 至 GameState.CHAPTER_COUNT;「繼續冒險」會回到這一章)。
 func get_run_chapter() -> int:
 	return _run_chapter
 
 
-## v2.6:有幾章的資料(正式遊戲是 3)。
+## 有幾章可以玩:GameState.CHAPTER_COUNT(正式遊戲是 6);資料檔缺了後面的章時,只算到最後一個有資料的章。
 func chapter_count() -> int:
 	var count := 0
 	for data in chapters:
-		if data == null:
+		if data == null or count >= GameState.CHAPTER_COUNT:
 			break
 		count += 1
 	return maxi(1, count)
+
+
+## v2.7:這一章是不是最後一章(打完就是全劇終)。
+func is_final_chapter(number: int) -> bool:
+	return number >= GameState.CHAPTER_COUNT
 
 
 ## v2.6:第 number 章的資料(1 起算;沒有那一章時傳回第一章)。
@@ -419,7 +433,7 @@ func get_chapter_data(number: int) -> ChapterData:
 	return chapters[index] if index < chapters.size() and chapters[index] != null else chapter
 
 
-## v2.6:標題可以選的最高章 = min(chapters_cleared + 1, 章數)(DEV_PLAN 4.13)。
+## 標題可以選的最高章 = min(chapters_cleared + 1, GameState.CHAPTER_COUNT)(DEV_PLAN 4.13、4.14)。
 func max_selectable_chapter() -> int:
 	return clampi(GameState.chapters_cleared + 1, 1, chapter_count())
 
@@ -669,6 +683,9 @@ func _begin_level() -> void:
 		_freeze_world(true)
 		if not await _play_story(story) or session != _session or state != State.STORY:
 			return
+		# BW4:對白框淡出之後才發 level_started(標題卡不會從還在淡出的對白框底下冒出來)
+		if not await _wait_story_hidden() or session != _session or state != State.STORY:
+			return
 		_freeze_world(false)
 		_set_state(State.LEVEL)
 	level_events.reset_level()
@@ -738,6 +755,10 @@ func _on_level_finished(victory: bool) -> void:
 			var track := STORY_MUSIC if chapter.is_last(_level_index) else _level_track(level)
 			_music(&"play", [track, difficulty.story_music_fade])
 			if not await _play_story(story) or session != _session or state != State.STORY:
+				return
+			# BW4:過關慶祝 → story_after → 結算。對白框(第 40 層)播完後還要淡出一下;結算畫面(第 30 層)
+			# 等它完全看不見才出現,不會被對白蓋住。
+			if not await _wait_story_hidden() or session != _session or state != State.STORY:
 				return
 		_set_state(State.RESULTS)
 		_screen = _add_ui(FlowParts.RESULTS, _screen_layer)
@@ -811,6 +832,7 @@ func _build_result(victory: bool) -> Dictionary:
 		"chapters_cleared": GameState.chapters_cleared,
 		"chapter_count": chapter_count(),
 		"next_chapter_unlocked": victory and chapter.is_last(_level_index) and _run_chapter < chapter_count(),
+		"game_complete": victory and chapter.is_last(_level_index) and is_final_chapter(_run_chapter),
 	}
 
 
@@ -852,6 +874,7 @@ func _build_endless_result() -> Dictionary:
 		"chapters_cleared": GameState.chapters_cleared,
 		"chapter_count": chapter_count(),
 		"next_chapter_unlocked": false,
+		"game_complete": false,
 	}
 
 
@@ -879,7 +902,7 @@ func _enter_camp() -> void:
 
 
 ## 結算(一章完)之後:這一章的預告 → 回標題。chapter_cleared、chapters_cleared 已在打敗頭目時設定;
-## 這裡再存一次。v2.6:標題預設選剛解鎖的下一章(第三章打完就留在第三章)。
+## 這裡再存一次。v2.6:標題預設選剛解鎖的下一章(最後一章打完就留在最後一章;第六章的預告是全破之後的訊息)。
 func _finish_chapter() -> void:
 	GameState.chapter_cleared = true
 	GameState.chapters_cleared = maxi(GameState.chapters_cleared, _run_chapter)
@@ -894,11 +917,11 @@ func _finish_chapter() -> void:
 
 # --- 章(v2.6) ---
 
-## chapters 留空時載入 data/levels/chapter_1.tres 至 chapter_3.tres;在加進場景樹之前放了 chapter 的話,
-## 用它當第一章(測試)。
+## chapters 留空時載入 data/levels/chapter_1.tres 至 chapter_<GameState.CHAPTER_COUNT>.tres;
+## 在加進場景樹之前放了 chapter 的話,用它當第一章(測試)。
 func _init_chapters() -> void:
 	if chapters.is_empty():
-		for number in range(1, CHAPTER_COUNT + 1):
+		for number in range(1, GameState.CHAPTER_COUNT + 1):
 			var path := CHAPTER_PATH % number
 			chapters.append(load(path) as ChapterData if ResourceLoader.exists(path) else null)
 		if chapter != null:
@@ -1037,7 +1060,7 @@ func _go(step: Callable) -> void:
 # --- 故事(v2.3,BS2) ---
 
 func _add_dialogue_box() -> void:
-	var scene := FlowParts.optional_scene(FlowParts.DIALOGUE, use_stand_ins)
+	var scene := dialogue_scene if dialogue_scene != null else FlowParts.optional_scene(FlowParts.DIALOGUE, use_stand_ins)
 	if scene == null:
 		push_warning("FlowMain: 沒有對白框,略過全部故事")
 		return
@@ -1061,6 +1084,37 @@ func _play_story(script: DialogueScript) -> bool:
 	_story_id = &""
 	save_now()                # GameState.story_seen(對白框已記下)
 	return true
+
+
+## BW4:對白框還看得見嗎(播完之後的淡出也算)。對白框有 is_showing() 就問它;否則看它的直接子節點
+## (C 線正式對白框的 DialogueRoot、替身的 Root)是否還 visible。
+func is_dialogue_showing() -> bool:
+	var box := _dialogue_box
+	if box == null or not is_instance_valid(box) or not box.is_inside_tree():
+		return false
+	if box.has_method(&"is_showing"):
+		return bool(box.call(&"is_showing"))
+	if box.has_method(&"is_active") and bool(box.call(&"is_active")):
+		return true
+	if box is CanvasLayer and not (box as CanvasLayer).visible:
+		return false
+	for child in box.get_children():
+		var item := child as CanvasItem
+		if item != null and item.visible and item.modulate.a > 0.0:
+			return true
+	return false
+
+
+## BW4:等對白框淡出(看不見)。最多等 difficulty.story_fade_wait 秒(真實時間,保證不會卡住)。
+## 中途離開畫面(_leave_current → _stop_story)時傳回 false,呼叫的一方就不再繼續。
+func _wait_story_hidden() -> bool:
+	var serial := _story_serial
+	var deadline := Time.get_ticks_msec() + int(maxf(0.0, difficulty.story_fade_wait) * 1000.0)
+	while is_dialogue_showing() and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
+		if serial != _story_serial or not is_inside_tree():
+			return false
+	return serial == _story_serial and is_inside_tree()
 
 
 ## 離開畫面時:還在播的對白直接結束(等著它的步驟不再繼續)。

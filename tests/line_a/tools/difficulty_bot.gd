@@ -11,8 +11,7 @@ extends "res://tests/integration/playthrough_bot.gd"
 
 const CHAPTER_PATH := "res://data/levels/chapter_1.tres"
 
-var hard: bool = false
-var approx: bool = false
+var approx: bool = false                        ## (--hard 由試玩機器人本身處理:父類別的 hard)
 var _downs_by_level: Dictionary = {}
 var _damage_by_level: Dictionary = {}
 var _fails_by_level: Dictionary = {}
@@ -20,9 +19,7 @@ var _fails_by_level: Dictionary = {}
 
 func _run() -> void:
 	for arg in OS.get_cmdline_user_args():
-		if arg == "--hard":
-			hard = true
-		elif arg == "--approx":
+		if arg == "--approx":
 			approx = true
 	GameState.difficulty = &"hard" if hard else &"normal"
 	GameState.chapter_cleared = hard        # 困難模式要先打完第一章才能選(B 線 BS4)
