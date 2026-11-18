@@ -1,28 +1,22 @@
 [gd_scene format=3]
 
-[ext_resource type="Texture2D" path="res://assets/backgrounds/tower_top.png" id="1_bg"]
-[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/brazier_frames.tres" id="2_anim_brazier"]
-[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/flag_morgana_frames.tres" id="3_anim_flag_morgana"]
-[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/glint_star_frames.tres" id="4_anim_glint_star"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/volcano.png" id="1_bg"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/lava_bubble_frames.tres" id="2_anim_lava_bubble"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/lava_flow_frames.tres" id="3_anim_lava_flow"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_ash.png" id="4_p_ash"]
 [ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_ember.png" id="5_p_ember"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_mist.png" id="6_p_mist"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_spark_violet.png" id="7_p_spark_violet"]
-[ext_resource type="Script" path="res://assets/backgrounds/lightning.gd" id="90_lightning"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_smoke_dark.png" id="6_p_smoke_dark"]
 [ext_resource type="Script" path="res://assets/backgrounds/actor_shadows.gd" id="80_shadows"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/tower_top_fg.png" id="81_fg"]
-[ext_resource type="PackedScene" path="res://assets/fx/lights/sun.tscn" id="84_light_sun"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/volcano_fg.png" id="81_fg"]
 [ext_resource type="PackedScene" path="res://assets/fx/lights/torch.tscn" id="84_light_torch"]
-
-[sub_resource type="CanvasItemMaterial" id="Mat_add"]
-blend_mode = 1
 
 [sub_resource type="Gradient" id="Gradient_fade"]
 offsets = PackedFloat32Array(0, 0.15, 0.8, 1)
 colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
 
-[sub_resource type="Gradient" id="Gradient_blink"]
-offsets = PackedFloat32Array(0, 0.2, 0.35, 0.5, 0.65, 0.8, 1)
-colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0.2, 1, 1, 1, 1, 1, 1, 1, 0.3, 1, 1, 1, 1, 1, 1, 1, 0)
+[sub_resource type="Curve" id="Curve_grow"]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [node name="Background" type="Node2D"]
 
@@ -31,141 +25,230 @@ texture = ExtResource("1_bg")
 centered = false
 position = Vector2(-62, -88)
 
-[node name="Lightning" type="Node2D" parent="."]
-script = ExtResource("90_lightning")
-
 [node name="Anim" type="Node2D" parent="."]
 
-[node name="brazier_0" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-22, 54)
-sprite_frames = ExtResource("2_anim_brazier")
+[node name="lava_flow_0" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(0, 12)
+sprite_frames = ExtResource("3_anim_lava_flow")
+autoplay = "default"
+frame = 4
+speed_scale = 1
+centered = false
+
+[node name="lava_flow_1" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(126, 12)
+sprite_frames = ExtResource("3_anim_lava_flow")
+autoplay = "default"
+frame = 4
+speed_scale = 1
+centered = false
+
+[node name="lava_flow_2" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(180, 12)
+sprite_frames = ExtResource("3_anim_lava_flow")
+autoplay = "default"
+frame = 5
+speed_scale = 1
+centered = false
+
+[node name="lava_flow_3" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-22, 52)
+sprite_frames = ExtResource("3_anim_lava_flow")
+autoplay = "default"
+frame = 4
+speed_scale = 0.8
+centered = false
+
+[node name="lava_flow_4" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(48, 54)
+sprite_frames = ExtResource("3_anim_lava_flow")
 autoplay = "default"
 frame = 0
-speed_scale = 1
+speed_scale = 0.8
 centered = false
 
-[node name="brazier_1" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(192, 54)
-sprite_frames = ExtResource("2_anim_brazier")
-autoplay = "default"
-frame = 1
-speed_scale = 1
-centered = false
-
-[node name="brazier_2" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-22, 298)
-sprite_frames = ExtResource("2_anim_brazier")
+[node name="lava_flow_5" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(118, 50)
+sprite_frames = ExtResource("3_anim_lava_flow")
 autoplay = "default"
 frame = 2
-speed_scale = 1
+speed_scale = 0.8
 centered = false
 
-[node name="brazier_3" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(192, 298)
-sprite_frames = ExtResource("2_anim_brazier")
+[node name="lava_flow_6" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(188, 52)
+sprite_frames = ExtResource("3_anim_lava_flow")
 autoplay = "default"
 frame = 3
-speed_scale = 1
+speed_scale = 0.8
 centered = false
 
-[node name="flag_morgana_4" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(22, 36)
-sprite_frames = ExtResource("3_anim_flag_morgana")
+[node name="lava_bubble_7" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-2, 146)
+sprite_frames = ExtResource("2_anim_lava_bubble")
 autoplay = "default"
 frame = 0
-speed_scale = 1.2
+speed_scale = 0.8
 centered = false
 
-[node name="flag_morgana_5" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(146, 36)
-sprite_frames = ExtResource("3_anim_flag_morgana")
+[node name="lava_bubble_8" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(8, 150)
+sprite_frames = ExtResource("2_anim_lava_bubble")
+autoplay = "default"
+frame = 0
+speed_scale = 0.7
+centered = false
+
+[node name="lava_bubble_9" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(170, 220)
+sprite_frames = ExtResource("2_anim_lava_bubble")
+autoplay = "default"
+frame = 4
+speed_scale = 0.8
+centered = false
+
+[node name="lava_bubble_10" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(180, 224)
+sprite_frames = ExtResource("2_anim_lava_bubble")
+autoplay = "default"
+frame = 2
+speed_scale = 0.7
+centered = false
+
+[node name="lava_bubble_11" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-38, 266)
+sprite_frames = ExtResource("2_anim_lava_bubble")
+autoplay = "default"
+frame = 0
+speed_scale = 0.8
+centered = false
+
+[node name="lava_bubble_12" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-28, 270)
+sprite_frames = ExtResource("2_anim_lava_bubble")
+autoplay = "default"
+frame = 0
+speed_scale = 0.7
+centered = false
+
+[node name="lava_flow_13" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-42, 334)
+sprite_frames = ExtResource("3_anim_lava_flow")
+autoplay = "default"
+frame = 2
+speed_scale = 0.9
+centered = false
+
+[node name="lava_flow_14" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(58, 338)
+sprite_frames = ExtResource("3_anim_lava_flow")
 autoplay = "default"
 frame = 1
-speed_scale = 1.2
+speed_scale = 0.9
 centered = false
 
-[node name="glint_star_6" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(88, -68)
-sprite_frames = ExtResource("4_anim_glint_star")
+[node name="lava_flow_15" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(158, 332)
+sprite_frames = ExtResource("3_anim_lava_flow")
 autoplay = "default"
 frame = 0
-speed_scale = 0.5
-centered = false
-
-[node name="glint_star_7" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(178, -58)
-sprite_frames = ExtResource("4_anim_glint_star")
-autoplay = "default"
-frame = 3
-speed_scale = 0.5
-centered = false
-
-[node name="glint_star_8" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-32, 2)
-sprite_frames = ExtResource("4_anim_glint_star")
-autoplay = "default"
-frame = 6
-speed_scale = 0.5
+speed_scale = 0.9
 centered = false
 
 [node name="Ambient" type="Node2D" parent="."]
 
-[node name="mist_0" type="CPUParticles2D" parent="Ambient"]
-position = Vector2(110, 160)
-amount = 16
-lifetime = 6
-preprocess = 6
-randomness = 0.5
-texture = ExtResource("6_p_mist")
-emission_shape = 3
-emission_rect_extents = Vector2(170, 240)
-direction = Vector2(1, 0.1)
-spread = 8
-gravity = Vector2(0, 0)
-initial_velocity_min = 14
-initial_velocity_max = 22
-color_ramp = SubResource("Gradient_fade")
-
-[node name="spark_violet_1" type="CPUParticles2D" parent="Ambient"]
-position = Vector2(95, 170)
-amount = 10
-lifetime = 4
-preprocess = 4
-randomness = 0.5
-texture = ExtResource("7_p_spark_violet")
-emission_shape = 3
-emission_rect_extents = Vector2(105, 210)
-direction = Vector2(0, -1)
-spread = 180
-gravity = Vector2(0, 0)
-initial_velocity_min = 2
-initial_velocity_max = 5
-material = SubResource("Mat_add")
-color_ramp = SubResource("Gradient_blink")
-
-[node name="ember_2" type="CPUParticles2D" parent="Ambient"]
-position = Vector2(90, 155)
-amount = 6
-lifetime = 2
-preprocess = 2
+[node name="ember_0" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(90, 190)
+amount = 22
+lifetime = 3
+preprocess = 3
 randomness = 0.5
 texture = ExtResource("5_p_ember")
 emission_shape = 3
-emission_rect_extents = Vector2(90, 105)
-direction = Vector2(0.3, -1)
-spread = 40
-gravity = Vector2(0, -2)
+emission_rect_extents = Vector2(130, 150)
+direction = Vector2(0.2, -1)
+spread = 30
+gravity = Vector2(0, -3)
 initial_velocity_min = 8
-initial_velocity_max = 14
+initial_velocity_max = 16
+color_ramp = SubResource("Gradient_fade")
+
+[node name="ash_1" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(90, 120)
+amount = 14
+lifetime = 6
+preprocess = 6
+randomness = 0.5
+texture = ExtResource("4_p_ash")
+emission_shape = 3
+emission_rect_extents = Vector2(130, 200)
+direction = Vector2(0.5, 1)
+spread = 30
+gravity = Vector2(0, 1)
+initial_velocity_min = 4
+initial_velocity_max = 8
+color_ramp = SubResource("Gradient_fade")
+
+[node name="smoke_dark_2" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(90, -55)
+amount = 8
+lifetime = 6
+preprocess = 6
+randomness = 0.5
+texture = ExtResource("6_p_smoke_dark")
+emission_shape = 3
+emission_rect_extents = Vector2(150, 25)
+direction = Vector2(1, -0.2)
+spread = 10
+gravity = Vector2(0, 0)
+initial_velocity_min = 6
+initial_velocity_max = 10
+scale_amount_min = 1.0
+scale_amount_max = 2.0
+scale_amount_curve = SubResource("Curve_grow")
 color_ramp = SubResource("Gradient_fade")
 
 [node name="Lights" type="Node2D" parent="."]
 
-[node name="sun_0" parent="Lights" instance=ExtResource("84_light_sun")]
-modulate = Color(0.6, 0.65, 1, 0.5)
-position = Vector2(-44, -44)
-base_alpha = 0.22
+[node name="torch_0" parent="Lights" instance=ExtResource("84_light_torch")]
+position = Vector2(4, 152)
+base_alpha = 0.44
+seed_offset = 0.74
+
+[node name="torch_1" parent="Lights" instance=ExtResource("84_light_torch")]
+position = Vector2(176, 226)
+base_alpha = 0.44
 seed_offset = 0
+
+[node name="torch_2" parent="Lights" instance=ExtResource("84_light_torch")]
+position = Vector2(-32, 272)
+base_alpha = 0.44
+seed_offset = 0
+
+[node name="torch_3" parent="Lights" instance=ExtResource("84_light_torch")]
+position = Vector2(90, 58)
+base_alpha = 0.77
+seed_offset = 0
+
+[node name="torch_4" parent="Lights" instance=ExtResource("84_light_torch")]
+position = Vector2(8, 32)
+base_alpha = 0.55
+seed_offset = 0
+
+[node name="torch_5" parent="Lights" instance=ExtResource("84_light_torch")]
+position = Vector2(138, 32)
+base_alpha = 0.55
+seed_offset = 0
+
+[node name="torch_6" parent="Lights" instance=ExtResource("84_light_torch")]
+position = Vector2(30, 338)
+base_alpha = 0.55
+seed_offset = 0
+
+[node name="torch_7" parent="Lights" instance=ExtResource("84_light_torch")]
+position = Vector2(150, 336)
+base_alpha = 0.55
+seed_offset = 2.96
 
 [node name="Shadows" type="Node2D" parent="."]
 script = ExtResource("80_shadows")
@@ -179,25 +262,5 @@ texture = ExtResource("81_fg")
 centered = false
 position = Vector2(-62, -88)
 
-[node name="torch_0" parent="Foreground" instance=ExtResource("84_light_torch")]
-position = Vector2(-16, 56)
-base_alpha = 0.66
-seed_offset = 0.74
-
-[node name="torch_1" parent="Foreground" instance=ExtResource("84_light_torch")]
-position = Vector2(198, 56)
-base_alpha = 0.66
-seed_offset = 0
-
-[node name="torch_2" parent="Foreground" instance=ExtResource("84_light_torch")]
-position = Vector2(-16, 300)
-base_alpha = 0.66
-seed_offset = 2.22
-
-[node name="torch_3" parent="Foreground" instance=ExtResource("84_light_torch")]
-position = Vector2(198, 300)
-base_alpha = 0.66
-seed_offset = 1.48
-
 [node name="Mood" type="CanvasModulate" parent="."]
-color = Color(0.92, 0.92, 1, 1)
+color = Color(1, 0.93, 0.88, 1)

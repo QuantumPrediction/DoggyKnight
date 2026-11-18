@@ -166,14 +166,13 @@ func test_legacy_save_counts_as_chapter_one_cleared() -> void:
 
 func test_title_backdrop_follows_the_highest_unlocked_chapter() -> void:
 	var textures: Array[Texture2D] = []
-	for cleared in [0, 1, 2, 3]:
+	for cleared in [0, 1, 2]:
 		var t := _title(cleared)
-		assert_eq(t.get("backdrop_chapter"), mini(cleared + 1, 3))
+		assert_eq(t.get("backdrop_chapter"), mini(cleared + 1, GameState.CHAPTER_COUNT))
 		textures.append((t.get_node(^"Backdrop") as TextureRect).texture)
 		assert_eq((t.get_node(^"SwordGlint") as CanvasItem).visible, cleared == 0, "石中劍閃光只在第一章的背景")
 	assert_ne(textures[0], textures[1], "第二章換成城堡")
 	assert_ne(textures[1], textures[2], "第三章換成湖上高塔")
-	assert_eq(textures[2], textures[3])
 
 
 func test_chapter_select_fits_small_screen_with_notch() -> void:
@@ -221,8 +220,10 @@ func test_results_name_the_chapter() -> void:
 	assert_eq((r.get("title_label") as Label).text, tr("UI_CHAPTER_END") % tr("UI_CHAPTER_SHORT_2"))
 	assert_eq((r.get("progress_label") as Label).text, tr("UI_CHAPTER_PROGRESS_N") % [tr("UI_CHAPTER_SHORT_2"), 6, 6])
 	assert_false((r.get("title_label") as Label).text.contains(tr("UI_CHAPTER_SHORT_1")), "不寫死第一章")
-	r.call(&"setup", {"level_id": "3-6", "level_name": "LEVEL_3_6", "time_sec": 60.0, "kills": 5, "is_final": true})
-	assert_eq((r.get("title_label") as Label).text, tr("UI_GAME_END"), "打完第三章是全劇終")
+	r.call(&"setup", {"level_id": "3-6", "level_name": "LEVEL_3_6", "time_sec": 60.0, "kills": 5, "is_final": true,
+			"game_complete": false})
+	assert_eq((r.get("title_label") as Label).text, tr("UI_CHAPTER_END") % tr("UI_CHAPTER_SHORT_3"),
+			"v2.7:打完第三章是「第三章 完」,不是全劇終")
 	GameState.chapter = 3
 	r.call(&"setup", {"level_name": "LEVEL_3_2", "time_sec": 60.0, "kills": 5, "level_index": 1, "level_count": 6})
 	assert_eq((r.get("progress_label") as Label).text, tr("UI_CHAPTER_PROGRESS_N") % [tr("UI_CHAPTER_SHORT_3"), 2, 6],

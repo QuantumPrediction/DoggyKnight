@@ -1,12 +1,18 @@
 [gd_scene format=3]
 
-[ext_resource type="Texture2D" path="res://assets/backgrounds/crow_forest.png" id="1_bg"]
-[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/eyes_frames.tres" id="2_anim_eyes"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_firefly.png" id="3_p_firefly"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_leaf_dusk.png" id="4_p_leaf_dusk"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/shadow_camp.png" id="1_bg"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/campfire_frames.tres" id="2_anim_campfire"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/flag_wolf_frames.tres" id="3_anim_flag_wolf"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/lantern_frames.tres" id="4_anim_lantern"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/torch_frames.tres" id="5_anim_torch"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_ember.png" id="6_p_ember"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_smoke.png" id="7_p_smoke"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_spark_violet.png" id="8_p_spark_violet"]
 [ext_resource type="Script" path="res://assets/backgrounds/actor_shadows.gd" id="80_shadows"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/crow_forest_fg.png" id="81_fg"]
-[ext_resource type="PackedScene" path="res://assets/fx/lights/eye_violet.tscn" id="84_light_eye_violet"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/shadow_camp_fg.png" id="81_fg"]
+[ext_resource type="PackedScene" path="res://assets/fx/lights/campfire.tscn" id="84_light_campfire"]
+[ext_resource type="PackedScene" path="res://assets/fx/lights/lantern.tscn" id="84_light_lantern"]
+[ext_resource type="PackedScene" path="res://assets/fx/lights/torch.tscn" id="84_light_torch"]
 
 [sub_resource type="CanvasItemMaterial" id="Mat_add"]
 blend_mode = 1
@@ -28,33 +34,97 @@ position = Vector2(-62, -88)
 
 [node name="Anim" type="Node2D" parent="."]
 
-[node name="eyes_0" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-26, 40)
-sprite_frames = ExtResource("2_anim_eyes")
+[node name="torch_0" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(58, -16)
+sprite_frames = ExtResource("5_anim_torch")
 autoplay = "default"
-frame = 0
-speed_scale = 0.6
+frame = 2
+speed_scale = 1
 centered = false
 
-[node name="eyes_1" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(190, 32)
-sprite_frames = ExtResource("2_anim_eyes")
+[node name="torch_1" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(116, -16)
+sprite_frames = ExtResource("5_anim_torch")
+autoplay = "default"
+frame = 0
+speed_scale = 1
+centered = false
+
+[node name="campfire_2" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(4, 78)
+sprite_frames = ExtResource("2_anim_campfire")
+autoplay = "default"
+frame = 0
+speed_scale = 1
+centered = false
+
+[node name="campfire_3" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(160, 162)
+sprite_frames = ExtResource("2_anim_campfire")
+autoplay = "default"
+frame = 1
+speed_scale = 1
+centered = false
+
+[node name="campfire_4" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(6, 266)
+sprite_frames = ExtResource("2_anim_campfire")
+autoplay = "default"
+frame = 2
+speed_scale = 1
+centered = false
+
+[node name="campfire_5" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(82, 302)
+sprite_frames = ExtResource("2_anim_campfire")
+autoplay = "default"
+frame = 3
+speed_scale = 1
+centered = false
+
+[node name="lantern_6" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-2, 189)
+sprite_frames = ExtResource("4_anim_lantern")
+autoplay = "default"
+frame = 0
+speed_scale = 0.7
+centered = false
+
+[node name="lantern_7" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(172, 229)
+sprite_frames = ExtResource("4_anim_lantern")
 autoplay = "default"
 frame = 1
 speed_scale = 0.7
 centered = false
 
-[node name="eyes_2" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-50, 364)
-sprite_frames = ExtResource("2_anim_eyes")
+[node name="flag_wolf_8" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(11, 12)
+sprite_frames = ExtResource("3_anim_flag_wolf")
 autoplay = "default"
-frame = 2
-speed_scale = 0.8
+frame = 0
+speed_scale = 0.9
 centered = false
 
-[node name="eyes_3" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(208, 382)
-sprite_frames = ExtResource("2_anim_eyes")
+[node name="flag_wolf_9" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(51, 12)
+sprite_frames = ExtResource("3_anim_flag_wolf")
+autoplay = "default"
+frame = 1
+speed_scale = 1
+centered = false
+
+[node name="flag_wolf_10" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(143, 12)
+sprite_frames = ExtResource("3_anim_flag_wolf")
+autoplay = "default"
+frame = 2
+speed_scale = 1.1
+centered = false
+
+[node name="flag_wolf_11" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(183, 12)
+sprite_frames = ExtResource("3_anim_flag_wolf")
 autoplay = "default"
 frame = 3
 speed_scale = 0.9
@@ -62,78 +132,86 @@ centered = false
 
 [node name="Ambient" type="Node2D" parent="."]
 
-[node name="firefly_0" type="CPUParticles2D" parent="Ambient"]
-position = Vector2(95, 180)
+[node name="ember_0" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(90, 190)
 amount = 14
+lifetime = 2.5
+preprocess = 2.5
+randomness = 0.5
+texture = ExtResource("6_p_ember")
+emission_shape = 3
+emission_rect_extents = Vector2(100, 130)
+direction = Vector2(0.1, -1)
+spread = 30
+gravity = Vector2(0, -3)
+initial_velocity_min = 8
+initial_velocity_max = 14
+color_ramp = SubResource("Gradient_fade")
+
+[node name="smoke_1" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(90, 190)
+amount = 8
 lifetime = 5
 preprocess = 5
 randomness = 0.5
-texture = ExtResource("3_p_firefly")
+texture = ExtResource("7_p_smoke")
 emission_shape = 3
-emission_rect_extents = Vector2(105, 220)
+emission_rect_extents = Vector2(100, 130)
+direction = Vector2(0.2, -1)
+spread = 20
+gravity = Vector2(0, 0)
+initial_velocity_min = 3
+initial_velocity_max = 6
+color_ramp = SubResource("Gradient_fade")
+
+[node name="spark_violet_2" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(95, 170)
+amount = 8
+lifetime = 4
+preprocess = 4
+randomness = 0.5
+texture = ExtResource("8_p_spark_violet")
+emission_shape = 3
+emission_rect_extents = Vector2(105, 210)
 direction = Vector2(0, -1)
 spread = 180
 gravity = Vector2(0, 0)
-initial_velocity_min = 2
-initial_velocity_max = 6
+initial_velocity_min = 1
+initial_velocity_max = 3
 material = SubResource("Mat_add")
 color_ramp = SubResource("Gradient_blink")
 
-[node name="leaf_dusk_1" type="CPUParticles2D" parent="Ambient"]
-position = Vector2(100, 120)
-amount = 5
-lifetime = 6
-preprocess = 6
-randomness = 0.5
-texture = ExtResource("4_p_leaf_dusk")
-emission_shape = 3
-emission_rect_extents = Vector2(120, 180)
-direction = Vector2(1, 0.5)
-spread = 20
-gravity = Vector2(0, 3)
-initial_velocity_min = 6
-initial_velocity_max = 10
-angular_velocity_min = -90.0
-angular_velocity_max = 90.0
-angle_min = -180.0
-angle_max = 180.0
-color_ramp = SubResource("Gradient_fade")
-
-[node name="Light" type="Node2D" parent="."]
-
-[node name="Shaft_0" type="Polygon2D" parent="Light"]
-color = Color(1, 0.75, 0.55, 0.07)
-polygon = PackedVector2Array(-10, -90, 4, -90, 304, 430, 290, 430)
-
-[node name="Shaft_1" type="Polygon2D" parent="Light"]
-color = Color(1, 0.7, 0.6, 0.06)
-polygon = PackedVector2Array(30, -90, 52, -90, 352, 430, 330, 430)
-
-[node name="Shaft_2" type="Polygon2D" parent="Light"]
-color = Color(1, 0.8, 0.6, 0.05)
-polygon = PackedVector2Array(90, -90, 102, -90, 402, 430, 390, 430)
-
 [node name="Lights" type="Node2D" parent="."]
 
-[node name="eye_violet_0" parent="Lights" instance=ExtResource("84_light_eye_violet")]
-position = Vector2(-24, 41)
-base_alpha = 0.56
-seed_offset = 4.68
+[node name="campfire_0" parent="Lights" instance=ExtResource("84_light_campfire")]
+position = Vector2(12, 86)
+base_alpha = 0.42
+seed_offset = 0.74
 
-[node name="eye_violet_1" parent="Lights" instance=ExtResource("84_light_eye_violet")]
-position = Vector2(192, 33)
-base_alpha = 0.56
-seed_offset = 32.76
+[node name="campfire_1" parent="Lights" instance=ExtResource("84_light_campfire")]
+position = Vector2(168, 170)
+base_alpha = 0.42
+seed_offset = 2.96
 
-[node name="eye_violet_2" parent="Lights" instance=ExtResource("84_light_eye_violet")]
-position = Vector2(-48, 365)
-base_alpha = 0.56
-seed_offset = 1.56
+[node name="campfire_2" parent="Lights" instance=ExtResource("84_light_campfire")]
+position = Vector2(14, 274)
+base_alpha = 0.42
+seed_offset = 1.48
 
-[node name="eye_violet_3" parent="Lights" instance=ExtResource("84_light_eye_violet")]
-position = Vector2(210, 383)
-base_alpha = 0.56
-seed_offset = 35.1
+[node name="campfire_3" parent="Lights" instance=ExtResource("84_light_campfire")]
+position = Vector2(90, 310)
+base_alpha = 0.42
+seed_offset = 0.74
+
+[node name="lantern_4" parent="Lights" instance=ExtResource("84_light_lantern")]
+position = Vector2(2, 198)
+base_alpha = 0.275
+seed_offset = 1.48
+
+[node name="lantern_5" parent="Lights" instance=ExtResource("84_light_lantern")]
+position = Vector2(176, 238)
+base_alpha = 0.275
+seed_offset = 0.74
 
 [node name="Shadows" type="Node2D" parent="."]
 script = ExtResource("80_shadows")
@@ -147,5 +225,15 @@ texture = ExtResource("81_fg")
 centered = false
 position = Vector2(-62, -88)
 
+[node name="torch_0" parent="Foreground" instance=ExtResource("84_light_torch")]
+position = Vector2(62, -14)
+base_alpha = 0.55
+seed_offset = 0.74
+
+[node name="torch_1" parent="Foreground" instance=ExtResource("84_light_torch")]
+position = Vector2(120, -14)
+base_alpha = 0.55
+seed_offset = 2.96
+
 [node name="Mood" type="CanvasModulate" parent="."]
-color = Color(0.96, 0.9, 0.96, 1)
+color = Color(0.88, 0.88, 1, 1)

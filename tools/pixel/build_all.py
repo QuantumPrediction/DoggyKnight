@@ -64,7 +64,10 @@ import art_v26_ch1  # noqa: E402
 import art_v26_story  # noqa: E402
 import art_v26_title  # noqa: E402
 import art_v26_world  # noqa: E402
+import art_v27_title  # noqa: E402
+import art_v27_world  # noqa: E402
 import music_gen  # noqa: E402
+import music_v27  # noqa: E402
 import paint  # noqa: E402
 import sfx_gen  # noqa: E402
 from palette import PALETTE, rgba  # noqa: E402
@@ -170,9 +173,12 @@ def main() -> None:
     art_v26_ch1.write_all()
     art_v26_title.write_all()
     art_v26_story.write_all()
+    art_v27_world.write_all()                                    # v2.7 (C 世界): chapter 4-6 backgrounds
+    art_v27_title.write_all()                                    # v2.7 (C 世界): title backdrops 4-6
     sfx_gen.write_all()
     if "--no-music" not in sys.argv:
         music_gen.write_all()
+        music_v27.write_all()                                    # v2.7 (C 世界): field_4 ... boss_6
     write_ofl_text()
 
     if preview_dir:

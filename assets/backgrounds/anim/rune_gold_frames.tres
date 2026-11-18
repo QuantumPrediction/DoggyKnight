@@ -1,0 +1,53 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/rune_gold.png" id="1_sheet"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_0"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 0, 3, 4)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_1"]
+atlas = ExtResource("1_sheet")
+region = Rect2(3, 0, 3, 4)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_2"]
+atlas = ExtResource("1_sheet")
+region = Rect2(6, 0, 3, 4)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_3"]
+atlas = ExtResource("1_sheet")
+region = Rect2(9, 0, 3, 4)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_4"]
+atlas = ExtResource("1_sheet")
+region = Rect2(12, 0, 3, 4)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_5"]
+atlas = ExtResource("1_sheet")
+region = Rect2(15, 0, 3, 4)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 4.0
+}]

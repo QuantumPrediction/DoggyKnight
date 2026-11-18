@@ -1,20 +1,23 @@
 [gd_scene format=3]
 
-[ext_resource type="Texture2D" path="res://assets/backgrounds/fairy_forest.png" id="1_bg"]
-[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/mushroom_pulse_frames.tres" id="2_anim_mushroom_pulse"]
-[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/wisp_frames.tres" id="3_anim_wisp"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_firefly_green.png" id="4_p_firefly_green"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_spark_cyan.png" id="5_p_spark_cyan"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/hot_springs.png" id="1_bg"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/ripple_frames.tres" id="2_anim_ripple"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/steam_frames.tres" id="3_anim_steam"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/waterfall_frames.tres" id="4_anim_waterfall"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_snow.png" id="5_p_snow"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_steam.png" id="6_p_steam"]
 [ext_resource type="Script" path="res://assets/backgrounds/actor_shadows.gd" id="80_shadows"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/fairy_forest_fg.png" id="81_fg"]
-[ext_resource type="PackedScene" path="res://assets/fx/lights/magic.tscn" id="84_light_magic"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/hot_springs_fg.png" id="81_fg"]
+[ext_resource type="PackedScene" path="res://assets/fx/lights/lantern.tscn" id="84_light_lantern"]
+[ext_resource type="PackedScene" path="res://assets/fx/lights/sun.tscn" id="84_light_sun"]
 
-[sub_resource type="CanvasItemMaterial" id="Mat_add"]
-blend_mode = 1
+[sub_resource type="Gradient" id="Gradient_fade"]
+offsets = PackedFloat32Array(0, 0.15, 0.8, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
 
-[sub_resource type="Gradient" id="Gradient_blink"]
-offsets = PackedFloat32Array(0, 0.2, 0.35, 0.5, 0.65, 0.8, 1)
-colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0.2, 1, 1, 1, 1, 1, 1, 1, 0.3, 1, 1, 1, 1, 1, 1, 1, 0)
+[sub_resource type="Curve" id="Curve_grow"]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [node name="Background" type="Node2D"]
 
@@ -25,287 +28,206 @@ position = Vector2(-62, -88)
 
 [node name="Anim" type="Node2D" parent="."]
 
-[node name="mushroom_pulse_0" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-49, 33)
-sprite_frames = ExtResource("2_anim_mushroom_pulse")
+[node name="waterfall_0" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(96, 28)
+sprite_frames = ExtResource("4_anim_waterfall")
 autoplay = "default"
 frame = 0
-speed_scale = 0.6
+speed_scale = 1
 centered = false
 
-[node name="mushroom_pulse_1" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-16, 50)
-sprite_frames = ExtResource("2_anim_mushroom_pulse")
+[node name="ripple_1" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-6, 134)
+sprite_frames = ExtResource("2_anim_ripple")
 autoplay = "default"
-frame = 1
+frame = 0
 speed_scale = 0.7
 centered = false
 
-[node name="mushroom_pulse_2" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(17, 37)
-sprite_frames = ExtResource("2_anim_mushroom_pulse")
-autoplay = "default"
-frame = 2
-speed_scale = 0.8
-centered = false
-
-[node name="mushroom_pulse_3" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(50, 54)
-sprite_frames = ExtResource("2_anim_mushroom_pulse")
+[node name="ripple_2" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(6, 137)
+sprite_frames = ExtResource("2_anim_ripple")
 autoplay = "default"
 frame = 3
-speed_scale = 0.6
-centered = false
-
-[node name="mushroom_pulse_4" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(83, 41)
-sprite_frames = ExtResource("2_anim_mushroom_pulse")
-autoplay = "default"
-frame = 4
 speed_scale = 0.7
 centered = false
 
-[node name="mushroom_pulse_5" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(116, 58)
-sprite_frames = ExtResource("2_anim_mushroom_pulse")
+[node name="steam_3" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-4, 112)
+sprite_frames = ExtResource("3_anim_steam")
+autoplay = "default"
+frame = 2
+speed_scale = 0.6
+centered = false
+
+[node name="steam_4" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(8, 114)
+sprite_frames = ExtResource("3_anim_steam")
 autoplay = "default"
 frame = 5
-speed_scale = 0.8
+speed_scale = 0.5
 centered = false
 
-[node name="mushroom_pulse_6" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(149, 45)
-sprite_frames = ExtResource("2_anim_mushroom_pulse")
-autoplay = "default"
-frame = 0
-speed_scale = 0.6
-centered = false
-
-[node name="mushroom_pulse_7" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(182, 62)
-sprite_frames = ExtResource("2_anim_mushroom_pulse")
-autoplay = "default"
-frame = 1
-speed_scale = 0.7
-centered = false
-
-[node name="mushroom_pulse_8" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(215, 49)
-sprite_frames = ExtResource("2_anim_mushroom_pulse")
-autoplay = "default"
-frame = 2
-speed_scale = 0.8
-centered = false
-
-[node name="mushroom_pulse_9" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(168, 187)
-sprite_frames = ExtResource("2_anim_mushroom_pulse")
+[node name="ripple_5" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(166, 218)
+sprite_frames = ExtResource("2_anim_ripple")
 autoplay = "default"
 frame = 0
 speed_scale = 0.7
 centered = false
 
-[node name="mushroom_pulse_10" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(97, 290)
-sprite_frames = ExtResource("2_anim_mushroom_pulse")
-autoplay = "default"
-frame = 0
-speed_scale = 0.7
-centered = false
-
-[node name="mushroom_pulse_11" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(10, 211)
-sprite_frames = ExtResource("2_anim_mushroom_pulse")
-autoplay = "default"
-frame = 0
-speed_scale = 0.7
-centered = false
-
-[node name="mushroom_pulse_12" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(59, 89)
-sprite_frames = ExtResource("2_anim_mushroom_pulse")
-autoplay = "default"
-frame = 0
-speed_scale = 0.7
-centered = false
-
-[node name="mushroom_pulse_13" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(158, 138)
-sprite_frames = ExtResource("2_anim_mushroom_pulse")
-autoplay = "default"
-frame = 0
-speed_scale = 0.7
-centered = false
-
-[node name="wisp_14" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(8, 32)
-sprite_frames = ExtResource("3_anim_wisp")
-autoplay = "default"
-frame = 0
-speed_scale = 0.6
-centered = false
-
-[node name="wisp_15" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(68, 12)
-sprite_frames = ExtResource("3_anim_wisp")
-autoplay = "default"
-frame = 1
-speed_scale = 0.75
-centered = false
-
-[node name="wisp_16" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(128, 38)
-sprite_frames = ExtResource("3_anim_wisp")
-autoplay = "default"
-frame = 2
-speed_scale = 0.9
-centered = false
-
-[node name="wisp_17" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(178, 52)
-sprite_frames = ExtResource("3_anim_wisp")
+[node name="ripple_6" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(178, 221)
+sprite_frames = ExtResource("2_anim_ripple")
 autoplay = "default"
 frame = 3
+speed_scale = 0.7
+centered = false
+
+[node name="steam_7" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(168, 196)
+sprite_frames = ExtResource("3_anim_steam")
+autoplay = "default"
+frame = 6
 speed_scale = 0.6
 centered = false
 
-[node name="wisp_18" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(28, 322)
-sprite_frames = ExtResource("3_anim_wisp")
+[node name="steam_8" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(180, 198)
+sprite_frames = ExtResource("3_anim_steam")
+autoplay = "default"
+frame = 1
+speed_scale = 0.5
+centered = false
+
+[node name="ripple_9" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-50, 260)
+sprite_frames = ExtResource("2_anim_ripple")
+autoplay = "default"
+frame = 0
+speed_scale = 0.7
+centered = false
+
+[node name="ripple_10" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-40, 263)
+sprite_frames = ExtResource("2_anim_ripple")
+autoplay = "default"
+frame = 3
+speed_scale = 0.7
+centered = false
+
+[node name="steam_11" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-50, 238)
+sprite_frames = ExtResource("3_anim_steam")
 autoplay = "default"
 frame = 4
-speed_scale = 0.75
+speed_scale = 0.6
 centered = false
 
-[node name="wisp_19" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(148, 332)
-sprite_frames = ExtResource("3_anim_wisp")
+[node name="steam_12" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-38, 240)
+sprite_frames = ExtResource("3_anim_steam")
 autoplay = "default"
-frame = 5
-speed_scale = 0.9
+frame = 7
+speed_scale = 0.5
 centered = false
 
-[node name="wisp_20" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-42, 112)
-sprite_frames = ExtResource("3_anim_wisp")
+[node name="ripple_13" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(70, 310)
+sprite_frames = ExtResource("2_anim_ripple")
+autoplay = "default"
+frame = 0
+speed_scale = 0.7
+centered = false
+
+[node name="ripple_14" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(95, 313)
+sprite_frames = ExtResource("2_anim_ripple")
+autoplay = "default"
+frame = 3
+speed_scale = 0.7
+centered = false
+
+[node name="steam_15" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(82, 288)
+sprite_frames = ExtResource("3_anim_steam")
 autoplay = "default"
 frame = 0
 speed_scale = 0.6
 centered = false
 
-[node name="wisp_21" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(214, 212)
-sprite_frames = ExtResource("3_anim_wisp")
+[node name="steam_16" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(94, 290)
+sprite_frames = ExtResource("3_anim_steam")
 autoplay = "default"
-frame = 1
-speed_scale = 0.75
+frame = 3
+speed_scale = 0.5
 centered = false
 
 [node name="Ambient" type="Node2D" parent="."]
 
-[node name="firefly_green_0" type="CPUParticles2D" parent="Ambient"]
-position = Vector2(95, 180)
+[node name="steam_0" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(90, 185)
 amount = 16
 lifetime = 5
 preprocess = 5
 randomness = 0.5
-texture = ExtResource("4_p_firefly_green")
+texture = ExtResource("6_p_steam")
 emission_shape = 3
-emission_rect_extents = Vector2(105, 220)
-direction = Vector2(0, -1)
-spread = 180
-gravity = Vector2(0, 0)
-initial_velocity_min = 2
-initial_velocity_max = 6
-material = SubResource("Mat_add")
-color_ramp = SubResource("Gradient_blink")
+emission_rect_extents = Vector2(130, 145)
+direction = Vector2(0.2, -1)
+spread = 20
+gravity = Vector2(0, -1)
+initial_velocity_min = 4
+initial_velocity_max = 8
+scale_amount_min = 1.0
+scale_amount_max = 2.0
+scale_amount_curve = SubResource("Curve_grow")
+color_ramp = SubResource("Gradient_fade")
 
-[node name="spark_cyan_1" type="CPUParticles2D" parent="Ambient"]
-position = Vector2(105, 30)
-amount = 8
-lifetime = 4
-preprocess = 4
+[node name="snow_1" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(90, 120)
+amount = 16
+lifetime = 7
+preprocess = 7
 randomness = 0.5
-texture = ExtResource("5_p_spark_cyan")
+texture = ExtResource("5_p_snow")
 emission_shape = 3
-emission_rect_extents = Vector2(135, 90)
-direction = Vector2(0, 1)
-spread = 40
-gravity = Vector2(0, 0)
-initial_velocity_min = 2
-initial_velocity_max = 5
-material = SubResource("Mat_add")
-color_ramp = SubResource("Gradient_blink")
-
-[node name="Light" type="Node2D" parent="."]
-
-[node name="Shaft_0" type="Polygon2D" parent="Light"]
-color = Color(0.6, 0.8, 1, 0.06)
-polygon = PackedVector2Array(30, -90, 48, -90, 348, 430, 330, 430)
-
-[node name="Shaft_1" type="Polygon2D" parent="Light"]
-color = Color(0.6, 0.8, 1, 0.05)
-polygon = PackedVector2Array(100, -90, 112, -90, 412, 430, 400, 430)
-
-[node name="Shaft_2" type="Polygon2D" parent="Light"]
-color = Color(0.6, 0.8, 1, 0.05)
-polygon = PackedVector2Array(-40, -90, -26, -90, 274, 430, 260, 430)
+emission_rect_extents = Vector2(130, 200)
+direction = Vector2(0.3, 1)
+spread = 15
+gravity = Vector2(0, 1)
+initial_velocity_min = 6
+initial_velocity_max = 10
+color_ramp = SubResource("Gradient_fade")
 
 [node name="Lights" type="Node2D" parent="."]
 
-[node name="magic_0" parent="Lights" instance=ExtResource("84_light_magic")]
-modulate = Color(0.4, 1, 0.8, 0.5)
-position = Vector2(-47, 35)
-base_alpha = 0.225
-seed_offset = 2.96
-
-[node name="magic_1" parent="Lights" instance=ExtResource("84_light_magic")]
-modulate = Color(0.4, 1, 0.8, 0.5)
-position = Vector2(-14, 52)
-base_alpha = 0.225
+[node name="lantern_0" parent="Lights" instance=ExtResource("84_light_lantern")]
+position = Vector2(10, 84)
+base_alpha = 0.3
 seed_offset = 2.22
 
-[node name="magic_2" parent="Lights" instance=ExtResource("84_light_magic")]
-modulate = Color(0.4, 1, 0.8, 0.5)
-position = Vector2(19, 39)
-base_alpha = 0.225
-seed_offset = 1.48
+[node name="lantern_1" parent="Lights" instance=ExtResource("84_light_lantern")]
+position = Vector2(170, 84)
+base_alpha = 0.3
+seed_offset = 2.22
 
-[node name="magic_3" parent="Lights" instance=ExtResource("84_light_magic")]
-modulate = Color(0.4, 1, 0.8, 0.5)
-position = Vector2(52, 56)
-base_alpha = 0.225
+[node name="lantern_2" parent="Lights" instance=ExtResource("84_light_lantern")]
+position = Vector2(10, 280)
+base_alpha = 0.3
 seed_offset = 0.74
 
-[node name="magic_4" parent="Lights" instance=ExtResource("84_light_magic")]
-modulate = Color(0.4, 1, 0.8, 0.5)
-position = Vector2(85, 43)
-base_alpha = 0.225
+[node name="lantern_3" parent="Lights" instance=ExtResource("84_light_lantern")]
+position = Vector2(170, 280)
+base_alpha = 0.3
+seed_offset = 0.74
+
+[node name="sun_4" parent="Lights" instance=ExtResource("84_light_sun")]
+modulate = Color(1, 0.95, 0.85, 0.5)
+position = Vector2(158, -68)
+base_alpha = 0.198
 seed_offset = 0
-
-[node name="magic_5" parent="Lights" instance=ExtResource("84_light_magic")]
-modulate = Color(0.4, 1, 0.8, 0.5)
-position = Vector2(118, 60)
-base_alpha = 0.225
-seed_offset = 2.96
-
-[node name="magic_6" parent="Lights" instance=ExtResource("84_light_magic")]
-modulate = Color(0.4, 1, 0.8, 0.5)
-position = Vector2(151, 47)
-base_alpha = 0.225
-seed_offset = 2.22
-
-[node name="magic_7" parent="Lights" instance=ExtResource("84_light_magic")]
-modulate = Color(0.4, 1, 0.8, 0.5)
-position = Vector2(184, 64)
-base_alpha = 0.225
-seed_offset = 1.48
-
-[node name="magic_8" parent="Lights" instance=ExtResource("84_light_magic")]
-modulate = Color(0.4, 1, 0.8, 0.5)
-position = Vector2(217, 51)
-base_alpha = 0.225
-seed_offset = 0.74
 
 [node name="Shadows" type="Node2D" parent="."]
 script = ExtResource("80_shadows")
@@ -320,4 +242,4 @@ centered = false
 position = Vector2(-62, -88)
 
 [node name="Mood" type="CanvasModulate" parent="."]
-color = Color(0.9, 0.94, 1, 1)
+color = Color(1, 0.98, 0.96, 1)

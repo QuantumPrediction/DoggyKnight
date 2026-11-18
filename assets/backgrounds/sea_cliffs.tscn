@@ -1,15 +1,17 @@
 [gd_scene format=3]
 
-[ext_resource type="Texture2D" path="res://assets/backgrounds/castle_wall.png" id="1_bg"]
-[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/brazier_frames.tres" id="2_anim_brazier"]
-[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/flag_camelot_frames.tres" id="3_anim_flag_camelot"]
-[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/torch_frames.tres" id="4_anim_torch"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_ember.png" id="5_p_ember"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_leaf_dusk.png" id="6_p_leaf_dusk"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/sea_cliffs.png" id="1_bg"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/flower_pink_frames.tres" id="2_anim_flower_pink"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/flower_white_frames.tres" id="3_anim_flower_white"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/flower_yellow_frames.tres" id="4_anim_flower_yellow"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/glint_gold_frames.tres" id="5_anim_glint_gold"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/gull_frames.tres" id="6_anim_gull"]
+[ext_resource type="SpriteFrames" path="res://assets/backgrounds/anim/wave_crest_frames.tres" id="7_anim_wave_crest"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_petal.png" id="8_p_petal"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/anim/p_pollen.png" id="9_p_pollen"]
 [ext_resource type="Script" path="res://assets/backgrounds/actor_shadows.gd" id="80_shadows"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/castle_wall_fg.png" id="81_fg"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/sea_cliffs_fg.png" id="81_fg"]
 [ext_resource type="PackedScene" path="res://assets/fx/lights/sun.tscn" id="84_light_sun"]
-[ext_resource type="PackedScene" path="res://assets/fx/lights/torch.tscn" id="84_light_torch"]
 
 [sub_resource type="Gradient" id="Gradient_fade"]
 offsets = PackedFloat32Array(0, 0.15, 0.8, 1)
@@ -24,138 +26,186 @@ position = Vector2(-62, -88)
 
 [node name="Anim" type="Node2D" parent="."]
 
-[node name="flag_camelot_0" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-42, 36)
-sprite_frames = ExtResource("3_anim_flag_camelot")
+[node name="gull_0" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-42, -28)
+sprite_frames = ExtResource("6_anim_gull")
 autoplay = "default"
 frame = 0
-speed_scale = 1.1
+speed_scale = 0.7
 centered = false
 
-[node name="torch_1" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-14, 132)
-sprite_frames = ExtResource("4_anim_torch")
-autoplay = "default"
-frame = 0
-speed_scale = 1
-centered = false
-
-[node name="torch_2" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(-14, 242)
-sprite_frames = ExtResource("4_anim_torch")
+[node name="gull_1" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(28, -48)
+sprite_frames = ExtResource("6_anim_gull")
 autoplay = "default"
 frame = 2
+speed_scale = 0.8
+centered = false
+
+[node name="gull_2" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(128, -18)
+sprite_frames = ExtResource("6_anim_gull")
+autoplay = "default"
+frame = 4
 speed_scale = 0.9
 centered = false
 
-[node name="flag_camelot_3" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(210, 36)
-sprite_frames = ExtResource("3_anim_flag_camelot")
+[node name="gull_3" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(168, -66)
+sprite_frames = ExtResource("6_anim_gull")
 autoplay = "default"
-frame = 2
+frame = 6
+speed_scale = 1
+centered = false
+
+[node name="gull_4" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-2, 12)
+sprite_frames = ExtResource("6_anim_gull")
+autoplay = "default"
+frame = 8
 speed_scale = 1.1
 centered = false
 
-[node name="torch_4" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(188, 132)
-sprite_frames = ExtResource("4_anim_torch")
+[node name="wave_crest_5" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(58, 22)
+sprite_frames = ExtResource("7_anim_wave_crest")
+autoplay = "default"
+frame = 0
+speed_scale = 0.8
+centered = false
+
+[node name="wave_crest_6" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-22, -12)
+sprite_frames = ExtResource("7_anim_wave_crest")
+autoplay = "default"
+frame = 1
+speed_scale = 0.8
+centered = false
+
+[node name="wave_crest_7" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(118, 8)
+sprite_frames = ExtResource("7_anim_wave_crest")
+autoplay = "default"
+frame = 2
+speed_scale = 0.8
+centered = false
+
+[node name="wave_crest_8" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(138, -28)
+sprite_frames = ExtResource("7_anim_wave_crest")
+autoplay = "default"
+frame = 3
+speed_scale = 0.8
+centered = false
+
+[node name="wave_crest_9" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(78, -38)
+sprite_frames = ExtResource("7_anim_wave_crest")
+autoplay = "default"
+frame = 4
+speed_scale = 0.8
+centered = false
+
+[node name="glint_gold_10" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(168, -34)
+sprite_frames = ExtResource("5_anim_glint_gold")
+autoplay = "default"
+frame = 0
+speed_scale = 0.6
+centered = false
+
+[node name="flower_pink_11" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-8, 122)
+sprite_frames = ExtResource("2_anim_flower_pink")
+autoplay = "default"
+frame = 0
+speed_scale = 0.9
+centered = false
+
+[node name="flower_yellow_12" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(180, 192)
+sprite_frames = ExtResource("4_anim_flower_yellow")
 autoplay = "default"
 frame = 1
 speed_scale = 1
 centered = false
 
-[node name="torch_5" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(188, 242)
-sprite_frames = ExtResource("4_anim_torch")
+[node name="flower_white_13" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(-6, 286)
+sprite_frames = ExtResource("3_anim_flower_white")
+autoplay = "default"
+frame = 2
+speed_scale = 1.1
+centered = false
+
+[node name="flower_pink_14" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(182, 302)
+sprite_frames = ExtResource("2_anim_flower_pink")
 autoplay = "default"
 frame = 3
 speed_scale = 0.9
 centered = false
 
-[node name="brazier_6" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(34, 294)
-sprite_frames = ExtResource("2_anim_brazier")
+[node name="flower_yellow_15" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(4, 78)
+sprite_frames = ExtResource("4_anim_flower_yellow")
 autoplay = "default"
 frame = 0
 speed_scale = 1
 centered = false
 
-[node name="brazier_7" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(88, 294)
-sprite_frames = ExtResource("2_anim_brazier")
+[node name="flower_pink_16" type="AnimatedSprite2D" parent="Anim"]
+position = Vector2(166, 78)
+sprite_frames = ExtResource("2_anim_flower_pink")
 autoplay = "default"
 frame = 1
-speed_scale = 1
-centered = false
-
-[node name="brazier_8" type="AnimatedSprite2D" parent="Anim"]
-position = Vector2(142, 294)
-sprite_frames = ExtResource("2_anim_brazier")
-autoplay = "default"
-frame = 2
-speed_scale = 1
+speed_scale = 1.1
 centered = false
 
 [node name="Ambient" type="Node2D" parent="."]
 
-[node name="ember_0" type="CPUParticles2D" parent="Ambient"]
-position = Vector2(85, 290)
-amount = 6
-lifetime = 3
-preprocess = 3
-randomness = 0.5
-texture = ExtResource("5_p_ember")
-emission_shape = 3
-emission_rect_extents = Vector2(55, 10)
-direction = Vector2(0.2, -1)
-spread = 30
-gravity = Vector2(0, -2)
-initial_velocity_min = 6
-initial_velocity_max = 12
-color_ramp = SubResource("Gradient_fade")
-
-[node name="leaf_dusk_1" type="CPUParticles2D" parent="Ambient"]
+[node name="petal_0" type="CPUParticles2D" parent="Ambient"]
 position = Vector2(100, 120)
-amount = 6
+amount = 8
 lifetime = 6
 preprocess = 6
 randomness = 0.5
-texture = ExtResource("6_p_leaf_dusk")
+texture = ExtResource("8_p_petal")
 emission_shape = 3
 emission_rect_extents = Vector2(120, 180)
-direction = Vector2(1, 0.4)
+direction = Vector2(1, 0.3)
 spread = 20
 gravity = Vector2(0, 2)
-initial_velocity_min = 10
-initial_velocity_max = 16
+initial_velocity_min = 12
+initial_velocity_max = 18
 angular_velocity_min = -90.0
 angular_velocity_max = 90.0
 angle_min = -180.0
 angle_max = 180.0
 color_ramp = SubResource("Gradient_fade")
 
+[node name="pollen_1" type="CPUParticles2D" parent="Ambient"]
+position = Vector2(95, 170)
+amount = 8
+lifetime = 5
+preprocess = 5
+randomness = 0.5
+texture = ExtResource("9_p_pollen")
+emission_shape = 3
+emission_rect_extents = Vector2(105, 210)
+direction = Vector2(1, -0.5)
+spread = 60
+gravity = Vector2(0, 0)
+initial_velocity_min = 3
+initial_velocity_max = 6
+color_ramp = SubResource("Gradient_fade")
+
 [node name="Lights" type="Node2D" parent="."]
 
 [node name="sun_0" parent="Lights" instance=ExtResource("84_light_sun")]
-modulate = Color(1, 0.6, 0.35, 0.5)
-position = Vector2(-54, 24)
-base_alpha = 0.286
-seed_offset = 2.96
-
-[node name="torch_1" parent="Lights" instance=ExtResource("84_light_torch")]
-position = Vector2(40, 296)
-base_alpha = 0.66
+position = Vector2(90, -88)
+base_alpha = 0.22
 seed_offset = 1.48
-
-[node name="torch_2" parent="Lights" instance=ExtResource("84_light_torch")]
-position = Vector2(94, 296)
-base_alpha = 0.66
-seed_offset = 0.74
-
-[node name="torch_3" parent="Lights" instance=ExtResource("84_light_torch")]
-position = Vector2(148, 296)
-base_alpha = 0.66
-seed_offset = 0
 
 [node name="Shadows" type="Node2D" parent="."]
 script = ExtResource("80_shadows")
@@ -169,25 +219,5 @@ texture = ExtResource("81_fg")
 centered = false
 position = Vector2(-62, -88)
 
-[node name="torch_0" parent="Foreground" instance=ExtResource("84_light_torch")]
-position = Vector2(-10, 134)
-base_alpha = 0.55
-seed_offset = 2.22
-
-[node name="torch_1" parent="Foreground" instance=ExtResource("84_light_torch")]
-position = Vector2(-10, 244)
-base_alpha = 0.55
-seed_offset = 2.22
-
-[node name="torch_2" parent="Foreground" instance=ExtResource("84_light_torch")]
-position = Vector2(192, 134)
-base_alpha = 0.55
-seed_offset = 0
-
-[node name="torch_3" parent="Foreground" instance=ExtResource("84_light_torch")]
-position = Vector2(192, 244)
-base_alpha = 0.55
-seed_offset = 0
-
 [node name="Mood" type="CanvasModulate" parent="."]
-color = Color(1, 0.94, 0.9, 1)
+color = Color(1, 1, 0.97, 1)

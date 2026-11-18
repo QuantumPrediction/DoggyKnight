@@ -12,7 +12,9 @@ extends Control
 ## 正在播時不再播 clear 音效,避免兩段音樂疊在一起。
 ## v2.3(CS7):result.difficulty == &"hard" 時,面板右上角有紅色「困難」標記。
 ## v2.6(CW6):章名不寫死。章 = result.chapter,沒有時從 level_id(「2-3」的 2)推出,再沒有就用
-## GameState.chapter。最後一關的標題是「第 N 章 完」(第三章是「全劇終」),進度列是「第 N 章 m/6」。
+## GameState.chapter。最後一關的標題是「第 N 章 完」,進度列是「第 N 章 m/6」。
+## v2.7(CW10):章數用 GameState.CHAPTER_COUNT(不寫死 3)。「全劇終」只看 B 線的 result.game_complete
+## (打完最後一章才是 true);舊資料沒有這個鍵時,打完第 CHAPTER_COUNT 章才算全劇終。
 
 signal continue_pressed
 
@@ -181,24 +183,31 @@ func stars() -> int:
 	return clampi(int(_result.get("stars", 0)), 0, 3)
 
 
-## 這次結算是第幾章(1 至 3)。
+## 這次結算是第幾章(1 至 GameState.CHAPTER_COUNT)。
 static func chapter_of(result: Dictionary) -> int:
 	if result.has("chapter"):
-		return clampi(int(result["chapter"]), 1, 3)
+		return clampi(int(result["chapter"]), 1, GameState.CHAPTER_COUNT)
 	var id := String(result.get("level_id", ""))
 	if id.contains("-") and id.split("-")[0].is_valid_int():
-		return clampi(int(id.split("-")[0]), 1, 3)
-	return clampi(GameState.chapter, 1, 3)
+		return clampi(int(id.split("-")[0]), 1, GameState.CHAPTER_COUNT)
+	return clampi(GameState.chapter, 1, GameState.CHAPTER_COUNT)
 
 
-## 「第一章」「第二章」「第三章」。
+## 「第一章」……「第六章」。
 static func chapter_short(chapter: int) -> String:
-	return TranslationServer.translate("UI_CHAPTER_SHORT_%d" % clampi(chapter, 1, 3))
+	return TranslationServer.translate("UI_CHAPTER_SHORT_%d" % clampi(chapter, 1, GameState.CHAPTER_COUNT))
 
 
-## 打完一章的標題:「第 N 章 完」,打完第三章是「全劇終」。
-static func final_title(chapter: int) -> String:
-	if chapter >= 3:
+## 這次是不是打完了整個遊戲:B 線的 game_complete;舊資料沒有這個鍵時看是不是最後一章的最後一關。
+static func is_game_complete(result: Dictionary) -> bool:
+	if result.has("game_complete"):
+		return bool(result["game_complete"])
+	return bool(result.get("is_final", false)) and chapter_of(result) >= GameState.CHAPTER_COUNT
+
+
+## 打完一章的標題:「第 N 章 完」;打完整個遊戲(game_complete)是「全劇終」。
+static func final_title(chapter: int, game_complete: bool = false) -> String:
+	if game_complete:
 		return TranslationServer.translate("UI_GAME_END")
 	return TranslationServer.translate("UI_CHAPTER_END") % chapter_short(chapter)
 
@@ -210,7 +219,7 @@ func has_stars() -> bool:
 func _apply() -> void:
 	var is_final: bool = _result.get("is_final", false)
 	hard_badge.visible = StringName(str(_result.get("difficulty", "normal"))) == &"hard"
-	title_label.text = final_title(chapter_of(_result)) if is_final else tr("UI_LEVEL_CLEAR")
+	title_label.text = final_title(chapter_of(_result), is_game_complete(_result)) if is_final else tr("UI_LEVEL_CLEAR")
 	var level_name := String(_result.get("level_name", ""))
 	level_label.text = tr(level_name) if not level_name.is_empty() else ""
 	time_value.text = UiKit.format_time(float(_result.get("time_sec", 0.0)))

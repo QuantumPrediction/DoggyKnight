@@ -8,6 +8,9 @@ extends Control
 ## v2.3(CS7):梅林的小頭像與一句隨機提示 tr("STORY_TIP_%02d" % n)(不會連續兩次相同)。
 ## v2.6(CW6,docs/STORY.md 第 13 節):提示依 GameState.chapter 選:第一章 1 至 8;第二章 1 至 10 與 13;
 ## 第三章 1 至 14。
+## v2.7(CW10,docs/STORY.md 第 18 節):提示 1 至 20,每章只抽用得上的(TIPS_BY_CHAPTER):第四章 1 至 7
+## 與 15、16(螃蟹、水母);第五章 1 至 7 與 9、11、17、18(石像鬼、狐火、雪人、火蜥蜴);第六章 1 至 8 與
+## 12、13、19、20(影狼、舊頭目的幻影、影子騎士、提燈鬼火)。無盡試煉抽已開啟各章的提示。
 ## v2.4(CV5,DEV_PLAN 4.12):結果字典的 can_revive 為 true 時,最上面多一個金色的
 ## 「用 N 個零食復活」按鈕(N = revive_cost,按鈕上有零食圖示),按下播 revive 音效並發 revive_pressed;
 ## 這時「再試一次」改為藍色次要按鈕,梅林的小提示換成「金毛吃了零食就會醒來!」。can_revive 為 false 或沒有這個鍵時完全不顯示。
@@ -17,7 +20,16 @@ signal title_pressed
 signal revive_pressed
 
 const PANEL_WIDTH: float = 160.0
-const TIP_COUNT: int = 14
+const TIP_COUNT: int = 20
+## 每章可以抽的提示編號(docs/STORY.md 第 6、13、18 節);沒有列出的章用全部 1 至 TIP_COUNT。
+const TIPS_BY_CHAPTER: Dictionary = {
+	1: [1, 2, 3, 4, 5, 6, 7, 8],
+	2: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13],
+	3: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+	4: [1, 2, 3, 4, 5, 6, 7, 15, 16],
+	5: [1, 2, 3, 4, 5, 6, 7, 9, 11, 17, 18],
+	6: [1, 2, 3, 4, 5, 6, 7, 8, 12, 13, 19, 20],
+}
 const PORTRAIT_FRAME: Texture2D = preload("res://assets/ui/portrait_frame.png")
 
 static var _last_tip: int = 0
@@ -137,16 +149,29 @@ func _tip_row() -> Control:
 ## 這一章可以抽的提示編號。
 static func tips_for_chapter(chapter: int) -> Array[int]:
 	var out: Array[int] = []
-	var last := 8 if chapter <= 1 else (10 if chapter == 2 else TIP_COUNT)
-	for i in range(1, last + 1):
-		out.append(i)
-	if chapter == 2:
-		out.append(13)
+	if TIPS_BY_CHAPTER.has(chapter):
+		out.assign(TIPS_BY_CHAPTER[chapter])
+	else:
+		for i in range(1, TIP_COUNT + 1):
+			out.append(i)
+	return out
+
+
+## 這次失敗可以抽的提示:故事模式看這一章;無盡試煉合併已開啟各章(1 至 已打完的章數)的提示。
+static func tip_pool() -> Array[int]:
+	if GameState.mode != &"endless":
+		return tips_for_chapter(GameState.chapter)
+	var out: Array[int] = []
+	for n in range(1, clampi(GameState.chapters_cleared, 1, GameState.CHAPTER_COUNT) + 1):
+		for k: int in tips_for_chapter(n):
+			if not out.has(k):
+				out.append(k)
+	out.sort()
 	return out
 
 
 static func _pick_tip() -> int:
-	var pool := tips_for_chapter(GameState.chapter)
+	var pool := tip_pool()
 	var n := pool[randi_range(0, pool.size() - 1)]
 	if n == _last_tip:
 		n = pool[(pool.find(n) + 1) % pool.size()]
@@ -154,7 +179,7 @@ static func _pick_tip() -> int:
 	return n
 
 
-## 顯示第 n 句提示(1 至 14;測試也用這個)。
+## 顯示第 n 句提示(1 至 TIP_COUNT;測試也用這個)。
 func set_tip(n: int) -> void:
 	tip_index = clampi(n, 1, TIP_COUNT)
 	if tip_label != null:
