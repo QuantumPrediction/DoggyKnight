@@ -231,3 +231,49 @@
 **需要擁有人決定的事**
 
 - 看 `tests/line_c/shots_v26/` 的截圖,或執行 `godot --path . res://tests/line_c/cast_v26_gallery.tscn`(點畫面換頁),告訴我哪個角色還不喜歡。
+
+## C 角色 v2.7(DEV_PLAN 第 20 節 CC6 至 CC8)
+
+最後更新:2026-11-18。只列 C 角色的部分;背景、音樂由 C 世界負責,插畫由 C 繪本負責。
+
+**已完成**
+
+- CC6 十二個角色圖,全部由新檔 `tools/pixel/art_v27_cast.py` 用 v2.5、v2.6 的同一套畫法產生(左上光源、彩色外框、2 至 3 層明暗、走路的角色每格腳底對齊)。佔位版原地替換,路徑與動畫名稱不變,循環與否照佔位版:
+  - `assets/sprites/crab/`(24):紅色螃蟹海盜,頭上綁深藍底白點的小頭巾,眼睛長在眼柄上;`guard` 兩支大鉗子舉到臉前面,只露出眼睛。
+  - `assets/sprites/jellyfish/`(24):半透明、發光的紫色水母,粉紅色口腕與長觸手;`zap` 全身變亮,冒出黃色閃電。
+  - `assets/sprites/kraken/`(64):圓滾滾的珊瑚紅章魚王,頭頂貝殼王冠(金色王冠帶、粉紅扇貝、珍珠),額頭黑狼紋章(紫色描邊),大大的圓眼睛;`slam` 兩支觸手舉高再拍到地上、`ink` 鼓起臉頰噴出一團墨雲、`summon` 觸手張開冒泡泡、`down` 縮成一團害羞地偷看,紋章碎成光點不見了(不是受傷)。
+  - `assets/sprites/snowman/`(24):雪人兵,黑色毛線帽有兩個狼耳朵和紫色小狼臉,樹枝手、紅蘿蔔鼻子、深藍圍巾;`throw` 手往後拉、舉過頭、往前拋雪球。
+  - `assets/sprites/salamander/`(24):橘色小蜥蜴,黃肚子,尾巴尖有一朵小火;`dash` 身體拉長、腳伸直衝刺,身後有火星。
+  - `assets/sprites/red_dragon/`、`white_dragon/`(64):圓滾滾、大眼睛、小翅膀的可愛小龍。紅龍紅色、黃肚子、奶油色的角,脾氣急(眉毛皺起來);白龍雪白、冰藍色的角與鬃毛、冰藍肚子,愛頂嘴(半瞇的眼睛)。`breath` 先吸氣鼓臉,再噴出火焰(紅)或冰霜(白);`roar` 抬頭大吼;`sulk` 坐在地上、兩手抱胸、嘟嘴,鼻子噴一小團煙(紅龍頭上冒生氣符號,白龍冒小雪花)。
+  - `assets/sprites/shadow_knight/`(32):深靛色的影子盔甲,面罩縫隙發紫光的眼睛,頭上飄紫色影子,拿鐵灰色大塔盾(盾上有紫色狼頭);`guard` 蹲低、盾牌推到正前方;`down` 跪下冒星星,再散成一小堆秋天的落葉(橘、金、紅,不是受傷)。
+  - `assets/sprites/lantern_wisp/`(16):青綠色的小鬼火,頭上三個火苗、身後拖著幽靈尾巴,手提金色小燈籠;`heal` 燈籠變亮,一圈光擴散出去,冒出綠色加號。
+  - `assets/sprites/mordred/`(48):杜賓犬黑騎士,黑毛加鐵鏽色(黃褐)的眉點與嘴邊,高高的尖耳朵,琥珀色眼睛,銀邊黑盔甲(胸口有銀色狼頭),肩上是狼頭肩甲,深灰色斗篷(內裡紫紅),腰間的劍鞘發紫光;站姿抬下巴、很驕傲。`dash` 身體壓低、劍往前刺,斗篷往後飛;`slash` 舉劍再揮出一道大大的紫色弧光;`guard` 舉起劍鞘,前方出現紫色六角形護罩;`summon` 舉劍,地上升起紫色影子、落葉繞著轉;`down` 單膝跪地、劍插在地上、低頭(不是受傷)。
+  - `assets/sprites/tristan/`(32):柯基吟遊騎士,短腿、超大的耳朵、白色額頭線,深藍小帽插紅羽毛,淺藍披風,綠色上衣,背著木豎琴;`play` 把豎琴拿到胸前彈,音符飄出來。
+  - `assets/sprites/gawain/`(**40**,合約允許 24 至 40):聖伯納山之騎士,又大又蓬,棕白色、眼睛周圍深棕色,脖子紅項圈掛小木桶,鋼胸甲,橘色斗篷,大鐵鎚(站著時鎚頭靠在地上);`slam` 鐵鎚舉過頭再砸到地上,冒出灰塵圈和星星。
+- 三個 64 格頭目(章魚王、紅龍、白龍)和黑騎士一樣整張圖往上移 8 像素(腳底描邊在第 55 列),`_frames.tres` 有 `metadata/foot_lift = 8`,影子會自己跟上。其他角色的腳底描邊都在影子那一列(格子高 - 2)。
+- CC7 十五張頭像(48×48,和 v2.3、v2.6 同一種繪本畫法,臉朝左,因為六位都坐在對白框右邊):`assets/portraits/tristan/{normal,happy,serious,surprised}.png`(背景:夏天的海邊)、`gawain/{normal,happy,serious}.png`(雪山)、`kraken/normal.png`(海底宮殿,有王冠與紋章)、`red_dragon/normal.png`(火山,鼻子冒煙)、`white_dragon/normal.png`(冰山,半瞇眼得意地笑)、`mordred/{normal,smirk,angry,sad}.png`(秋天黃昏與黑狼旗;smirk 挑眉、angry 露牙、sad 掉一滴淚)。
+- CC8 投射物(動畫 `default`、循環、朝右畫,各自有 png,不再借用箭的圖):`assets/fx/bubble/`(12,半透明泡泡)、`ink_blob/`(16,墨汁)、`music_note/`(12,金色八分音符)、`snowball/`(12,會轉的雪球)、`fireball/`(16)、`ice_shard/`(16,冰晶)、`shadow_slash/`(24,紫色月牙劍氣)、`tentacle/`(24×56,直立的珊瑚紅觸手:舉起捲著、甩下、拍地濺水花、扭一下)。一次性粒子 `assets/fx/particles/snow_burst.tscn`(雪塊,圖 `tex/snow_chunk.png`)與 `bubble_pop.tscn`(小泡泡圈往上飄後消失,圖 `tex/bubble_ring.png`),照舊的粒子場景格式。
+- 其他新檔:`tests/line_c/test_art_v27_cast.gd`(格子、調色盤、腳底、上移、循環與長度、辨識特徵、頭像、投射物、粒子)、`tests/line_c/cast_v27_gallery.tscn/.gd`(圖庫與截圖工具,點畫面換頁)、`tests/line_c/shots_v27/`(八張截圖)。`tools/pixel/build_all.py` 只加了一行呼叫 `art_v27_cast.write_all()`。
+- `tools/run_tests.sh core` 66 項、`tools/run_tests.sh line_c` 136 項全部通過。
+
+**進行中**:沒有。
+
+**被甚麼卡住 / 給 A 線、C 世界、C 繪本與整合的說明**
+
+- 一次性動畫的長度(秒):螃蟹 attack 0.26;水母 attack 0.25、zap 0.25;章魚王 attack 0.33、slam 0.34、ink 0.38、summon 0.38、down 1.0;雪人 attack 0.26、throw 0.34;紅白龍 attack 0.27、breath 0.40、roar 0.42;影子騎士 attack 0.26、down 1.0;提燈鬼火 heal 0.38;莫德雷德 attack 0.27、slash 0.35、summon 0.38、down 1.0;崔斯坦 attack 0.25;高文 attack 0.27、slam 0.40;所有 hurt 0.67。和佔位版差不多,A 線的時間不用改。
+- 螃蟹「夾完喘氣」沒有另外的動畫;A 線可以在喘氣時播 `idle`(或 `hurt` 的第二格)。如果需要專用動畫,告訴我名稱即可加。
+- `tentacle` 是直立畫的(根部在下、尖端在上,24×56)。`enemy_projectile.gd` 會照飛行方向轉圖;如果 A 線把它當成「沿著紅線拍下」的障礙物,請自己設定旋轉,讓根部對著場地邊緣。
+- `music_note` 朝右畫;往左飛時會被轉成倒過來的音符,A 線可以考慮不轉(`spin_speed` 或固定 rotation)。
+- 會飄的新敵人(`jellyfish`、`lantern_wisp`)的影子:`assets/backgrounds/actor_shadows.gd`(C 世界的檔案,我沒有動)的 `FLYERS` 建議加上 `"/jellyfish/"`、`"/lantern_wisp/"`。
+- 莫德雷德的 `guard` 護罩畫在 48 格裡的右半邊(跟著角色翻轉);`slash` 的紫色弧光也在格子裡,真正的劍氣投射物是 `shadow_slash`。
+- 給 C 繪本的設計重點(插畫請照這些顏色):崔斯坦=橘白柯基、深藍小帽紅羽毛、淺藍披風、綠上衣、木豎琴;高文=棕白聖伯納、眼周深棕、紅項圈小木桶、鋼胸甲、橘斗篷、大鐵鎚;莫德雷德=黑毛、鐵鏽色眉點與嘴邊、琥珀眼、尖耳、銀邊黑盔甲、狼頭肩甲、深灰斗篷(紫紅內裡)、發紫光的劍鞘;章魚王=珊瑚紅、深紅斑點、淺桃色肚子、貝殼王冠(金帶、粉紅扇貝、珍珠)、額頭黑狼紋章(紫邊)、大圓眼;紅龍=紅身體、黃肚子、奶油色角、玫瑰色小翅膀;白龍=雪白身體、冰藍角與鬃毛、冰藍肚子。插畫裡只有騎士拿武器(章魚王、雙龍空手)。
+- `docs/ART_BRIEF.md` 的尺寸表請整合更新:螃蟹、水母、雪人、火蜥蜴 24;章魚王、紅龍、白龍 64(上移 8);影子騎士、崔斯坦 32;提燈鬼火 16;莫德雷德 48;高文 40;投射物 bubble、music_note、snowball 12×12,ink_blob、fireball、ice_shard 16×16,shadow_slash 24×24,tentacle 24×56。
+
+**下一步**
+
+- 整合後在真正的關卡(海底、雪山、王座大廳的背景)裡看一次,尤其是水母的半透明、影子騎士在暗背景上的對比、章魚王觸手與預警紅線的位置,再微調。
+
+**需要擁有人決定的事**
+
+- 看 `tests/line_c/shots_v27/` 的八張截圖(`v27_cast_7.png` 是大家站在戰鬥區的樣子),或執行 `godot --path . res://tests/line_c/cast_v27_gallery.tscn`(點畫面換頁),告訴我哪個角色還不喜歡。
+- 高文用了 40×40 的格子(比金毛的 32 大一圈,看得出是大個子);如果覺得太大,可以改回 32。
