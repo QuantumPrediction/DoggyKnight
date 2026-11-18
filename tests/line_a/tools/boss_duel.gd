@@ -11,7 +11,8 @@ extends Node
 const ARENA_SCENE: PackedScene = preload("res://game/combat/arena.tscn")
 const TIMEOUT_SEC := 240.0
 
-## [頭目, 章, 關卡編號(0 起算), 同伴]
+## [頭目, 章, 關卡編號(0 起算), 同伴, (選用)同時出場的第二個頭目]
+## v2.7:加上第四至六章(雙龍一起出場;莫德雷德第一戰逃走就算結束)。
 const DUELS: Array = [
 	[&"scarecrow_captain", 1, 3, [&"bulldog"]],
 	[&"black_knight", 1, 5, [&"bulldog"]],
@@ -19,6 +20,12 @@ const DUELS: Array = [
 	[&"green_knight", 2, 5, [&"bulldog", &"lancelot"]],
 	[&"phantom_knight", 3, 3, [&"bulldog", &"lancelot"]],
 	[&"morgana", 3, 5, [&"bulldog", &"lancelot"]],
+	[&"crab_elite", 4, 3, [&"bulldog", &"tristan"]],
+	[&"kraken", 4, 5, [&"bulldog", &"tristan"]],
+	[&"snowman_elite", 5, 3, [&"lancelot", &"gawain"]],
+	[&"red_dragon", 5, 5, [&"lancelot", &"gawain"], &"white_dragon"],
+	[&"mordred_duel", 6, 3, [&"bulldog", &"lancelot"]],
+	[&"mordred", 6, 5, [&"bulldog", &"lancelot", &"tristan", &"gawain"]],
 ]
 
 var speed: float = 4.0
@@ -44,7 +51,7 @@ func _ready() -> void:
 func _run() -> void:
 	var lines: PackedStringArray = []
 	for duel: Array in DUELS:
-		lines.append(await _duel(duel[0], duel[1], duel[2], duel[3]))
+		lines.append(await _duel(duel[0], duel[1], duel[2], duel[3], duel[4] if duel.size() > 4 else &""))
 	Engine.time_scale = 1.0
 	print("\n== 頭目量度(%s,金毛攻擊力 ×%.1f) ==" % ["困難" if hard else "一般", power])
 	for line in lines:
@@ -52,7 +59,7 @@ func _run() -> void:
 	get_tree().quit(0)
 
 
-func _duel(boss_id: StringName, chapter: int, level_index: int, companions: Array) -> String:
+func _duel(boss_id: StringName, chapter: int, level_index: int, companions: Array, second_id: StringName = &"") -> String:
 	GameState.reset_run()
 	GameState.mode = &"story"
 	GameState.difficulty = &"hard" if hard else &"normal"
@@ -63,21 +70,34 @@ func _duel(boss_id: StringName, chapter: int, level_index: int, companions: Arra
 	add_child(arena)
 	for id: StringName in companions:
 		arena.spawn_companion(id)
-	var boss := arena.spawn_enemy(boss_id, Vector2(Layout.ARENA_RECT.get_center().x, Layout.ARENA_RECT.position.y + 50)) as BossBase
+	var top := Layout.ARENA_RECT.position.y + 50
+	var bosses: Array = []
+	if second_id == &"":
+		bosses.append(arena.spawn_enemy(boss_id, Vector2(Layout.ARENA_RECT.get_center().x, top)) as BossBase)
+	else:
+		bosses.append(arena.spawn_enemy(boss_id, Vector2(Layout.ARENA_RECT.position.x + 40, top)) as BossBase)
+		bosses.append(arena.spawn_enemy(second_id, Vector2(Layout.ARENA_RECT.end.x - 40, top)) as BossBase)
 	var player := arena.get_player() as GoldiePlayer
 	_damage = 0
 	_downs = 0
-	var max_hp := boss.max_hp
+	var max_hp := 0
+	for b: Variant in bosses:
+		max_hp += (b as BossBase).max_hp
 	Engine.time_scale = speed
 	var clock := 0.0
-	while clock < TIMEOUT_SEC and is_instance_valid(boss) and boss.is_in_group(&"enemy"):
+	var alive := func() -> bool:
+		for b: Variant in bosses:
+			if is_instance_valid(b) and (b as Node).is_in_group(&"enemy"):
+				return true
+		return false
+	while clock < TIMEOUT_SEC and alive.call():
 		await get_tree().physics_frame
 		clock += get_physics_process_delta_time()
 		if player.is_downed():
 			player.revive()
 		_steer(arena, player)
 	Engine.time_scale = 1.0
-	var won := not (is_instance_valid(boss) and boss.is_in_group(&"enemy"))
+	var won := not alive.call()
 	remove_child(arena)
 	arena.queue_free()
 	await get_tree().process_frame

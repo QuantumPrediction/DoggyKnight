@@ -3,7 +3,8 @@ extends BossBase
 ## 莫德雷德(v2.7 AW6,48×48):杜賓犬黑騎士,腰間掛著發紫光的劍鞘。同一個腳本兩個場景:
 ## - mordred_duel.tscn(中頭目第一戰,6-4,duel = true):衝刺斬與劍氣;生命剩 flee_threshold(一半)時逃走
 ##   ——說一句話、往場地上方跑掉(無敵),離開 enemy 群組並發 enemy_died(掉經驗與寶箱),
-##   場上的其他手下也跟著撤退(retreat_others_on_flee),所以逃走 = 過關。逃走前不會被打倒。
+##   故事模式時場上的其他手下也跟著撤退(retreat_others_on_flee),所以逃走 = 過關。逃走前不會被打倒。
+##   逃走的 flee_time 秒內還在 enemy 群組裡,但無敵、不能被瞄準(和頭目的倒下演出一樣),之後才離開群組。
 ## - mordred.tscn(最終頭目,6-6,三個階段):
 ##   1. 衝刺斬(紅線預警,方向鎖定,沿線衝過去;衝完喘氣是反擊時機)與劍氣(直線預警後射出 shadow_slash)。
 ##   2. 66% 起:劍鞘護盾。紫色的護盾罩住他,這時金毛打不動(「鏘!」),只有同伴的攻擊(Style.ALLY)
@@ -578,7 +579,8 @@ func start_flee() -> void:
 	_cancel_attack()
 	_clear_marks()
 	_drop_summons()
-	if retreat_others_on_flee:
+	# 故事模式(6-4):手下跟著撤退,逃走 = 過關。無盡試煉不撤退(其他敵人照常打)。
+	if retreat_others_on_flee and GameState.mode == &"story":
 		for node in get_tree().get_nodes_in_group(ENEMY_GROUP):
 			if node != self and node is EnemyBase and not node is BossBase:
 				(node as EnemyBase).retreat()
