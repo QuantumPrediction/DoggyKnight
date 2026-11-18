@@ -149,7 +149,8 @@ extends Resource
 @export var lancelot_touch_margin: float = 4.0
 
 @export_group("湖中仙女(v2.6 DV1)")
-## 第幾章起由湖中仙女代替梅林(第三章:梅林被抓走了)。0 = 不換。
+## 哪一章由湖中仙女代替梅林(第三章:梅林被抓走了)。0 = 不換。
+## v2.7:只有這一章;第四章起梅林回來了,第六章第二次營地仙女和梅林一起(見 cast_layouts、friends)。
 @export var lady_from_chapter: int = 3
 ## 湖中仙女的圖(C 線,動畫 idle、run、cast)。留空時用 assets/sprites/lady_lake/lady_lake_frames.tres。
 @export var lady_frames: SpriteFrames

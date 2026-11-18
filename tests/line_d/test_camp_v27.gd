@@ -267,6 +267,14 @@ func test_new_camp_lines_are_short_full_width_and_in_the_font() -> void:
 		assert_false(text.contains("!") or text.contains("?") or text.contains(":"), "%s 用全形標點" % key)
 		for c in text:
 			assert_true(font.has_char(c.unicode_at(0)), "%s:像素字型有「%s」" % [key, c])
+	# 對話泡泡自動換成兩行時,剛好在標點後面換行(不會把「晚上」「星星」拆開)
+	await _enter(6, 1)
+	var bubble := _camp.get_merlin_bubble()
+	for key in keys:
+		bubble.show_text(tr(key), Vector2(90, 120), 1.0)
+		var lines := bubble.get_lines()
+		assert_eq(lines.size(), 2, "%s 兩行" % key)
+		assert_true(MinigameSpeechBubble.NO_LINE_START.contains(lines[0].right(1)), "%s:第一行在標點結束(%s)" % [key, lines[0]])
 
 
 func test_cast_layouts_and_friends_are_data() -> void:
