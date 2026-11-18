@@ -52,7 +52,7 @@ const MIST_COLORS: Array[Color] = [Color(0.35, 0.3, 0.5, 0.9), Color(0.55, 0.5, 
 @export var slash_telegraph: float = 0.8
 @export var slash_count: int = 1
 @export var slash_count_phase2: int = 3
-@export var slash_step_deg: float = 26.0
+@export var slash_step_deg: float = 30.0
 @export var slash_recover: float = 0.5
 @export_group("劍鞘護盾(第二階段起)")
 @export var shield_hp: int = 60                  ## 同伴要打掉這麼多才破盾

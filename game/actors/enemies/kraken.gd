@@ -48,7 +48,7 @@ const BUBBLE_COLORS: Array[Color] = [Color(0.8, 0.95, 1.0, 0.9), Color(0.6, 0.85
 @export_group("扇形泡泡")
 @export var bubble: ProjectileData = BUBBLE
 @export var bubble_count: int = 5
-@export var bubble_step_deg: float = 22.0
+@export var bubble_step_deg: float = 28.0
 @export var bubble_telegraph: float = 0.85
 @export var bubble_recover: float = 0.5
 @export_group("召喚(第二階段)")
