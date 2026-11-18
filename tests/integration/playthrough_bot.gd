@@ -120,6 +120,8 @@ func _play_level() -> void:
 		await _shot_once("level_" + level_id, "01_level_%s" % level_id)
 	if _level_clock > 22.0:   # 關卡標題卡早已消失,拍戰鬥正激烈的一刻
 		await _shot_once("level_mid_" + level_id, "01_level_%s_mid" % level_id)
+	if _level_clock > 40.0:   # 頭目戰比較長:再拍一張,頭目與預警都在畫面上
+		await _shot_once("level_late_" + level_id, "01_level_%s_late" % level_id)
 	_press_ultimate_if_ready()
 	_steer()
 
