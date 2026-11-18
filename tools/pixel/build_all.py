@@ -171,6 +171,7 @@ def main() -> None:
     art_v26_ch1.write_all()
     art_v26_title.write_all()
     art_v26_story.write_all()
+    __import__("art_v27_story").write_all()                      # v2.7 C 繪本: chapter 4-6 storybook pages
     sfx_gen.write_all()
     if "--no-music" not in sys.argv:
         music_gen.write_all()
