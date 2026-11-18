@@ -11,6 +11,100 @@
 [ext_resource type="PackedScene" path="res://assets/fx/particles/sparkle.tscn" id="9_sparkle"]
 [ext_resource type="PackedScene" path="res://game/camp/training.tscn" id="10_training"]
 [ext_resource type="PackedScene" path="res://game/minigames/wake/wake_minigame.tscn" id="11_wake"]
+[ext_resource type="Script" path="res://game/camp/camp_friend_data.gd" id="12_friend"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/tristan/tristan_frames.tres" id="13_tristan"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/gawain/gawain_frames.tres" id="14_gawain"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/morgana/morgana_frames.tres" id="15_morgana"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/lady_lake/lady_lake_frames.tres" id="16_lady"]
+[ext_resource type="PackedScene" path="res://game/minigames/fish/fish_minigame.tscn" id="17_fish"]
+
+[sub_resource type="Resource" id="Resource_tristan"]
+script = ExtResource("12_friend")
+id = &"tristan"
+frames = ExtResource("13_tristan")
+idle_animation = &"idle"
+tap_animation = &"play"
+scale = 2.0
+flip = false
+auto_face = true
+lines = PackedStringArray("CAMP_TRISTAN_01", "CAMP_TRISTAN_02", "CAMP_TRISTAN_03", "CAMP_TRISTAN_04")
+sfx = &"star"
+sfx_pitch = 1.25
+tap_sec = 1.2
+hop_px = 2.0
+glow_color = Color(1, 1, 1, 0)
+glow_offset = Vector2(6, 0)
+ambient_animation = &"play"
+ambient_every_min = 6.0
+ambient_every_max = 10.0
+ambient_sec = 1.8
+music_notes = true
+note_color = Color(1, 0.952941, 0.627451, 1)
+breathe_sec = 2.0
+touch_margin = 4.0
+head_inset = 2.0
+
+[sub_resource type="Resource" id="Resource_gawain"]
+script = ExtResource("12_friend")
+id = &"gawain"
+frames = ExtResource("14_gawain")
+idle_animation = &"idle"
+tap_animation = &"slam"
+scale = 2.0
+flip = false
+auto_face = true
+lines = PackedStringArray("CAMP_GAWAIN_01", "CAMP_GAWAIN_02", "CAMP_GAWAIN_03", "CAMP_GAWAIN_04")
+sfx = &"bark"
+sfx_pitch = 0.72
+tap_sec = 0.8
+hop_px = 4.0
+glow_color = Color(1, 0.85, 0.5, 0.35)
+glow_offset = Vector2(10, 8)
+breathe_sec = 2.8
+touch_margin = 4.0
+head_inset = 2.0
+
+[sub_resource type="Resource" id="Resource_morgana"]
+script = ExtResource("12_friend")
+id = &"morgana"
+frames = ExtResource("15_morgana")
+idle_animation = &"idle"
+tap_animation = &"cast"
+scale = 1.0
+flip = false
+auto_face = true
+lines = PackedStringArray()
+sfx = &"magic"
+sfx_pitch = 0.9
+tap_sec = 0.9
+hop_px = 2.0
+glow_color = Color(0.75, 0.45, 1, 0.4)
+glow_offset = Vector2(14, -20)
+tap_particles = ExtResource("9_sparkle")
+breathe_sec = 2.6
+touch_margin = 4.0
+head_inset = 10.0
+
+[sub_resource type="Resource" id="Resource_lady"]
+script = ExtResource("12_friend")
+id = &"lady_lake"
+frames = ExtResource("16_lady")
+idle_animation = &"idle"
+tap_animation = &"cast"
+scale = 2.0
+flip = false
+auto_face = true
+lines = PackedStringArray("CAMP_LADY_01", "CAMP_LADY_02", "CAMP_LADY_04")
+sfx = &"magic"
+sfx_pitch = 1.15
+tap_sec = 0.9
+hop_px = 2.0
+glow_color = Color(0.5, 0.85, 1, 0.4)
+glow_offset = Vector2(6, -2)
+tap_particles = ExtResource("9_sparkle")
+breathe_sec = 2.4
+touch_margin = 4.0
+head_inset = 2.0
 
 [resource]
 script = ExtResource("1_config")
@@ -63,8 +157,49 @@ camp_numbers = Dictionary[int, int]({
 chapter_story_path_format = "res://data/story/c%d_camp%d.tres"
 bulldog_from_chapter = 2
 minigame_rotation_from_chapter = 2
-minigame_rotation = Array[PackedScene]([ExtResource("2_minigame"), ExtResource("11_wake")])
-minigame_rotation_keys = PackedStringArray("UI_CAMP_MINIGAME", "UI_CAMP_MINIGAME_WAKE")
+minigame_rotation = Array[PackedScene]([ExtResource("2_minigame"), ExtResource("11_wake"), ExtResource("17_fish")])
+minigame_rotation_keys = PackedStringArray("UI_CAMP_MINIGAME", "UI_CAMP_MINIGAME_WAKE", "UI_CAMP_MINIGAME_FISH")
+minigame_rotation_counts = Dictionary[int, int]({
+2: 2,
+4: 3
+})
+cast_layouts = Dictionary[String, Dictionary]({
+"4": {
+"bulldog": Vector2(-58, 40),
+"merlin": Vector2(-22, -20),
+"tristan": Vector2(32, -20)
+},
+"5-1": {
+"gawain": Vector2(-58, 38),
+"lancelot": Vector2(32, -20),
+"merlin": Vector2(-22, -20)
+},
+"5-2": {
+"crystal_ball": Vector2(2, -9),
+"gawain": Vector2(-58, 38),
+"lancelot": Vector2(32, -20),
+"merlin": Vector2(-22, -20)
+},
+"6-1": {
+"bulldog": Vector2(-60, 40),
+"gawain": Vector2(66, 26),
+"lancelot": Vector2(38, -20),
+"merlin": Vector2(-30, -20),
+"tristan": Vector2(4, -20)
+},
+"6-2": {
+"bulldog": Vector2(-60, 40),
+"gawain": Vector2(66, 26),
+"lady_lake": Vector2(-58, -16),
+"lancelot": Vector2(58, -20),
+"merlin": Vector2(-32, -20),
+"morgana": Vector2(-2, -20),
+"tristan": Vector2(28, -18)
+}
+})
+friends = Array[ExtResource("12_friend")]([SubResource("Resource_tristan"), SubResource("Resource_gawain"), SubResource("Resource_morgana"), SubResource("Resource_lady")])
+friend_tap_cooldown_sec = 0.6
+bulldog_offset = Vector2(-58, 40)
 lancelot_from_chapter = 2
 lancelot_idle_animation = &"idle"
 lancelot_tap_animation = &"attack"
@@ -123,5 +258,41 @@ chapter_palettes = Dictionary[int, Dictionary]({
 "sky_bottom_color": Color(0.164706, 0.290196, 0.415686, 1),
 "sky_top_color": Color(0.035294, 0.058824, 0.141176, 1),
 "water_color": Color(0.113725, 0.227451, 0.360784, 1)
+},
+4: {
+"firefly_color": Color(1, 0.952941, 0.784314, 1),
+"glow_color": Color(1, 0.55, 0.2, 0.06),
+"ground_color": Color(0.517647, 0.443137, 0.341176, 1),
+"ground_light_color": Color(0.756863, 0.65098, 0.490196, 1),
+"leaf_color": Color(0.172549, 0.352941, 0.290196, 1),
+"rock_color": Color(0.219608, 0.203922, 0.313726, 1),
+"sky_bottom_color": Color(0.164706, 0.290196, 0.478431, 1),
+"sky_top_color": Color(0.043137, 0.101961, 0.227451, 1),
+"trunk_color": Color(0.352941, 0.25098, 0.219608, 1),
+"water_color": Color(0.105882, 0.227451, 0.388235, 1)
+},
+5: {
+"firefly_color": Color(0.811765, 0.909804, 1, 1),
+"ground_color": Color(0.470588, 0.533333, 0.682353, 1),
+"ground_light_color": Color(0.705882, 0.764706, 0.894118, 1),
+"sky_bottom_color": Color(0.203922, 0.25098, 0.415686, 1),
+"sky_top_color": Color(0.054902, 0.078431, 0.188235, 1),
+"snowcap_color": Color(0.866667, 0.901961, 0.972549, 1),
+"spring_color": Color(0.247059, 0.541176, 0.627451, 1),
+"wood_color": Color(0.419608, 0.290196, 0.219608, 1)
+},
+6: {
+"cloth_color": Color(0.721569, 0.203922, 0.227451, 1),
+"far_hill_color": Color(0.415686, 0.25098, 0.376471, 1),
+"firefly_color": Color(1, 0.823529, 0.478431, 1),
+"glow_color": Color(1, 0.55, 0.2, 0.06),
+"ground_color": Color(0.352941, 0.290196, 0.164706, 1),
+"ground_light_color": Color(0.658824, 0.541176, 0.227451, 1),
+"leaf_color": Color(0.847059, 0.337255, 0.180392, 1),
+"leaf_color_2": Color(0.941176, 0.627451, 0.196078, 1),
+"leaf_color_3": Color(0.658824, 0.188235, 0.164706, 1),
+"near_hill_color": Color(0.290196, 0.188235, 0.219608, 1),
+"sky_bottom_color": Color(0.847059, 0.470588, 0.313726, 1),
+"sky_top_color": Color(0.164706, 0.12549, 0.313726, 1)
 }
 })

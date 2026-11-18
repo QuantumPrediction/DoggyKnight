@@ -97,14 +97,35 @@ extends Resource
 ## 第幾章起鬥牛犬一開始就在營地(第二、三章 2-1 起就是同伴)。
 @export var bulldog_from_chapter: int = 2
 
-@export_group("小遊戲輪流(v2.6 DV3)")
+@export_group("小遊戲輪流(v2.6 DV3、v2.7 DW3)")
 ## 第幾章起營地的小遊戲輪流出現(第一章只有 minigame_scene)。
 @export var minigame_rotation_from_chapter: int = 2
-## 輪流的小遊戲。第 N 章第 K 次營地用第 (N + K) % 數量 個:
-## 預設 [卷軸, 叫醒騎士] → 2 章第 1 次叫醒騎士、第 2 次卷軸;3 章第 1 次卷軸、第 2 次叫醒騎士。
+## 輪流的小遊戲。第 N 章第 K 次營地用第 (N + K) % 數量 個(數量見 minigame_rotation_counts):
+## 預設 [卷軸, 叫醒騎士, 接住跳跳魚]。
+## - 第二、三章在前兩個之間輪流:2 章第 1 次叫醒騎士、第 2 次卷軸;3 章第 1 次卷軸、第 2 次叫醒騎士。
+## - 第四章起三個輪流:4 章接魚、卷軸;5 章卷軸、叫醒騎士;6 章叫醒騎士、接魚。
 @export var minigame_rotation: Array[PackedScene] = []
 ## 每個輪流小遊戲的按鈕文字(翻譯鍵,和 minigame_rotation 同一次序)。
 @export var minigame_rotation_keys: PackedStringArray = []
+## v2.7:第幾章起在前幾個小遊戲之間輪流(章 → 數量;用不大於這一章的最大的章)。
+## 例如 {2: 2, 4: 3}:第二、三章用前 2 個,第四章起用前 3 個。沒有寫時用全部。
+@export var minigame_rotation_counts: Dictionary[int, int] = {}
+
+@export_group("六章的營地人物(v2.7 DW1)")
+## 每章每次營地在場的人與位置(docs/STORY.md 第 18 節)。
+## 鍵:"章-第幾次營地"(例如 "6-2"),或只寫 "章"(兩次營地一樣)。先找 "章-次",再找 "章"。
+## 值:{人: 相對圓桌中心的位置(邏輯像素)}。人:merlin、lady_lake、lancelot、bulldog,
+## 以及 friends 裡的同伴(tristan、gawain、morgana;梅林也在時 lady_lake 也算同伴),
+## 道具 crystal_ball(第五章第二次營地,摩根娜用水晶球說話)。
+## y < 0 的人站在圓桌後面(桌面遮住下半身);y ≥ 0 的人在圓桌前面、營火旁。
+## 沒有寫的章(第一至三章)沿用 v2.6 的規則:梅林、第二章起蘭斯洛特與鬥牛犬、第三章湖中仙女代替梅林。
+@export var cast_layouts: Dictionary[String, Dictionary] = {}
+## 會說話的同伴(CampFriendData):崔斯坦、高文、摩根娜、第六章的湖中仙女。
+@export var friends: Array[CampFriendData] = []
+## 兩次點同一位同伴之間至少隔多少秒。
+@export var friend_tap_cooldown_sec: float = 0.6
+## 鬥牛犬平常的位置(相對圓桌中心)。cast_layouts 沒有寫鬥牛犬的位置時用這個;木頭椅也畫在這裡下面。
+@export var bulldog_offset: Vector2 = Vector2(-58, 40)
 
 @export_group("蘭斯洛特(v2.6 DV1)")
 ## 第幾章起蘭斯洛特在營地(第二章第一次營地起,DEV_PLAN 4.13)。
@@ -128,7 +149,8 @@ extends Resource
 @export var lancelot_touch_margin: float = 4.0
 
 @export_group("湖中仙女(v2.6 DV1)")
-## 第幾章起由湖中仙女代替梅林(第三章:梅林被抓走了)。0 = 不換。
+## 哪一章由湖中仙女代替梅林(第三章:梅林被抓走了)。0 = 不換。
+## v2.7:只有這一章;第四章起梅林回來了,第六章第二次營地仙女和梅林一起(見 cast_layouts、friends)。
 @export var lady_from_chapter: int = 3
 ## 湖中仙女的圖(C 線,動畫 idle、run、cast)。留空時用 assets/sprites/lady_lake/lady_lake_frames.tres。
 @export var lady_frames: SpriteFrames
@@ -196,8 +218,9 @@ extends Resource
 @export var fire_animation: StringName = &"default"
 
 @export_group("顏色(佔位圖用)")
-## v2.6 DV2:營地的場景依章變化(1 草地夜空、2 城牆下的營火、3 湖邊洞口與月光)。
-## 這裡是第一章的顏色;第二、三章的顏色在 chapter_palettes(章 → {欄位名稱: 顏色}),
+## v2.6 DV2、v2.7 DW2:營地的場景依章變化(1 草地夜空、2 城牆下的營火、3 湖邊洞口與月光、
+## 4 海灘營火與星空、5 雪山小屋與溫泉、6 秋天山丘上的野外圓桌)。
+## 這裡是第一章的顏色;其他章的顏色在 chapter_palettes(章 → {欄位名稱: 顏色}),
 ## 沒有寫的欄位沿用第一章的。
 @export var chapter_palettes: Dictionary[int, Dictionary] = {}
 @export var sky_top_color: Color = Color("141030")

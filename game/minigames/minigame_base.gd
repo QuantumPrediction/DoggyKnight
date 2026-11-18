@@ -167,6 +167,13 @@ func add_time(seconds: float) -> void:
 	time_left = clampf(time_left + seconds, 0.0, config.duration_sec)
 
 
+## v2.7:自動試玩(整合的試玩機器人、沙盒、測試)。遊戲中每格呼叫一次,小遊戲就會自己玩得不錯。
+## 每個小遊戲覆寫:卷軸一直往下拉(遇到墨水漬停住)、叫醒騎士在節拍上點、接魚跑到落點。
+## 只在遊戲中(PLAYING)有作用;倒數、暫停、評價時呼叫也沒關係。
+func bot_step(_delta: float) -> void:
+	pass
+
+
 ## 評價畫面看完。
 func close() -> void:
 	if state == State.CLOSED:

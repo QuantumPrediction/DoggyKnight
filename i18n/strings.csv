@@ -341,3 +341,22 @@ COMPANION_GAWAIN,高文
 CHAPTER_SHORT_4,第四章
 CHAPTER_SHORT_5,第五章
 CHAPTER_SHORT_6,第六章
+CAMP_TRISTAN_01,我為今晚寫了一首歌，叫《香腸之歌》！
+CAMP_TRISTAN_02,腿短才好！彈豎琴時，琴剛好在我的高度。
+CAMP_TRISTAN_03,大耳朵聽得好清楚喔，連星星眨眼都聽見。
+CAMP_TRISTAN_04,一起來唱：汪汪嗚汪！……咦，大家呢？
+CAMP_GAWAIN_01,白天的我力氣最大喔！晚上嘛……先睡一下。
+CAMP_GAWAIN_02,我脖子上的小木桶？是熱可可，要喝嗎？
+CAMP_GAWAIN_03,有沒有誰迷路了呢？救援騎士來救你！
+CAMP_GAWAIN_04,我的大鐵鎚很重很重，抱抱卻很溫柔喔。
+UI_CAMP_MINIGAME_FISH,接住跳跳魚
+MINIGAME_FISH_GO,接住！
+MINIGAME_FISH_HINT,左右拖曳，用碗接住魚！
+MINIGAME_FISH_SCORE,%d 分
+MINIGAME_FISH_COMBO,連續 ×%d
+MINIGAME_FISH_RESULT,接住 %d 條，金魚 ×%d
+MINIGAME_FISH_BOOT,呸！
+MINIGAME_FISH_MISS,噗通！
+MINIGAME_FISH_CHEER,汪！
+CAMP_SANDBOX_ROW_CAMP1,各章的第一次營地
+CAMP_SANDBOX_ROW_CAMP2,各章的第二次營地

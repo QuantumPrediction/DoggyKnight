@@ -11,7 +11,11 @@ extends Node
 ##   城牆下的營火;小遊戲是新的「叫醒打瞌睡的騎士」。
 ## - 「第三章營地(湖中仙女)」(v2.6):第三章第一次營地,播 c3_camp1;湖中仙女坐在梅林的位置(點她說話),
 ##   湖邊洞口與月光;小遊戲輪到「拉扯王室卷軸」。
-## - 「頭目壓力測試」(v2.6 DV4):開啟 tests/line_d/boss_stress_test.tscn(頭目 + 分身 + 小怪 + 投射物)。
+## - v2.7:「各章的第一次營地」「各章的第二次營地」兩列按鈕 1 至 6:進那一章的那一次營地(取代上面
+##   四個按鈕;第四章崔斯坦與海灘、第五章高文與雪山小屋、第六章全員與秋天山丘,第五章第二次營地桌上有水晶球)。
+##   小遊戲依章輪流;第四章第一次與第六章第二次是新的「接住跳跳魚」。
+## - 「頭目壓力測試」(v2.6 DV4):開啟 tests/line_d/boss_stress_test.tscn(頭目 + 分身 + 小怪 + 投射物;
+##   v2.7 加上 --scenario=dragons:四位同伴 + 紅龍與白龍 + 投射物)。
 ## - 「訓練(送 50 個零食)」(v2.4):像從標題打開一樣,單獨打開營地訓練介面;先送 50 個零食方便試買。
 ## - 「壓力測試」:開啟 tests/line_d/stress_test.tscn(40 隻敵人與 FPS)。
 ## - 「模擬瀏海」:切換 SafeArea.simulate_notch。
@@ -19,7 +23,8 @@ extends Node
 ##
 ## 自動試玩(無畫面的檢查用):
 ##   godot --headless --path . res://tests/line_d/camp_sandbox.tscn --fixed-fps 60 --quit-after 1500 -- --autoplay
-## 加上 --fast 時以 4 倍速執行;--chapter=2 或 3 時進那一章的營地(第二章會玩「叫醒騎士」)。
+## 加上 --fast 時以 4 倍速執行;--chapter=N(1 至 GameState.CHAPTER_COUNT)時進那一章的第一次營地
+## (第二章會玩「叫醒騎士」、第四章會玩「接住跳跳魚」);再加 --camp2 進第二次營地。
 ## 無畫面(headless)時自動開啟自動試玩。
 
 const CAMP_SCENE: PackedScene = preload("res://game/camp/camp.tscn")
@@ -49,6 +54,7 @@ var _bot_swipe_timer: float = 0.0
 var _bot_mistake_done: bool = false
 var _bot_pause_done: bool = false
 var _timer_at_pause: float = 0.0
+var _bot_fish_judged: int = 0
 
 
 func _ready() -> void:
@@ -69,8 +75,8 @@ func _ready() -> void:
 		var chapter := 1
 		for arg in args:
 			if arg.begins_with("--chapter="):
-				chapter = clampi(int(arg.trim_prefix("--chapter=")), 1, 3)
-		enter_camp(3 if chapter == 1 else 1, chapter)
+				chapter = clampi(int(arg.trim_prefix("--chapter=")), 1, GameState.CHAPTER_COUNT)
+		enter_camp(3 if chapter == 1 or args.has("--camp2") else 1, chapter)
 
 
 func enter_camp(level_index: int = 1, chapter: int = 1) -> void:
@@ -89,6 +95,8 @@ func enter_camp(level_index: int = 1, chapter: int = 1) -> void:
 	_camp.story_finished.connect(func() -> void: _note("camp story finished → menu"))
 	_camp.merlin_spoke.connect(func(key: String) -> void: _note("  %s: %s" % ["Lady" if _camp.is_lady_present() else "Merlin", tr(key)]))
 	_camp.lancelot_spoke.connect(func(key: String) -> void: _note("  Lancelot: %s" % tr(key)))
+	_camp.friend_spoke.connect(func(id: StringName, key: String) -> void:
+		_note("  %s: %s" % [id, tr(key) if key != "" else "(只做動作)"]))
 	_camp.minigame_opened.connect(func(m: MinigameBase) -> void:
 		_note("minigame opened: %s" % m.config.minigame_id)
 		m.state_changed.connect(func(s: MinigameBase.State) -> void:
@@ -157,6 +165,8 @@ func _run_bot(delta: float) -> void:
 					_camp.tap_bulldog()
 					if _camp.is_lancelot_visible():
 						_camp.tap_lancelot()
+					for id: StringName in _camp.friend_ids():
+						_camp.tap_friend(id)
 					_note("  bulldog visible=%s (level_index=%d)" % [_camp.is_bulldog_visible(), GameState.level_index])
 			elif _bot_time > 2.6 and (_camp.merlin_taps >= 2 or not _camp.is_merlin_visible()):
 				_camp.open_minigame()
@@ -166,6 +176,9 @@ func _run_bot(delta: float) -> void:
 				return
 			if minigame.state == MinigameBase.State.PLAYING and minigame is WakeMinigame:
 				_bot_wake(minigame as WakeMinigame)
+				return
+			if minigame.state == MinigameBase.State.PLAYING and minigame is FishMinigame:
+				_bot_fish(minigame as FishMinigame, delta)
 				return
 			if minigame.state == MinigameBase.State.PLAYING:
 				var scroll := minigame as ScrollMinigame
@@ -231,6 +244,22 @@ func _bot_wake(game: WakeMinigame) -> void:
 			_note("  wake: knight %d → %s (combo %d)" % [int(n["lane"]), WakeMinigame.Hit.keys()[hit], game.combo])
 
 
+## 「接住跳跳魚」(v2.7):用 bot_step() 跑到每條魚的落點;中途模擬切到背景一次。
+func _bot_fish(game: FishMinigame, delta: float) -> void:
+	if not _bot_pause_done and game.play_elapsed > 5.0:
+		_bot_pause_done = true
+		_timer_at_pause = game.time_left
+		AppLifecycle.simulate_background()
+		_bot_time = 0.0
+		_bot_step = 2
+		return
+	game.bot_step(delta)
+	var judged := game.caught + game.misses + game.boots
+	if judged != _bot_fish_judged:
+		_bot_fish_judged = judged
+		_note("  fish: caught %d, golden %d, missed %d, boots %d (combo %d)" % [game.caught, game.goldens, game.misses, game.boots, game.combo])
+
+
 func _note(text: String) -> void:
 	_log.append(text)
 	print("[camp_sandbox] ", text)
@@ -273,21 +302,23 @@ func _build_menu() -> void:
 	root.add_child(_menu)
 	_menu.add_child(MinigameUi.make_label(tr("CAMP_SANDBOX_TITLE"), 14, Color("ffe9a8")))
 	var size := Vector2(150, 26)
-	var camp_button := MinigameUi.make_button(tr("CAMP_SANDBOX_CAMP"), size, 11, Color("c0603a"), Color("3a1a10"))
-	camp_button.pressed.connect(enter_camp)
-	_menu.add_child(camp_button)
-	var camp2_button := MinigameUi.make_button(tr("CAMP_SANDBOX_CAMP2"), size, 11, Color("c0603a"), Color("3a1a10"))
-	camp2_button.pressed.connect(enter_camp.bind(3))
-	_menu.add_child(camp2_button)
+	# v2.7:各章的第一次、第二次營地(1 至 CHAPTER_COUNT 的小按鈕)
+	for row in 2:
+		_menu.add_child(MinigameUi.make_label(tr("CAMP_SANDBOX_ROW_CAMP%d" % (row + 1)), 12, Color("ffe9a8")))
+		var line := HBoxContainer.new()
+		line.add_theme_constant_override(&"separation", 3)
+		_menu.add_child(line)
+		var chapters := GameState.CHAPTER_COUNT
+		var width := floorf((size.x - 3.0 * (chapters - 1)) / chapters)
+		for chapter in range(1, chapters + 1):
+			var b := MinigameUi.make_button(str(chapter), Vector2(width, 24), 11,
+				Color("c0603a") if row == 0 else Color("8a5a3a"), Color("3a1a10"))
+			b.name = "Camp%d_%d" % [chapter, row + 1]
+			b.pressed.connect(enter_camp.bind(1 if row == 0 else 3, chapter))
+			line.add_child(b)
 	var training_button := MinigameUi.make_button(tr("CAMP_SANDBOX_TRAINING"), size, 11, Color("3a5a8a"), Color("12243a"))
 	training_button.pressed.connect(open_training)
 	_menu.add_child(training_button)
-	var c2_button := MinigameUi.make_button(tr("CAMP_SANDBOX_C2"), size, 11, Color("8a5a3a"), Color("3a1a10"))
-	c2_button.pressed.connect(enter_camp.bind(1, 2))
-	_menu.add_child(c2_button)
-	var c3_button := MinigameUi.make_button(tr("CAMP_SANDBOX_C3"), size, 11, Color("3a6a8a"), Color("10243a"))
-	c3_button.pressed.connect(enter_camp.bind(1, 3))
-	_menu.add_child(c3_button)
 	var boss_button := MinigameUi.make_button(tr("CAMP_SANDBOX_BOSS"), size, 11, Color("6a3a7a"), Color("24103a"))
 	boss_button.pressed.connect(func() -> void: get_tree().change_scene_to_file(BOSS_STRESS_SCENE_PATH))
 	_menu.add_child(boss_button)
@@ -301,7 +332,7 @@ func _build_menu() -> void:
 	_menu.add_child(notch_button)
 	_status = MinigameUi.make_label("", 8)
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_status.custom_minimum_size = Vector2(150, 60)
+	_status.custom_minimum_size = Vector2(150, 36)
 	_menu.add_child(_status)
 	root.resized.connect(_layout_menu)
 	_layout_menu()
