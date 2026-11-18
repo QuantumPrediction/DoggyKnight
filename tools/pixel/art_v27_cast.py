@@ -56,9 +56,7 @@ LIFT64 = 8           # the 64 px bosses stand 8 px higher (foot_lift metadata), 
 GROUND64 = 62 - LIFT64
 
 stars = V.stars
-glow = V.glow
 sparkle = V.sparkle
-fade = V.fade
 dissolve = V.dissolve
 anim = V.anim
 add_foot_lift = V.add_foot_lift
@@ -643,7 +641,6 @@ def salamander() -> list[Anim]:
 # ---------------------------------------------------------------------------
 
 WISP_RAMP = ["teal", "teal", "azure", "white"]
-LANTERN = Mat(["brown_d", "gold_d", "gold"], outline="umber")
 
 
 def wisp_frame(sway: float = 0.0, bob: int = 0, lean: float = 0.0, r: float = 4.2, eyes: str = "open",
@@ -2796,7 +2793,7 @@ def tentacle() -> list[Anim]:
         for j in range(1, 7):
             ang = math.pi + d * (-j * (0.75 + curl * 0.35))
             rr = 3.0 - j * 0.35
-            pts.append((cxs + math.cos(ang) * rr * d * -1 * -1, cys + math.sin(ang) * rr))
+            pts.append((cxs + math.cos(ang) * rr * d, cys + math.sin(ang) * rr))
         shape = set()
         n = len(pts) - 1
         for i in range(n):
