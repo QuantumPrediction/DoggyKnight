@@ -24,6 +24,15 @@ extends Node
 ## - 第三章梅林被抓走了:湖中仙女坐在梅林的位置(點她說 CAMP_LADY_XX)。
 ## - 場景:第一章草地夜空、第二章城牆下的營火、第三章湖邊洞口與月光(CampScenery.chapter)。
 ## - 小遊戲:第二章起「拉扯王室卷軸」與「叫醒騎士」輪流(CampConfig.minigame_rotation)。
+##
+## v2.7 六章(DEV_PLAN 4.14、20 DW1 至 DW3;docs/STORY.md 第 18 節):
+## - 第四至六章誰在營地、站在哪裡由 CampConfig.cast_layouts 決定(第一至三章仍用 v2.6 的規則):
+##   第四章梅林、貝德維爾、崔斯坦;第五章梅林、蘭斯洛特、高文(貝德維爾留在卡美洛;
+##   第二次營地桌上有摩根娜的水晶球);第六章全員,第二次營地再加上湖中仙女與摩根娜。
+## - 同伴(CampFriend,資料在 CampConfig.friends):點崔斯坦說 CAMP_TRISTAN_XX、點高文說 CAMP_GAWAIN_XX
+##   (tap_friend(),訊號 friend_spoke)。
+## - 場景:第四章海灘營火與星空、第五章雪山小屋與溫泉蒸氣、第六章秋天山丘上的野外圓桌(CampChapterScenes)。
+## - 小遊戲:第四章起三個輪流(加上「接住跳跳魚」FishMinigame,見 CampConfig.minigame_rotation_counts)。
 
 const DEFAULT_GOLDIE_FRAMES_PATH: String = "res://game/camp/art/camp_goldie_frames.tres"
 const FALLBACK_GOLDIE_FRAMES_PATH: String = "res://assets/sprites/goldie/goldie_frames.tres"
@@ -49,6 +58,8 @@ signal story_finished()
 signal merlin_spoke(key: String)
 ## v2.6:蘭斯洛特說了一句話(翻譯鍵)。
 signal lancelot_spoke(key: String)
+## v2.7:同伴(崔斯坦、高文、摩根娜、第六章的湖中仙女)被點了。key:說的話(翻譯鍵;只做動作時是空字串)。
+signal friend_spoke(id: StringName, key: String)
 ## v2.4:訓練介面打開、關閉;在訓練裡買了一級(B 線想立即套用時可以聽這個)。
 signal training_opened(training: CampTraining)
 signal training_closed()
@@ -70,6 +81,8 @@ var story_played: bool = false
 var merlin_taps: int = 0
 ## 這次營地點蘭斯洛特的次數(有說話的)。
 var lancelot_taps: int = 0
+## v2.7:這次營地點同伴的次數(有反應的)。
+var friend_taps: int = 0
 
 var _layer: CanvasLayer
 var _root: Control
@@ -133,6 +146,13 @@ var _line_rng := RandomNumberGenerator.new()
 ## 這次營地用的小遊戲(依章輪流)與它的按鈕文字。
 var _minigame_scene: PackedScene
 var _minigame_key: String = "UI_CAMP_MINIGAME"
+## v2.7:這次營地的人物表(CampConfig.cast_layouts 的一項;空 = 用 v2.6 的規則)。
+var _cast: Dictionary = {}
+## v2.7:同伴(id → CampFriend)與它們的觸控範圍(id → Control)。
+var _friends: Dictionary = {}
+var _friend_zones: Dictionary = {}
+var _last_friend_tap: Dictionary = {}
+var _table_spot: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
@@ -188,6 +208,7 @@ func _load_defaults() -> void:
 		if config.lady_frames == null and ResourceLoader.exists(LADY_FRAMES_PATH):
 			config.lady_frames = load(LADY_FRAMES_PATH) as SpriteFrames
 	_apply_chapter_palette()
+	_cast = cast_layout()
 	_pick_minigame()
 	if ResourceLoader.exists(SNACK_FRAMES_PATH):
 		var snack := load(SNACK_FRAMES_PATH) as SpriteFrames
@@ -266,9 +287,51 @@ func is_lancelot_visible() -> bool:
 	return _lancelot != null and _lancelot.visible
 
 
-## 第三章:坐在梅林位置的是湖中仙女。
+## 湖中仙女在營地:第三章坐在梅林的位置;第六章第二次營地和梅林一起(v2.7)。
 func is_lady_present() -> bool:
-	return config.lady_from_chapter > 0 and GameState.chapter >= config.lady_from_chapter
+	if not _cast.is_empty():
+		return _cast.has("lady_lake")
+	return config.lady_from_chapter > 0 and GameState.chapter == config.lady_from_chapter
+
+
+## 坐在梅林位置(圓桌後面左邊、點她說 CAMP_LADY_XX)的是湖中仙女:梅林不在、仙女在(第三章)。
+func is_lady_hosting() -> bool:
+	if not _cast.is_empty():
+		return _cast.has("lady_lake") and not _cast.has("merlin")
+	return is_lady_present()
+
+
+## v2.7:這次營地的人物表(CampConfig.cast_layouts):{人: 相對圓桌中心的位置}。
+## 先找 "章-第幾次營地",再找 "章";沒有時傳回空字典(用 v2.6 的規則)。
+func cast_layout() -> Dictionary:
+	var number := maxi(camp_number(), 1)
+	for key: String in ["%d-%d" % [GameState.chapter, number], str(GameState.chapter)]:
+		if config.cast_layouts.has(key):
+			return config.cast_layouts[key]
+	return {}
+
+
+## v2.7:這次營地在場的同伴代號(CampFriend;不含梅林、蘭斯洛特、鬥牛犬)。
+func friend_ids() -> Array[StringName]:
+	var ids: Array[StringName] = []
+	for id: StringName in _friends:
+		ids.append(id)
+	return ids
+
+
+func get_friend(id: StringName) -> CampFriend:
+	return _friends.get(id) as CampFriend
+
+
+## 同伴在營地而且看得到(小遊戲中看不到)。
+func is_friend_visible(id: StringName) -> bool:
+	var friend := get_friend(id)
+	return friend != null and friend.visible
+
+
+## 第五章第二次營地:桌上有摩根娜的水晶球(她用水晶球說話)。
+func has_crystal_ball() -> bool:
+	return _cast.has("crystal_ball")
 
 
 ## 這次營地是這一章的第幾次營地(1 或 2;不是營地的 level_index 傳回 0)。
@@ -429,7 +492,7 @@ func tap_merlin() -> String:
 		return ""
 	if _time - _last_merlin_tap < config.merlin_tap_cooldown_sec:
 		return ""
-	var key := _next_line(&"lady_lake" if is_lady_present() else &"merlin", host_lines())
+	var key := _next_line(&"lady_host" if is_lady_hosting() else &"merlin", host_lines())
 	if key == "":
 		return ""
 	_last_merlin_tap = _time
@@ -462,9 +525,41 @@ func tap_lancelot() -> String:
 	return key
 
 
-## 坐在圓桌後面的人(梅林,第三章是湖中仙女)會說的話。
+## v2.7:點同伴(崔斯坦、高文、摩根娜、第六章的湖中仙女):做動作、發光、音效、輕震,
+## 對話泡泡說一句(CampFriendData.lines;沒有台詞的只做動作)。
+## 傳回說的那一句的翻譯鍵;沒有說話(故事中、小遊戲中、連點太快、不在營地、沒有台詞)時傳回空字串。
+func tap_friend(id: StringName) -> String:
+	var friend := get_friend(id)
+	if has_left or _minigame != null or _story_playing or _training != null or friend == null or not friend.visible:
+		return ""
+	if _time - float(_last_friend_tap.get(id, -100.0)) < config.friend_tap_cooldown_sec:
+		return ""
+	_last_friend_tap[id] = _time
+	friend_taps += 1
+	friend.poke()
+	if friend.data.sfx != &"":
+		Sfx.play(friend.data.sfx, 0.0, friend.data.sfx_pitch)
+	Haptics.play(&"light")
+	var key := _next_line(id, friend.data.lines)
+	if key != "":
+		_merlin_bubble.show_text(tr(key), friend.speech_anchor(), config.merlin_bubble_sec)
+	friend_spoke.emit(id, key)
+	return key
+
+
+## 點崔斯坦(第四章起):彈一下豎琴、飄出音符,說一句 CAMP_TRISTAN_XX。
+func tap_tristan() -> String:
+	return tap_friend(&"tristan")
+
+
+## 點高文(第五章起):大鐵鎚敲一下地,說一句 CAMP_GAWAIN_XX。
+func tap_gawain() -> String:
+	return tap_friend(&"gawain")
+
+
+## 坐在圓桌後面左邊的人(梅林,第三章是湖中仙女)會說的話。
 func host_lines() -> PackedStringArray:
-	return config.lady_lines if is_lady_present() else config.merlin_lines
+	return config.lady_lines if is_lady_hosting() else config.merlin_lines
 
 
 func is_merlin_visible() -> bool:
@@ -533,15 +628,27 @@ func _next_line(speaker: StringName, lines: PackedStringArray) -> String:
 	return key
 
 
+## 第 chapter 章在前幾個輪流小遊戲之間輪流(CampConfig.minigame_rotation_counts;沒有寫時用全部)。
+func rotation_count(chapter: int) -> int:
+	var size := config.minigame_rotation.size()
+	var best_from := -1
+	var count := size
+	for from: int in config.minigame_rotation_counts:
+		if from <= chapter and from > best_from:
+			best_from = from
+			count = config.minigame_rotation_counts[from]
+	return clampi(count, mini(1, size), size)
+
+
 ## 依章挑這次營地的小遊戲:第一章(或沒有輪流設定時)用 minigame_scene;
-## 第二章起用 minigame_rotation[(章 + 第幾次營地) % 數量]。
+## 第二章起用 minigame_rotation[(章 + 第幾次營地) % 數量](數量見 rotation_count())。
 func _pick_minigame() -> void:
 	_minigame_scene = config.minigame_scene
 	_minigame_key = "UI_CAMP_MINIGAME"
 	var rotation := config.minigame_rotation
 	if GameState.chapter < config.minigame_rotation_from_chapter or rotation.is_empty():
 		return
-	var index := (GameState.chapter + maxi(camp_number(), 1)) % rotation.size()
+	var index := (GameState.chapter + maxi(camp_number(), 1)) % rotation_count(GameState.chapter)
 	if rotation[index] == null:
 		return
 	_minigame_scene = rotation[index]
@@ -609,7 +716,33 @@ func _on_training_closed() -> void:
 
 
 func _lancelot_present() -> bool:
-	return config.lancelot_frames != null and config.lancelot_from_chapter > 0 and GameState.chapter >= config.lancelot_from_chapter
+	if config.lancelot_frames == null:
+		return false
+	if not _cast.is_empty():
+		return _cast.has("lancelot")
+	return config.lancelot_from_chapter > 0 and GameState.chapter >= config.lancelot_from_chapter
+
+
+func _bulldog_present() -> bool:
+	if config.bulldog_frames == null:
+		return false
+	if not _cast.is_empty():
+		return _cast.has("bulldog")
+	return GameState.level_index >= config.bulldog_from_level_index \
+			or (config.bulldog_from_chapter > 0 and GameState.chapter >= config.bulldog_from_chapter)
+
+
+## 坐在圓桌後面左邊的人在不在(梅林;第三章是湖中仙女)。v2.7 的章由 cast_layouts 決定。
+func _host_present() -> bool:
+	if _cast.is_empty():
+		return true
+	return _cast.has("merlin") or _cast.has("lady_lake")
+
+
+## cast_layouts 裡某人的位置(相對圓桌中心);沒有寫時用 fallback。
+func _cast_offset(id: String, fallback: Vector2) -> Vector2:
+	var value: Variant = _cast.get(id, fallback)
+	return value if value is Vector2 else fallback
 
 
 func _set_camp_visible(value: bool) -> void:
@@ -618,11 +751,15 @@ func _set_camp_visible(value: bool) -> void:
 	_pet_zone.visible = value
 	_bulldog_zone.visible = value and is_bulldog_visible()
 	if _merlin != null:
-		_merlin.visible = value and _merlin.frames != null
+		_merlin.visible = value and _merlin.frames != null and _host_present()
 	_merlin_zone.visible = value and is_merlin_visible()
 	if _lancelot != null:
 		_lancelot.visible = value and _lancelot_present()
 	_lancelot_zone.visible = value and is_lancelot_visible()
+	for id: StringName in _friends:
+		var friend := _friends[id] as CampFriend
+		friend.visible = value and friend.data.frames != null
+		(_friend_zones[id] as Control).visible = friend.visible
 	if not value:
 		_toast.visible = false
 		_merlin_bubble.hide_bubble()
@@ -743,7 +880,7 @@ func _build() -> void:
 	_root.add_child(_sky)
 	# 梅林畫在夜空與地面之間:地面上的圓桌會蓋住他的下半身,看起來就是坐在桌子後面。
 	# 第三章由湖中仙女坐在同一個位置(梅林被抓走了)。
-	if is_lady_present():
+	if is_lady_hosting():
 		_merlin = CampMerlin.new(config, config.lady_frames)
 		_merlin.name = "LadyLake"
 		_merlin.glow_color = config.lady_glow_color
@@ -752,13 +889,29 @@ func _build() -> void:
 			_merlin.frames = null
 	else:
 		_merlin = CampMerlin.new(config)
-	_merlin.visible = _merlin.frames != null
+	_merlin.visible = _merlin.frames != null and _host_present()
 	_root.add_child(_merlin)
 	# 蘭斯洛特(第二章起)站在圓桌右後方,同樣被桌面遮住下半身。
 	_lancelot = CampLancelot.new(config)
 	_lancelot.visible = _lancelot_present()
 	_root.add_child(_lancelot)
+	# v2.7:同伴(cast_layouts 裡 y < 0 的站在圓桌後面,其他的在營火旁,下面加到 _actors)。
+	var front_friends: Array[CampFriend] = []
+	for data: CampFriendData in config.friends:
+		if data == null or data.id == &"" or not _cast.has(String(data.id)):
+			continue
+		if data.id == &"lady_lake" and is_lady_hosting():
+			continue
+		var friend := CampFriend.new(data)
+		friend.behind_table = _cast_offset(String(data.id), Vector2.ZERO).y < 0.0
+		friend.visible = data.frames != null
+		_friends[data.id] = friend
+		if friend.behind_table:
+			_root.add_child(friend)
+		else:
+			front_friends.append(friend)
 	_ground = CampScenery.new(CampScenery.Part.GROUND, config, GameState.chapter)
+	_ground.crystal_ball = has_crystal_ball()
 	_root.add_child(_ground)
 
 	_actors = Node2D.new()
@@ -775,14 +928,15 @@ func _build() -> void:
 	_bulldog.name = "Bulldog"
 	_bulldog.sprite_frames = config.bulldog_frames
 	_bulldog.scale = Vector2.ONE * config.bulldog_scale
-	_bulldog.visible = config.bulldog_frames != null and (GameState.level_index >= config.bulldog_from_level_index \
-			or (config.bulldog_from_chapter > 0 and GameState.chapter >= config.bulldog_from_chapter))
+	_bulldog.visible = _bulldog_present()
 	if config.bulldog_frames != null:
 		for anim: StringName in [config.bulldog_animation, &"idle"]:
 			if config.bulldog_frames.has_animation(anim):
 				_bulldog.play(anim)
 				break
 	_actors.add_child(_bulldog)
+	for friend in front_friends:
+		_actors.add_child(friend)
 	_goldie = CampGoldie.new(config)
 	_actors.add_child(_goldie)
 	_embers = _make_embers()
@@ -791,6 +945,7 @@ func _build() -> void:
 	_actors.add_child(_smoke)
 
 	_glow = CampScenery.new(CampScenery.Part.GLOW, config, GameState.chapter)
+	_glow.crystal_ball = has_crystal_ball()
 	_root.add_child(_glow)
 
 	_front = Control.new()
@@ -835,6 +990,10 @@ func _build() -> void:
 	_merlin_zone.visible = is_merlin_visible()
 	_lancelot_zone = _make_touch_zone("LancelotZone", tap_lancelot)
 	_lancelot_zone.visible = is_lancelot_visible()
+	for id: StringName in _friends:
+		var zone := _make_touch_zone("%sZone" % (_friends[id] as CampFriend).name, func() -> void: tap_friend(id))
+		zone.visible = is_friend_visible(id)
+		_friend_zones[id] = zone
 
 	_menu = VBoxContainer.new()
 	_menu.name = "Menu"
@@ -993,16 +1152,18 @@ func _layout() -> void:
 	var scene_bottom := _menu_rest.y - 6.0
 	var mid := roundf(lerpf(scene_top, scene_bottom, 0.5))
 	var table_spot := Vector2(cx, mid - 22.0)
+	_table_spot = table_spot
 	_fire_spot = Vector2(cx - 16.0, mid + 24.0)
-	_bulldog_spot = Vector2(cx - 58.0, mid + 18.0)
+	_bulldog_spot = table_spot + _cast_offset("bulldog", config.bulldog_offset)
 	var goldie_spot := Vector2(cx + 34.0, mid + 28.0)
 	for part: CampScenery in [_sky, _ground, _glow]:
 		part.horizon_y = table_spot.y + 4.0
 		part.fire_spot = _fire_spot
 		part.table_spot = table_spot
-		part.log_spot = _bulldog_spot + Vector2(0, 22)
+		part.log_spot = table_spot + config.bulldog_offset + Vector2(0, 22)
 		part.moon_spot = Vector2(screen.x - 28.0, roundf(lerpf(stats_y + 36.0, table_spot.y, 0.3)))
 		part.top_y = stats_y + 40.0
+		part.crystal_spot = table_spot + _cast_offset("crystal_ball", Vector2(-4, -6))
 		part.queue_redraw()
 	_goldie.position = goldie_spot
 	_bulldog.position = _bulldog_spot
@@ -1011,38 +1172,92 @@ func _layout() -> void:
 	var fire := _actors.get_node_or_null(^"Fire") as Node2D
 	if fire != null:
 		fire.position = _fire_spot
-	var pet_rect := _goldie.touch_rect()
-	_pet_zone.position = pet_rect.position
-	_pet_zone.size = pet_rect.size
-	_merlin.position = table_spot + config.merlin_offset
-	var merlin_rect := _merlin.sprite_rect()
-	# 只有桌面以上看得到的部分可以點(桌面約在圓桌中心上方 12 像素)
-	var merlin_bottom := minf(merlin_rect.end.y, table_spot.y - 4.0)
-	var merlin_zone := Rect2(merlin_rect.position, Vector2(merlin_rect.size.x, merlin_bottom - merlin_rect.position.y)).grow(config.merlin_touch_margin)
-	_lancelot.position = table_spot + config.lancelot_offset
-	var lancelot_rect := _lancelot.sprite_rect()
-	var lancelot_bottom := minf(lancelot_rect.end.y, table_spot.y - 4.0)
-	var lancelot_zone := Rect2(lancelot_rect.position, Vector2(lancelot_rect.size.x, lancelot_bottom - lancelot_rect.position.y)).grow(config.lancelot_touch_margin)
-	if is_lancelot_visible() and is_merlin_visible() and lancelot_zone.intersects(merlin_zone):
-		# 兩人的圖有透明的邊,範圍會重疊:從兩人中間切開(梅林在左、蘭斯洛特在右)。
-		var split := roundf((_merlin.position.x + _lancelot.position.x) * 0.5)
-		merlin_zone.size.x = maxf(0.0, split - merlin_zone.position.x)
-		lancelot_zone.size.x = maxf(0.0, lancelot_zone.end.x - split)
-		lancelot_zone.position.x = split
-	_merlin_zone.position = merlin_zone.position
-	_merlin_zone.size = merlin_zone.size
-	_lancelot_zone.position = lancelot_zone.position
-	_lancelot_zone.size = lancelot_zone.size
+	_merlin.position = table_spot + _cast_offset("lady_lake" if is_lady_hosting() else "merlin", config.merlin_offset)
+	_lancelot.position = table_spot + _cast_offset("lancelot", config.lancelot_offset)
+	for id: StringName in _friends:
+		var friend := _friends[id] as CampFriend
+		var offset := _cast_offset(String(id), Vector2.ZERO)
+		friend.position = table_spot + offset
+		if friend.data.auto_face:
+			# 圓桌右邊的人朝左、左邊的人朝右(營火旁的人看著營火)
+			var look_at_x := table_spot.x if friend.behind_table else _fire_spot.x
+			friend.set_face_left(friend.position.x > look_at_x)
+	_layout_zones(table_spot)
 	_merlin_bubble.move_to(_merlin.speech_anchor())
-	var bulldog_size := Vector2(24, 24) * config.bulldog_scale
-	var bulldog_rect := Rect2(_bulldog_spot - bulldog_size * 0.5, bulldog_size).grow(2.0)
-	_bulldog_zone.position = bulldog_rect.position
-	_bulldog_zone.size = bulldog_rect.size
 
 	_toast.size = Vector2(minf(156.0, safe.size.x - 16.0), 20)
 	_toast.position = Vector2(cx - roundf(_toast.size.x * 0.5), _menu_rest.y - 26.0)
 	_front.queue_redraw()
 	_stats.queue_redraw()
+
+
+## 觸控範圍:每人一個(圖的範圍;圓桌後面的人只算桌面以上看得到的部分)。
+## 兩個範圍重疊時從兩人中間切開(左右並排就直切、上下就橫切);全部不蓋到選單。
+func _layout_zones(table_spot: Vector2) -> void:
+	var table_top := table_spot.y - 4.0
+	var bulldog_size := Vector2(24, 24) * config.bulldog_scale
+	var zones: Array[Dictionary] = [
+		{"node": _pet_zone, "rect": _goldie.touch_rect(), "center": _goldie.position, "on": true},
+		{"node": _bulldog_zone, "rect": Rect2(_bulldog_spot - bulldog_size * 0.5, bulldog_size).grow(2.0),
+			"center": _bulldog_spot, "on": _bulldog_present()},
+		{"node": _merlin_zone, "rect": _above_table(_merlin.sprite_rect(), table_top).grow(config.merlin_touch_margin),
+			"center": _merlin.position, "on": _merlin.frames != null and _host_present()},
+		{"node": _lancelot_zone, "rect": _above_table(_lancelot.sprite_rect(), table_top).grow(config.lancelot_touch_margin),
+			"center": _lancelot.position, "on": _lancelot_present()},
+	]
+	for id: StringName in _friends:
+		var friend := _friends[id] as CampFriend
+		var rect := friend.sprite_rect()
+		if friend.behind_table:
+			rect = _above_table(rect, table_top)
+		zones.append({"node": _friend_zones[id], "rect": rect.grow(friend.data.touch_margin), "center": friend.position,
+			"on": friend.data.frames != null})
+	var active: Array[Dictionary] = zones.filter(func(z: Dictionary) -> bool: return bool(z["on"]))
+	for i in active.size():
+		for j in range(i + 1, active.size()):
+			_split_zones(active[i], active[j])
+	var menu_top := _menu_rest.y - 2.0
+	for z: Dictionary in zones:
+		var rect := z["rect"] as Rect2
+		if rect.end.y > menu_top:
+			rect.size.y = maxf(0.0, menu_top - rect.position.y)
+		var node := z["node"] as Control
+		node.position = rect.position
+		node.size = rect.size
+
+
+static func _above_table(rect: Rect2, table_top: float) -> Rect2:
+	return Rect2(rect.position, Vector2(rect.size.x, maxf(0.0, minf(rect.end.y, table_top) - rect.position.y)))
+
+
+## 兩個觸控範圍重疊時,從兩人(center)中間切開。
+static func _split_zones(a: Dictionary, b: Dictionary) -> void:
+	var ra := a["rect"] as Rect2
+	var rb := b["rect"] as Rect2
+	if not ra.intersects(rb):
+		return
+	var ca := a["center"] as Vector2
+	var cb := b["center"] as Vector2
+	if absf(ca.x - cb.x) >= absf(ca.y - cb.y):
+		var split := roundf((ca.x + cb.x) * 0.5)
+		var left := ra if ca.x <= cb.x else rb
+		var right := rb if ca.x <= cb.x else ra
+		left.size.x = clampf(split - left.position.x, 0.0, left.size.x)
+		var right_end := right.end.x
+		right.position.x = maxf(right.position.x, split)
+		right.size.x = maxf(0.0, right_end - right.position.x)
+		a["rect"] = left if ca.x <= cb.x else right
+		b["rect"] = right if ca.x <= cb.x else left
+	else:
+		var split := roundf((ca.y + cb.y) * 0.5)
+		var top := ra if ca.y <= cb.y else rb
+		var bottom := rb if ca.y <= cb.y else ra
+		top.size.y = clampf(split - top.position.y, 0.0, top.size.y)
+		var bottom_end := bottom.end.y
+		bottom.position.y = maxf(bottom.position.y, split)
+		bottom.size.y = maxf(0.0, bottom_end - bottom.position.y)
+		a["rect"] = top if ca.y <= cb.y else bottom
+		b["rect"] = bottom if ca.y <= cb.y else top
 
 
 # --- 繪圖 ---
@@ -1062,6 +1277,10 @@ func _draw_front() -> void:
 		var p := pos.round()
 		_front.draw_rect(Rect2(p - Vector2(1, 1), Vector2(3, 3)), Color(bug.darkened(0.1), 0.18 * glow))
 		_front.draw_rect(Rect2(p, Vector2.ONE), Color(bug, 0.35 + 0.65 * glow))
+	# v2.7:第五章的飄雪、第六章飄落的葉子(在角色前面;不蓋到標題與選單)
+	var top := _sky.top_y - 16.0
+	var weather := Rect2(0, top, SafeArea.get_screen_size().x, maxf(_menu_rest.y - 4.0 - top, 1.0))
+	CampChapterScenes.draw_front(_front, GameState.chapter, _time, weather, palette)
 	# 鬥牛犬的「汪!」
 	if _bark_left > 0.0 and is_bulldog_visible():
 		var at := (_bulldog_spot + Vector2(10, -34)).round()

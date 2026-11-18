@@ -15,6 +15,9 @@ extends Control
 ##   左邊的岩石洞口(會閃的水晶)、湖邊的蘆葦與鵝卵石。
 ## 顏色:CampConfig 的 sky_*、ground_* 由 Camp 依 chapter_palettes 換好;這裡另外讀 chapter_palettes 的
 ## wall_color、rock_color、water_color、crystal_color 等(沒有寫時用下面的預設值)。
+##
+## v2.7 DW2:第四至六章的景物在 camp_chapter_scenes.gd(CampChapterScenes),這裡依章呼叫:
+## - 4 海灘營火與星空、5 雪山小屋與溫泉蒸氣、6 秋天山丘上的野外圓桌(暮色)。
 
 enum Part { SKY, GROUND, GLOW }
 
@@ -31,8 +34,11 @@ var log_spot: Vector2 = Vector2.ZERO
 var moon_spot: Vector2 = Vector2.ZERO
 ## 場景的上緣(標題與活力條下面);城牆與洞口不會高過這裡太多。
 var top_y: float = 70.0
-## v2.6:第幾章的場景(1 至 3)。
+## v2.6:第幾章的場景(1 至 GameState.CHAPTER_COUNT)。
 var chapter: int = 1
+## v2.7:第五章第二次營地,桌上有摩根娜的水晶球(crystal_spot 是它的中心)。
+var crystal_ball: bool = false
+var crystal_spot: Vector2 = Vector2.ZERO
 
 ## 流星:{"pos": Vector2, "vel": Vector2, "age": float, "life": float}
 var meteors: Array[Dictionary] = []
@@ -43,7 +49,7 @@ var _rng := RandomNumberGenerator.new()
 func _init(p_part: Part = Part.SKY, p_config: CampConfig = null, p_chapter: int = 1) -> void:
 	part = p_part
 	config = p_config
-	chapter = clampi(p_chapter, 1, 3)
+	chapter = clampi(p_chapter, 1, GameState.CHAPTER_COUNT)
 	name = String(Part.keys()[p_part]).capitalize()
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -120,6 +126,11 @@ func _draw_sky() -> void:
 		var star := Vector2(fmod(i * 47.0 + 13.0 + (i % 3) * 5.0, screen.x), fmod(i * 29.0 + 7.0 + (i % 5) * 11.0, maxf(horizon - 14.0, 20.0)))
 		var twinkle := 0.5 + 0.5 * sin(time * (1.1 + (i % 4) * 0.45) + i * 1.3)
 		var color := Color(1, 1, 0.85, 0.25 + 0.65 * twinkle)
+		if chapter == 6:
+			# 黃昏:只有天頂的幾顆星星,越靠近地平線越淡
+			color.a *= clampf(1.0 - star.y / maxf(horizon * 0.55, 1.0), 0.0, 1.0)
+			if color.a <= 0.02:
+				continue
 		if i % 9 == 0:
 			# 大星星:十字形
 			draw_rect(Rect2(star.round(), Vector2.ONE), Color(1, 1, 0.95, 0.9))
@@ -136,9 +147,11 @@ func _draw_sky() -> void:
 		var cloud_color := Color(config.sky_bottom_color.lightened(0.12), 0.35)
 		for puff: Vector3 in [Vector3(0, 0, 9), Vector3(10, -3, 7), Vector3(-10, 1, 6), Vector3(18, 1, 5)]:
 			_draw_ellipse(Vector2(roundf(cloud_x) + puff.x, cloud_y + puff.y), Vector2(puff.z * 1.4, puff.z * 0.55), cloud_color)
-	# 月亮(新月;第三章是又大又圓的滿月)與月暈
+	# 月亮(新月;第三章是又大又圓的滿月;第六章是黃昏,沒有月亮,改畫夕陽)與月暈
 	var moon := moon_spot
-	if chapter == 3:
+	if chapter == 6:
+		pass
+	elif chapter == 3:
 		draw_circle(moon, 20.0, Color(0.8, 0.95, 1, 0.05))
 		draw_circle(moon, 15.0, Color(0.8, 0.95, 1, 0.08))
 		draw_circle(moon, 11.0, Color("f4fbff"))
@@ -166,6 +179,15 @@ func _draw_sky() -> void:
 			return
 		3:
 			_draw_lake_and_cave()
+			return
+		4:
+			CampChapterScenes.sky_beach(self)
+			return
+		5:
+			CampChapterScenes.sky_snow(self)
+			return
+		6:
+			CampChapterScenes.sky_autumn(self)
 			return
 	# 遠山
 	var far := config.sky_bottom_color.darkened(0.25)
@@ -228,12 +250,20 @@ func _draw_ground() -> void:
 	# 營火旁踩平的空地
 	_draw_ellipse(fire_spot + Vector2(0, 10), Vector2(64, 16), config.ground_color.lerp(Color("5a4a32"), 0.45))
 	_draw_ellipse(fire_spot + Vector2(0, 10), Vector2(46, 10), config.ground_color.lerp(Color("6a5638"), 0.5))
-	if chapter == 2:
-		_draw_cobbles()
-	elif chapter == 3:
-		_draw_shore()
-	# 草(隨風輕輕搖;第二章是石板地,只有幾撮;第三章是湖邊,少一點)
-	var tufts := 34 if chapter == 1 else (8 if chapter == 2 else 18)
+	match chapter:
+		2:
+			_draw_cobbles()
+		3:
+			_draw_shore()
+		4:
+			CampChapterScenes.ground_beach(self)
+		5:
+			CampChapterScenes.ground_snow(self)
+		6:
+			CampChapterScenes.ground_autumn(self)
+	# 草(隨風輕輕搖;第二章是石板地,只有幾撮;第三章是湖邊,少一點;第四章沙灘幾撮海邊草;
+	# 第五章雪地沒有草;第六章秋天的金色草地)
+	var tufts: int = [34, 34, 8, 18, 6, 0, 30][clampi(chapter, 0, 6)]
 	for i in tufts:
 		var tuft := Vector2(fmod(i * 53.0 + 5.0, screen.x), horizon + 6.0 + fmod(i * 31.0, maxf(screen.y - horizon - 8.0, 8.0)))
 		if absf(tuft.x - fire_spot.x) < 60.0 and absf(tuft.y - fire_spot.y - 10.0) < 14.0:
@@ -255,6 +285,7 @@ func _draw_ground() -> void:
 		draw_texture(config.table_texture, (table_spot - t_size * 0.5).round())
 	else:
 		_draw_table()
+	CampChapterScenes.table_extras(self)
 	_draw_armor()
 	_draw_log()
 	_draw_fire()
@@ -637,6 +668,21 @@ func _pc(key: String, fallback: Color) -> Color:
 	return value if value is Color else fallback
 
 
+## 給 CampChapterScenes 用(同 _pc)。
+func palette_color(key: String, fallback: Color) -> Color:
+	return _pc(key, fallback)
+
+
+## 給 CampChapterScenes 用(同 _draw_ellipse:頂點取整數的橢圓)。
+func draw_ellipse_px(center: Vector2, radii: Vector2, color: Color) -> void:
+	_draw_ellipse(center, radii, color)
+
+
+## 給 CampChapterScenes 用:畫松樹的剪影。
+func draw_pine(base: Vector2, height: float, color: Color) -> void:
+	_draw_pine(base, height, color)
+
+
 # --- 光暈 ---
 
 func _draw_glow() -> void:
@@ -654,6 +700,8 @@ func _draw_glow() -> void:
 		for t: Vector2 in torch_spots():
 			for i in 3:
 				draw_circle(t + Vector2(0, -3), roundf((14.0 - i * 4.0) * flicker), Color(1.0, 0.55, 0.2, 0.05 + i * 0.03))
+	elif chapter >= 4:
+		CampChapterScenes.glow(self)
 	elif chapter == 3:
 		# 湖面的月光倒影:月亮下方一段一段閃爍的亮線
 		var lake := lake_top()
