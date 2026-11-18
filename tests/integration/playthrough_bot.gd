@@ -118,6 +118,8 @@ func _play_level() -> void:
 	var level_id := String(flow.get_session().level.id) if flow.get_session() != null else ""
 	if _level_clock > 6.0:
 		await _shot_once("level_" + level_id, "01_level_%s" % level_id)
+	if _level_clock > 22.0:   # 關卡標題卡早已消失,拍戰鬥正激烈的一刻
+		await _shot_once("level_mid_" + level_id, "01_level_%s_mid" % level_id)
 	_press_ultimate_if_ready()
 	_steer()
 
