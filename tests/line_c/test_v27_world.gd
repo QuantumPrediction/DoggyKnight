@@ -123,6 +123,13 @@ func test_arena_floors_are_calm() -> void:
 		assert_true(float(top2) / total >= 0.8, "%s 的戰鬥區地面夠安靜(前兩色佔 %.0f%%)" % [bg, 100.0 * top2 / total])
 
 
+func test_flying_foes_cast_shadows_on_the_ground() -> void:
+	var consts := (load("res://assets/backgrounds/actor_shadows.gd") as GDScript).get_script_constant_map()
+	var flyers: PackedStringArray = consts["FLYERS"]
+	for code in ["jellyfish", "lantern_wisp"]:
+		assert_true(flyers.has("/%s/" % code), "%s 的影子落在地上(會飛)" % code)
+
+
 # --------------------------------------------------------------------------
 # CW8 標題:選章到 CHAPTER_COUNT、第四至六章的背景
 # --------------------------------------------------------------------------

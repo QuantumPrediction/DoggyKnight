@@ -259,4 +259,4 @@ centered = false
 position = Vector2(-62, -88)
 
 [node name="Mood" type="CanvasModulate" parent="."]
-color = Color(0.92, 0.96, 1, 1)
+color = Color(0.88, 0.93, 1, 1)

@@ -617,6 +617,14 @@ def scene_avalon_hill() -> Scene26:
         AW.sprinkle_flowers(img, (cx - 10, cy - 6, cx + 10, cy + 6), 9, cx * 3 + cy, ["white", "pink", "white"])
     K7.leaf_litter(img, (0, 156, IMG_W, IMG_H), 220, 6607, cols=("pink", "white", "peach", "pink"), calm=0.98)
     K.edge_shadow(img, 152, 3, 0, IMG_W)
+    # the hilltop's faint old circle, and drifts of fallen blossom near its rim
+    W.rune_ring(img, MIDX, MIDY + 6, 84, "spring", "leaf_l", ticks=16, width=1.0)
+    for k in range(10):
+        a = k / 10 * 2 * math.pi + 0.3
+        cx, cy = MIDX + math.cos(a) * 96, MIDY + 6 + math.sin(a) * 124
+        K7.soft_disc(img, cx, cy, 9, 4, "spring", seed=6650 + k, only=("leaf",))
+        AW.sprinkle_flowers(img, (int(cx) - 8, int(cy) - 4, int(cx) + 8, int(cy) + 4), 3, 6660 + k,
+                            ["white", "pink"])
     # old standing stones at four points of the ring
     for (x, y, h) in ((AX0 + 2, AY0 + 6, 18), (AX1 - 14, AY0 + 6, 20), (AX0 + 2, AY1 - 28, 18), (AX1 - 14, AY1 - 28, 20)):
         AW.place(img, K.menhir(h, x, ("stone_d", "stone", "stone_l"), "iron", rune="gold_l"), x, y,

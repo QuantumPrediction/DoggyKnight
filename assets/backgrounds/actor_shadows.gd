@@ -6,9 +6,11 @@ extends Node2D
 ## 會飛的(烏鴉,v2.6 加石像鬼、魔法書、狐火)影子落在下方的地面,比較淡。
 ## v2.6:SpriteFrames 有 metadata foot_lift(每格往上移的像素,例如黑騎士 8)時,影子也往上移同樣多,
 ## 仍然在腳底。
+## v2.7:會飛的加上電電水母與提燈鬼火;章魚王與紅龍、白龍的 foot_lift = 8 也照上面的規則讀取。
 
 const GROUPS: Array[StringName] = [&"player", &"companion", &"enemy"]
-const FLYERS: PackedStringArray = ["/crow/", "/gargoyle/", "/spellbook/", "/foxfire/"]
+const FLYERS: PackedStringArray = ["/crow/", "/gargoyle/", "/spellbook/", "/foxfire/", "/jellyfish/",
+		"/lantern_wisp/"]
 
 @export var color: Color = Color(0.165, 0.106, 0.176, 0.4)
 @export var width_ratio: float = 0.66

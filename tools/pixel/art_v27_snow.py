@@ -299,7 +299,7 @@ def scene_ice_cave() -> Scene26:
                 spread=180, speed=(1, 3), gravity=(0, 0), blink=True)
     sc.particle(kind="snow", amount=10, lifetime=6.0, rect=(-10, -40, 200, 380), velocity=(0.2, 1), spread=40,
                 speed=(2, 5), gravity=(0, 0), colour_fade=True)
-    sc.modulate = (0.92, 0.96, 1.0)
+    sc.modulate = (0.88, 0.93, 1.0)
     return sc
 
 
