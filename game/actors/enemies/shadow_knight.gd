@@ -223,12 +223,15 @@ func _draw() -> void:
 	super()
 	if state != State.ACTIVE:
 		return
-	# 盾牌的方向:地上一道淡藍色的弧(被擋下時亮一下)。
+	# 盾牌的方向:身體周圍一道淡藍色的粗弧(正面 = 打不痛的那一邊;被擋下時亮一下)。
 	var a := shield_dir.angle()
 	var half := deg_to_rad(shield_half_angle_deg)
-	var bright := 0.35 + (0.5 if _guard_left > 0.0 else 0.0)
-	draw_set_transform(Vector2(0, _frame_size.y * 0.3), 0.0, Vector2(1.0, 0.6))
-	draw_arc(Vector2.ZERO, body_radius + 6.0, a - half, a + half, 12, Color(SHIELD, bright), 2.0)
+	var bright := 0.55 + (0.4 if _guard_left > 0.0 else 0.0)
+	var r := maxf(body_radius + 8.0, _frame_size.x * 0.55 + 2.0)
+	draw_set_transform(Vector2(0, _frame_size.y * 0.1), 0.0, Vector2(1.0, 0.75))
+	draw_arc(Vector2.ZERO, r, a - half, a + half, 14, Color(0.1, 0.12, 0.25, 0.45), 5.0)
+	draw_arc(Vector2.ZERO, r, a - half, a + half, 14, Color(SHIELD, bright), 3.0)
+	draw_arc(Vector2.ZERO, r - 1.0, a - half * 0.8, a + half * 0.8, 10, Color(1, 1, 1, bright * 0.7), 1.0)
 	draw_set_transform(Vector2.ZERO)
 
 

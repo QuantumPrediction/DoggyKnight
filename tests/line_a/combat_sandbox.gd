@@ -16,6 +16,9 @@ extends Node2D
 ## v2.6:Pg 切換按鈕頁。第 2 頁:Garg 石像鬼、Book 魔法書、Fox 一群狐火、Wolf 三隻影狼、GElt 石像鬼統領、
 ## Phan 幻影黑騎士、GrnK 綠騎士、Morg 摩根娜、Lanc 蘭斯洛特、Dog 鬥牛犬、Ch+ 切換章(1 至 3,章倍率);
 ## 上方小字的 C 幾是目前的章。
+## v2.7:第 3 頁:Crab 螃蟹、Jely 水母、CElt 寄居蟹將軍、Krkn 章魚王、Snow 雪人兵、SElt 雪人隊長、Sala 火蜥蜴、
+## Drgn 紅龍與白龍、ShKn 影子騎士、Wisp 提燈鬼火、MDue 莫德雷德第一戰、Mord 莫德雷德、Tris 崔斯坦、Gawn 高文、
+## Ch+ 切換章(1 至 6)。
 
 const ARENA_SCENE: PackedScene = preload("res://game/combat/arena.tscn")
 const BLOCKER_GROUP: StringName = &"ui_touch_blocker"
@@ -124,8 +127,15 @@ func _spawn_top(enemy_id: StringName) -> void:
 	arena.spawn_enemy(enemy_id, Vector2(Layout.ARENA_RECT.get_center().x, Layout.ARENA_RECT.position.y + 50))
 
 
+## v2.7:紅龍與白龍從上方的兩個角落同時出現(同 B 線 5-6)。
+func _spawn_dragons() -> void:
+	var r := Layout.ARENA_RECT
+	arena.spawn_enemy(&"red_dragon", Vector2(r.position.x + 40, r.position.y + 44))
+	arena.spawn_enemy(&"white_dragon", Vector2(r.end.x - 40, r.position.y + 44))
+
+
 func _next_chapter() -> void:
-	GameState.chapter = GameState.chapter % 3 + 1
+	GameState.chapter = GameState.chapter % GameState.CHAPTER_COUNT + 1
 	_refresh()
 
 
@@ -300,8 +310,31 @@ func _build_ui() -> void:
 		["Win", func() -> void: EventBus.level_completed.emit(&"sandbox")],
 		["Lv+", _next_level],
 	]
+	var page_three: Array = [
+		["Crab", _spawn_many.bind(&"crab", 2)],
+		["Jely", _spawn_many.bind(&"jellyfish", 2)],
+		["CElt", _spawn_top.bind(&"crab_elite")],
+		["Krkn", _spawn_top.bind(&"kraken")],
+		["Snow", _spawn_many.bind(&"snowman", 2)],
+		["SElt", _spawn_top.bind(&"snowman_elite")],
+		["Sala", _spawn_many.bind(&"salamander", 2)],
+		["Drgn", _spawn_dragons],
+		["ShKn", _spawn_many.bind(&"shadow_knight", 2)],
+		["Wisp", _spawn.bind(&"lantern_wisp")],
+		["MDue", _spawn_top.bind(&"mordred_duel")],
+		["Mord", _spawn_top.bind(&"mordred")],
+		["Tris", func() -> void: arena.spawn_companion(&"tristan")],
+		["Gawn", func() -> void: arena.spawn_companion(&"gawain")],
+		["Lanc", func() -> void: arena.spawn_companion(&"lancelot")],
+		["Dog", func() -> void: arena.spawn_companion(&"bulldog")],
+		["Ch+", _next_chapter],
+		["Loyal", _fill_loyalty],
+		["Heal", _heal],
+		["Reset", _reset],
+		["Win", func() -> void: EventBus.level_completed.emit(&"sandbox")],
+	]
 	_pages.clear()
-	for page: Array in [actions, page_two]:
+	for page: Array in [actions, page_two, page_three]:
 		var buttons: Array[Button] = []
 		var pager := _make_button("Pg")
 		pager.pressed.connect(_toggle_page)
