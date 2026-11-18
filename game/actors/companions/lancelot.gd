@@ -4,6 +4,7 @@ extends CharacterBody2D
 ## data/companions/lancelot.tres;LevelData.companions 可以同時有鬥牛犬與蘭斯洛特。
 ##
 ## - 平時跟在金毛身邊,站在另一位同伴(鬥牛犬)的另一邊;和其他同伴、金毛互相推開(CompanionSpacing),不會疊在一起。
+##   v2.7:四位同伴時依隊形站(CompanionSpacing.side_of:和高文一左一右)。
 ## - 每約 dash_interval(3)秒,金毛附近有敵人時,向最近的敵人突刺(dash 動畫、很快地直衝過去),
 ##   刺中就造成傷害並擊退(淡藍色傷害數字),然後跑回金毛身邊。頭上偶爾冒「看槍!」。
 ## - 不會倒下(同鬥牛犬的規則):累積受到一定傷害後暈眩 daze_time 秒(冒星星),然後自己站起來。
@@ -149,6 +150,11 @@ func is_dashing() -> bool:
 	return mode == Mode.DASH
 
 
+## v2.7 隊形(CompanionSpacing):站在金毛的左邊或右邊。
+func formation_role() -> StringName:
+	return CompanionSpacing.SIDE
+
+
 func _daze() -> void:
 	mode = Mode.DAZED
 	_daze_left = daze_time
@@ -187,9 +193,7 @@ func _on_level_completed(_level_id: StringName) -> void:
 func _follow(delta: float, player: Node2D) -> Vector2:
 	if player == null:
 		return Vector2.ZERO
-	var other := CompanionSpacing.other_side(self, player)
-	if other != 0.0:
-		_side = -other
+	_side = CompanionSpacing.side_of(self, player)
 	var spot := CombatMath.clamp_to_bounds(player.global_position + Vector2(follow_offset.x * _side, follow_offset.y), _arena_margin)
 	var to_spot := spot - global_position
 	var dist := to_spot.length()

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="CompanionData" format=3]
+
+[ext_resource type="Script" path="res://core/data/companion_data.gd" id="1_data"]
+[ext_resource type="PackedScene" path="res://game/actors/companions/tristan.tscn" id="2_scene"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"tristan"
+display_name = "COMPANION_TRISTAN"
+scene = ExtResource("2_scene")
+role = &"bard"

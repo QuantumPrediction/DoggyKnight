@@ -352,6 +352,27 @@ func die() -> void:
 	_on_died()
 
 
+## v2.7:撤退(莫德雷德第一戰逃走時,場上的手下跟著跑掉;頭目的幻影時間到了消失):
+## 立刻離開 enemy 群組,「噗」地揚起塵土淡出。不是被打倒:不發 enemy_died、不掉經驗與寶箱。
+func retreat() -> void:
+	if state == State.DYING:
+		return
+	state = State.DYING
+	remove_from_group(ENEMY_GROUP)
+	collision_layer = 0
+	_cancel_attack()
+	release_attack_slot()
+	_clear_spawn_marker()
+	_clear_dizzy()
+	_hitstop_left = 0.0
+	if _light != null:
+		_light.visible = false
+	if sprite != null:
+		sprite.speed_scale = 1.0
+	_death_left = death_time
+	_poof()
+
+
 # --- 出場 -----------------------------------------------------------------------
 
 ## 出場預警:塵土與地上的圓圈,duration 秒後才開始行動。
