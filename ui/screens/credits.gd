@@ -21,7 +21,7 @@ const LICENSE_ENTRIES: Array[Dictionary] = [
 	},
 	{
 		"name": "俐方體11號 Cubic 11 (1.500)",
-		"use": "全部介面文字與標題字樣",
+		"use": "保留的像素介面與後備字型",
 		"source": "https://github.com/ACh-K/Cubic-11",
 		"license": "SIL Open Font License 1.1。Copyright (c) ACh-K;衍生自 M+ BITMAP FONTS, Copyright (C) 2002-2004 COZ,及 JF Dot M+H 12, Copyright (c) 2005 M+ FONTS PROJECT",
 	},
@@ -167,6 +167,12 @@ func _fill(width: float) -> void:
 	for para in OFL.TEXT.split("\n\n"):
 		_text(para, width, &"LabelSoft")
 
+	_heading("StorySans / StorySerif — Noto CJK", width)
+	_text("Noto Sans CJK TC 與 Noto Serif CJK TC 子集；SIL Open Font License 1.1。", width)
+	for para in preload("res://ui/screens/noto_license.gd").TEXT.split("\n\n"):
+		_text(para, width, &"LabelSoft")
+	_heading("繪本美術", width)
+	_text("OpenAI image generation 輔助製作；提示、來源與整合紀錄見專案 docs/ART_REDESIGN.md。", width)
 	_heading(tr("UI_THIRD_PARTY"), width)
 	_text("Godot Engine", width)
 	for para in Engine.get_license_text().split("\n\n"):

@@ -73,10 +73,6 @@ func _shadow_for(body: Node2D) -> void:
 
 ## 像素橢圓:一行一個矩形,邊緣對齊整數像素。
 func _ellipse(center: Vector2, w: int, h: int, col: Color) -> void:
-	var half_h := h * 0.5
-	for row in h:
-		var dy := (row + 0.5 - half_h) / half_h
-		var half_w := floorf(w * 0.5 * sqrt(maxf(0.0, 1.0 - dy * dy)) + 0.35)
-		if half_w <= 0.0:
-			continue
-		draw_rect(Rect2(center.x - half_w, center.y - floorf(half_h) + row, half_w * 2.0, 1.0), col)
+	draw_set_transform(center, 0.0, Vector2(1.0, float(h) / maxf(1.0, w)))
+	draw_circle(Vector2.ZERO, w * 0.5, Color(col, col.a * 0.6), true, -1, true)
+	draw_set_transform(Vector2.ZERO)

@@ -1,0 +1,126 @@
+extends SceneTree
+var out := OS.get_environment("ART_CAPTURE_DIR")
+
+func _init() -> void:
+	if out.is_empty():
+		out = ProjectSettings.globalize_path("res://export/build/art-review")
+
+func _initialize() -> void:
+	run.call_deferred()
+
+func frames(n: int) -> void:
+	for i in n:
+		await process_frame
+
+func shot(name: String) -> void:
+	await RenderingServer.frame_post_draw
+	var img := root.get_texture().get_image()
+	img.save_png(out.path_join(name + ".png"))
+	print("CAPTURE ", name, " ", img.get_size())
+
+func run() -> void:
+	DirAccess.make_dir_recursive_absolute(out)
+	root.size = Vector2i(540, 960)
+	await frames(3)
+	var state := root.get_node("GameState")
+	state.call("reset_run")
+	var title: Node = load("res://ui/screens/title.tscn").instantiate()
+	root.add_child(title)
+	await frames(90)
+	await shot("01_title")
+	title.queue_free()
+	await frames(3)
+	for chapter in range(1, 7):
+		state.set("chapter", chapter)
+		var arena: Node = load("res://game/combat/arena.tscn").instantiate()
+		root.add_child(arena)
+		arena.set_background(load("res://assets/backgrounds/%s.tscn" % StoryArt.WORLDS[chapter - 1][0]))
+		arena.spawn_companion(&"bulldog")
+		arena.spawn_companion(&"lancelot")
+		var enemies: Array = [[&"scarecrow", &"scarecrow_archer", &"crow"], [&"gargoyle", &"armored_husk", &"spellbook"], [&"shadow_wolf", &"foxfire", &"spellbook"], [&"crab", &"jellyfish", &"crab"], [&"snowman", &"salamander", &"snowman"], [&"shadow_knight", &"lantern_wisp", &"shadow_knight"]][chapter - 1]
+		for i in enemies.size():
+			arena.spawn_enemy(enemies[i], Vector2(45 + i * 40, 115 + i * 25))
+		var layer := CanvasLayer.new()
+		layer.layer = 10
+		root.add_child(layer)
+		var hud: Node = load("res://ui/hud/hud.tscn").instantiate()
+		layer.add_child(hud)
+		root.get_node("EventBus").emit_signal("level_started", StringName("%d-1" % chapter))
+		arena.get_player().set("invuln_left", 30.0)
+		await frames(90)
+		await shot("%02d_chapter_%d" % [chapter + 1, chapter])
+		layer.queue_free()
+		arena.queue_free()
+		await frames(4)
+	state.set("chapter", 1)
+	state.set("level_index", 3)
+	var camp: Node = load("res://game/camp/camp.tscn").instantiate()
+	root.add_child(camp)
+	await frames(5)
+	for i in 30:
+		camp.call("skip_story")
+		await frames(1)
+	camp.call("finish_intro")
+	await frames(60)
+	await shot("08_camp")
+	camp.call("open_training")
+	await frames(35)
+	await shot("09_training")
+	var training: Node = camp.call("get_training")
+	training.call("close")
+	await frames(20)
+	var gallery := CanvasLayer.new()
+	gallery.set_script(load("res://ui/illustrated/art_gallery.gd"))
+	root.add_child(gallery)
+	gallery.call("select_chapter", 6)
+	gallery.call("select_level", 5)
+	await frames(10)
+	await shot("10_gallery")
+	gallery.queue_free()
+	await frames(4)
+	var dialogue: Node = load("res://ui/dialogue/dialogue_box.tscn").instantiate()
+	root.add_child(dialogue)
+	dialogue.call("play", load("res://data/story/prologue.tres"))
+	dialogue.call("advance")
+	await frames(100)
+	await shot("11_story")
+	dialogue.call("skip")
+	dialogue.queue_free()
+	await frames(4)
+	var choice_layer := CanvasLayer.new()
+	choice_layer.layer = 30
+	root.add_child(choice_layer)
+	var choice: Node = load("res://ui/trick_choice/trick_choice.tscn").instantiate()
+	choice_layer.add_child(choice)
+	choice.call("show_options", [load("res://data/tricks/fetch.tres"), load("res://data/tricks/lion_roar.tres"), load("res://data/tricks/tornado_tail.tres")])
+	await frames(70)
+	await shot("12_upgrades")
+	choice_layer.queue_free()
+	await frames(4)
+	camp.call("open_minigame")
+	await frames(50)
+	await shot("13_minigame")
+	camp.queue_free()
+	await frames(4)
+	for chapter in range(1, 7):
+		state.set("chapter", chapter)
+		state.call("reset_run")
+		var arena: Node = load("res://game/combat/arena.tscn").instantiate()
+		root.add_child(arena)
+		arena.set_background(load("res://assets/backgrounds/%s.tscn" % StoryArt.WORLDS[chapter - 1][5]))
+		arena.get_player().set("invuln_left", 30.0)
+		var boss_id: StringName = [&"black_knight", &"green_knight", &"morgana", &"kraken", &"red_dragon", &"mordred"][chapter - 1]
+		arena.spawn_enemy(boss_id, Vector2(90, 125))
+		await frames(70)
+		await shot("%02d_boss_%d" % [13 + chapter, chapter])
+		arena.queue_free()
+		await frames(4)
+	for pair: Array in [["wake", "20_wake"], ["fish", "21_fish"]]:
+		state.set("chapter", 4)
+		var mini: Node = load("res://game/minigames/%s/%s_minigame.tscn" % [pair[0], pair[0]]).instantiate()
+		root.add_child(mini)
+		await frames(60)
+		await shot(pair[1])
+		mini.queue_free()
+		await frames(4)
+	quit.call_deferred()

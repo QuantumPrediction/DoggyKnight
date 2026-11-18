@@ -59,6 +59,9 @@ static func make_title(text: String) -> Label:
 		label.remove_theme_color_override(&"font_color")
 		label.remove_theme_color_override(&"font_outline_color")
 		label.remove_theme_constant_override(&"outline_size")
+	label.add_theme_color_override(&"font_color", Color("f5dfad"))
+	label.add_theme_color_override(&"font_outline_color", Color("18302f"))
+	label.add_theme_constant_override(&"outline_size", 1)
 	return label
 
 
@@ -133,37 +136,16 @@ static func draw_down_chevron(ci: CanvasItem, center: Vector2, half_width: float
 
 ## 五角星。
 static func draw_star(ci: CanvasItem, center: Vector2, radius: float, filled: bool) -> void:
-	var points := PackedVector2Array()
-	for i in 10:
-		var r := radius if i % 2 == 0 else radius * 0.45
-		var angle := -PI / 2.0 + i * PI / 5.0
-		points.append(center + Vector2(cos(angle), sin(angle)) * r)
-	var outline := PackedVector2Array()
-	for i in 10:
-		var r := (radius + 1.5) if i % 2 == 0 else (radius + 1.5) * 0.45
-		var angle := -PI / 2.0 + i * PI / 5.0
-		outline.append(center + Vector2(cos(angle), sin(angle)) * r)
-	ci.draw_colored_polygon(outline, STAR_EDGE if filled else INK)
-	ci.draw_colored_polygon(points, STAR_ON if filled else STAR_OFF)
+	var tex := StoryArt.ui_icon("star_full" if filled else "star_empty")
+	ci.draw_texture_rect(tex, Rect2(center - Vector2.ONE * radius, Vector2.ONE * radius * 2), false)
 
 
 ## 像素愛心(7×6 格,scale 整數倍)。
 static func draw_heart(ci: CanvasItem, center: Vector2, scale: float = 1.0, alpha: float = 1.0, color: Color = HEART) -> void:
-	const ROWS: Array[String] = [".xx.xx.", "xooxoox", "xooooox", ".xooox.", "..xox..", "...x..."]
-	var fill := Color(color, alpha)
-	var edge := Color(HEART_EDGE, alpha)
-	var shine := Color(1, 1, 1, alpha * 0.85)
-	var origin := (center - Vector2(3.5, 3.0) * scale).round()
-	for y in ROWS.size():
-		var row: String = ROWS[y]
-		for x in row.length():
-			var ch := row[x]
-			if ch == ".":
-				continue
-			var c := edge if ch == "x" else fill
-			if y == 1 and x == 1:
-				c = shine
-			ci.draw_rect(Rect2(origin + Vector2(x, y) * scale, Vector2(scale, scale)), c)
+	var extent := Vector2(8, 8) * scale
+	var tint := Color.WHITE if color == HEART else color
+	tint.a = alpha
+	ci.draw_texture_rect(StoryArt.ui_icon("icon_heart"), Rect2(center - extent * 0.5, extent), false, tint)
 
 
 ## 暫停圖示(兩條直線)。

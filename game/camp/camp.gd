@@ -968,6 +968,9 @@ func _build() -> void:
 
 	_title = MinigameUi.make_title(tr("UI_CAMP"))
 	_title.name = "Title"
+	_title.add_theme_color_override(&"font_color", Color("f5dda4"))
+	_title.add_theme_color_override(&"font_outline_color", Color("122623"))
+	_title.add_theme_constant_override(&"outline_size", 1)
 	_root.add_child(_title)
 	_vigor_label = MinigameUi.make_label(tr("CAMP_VIGOR"), config.small_font_size)
 	_vigor_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -1154,7 +1157,7 @@ func _layout() -> void:
 	var table_spot := Vector2(cx, mid - 22.0)
 	_fire_spot = Vector2(cx - 16.0, mid + 24.0)
 	_bulldog_spot = table_spot + _cast_offset("bulldog", config.bulldog_offset)
-	var goldie_spot := Vector2(cx + 34.0, mid + 28.0)
+	var goldie_spot := Vector2(cx + 4.0, mid + 40.0)
 	for part: CampScenery in [_sky, _ground, _glow]:
 		part.horizon_y = table_spot.y + 4.0
 		part.fire_spot = _fire_spot
@@ -1305,7 +1308,7 @@ func _draw_stats() -> void:
 	if _snack_texture != null:
 		var spot := _snack_spot()
 		var bump := roundf(sin(_snack_pulse * PI) * 2.0)
-		_stats.draw_texture_rect(_snack_texture, Rect2(spot - Vector2(8, 8 + bump), Vector2(16, 16)), false)
+		_stats.draw_texture_rect(StoryArt.ui_icon("icon_snack"), Rect2(spot - Vector2(8, 8 + bump), Vector2(16, 16)), false)
 		var font := _title.get_theme_font(&"font")
 		var text := str(GameState.snacks)
 		var at := (spot + Vector2(11, 5 - bump)).round()
@@ -1339,7 +1342,7 @@ func _draw_bar(at: Vector2, ratio: float, color: Color, pulse: float) -> void:
 	var rect := Rect2(at.round(), Vector2(80, 6))
 	var grow := 1.0 if pulse > 0.0 else 0.0
 	_stats.draw_rect(rect.grow(1 + grow), MinigameUi.INK)
-	_stats.draw_rect(rect.grow(grow), Color("2a2440"))
+	_stats.draw_rect(rect.grow(grow), Color("162c2c"))
 	var fill := color.lerp(Color.WHITE, pulse * 0.6)
 	var fill_rect := Rect2(rect.position - Vector2(grow, grow), Vector2(roundf(rect.size.x * ratio) + grow * 2.0, rect.size.y + grow * 2.0))
 	_stats.draw_rect(fill_rect, fill)

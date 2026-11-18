@@ -568,47 +568,12 @@ func _draw() -> void:
 
 ## 背景:天空、海(浪、閃光、岸邊的泡沫)、沙灘(依章:海邊、雪、秋天)。
 func _draw_backdrop(screen: Vector2) -> void:
-	var sky := _pc("sky_color", Color("8fd3ff"))
-	var sea := _pc("sea_color", Color("2f8fd0"))
-	var sea_light := _pc("sea_light_color", Color("6ccaf0"))
-	var sand := _pc("sand_color", Color("f0d49a"))
-	var sand_light := _pc("sand_light_color", Color("fff0c0"))
-	var foam := _pc("foam_color", Color.WHITE)
-	draw_rect(Rect2(0, 0, screen.x, _sea_top + 4.0), sky)
-	# 天空的雲
-	for i in 3:
-		var cx := fmod(i * 67.0 + _anim_time * (3.0 + i), screen.x + 40.0) - 20.0
-		var cy := roundf(_sea_top * (0.3 + i * 0.2))
-		for puff: Vector3 in [Vector3(0, 0, 5), Vector3(6, 1, 4), Vector3(-6, 1, 4)]:
-			draw_circle(Vector2(roundf(cx) + puff.x, cy + puff.y), puff.z, Color(1, 1, 1, 0.55))
-	# 海:遠深近淺
-	var bands := 6
-	for i in bands:
-		var y0 := _sea_top + roundf((_shore_y - _sea_top) * i / bands)
-		var y1 := _sea_top + roundf((_shore_y - _sea_top) * (i + 1) / bands)
-		draw_rect(Rect2(0, y0, screen.x, y1 - y0 + 1), sea.lerp(sea_light, float(i) / bands))
-	draw_rect(Rect2(0, _sea_top, screen.x, 1), sea_light.lightened(0.3))
-	for i in 20:
-		var wy := _sea_top + 4.0 + fmod(i * 7.0, maxf(_shore_y - _sea_top - 8.0, 1.0))
-		var wx := fmod(i * 31.0 + _anim_time * (5.0 + (i % 3) * 2.0), screen.x + 12.0) - 6.0
-		var a := 0.35 + 0.25 * sin(_anim_time * 2.0 + i)
-		draw_rect(Rect2(roundf(wx), roundf(wy), 3 + (i % 3) * 2, 1), Color(1, 1, 1, a))
-	# 沙灘(雪地、秋天的草地)與岸邊來回的泡沫
-	draw_rect(Rect2(0, _shore_y, screen.x, screen.y - _shore_y), sand)
-	var reach := roundf(2.0 + 2.0 * sin(_anim_time * 1.6))
-	draw_rect(Rect2(0, _shore_y, screen.x, reach + 2.0), sand.darkened(0.12))
-	for x in range(0, int(screen.x) + 2, 2):
-		draw_rect(Rect2(x, _shore_y + reach + roundf(sin(x * 0.3 + _anim_time * 2.0)), 2, 1), Color(foam, 0.85))
-	for i in 24:
-		var p := Vector2(fmod(i * 43.0 + 11.0, screen.x), _shore_y + 8.0 + fmod(i * 29.0, maxf(screen.y - _shore_y - 10.0, 8.0)))
-		draw_rect(Rect2(p.round(), Vector2(2, 1)), Color(sand_light, 0.7))
-	match _decor:
-		1:
-			_draw_snow_decor(screen)
-		2:
-			_draw_autumn_decor(screen)
-		_:
-			_draw_beach_decor(screen)
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	var panel := 1 if GameState.chapter == 5 else 0
+	draw_texture_rect(StoryArt.cell("minigame_worlds", panel, 1, 2, 2), Rect2(Vector2.ZERO, screen), false)
+	draw_rect(Rect2(0, 0, screen.x, 23), Color(0.04, 0.09, 0.08, 0.72))
+	# Readable physical waterline; gameplay jump and catch timing stay unchanged.
+	draw_line(Vector2(0, _shore_y), Vector2(screen.x, _shore_y), Color(0.85, 0.96, 0.92, 0.38), 0.5, true)
 
 
 func _draw_beach_decor(screen: Vector2) -> void:

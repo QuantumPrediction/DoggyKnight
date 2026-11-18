@@ -1,0 +1,203 @@
+{
+  "version": "0.2.0-art",
+  "generator": "OpenAI image_gen",
+  "date": "2026-11-18",
+  "textures": [
+    {
+      "file": "assets/illustrated/app_icon.png",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 2783418,
+      "sha256": "43a3e4fb7a85c436ae606b756093b69acddddd742d57bad0b44a9c3fe5643829"
+    },
+    {
+      "file": "assets/illustrated/bosses_avalon.png",
+      "width": 1268,
+      "height": 1241,
+      "bytes": 3995942,
+      "sha256": "b0128eef8d1de0eb033f2302a3874178a9b48878ed3d3008fa02b02eda222ca2"
+    },
+    {
+      "file": "assets/illustrated/bosses_royal.png",
+      "width": 1240,
+      "height": 1268,
+      "bytes": 2545677,
+      "sha256": "d7bc915ef9b46608c76bb203a2bca4a201d20dbf833f738853a6fa30718d6bec"
+    },
+    {
+      "file": "assets/illustrated/camp_sheet.png",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 3794926,
+      "sha256": "b22ed42a4e40986ab5383c99c5ad61592f4eb0bacd25f5e4a29e13783db6ef88"
+    },
+    {
+      "file": "assets/illustrated/chapter_1.png",
+      "width": 965,
+      "height": 1629,
+      "bytes": 3525585,
+      "sha256": "60274af31dad017cee7d1078e15ad13d0972aa6d8e095327498ff98a68bc876a"
+    },
+    {
+      "file": "assets/illustrated/chapter_2.png",
+      "width": 965,
+      "height": 1629,
+      "bytes": 3433228,
+      "sha256": "97f9f435774f0f908fb83018f9b0d2a1d10c28bbcb45debb853c2c7d11f5a106"
+    },
+    {
+      "file": "assets/illustrated/chapter_3.png",
+      "width": 965,
+      "height": 1629,
+      "bytes": 3405040,
+      "sha256": "10ab0f50531a8370f48b5c6c2a7288ba5ff5dd9c1312628dd304c8086b569209"
+    },
+    {
+      "file": "assets/illustrated/chapter_4.png",
+      "width": 965,
+      "height": 1629,
+      "bytes": 3585658,
+      "sha256": "f6d0f7a536c420dd17533122adeffe25313c79756bf153d05c55b417f0156cd3"
+    },
+    {
+      "file": "assets/illustrated/chapter_5.png",
+      "width": 965,
+      "height": 1629,
+      "bytes": 3499754,
+      "sha256": "5391f2d6711003e68b0664ed414be60803f05b1960ff7763cd8f506f3051a78e"
+    },
+    {
+      "file": "assets/illustrated/chapter_6.png",
+      "width": 965,
+      "height": 1629,
+      "bytes": 3420222,
+      "sha256": "b6c6805db2bd01419fcd7e97a1d30c59f290ad9a888c3dac72f39a08c3fb211c"
+    },
+    {
+      "file": "assets/illustrated/extra_cast.png",
+      "width": 1774,
+      "height": 887,
+      "bytes": 2024903,
+      "sha256": "6f745985f8f658a90979da1ca026cc78b9f7903094fae18912f64d0b5eba6c34"
+    },
+    {
+      "file": "assets/illustrated/foes_elements.png",
+      "width": 1293,
+      "height": 1217,
+      "bytes": 1843716,
+      "sha256": "ada13f710820d18baf41ebf7731c67fe28a0ce53105990e93c67974d676aadbb"
+    },
+    {
+      "file": "assets/illustrated/foes_magic.png",
+      "width": 1269,
+      "height": 1240,
+      "bytes": 2045748,
+      "sha256": "80d9009f7b98ae9ca17a907db73e66c44cdfe7cfffcf80d3b0bdd291b5e82d93"
+    },
+    {
+      "file": "assets/illustrated/foes_meadow.png",
+      "width": 1261,
+      "height": 1247,
+      "bytes": 2104089,
+      "sha256": "ed13f34020c9187b09febb3e9cdcb3c9cf30c906f36f65b4579e915e3fdb0078"
+    },
+    {
+      "file": "assets/illustrated/fx_sheet.png",
+      "width": 1269,
+      "height": 1240,
+      "bytes": 1548194,
+      "sha256": "0108d017e47dfa32069c7d4157f8e31d04bc7be58667091aa837780e1de5743b"
+    },
+    {
+      "file": "assets/illustrated/hero_sheet.png",
+      "width": 1774,
+      "height": 887,
+      "bytes": 2318135,
+      "sha256": "6ba108ff371f3268320ca9ace44c418f7a5a86091bbf67d14af44e5edcac9aef"
+    },
+    {
+      "file": "assets/illustrated/minigame_worlds.png",
+      "width": 1086,
+      "height": 1448,
+      "bytes": 3057897,
+      "sha256": "d1fdd3bdeb71cb15cd0fbbaa3afcc7097e90ee3b8294b5fd625353766ac3ce85"
+    },
+    {
+      "file": "assets/illustrated/party_sheet.png",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 2337492,
+      "sha256": "7f1600b7367bd412cffaa5e28adc729772237eed3270dc9f94a3c9576c439ba2"
+    },
+    {
+      "file": "assets/illustrated/story_1.png",
+      "width": 1774,
+      "height": 887,
+      "bytes": 3908374,
+      "sha256": "29b5a8513e8279a13181b389a8294548f2477093049ddf05047a7c38cedf8fd1"
+    },
+    {
+      "file": "assets/illustrated/story_2.png",
+      "width": 1774,
+      "height": 887,
+      "bytes": 3897070,
+      "sha256": "bdfe46ad7738c550f08e81b5dcb12dd20b5eaf5bf5af054ed3638b216bd8501c"
+    },
+    {
+      "file": "assets/illustrated/story_3.png",
+      "width": 1774,
+      "height": 887,
+      "bytes": 3825798,
+      "sha256": "8830f14a0ca93cf1b5d5271885112f793ba34c60b42cef6a61ec87f014770b56"
+    },
+    {
+      "file": "assets/illustrated/story_4.png",
+      "width": 1774,
+      "height": 887,
+      "bytes": 3894355,
+      "sha256": "e12872f7498c73120cfd6f94ffe616d7a5c572cb44011eb6398edd0fd3002bac"
+    },
+    {
+      "file": "assets/illustrated/story_5.png",
+      "width": 1774,
+      "height": 887,
+      "bytes": 3969817,
+      "sha256": "885c15e5ffe686d9c523099d57ab13f4052a5353cd354cbd348ad06ced9dbb29"
+    },
+    {
+      "file": "assets/illustrated/story_6.png",
+      "width": 1774,
+      "height": 887,
+      "bytes": 4055874,
+      "sha256": "285c2f4e84d7a06c430e8af3b0b14e11e2d286ad4aafc5091db5a3ff9cecc2b0"
+    },
+    {
+      "file": "assets/illustrated/story_cast.png",
+      "width": 1263,
+      "height": 1246,
+      "bytes": 2441917,
+      "sha256": "fdfb2b6e280e8afed329718a886249e4597d11625d713c19ea2402064e3d2b8a"
+    },
+    {
+      "file": "assets/illustrated/title_art.png",
+      "width": 1024,
+      "height": 1536,
+      "bytes": 3428001,
+      "sha256": "9dec9f001dff3621aa9c6c42993b22c4f6424bcb2c08419553f741ce64ca0b89"
+    },
+    {
+      "file": "assets/illustrated/trick_icons.png",
+      "width": 1261,
+      "height": 1247,
+      "bytes": 2574645,
+      "sha256": "871debb282a4409805bb89ec5c111eba8ee9c28b097f2418827256749a99ba9e"
+    },
+    {
+      "file": "assets/illustrated/ui_icons.png",
+      "width": 1283,
+      "height": 1226,
+      "bytes": 1708020,
+      "sha256": "8b947f55435cb7b960519653c4455200805a6a169c9e8651672421b3b8841b4a"
+    }
+  ]
+}

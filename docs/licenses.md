@@ -104,3 +104,9 @@ D 線 M3(2026-11-16):營地新增的金毛像素圖(`game/camp/art/`,由 `game/c
 | --- | --- | --- | --- | --- | --- | --- |
 | 10 個新把戲圖示(撲擊、打滾、挖寶、嗅嗅、裝死、暴衝;四個金框進化把戲)、寶箱、零食、進化卡片、梅林與摩根娜的事件卡片、金色緞帶、紫色按鈕、HUD 零食/波數/獎盃小圖示。只參考同類遊戲的玩法機制,名稱與美術全部原創 | `assets/icons/tricks/`、`assets/sprites/chest/`、`assets/fx/snack/`、`assets/ui/` | 本專案以 `tools/pixel/art_v24.py` 程式繪製 | 本專案原創 | 是 | 否 | C 線,2026-11-17 |
 | 5 個新音效(chest_open、evolve、snack、revive、event) | `assets/sfx/` | 本專案以 `tools/pixel/sfx_gen.py` 程式合成 | 本專案原創 | 是 | 否 | C 線,2026-11-17 |
+
+## 2026-11-18 繪本美術重製
+
+- `assets/illustrated/`：使用 OpenAI image_gen 生成的本專案美術；28 個原始 PNG，生成提示與修改請求見 `ART_PROMPTS.json`，檔案校驗見 `ART_MANIFEST.json`。來源為生成工具，並非購買或下載的第三方素材包。
+- `StorySans.otf` 與 `StorySerif.otf`：Noto Sans CJK TC / Noto Serif CJK TC 的字元子集，來源 https://github.com/notofonts/noto-cjk ，SIL Open Font License 1.1；完整版權與授權保存於 `assets/fonts/Noto_CJK_LICENSE.txt`，遊戲製作名單亦顯示全文。
+- 上面的像素圖、Cubic 11 與音樂紀錄為保留資源的來源，並不表示本版本的新插畫由舊像素生成器產生。

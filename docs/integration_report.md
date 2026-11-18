@@ -1,5 +1,9 @@
 # 整合報告(M2 與 M3 打磨)
 
+## 繪本美術重製（2026-11-18）
+
+28 個新 PNG 已整合至原有六章遊戲，新增主畫面的全章美術巡覽。782 項測試通過，23 張真實 renderer 畫面完成檢查，Windows EXE 資料包驗證通過。詳細範圍、素材來源與未完成的 Windows 實機驗證見 [ART_REDESIGN.md](ART_REDESIGN.md) 和 [整合進度](status/LINE_INT.md)。
+
 ## Windows 接手與交付（2026-11-18）
 
 擁有人要求接手並提供電腦試玩版。新增 Windows x64 單一執行檔、WASD／方向鍵、Space 必殺技及桌面教學；原有六章內容與手機操作保留。776 項測試通過，六章自動試玩完成，打包內容檢查通過。Windows 實機人工試玩尚未完成；詳細證據與限制見 [WINDOWS_HANDOVER.md](WINDOWS_HANDOVER.md)。
