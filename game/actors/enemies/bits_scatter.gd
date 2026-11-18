@@ -5,9 +5,11 @@ extends Node2D
 ## - CHIP:石屑(石像鬼):彈開、落地、彈一下。
 ## - PAGE:書頁(魔法書):往上翻飛,慢慢飄落。
 ## - MIST:淡淡的霧團(幻影黑騎士、摩根娜的鏡像):往上飄、變大、淡出。
+## - BUBBLE(v2.7):泡泡(螃蟹、水母、章魚王):左右搖著往上飄,一個一個「啵」地破掉。
+## - SNOW(v2.7):雪球碎成的雪花(雪人):往外彈開,慢慢飄落。
 ## 幾秒後淡出、自己刪除。在群組 combat_fx(場地 clear() 時一起移除);慢動作時跟著變慢。
 
-enum Kind { LEAF, CHIP, PAGE, MIST }
+enum Kind { LEAF, CHIP, PAGE, MIST, BUBBLE, SNOW }
 
 const GRAVITY := 220.0
 
@@ -50,7 +52,8 @@ func _ready() -> void:
 			"vz": randf_range(lift * 0.5, lift),
 			"rot": randf() * TAU,
 			"spin": randf_range(-8.0, 8.0),
-			"size": randf_range(1.5, 3.0) if kind != Kind.MIST else randf_range(3.0, 6.0),
+			"size": randf_range(3.0, 6.0) if kind == Kind.MIST else (randf_range(1.5, 3.5) if kind == Kind.BUBBLE else randf_range(1.5, 3.0)),
+			"pop": randf_range(0.5, 1.0) * fade_after,
 			"phase": randf() * TAU,
 			"color": colors[i % colors.size()],
 		})
@@ -96,6 +99,18 @@ func _simulate(bit: Dictionary, delta: float) -> void:
 			height += 14.0 * delta
 			vel = vel.move_toward(Vector2.ZERO, 50.0 * delta)
 			bit["size"] = float(bit["size"]) + 4.0 * delta
+		Kind.BUBBLE:
+			height += 22.0 * delta
+			vel = vel.move_toward(Vector2.ZERO, 70.0 * delta)
+			bit["phase"] = float(bit["phase"]) + delta * 6.0
+			vel.x += sin(float(bit["phase"])) * 24.0 * delta
+		Kind.SNOW:
+			vz = maxf(vz - GRAVITY * 0.6 * delta, -10.0)
+			height = maxf(0.0, height + vz * delta)
+			vel = vel.move_toward(Vector2.ZERO, 80.0 * delta)
+			bit["phase"] = float(bit["phase"]) + delta * 4.0
+			if height > 0.0:
+				vel.x += sin(float(bit["phase"])) * 12.0 * delta
 	bit["pos"] = (bit["pos"] as Vector2) + vel * delta
 	bit["vel"] = vel
 	bit["height"] = height
@@ -115,6 +130,17 @@ func _draw() -> void:
 			Kind.MIST:
 				draw_circle(at, size, Color(color, color.a * 0.45))
 				draw_circle(at, size * 0.55, Color(color.lightened(0.3), color.a * 0.35))
+			Kind.BUBBLE:
+				if _age < float(bit["pop"]):
+					draw_arc(at, size, 0.0, TAU, 10, Color(color, color.a * 0.9), 1.0)
+					draw_rect(Rect2(at + Vector2(-size * 0.45, -size * 0.55), Vector2.ONE), Color(1, 1, 1, 0.9))
+				elif _age < float(bit["pop"]) + 0.12:
+					# 「啵」:破掉的一瞬間變成四個小點。
+					for k in 4:
+						draw_rect(Rect2((at + Vector2.from_angle(PI * 0.5 * float(k) + 0.6) * (size + 1.5)).round(), Vector2.ONE), color)
+			Kind.SNOW:
+				draw_circle(pos.round() + Vector2(0, 1), size * 0.5, Color(0, 0, 0, 0.12))
+				draw_circle(at, size * 0.6, color)
 			Kind.CHIP:
 				draw_circle(pos.round() + Vector2(0, 1), size * 0.6, Color(0, 0, 0, 0.18))
 				draw_rect(Rect2(at - Vector2.ONE * size * 0.5, Vector2.ONE * size).abs(), color)
