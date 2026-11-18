@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="CrabTuning" format=3]
+
+[ext_resource type="Script" path="res://game/actors/enemies/crab_tuning.gd" id="1_tuning"]
+
+[resource]
+script = ExtResource("1_tuning")
+side_speed_mult = 1.5
+forward_speed_mult = 0.45
+side_offset = 16.0
+zigzag = 0.35
+guard_range = 44.0
+guard_damage_mult = 0.2
+guard_clang_cooldown = 0.35
+pinch_reach = 20.0
+pinch_half_angle_deg = 60.0
+pinch_start = 22.0
+pinch_telegraph = 0.6
+pinches_per_turn = 1
+pant_time = 1.2
+pinch_cooldown_min = 1.4
+pinch_cooldown_max = 2.2
+first_pinch_min = 0.6
+first_pinch_max = 1.2
