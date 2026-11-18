@@ -456,8 +456,8 @@ def scene_avalanche_pass() -> Scene26:
                 if side == 0 and x < -20:
                     x += 14
                     continue
-                w = rng0.randrange(14, 24)
-                h = rng0.randrange(9, 14)
+                w = rng0.randrange(12, 30)
+                h = rng0.randrange(8, 17)
                 if side == 1 and x > IMG_W:
                     break
                 rk = K7.snow_rock(int(x * 7 + y), w, h, ("ink", "iron", "slate", "ash"), "ink")
@@ -482,12 +482,12 @@ def scene_avalanche_pass() -> Scene26:
         img.set(x, int(top), "steel_l")
     K7.icicles(img, 50, 260, 96, 5404, ("steel_l", "white", "white"), 7)
     # the path: packed snow, wind-swept, calm in the middle
-    snow_ground(img, (0, 150, IMG_W, IMG_H), 5405, ("ash", "fog", "steel_l"),
+    snow_ground(img, (0, 96, IMG_W, IMG_H), 5405, ("ash", "fog", "steel_l"),
                 mask=lambda x, y: y >= 300 or cliff_l(y) <= x <= cliff_r(y))
     for x in range(IMG_W):
-        for y in range(100, 160):
-            if cliff_l(y) <= x <= cliff_r(y) and name_at(img, x, y) not in ("white", "steel_l", "steel"):
-                img.set(x, y, "steel_l" if y < 126 else "fog")
+        for y in range(96, 150):
+            if cliff_l(y) <= x <= cliff_r(y) and name_at(img, x, y) == "fog" and fbm(x, y, 5407, 14, 2) > 0.38 + (y - 96) / 140:
+                img.set(x, y, "steel_l")
     rng = random.Random(5406)
     for _ in range(80):
         x, y = rng.randrange(0, IMG_W - 14), rng.randrange(150, IMG_H)
@@ -496,7 +496,6 @@ def scene_avalanche_pass() -> Scene26:
         for k in range(rng.randrange(6, 14)):
             if name_at(img, x + k, y) in ("fog", "steel_l"):
                 img.set(x + k, y, "steel_l" if name_at(img, x + k, y) == "fog" else "white")
-    K.edge_shadow(img, AY0, 5)
     # boulders from the last avalanche, snow piles against the cliffs
     for (x, y, w, h) in ((AX0 - 26, AY0 + 30, 26, 16), (AX1 + 2, AY0 + 80, 24, 14), (AX0 - 20, AY1 - 50, 22, 14),
                          (AX1 - 2, AY1 - 20, 26, 15), (AX0 + 2, AY0 + 2, 16, 10), (AX1 - 20, AY0 - 2, 14, 9)):
