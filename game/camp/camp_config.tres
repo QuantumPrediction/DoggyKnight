@@ -182,14 +182,14 @@ cast_layouts = Dictionary[String, Dictionary]({
 },
 "6-1": {
 "bulldog": Vector2(-60, 40),
-"gawain": Vector2(70, 26),
+"gawain": Vector2(66, 26),
 "lancelot": Vector2(38, -20),
 "merlin": Vector2(-30, -20),
 "tristan": Vector2(4, -20)
 },
 "6-2": {
 "bulldog": Vector2(-60, 40),
-"gawain": Vector2(70, 26),
+"gawain": Vector2(66, 26),
 "lady_lake": Vector2(-58, -16),
 "lancelot": Vector2(58, -20),
 "merlin": Vector2(-32, -20),

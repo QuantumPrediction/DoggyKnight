@@ -152,7 +152,6 @@ var _cast: Dictionary = {}
 var _friends: Dictionary = {}
 var _friend_zones: Dictionary = {}
 var _last_friend_tap: Dictionary = {}
-var _table_spot: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
@@ -877,6 +876,7 @@ func _build() -> void:
 	_root.resized.connect(_layout)
 
 	_sky = CampScenery.new(CampScenery.Part.SKY, config, GameState.chapter)
+	_sky.crystal_ball = has_crystal_ball()
 	_root.add_child(_sky)
 	# 梅林畫在夜空與地面之間:地面上的圓桌會蓋住他的下半身,看起來就是坐在桌子後面。
 	# 第三章由湖中仙女坐在同一個位置(梅林被抓走了)。
@@ -1152,7 +1152,6 @@ func _layout() -> void:
 	var scene_bottom := _menu_rest.y - 6.0
 	var mid := roundf(lerpf(scene_top, scene_bottom, 0.5))
 	var table_spot := Vector2(cx, mid - 22.0)
-	_table_spot = table_spot
 	_fire_spot = Vector2(cx - 16.0, mid + 24.0)
 	_bulldog_spot = table_spot + _cast_offset("bulldog", config.bulldog_offset)
 	var goldie_spot := Vector2(cx + 34.0, mid + 28.0)
@@ -1217,8 +1216,10 @@ func _layout_zones(table_spot: Vector2) -> void:
 		for j in range(i + 1, active.size()):
 			_split_zones(active[i], active[j])
 	var menu_top := _menu_rest.y - 2.0
+	var screen := Rect2(Vector2.ZERO, SafeArea.get_screen_size())
 	for z: Dictionary in zones:
-		var rect := z["rect"] as Rect2
+		# 不蓋到選單;超出畫面的部分點不到,切掉
+		var rect := (z["rect"] as Rect2).intersection(screen)
 		if rect.end.y > menu_top:
 			rect.size.y = maxf(0.0, menu_top - rect.position.y)
 		var node := z["node"] as Control

@@ -285,6 +285,11 @@ func bot_step(_delta: float) -> void:
 		move_to(bot_target_x())
 
 
+## 金毛目前的動畫(測試用):idle、run,評價 2 以上時 victory。
+func goldie_animation() -> StringName:
+	return _goldie.animation if _goldie != null else &""
+
+
 ## 碗的中心(畫面邏輯像素)。
 func bowl_center() -> Vector2:
 	var offset := _cfg.bowl_offset
