@@ -13,6 +13,10 @@ extends Resource
 ## (石像鬼、魔法書)與背景,打完第三章(tier 3)起加入第三章的(狐火、影狼)。頭目波也輪流換人:
 ## 中頭目 mini_boss_id → extra_mini_bosses(石像鬼統領、幻影黑騎士);頭目 boss_id → extra_bosses
 ## (綠騎士、摩根娜),同樣只用 tier 以內的。
+##
+## v2.7(BW5):tier 最高到 GameState.CHAPTER_COUNT(6)。打完第四章起加入螃蟹、水母、寄居蟹將軍、章魚王與
+## 第四章的背景;第五章起雪人、火蜥蜴、雪人隊長、紅龍、白龍(雙龍在無盡試煉各自單獨出場,一次只有一條);
+## 第六章起影子騎士、提燈鬼火、莫德雷德(第一戰,半血逃走)與莫德雷德。
 
 @export var level_id: StringName = &"endless"
 @export var display_name: String = "LEVEL_ENDLESS"
