@@ -45,7 +45,7 @@ func _ready() -> void:
 		elif arg.begins_with("--seed="):
 			rng_seed = int(arg.trim_prefix("--seed="))
 		elif arg.begins_with("--chapter="):
-			chapter = clampi(int(arg.trim_prefix("--chapter=")), 1, 3)
+			chapter = clampi(int(arg.trim_prefix("--chapter=")), 1, GameState.CHAPTER_COUNT)
 		elif arg == "--hard":
 			hard = true
 	if not shots_dir.is_empty():
