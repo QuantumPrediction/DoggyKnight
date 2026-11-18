@@ -28,6 +28,7 @@ intro_duration = 1.6
 results_delay = 2.0
 failure_delay = 1.0
 story_music_fade = 2.5
+story_fade_wait = 0.6
 event_delay = 0.6
 event_auto_pick_delay = 0.5
 transition_cover_time = 0.12

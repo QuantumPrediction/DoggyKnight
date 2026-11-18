@@ -86,6 +86,9 @@ extends Resource
 @export_group("Story")
 ## 過關後的對白開始時,勝利短曲淡出、換回該關曲子(結局換 story)所用的秒數(讓短曲不會突然被切斷)。
 @export var story_music_fade: float = 2.5
+## v2.7 BW4:對白播完後,等對白框淡出(看不見)才出結算或標題卡;最多等這麼多秒(真實時間)。
+## C 線的正式對白框淡出約 0.18 秒。0 = 不等。
+@export var story_fade_wait: float = 0.6
 
 @export_group("Transition")
 ## 換畫面時:畫面被蓋住要多少秒(快一點,按下按鈕立即有反應)。0 = 不播轉場。
