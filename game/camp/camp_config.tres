@@ -16,6 +16,7 @@
 [ext_resource type="SpriteFrames" path="res://assets/sprites/gawain/gawain_frames.tres" id="14_gawain"]
 [ext_resource type="SpriteFrames" path="res://assets/sprites/morgana/morgana_frames.tres" id="15_morgana"]
 [ext_resource type="SpriteFrames" path="res://assets/sprites/lady_lake/lady_lake_frames.tres" id="16_lady"]
+[ext_resource type="PackedScene" path="res://game/minigames/fish/fish_minigame.tscn" id="17_fish"]
 
 [sub_resource type="Resource" id="Resource_tristan"]
 script = ExtResource("12_friend")
@@ -156,8 +157,12 @@ camp_numbers = Dictionary[int, int]({
 chapter_story_path_format = "res://data/story/c%d_camp%d.tres"
 bulldog_from_chapter = 2
 minigame_rotation_from_chapter = 2
-minigame_rotation = Array[PackedScene]([ExtResource("2_minigame"), ExtResource("11_wake")])
-minigame_rotation_keys = PackedStringArray("UI_CAMP_MINIGAME", "UI_CAMP_MINIGAME_WAKE")
+minigame_rotation = Array[PackedScene]([ExtResource("2_minigame"), ExtResource("11_wake"), ExtResource("17_fish")])
+minigame_rotation_keys = PackedStringArray("UI_CAMP_MINIGAME", "UI_CAMP_MINIGAME_WAKE", "UI_CAMP_MINIGAME_FISH")
+minigame_rotation_counts = Dictionary[int, int]({
+2: 2,
+4: 3
+})
 cast_layouts = Dictionary[String, Dictionary]({
 "4": {
 "bulldog": Vector2(-58, 40),

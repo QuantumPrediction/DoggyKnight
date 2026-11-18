@@ -196,6 +196,15 @@ func tap_lane(lane: int) -> Hit:
 	return hit
 
 
+## v2.7:自動試玩(MinigameBase.bot_step):音符一到就點那一欄(和整合試玩機器人一樣,幾乎全部「完美!」)。
+func bot_step(_delta: float) -> void:
+	if state != State.PLAYING:
+		return
+	for n: Dictionary in notes:
+		if int(n["result"]) == Hit.NONE and play_elapsed >= float(n["time"]) - 0.02:
+			tap_lane(int(n["lane"]))
+
+
 ## 第 lane 欄的音符中,還沒判定、最早的那一個的時間;沒有時傳回 -1。
 func next_note_time(lane: int) -> float:
 	for n: Dictionary in notes:
