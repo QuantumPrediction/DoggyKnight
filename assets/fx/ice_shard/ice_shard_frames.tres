@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" format=3]
 
-[ext_resource type="Texture2D" path="res://assets/fx/arrow/arrow.png" id="1_sheet"]
+[ext_resource type="Texture2D" path="res://assets/fx/ice_shard/ice_shard.png" id="1_sheet"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_default_0"]
 atlas = ExtResource("1_sheet")
@@ -10,6 +10,14 @@ region = Rect2(0, 0, 16, 16)
 atlas = ExtResource("1_sheet")
 region = Rect2(16, 0, 16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_2"]
+atlas = ExtResource("1_sheet")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_default_3"]
+atlas = ExtResource("1_sheet")
+region = Rect2(48, 0, 16, 16)
+
 [resource]
 animations = [{
 "frames": [{
@@ -18,6 +26,12 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_default_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_default_3")
 }],
 "loop": true,
 "name": &"default",

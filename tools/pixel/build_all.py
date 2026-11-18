@@ -146,6 +146,7 @@ def main() -> None:
         build_sheet("res://assets/sprites/%s" % code, code, anims, size)
         sheets[code] = anims
     art_v26_cast.write_all()                                     # v2.6 C 角色: new cast, portraits, FX, knight lift
+    __import__("art_v27_cast").write_all()                       # v2.7 C 角色: chapter 4-6 cast, portraits, FX
     for name, (fn, size) in art_cast.PROJECTILES.items():
         anims = fn()
         build_sheet("res://assets/fx/%s" % name, name, anims, size)
