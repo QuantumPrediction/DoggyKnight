@@ -1,4 +1,4 @@
-# 《金毛騎士》故事設定與對白(第一章「石中劍」、第二章「圓桌騎士」、第三章「湖中仙女」)
+# 《金毛騎士》故事設定與對白(第一章「石中劍」、第二章「圓桌騎士」、第三章「湖中仙女」、第四章「沉沒之國」、第五章「紅龍與白龍」、第六章「卡姆蘭之戰」)
 
 版本:v2.3,2026-11-16,整合工作階段撰寫。擁有人要求「故事要夠豐富、好玩」。
 
@@ -532,14 +532,504 @@
 | STORY_C3L6_AFTER_09 | narrator |  | c3_ending_3 |
 | STORY_C3L6_AFTER_10 | narrator |  | c3_ending_3 |
 
-### `c3_teaser`:全破之後(結算之後、回標題之前)
+### `c3_teaser`:第四章預告(v2.7 起;原本是全破之後)
 
 | 鍵 | speaker | 表情 | 插畫 |
 | --- | --- | --- | --- |
-| STORY_C3_TEASER_01 | narrator |  | c3_ending_3 |
+| STORY_C3_TEASER_01 | narrator |  | teaser_3 |
 
 ## 13. 第二、三章的失敗提示與播放規則
 
 - 失敗提示增加 `STORY_TIP_09` 至 `STORY_TIP_14`(新敵人與頭目)。失敗畫面可以只抽目前這一章用得上的提示,也可以全部隨機。
 - 播放規則同第 8 節,段落 id 換成這一章的:第 N 章新遊戲 → `cN_prologue`(第一章是 `prologue`)→ N-1 場地 → `cNl1_before` → ……;營地第一次 `cN_camp1`、第二次 `cN_camp2`;最後一關過關 → `cNl6_after` → 結算 → `cN_teaser` → 回標題。
 - 營地與故事裡的梅林:第三章 3-5 過關之前梅林不在隊伍裡(被抓走了),營地改由湖中仙女站在梅林的位置;第三章營地點她會說 `CAMP_LADY_01` 至 `CAMP_LADY_04`(D 線撰寫)。
+
+---
+
+# 第四章「沉沒之國」、第五章「紅龍與白龍」、第六章「卡姆蘭之戰」(v2.7)
+
+版本:v2.7,2026-11-18,整合工作階段撰寫。擁有人要求「5 至 6 章、30 至 36 關、故事約 3 至 5 小時」。基調、對白長度、「狗不會受傷」等規則同第 1 節。
+
+## 14. 六章的大綱
+
+| 章 | 名稱 | 一句話 | 中頭目 / 頭目 | 同伴 |
+| --- | --- | --- | --- | --- |
+| 1 | 石中劍 | 拔出石中劍,前往卡美洛 | 稻草人隊長 / 黑騎士 | 貝德維爾 |
+| 2 | 圓桌騎士 | 叫醒中了午睡咒的騎士 | 石像鬼統領 / 綠騎士 | 貝德維爾、蘭斯洛特 |
+| 3 | 湖中仙女 | 救出被抓走的梅林,摩根娜成為朋友 | 幻影黑騎士 / 摩根娜 | 貝德維爾、蘭斯洛特 |
+| 4 | 沉沒之國 | 全國的狗碗被偷空;到海底的里昂尼斯找回食物與「黃金狗碗」 | 寄居蟹將軍 / 章魚王 | 貝德維爾、崔斯坦(4-3 起) |
+| 5 | 紅龍與白龍 | 莫德雷德吵醒山裡吵了一千年架的兩條龍 | 雪人隊長 / 紅龍與白龍(雙頭目) | 蘭斯洛特、高文(5-3 起) |
+| 6 | 卡姆蘭之戰 | 莫德雷德帶著劍鞘與影子大軍佔領卡美洛;最終決戰在阿瓦隆 | 莫德雷德(第一戰)/ 莫德雷德(最終) | 貝德維爾、蘭斯洛特;6-6 四位同伴全員 |
+
+**後三章的主線**:莫德雷德是一位很努力、卻沒有被石中劍選上的騎士。他偷走了石中劍的劍鞘(保護持劍者的魔法),在每章背後操縱敵人(黑狼紋章)。結局:金毛邀請他一起當騎士;金毛把石中劍還給湖,因為「找到了比寶劍更重要的東西:大家」。這呼應第一章「我只想大家都可以安心地玩撿樹枝」與第三章對摩根娜的邀請,但莫德雷德的心結是「努力卻沒被選上」,和摩根娜的「孤單」不同。
+
+**原創設計**:不要模仿任何電影、動畫或遊戲版本的崔斯坦、高文或莫德雷德。
+
+## 15. 第四至六章的新角色(C 線畫頭像 48×48)
+
+| speaker 代號 | 名字(名牌) | 設定 | 頭像表情 |
+| --- | --- | --- | --- |
+| `tristan` | 崔斯坦 | 柯基吟遊騎士:短腿、大耳朵、淺藍色披風與小羽毛帽,背著木豎琴。開朗、愛唱歌,從遠處用琴聲(音符)攻擊。 | `normal`、`happy`、`serious`、`surprised` |
+| `gawain` | 高文 | 聖伯納山之騎士:大個子、棕白色長毛、脖子掛著小木桶、拿大鐵鎚、橘色斗篷。豪爽、熱心救人,白天特別有力氣。 | `normal`、`happy`、`serious` |
+| `kraken` | 章魚王 | 海底宮殿的大章魚,珊瑚紅色、戴著貝殼王冠;中咒時額頭有黑狼紋章。其實只是肚子餓。 | `normal` |
+| `red_dragon` | 紅龍 | 火山之龍,圓滾滾的紅色身體、黃色肚子、小翅膀,脾氣急。 | `normal` |
+| `white_dragon` | 白龍 | 雪山之龍,雪白色、冰藍色的角和鬃毛,愛頂嘴。和紅龍的尾巴其實一樣長。 | `normal` |
+| `mordred` | 莫德雷德 | 杜賓犬黑騎士:黑棕色短毛、尖耳、銀邊黑盔甲、肩甲上有黑狼頭紋章、深灰色斗篷,腰間掛著發紫光的劍鞘。驕傲、努力、心裡很不甘心。 | `normal`、`smirk`、`angry`、`sad` |
+
+## 16. 第四至六章的繪本插畫(C 線,`assets/story/<id>.png`,160×120)
+
+| id | 畫面 |
+| --- | --- |
+| `teaser_3` | 夕陽下的海面,遠處海底透出一座城的光(第四章預告) |
+| `c4_prologue_1` | 卡美洛的狗狗們捧著空空的狗碗,糧倉大門開著、裡面空空如也 |
+| `c4_prologue_2` | 黃昏的沙灘,一隻背著豎琴的柯基坐著小船漂到岸邊 |
+| `c4_ending_1` | 海底宮殿,章魚王縮成一團、黑色紋章碎成光點,金毛遞給牠一根骨頭 |
+| `c4_ending_2` | 閃閃發光的黃金狗碗,大家圍著在沙灘上開宴會 |
+| `c4_ending_3` | 月光下的懸崖,一個披著斗篷的杜賓犬剪影 |
+| `teaser_4` | 一半下雪一半噴火的高山,雲中露出紅色與白色的龍眼(第五章預告) |
+| `c5_prologue_1` | 卡美洛的地面裂開小縫,北方的山冒煙 |
+| `c5_prologue_2` | 遠景的大山:左邊雪白、右邊火紅 |
+| `c5_ending_1` | 紅龍與白龍累得坐下,尾巴纏在一起 |
+| `c5_ending_2` | 金毛用樹枝量兩條龍的尾巴,兩條龍大笑 |
+| `c5_ending_3` | 夕陽下的卡美洛城牆升起黑狼旗(最終章預告) |
+| `teaser_5` | 秋天的平原上,遠方黑壓壓的影子大軍與黑狼旗 |
+| `c6_prologue_1` | 被佔領的卡美洛:城門掛黑狼旗,影子騎士站崗 |
+| `c6_prologue_2` | 山丘上的營火,全部同伴圍著一張野外圓桌 |
+| `c6_ending_1` | 阿瓦隆之丘,劍鞘裂開、影子化成落葉飛走,莫德雷德跪坐,金毛伸出爪子 |
+| `c6_ending_2` | 阿瓦隆的湖邊,金毛把石中劍交還給湖中仙女 |
+| `c6_ending_3` | 卡美洛的大圓桌坐滿了所有角色(包括摩根娜、莫德雷德、綠騎士、兩條龍在窗外) |
+| `c6_ending_4` | 夕陽下的草地,國王金毛追著樹枝跑,大家在旁邊歡呼(全劇終) |
+
+## 17. 第四至六章的對白腳本
+
+格式同第 5 節。文字見 `i18n/story.csv`。第三章的 `c3_teaser` 改為第四章預告(插畫 `teaser_3`),`STORY_C3L6_AFTER_10` 改為「新的冒險就快要開始了」。
+
+### `c4_prologue`:第四章開場繪本(第四章新遊戲時,4-1 之前)
+
+| 鍵 | speaker | 表情 | 插畫 |
+| --- | --- | --- | --- |
+| STORY_C4_PROLOGUE_01 | narrator |  | c4_prologue_1 |
+| STORY_C4_PROLOGUE_02 | narrator |  | c4_prologue_1 |
+| STORY_C4_PROLOGUE_03 | narrator |  | c4_prologue_1 |
+| STORY_C4_PROLOGUE_04 | narrator |  | c4_prologue_2 |
+
+### `c4l1_before`:4-1 金色沙灘:崔斯坦登場
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C4L1_BEFORE_01 | tristan | surprised |
+| STORY_C4L1_BEFORE_02 | goldie | happy |
+| STORY_C4L1_BEFORE_03 | tristan | normal |
+| STORY_C4L1_BEFORE_04 | tristan | serious |
+| STORY_C4L1_BEFORE_05 | merlin | normal |
+
+### `c4l1_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C4L1_AFTER_01 | tristan | happy |
+| STORY_C4L1_AFTER_02 | bulldog | serious |
+| STORY_C4L1_AFTER_03 | tristan | normal |
+
+### `c4l2_before`:4-2 海邊懸崖
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C4L2_BEFORE_01 | tristan | normal |
+| STORY_C4L2_BEFORE_02 | goldie | surprised |
+| STORY_C4L2_BEFORE_03 | merlin | worried |
+| STORY_C4L2_BEFORE_04 | tristan | serious |
+
+### `c4l2_after`:崔斯坦加入(4-3 起成為同伴)
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C4L2_AFTER_01 | tristan | happy |
+| STORY_C4L2_AFTER_02 | goldie | happy |
+| STORY_C4L2_AFTER_03 | tristan | happy |
+| STORY_C4L2_AFTER_04 | merlin | proud |
+
+### `c4_camp1`:第四章第一次營地
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C4_CAMP1_01 | tristan | normal |
+| STORY_C4_CAMP1_02 | tristan | serious |
+| STORY_C4_CAMP1_03 | goldie | surprised |
+| STORY_C4_CAMP1_04 | tristan | normal |
+| STORY_C4_CAMP1_05 | merlin | worried |
+
+### `c4l3_before`:4-3 海盜船
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C4L3_BEFORE_01 | goldie | serious |
+| STORY_C4L3_BEFORE_02 | bulldog | happy |
+| STORY_C4L3_BEFORE_03 | tristan | serious |
+
+### `c4l3_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C4L3_AFTER_01 | bulldog | serious |
+| STORY_C4L3_AFTER_02 | tristan | serious |
+| STORY_C4L3_AFTER_03 | merlin | proud |
+
+### `c4l4_before`:4-4 海底珊瑚礁:寄居蟹將軍
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C4L4_BEFORE_01 | goldie | happy |
+| STORY_C4L4_BEFORE_02 | tristan | surprised |
+| STORY_C4L4_BEFORE_03 | merlin | worried |
+| STORY_C4L4_BEFORE_04 | goldie | serious |
+
+### `c4l4_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C4L4_AFTER_01 | tristan | normal |
+| STORY_C4L4_AFTER_02 | merlin | worried |
+| STORY_C4L4_AFTER_03 | goldie | surprised |
+| STORY_C4L4_AFTER_04 | merlin | worried |
+
+### `c4_camp2`:第四章第二次營地
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C4_CAMP2_01 | merlin | normal |
+| STORY_C4_CAMP2_02 | merlin | worried |
+| STORY_C4_CAMP2_03 | goldie | normal |
+| STORY_C4_CAMP2_04 | bulldog | serious |
+| STORY_C4_CAMP2_05 | tristan | happy |
+
+### `c4l5_before`:4-5 沉沒之城
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C4L5_BEFORE_01 | tristan | surprised |
+| STORY_C4L5_BEFORE_02 | merlin | normal |
+| STORY_C4L5_BEFORE_03 | goldie | serious |
+
+### `c4l5_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C4L5_AFTER_01 | goldie | surprised |
+| STORY_C4L5_AFTER_02 | tristan | serious |
+
+### `c4l6_before`:4-6 海底宮殿:章魚王
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C4L6_BEFORE_01 | kraken | normal |
+| STORY_C4L6_BEFORE_02 | goldie | serious |
+| STORY_C4L6_BEFORE_03 | kraken | normal |
+| STORY_C4L6_BEFORE_04 | tristan | serious |
+| STORY_C4L6_BEFORE_05 | goldie | serious |
+
+### `c4l6_after`:第四章結局
+
+| 鍵 | speaker | 表情 | 插畫 |
+| --- | --- | --- | --- |
+| STORY_C4L6_AFTER_01 | narrator |  | c4_ending_1 |
+| STORY_C4L6_AFTER_02 | kraken | normal |  |
+| STORY_C4L6_AFTER_03 | goldie | happy |  |
+| STORY_C4L6_AFTER_04 | narrator |  | c4_ending_2 |
+| STORY_C4L6_AFTER_05 | tristan | happy |  |
+| STORY_C4L6_AFTER_06 | narrator |  | c4_ending_3 |
+| STORY_C4L6_AFTER_07 | mordred | smirk |  |
+
+### `c4_teaser`:第五章預告
+
+| 鍵 | speaker | 表情 | 插畫 |
+| --- | --- | --- | --- |
+| STORY_C4_TEASER_01 | narrator |  | teaser_4 |
+
+### `c5_prologue`:第五章開場繪本(第五章新遊戲時,5-1 之前)
+
+| 鍵 | speaker | 表情 | 插畫 |
+| --- | --- | --- | --- |
+| STORY_C5_PROLOGUE_01 | narrator |  | c5_prologue_1 |
+| STORY_C5_PROLOGUE_02 | narrator |  | c5_prologue_1 |
+| STORY_C5_PROLOGUE_03 | narrator |  | c5_prologue_2 |
+| STORY_C5_PROLOGUE_04 | merlin | worried | c5_prologue_2 |
+| STORY_C5_PROLOGUE_05 | narrator |  | c5_prologue_2 |
+
+### `c5l1_before`:5-1 雪原:高文登場
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C5L1_BEFORE_01 | gawain | happy |
+| STORY_C5L1_BEFORE_02 | goldie | happy |
+| STORY_C5L1_BEFORE_03 | gawain | normal |
+| STORY_C5L1_BEFORE_04 | gawain | serious |
+
+### `c5l1_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C5L1_AFTER_01 | gawain | normal |
+| STORY_C5L1_AFTER_02 | merlin | normal |
+| STORY_C5L1_AFTER_03 | goldie | happy |
+
+### `c5l2_before`:5-2 冰之洞窟
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C5L2_BEFORE_01 | goldie | surprised |
+| STORY_C5L2_BEFORE_02 | gawain | serious |
+| STORY_C5L2_BEFORE_03 | merlin | worried |
+
+### `c5l2_after`:高文加入(5-3 起成為同伴)
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C5L2_AFTER_01 | gawain | happy |
+| STORY_C5L2_AFTER_02 | lancelot | happy |
+| STORY_C5L2_AFTER_03 | goldie | happy |
+
+### `c5_camp1`:第五章第一次營地
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C5_CAMP1_01 | gawain | normal |
+| STORY_C5_CAMP1_02 | gawain | normal |
+| STORY_C5_CAMP1_03 | goldie | surprised |
+| STORY_C5_CAMP1_04 | gawain | happy |
+| STORY_C5_CAMP1_05 | lancelot | serious |
+
+### `c5l3_before`:5-3 溫泉谷
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C5L3_BEFORE_01 | goldie | happy |
+| STORY_C5L3_BEFORE_02 | merlin | worried |
+| STORY_C5L3_BEFORE_03 | gawain | serious |
+
+### `c5l3_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C5L3_AFTER_01 | goldie | happy |
+| STORY_C5L3_AFTER_02 | lancelot | normal |
+| STORY_C5L3_AFTER_03 | gawain | serious |
+
+### `c5l4_before`:5-4 雪崩山道:雪人隊長
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C5L4_BEFORE_01 | merlin | worried |
+| STORY_C5L4_BEFORE_02 | gawain | serious |
+| STORY_C5L4_BEFORE_03 | goldie | serious |
+
+### `c5l4_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C5L4_AFTER_01 | gawain | normal |
+| STORY_C5L4_AFTER_02 | lancelot | serious |
+| STORY_C5L4_AFTER_03 | merlin | worried |
+
+### `c5_camp2`:第五章第二次營地:摩根娜的水晶球
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C5_CAMP2_01 | morgana_true | normal |
+| STORY_C5_CAMP2_02 | goldie | happy |
+| STORY_C5_CAMP2_03 | morgana_true | normal |
+| STORY_C5_CAMP2_04 | merlin | surprised |
+| STORY_C5_CAMP2_05 | morgana_true | sad |
+
+### `c5l5_before`:5-5 火山口
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C5L5_BEFORE_01 | goldie | surprised |
+| STORY_C5L5_BEFORE_02 | gawain | serious |
+| STORY_C5L5_BEFORE_03 | lancelot | serious |
+
+### `c5l5_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C5L5_AFTER_01 | red_dragon | normal |
+| STORY_C5L5_AFTER_02 | white_dragon | normal |
+| STORY_C5L5_AFTER_03 | goldie | surprised |
+
+### `c5l6_before`:5-6 雙龍之巢:紅龍與白龍
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C5L6_BEFORE_01 | red_dragon | normal |
+| STORY_C5L6_BEFORE_02 | white_dragon | normal |
+| STORY_C5L6_BEFORE_03 | goldie | serious |
+| STORY_C5L6_BEFORE_04 | red_dragon | normal |
+| STORY_C5L6_BEFORE_05 | merlin | worried |
+
+### `c5l6_after`:第五章結局
+
+| 鍵 | speaker | 表情 | 插畫 |
+| --- | --- | --- | --- |
+| STORY_C5L6_AFTER_01 | narrator |  | c5_ending_1 |
+| STORY_C5L6_AFTER_02 | goldie | happy |  |
+| STORY_C5L6_AFTER_03 | red_dragon | normal |  |
+| STORY_C5L6_AFTER_04 | white_dragon | normal |  |
+| STORY_C5L6_AFTER_05 | narrator |  | c5_ending_2 |
+| STORY_C5L6_AFTER_06 | white_dragon | normal |  |
+| STORY_C5L6_AFTER_07 | narrator |  | c5_ending_3 |
+
+### `c5_teaser`:最終章預告
+
+| 鍵 | speaker | 表情 | 插畫 |
+| --- | --- | --- | --- |
+| STORY_C5_TEASER_01 | narrator |  | teaser_5 |
+
+### `c6_prologue`:最終章開場繪本(第六章新遊戲時,6-1 之前)
+
+| 鍵 | speaker | 表情 | 插畫 |
+| --- | --- | --- | --- |
+| STORY_C6_PROLOGUE_01 | narrator |  | c6_prologue_1 |
+| STORY_C6_PROLOGUE_02 | narrator |  | c6_prologue_1 |
+| STORY_C6_PROLOGUE_03 | narrator |  | c6_prologue_2 |
+| STORY_C6_PROLOGUE_04 | bulldog | serious | c6_prologue_2 |
+
+### `c6l1_before`:6-1 卡姆蘭平原
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C6L1_BEFORE_01 | lancelot | serious |
+| STORY_C6L1_BEFORE_02 | goldie | serious |
+| STORY_C6L1_BEFORE_03 | merlin | normal |
+| STORY_C6L1_BEFORE_04 | bulldog | happy |
+
+### `c6l1_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C6L1_AFTER_01 | tristan | normal |
+| STORY_C6L1_AFTER_02 | bulldog | serious |
+
+### `c6l2_before`:6-2 影之營地
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C6L2_BEFORE_01 | merlin | worried |
+| STORY_C6L2_BEFORE_02 | goldie | serious |
+| STORY_C6L2_BEFORE_03 | lancelot | happy |
+
+### `c6l2_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C6L2_AFTER_01 | gawain | happy |
+| STORY_C6L2_AFTER_02 | tristan | serious |
+
+### `c6_camp1`:最終章第一次營地
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C6_CAMP1_01 | goldie | normal |
+| STORY_C6_CAMP1_02 | merlin | worried |
+| STORY_C6_CAMP1_03 | merlin | worried |
+| STORY_C6_CAMP1_04 | lancelot | serious |
+| STORY_C6_CAMP1_05 | goldie | normal |
+
+### `c6l3_before`:6-3 被佔領的城下町
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C6L3_BEFORE_01 | goldie | surprised |
+| STORY_C6L3_BEFORE_02 | crow | normal |
+| STORY_C6L3_BEFORE_03 | bulldog | serious |
+| STORY_C6L3_BEFORE_04 | tristan | happy |
+
+### `c6l3_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C6L3_AFTER_01 | goldie | happy |
+| STORY_C6L3_AFTER_02 | lancelot | serious |
+
+### `c6l4_before`:6-4 王座大廳:莫德雷德
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C6L4_BEFORE_01 | mordred | smirk |
+| STORY_C6L4_BEFORE_02 | mordred | angry |
+| STORY_C6L4_BEFORE_03 | goldie | serious |
+| STORY_C6L4_BEFORE_04 | mordred | smirk |
+
+### `c6l4_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C6L4_AFTER_01 | mordred | angry |
+| STORY_C6L4_AFTER_02 | mordred | smirk |
+| STORY_C6L4_AFTER_03 | merlin | worried |
+
+### `c6_camp2`:最終章第二次營地:全員到齊
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C6_CAMP2_01 | lady_lake | normal |
+| STORY_C6_CAMP2_02 | morgana_true | normal |
+| STORY_C6_CAMP2_03 | goldie | happy |
+| STORY_C6_CAMP2_04 | bulldog | happy |
+| STORY_C6_CAMP2_05 | merlin | proud |
+
+### `c6l5_before`:6-5 阿瓦隆之門
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C6L5_BEFORE_01 | lady_lake | normal |
+| STORY_C6L5_BEFORE_02 | goldie | surprised |
+| STORY_C6L5_BEFORE_03 | morgana_true | angry |
+
+### `c6l5_after`
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C6L5_AFTER_01 | goldie | serious |
+| STORY_C6L5_AFTER_02 | lancelot | happy |
+
+### `c6l6_before`:6-6 阿瓦隆之丘:莫德雷德(最終頭目)
+
+| 鍵 | speaker | 表情 |
+| --- | --- | --- |
+| STORY_C6L6_BEFORE_01 | mordred | normal |
+| STORY_C6L6_BEFORE_02 | goldie | serious |
+| STORY_C6L6_BEFORE_03 | mordred | angry |
+| STORY_C6L6_BEFORE_04 | morgana_true | normal |
+| STORY_C6L6_BEFORE_05 | goldie | serious |
+
+### `c6l6_after`:最終結局
+
+| 鍵 | speaker | 表情 | 插畫 |
+| --- | --- | --- | --- |
+| STORY_C6L6_AFTER_01 | narrator |  | c6_ending_1 |
+| STORY_C6L6_AFTER_02 | mordred | sad |  |
+| STORY_C6L6_AFTER_03 | goldie | normal |  |
+| STORY_C6L6_AFTER_04 | goldie | happy |  |
+| STORY_C6L6_AFTER_05 | mordred | sad |  |
+| STORY_C6L6_AFTER_06 | narrator |  | c6_ending_2 |
+| STORY_C6L6_AFTER_07 | lady_lake | normal |  |
+| STORY_C6L6_AFTER_08 | goldie | happy |  |
+| STORY_C6L6_AFTER_09 | lady_lake | smile |  |
+| STORY_C6L6_AFTER_10 | goldie | happy |  |
+| STORY_C6L6_AFTER_11 | narrator |  | c6_ending_3 |
+| STORY_C6L6_AFTER_12 | mordred | normal |  |
+| STORY_C6L6_AFTER_13 | narrator |  | c6_ending_4 |
+| STORY_C6L6_AFTER_14 | narrator |  | c6_ending_4 |
+
+### `c6_teaser`:全破之後(結算之後、回標題之前)
+
+| 鍵 | speaker | 表情 | 插畫 |
+| --- | --- | --- | --- |
+| STORY_C6_TEASER_01 | narrator |  | c6_ending_4 |
+
+## 18. 第四至六章的失敗提示與播放規則
+
+- 失敗提示增加 `STORY_TIP_15` 至 `STORY_TIP_20`。
+- 播放規則同第 13 節(`cN_prologue`、`cNlM_before/after`、`cN_camp1/2`、`cN_teaser`)。第六章的 `c6_teaser` 是全破之後的訊息。
+- 營地人物:第四章有崔斯坦(第一次營地起);第五章貝德維爾留在卡美洛,營地是蘭斯洛特、高文、梅林;第六章全員(第二次營地加上湖中仙女與摩根娜)。點崔斯坦說 `CAMP_TRISTAN_01` 至 `04`,點高文說 `CAMP_GAWAIN_01` 至 `04`(D 線撰寫)。

@@ -1,0 +1,112 @@
+[gd_resource type="Resource" script_class="DialogueScript" format=3]
+
+[ext_resource type="Script" path="res://core/data/dialogue_script.gd" id="1_script"]
+[ext_resource type="Script" path="res://core/data/dialogue_line.gd" id="2_line"]
+[ext_resource type="Texture2D" path="res://assets/story/c6_ending_1.png" id="3_c6_ending_1"]
+[ext_resource type="Texture2D" path="res://assets/story/c6_ending_2.png" id="4_c6_ending_2"]
+[ext_resource type="Texture2D" path="res://assets/story/c6_ending_3.png" id="5_c6_ending_3"]
+[ext_resource type="Texture2D" path="res://assets/story/c6_ending_4.png" id="6_c6_ending_4"]
+
+[sub_resource type="Resource" id="line_01"]
+script = ExtResource("2_line")
+speaker = &"narrator"
+expression = &""
+text_key = "STORY_C6L6_AFTER_01"
+illustration = ExtResource("3_c6_ending_1")
+
+[sub_resource type="Resource" id="line_02"]
+script = ExtResource("2_line")
+speaker = &"mordred"
+expression = &"sad"
+text_key = "STORY_C6L6_AFTER_02"
+illustration = ExtResource("3_c6_ending_1")
+
+[sub_resource type="Resource" id="line_03"]
+script = ExtResource("2_line")
+speaker = &"goldie"
+expression = &"normal"
+text_key = "STORY_C6L6_AFTER_03"
+illustration = ExtResource("3_c6_ending_1")
+
+[sub_resource type="Resource" id="line_04"]
+script = ExtResource("2_line")
+speaker = &"goldie"
+expression = &"happy"
+text_key = "STORY_C6L6_AFTER_04"
+illustration = ExtResource("3_c6_ending_1")
+
+[sub_resource type="Resource" id="line_05"]
+script = ExtResource("2_line")
+speaker = &"mordred"
+expression = &"sad"
+text_key = "STORY_C6L6_AFTER_05"
+illustration = ExtResource("3_c6_ending_1")
+
+[sub_resource type="Resource" id="line_06"]
+script = ExtResource("2_line")
+speaker = &"narrator"
+expression = &""
+text_key = "STORY_C6L6_AFTER_06"
+illustration = ExtResource("4_c6_ending_2")
+
+[sub_resource type="Resource" id="line_07"]
+script = ExtResource("2_line")
+speaker = &"lady_lake"
+expression = &"normal"
+text_key = "STORY_C6L6_AFTER_07"
+illustration = ExtResource("4_c6_ending_2")
+
+[sub_resource type="Resource" id="line_08"]
+script = ExtResource("2_line")
+speaker = &"goldie"
+expression = &"happy"
+text_key = "STORY_C6L6_AFTER_08"
+illustration = ExtResource("4_c6_ending_2")
+
+[sub_resource type="Resource" id="line_09"]
+script = ExtResource("2_line")
+speaker = &"lady_lake"
+expression = &"smile"
+text_key = "STORY_C6L6_AFTER_09"
+illustration = ExtResource("4_c6_ending_2")
+
+[sub_resource type="Resource" id="line_10"]
+script = ExtResource("2_line")
+speaker = &"goldie"
+expression = &"happy"
+text_key = "STORY_C6L6_AFTER_10"
+illustration = ExtResource("4_c6_ending_2")
+
+[sub_resource type="Resource" id="line_11"]
+script = ExtResource("2_line")
+speaker = &"narrator"
+expression = &""
+text_key = "STORY_C6L6_AFTER_11"
+illustration = ExtResource("5_c6_ending_3")
+
+[sub_resource type="Resource" id="line_12"]
+script = ExtResource("2_line")
+speaker = &"mordred"
+expression = &"normal"
+text_key = "STORY_C6L6_AFTER_12"
+illustration = ExtResource("5_c6_ending_3")
+
+[sub_resource type="Resource" id="line_13"]
+script = ExtResource("2_line")
+speaker = &"narrator"
+expression = &""
+text_key = "STORY_C6L6_AFTER_13"
+illustration = ExtResource("6_c6_ending_4")
+
+[sub_resource type="Resource" id="line_14"]
+script = ExtResource("2_line")
+speaker = &"narrator"
+expression = &""
+text_key = "STORY_C6L6_AFTER_14"
+illustration = ExtResource("6_c6_ending_4")
+
+[resource]
+script = ExtResource("1_script")
+id = &"c6l6_after"
+lines = Array[ExtResource("2_line")]([SubResource("line_01"), SubResource("line_02"), SubResource("line_03"), SubResource("line_04"), SubResource("line_05"), SubResource("line_06"), SubResource("line_07"), SubResource("line_08"), SubResource("line_09"), SubResource("line_10"), SubResource("line_11"), SubResource("line_12"), SubResource("line_13"), SubResource("line_14")])
+skippable = true

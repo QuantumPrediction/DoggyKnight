@@ -472,6 +472,39 @@ func reset_run() -> void
 
 **營地**:第 N 章的營地播放 `cN_camp1`、`cN_camp2`(第一章仍是 `camp1`、`camp2`);第三章由湖中仙女代替梅林;蘭斯洛特從第二章第一次營地起出現在營地。
 
+### 4.14 六章合約(v2.7,四條線必讀)
+
+**章數**:`GameState.CHAPTER_COUNT`(= 6,新常數)。選章、存檔、結算、無盡試煉一律用這個常數,**不要再寫死 3**。可以選的章:`1` 至 `min(chapters_cleared + 1, CHAPTER_COUNT)`。其他規則同 4.13(每章獨立一輪、段落 id `cN_*`、關卡 `level_N_M.tres`、頭目 `-6`、中頭目 `-4`)。故事見 `docs/STORY.md` 第 14 至 18 節;第三章的預告改為第四章預告。
+
+**新敵人(A 線,`data/enemies/<id>.tres`;圖 `assets/sprites/<代號>/`,佔位版已放好)**
+
+| id | 圖的代號 | 格子 | 必要動畫 | 說明 |
+| --- | --- | --- | --- | --- |
+| `crab` | crab | 24 | idle、run、attack、hurt、guard | 螃蟹海盜:橫著快速移動;舉鉗子(`guard`)時幾乎打不痛,夾完一下會喘氣(反擊時機) |
+| `crab_elite` | crab(放大) | — | — | 中頭目寄居蟹將軍(4-4) |
+| `jellyfish` | jellyfish | 24 | idle、run、attack、hurt、zap | 電電水母:慢慢飄;地上亮圓圈預警後放電 |
+| `kraken` | kraken | 64 | idle、run、attack、hurt、slam、ink、summon、down | 第四章頭目章魚王:觸手(`tentacle`)從場地邊緣紅線預警後拍下、墨汁(`ink_blob`)、泡泡(`bubble`) |
+| `snowman` | snowman | 24 | idle、run、attack、hurt、throw | 雪人兵:遠程拋雪球(`snowball`),落點先出現影子 |
+| `snowman_elite` | snowman(放大) | — | — | 中頭目雪人隊長(5-4) |
+| `salamander` | salamander | 24 | idle、run、attack、hurt、dash | 火蜥蜴:快速衝刺,身後留下短暫的小火苗(踩到會被燙到,可愛表現) |
+| `red_dragon`、`white_dragon` | red_dragon、white_dragon | 64 | idle、run、attack、hurt、breath、roar、sulk | 第五章雙頭目:兩條龍同時在場,各有生命;一條「生悶氣坐下」(`sulk`)後另一條暴怒;兩條都坐下才過關 |
+| `shadow_knight` | shadow_knight | 32 | idle、run、attack、hurt、guard、down | 影子騎士:盾牌擋正面(從側面或背後才打得痛) |
+| `lantern_wisp` | lantern_wisp | 16 | idle、run、attack、hurt、heal | 提燈鬼火:幫附近的敵人回復,會逃跑;優先目標 |
+| `mordred_duel` | mordred | — | — | 中頭目莫德雷德第一戰(6-4,生命剩一半時逃走) |
+| `mordred` | mordred | 48 | idle、run、attack、hurt、dash、slash、guard、summon、down | 最終頭目莫德雷德(6-6) |
+
+投射物特效(佔位版已放好):`assets/fx/bubble`、`ink_blob`、`music_note`、`snowball`、`fireball`、`ice_shard`、`shadow_slash`、`tentacle`(動畫 `default`)。敵人名字的翻譯鍵 `ENEMY_<ID 大寫>` 已加。
+
+**新同伴**:`tristan`(柯基吟遊騎士,遠程發射 `music_note`;圖動畫 idle、run、attack、hurt、play)、`gawain`(聖伯納,大鐵鎚落地衝擊並短暫震暈;動畫 idle、run、attack、hurt、slam)。`LevelData.companions` **最多 4 位**(6-6 全員:`[&"bulldog", &"lancelot", &"tristan", &"gawain"]`),彼此不重疊。
+
+**每章同伴**:第四章貝德維爾 + 崔斯坦(4-3 起);第五章蘭斯洛特 + 高文(5-3 起);第六章貝德維爾 + 蘭斯洛特,6-6 四位全員。
+
+**難度**:`chapter_hp_mult`、`chapter_damage_mult` 延長為 6 個值(A 線),初始 `1.0, 1.15, 1.3, 1.45, 1.6, 1.75` 與 `1.0, 1.1, 1.2, 1.3, 1.4, 1.5`,整合工作階段再依試玩調整。
+
+**音樂**:`field_4`、`boss_4`、`field_5`、`boss_5`、`field_6`、`boss_6`(C 線)。
+
+**新背景(佔位版已放好)**:`golden_beach`、`sea_cliffs`、`pirate_ship`、`coral_reef`、`sunken_city`、`sunken_palace`、`snowfield`、`ice_cave`、`hot_springs`、`avalanche_pass`、`volcano`、`dragon_nest`、`camlann_field`、`shadow_camp`、`occupied_town`、`throne_hall`、`avalon_gate`、`avalon_hill`。全部由 `tests/core/test_v27_contract.gd` 檢查。
+
 ---
 
 ## 5. 所有線共同遵守的規則
@@ -955,3 +988,81 @@ C 線這次分成兩個工作階段:**C 世界**(背景、標題、插畫、音�
 ### 整合工作階段
 
 - [ ] 合併五個工作階段;試玩機器人擴充為三章各打一次;依數據調整每章倍率;更新 `docs/ART_BRIEF.md`、`docs/integration_report.md`;PR 合併到 `main`。
+
+## 20. 第四至六章(v2.7)
+
+**背景:** 擁有人要求正式上架前做到「5 至 6 章、30 至 36 關、故事約 3 至 5 小時」。決定做到 6 章 36 關。合約見 4.14;故事見 `docs/STORY.md` 第 14 至 18 節。**不要建置 APK。**
+
+C 線分成三個工作階段:**C 世界**(背景、標題、音樂)、**C 角色**(角色圖、頭像、投射物特效)、**C 繪本**(插畫,等 C 角色完成後才開始,才能畫出正式角色)。
+
+### A 線任務
+
+- [ ] AW1 第四章敵人:`crab`(橫走、舉鉗子防禦、夾完喘氣)、`jellyfish`(圓圈預警後放電)、中頭目 `crab_elite`(放大、殼更硬、半血時召喚螃蟹)。
+- [ ] AW2 第四章頭目 `kraken`:觸手從場地邊緣紅線預警後拍下(`tentacle` 特效)、噴墨汁(落地後一小片暗區,幾秒後消失)、扇形泡泡;半血後召喚水母、觸手連續兩次。
+- [ ] AW3 第五章敵人:`snowman`(拋物線雪球,落點先出現影子)、`salamander`(衝刺、身後短暫火苗)、中頭目 `snowman_elite`(放大、一次丟三顆、召喚雪人)。
+- [ ] AW4 第五章雙頭目 `red_dragon` + `white_dragon`:各自生命;紅龍火焰吐息(扇形紅色預警)與火球,白龍冰霜吐息與冰刺環(`ice_shard`);一條生命歸零時播 `sulk` 坐下生悶氣(不是受傷),另一條 `roar` 後變快;兩條都坐下才過關。頭目血條顯示兩條(或合計)。
+- [ ] AW5 第六章敵人:`shadow_knight`(盾牌擋正面:正面受到的傷害 ×0.2,側面與背後正常;會慢慢轉身面向金毛)、`lantern_wisp`(每隔幾秒幫範圍內敵人回復,遠離金毛)。
+- [ ] AW6 第六章頭目:`mordred_duel`(6-4,紅線預警的衝刺斬、`shadow_slash` 劍氣;半血時逃走 = 過關)與 `mordred`(6-6,三階段:衝刺斬與劍氣;66% 起劍鞘護盾 —— 護盾期間只有同伴的攻擊能削弱護盾,破盾後暈眩幾秒;33% 起召喚舊頭目的幻影(黑騎士、綠騎士的簡化版)並加快)。倒下播 `down`(單膝跪下,不是受傷)。
+- [ ] AW7 同伴:`tristan`(保持距離,每約 1.5 秒朝最近敵人射音符)、`gawain`(每約 4 秒大鐵鎚落地,範圍傷害並短暫震暈);最多 4 位同伴同時在場、不重疊、不擋路。
+- [ ] AW8 `chapter_hp_mult`、`chapter_damage_mult` 延長為 6 個值(4.14 的初始值);測試從資料讀取,不寫死。
+- [ ] AW9 每個新敵人與頭目在測試場地可以被打倒;頭目各有至少一個「看到預警就躲得開」的測試;測試總時間不要讓全部測試超過 `run_tests.sh` 的時間上限。
+
+### B 線任務
+
+- [ ] BW1 `chapter_4.tres` 至 `chapter_6.tres` 與 18 關。關卡表:
+
+| 關 | 背景 | 同伴 | 主要敵人 |
+| --- | --- | --- | --- |
+| 4-1 | golden_beach | 貝德維爾 | 螃蟹(教學)、烏鴉 |
+| 4-2 | sea_cliffs | 貝德維爾 | 水母(教學)、螃蟹 |
+| 4-3 | pirate_ship | 貝德維爾、崔斯坦 | 螃蟹、水母、弓兵 |
+| 4-4 | coral_reef | 同上 | 中頭目寄居蟹將軍 + 水母 |
+| 4-5 | sunken_city | 同上 | 混合(第四章最難的一般關) |
+| 4-6 | sunken_palace | 同上 | 章魚王 |
+| 5-1 | snowfield | 蘭斯洛特 | 雪人(教學)、石像鬼 |
+| 5-2 | ice_cave | 蘭斯洛特 | 火蜥蜴(教學)、雪人 |
+| 5-3 | hot_springs | 蘭斯洛特、高文 | 火蜥蜴、雪人、狐火 |
+| 5-4 | avalanche_pass | 同上 | 中頭目雪人隊長 + 雪人 |
+| 5-5 | volcano | 同上 | 混合(第五章最難的一般關) |
+| 5-6 | dragon_nest | 同上 | 紅龍與白龍 |
+| 6-1 | camlann_field | 貝德維爾、蘭斯洛特 | 影子騎士(教學)、空盔甲兵 |
+| 6-2 | shadow_camp | 同上 | 提燈鬼火(教學)、影子騎士、影狼 |
+| 6-3 | occupied_town | 同上 | 影子騎士、鬼火、弓兵、烏鴉 |
+| 6-4 | throne_hall | 同上 | 中頭目莫德雷德第一戰 + 影子騎士 |
+| 6-5 | avalon_gate | 同上 | 全部混合(全遊戲最難的一般關) |
+| 6-6 | avalon_hill | 貝德維爾、蘭斯洛特、崔斯坦、高文 | 莫德雷德 |
+
+- [ ] BW2 依 `docs/STORY.md` 第 17 節的對白資料(整合工作階段已用 build_story 產生,B 線確認並更新 `test_story_data.gd`)。
+- [ ] BW3 流程與存檔改用 `GameState.CHAPTER_COUNT`(刪掉 `game/flow` 裡寫死的 3);舊存檔相容;第六章結束時結算顯示「全劇終」。
+- [ ] BW4 **修正**:試玩截圖中,3-1 過關時蘭斯洛特的 `story_after` 對白蓋在結算畫面上面。依 `docs/STORY.md` 第 8 節應為「過關慶祝 → story_after → 結算」;請檢查並修正次序,加測試。
+- [ ] BW5 音樂 `field_4`……`boss_6`;無盡試煉依 `chapters_cleared` 加入第四至六章的敵人、頭目與背景(雙龍頭目在無盡試煉可以只出一條)。
+- [ ] BW6 第四至六章的抉擇事件:用現有事件即可;如果有提到梅林而梅林不在場的情況,記在 status 檔。
+- [ ] BW7 測試:六章各自可以從第 1 關玩到結局(測試替身快轉);`stub_title` 選章到 6。
+
+### C 世界任務(背景、標題、音樂)
+
+- [ ] CW7 18 張新背景(4.14 的清單)。第四章明亮的夏日海邊與海底(沙、浪花、珊瑚、海草、泡泡、透光);第五章雪地與火山(飄雪、冰晶反光、溫泉蒸氣、岩漿光);第六章秋天與暮色(落葉、黑狼旗、王座大廳的燭光、阿瓦隆的蘋果林與晚霞)。戰鬥區中央保持安靜清楚(沿用第三章的地面做法)。
+- [ ] CW8 標題:選章到第 6 章;第四至六章的標題背景(海邊、雙龍雪山、阿瓦隆夕陽);章名底色沿用。
+- [ ] CW9 音樂 `field_4`(輕快海風)、`boss_4`(海底、有點滑稽)、`field_5`(雪山)、`boss_5`(雙龍、熱鬧)、`field_6`(行軍、堅定)、`boss_6`(最終戰、壯闊而溫暖)。
+- [ ] CW10 失敗畫面提示依章選(1 至 20);結算與 HUD 不寫死章數。
+
+### C 角色任務(角色圖、頭像、特效)
+
+- [ ] CC6 12 個新角色圖(4.14 的表),畫風同 v2.5、v2.6。重點:螃蟹舉鉗子、水母半透明發光、章魚王戴貝殼王冠、雪人的黑狼頭帽子、火蜥蜴的小火尾、紅龍與白龍圓滾滾可愛、影子騎士的大盾牌、提燈鬼火、莫德雷德(杜賓犬黑騎士,銀邊黑盔甲、黑狼頭肩甲、灰斗篷、腰間發紫光的劍鞘)、崔斯坦(柯基、豎琴)、高文(聖伯納、木桶、大鐵鎚)。
+- [ ] CC7 6 位新說話者的頭像(`docs/STORY.md` 第 15 節)。
+- [ ] CC8 投射物特效 8 個(4.14);粒子 `snow_burst`(雪人打散)、`bubble_pop`(泡泡破)。
+
+### C 繪本任務(C 角色完成後開始)
+
+- [ ] CS4 19 張新插畫(`docs/STORY.md` 第 16 節),用正式角色的設計;只有騎士拿武器;最後一張是全劇終的畫面,要特別用心。
+
+### D 線任務
+
+- [ ] DW1 營地依章播放對白(第四至六章);營地人物依 `docs/STORY.md` 第 18 節;點崔斯坦說 `CAMP_TRISTAN_01..04`、點高文說 `CAMP_GAWAIN_01..04`(D 線撰寫)。
+- [ ] DW2 營地場景:第四章海灘營火與星空、第五章雪山小屋與溫泉蒸氣、第六章秋天山丘上的野外圓桌(第二次營地加上湖中仙女與摩根娜)。
+- [ ] DW3 新小遊戲一個(例如「海灘挖寶」或「接住魚」),在第四至六章的營地與現有小遊戲輪流出現;結果一樣影響下一關加成。
+- [ ] DW4 效能:4 位同伴 + 雙龍 + 投射物同時在場的量測(`tests/line_d/`),寫進 status 檔。
+
+### 整合工作階段
+
+- [ ] 合併;試玩機器人六章各打一次;依數據調整章倍率;更新文件;PR 合併到 `main`。

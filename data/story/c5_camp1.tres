@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="DialogueScript" format=3]
+
+[ext_resource type="Script" path="res://core/data/dialogue_script.gd" id="1_script"]
+[ext_resource type="Script" path="res://core/data/dialogue_line.gd" id="2_line"]
+
+[sub_resource type="Resource" id="line_01"]
+script = ExtResource("2_line")
+speaker = &"gawain"
+expression = &"normal"
+text_key = "STORY_C5_CAMP1_01"
+
+[sub_resource type="Resource" id="line_02"]
+script = ExtResource("2_line")
+speaker = &"gawain"
+expression = &"normal"
+text_key = "STORY_C5_CAMP1_02"
+
+[sub_resource type="Resource" id="line_03"]
+script = ExtResource("2_line")
+speaker = &"goldie"
+expression = &"surprised"
+text_key = "STORY_C5_CAMP1_03"
+
+[sub_resource type="Resource" id="line_04"]
+script = ExtResource("2_line")
+speaker = &"gawain"
+expression = &"happy"
+text_key = "STORY_C5_CAMP1_04"
+
+[sub_resource type="Resource" id="line_05"]
+script = ExtResource("2_line")
+speaker = &"lancelot"
+expression = &"serious"
+text_key = "STORY_C5_CAMP1_05"
+
+[resource]
+script = ExtResource("1_script")
+id = &"c5_camp1"
+lines = Array[ExtResource("2_line")]([SubResource("line_01"), SubResource("line_02"), SubResource("line_03"), SubResource("line_04"), SubResource("line_05")])
+skippable = true
