@@ -9,7 +9,7 @@ extends BossBase
 ## - 配對:生成時找場上另一條龍當搭檔。頭目血條顯示「紅龍與白龍」(boss_appeared(&"twin_dragons")),
 ##   生命是兩條加起來(boss_hp_changed 的 current、maximum 都是合計),一條坐下後血條剩下另一條的部分。
 ##   只有一條龍時(無盡試煉)顯示自己的名字和生命。
-## - 輪流:搭檔正在預警或吐息時,自己先等一下,不會兩條同時預警(手機上看得清楚、躲得開)。
+## - 輪流:搭檔正在預警、吐息或剛出完招喘氣時,自己先等一下,不會兩條同時預警(手機上看得清楚、躲得開)。
 ## - 紅龍(火):火焰吐息(扇形紅色預警,填滿後噴火,BreathCone)與火球(拋物線,落點先出現影子)。
 ## - 白龍(冰):冰霜吐息(扇形紅色預警)與冰刺環(放射的預警線,之後沿線射出 ice_shard,
 ##   線與線之間離白龍越遠空隙越大)。
@@ -30,34 +30,34 @@ const STEAM := Color(1, 1, 1, 0.9)
 @export var element: Element = Element.FIRE
 @export_group("節奏")
 @export var intro_time: float = 1.0
-@export var idle_time: float = 1.2
-@export var idle_time_enraged: float = 0.7
+@export var idle_time: float = 1.8
+@export var idle_time_enraged: float = 1.2
 @export var home_offset: Vector2 = Vector2(-56, -44)   ## 平時待在目標的哪裡(白龍的 x 相反);暴怒後不分左右
 @export var drift_speed_mult: float = 0.7
 @export var float_height: float = 4.0
 @export var turn_wait: float = 0.35              ## 搭檔正在預警時,先等這麼久再看
 @export var roar_time: float = 1.2               ## 搭檔坐下後大吼(無敵)的秒數
-@export var enraged_rest_mult: float = 0.7
+@export var enraged_rest_mult: float = 1.0
 @export_group("吐息")
 @export var breath_telegraph: float = 0.95
-@export var breath_radius: float = 72.0          ## 扇形預警 = 打中範圍
-@export var breath_half_angle_deg: float = 32.0
+@export var breath_radius: float = 60.0          ## 扇形預警 = 打中範圍
+@export var breath_half_angle_deg: float = 28.0
 @export var breath_time: float = 0.5
-@export var breath_damage: int = 14
+@export var breath_damage: int = 11
 @export var breath_recover: float = 0.8
 @export var breath_close: float = 40.0           ## 目標比這個近時,下一招多半是吐息
 @export_group("火球(紅龍)")
 @export var fireball: ProjectileData = FIREBALL
 @export var volley_count: int = 3
-@export var volley_count_enraged: int = 5
+@export var volley_count_enraged: int = 4
 @export var volley_delay: float = 0.5            ## 影子出現到火球吐出的秒數
-@export var volley_spread: float = 40.0
-@export var volley_spacing: float = 24.0
+@export var volley_spread: float = 48.0
+@export var volley_spacing: float = 28.0
 @export var volley_recover: float = 0.6
 @export_group("冰刺環(白龍)")
 @export var ice_shard: ProjectileData = ICE_SHARD
 @export var ring_count: int = 10
-@export var ring_count_enraged: int = 14
+@export var ring_count_enraged: int = 12
 @export var ring_telegraph: float = 0.85
 @export var ring_recover: float = 0.6
 
@@ -249,13 +249,14 @@ func _drift() -> void:
 
 # --- 選招與輪流 -------------------------------------------------------------------
 
-## 搭檔正在預警或吐息(這時自己先等)。
+## 正在預警或吐息。
 func is_telling() -> bool:
 	return phase in [Phase.BREATH_TELL, Phase.BREATH, Phase.VOLLEY_TELL, Phase.RING_TELL]
 
 
+## 搭檔正在預警、吐息或剛出完招喘氣:自己先等(兩條輪流出招,中間有空檔)。
 func _partner_busy() -> bool:
-	return partner_active() and partner.is_telling()
+	return partner_active() and (partner.is_telling() or partner.phase == Phase.RECOVER)
 
 
 func _next_move() -> void:

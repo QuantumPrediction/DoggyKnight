@@ -56,10 +56,10 @@ const MIST_COLORS: Array[Color] = [Color(0.35, 0.3, 0.5, 0.9), Color(0.55, 0.5, 
 @export var slash_step_deg: float = 30.0
 @export var slash_recover: float = 0.5
 @export_group("劍鞘護盾(第二階段起)")
-@export var shield_hp: int = 60                  ## 同伴要打掉這麼多才破盾
+@export var shield_hp: int = 50                  ## 同伴要打掉這麼多才破盾
 @export var shield_raise_time: float = 0.8
-@export var shield_regen_time: float = 9.0
-@export var shield_max_time: float = 14.0
+@export var shield_regen_time: float = 11.0
+@export var shield_max_time: float = 10.0
 @export var shield_solo_time: float = 5.0
 @export var break_stun_time: float = 3.0
 @export_group("舊頭目的幻影(第三階段)")

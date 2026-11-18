@@ -24,8 +24,8 @@ const BUBBLE_COLORS: Array[Color] = [Color(0.8, 0.95, 1.0, 0.9), Color(0.6, 0.85
 
 @export_group("節奏")
 @export var intro_time: float = 1.0
-@export var idle_time: float = 1.0
-@export var idle_time_phase2: float = 0.7
+@export var idle_time: float = 0.8
+@export var idle_time_phase2: float = 0.55
 @export var home_depth: float = 44.0             ## 待在戰鬥區上緣之下幾像素
 @export var drift_speed_mult: float = 0.6
 @export var roar_time: float = 1.2               ## 半血時大叫(無敵)的秒數
@@ -33,7 +33,7 @@ const BUBBLE_COLORS: Array[Color] = [Color(0.8, 0.95, 1.0, 0.9), Color(0.6, 0.85
 @export var tentacle_telegraph: float = 1.0
 @export var tentacle_second_telegraph: float = 0.85
 @export var tentacle_width: float = 18.0         ## 紅線寬度 = 打中範圍
-@export var tentacle_damage: int = 15
+@export var tentacle_damage: int = 16
 @export var tentacles_phase2: int = 2
 @export var tentacle_recover: float = 0.7
 @export_group("墨汁")

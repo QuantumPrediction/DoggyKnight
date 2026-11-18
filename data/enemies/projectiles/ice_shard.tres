@@ -6,7 +6,7 @@
 script = ExtResource("1_data")
 id = &"ice_shard"
 fx = &"ice_shard"
-damage = 9
+damage = 8
 speed = 92.0
 max_range = 200.0
 hit_radius = 2.5

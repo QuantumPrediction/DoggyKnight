@@ -7,7 +7,7 @@ extends Node
 ## 執行(headless,約 1 至 2 分鐘):
 ##   godot --headless --path . res://tests/line_a/tools/boss_duel.tscn -- --hard --speed=4 --power=1.6
 ## --power:金毛攻擊力倍數(模擬打到頭目時的等級與把戲,預設 1.6)。
-## --from=N:只量第 N 章以後的頭目(例如 --from=4)。
+## --from=N:只量第 N 章以後的頭目(例如 --from=4);--only=<頭目 id>:只量這一個。
 
 const ARENA_SCENE: PackedScene = preload("res://game/combat/arena.tscn")
 const TIMEOUT_SEC := 240.0
@@ -33,6 +33,7 @@ var speed: float = 4.0
 var power: float = 1.6
 var hard: bool = false
 var from_chapter: int = 1
+var only: StringName = &""
 var _damage: int = 0
 var _downs: int = 0
 
@@ -47,6 +48,8 @@ func _ready() -> void:
 			power = float(arg.get_slice("=", 1))
 		elif arg.begins_with("--from="):
 			from_chapter = int(arg.get_slice("=", 1))
+		elif arg.begins_with("--only="):
+			only = StringName(arg.get_slice("=", 1))
 	EventBus.player_damaged.connect(func(amount: int) -> void: _damage += amount)
 	EventBus.player_downed.connect(func() -> void: _downs += 1)
 	_run.call_deferred()
@@ -55,7 +58,7 @@ func _ready() -> void:
 func _run() -> void:
 	var lines: PackedStringArray = []
 	for duel: Array in DUELS:
-		if int(duel[1]) < from_chapter:
+		if int(duel[1]) < from_chapter or (only != &"" and duel[0] != only):
 			continue
 		lines.append(await _duel(duel[0], duel[1], duel[2], duel[3], duel[4] if duel.size() > 4 else &""))
 	Engine.time_scale = 1.0
@@ -96,14 +99,14 @@ func _duel(boss_id: StringName, chapter: int, level_index: int, companions: Arra
 			if is_instance_valid(b) and (b as Node).is_in_group(&"enemy"):
 				return true
 		return false
-	while clock < TIMEOUT_SEC and alive.call():
+	while clock < TIMEOUT_SEC and bool(alive.call()):
 		await get_tree().physics_frame
 		clock += get_physics_process_delta_time()
 		if player.is_downed():
 			player.revive()
 		_steer(arena, player)
 	Engine.time_scale = 1.0
-	var won := not alive.call()
+	var won: bool = not bool(alive.call())
 	remove_child(arena)
 	arena.queue_free()
 	await get_tree().process_frame

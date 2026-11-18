@@ -22,7 +22,7 @@ const FROST := Color(0.6, 0.85, 1.0)
 @export var summon_count: int = 2
 @export var summon_telegraph: float = 1.0
 @export var summon_offset: float = 34.0
-@export var summon_every: int = 3                ## 每幾次拋雪球召喚一次
+@export var summon_every: int = 4                ## 每幾次拋雪球召喚一次
 @export var max_summons_alive: int = 2
 @export_group("第二階段")
 @export var whistle_time: float = 0.9
