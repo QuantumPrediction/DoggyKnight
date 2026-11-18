@@ -73,7 +73,7 @@ func test_save_v4_round_trip_and_old_saves_load() -> void:
 	store.write_data({"level_index": 2, "snacks": 37, "meta_upgrades": {&"strength": 2, "luck": 9.0, "bad": "x"},
 			"endless_best": 14})
 	var data := store.read()
-	assert_eq(data["version"], SaveStore.VERSION, "寫入的是目前的版本(v2.6 起第 5 版)")
+	assert_eq(data["version"], SaveStore.VERSION, "寫入的是目前的版本(v2.7 起第 6 版)")
 	assert_eq(data["snacks"], 37)
 	assert_eq(data["meta_upgrades"], {"strength": 2, "luck": 9})
 	assert_eq(data["endless_best"], 14)
