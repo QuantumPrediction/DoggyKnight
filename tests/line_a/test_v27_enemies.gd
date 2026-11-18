@@ -263,14 +263,14 @@ func test_shadow_knight_shield_blocks_the_front_and_turns_slowly() -> void:
 	knight.shield_dir = (player.global_position - knight.global_position).normalized()
 	var hp := knight.hp
 	knight.hit(20, player.global_position, 60.0)
-	assert_eq(hp - knight.hp, roundi(20 * knight.shield_damage_mult), "正面打在盾牌上 × 0.2")
-	assert_almost_eq(knight.shield_damage_mult, 0.2, 0.001)
+	assert_eq(hp - knight.hp, roundi(20 * knight.shield_damage_mult), "正面打在盾牌上只剩一小部分")
+	assert_true(knight.shield_damage_mult > 0.0 and knight.shield_damage_mult < 0.5, "盾牌大幅減傷")
 	hp = knight.hp
-	knight.hit(20, knight.global_position - knight.shield_dir * 20.0, 60.0)
-	assert_eq(hp - knight.hp, 20, "從背後打得痛")
+	knight.hit(12, knight.global_position - knight.shield_dir * 20.0, 60.0)
+	assert_eq(hp - knight.hp, 12, "從背後打得痛")
 	hp = knight.hp
-	knight.hit(20, knight.global_position + knight.shield_dir.orthogonal() * 20.0, 60.0)
-	assert_eq(hp - knight.hp, 20, "從側面打得痛")
+	knight.hit(12, knight.global_position + knight.shield_dir.orthogonal() * 20.0, 60.0)
+	assert_eq(hp - knight.hp, 12, "從側面打得痛")
 	# 慢慢轉身:繞到背後,一秒內轉不過來。
 	knight.target = player
 	var before := knight.shield_dir

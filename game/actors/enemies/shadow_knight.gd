@@ -18,8 +18,8 @@ const MIST_COLORS: Array[Color] = [Color(0.35, 0.3, 0.5, 0.9), Color(0.55, 0.5, 
 
 @export_group("盾牌")
 @export var shield_half_angle_deg: float = 70.0
-@export var shield_damage_mult: float = 0.2
-@export var shield_turn_deg: float = 100.0       ## 每秒最多轉幾度(繞著跑比這個快)
+@export var shield_damage_mult: float = 0.35
+@export var shield_turn_deg: float = 80.0       ## 每秒最多轉幾度(繞著跑比這個快)
 @export var shield_turn_recover_deg: float = 35.0
 @export var guard_flash_time: float = 0.25
 @export var clang_cooldown: float = 0.3

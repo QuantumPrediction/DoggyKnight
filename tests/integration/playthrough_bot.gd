@@ -159,6 +159,7 @@ func _steer() -> void:
 		if targetable and distance < nearest_distance:
 			nearest_distance = distance
 			nearest = enemy
+	danger += _telegraph_escape(player.global_position)
 	var direction := Vector2.ZERO
 	if danger != Vector2.ZERO:
 		direction = danger.normalized()
@@ -168,6 +169,44 @@ func _steer() -> void:
 	elif nearest != null and nearest_distance > ATTACK_DISTANCE:
 		direction = (nearest.global_position - player.global_position).normalized()
 	player.call(&"set_move_override", direction)
+
+
+## v2.7:新頭目(章魚王、雙龍、莫德雷德等)把預警直接放在場上(AttackTelegraph,群組 combat_fx),
+## 不在敵人的 _telegraph 欄位裡。像真人玩家一樣看地上的紅圈、扇形與紅線:站在裡面(或很接近)就往外閃。
+const TELEGRAPH_MARGIN: float = 10.0
+
+
+func _telegraph_escape(at: Vector2) -> Vector2:
+	var push := Vector2.ZERO
+	for node in get_tree().get_nodes_in_group(&"combat_fx"):
+		var mark := node as AttackTelegraph
+		if mark == null or not is_instance_valid(mark) or not mark.visible:
+			continue
+		var origin := mark.global_position
+		var urgency := 1.0 + mark.progress * 2.0
+		match mark.shape:
+			AttackTelegraph.Shape.CIRCLE:
+				var offset := at - origin
+				var r := mark.radius * absf(mark.global_scale.x) + TELEGRAPH_MARGIN
+				if offset.length() < r:
+					push += (offset.normalized() if offset.length() > 0.5 else Vector2.RIGHT) * (r - offset.length() + 4.0) * urgency
+			AttackTelegraph.Shape.LINE:
+				var dir := mark.global_transform.basis_xform(mark.direction).normalized()
+				var rel := at - origin
+				var along := rel.dot(dir)
+				var side := rel.dot(dir.orthogonal())
+				var half := mark.width * 0.5 + TELEGRAPH_MARGIN
+				if along > -TELEGRAPH_MARGIN and along < mark.length + TELEGRAPH_MARGIN and absf(side) < half:
+					var away := dir.orthogonal() * (1.0 if side >= 0.0 else -1.0)
+					push += away * (half - absf(side) + 4.0) * urgency * 2.0
+			AttackTelegraph.Shape.SECTOR:
+				var dir := mark.global_transform.basis_xform(mark.direction).normalized()
+				var rel := at - origin
+				var r := mark.radius + TELEGRAPH_MARGIN
+				if rel.length() < r and absf(dir.angle_to(rel)) < mark.half_angle + 0.25:
+					var side := 1.0 if dir.cross(rel) >= 0.0 else -1.0
+					push += (dir.orthogonal() * side + rel.normalized()).normalized() * (r - rel.length() + 4.0) * urgency
+	return push
 
 
 func _on_results() -> void:
