@@ -106,8 +106,9 @@ func fast_chapter(with_story: bool = false, number: int = 1) -> ChapterData:
 ## 建立流程(一律用替身、測試存檔、固定種子)並加進場景樹。with_story = true 時帶上全部對白
 ## (對白框是替身 game/flow/stubs/stub_dialogue_box.tscn)。with_events = true(v2.4)時帶上
 ## data/levels/events.tres 的抉擇事件(替身事件介面);預設是空的事件表(舊的流程測試不受事件影響)。
+## v2.7:全部 GameState.CHAPTER_COUNT 章(fast_chapter 的複本);dialogue(BW4)換掉替身對白框。
 func make_flow(keep_save: bool = false, rng_seed: int = 1234, with_story: bool = false,
-		with_events: bool = false) -> FlowMain:
+		with_events: bool = false, dialogue: PackedScene = null) -> FlowMain:
 	if not keep_save:
 		SaveStore.new(SAVE_PATH).delete()
 	var f := (load(MAIN_SCENE) as PackedScene).instantiate() as FlowMain
@@ -116,7 +117,11 @@ func make_flow(keep_save: bool = false, rng_seed: int = 1234, with_story: bool =
 	f.rng_seed = rng_seed
 	f.difficulty = fast_difficulty()
 	f.chapter = fast_chapter(with_story)
-	f.chapters = [f.chapter, fast_chapter(with_story, 2), fast_chapter(with_story, 3)] as Array[ChapterData]
+	var all_chapters: Array[ChapterData] = [f.chapter]
+	for n in range(2, GameState.CHAPTER_COUNT + 1):
+		all_chapters.append(fast_chapter(with_story, n))
+	f.chapters = all_chapters
+	f.dialogue_scene = dialogue
 	if not with_events:
 		f.events = LevelEventTable.new()
 	f.platform_name = "Linux"

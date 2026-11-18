@@ -2,6 +2,7 @@ extends Control
 ## 過關結算的替身。正式版:ui/screens/results.tscn(C 線)。
 ##   setup(result: Dictionary);出現時播 Sfx clear;訊號 continue_pressed。result 的鍵見 DEV_PLAN 4.9、4.10
 ##   (替身也顯示星級與三個目標,方便在沙盒裡檢查)。
+##   v2.7:game_complete(打完第六章)時標題是「THE END」(正式畫面是「全劇終」UI_GAME_END)。
 
 signal continue_pressed()
 
@@ -29,8 +30,12 @@ func setup(data: Dictionary) -> void:
 	result = data
 	Sfx.play(&"clear")      # 與 C 線的正式畫面相同:畫面出現時自己播音效
 	var final: bool = data.get("is_final", false)
-	StubUI.add_label(_column, ("CHAPTER %d CLEAR!" % int(data.get("chapter", 1))) if final else "CLEAR!",
-			StubUI.ACCENT, 16)
+	var heading := "CLEAR!"
+	if data.get("game_complete", false):
+		heading = "THE END"
+	elif final:
+		heading = "CHAPTER %d CLEAR!" % int(data.get("chapter", 1))
+	StubUI.add_label(_column, heading, StubUI.ACCENT, 16)
 	if data.get("next_chapter_unlocked", false):
 		StubUI.add_label(_column, "Chapter %d unlocked!" % (int(data.get("chapter", 1)) + 1), StubUI.ACCENT)
 	StubUI.add_label(_column, "Chapter %d  Level %s%s" % [int(data.get("chapter", 1)), data.get("level_id", ""),

@@ -43,9 +43,11 @@ extends Resource
 @export var min_spawn_distance: float = 48.0
 
 ## 這些敵人所在的一波開始時改播頭目音樂(這一章的 ChapterData.boss_music)並播 boss_warning
-## (1-4 稻草人隊長、v2.6 的 2-4 石像鬼統領與 3-4 幻影黑騎士;頭目關本身一開始就播頭目曲)。
+## (1-4 稻草人隊長、v2.6 的 2-4 石像鬼統領與 3-4 幻影黑騎士、v2.7 的 4-4 寄居蟹將軍、5-4 雪人隊長、
+## 6-4 莫德雷德第一戰;頭目關本身一開始就播頭目曲)。
 @export var boss_music_enemies: Array[StringName] = [&"scarecrow_captain", &"black_knight", &"gargoyle_elite",
-		&"phantom_knight", &"green_knight", &"morgana"]
+		&"phantom_knight", &"green_knight", &"morgana", &"crab_elite", &"kraken", &"snowman_elite", &"red_dragon",
+		&"white_dragon", &"mordred_duel", &"mordred"]
 
 @export_group("Hard mode")
 ## 困難模式(GameState.difficulty == &"hard")每組敵人多加 floor(數目 × 這個比例) 隻
@@ -56,7 +58,8 @@ extends Resource
 @export var hard_extra_ratio: float = 0.0
 ## 困難模式不會多加的敵人(頭目、中頭目)。
 @export var hard_extra_exempt: Array[StringName] = [&"black_knight", &"scarecrow_captain", &"gargoyle_elite",
-		&"phantom_knight", &"green_knight", &"morgana"]
+		&"phantom_knight", &"green_knight", &"morgana", &"crab_elite", &"kraken", &"snowman_elite", &"red_dragon",
+		&"white_dragon", &"mordred_duel", &"mordred"]
 
 @export_group("Patterns")
 ## 隊形(SpawnEntry.pattern)的出生點離戰鬥區(Layout.ARENA_RECT)邊緣的距離(像素)。
@@ -83,6 +86,9 @@ extends Resource
 @export_group("Story")
 ## 過關後的對白開始時,勝利短曲淡出、換回該關曲子(結局換 story)所用的秒數(讓短曲不會突然被切斷)。
 @export var story_music_fade: float = 2.5
+## v2.7 BW4:對白播完後,等對白框淡出(看不見)才出結算或標題卡;最多等這麼多秒(真實時間)。
+## C 線的正式對白框淡出約 0.18 秒。0 = 不等。
+@export var story_fade_wait: float = 0.6
 
 @export_group("Transition")
 ## 換畫面時:畫面被蓋住要多少秒(快一點,按下按鈕立即有反應)。0 = 不播轉場。

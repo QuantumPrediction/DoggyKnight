@@ -12,7 +12,7 @@ extends Node
 ##     Notch     模擬瀏海                   Android  模擬 Android(標題按返回鍵會詢問離開)
 ##     Reset     清除沙盒存檔(教學提示、最佳星數、通關紀錄重新開始)
 ##     Cleared   切換「已打完第一章」(標題出現「New Game (Hard)」困難模式按鈕)
-##     Chapters  v2.6:已打完的章數 0 → 1 → 2 → 3 → 0(標題出現「<  Chapter N  >」選章;
+##     Chapters  已打完的章數 0 → 1 → … → 6 → 0(v2.7 六章;標題出現「<  Chapter N  >」選章;
 ##               1 以上同時算「已打完第一章」)
 ## 對白(v2.3)用替身對白框:點畫面 = 下一句,右上「Skip」= 略過整段。
 ## 存檔寫在 user://flow_sandbox_save.json,不會蓋掉正式存檔。
@@ -157,7 +157,7 @@ func _toggle_cleared() -> void:
 
 
 func _cycle_chapters() -> void:
-	GameState.chapters_cleared = (GameState.chapters_cleared + 1) % 4
+	GameState.chapters_cleared = (GameState.chapters_cleared + 1) % (GameState.CHAPTER_COUNT + 1)
 	if GameState.chapters_cleared >= 1:
 		GameState.chapter_cleared = true
 
