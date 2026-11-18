@@ -247,6 +247,30 @@ func hit(amount: int, from_position: Vector2, knockback_speed: float,
 		apply_knockback(from_position, knockback_speed)
 
 
+## v2.7:回復生命(提燈鬼火的回復光)。不超過最大生命;傳回實際回復了多少。倒下中或出場中不回復。
+func heal(amount: int) -> int:
+	if amount <= 0 or state != State.ACTIVE or hp >= max_hp:
+		return 0
+	var before := hp
+	hp = mini(max_hp, hp + amount)
+	_on_healed(hp - before)
+	return hp - before
+
+
+## v2.7:金毛自動攻擊時優先打這隻(提燈鬼火)。
+func is_priority_target() -> bool:
+	return false
+
+
+## v2.7:擋下攻擊時的「鏘!」(盾、鉗子、劍鞘護盾):火花與一個小光圈,不跳傷害數字。
+func clang_fx(from_position: Vector2, color: Color = Color(0.85, 0.9, 1.0)) -> void:
+	var dir := (from_position - global_position).normalized() if from_position.distance_to(global_position) > 0.5 else -facing
+	var at := global_position + _sprite_base_offset + dir * (body_radius + 2.0)
+	CombatFx.spawn(self, &"hit_spark", at, dir.angle(), Vector2.ONE * 0.8, color)
+	CombatFx.ring(self, at, 1.0, 7.0, 0.15, Color(color, 0.9), 1.0)
+	CombatFx.sfx(&"clang", &"husk_clank", -6.0)
+
+
 ## 傷害數字出現的位置(頭上)。
 func number_anchor() -> Vector2:
 	var h := number_height if number_height >= 0.0 else _frame_size.y * 0.55
@@ -326,6 +350,27 @@ func die() -> void:
 		CombatFx.trauma(self, CombatFx.feel().trauma_elite_kill)
 		CombatFx.particles(self, &"star_burst", global_position + _sprite_base_offset, false, true)
 	_on_died()
+
+
+## v2.7:撤退(莫德雷德第一戰逃走時,場上的手下跟著跑掉;頭目的幻影時間到了消失):
+## 立刻離開 enemy 群組,「噗」地揚起塵土淡出。不是被打倒:不發 enemy_died、不掉經驗與寶箱。
+func retreat() -> void:
+	if state == State.DYING:
+		return
+	state = State.DYING
+	remove_from_group(ENEMY_GROUP)
+	collision_layer = 0
+	_cancel_attack()
+	release_attack_slot()
+	_clear_spawn_marker()
+	_clear_dizzy()
+	_hitstop_left = 0.0
+	if _light != null:
+		_light.visible = false
+	if sprite != null:
+		sprite.speed_scale = 1.0
+	_death_left = death_time
+	_poof()
 
 
 # --- 出場 -----------------------------------------------------------------------
@@ -776,6 +821,10 @@ func _cancel_attack() -> void:
 
 
 func _on_damaged(_amount: int) -> void:
+	pass
+
+
+func _on_healed(_amount: int) -> void:
 	pass
 
 

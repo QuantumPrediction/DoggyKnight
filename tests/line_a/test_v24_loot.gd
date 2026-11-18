@@ -120,7 +120,8 @@ func test_snacks_drop_get_pulled_in_and_emit_snack_collected() -> void:
 	make_arena()
 	_keep_one_enemy_alive()
 	var collected := watch_signal(EventBus.snack_collected)
-	var enemy := spawn(&"scarecrow", player.global_position + Vector2(0, -14))
+	# 零食彈出 5 至 12 像素:從 8 像素外彈出,最遠也在拾取範圍(24)之內(以前用 14,偶爾彈到範圍外)。
+	var enemy := spawn(&"scarecrow", player.global_position + Vector2(0, -8))
 	enemy.die()
 	await wait_physics(1)
 	assert_eq(arena.get_snacks().size(), 1, "掉了一個零食")

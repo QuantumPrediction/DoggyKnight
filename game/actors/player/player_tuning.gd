@@ -22,6 +22,7 @@ extends Resource
 @export var target_search_mult: float = 1.5     ## 找目標的範圍 = attack_range × 這個倍數
 @export var close_hit_distance: float = 6.0     ## 貼身時不計角度
 @export var stone_target_penalty: float = 40.0  ## v2.6:找目標時,變成石頭的敵人當作遠這麼多像素(先打別的)
+@export var priority_target_bonus: float = 24.0 ## v2.7:找目標時,優先目標(提燈鬼火)當作近這麼多像素(先打它)
 @export var hitstop_time: float = 0.05          ## 打中時的停頓
 @export var knockback_speed: float = 80.0          ## 普通攻擊的擊退(M3:110 → 80,讓單獨的稻草人也打得到金毛)
 @export var attack_anim_time: float = 0.2

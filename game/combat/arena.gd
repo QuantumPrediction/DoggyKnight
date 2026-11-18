@@ -44,6 +44,9 @@ const GOLDEN_ANGLE := 2.39996
 @export var spawn_spacing: float = 14.0           ## 同一點連續生成時,新敵人與已在場敵人至少相隔多遠
 @export var wall_thickness: float = 32.0
 @export var companion_offset: Vector2 = Vector2(-18, 8)
+## v2.7(AW7):第 1 至 4 位同伴出現的位置(相對金毛;最多 4 位同時在場,彼此不重疊)。
+@export var companion_offsets: PackedVector2Array = PackedVector2Array([Vector2(-18, 8), Vector2(18, 8),
+		Vector2(0, 22), Vector2(-20, -10)])
 
 var background: Node2D
 var ground_layer: Node2D
@@ -201,9 +204,12 @@ func spawn_companion(companion_id: StringName) -> Node:
 	if companion.has_method(&"setup"):
 		companion.call(&"setup", data)
 	var anchor := player.position if player != null else Layout.PLAYER_START
-	# v2.6:第二位同伴站在金毛的另一邊(兩位同伴不會疊在一起)。
+	# v2.6:第二位同伴站在金毛的另一邊;v2.7:第三、四位站在後面與另一個斜角(最多 4 位,不會疊在一起)。
+	var index := get_companions().size()
 	var offset := companion_offset
-	if get_companions().size() % 2 == 1:
+	if index < companion_offsets.size():
+		offset = companion_offsets[index]
+	elif index % 2 == 1:
 		offset.x = -offset.x
 	companion.position = CombatMath.clamp_to_arena(anchor + offset, 8.0)
 	entities.add_child(companion)
@@ -226,7 +232,7 @@ func get_player() -> Node2D:
 	return player
 
 
-## 場上的同伴(v2.6:最多兩位同時在場)。
+## 場上的同伴(v2.7:最多四位同時在場)。
 func get_companions() -> Array[Node]:
 	var result: Array[Node] = []
 	for node in entities.get_children():

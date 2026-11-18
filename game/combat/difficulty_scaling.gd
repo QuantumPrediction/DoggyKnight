@@ -10,8 +10,9 @@ extends Resource
 ##    - 交叉火力(crossfire_from_level 起):近戰敵人開始預警時,冷卻快好的弓兵立刻瞄準同一個目標。
 ##    - 夾擊(pincer_from_level 起):一隻近戰敵人開始預警時,附近等著的同伴也一起出手(從不同方向)。
 ##    陣列比關卡少時,用最後一個值。
-## 3. v2.6 每章倍率(AV9):故事模式依 GameState.chapter(1 至 3)再乘 chapter_hp_mult、chapter_damage_mult,
-##    和每關的成長曲線相乘(第 N 章第 M 關的生命 = 難度 × 章倍率 × 關倍率)。無盡試煉不套用。
+## 3. v2.6 每章倍率(AV9):故事模式依 GameState.chapter(1 至 GameState.CHAPTER_COUNT)再乘 chapter_hp_mult、
+##    chapter_damage_mult,和每關的成長曲線相乘(第 N 章第 M 關的生命 = 難度 × 章倍率 × 關倍率)。無盡試煉不套用。
+##    v2.7(AW8):延長為 6 個值(DEV_PLAN 4.14 的初始值;整合工作階段再依試玩調整)。
 
 const PATH := "res://data/enemies/difficulty_scaling.tres"
 const NORMAL: StringName = &"normal"
@@ -33,10 +34,10 @@ var _ramped: Dictionary = {}
 @export var pincer_from_level: int = 4           ## 從第幾關(0 起算)開始夾擊;< 0 = 不用
 @export var pincer_reach: float = 16.0           ## 等著的同伴離自己的攻擊距離不到這麼遠,才會一起出手
 
-@export_group("每章倍率(v2.6 AV9)")
-## 故事模式第 1、2、3 章的敵人生命與傷害倍數(頭目也一樣);和 hp/damage_ramp_by_level 相乘。
-@export var chapter_hp_mult: PackedFloat32Array = PackedFloat32Array([1.0, 1.3, 1.6])
-@export var chapter_damage_mult: PackedFloat32Array = PackedFloat32Array([1.0, 1.2, 1.4])
+@export_group("每章倍率(v2.6 AV9、v2.7 AW8)")
+## 故事模式第 1 至 6 章的敵人生命與傷害倍數(頭目也一樣);和 hp/damage_ramp_by_level 相乘。
+@export var chapter_hp_mult: PackedFloat32Array = PackedFloat32Array([1.0, 1.15, 1.3, 1.45, 1.6, 1.75])
+@export var chapter_damage_mult: PackedFloat32Array = PackedFloat32Array([1.0, 1.1, 1.2, 1.3, 1.4, 1.5])
 
 ## 測試用:換一份(null = 回到資料檔)。
 static var override: DifficultyScaling

@@ -896,6 +896,9 @@ func _nearest_enemy(max_distance: float) -> Node2D:
 		# v2.6:變成石頭的石像鬼打不動,附近有別的敵人時先打別的。
 		if enemy.has_method(&"is_stone") and bool(enemy.call(&"is_stone")):
 			d += tuning.stone_target_penalty
+		# v2.7:提燈鬼火會幫敵人回復,範圍內有它就先打它。
+		if enemy.has_method(&"is_priority_target") and bool(enemy.call(&"is_priority_target")):
+			d -= tuning.priority_target_bonus
 		if d < best_distance:
 			best = enemy
 			best_distance = d
