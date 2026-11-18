@@ -194,22 +194,12 @@ func _play_camp() -> void:
 	camp.call(&"open_minigame")
 	await _frames(5)
 	var minigame := camp.call(&"get_minigame") as MinigameBase
-	var swipe_timer := 0.0
 	var shot_taken := false
 	while minigame != null and is_instance_valid(minigame) and minigame.state != MinigameBase.State.CLOSED:
 		await get_tree().process_frame
 		if minigame.state == MinigameBase.State.PLAYING:
-			swipe_timer -= get_process_delta_time()
-			if minigame is WakeMinigame:   # v2.6:第二、三章的「叫醒騎士」節奏小遊戲(D 線)
-				var wake := minigame as WakeMinigame
-				for n: Dictionary in wake.notes:
-					if int(n["result"]) == WakeMinigame.Hit.NONE and wake.play_elapsed >= float(n["time"]) - 0.02:
-						wake.tap_lane(int(n["lane"]))
-			elif minigame is ScrollMinigame:
-				var scroll := minigame as ScrollMinigame
-				if swipe_timer <= 0.0 and scroll.ink_state == ScrollMinigame.Ink.NONE:
-					swipe_timer = 0.22
-					scroll.simulate_swipe(70.0)
+			# v2.7:每個小遊戲都有 bot_step()(D 線,MinigameBase),捲軸、叫醒騎士、接住跳跳魚都會自己玩
+			minigame.bot_step(get_process_delta_time())
 			if not shot_taken and minigame.play_elapsed > 4.0:
 				shot_taken = true
 				await _shot("05_minigame")
