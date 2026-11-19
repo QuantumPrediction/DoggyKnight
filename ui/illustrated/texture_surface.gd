@@ -62,7 +62,7 @@ func _update() -> void:
 				_tex = StoryArt.ui_icon("ultimate")
 			elif _code == "cutin_goldie":
 				_kind = "image"
-				_tex = StoryArt.actor("goldie", 4)
+				_tex = StoryArt.hero(GameState.hero_class, 4)
 			elif _code in ["logo", "logo_2x"]:
 				_kind = "logo"
 			elif _code in ["dialogue_panel", "panel", "page_frame", "portrait_frame", "name_plate", "hud_plate", "panel_dark", "ribbon", "ribbon_gold"]:
@@ -113,11 +113,11 @@ func _draw() -> void:
 			var fs := mini(26, int(_last_size.x / 4.5))
 			var width := font.get_string_size(title, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
 			var pos := Vector2((_last_size.x - width) * 0.5, _last_size.y * 0.62)
-			draw_string_outline(font, pos + Vector2(0, 1), title, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, 4, Color("152c28"))
-			draw_string(font, pos, title, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, Color("f5d68b"))
-			var caption := "G O L D E N   K N I G H T"
-			var sw := font.get_string_size(caption, HORIZONTAL_ALIGNMENT_LEFT, -1, 5).x
-			draw_string(font, Vector2((_last_size.x - sw) * 0.5, _last_size.y - 3), caption, HORIZONTAL_ALIGNMENT_LEFT, -1, 5, Color("f2e6c4"))
+			draw_string_outline(font, pos, title, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, 1, Color(0.97, 0.92, 0.78, 0.6))
+			draw_string(font, pos, title, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, Color("233b36"))
+			var caption := "Golden Knight"
+			var sw := font.get_string_size(caption, HORIZONTAL_ALIGNMENT_LEFT, -1, 7).x
+			draw_string(font, Vector2((_last_size.x - sw) * 0.5, _last_size.y - 1), caption, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color("314b42"))
 
 static func _box(fill: Color, border: Color) -> StyleBoxFlat:
 	var b := StyleBoxFlat.new()

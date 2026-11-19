@@ -121,7 +121,7 @@ func test_buttons_squash_when_pressed() -> void:
 	await wait_frames(1)
 	b.button_down.emit()
 	await get_tree().create_timer(0.08).timeout
-	assert_true(b.scale.y < 0.95, "按下時擠扁(scale %s)" % b.scale)
+	assert_true(b.scale.y < 0.995 and b.scale.y >= 0.975, "按下時輕微收縮(scale %s)" % b.scale)
 	b.button_up.emit()
 	await get_tree().create_timer(0.3).timeout
 	assert_almost_eq(b.scale.y, 1.0, 0.01)

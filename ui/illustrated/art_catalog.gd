@@ -143,3 +143,10 @@ static func pose(code: String, anim: StringName, frame: int) -> int:
 	if anim in [&"attack", &"guard", &"slam", &"cast", &"play", &"throw", &"breath", &"roar", &"slash", &"heal", &"zap", &"ink", &"summon", &"open"]:
 		return 3
 	return 0
+
+
+static func hero(id: StringName, pose_index: int = 0) -> Texture2D:
+	if id == &"knight":
+		return actor("goldie", pose_index)
+	var row := (0 if id == &"mage" else 2) + pose_index / 4
+	return cell("hero_classes", pose_index % 4, row, 4, 4)

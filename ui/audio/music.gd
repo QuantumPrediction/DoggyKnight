@@ -2,7 +2,8 @@ extends Node
 ## 背景音樂(Autoload 名稱:Music)。DEV_PLAN 4.10、CP6。擁有者:C 線。
 ##
 ## 用法(任何線):Music.play(&"field")、Music.stop()、Music.set_ducked(true)、Music.refresh()
-## 曲目檔:assets/music/<id>.wav(由 tools/pixel/music_gen.py 程式作曲、生成;QOA 壓縮匯入)。
+## 曲目檔:assets/music/<id>.ogg,由 tools/audio/compose_score.py 作曲與合成。
+## 戰鬥另有等長的 <id>_pressure.ogg;舊 WAV 保留作相容後備與短曲。
 ## 找不到檔案時安靜略過,所以各線不必等 C 線。
 ##
 ## - 循環曲目(title、field、boss、camp,v2.3 加 story:開場繪本、結局與預告;v2.6 加第二章 field_2、boss_2,
@@ -26,6 +27,12 @@ var track_trim_db: Dictionary = {}
 
 var current: StringName = &""
 var _players: Array[AudioStreamPlayer] = []
+var _rhythm: Array[AudioStreamPlayer] = []
+var _pressure: float = 0.0
+var _phase: int = 1
+var _sense_timer: float = 0.0
+var _pressure_fade: float = 1.8
+var _crowd_full: float = 12.0
 var _tweens: Array[Tween] = [null, null]
 var _active: int = 0
 var _ducked: bool = false
@@ -42,6 +49,13 @@ func _ready() -> void:
 		player.finished.connect(_on_finished.bind(i))
 		add_child(player)
 		_players.append(player)
+		var rhythm := AudioStreamPlayer.new()
+		rhythm.name = "Pressure%d" % i
+		rhythm.volume_db = SILENT_DB
+		add_child(rhythm)
+		_rhythm.append(rhythm)
+	EventBus.boss_phase_changed.connect(func(phase: int) -> void: _phase = phase)
+
 
 
 ## 換曲(同一首正在播就不重來)。fade < 0 時用設定檔的交叉淡入淡出秒數。
@@ -51,6 +65,8 @@ func play(track: StringName, fade: float = -1.0) -> void:
 	if track == current and _players[_active].playing:
 		return
 	current = track
+	_phase = 1
+	_pressure = 0.0
 	if not GameState.music_on:
 		return
 	var stream := _stream(track)
@@ -67,6 +83,14 @@ func play(track: StringName, fade: float = -1.0) -> void:
 		player.volume_db = SILENT_DB
 		_fade(_active, _target_db(track), fade, false, true)
 	player.play()
+	# Matching-length stems are started together; a wave change never restarts them.
+	var stem := _stream(StringName(String(track) + "_pressure")) if _is_battle(track) else null
+	_rhythm[_active].stop()
+	_rhythm[_active].stream = stem
+	_rhythm[_active].volume_db = SILENT_DB
+	if stem != null:
+		_rhythm[_active].play()
+
 
 
 func stop(fade: float = 0.6) -> void:
@@ -90,6 +114,8 @@ func refresh() -> void:
 		for i in _players.size():
 			_kill_tween(i)
 			_players[i].stop()
+			_rhythm[i].stop()
+			_rhythm[i].volume_db = SILENT_DB
 			_players[i].volume_db = SILENT_DB
 		return
 	var track := current
@@ -141,7 +167,10 @@ func _fade(index: int, to_db: float, duration: float, stop_after: bool, force: b
 	tween.set_trans(Tween.TRANS_SINE)
 	tween.tween_property(player, "volume_db", to_db, maxf(duration, 0.01))
 	if stop_after:
+		tween.parallel().tween_property(_rhythm[index], "volume_db", SILENT_DB, maxf(duration, 0.01))
+	if stop_after:
 		tween.tween_callback(player.stop)
+		tween.tween_callback(_rhythm[index].stop)
 	_tweens[index] = tween
 
 
@@ -156,7 +185,7 @@ func _stream(track: StringName) -> AudioStream:
 			break
 	if stream is AudioStreamWAV:
 		var wav := stream as AudioStreamWAV
-		if LOOPS.has(track):
+		if LOOPS.has(track) or String(track).ends_with("_pressure"):
 			# 匯入設定已是 Forward 循環;這裡再保險一次,整首無縫循環。
 			if wav.loop_mode == AudioStreamWAV.LOOP_DISABLED:
 				wav.loop_mode = AudioStreamWAV.LOOP_FORWARD
@@ -165,7 +194,7 @@ func _stream(track: StringName) -> AudioStream:
 		else:
 			wav.loop_mode = AudioStreamWAV.LOOP_DISABLED
 	elif stream is AudioStreamOggVorbis:
-		(stream as AudioStreamOggVorbis).loop = LOOPS.has(track)
+		(stream as AudioStreamOggVorbis).loop = LOOPS.has(track) or String(track).ends_with("_pressure")
 	_cache[track] = stream
 	return stream
 
@@ -183,3 +212,37 @@ func _load_config() -> void:
 	var trims: Variant = cfg.get("track_trim_db")
 	if trims is Dictionary:
 		track_trim_db = trims
+	_pressure_fade = float(cfg.get("pressure_fade"))
+	_crowd_full = float(cfg.get("crowd_full"))
+
+
+func _is_battle(track: StringName) -> bool:
+	return String(track).begins_with("field") or String(track).begins_with("boss")
+
+
+func _process(delta: float) -> void:
+	if _rhythm.is_empty() or not _rhythm[_active].playing or not _is_battle(current):
+		return
+	# Periodic sensing, not a per-frame scan of every combat node.
+	_sense_timer -= delta
+	if _sense_timer <= 0.0 and not get_tree().paused:
+		_sense_timer = 0.3
+		var count := get_tree().get_nodes_in_group(&"enemy").size()
+		var ratio := float(GameState.vigor) / maxf(1.0, GameState.player_stats.max_vigor)
+		set_pressure(pressure_for(count, ratio, String(current).begins_with("boss"), _phase))
+	var target := SILENT_DB if _pressure < 0.03 else _target_db(current) - 12.0 + 9.0 * _pressure
+	_rhythm[_active].volume_db = move_toward(_rhythm[_active].volume_db, target, delta * 36.0 / maxf(_pressure_fade, 0.1))
+
+
+func pressure_for(enemies: int, vigor_ratio: float, boss: bool, phase: int) -> float:
+	var crowd := clampf(float(enemies) / maxf(1.0, _crowd_full), 0.0, 1.0)
+	var danger := 0.25 if vigor_ratio < 0.35 and enemies > 0 else 0.0
+	return clampf(maxf(crowd, 0.6 if boss and enemies > 0 else 0.0) + danger + (0.2 if boss and phase > 1 else 0.0), 0.0, 1.0)
+
+
+func set_pressure(value: float) -> void:
+	_pressure = clampf(value, 0.0, 1.0)
+
+
+func pressure_level() -> float:
+	return _pressure

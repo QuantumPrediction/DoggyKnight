@@ -26,11 +26,12 @@ func _ready() -> void:
 	portrait = UiKit.texture_rect(preload("res://assets/ui/cutin_goldie.png"))
 	portrait.name = "Portrait"
 	add_child(portrait)
-	var words := tr("UI_ULTIMATE")
+	var words := tr(HeroClasses.get_data(GameState.hero_class).ultimate_name)
 	# 兩行疊起來(「王者/之劍!」),窄螢幕也放得下
 	var cut := ceili(words.length() / 2.0)
 	shout = UiKit.label(words.substr(0, cut) + "\n" + words.substr(cut) + "!", &"LabelTitle", HORIZONTAL_ALIGNMENT_LEFT)
 	shout.name = "Shout"
+	shout.add_theme_color_override(&"font_color", Color("233b36"))
 	add_child(shout)
 	visible = false
 

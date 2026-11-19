@@ -58,6 +58,9 @@ const CHAPTER_LOOKS: Dictionary = {
 			"cloud": Color(1.0, 0.78, 0.74, 0.75)},
 }
 
+var _class_select: HeroClassSelect
+var _class_endless: bool = false
+
 var continue_button: Button
 var new_game_button: Button
 var credits_button: Button
@@ -125,7 +128,7 @@ func _ready() -> void:
 	_caption_bg.name = "CaptionBacking"
 	_caption_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var box := StyleBoxFlat.new()
-	box.bg_color = Color(PaletteColors.INK, 0.55)
+	box.bg_color = Color(0.06, 0.16, 0.15, 0.82)
 	box.set_corner_radius_all(3)
 	box.anti_aliasing = false
 	_caption_bg.add_theme_stylebox_override(&"panel", box)
@@ -200,6 +203,7 @@ func _ready() -> void:
 	_version = UiKit.label(tr("UI_VERSION") % ProjectSettings.get_setting("application/config/version", "0.1.0"),
 			&"LabelLight", HORIZONTAL_ALIGNMENT_RIGHT)
 	add_child(_version)
+	_version.add_theme_font_size_override(&"font_size", 7)
 
 	_gallery_button = UiKit.button("美術巡覽", &"ButtonAlt", Vector2(58, 24))
 	_gallery_button.name = "ArtGalleryButton"
@@ -370,6 +374,12 @@ func _centered(c: Control) -> CenterContainer:
 func _on_new_game() -> void:
 	if is_chapter_locked(chosen_chapter()):
 		return
+	_open_class_select(false)
+
+
+func _after_class_selected() -> void:
+	if is_chapter_locked(chosen_chapter()):
+		return
 	GameState.chapter = chosen_chapter()
 	if GameState.chapter_cleared:
 		show_difficulty(true)
@@ -398,8 +408,7 @@ func is_difficulty_open() -> bool:
 func _on_endless() -> void:
 	if not GameState.chapter_cleared:
 		return
-	GameState.mode = &"endless"
-	endless_pressed.emit()
+	_open_class_select(true)
 
 
 func _start(difficulty: StringName) -> void:
@@ -566,3 +575,39 @@ func _layout() -> void:
 	_petals.position = Vector2(cx - 40, safe.position.y + 60)
 	_version.size = _version.get_minimum_size()
 	_version.position = Vector2(floorf(safe.end.x - _version.size.x - 4), floorf(minf(safe.end.y, screen.y) - _version.size.y - 2))
+
+
+func _open_class_select(endless: bool) -> void:
+	if is_instance_valid(_class_select):
+		return
+	_class_endless = endless
+	_class_select = HeroClassSelect.new()
+	_class_select.name = "ClassSelect"
+	_class_select.confirmed.connect(_confirm_class)
+	_class_select.cancelled.connect(close_class_select)
+	add_child(_class_select)
+
+
+func _confirm_class(id: StringName) -> void:
+	if not is_instance_valid(_class_select):
+		return
+	GameState.hero_class = HeroClasses.valid_id(id)
+	close_class_select()
+	if _class_endless:
+		GameState.mode = &"endless"
+		endless_pressed.emit()
+	else:
+		_after_class_selected()
+
+
+func close_class_select() -> bool:
+	if not is_instance_valid(_class_select):
+		return false
+	_class_select.queue_free()
+	_class_select = null
+	new_game_button.grab_focus()
+	return true
+
+
+func get_class_select() -> HeroClassSelect:
+	return _class_select

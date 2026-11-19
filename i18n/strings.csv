@@ -372,5 +372,22 @@ BOSS_MORDRED_FLEE,哼！下次再分勝負！
 UI_TUTORIAL_MOVE_PC,WASD／方向鍵移動
 UI_TUTORIAL_ATTACK_PC,放開移動鍵！自動揮劍
 UI_DESKTOP_CONTROLS,"WASD／方向鍵移動
-放開移動鍵：自動揮劍
+放開移動鍵：自動攻擊
 Space 必殺技 · Esc 暫停"
+UI_CLASS_SELECT,選擇出征職業
+UI_CLASS_KNIGHT,騎士
+UI_CLASS_MAGE,法師
+UI_CLASS_ARCHER,弓箭手
+UI_CLASS_KNIGHT_DESC,揮劍橫掃近身敵人，活力充足。
+UI_CLASS_MAGE_DESC,法球爆開，傷害附近敵人。
+UI_CLASS_ARCHER_DESC,箭矢穿透兩個目標，擅長遠距離。
+UI_CLASS_KNIGHT_TACTIC,靠近敵群側面，停步揮劍；移動避開紅色預警。
+UI_CLASS_MAGE_TACTIC,利用走位聚攏敵人，再停步施法；詠唱期間仍可移動取消。
+UI_CLASS_ARCHER_TACTIC,停步 0.7 秒進入專注，傷害提升 35%；移動會重置。
+UI_CLASS_KNIGHT_ULT,王者之劍
+UI_CLASS_MAGE_ULT,星落術
+UI_CLASS_ARCHER_ULT,疾風箭陣
+UI_CLASS_ULTIMATE,必殺技 · %s
+UI_CLASS_STATS,活力 %d　射程 %d
+UI_CLASS_DEPART,以此職業出征
+UI_TUTORIAL_RANGED,停步自動瞄準，移動避開攻擊

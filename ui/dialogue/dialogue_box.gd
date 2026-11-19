@@ -349,7 +349,7 @@ func _build() -> void:
 	_text.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	_text.visible_characters_behavior = TextServer.VC_CHARS_AFTER_SHAPING
 	_text.add_theme_color_override(&"font_color", PaletteColors.INK)
-	_text.add_theme_constant_override(&"line_spacing", 1)
+	_text.add_theme_constant_override(&"line_spacing", 2)
 	_panel.add_child(_text)
 	_next = UiKit.texture_rect(ARROW_TEX)
 	_next.name = "NextArrow"

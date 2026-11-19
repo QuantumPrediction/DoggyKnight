@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="HeroClassData" load_steps=4 format=3]
+[ext_resource type="Script" path="res://core/data/hero_class_data.gd" id="1"]
+[ext_resource type="Script" path="res://core/data/stat_block.gd" id="2"]
+[sub_resource type="Resource" id="Stats"]
+script = ExtResource("2")
+max_vigor = 85
+move_speed = 78.0
+attack_damage = 9
+attack_interval = 0.55
+attack_range = 116.0
+damage_taken_mult = 1.0
+pickup_radius = 28.0
+exp_mult = 1.0
+[resource]
+script = ExtResource("1")
+id = &"archer"
+display_name = "UI_CLASS_ARCHER"
+description = "UI_CLASS_ARCHER_DESC"
+tactic = "UI_CLASS_ARCHER_TACTIC"
+ultimate_name = "UI_CLASS_ARCHER_ULT"
+stats = SubResource("Stats")
+windup = 0.16
+projectile_speed = 245.0
+projectile_radius = 2.0
+max_hits = 2
+secondary_mult = 0.65
+focus_time = 0.7
+focus_mult = 1.35
+ultimate_mult = 2.2
+ultimate_projectiles = 5
+accent = Color(0.55, 0.70, 0.39, 1)

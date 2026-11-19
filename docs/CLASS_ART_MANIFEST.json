@@ -1,0 +1,26 @@
+{
+  "version": "0.3.0",
+  "date": "2026-11-19",
+  "generator": "OpenAI image_gen",
+  "file": "assets/illustrated/hero_classes.png",
+  "reference": "assets/illustrated/hero_sheet.png",
+  "width": 1254,
+  "height": 1254,
+  "bytes": 2182628,
+  "sha256": "5b5f576a8a34be3d815cb65c4d2609a525831b4020082475764f246cde4d0d2f",
+  "transparent_background": true,
+  "layout": {
+    "columns": 4,
+    "rows": 4,
+    "mage_rows": [
+      0,
+      1
+    ],
+    "archer_rows": [
+      2,
+      3
+    ]
+  },
+  "design_brief": "Match the existing golden retriever and warm gouache storybook art. Mage in a muted teal robe with a wooden amber staff; archer in a moss green cloak with bow and quiver. Each has eight right-facing poses: idle, alert, running A/B, prepare attack, release attack, celebrate, sleep. Whole figures inside separate transparent cells. No lettering or frames.",
+  "note": "Design brief records the intended art direction, not a verbatim generation prompt."
+}

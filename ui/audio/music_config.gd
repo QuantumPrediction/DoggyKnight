@@ -12,3 +12,6 @@ extends Resource
 @export var jingle_fade_out: float = 0.25
 ## 個別曲目的音量微調(dB),例如 {&"camp": -1.0}。
 @export var track_trim_db: Dictionary = {&"victory": 1.5, &"chapter_clear": 1.5, &"fail": 0.0, &"camp": 0.0}
+
+@export var pressure_fade: float = 1.8
+@export var crowd_full: float = 12.0

@@ -145,6 +145,7 @@ func test_chapter_select_reaches_the_last_chapter() -> void:
 	var seen: Array[int] = []
 	t.connect("new_game_pressed", func() -> void: seen.append(GameState.chapter))
 	(t.get("new_game_button") as Button).pressed.emit()
+	t.get_class_select().confirm_button.pressed.emit()
 	(t.get("normal_button") as Button).pressed.emit()
 	assert_eq(seen, [GameState.CHAPTER_COUNT] as Array[int], "發 new_game_pressed 時 GameState.chapter 已是 6")
 

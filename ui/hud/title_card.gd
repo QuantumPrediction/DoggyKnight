@@ -103,7 +103,7 @@ func _draw() -> void:
 	var r := _band_rect()
 	if r.size.y < 2:
 		return
-	draw_rect(r, Color(PaletteColors.INK, 0.82))
+	draw_rect(r, Color(0.06, 0.14, 0.13, 0.88))
 	# gold trim: a bright line and a darker one, top and bottom
 	draw_rect(Rect2(r.position.x, r.position.y, r.size.x, 1), PaletteColors.GOLD_D)
 	draw_rect(Rect2(r.position.x, r.position.y + 2, r.size.x, 1), PaletteColors.YELLOW)

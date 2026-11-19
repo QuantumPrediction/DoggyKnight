@@ -172,7 +172,7 @@ func _build() -> void:
 	ultimate_button.pressed.connect(_on_ultimate_pressed)
 	ultimate_button.visible = false
 	add_child(ultimate_button)
-	ultimate_label = UiKit.label(tr("UI_ULTIMATE"), &"LabelLight")
+	ultimate_label = UiKit.label(tr(HeroClasses.get_data(GameState.hero_class).ultimate_name), &"LabelLight")
 	ultimate_label.name = "UltimateLabel"
 	ultimate_label.visible = false
 	add_child(ultimate_label)

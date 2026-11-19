@@ -1,0 +1,31 @@
+== 匯入資源 ==
+== 執行測試 ==
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/line_a/test_hero_classes.gd
+  ok      test_all_loadouts_are_available_and_stats_do_not_mutate_resources
+  ok      test_arrows_travel_before_damage_and_pierce_in_spatial_order
+  ok      test_mage_splash_hits_nearby_targets_once_and_not_distant_enemies
+  ok      test_projectile_misses_outside_lane_and_expires_at_range
+  ok      test_movement_cancels_cast_and_resets_archer_focus
+  ok      test_ranged_ultimate_is_class_specific_and_does_not_refill_itself
+  ok      test_pause_freezes_flying_projectile_and_clear_removes_it
+  ok      test_upgrades_rebuild_from_class_base_and_do_not_offer_melee_pounce
+  ok      test_archer_focus_changes_real_impact_damage
+  ok      test_mage_ultimate_centers_on_target_and_does_not_refill_itself
+  ok      test_flying_shot_expires_after_player_is_freed
+
+res://tests/line_b/test_hero_class_flow.gd
+  ok      test_continue_restores_saved_class_instead_of_title_candidate
+  ok      test_retry_preserves_archer_stats_and_class
+  ok      test_endless_class_does_not_overwrite_story_class
+
+14 tests, 0 failed, 0 broken files
+WARNING: 67 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 40 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 7 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+全部測試通過。

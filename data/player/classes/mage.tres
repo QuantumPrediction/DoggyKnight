@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="HeroClassData" load_steps=4 format=3]
+[ext_resource type="Script" path="res://core/data/hero_class_data.gd" id="1"]
+[ext_resource type="Script" path="res://core/data/stat_block.gd" id="2"]
+[sub_resource type="Resource" id="Stats"]
+script = ExtResource("2")
+max_vigor = 75
+move_speed = 68.0
+attack_damage = 15
+attack_interval = 0.9
+attack_range = 88.0
+damage_taken_mult = 1.0
+pickup_radius = 28.0
+exp_mult = 1.0
+[resource]
+script = ExtResource("1")
+id = &"mage"
+display_name = "UI_CLASS_MAGE"
+description = "UI_CLASS_MAGE_DESC"
+tactic = "UI_CLASS_MAGE_TACTIC"
+ultimate_name = "UI_CLASS_MAGE_ULT"
+stats = SubResource("Stats")
+windup = 0.26
+projectile_speed = 145.0
+projectile_radius = 4.0
+splash_radius = 22.0
+secondary_mult = 0.6
+ultimate_radius = 48.0
+ultimate_mult = 5.0
+accent = Color(0.34, 0.67, 0.67, 1)

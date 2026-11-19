@@ -7,6 +7,8 @@ const BASE_STATS: StatBlock = preload("res://data/player/goldie_base_stats.tres"
 ## v2.7:故事模式的總章數(DEV_PLAN 4.14)。選章、存檔、結算一律用這個常數,不要另外寫死。
 const CHAPTER_COUNT: int = 6
 
+var hero_class: StringName = &"knight"
+
 var player_stats: StatBlock       # 金毛目前數值(含把戲加成)
 var vigor: int                    # 活力(生命值)
 var satisfaction: int             # 滿意度 0 至 100,由小遊戲提高
@@ -40,10 +42,15 @@ func _ready() -> void:
 ## 開始新的一輪冒險。零食、設定(音效、音樂、震動)、教學紀錄、最佳星數、難度、通關紀錄與看過的對白
 ## 屬於存檔與設定,不會被重設。
 func reset_run() -> void:
-	player_stats = BASE_STATS.duplicate() as StatBlock
+	hero_class = HeroClasses.valid_id(hero_class)
+	player_stats = base_stats().duplicate() as StatBlock
 	vigor = player_stats.max_vigor
 	satisfaction = 0
 	level_index = 0
 	hero_level = 1
 	active_tricks.clear()
 	next_level_bonus = 0.0
+
+
+func base_stats() -> StatBlock:
+	return HeroClasses.get_data(hero_class).stats

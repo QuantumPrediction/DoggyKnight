@@ -65,6 +65,8 @@ func test_title_buttons_emit() -> void:
 			["credits_button", "credits_pressed"]]:
 		var w := watch_signal(Signal(title, pair[1]))
 		(title.get(pair[0]) as Button).pressed.emit()
+		if pair[0] == "new_game_button":
+			title.get_class_select().confirm_button.pressed.emit()
 		assert_eq(w.count, 1, pair[1])
 
 

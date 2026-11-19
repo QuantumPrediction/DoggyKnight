@@ -1,0 +1,52 @@
+{
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "seed": 7,
+  "time_scale": 4,
+  "runs": [
+    {
+      "class": "archer",
+      "chapter": 1,
+      "completed": true,
+      "downs": 0,
+      "ultimates": 20,
+      "final_vigor": 85,
+      "log": "bot_archer_ch1.log"
+    },
+    {
+      "class": "archer",
+      "chapter": 6,
+      "completed": true,
+      "downs": 0,
+      "ultimates": 32,
+      "final_vigor": 78,
+      "log": "bot_archer_ch6.log"
+    },
+    {
+      "class": "knight",
+      "chapter": 1,
+      "completed": true,
+      "downs": 3,
+      "ultimates": 20,
+      "final_vigor": 56,
+      "log": "bot_knight_ch1.log"
+    },
+    {
+      "class": "mage",
+      "chapter": 1,
+      "completed": true,
+      "downs": 0,
+      "ultimates": 14,
+      "final_vigor": 67,
+      "log": "bot_mage_ch1.log"
+    },
+    {
+      "class": "mage",
+      "chapter": 6,
+      "completed": true,
+      "downs": 0,
+      "ultimates": 24,
+      "final_vigor": 68,
+      "log": "bot_mage_ch6.log"
+    }
+  ]
+}
