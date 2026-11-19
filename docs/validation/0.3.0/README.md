@@ -2,6 +2,8 @@
 
 日期：2026-11-19。Godot `4.7.2.stable.official.ed1daf0bf`。
 
+公開提交：[草稿 PR #11](https://github.com/QuantumPrediction/DoggyKnight/pull/11)，尚未合併。`publication_test_suite.log` 是建立 PR 前重新執行完整回歸的輸出：802 項通過、0 失敗、0 損壞檔案，執行碼 0；保留既有清理與退出警告。
+
 - `test_suite.log`：完整 802 項測試，0 assertion failures、0 broken test files；不是無警告日誌。既有測試在銷毀訊號來源後仍嘗試斷線，以及故事流程測試的 Lambda 捕捉已釋放物件，會印出測試清理錯誤；退出亦有未釋放資源警告。沒有把這些訊息從日誌刪除。
 - `bot_*.log`、`playthrough_summary.json`：正式關卡試玩，共 5 次、30 次成功關卡完成，騎士另重試 3 次。只選種子 7，不能代表職業平衡、平均勝率或真人體驗。
 - `audio_checks.json`：FFmpeg 解碼全部 27 個 OGG 為 32 kHz stereo float PCM，全部有限數值、無削波，峰值最大 0.46122；12 組伴奏與主音軌等長。這是檔案與訊號檢查，不是主觀聆聽。
