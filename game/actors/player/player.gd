@@ -563,7 +563,7 @@ func _ultimate_strike() -> void:
 	CombatFx.trauma(self, feel.trauma_ultimate)
 	if loadout.id == &"knight":
 		var size := tuning.ultimate_radius * 2.0
-		var fx_frames := CombatFx.frames(&"ultimate_slash")
+		var fx_frames := CombatFx.frames(&"ultimate_slash", self)
 		var fx_scale := 2.5
 		if fx_frames != null and fx_frames.get_frame_count(&"default") > 0:
 			fx_scale = size / maxf(1.0, fx_frames.get_frame_texture(&"default", 0).get_width())

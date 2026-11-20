@@ -2,7 +2,19 @@
 
 Updated: 2026-11-20 (Hong Kong). Version: **0.9.1 development source**.
 
-## Current implementation — R03a warning priority
+## Current implementation — battle resource lifetime and archer 1-4
+
+Work continues on `codex/scene-resource-lifetime` from PR #17 head `70dc412ab8e1ac330e7ecfa57cd1581ddba06f62`. The previous releases through PR #14 are merged. The current stack starts at #15. [Contract](requests/20261120-INT-scene-resource-lifetime.md) · [Measured results and reproduction](validation/scene-lifetime/README.md)
+
+Published as [draft PR #18](https://github.com/QuantumPrediction/DoggyKnight/pull/18) on #17. Public implementation `f6e29b71fca641af2bcc862b2f90655d54615b6d` and locally tested `a6f9df089f2d54533997160c77f73fc9edc0a8f7` have the identical complete tree `2959b848d4f0826e98614a08f399c95bed40abc6`. Resume the latest #18 head, including the subsequent documentation update.
+
+- Pause volume changes now respect a requested music stop. The two layers are released after the fade, silence or the end of a short cue. After playing all six chapters' field and boss tracks and returning to title, 0/24 chapter audio assets remain loaded, down from 24/24. Repeated synchronous track loads are slower on this host. Device frame time and listening tests remain open.
+- Combat particle scenes and animation frames belong to their arena and can be reused until it exits. Three real visits removed all 21 remaining combat-effect asset paths from the verbose exit list. In 100 real combat visits on each build, every visit reached combat and left no player, enemy or orphan. Exit resource messages fell from 56 to 35. Title-only startup and exit still intermittently report two Ogg resources.
+- The 930-test suite passed. Eight archer reports match #17 byte for byte. Both cautious seed-19 cases still reach the down limit on 1-4. The [playable observation scenario](validation/scene-lifetime/archer-trial.md) starts at a captured level-6 marksman checkpoint. The native Linux 360×640 input / pause / title path was exercised. Target-player observations so far total zero.
+- Four supplementary observed runs reproduce the seed-19 reports. Ordinary scarecrow swings account for 91 of 101 hits and 629 of 721 damage across the six cautious failures. [All four traces](validation/scene-lifetime/trial-traces.json)
+- Next, trace the last feasible exit before these ordinary swings and compare one encounter change if the trace supports it. Run the six-to-eight-player uncoached trial when participants are available. Retain the native-crash record, remaining object/RID warnings, the three two-hour runs and actual Windows/mobile tests as open items. Overall provisional quality is 6–6.5/10. [24-part rubric](QUALITY_9_ROADMAP_ZH.md#9-每一部分如何到達目標)
+
+## Previous implementation — R03a warning priority
 
 Current work is `codex/combat-timing-r03`, based on public PR #16 head
 `3367a183599b2e1ecbb5efebec341cb7879f3965`; preserve the full #15 → #16 stack.

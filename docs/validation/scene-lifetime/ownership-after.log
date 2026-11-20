@@ -1,0 +1,24 @@
+== 匯入資源 ==
+== 執行測試 ==
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/line_a/test_arena_resource_lifetime.gd
+  ok      test_effect_assets_live_with_their_arena_and_survive_overlapping_scenes
+
+res://tests/line_c/test_music_resource_lifetime.gd
+  ok      test_looking_up_a_track_does_not_keep_unplayed_chapter_music_resident
+  ok      test_crossfade_keeps_both_layers_until_the_outgoing_deck_releases_them
+  ok      test_stop_finishes_while_ducking_and_a_fast_deck_reuse_keeps_the_new_track
+  ok      test_muting_a_crossfade_releases_both_decks_and_resumes_the_selected_battle
+  ok      test_finished_victory_cue_releases_its_deck
+Chapter score resources resident at title: 0/24 []
+  ok      test_returning_to_title_releases_scores_played_across_six_chapters
+
+7 tests, 0 failed, 0 broken files
+WARNING: 29 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 15 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+全部測試通過。

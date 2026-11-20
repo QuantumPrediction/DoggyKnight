@@ -68,6 +68,7 @@ var _slowmo_left: float = 0.0
 var _slowmo_total: float = 0.0
 var _slowmo_scale: float = 1.0
 var _slots: Dictionary = {}                       ## 進攻名額:敵人的 instance id → 種類(melee / ranged)
+var _effect_resources: Dictionary[String, Resource] = {}
 
 
 func _ready() -> void:
@@ -100,6 +101,14 @@ func _process(delta: float) -> void:
 func _exit_tree() -> void:
 	# 慢動作只屬於這個場地;離開時一定回到正常速度。
 	CombatFx.time_scale = 1.0
+	_effect_resources.clear()
+
+
+## Repeated bursts reuse their assets until this arena leaves the tree.
+func get_effect_resource(path: String) -> Resource:
+	if not _effect_resources.has(path):
+		_effect_resources[path] = load(path) if ResourceLoader.exists(path) else null
+	return _effect_resources[path]
 
 
 # --- 合約方法(DEV_PLAN 4.4) -------------------------------------------------------

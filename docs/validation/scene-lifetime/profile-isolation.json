@@ -1,0 +1,23 @@
+{
+  "profiles": "two concurrent trial processes sharing a pre-existing synthetic normal SaveStore v11 profile and nonempty PlayLog",
+  "before_sha256": {
+    "save.json": "27e50c27065ec819c5f13f324c6d6d25b3e8f4c0927d18da187420ed468e9452",
+    "playlog.jsonl": "9f396681afd244d021dfdc9f8ab203120cb9574bf3dc78d0e4a62b24b1468d9d"
+  },
+  "after_sha256": {
+    "save.json": "27e50c27065ec819c5f13f324c6d6d25b3e8f4c0927d18da187420ed468e9452",
+    "playlog.jsonl": "9f396681afd244d021dfdc9f8ab203120cb9574bf3dc78d0e4a62b24b1468d9d"
+  },
+  "runs": [
+    {
+      "exit_code": 0,
+      "tests_passed": true,
+      "sha256_log": "737035da587d8cc0b81ae09486d3768222bf23f6af97d693d89ec4d26b02308c"
+    },
+    {
+      "exit_code": 0,
+      "tests_passed": true,
+      "sha256_log": "1818ab7d682980c02f2c3b4e8d9116468a34fbb3bedc11ddb26a17a08ef868ed"
+    }
+  ]
+}

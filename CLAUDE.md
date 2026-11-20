@@ -1,6 +1,6 @@
 # CLAUDE.md —《金毛騎士》原型
 
-2026-11-20 最新 R03a 接續：`codex/combat-timing-r03` 基於公開 PR #16；合約 `docs/requests/20261120-INT-warning-priority.md`。讓玩家身上的可見攻擊預警優先於準備攻擊提示，明確區分召喚／登場圈；修正實際截圖發現的文字列超出面板。戰鬥規則及兩個測試政策保持不變，R03／P1 與真人、實機驗收尚未完成；最新公開狀態仍以 `docs/PROJECT_STATE.md` 為準。
+目前從 [草稿 PR #18](https://github.com/QuantumPrediction/DoggyKnight/pull/18) 的 `codex/scene-resource-lifetime` 接續。遊戲現已按場地回收特效，修正淡出期間配樂持續播放，並提供獨立存檔的弓手 1-4 真人試玩場景。最新結果與待驗收項目見 [整合狀態](docs/PROJECT_STATE.md) 及 [重現紀錄](docs/validation/scene-lifetime/README.md)。
 
 目前接續入口為 `docs/PROJECT_STATE.md`。0.9.1 在已合併的 0.9.0 上處理戰鬥提示、弓兵預警一致性與測試生命週期；跨線整合合約為 `docs/requests/20261120-INT-combat-readability.md`。不新增下載包、不改存檔／平衡數值；原生崩潰與真人品質驗證仍是待辦。
 

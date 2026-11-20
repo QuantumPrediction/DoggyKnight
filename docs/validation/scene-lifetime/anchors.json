@@ -1,0 +1,116 @@
+{
+  "previous_folder": "../r03a/anchors",
+  "runner": "tools/run_pressure_audit.py",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "source_count": 632,
+  "fingerprints_sha256": "eb36be80457bab0b075682253b5f23db08ec6097271aebf6a2362e957b560800",
+  "source_changed_during_run": [],
+  "cases": [
+    {
+      "case": "archer_route0_s7_cautious",
+      "exit_code": 0,
+      "outcome": "complete",
+      "downs": 1,
+      "raw_report_sha256": "5f10fcf49b3145928d4d1eda77c1d4e753d61828b1af5e437fe63cb9877eb61a",
+      "previous_report_sha256": "5f10fcf49b3145928d4d1eda77c1d4e753d61828b1af5e437fe63cb9877eb61a",
+      "log_sha256": "20485da8d9b7a74d2f48afb61f946d0e74a84c87cbb96c6bc6b3ed5865adc72c",
+      "shutdown_messages": [
+        "WARNING: 32 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 15 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    {
+      "case": "archer_route0_s7_escape",
+      "exit_code": 0,
+      "outcome": "complete",
+      "downs": 0,
+      "raw_report_sha256": "4eb300ccfd7ab3d70506f6972e5bd57513a073fccfd2f48f9ffbf30771fcf971",
+      "previous_report_sha256": "4eb300ccfd7ab3d70506f6972e5bd57513a073fccfd2f48f9ffbf30771fcf971",
+      "log_sha256": "3247d83d003da14eb2cfd815aa6d1b3cd9881583a188ca1b364775d4c8c8b78f",
+      "shutdown_messages": [
+        "WARNING: 30 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 13 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    {
+      "case": "archer_route0_s19_cautious",
+      "exit_code": 1,
+      "outcome": "down_limit",
+      "downs": 3,
+      "raw_report_sha256": "c49e74cf9fe1b388f0037b3a05838cb126e8e2fd07823e684b2d16f53909f5f9",
+      "previous_report_sha256": "c49e74cf9fe1b388f0037b3a05838cb126e8e2fd07823e684b2d16f53909f5f9",
+      "log_sha256": "613e8c7cfc8d24de571905933f27df1d7cc10bedc2bf67c6c02daaca8078b4be",
+      "shutdown_messages": [
+        "WARNING: 28 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 13 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    {
+      "case": "archer_route0_s19_escape",
+      "exit_code": 0,
+      "outcome": "complete",
+      "downs": 0,
+      "raw_report_sha256": "2aabdc419bf598dec297b6152ec3819f48ae798557e54bd178ec499e11f1d54f",
+      "previous_report_sha256": "2aabdc419bf598dec297b6152ec3819f48ae798557e54bd178ec499e11f1d54f",
+      "log_sha256": "b3446e90047f7e4f5fcc7a9dd34bf016e09891f13c3d19fdd68bf3da97c5d3ca",
+      "shutdown_messages": [
+        "WARNING: 28 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 13 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    {
+      "case": "archer_route1_s7_cautious",
+      "exit_code": 0,
+      "outcome": "complete",
+      "downs": 2,
+      "raw_report_sha256": "3e265334e0651c8cc0ed6263040dc8ed4f9b2f668c8dfcd804f2c7afb3c19746",
+      "previous_report_sha256": "3e265334e0651c8cc0ed6263040dc8ed4f9b2f668c8dfcd804f2c7afb3c19746",
+      "log_sha256": "ba5209a8a5253922a0a5ec36b5adb3516cfaa4e64672ae5c7a65e224b76ce6d3",
+      "shutdown_messages": [
+        "WARNING: 31 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 15 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    {
+      "case": "archer_route1_s7_escape",
+      "exit_code": 0,
+      "outcome": "complete",
+      "downs": 0,
+      "raw_report_sha256": "ea5ede99a5eaf06364cd099f948ffbe4180c07d7fd2bd2e11fae876a1d2cd58a",
+      "previous_report_sha256": "ea5ede99a5eaf06364cd099f948ffbe4180c07d7fd2bd2e11fae876a1d2cd58a",
+      "log_sha256": "5530dc4e83612eee3e682274f707aae47ee98658a606abf625f441a754c04d2c",
+      "shutdown_messages": [
+        "WARNING: 30 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 13 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    {
+      "case": "archer_route1_s19_cautious",
+      "exit_code": 1,
+      "outcome": "down_limit",
+      "downs": 3,
+      "raw_report_sha256": "5473b13873603a7fd20a4e167ec676a9432154b5fc04ee712a98c2ec965ffb5c",
+      "previous_report_sha256": "5473b13873603a7fd20a4e167ec676a9432154b5fc04ee712a98c2ec965ffb5c",
+      "log_sha256": "14c40ee9068401fdc6692fa1f04212a9f95c420944b66a7daf8e6a5f91bc61b9",
+      "shutdown_messages": [
+        "WARNING: 24 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 10 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    {
+      "case": "archer_route1_s19_escape",
+      "exit_code": 0,
+      "outcome": "complete",
+      "downs": 0,
+      "raw_report_sha256": "3f82d956c00a9012e38159c58646541a726cc7b12a62a065b60c70dd1fa2e136",
+      "previous_report_sha256": "3f82d956c00a9012e38159c58646541a726cc7b12a62a065b60c70dd1fa2e136",
+      "log_sha256": "b1e3e46c2a58a2a2768e8bcd4442f4613dcec7bcea40c9b1080fea1a70600cb9",
+      "shutdown_messages": [
+        "WARNING: 22 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 10 resources still in use at exit (run with --verbose for details)."
+      ]
+    }
+  ],
+  "trial_fixture_sha256": "7066f2853ad0e9daa51c631feb7f985dbead60f16672f52ef5499ef6884124b5",
+  "fixture_source_report_sha256": "c49e74cf9fe1b388f0037b3a05838cb126e8e2fd07823e684b2d16f53909f5f9"
+}

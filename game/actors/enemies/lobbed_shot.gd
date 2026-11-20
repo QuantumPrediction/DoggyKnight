@@ -117,7 +117,7 @@ func _physics_process(delta: float) -> void:
 func _launch() -> void:
 	state = State.FLY
 	_left = flight_time
-	var frames := CombatFx.frames(data.fx)
+	var frames := CombatFx.frames(data.fx, self)
 	if frames != null and frames.has_animation(&"default"):
 		_ball = AnimatedSprite2D.new()
 		_ball.sprite_frames = frames

@@ -1,0 +1,428 @@
+{
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "baseline": "70dc412ab8e1ac330e7ecfa57cd1581ddba06f62",
+  "cycles": {
+    "before_three": {
+      "exit_code": 0,
+      "elapsed_seconds": 3.59,
+      "cycles": 3,
+      "reached": 3,
+      "max_remaining_players": 0,
+      "max_remaining_enemies": 0,
+      "max_orphans": 0.0,
+      "raw_samples_sha256": "48412297e908e20e41fbd4e472850f2dab18c455d895c8476b6b23252d0a89b5",
+      "shutdown": {
+        "objects": 111,
+        "resources": 58,
+        "stderr": [
+          "WARNING: 111 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+          "   at: cleanup (core/object/object.cpp:2536)",
+          "ERROR: 58 resources still in use at exit.",
+          "   at: clear (core/io/resource.cpp:817)"
+        ],
+        "resources_by_path": [
+          "res://core/data/stat_block.gd (GDScript)",
+          "res://ui/illustrated/art_catalog.gd (GDScript)",
+          "res://core/data/dialogue_line.gd (GDScript)",
+          "res://core/data/dialogue_script.gd (GDScript)",
+          "res://core/data/spawn_entry.gd (GDScript)",
+          "res://core/data/wave_data.gd (GDScript)",
+          "res://core/data/level_data.gd (GDScript)",
+          "res://game/progression/meta_upgrade.gd (GDScript)",
+          "res://core/data/trick_data.gd (GDScript)",
+          "res://game/progression/trick_deck.gd (GDScript)",
+          "res://game/progression/meta_upgrade_table.gd (GDScript)",
+          "res://game/progression/event_option.gd (GDScript)",
+          "res://game/progression/level_event.gd (GDScript)",
+          "res://game/progression/level_event_table.gd (GDScript)",
+          "res://core/haptics.gd (GDScript)",
+          "res://core/safe_area.gd (GDScript)",
+          "res://assets/fonts/StorySans.otf (FontFile)",
+          "res://assets/sfx/hit.wav (AudioStreamWAV)",
+          "res://assets/sfx/whoosh.wav (AudioStreamWAV)",
+          "res://assets/sfx/arrow_shot.wav (AudioStreamWAV)",
+          "res://assets/fx/particles/one_shot_particles.gd (GDScript)",
+          "res://assets/music/title.ogg::OggPacketSequence_6sff0 (OggPacketSequence)",
+          "res://assets/music/title.ogg (AudioStreamOggVorbis)",
+          "res://ui/common/evolution_info.gd (GDScript)",
+          "res://game/combat/feel_tuning.gd (GDScript)",
+          "res://data/player/feel_tuning.tres (Resource)",
+          "res://game/combat/one_shot_fx.gd (GDScript)",
+          "res://game/combat/ring_fx.gd (GDScript)",
+          "res://game/combat/damage_number.gd (GDScript)",
+          "res://game/combat/screen_tint.gd (GDScript)",
+          "res://game/combat/combat_fx.gd (GDScript)",
+          "res://game/combat/loot_tuning.gd (GDScript)",
+          "res://data/enemies/loot_tuning.tres (Resource)",
+          "res://game/combat/loot.gd (GDScript)",
+          "res://assets/music/field.ogg::OggPacketSequence_kss7g (OggPacketSequence)",
+          "res://assets/music/field.ogg (AudioStreamOggVorbis)",
+          "res://assets/music/field_pressure.ogg::OggPacketSequence_k3xk6 (OggPacketSequence)",
+          "res://assets/music/field_pressure.ogg (AudioStreamOggVorbis)",
+          "res://assets/fx/dust/dust.png (CompressedTexture2D)",
+          "res://assets/fx/dust/dust_frames.tres::AtlasTexture_default_0 (AtlasTexture)",
+          "res://assets/fx/dust/dust_frames.tres::AtlasTexture_default_1 (AtlasTexture)",
+          "res://assets/fx/dust/dust_frames.tres::AtlasTexture_default_2 (AtlasTexture)",
+          "res://assets/fx/dust/dust_frames.tres::AtlasTexture_default_3 (AtlasTexture)",
+          "res://assets/fx/dust/dust_frames.tres (SpriteFrames)",
+          "res://assets/fx/particles/tex/puff.png (CompressedTexture2D)",
+          "res://assets/fx/particles/footstep_dust.tscn::Gradient_ramp (Gradient)",
+          "res://assets/fx/particles/footstep_dust.tscn::Curve_scale (Curve)",
+          "res://assets/fx/particles/footstep_dust.tscn (PackedScene)",
+          "res://assets/fx/hit_spark/hit_spark.png (CompressedTexture2D)",
+          "res://assets/fx/hit_spark/hit_spark_frames.tres::AtlasTexture_default_0 (AtlasTexture)",
+          "res://assets/fx/hit_spark/hit_spark_frames.tres::AtlasTexture_default_1 (AtlasTexture)",
+          "res://assets/fx/hit_spark/hit_spark_frames.tres::AtlasTexture_default_2 (AtlasTexture)",
+          "res://assets/fx/hit_spark/hit_spark_frames.tres::AtlasTexture_default_3 (AtlasTexture)",
+          "res://assets/fx/hit_spark/hit_spark_frames.tres (SpriteFrames)",
+          "res://assets/fx/particles/tex/square.png (CompressedTexture2D)",
+          "res://assets/fx/particles/hit_burst.tscn::Gradient_ramp (Gradient)",
+          "res://assets/fx/particles/hit_burst.tscn::Curve_scale (Curve)",
+          "res://assets/fx/particles/hit_burst.tscn (PackedScene)"
+        ],
+        "object_types": {
+          "AtlasTexture": 8,
+          "AudioStreamOggVorbis": 3,
+          "AudioStreamPlaybackOggVorbis": 3,
+          "AudioStreamPlaybackWAV": 6,
+          "AudioStreamWAV": 3,
+          "CompressedTexture2D": 4,
+          "Curve": 2,
+          "FontFile": 1,
+          "GDScript": 26,
+          "GDScriptNativeClass": 12,
+          "Gradient": 2,
+          "Image": 18,
+          "ImageTexture": 7,
+          "OggPacketSequence": 3,
+          "OggPacketSequencePlayback": 3,
+          "PackedScene": 2,
+          "RandomNumberGenerator": 1,
+          "Resource": 2,
+          "SceneState": 2,
+          "SpriteFrames": 2,
+          "TextLine": 1
+        },
+        "stdout.log": "0ef3589366027647d528663d63f6427b17bd73ddbbf6c5debc1b3e91b36b6b7c",
+        "stderr.log": "1bef46da30e737044332bec2b96c521e265c2c784fe57162eb6c48e7ffba86a5"
+      }
+    },
+    "before_hundred": {
+      "exit_code": 0,
+      "elapsed_seconds": 43.95,
+      "cycles": 100,
+      "reached": 100,
+      "max_remaining_players": 0,
+      "max_remaining_enemies": 0,
+      "max_orphans": 0.0,
+      "raw_samples_sha256": "073de9c1b6102f525161a625dfab5f67918968e1ee9f13f334e91fb95ce93946",
+      "shutdown": {
+        "objects": 106,
+        "resources": 56,
+        "stderr": [
+          "WARNING: 106 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+          "   at: cleanup (core/object/object.cpp:2536)",
+          "ERROR: 56 resources still in use at exit (run with --verbose for details).",
+          "   at: clear (core/io/resource.cpp:822)"
+        ],
+        "resources_by_path": [],
+        "object_types": {},
+        "stdout.log": "0760d135a878b47899e5396f49e7bfcc407dd71db5ef5443522362bf4ccf17a7",
+        "stderr.log": "a34b0ec1096aa08b337ef3d6215f2b309bec737bb79fcb3bcc34e6f093123b79"
+      },
+      "window_medians": {
+        "cycles_4_to_13": {
+          "nodes": 26.0,
+          "objects": 2028.0,
+          "resources": 299.0,
+          "memory_static": 136952910.0
+        },
+        "cycles_91_to_100": {
+          "nodes": 26.0,
+          "objects": 2029.0,
+          "resources": 299.0,
+          "memory_static": 137957601.0
+        }
+      }
+    },
+    "after_three": {
+      "exit_code": 0,
+      "elapsed_seconds": 3.94,
+      "cycles": 3,
+      "reached": 3,
+      "max_remaining_players": 0,
+      "max_remaining_enemies": 0,
+      "max_orphans": 0.0,
+      "raw_samples_sha256": "1c4bae9696a0b6000b382be6f2dc06bb15fc444ecf5384637c1af60c9b07f7cc",
+      "shutdown": {
+        "objects": 82,
+        "resources": 37,
+        "stderr": [
+          "WARNING: 82 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+          "   at: cleanup (core/object/object.cpp:2536)",
+          "ERROR: 37 resources still in use at exit.",
+          "   at: clear (core/io/resource.cpp:817)"
+        ],
+        "resources_by_path": [
+          "res://core/data/stat_block.gd (GDScript)",
+          "res://ui/illustrated/art_catalog.gd (GDScript)",
+          "res://core/data/dialogue_line.gd (GDScript)",
+          "res://core/data/dialogue_script.gd (GDScript)",
+          "res://core/data/spawn_entry.gd (GDScript)",
+          "res://core/data/wave_data.gd (GDScript)",
+          "res://core/data/level_data.gd (GDScript)",
+          "res://game/progression/meta_upgrade.gd (GDScript)",
+          "res://core/data/trick_data.gd (GDScript)",
+          "res://game/progression/trick_deck.gd (GDScript)",
+          "res://game/progression/meta_upgrade_table.gd (GDScript)",
+          "res://game/progression/event_option.gd (GDScript)",
+          "res://game/progression/level_event.gd (GDScript)",
+          "res://game/progression/level_event_table.gd (GDScript)",
+          "res://core/haptics.gd (GDScript)",
+          "res://core/safe_area.gd (GDScript)",
+          "res://assets/fonts/StorySans.otf (FontFile)",
+          "res://assets/sfx/hit.wav (AudioStreamWAV)",
+          "res://assets/sfx/whoosh.wav (AudioStreamWAV)",
+          "res://assets/sfx/arrow_shot.wav (AudioStreamWAV)",
+          "res://ui/common/evolution_info.gd (GDScript)",
+          "res://game/combat/feel_tuning.gd (GDScript)",
+          "res://data/player/feel_tuning.tres (Resource)",
+          "res://game/combat/one_shot_fx.gd (GDScript)",
+          "res://game/combat/ring_fx.gd (GDScript)",
+          "res://game/combat/damage_number.gd (GDScript)",
+          "res://game/combat/screen_tint.gd (GDScript)",
+          "res://game/combat/combat_fx.gd (GDScript)",
+          "res://game/combat/loot_tuning.gd (GDScript)",
+          "res://data/enemies/loot_tuning.tres (Resource)",
+          "res://game/combat/loot.gd (GDScript)",
+          "res://assets/music/field.ogg::OggPacketSequence_kss7g (OggPacketSequence)",
+          "res://assets/music/field.ogg (AudioStreamOggVorbis)",
+          "res://assets/music/field_pressure.ogg::OggPacketSequence_k3xk6 (OggPacketSequence)",
+          "res://assets/music/field_pressure.ogg (AudioStreamOggVorbis)",
+          "res://assets/music/title.ogg::OggPacketSequence_6sff0 (OggPacketSequence)",
+          "res://assets/music/title.ogg (AudioStreamOggVorbis)"
+        ],
+        "object_types": {
+          "AudioStreamOggVorbis": 3,
+          "AudioStreamPlaybackOggVorbis": 3,
+          "AudioStreamPlaybackWAV": 4,
+          "AudioStreamWAV": 3,
+          "FontFile": 1,
+          "GDScript": 25,
+          "GDScriptNativeClass": 12,
+          "Image": 14,
+          "ImageTexture": 7,
+          "OggPacketSequence": 3,
+          "OggPacketSequencePlayback": 3,
+          "RandomNumberGenerator": 1,
+          "Resource": 2,
+          "TextLine": 1
+        },
+        "stdout.log": "3e15cdd93e9451d9a9dc46cdc530c19f1b9b0e70085f5a0b678848e10a07dc2e",
+        "stderr.log": "e1db7d194b0544d44ab950138c6aac888a9faa1a5fe0b4eb467860fd7f3e2e2a"
+      }
+    },
+    "after_hundred": {
+      "exit_code": 0,
+      "elapsed_seconds": 49.85,
+      "cycles": 100,
+      "reached": 100,
+      "max_remaining_players": 0,
+      "max_remaining_enemies": 0,
+      "max_orphans": 0.0,
+      "raw_samples_sha256": "b2027873e4333e2ae267be2a8e2f48bb1a623f4908902d931e21417935e50b2e",
+      "shutdown": {
+        "objects": 79,
+        "resources": 35,
+        "stderr": [
+          "WARNING: 79 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+          "   at: cleanup (core/object/object.cpp:2536)",
+          "ERROR: 35 resources still in use at exit (run with --verbose for details).",
+          "   at: clear (core/io/resource.cpp:822)"
+        ],
+        "resources_by_path": [],
+        "object_types": {},
+        "stdout.log": "e2769a3e03636e0c8edd5a55926309bf9790d3591b0280c6c2824710d73e1087",
+        "stderr.log": "225c046a353c28000444ea3d17484923f689958907a3dfacc198ec1709c8d340"
+      },
+      "window_medians": {
+        "cycles_4_to_13": {
+          "nodes": 26.0,
+          "objects": 1999.0,
+          "resources": 277.0,
+          "memory_static": 135609848.0
+        },
+        "cycles_91_to_100": {
+          "nodes": 26.0,
+          "objects": 2000.0,
+          "resources": 277.0,
+          "memory_static": 136602862.0
+        }
+      }
+    }
+  },
+  "title": {
+    "before": [
+      {
+        "exit_code": 0,
+        "objects": 4,
+        "resources": 2,
+        "stderr": [
+          "WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+          "   at: cleanup (core/object/object.cpp:2536)",
+          "ERROR: 2 resources still in use at exit.",
+          "   at: clear (core/io/resource.cpp:817)"
+        ],
+        "resources_by_path": [
+          "res://assets/music/title.ogg::OggPacketSequence_6sff0 (OggPacketSequence)",
+          "res://assets/music/title.ogg (AudioStreamOggVorbis)"
+        ],
+        "object_types": {
+          "AudioStreamOggVorbis": 1,
+          "AudioStreamPlaybackOggVorbis": 1,
+          "OggPacketSequence": 1,
+          "OggPacketSequencePlayback": 1
+        },
+        "stdout.log": "4a71e0edc8042b3fc95d4c7e77a39a844407c6efd1073b58849fac3f9937dad0",
+        "stderr.log": "738630fd26c34ac3f67e1e5af463eb4602c8836426777cafbde25b6e76aa3221"
+      },
+      {
+        "exit_code": 0,
+        "objects": 4,
+        "resources": 2,
+        "stderr": [
+          "WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+          "   at: cleanup (core/object/object.cpp:2536)",
+          "ERROR: 2 resources still in use at exit.",
+          "   at: clear (core/io/resource.cpp:817)"
+        ],
+        "resources_by_path": [
+          "res://assets/music/title.ogg::OggPacketSequence_6sff0 (OggPacketSequence)",
+          "res://assets/music/title.ogg (AudioStreamOggVorbis)"
+        ],
+        "object_types": {
+          "AudioStreamOggVorbis": 1,
+          "AudioStreamPlaybackOggVorbis": 1,
+          "OggPacketSequence": 1,
+          "OggPacketSequencePlayback": 1
+        },
+        "stdout.log": "4a71e0edc8042b3fc95d4c7e77a39a844407c6efd1073b58849fac3f9937dad0",
+        "stderr.log": "738630fd26c34ac3f67e1e5af463eb4602c8836426777cafbde25b6e76aa3221"
+      },
+      {
+        "exit_code": 0,
+        "objects": 4,
+        "resources": 2,
+        "stderr": [
+          "WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+          "   at: cleanup (core/object/object.cpp:2536)",
+          "ERROR: 2 resources still in use at exit.",
+          "   at: clear (core/io/resource.cpp:817)"
+        ],
+        "resources_by_path": [
+          "res://assets/music/title.ogg::OggPacketSequence_6sff0 (OggPacketSequence)",
+          "res://assets/music/title.ogg (AudioStreamOggVorbis)"
+        ],
+        "object_types": {
+          "AudioStreamOggVorbis": 1,
+          "AudioStreamPlaybackOggVorbis": 1,
+          "OggPacketSequence": 1,
+          "OggPacketSequencePlayback": 1
+        },
+        "stdout.log": "4a71e0edc8042b3fc95d4c7e77a39a844407c6efd1073b58849fac3f9937dad0",
+        "stderr.log": "738630fd26c34ac3f67e1e5af463eb4602c8836426777cafbde25b6e76aa3221"
+      },
+      {
+        "exit_code": 0,
+        "objects": 4,
+        "resources": 2,
+        "stderr": [
+          "WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+          "   at: cleanup (core/object/object.cpp:2536)",
+          "ERROR: 2 resources still in use at exit.",
+          "   at: clear (core/io/resource.cpp:817)"
+        ],
+        "resources_by_path": [
+          "res://assets/music/title.ogg::OggPacketSequence_6sff0 (OggPacketSequence)",
+          "res://assets/music/title.ogg (AudioStreamOggVorbis)"
+        ],
+        "object_types": {
+          "AudioStreamOggVorbis": 1,
+          "AudioStreamPlaybackOggVorbis": 1,
+          "OggPacketSequence": 1,
+          "OggPacketSequencePlayback": 1
+        },
+        "stdout.log": "4a71e0edc8042b3fc95d4c7e77a39a844407c6efd1073b58849fac3f9937dad0",
+        "stderr.log": "738630fd26c34ac3f67e1e5af463eb4602c8836426777cafbde25b6e76aa3221"
+      }
+    ],
+    "after": [
+      {
+        "exit_code": 0,
+        "objects": 0,
+        "resources": 0,
+        "stderr": [],
+        "resources_by_path": [],
+        "object_types": {},
+        "stdout.log": "fa703c088f02763d1d60524907042c888c904e295b7addb2a8d395873681cc0e",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "exit_code": 0,
+        "objects": 4,
+        "resources": 2,
+        "stderr": [
+          "WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+          "   at: cleanup (core/object/object.cpp:2536)",
+          "ERROR: 2 resources still in use at exit.",
+          "   at: clear (core/io/resource.cpp:817)"
+        ],
+        "resources_by_path": [
+          "res://assets/music/title.ogg::OggPacketSequence_6sff0 (OggPacketSequence)",
+          "res://assets/music/title.ogg (AudioStreamOggVorbis)"
+        ],
+        "object_types": {
+          "AudioStreamOggVorbis": 1,
+          "AudioStreamPlaybackOggVorbis": 1,
+          "OggPacketSequence": 1,
+          "OggPacketSequencePlayback": 1
+        },
+        "stdout.log": "4a71e0edc8042b3fc95d4c7e77a39a844407c6efd1073b58849fac3f9937dad0",
+        "stderr.log": "738630fd26c34ac3f67e1e5af463eb4602c8836426777cafbde25b6e76aa3221"
+      },
+      {
+        "exit_code": 0,
+        "objects": 0,
+        "resources": 0,
+        "stderr": [],
+        "resources_by_path": [],
+        "object_types": {},
+        "stdout.log": "fa703c088f02763d1d60524907042c888c904e295b7addb2a8d395873681cc0e",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "exit_code": 0,
+        "objects": 4,
+        "resources": 2,
+        "stderr": [
+          "WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+          "   at: cleanup (core/object/object.cpp:2536)",
+          "ERROR: 2 resources still in use at exit.",
+          "   at: clear (core/io/resource.cpp:817)"
+        ],
+        "resources_by_path": [
+          "res://assets/music/title.ogg::OggPacketSequence_6sff0 (OggPacketSequence)",
+          "res://assets/music/title.ogg (AudioStreamOggVorbis)"
+        ],
+        "object_types": {
+          "AudioStreamOggVorbis": 1,
+          "AudioStreamPlaybackOggVorbis": 1,
+          "OggPacketSequence": 1,
+          "OggPacketSequencePlayback": 1
+        },
+        "stdout.log": "4a71e0edc8042b3fc95d4c7e77a39a844407c6efd1073b58849fac3f9937dad0",
+        "stderr.log": "738630fd26c34ac3f67e1e5af463eb4602c8836426777cafbde25b6e76aa3221"
+      }
+    ]
+  }
+}
