@@ -1,0 +1,32 @@
+extends TestCase
+
+const ARENA := preload("res://game/combat/arena.tscn")
+const DUST_PARTICLES := "res://assets/fx/particles/footstep_dust.tscn"
+
+func test_effect_assets_live_with_their_arena_and_survive_overlapping_scenes() -> void:
+	var first: CombatArena = ARENA.instantiate()
+	var next: CombatArena = ARENA.instantiate()
+	add_child(first)
+	add_child(next)
+	var dust := CombatFx.spawn(first, &"dust", Vector2.ZERO)
+	var spark := CombatFx.spawn(next, &"hit_spark", Vector2.ZERO)
+	var particles := CombatFx.particles(first, &"footstep_dust", Vector2.ZERO)
+	var first_frames: WeakRef = weakref(dust.sprite_frames)
+	var next_frames: WeakRef = weakref(spark.sprite_frames)
+	var first_particles: WeakRef = weakref(load(DUST_PARTICLES))
+	dust.free()
+	spark.free()
+	particles.free()
+	assert_not_null(first_frames.get_ref(), "reuse dust frames between bursts in the same arena")
+	assert_not_null(first_particles.get_ref(), "reuse the particle scene between footsteps")
+	assert_not_null(next_frames.get_ref())
+	first.free()
+	await wait_frames(2)
+	assert_null(first_frames.get_ref(), "leaving one arena releases its unused frames")
+	assert_null(first_particles.get_ref(), "leaving releases its unused particle scene")
+	assert_not_null(next_frames.get_ref(), "second arena still owns its hot assets")
+	var next_spark := CombatFx.spawn(next, &"hit_spark", Vector2.ZERO)
+	assert_eq(next_spark.sprite_frames, next_frames.get_ref())
+	next.free()
+	await wait_frames(2)
+	assert_null(next_frames.get_ref(), "last user of the second arena's frames has left")

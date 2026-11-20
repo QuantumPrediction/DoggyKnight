@@ -36,7 +36,6 @@ var _crowd_full: float = 12.0
 var _tweens: Array[Tween] = [null, null]
 var _active: int = 0
 var _ducked: bool = false
-var _cache: Dictionary = {}
 
 
 func _ready() -> void:
@@ -57,6 +56,11 @@ func _ready() -> void:
 	EventBus.boss_phase_changed.connect(func(phase: int) -> void: _phase = phase)
 
 
+func _exit_tree() -> void:
+	for i in _players.size():
+		_kill_tween(i)
+		_release_deck(i)
+
 
 ## 換曲(同一首正在播就不重來)。fade < 0 時用設定檔的交叉淡入淡出秒數。
 func play(track: StringName, fade: float = -1.0) -> void:
@@ -70,9 +74,10 @@ func play(track: StringName, fade: float = -1.0) -> void:
 	if not GameState.music_on:
 		return
 	var stream := _stream(track)
-	_fade(_active, SILENT_DB, fade, true)
 	if stream == null:
+		stop(fade)
 		return
+	_fade(_active, SILENT_DB, fade, true)
 	_active = 1 - _active
 	var player := _players[_active]
 	_kill_tween(_active)
@@ -104,7 +109,7 @@ func set_ducked(on: bool) -> void:
 	if on == _ducked:
 		return
 	_ducked = on
-	if _players[_active].playing:
+	if current != &"" and _players[_active].playing:
 		_fade(_active, _target_db(current), 0.25, false)
 
 
@@ -113,10 +118,7 @@ func refresh() -> void:
 	if not GameState.music_on:
 		for i in _players.size():
 			_kill_tween(i)
-			_players[i].stop()
-			_rhythm[i].stop()
-			_rhythm[i].volume_db = SILENT_DB
-			_players[i].volume_db = SILENT_DB
+			_release_deck(i)
 		return
 	var track := current
 	current = &""
@@ -139,7 +141,7 @@ func is_ducked() -> bool:
 
 ## 這首曲子有沒有音樂檔(測試用)。
 func has_track(track: StringName) -> bool:
-	return _stream(track) != null
+	return not _track_path(track).is_empty()
 
 
 func _target_db(track: StringName) -> float:
@@ -150,6 +152,15 @@ func _on_finished(index: int) -> void:
 	# 只有短曲會播完(循環曲目不會觸發 finished):播完就安靜。
 	if index == _active and JINGLES.has(current):
 		current = &""
+	_kill_tween(index)
+	_release_deck(index)
+
+
+func _release_deck(index: int) -> void:
+	for player: AudioStreamPlayer in [_players[index], _rhythm[index]]:
+		player.stop()
+		player.stream = null
+		player.volume_db = SILENT_DB
 
 
 func _kill_tween(index: int) -> void:
@@ -161,6 +172,9 @@ func _kill_tween(index: int) -> void:
 func _fade(index: int, to_db: float, duration: float, stop_after: bool, force: bool = false) -> void:
 	var player := _players[index]
 	if not player.playing and not force:
+		if stop_after:
+			_kill_tween(index)
+			_release_deck(index)
 		return
 	_kill_tween(index)
 	var tween := create_tween()
@@ -168,21 +182,23 @@ func _fade(index: int, to_db: float, duration: float, stop_after: bool, force: b
 	tween.tween_property(player, "volume_db", to_db, maxf(duration, 0.01))
 	if stop_after:
 		tween.parallel().tween_property(_rhythm[index], "volume_db", SILENT_DB, maxf(duration, 0.01))
-	if stop_after:
-		tween.tween_callback(player.stop)
-		tween.tween_callback(_rhythm[index].stop)
+		tween.tween_callback(_release_deck.bind(index))
 	_tweens[index] = tween
 
 
-func _stream(track: StringName) -> AudioStream:
-	if _cache.has(track):
-		return _cache[track]
-	var stream: AudioStream = null
+func _track_path(track: StringName) -> String:
 	for ext in ["ogg", "wav"]:
 		var path := "res://assets/music/%s.%s" % [track, ext]
-		if ResourceLoader.exists(path):
-			stream = load(path)
-			break
+		if ResourceLoader.exists(path, "AudioStream"):
+			return path
+	return ""
+
+
+func _stream(track: StringName) -> AudioStream:
+	var path := _track_path(track)
+	if path.is_empty():
+		return null
+	var stream := load(path) as AudioStream
 	if stream is AudioStreamWAV:
 		var wav := stream as AudioStreamWAV
 		if LOOPS.has(track) or String(track).ends_with("_pressure"):
@@ -195,7 +211,6 @@ func _stream(track: StringName) -> AudioStream:
 			wav.loop_mode = AudioStreamWAV.LOOP_DISABLED
 	elif stream is AudioStreamOggVorbis:
 		(stream as AudioStreamOggVorbis).loop = LOOPS.has(track) or String(track).ends_with("_pressure")
-	_cache[track] = stream
 	return stream
 
 

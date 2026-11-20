@@ -1,0 +1,43 @@
+== 匯入資源 ==
+== 執行測試 ==
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/line_a/test_arena_resource_lifetime.gd
+  FAIL    test_effect_assets_live_with_their_arena_and_survive_overlapping_scenes
+          - leaving one arena releases its unused frames: expected null, got Resource("res://assets/fx/dust/dust_frames.tres")
+          - leaving releases its unused particle scene: expected null, got Resource("res://assets/fx/particles/footstep_dust.tscn")
+          - last user of the second arena's frames has left: expected null, got Resource("res://assets/fx/hit_spark/hit_spark_frames.tres")
+
+res://tests/line_c/test_music_resource_lifetime.gd
+  FAIL    test_looking_up_a_track_does_not_keep_unplayed_chapter_music_resident
+          - a track lookup must release the unplayed score: expected false
+  FAIL    test_crossfade_keeps_both_layers_until_the_outgoing_deck_releases_them
+          - faded-out chapter melody: expected null, got Resource("uid://cjf583ae7s8wn", "res://assets/music/field_2.ogg")
+          - faded-out pressure track: expected null, got Resource("uid://hb0cq073l8sp", "res://assets/music/field_2_pressure.ogg")
+  FAIL    test_stop_finishes_while_ducking_and_a_fast_deck_reuse_keeps_the_new_track
+          - stopped decks release the score: expected null, got Resource("uid://cawusufsq31fa", "res://assets/music/boss.ogg")
+          - changing pause volume during stop must still finish the fade: expected false
+          - stopped decks release the score: expected null, got Resource("uid://dqgebyl7mhvyq", "res://assets/music/field_3.ogg")
+          - stopped decks release the score: expected null, got Resource("uid://brh5vyv6nl6y3", "res://assets/music/boss_pressure.ogg")
+          - changing pause volume during stop must still finish the fade: expected false
+          - stopped decks release the score: expected null, got Resource("uid://bg0mpiyw5k7os", "res://assets/music/field_3_pressure.ogg")
+  FAIL    test_muting_a_crossfade_releases_both_decks_and_resumes_the_selected_battle
+          - muted deck must relinquish each stream: expected null, got Resource("uid://bihqk8s43thcl", "res://assets/music/field.ogg")
+          - muted deck must relinquish each stream: expected null, got Resource("uid://m7y21aj5kk6m", "res://assets/music/boss_2.ogg")
+          - muted deck must relinquish each stream: expected null, got Resource("uid://bxfvo7024521e", "res://assets/music/field_pressure.ogg")
+          - muted deck must relinquish each stream: expected null, got Resource("uid://c5yfmak3kbw04", "res://assets/music/boss_2_pressure.ogg")
+  FAIL    test_finished_victory_cue_releases_its_deck
+          - completed one-shot cue: expected null, got Resource("uid://bblibt3qtelve", "res://assets/music/victory.wav")
+Chapter score resources resident at title: 24/24 ["field.ogg", "field_pressure.ogg", "boss.ogg", "boss_pressure.ogg", "field_2.ogg", "field_2_pressure.ogg", "boss_2.ogg", "boss_2_pressure.ogg", "field_3.ogg", "field_3_pressure.ogg", "boss_3.ogg", "boss_3_pressure.ogg", "field_4.ogg", "field_4_pressure.ogg", "boss_4.ogg", "boss_4_pressure.ogg", "field_5.ogg", "field_5_pressure.ogg", "boss_5.ogg", "boss_5_pressure.ogg", "field_6.ogg", "field_6_pressure.ogg", "boss_6.ogg", "boss_6_pressure.ogg"]
+  FAIL    test_returning_to_title_releases_scores_played_across_six_chapters
+          - unused chapter music still resident at title: expected true
+
+7 tests, 7 failed, 0 broken files
+WARNING: 50 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 32 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 3 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+測試失敗。

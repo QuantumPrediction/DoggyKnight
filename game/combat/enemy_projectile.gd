@@ -113,7 +113,7 @@ static func segment_distance(a: Vector2, b: Vector2, p: Vector2) -> float:
 func _ready() -> void:
 	add_to_group(GROUP)
 	z_index = 1
-	var frames := CombatFx.frames(data.fx) if data != null else null
+	var frames := CombatFx.frames(data.fx, self) if data != null else null
 	if frames != null and frames.has_animation(&"default"):
 		_sprite = AnimatedSprite2D.new()
 		_sprite.sprite_frames = frames

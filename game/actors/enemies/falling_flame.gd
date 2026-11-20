@@ -76,7 +76,7 @@ func _physics_process(delta: float) -> void:
 func _start_fall() -> void:
 	state = State.FALL
 	_left = fall_time
-	var frames := CombatFx.frames(&"fox_flame")
+	var frames := CombatFx.frames(&"fox_flame", self)
 	if frames != null and frames.has_animation(&"default"):
 		_flame = AnimatedSprite2D.new()
 		_flame.sprite_frames = frames

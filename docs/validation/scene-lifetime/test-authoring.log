@@ -1,0 +1,50 @@
+== 匯入資源 ==
+== 執行測試 ==
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/line_a/test_arena_resource_lifetime.gd
+SCRIPT ERROR: Parse Error: The variable type is being inferred from a Variant value, so it will be typed as Variant. (Warning treated as error.)
+          at: GDScript::reload (res://tests/line_a/test_arena_resource_lifetime.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] _run (res://tests/framework/test_runner.gd:30)
+SCRIPT ERROR: Parse Error: The variable type is being inferred from a Variant value, so it will be typed as Variant. (Warning treated as error.)
+          at: GDScript::reload (res://tests/line_a/test_arena_resource_lifetime.gd:15)
+          GDScript backtrace (most recent call first):
+              [0] _run (res://tests/framework/test_runner.gd:30)
+SCRIPT ERROR: Parse Error: The variable type is being inferred from a Variant value, so it will be typed as Variant. (Warning treated as error.)
+          at: GDScript::reload (res://tests/line_a/test_arena_resource_lifetime.gd:16)
+          GDScript backtrace (most recent call first):
+              [0] _run (res://tests/framework/test_runner.gd:30)
+ERROR: Failed to load script "res://tests/line_a/test_arena_resource_lifetime.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] _run (res://tests/framework/test_runner.gd:30)
+  BROKEN  cannot load script (parse error?)
+
+res://tests/line_c/test_music_resource_lifetime.gd
+  FAIL    test_looking_up_a_track_does_not_keep_unplayed_chapter_music_resident
+          - a track lookup must release the unplayed score: expected false
+  FAIL    test_crossfade_keeps_both_layers_until_the_outgoing_deck_releases_them
+          - faded-out chapter melody: expected null, got Resource("uid://cjf583ae7s8wn", "res://assets/music/field_2.ogg")
+          - faded-out pressure track: expected null, got Resource("uid://hb0cq073l8sp", "res://assets/music/field_2_pressure.ogg")
+  FAIL    test_stop_finishes_while_ducking_and_a_fast_deck_reuse_keeps_the_new_track
+          - stopped decks release the score: expected null, got Resource("uid://cawusufsq31fa", "res://assets/music/boss.ogg")
+          - changing pause volume during stop must still finish the fade: expected false
+          - stopped decks release the score: expected null, got Resource("uid://dqgebyl7mhvyq", "res://assets/music/field_3.ogg")
+          - stopped decks release the score: expected null, got Resource("uid://brh5vyv6nl6y3", "res://assets/music/boss_pressure.ogg")
+          - changing pause volume during stop must still finish the fade: expected false
+          - stopped decks release the score: expected null, got Resource("uid://bg0mpiyw5k7os", "res://assets/music/field_3_pressure.ogg")
+  FAIL    test_muting_a_crossfade_releases_both_decks_and_resumes_the_selected_battle
+          - muted deck must relinquish each stream: expected null, got Resource("uid://bihqk8s43thcl", "res://assets/music/field.ogg")
+          - muted deck must relinquish each stream: expected null, got Resource("uid://m7y21aj5kk6m", "res://assets/music/boss_2.ogg")
+          - muted deck must relinquish each stream: expected null, got Resource("uid://bxfvo7024521e", "res://assets/music/field_pressure.ogg")
+          - muted deck must relinquish each stream: expected null, got Resource("uid://c5yfmak3kbw04", "res://assets/music/boss_2_pressure.ogg")
+
+4 tests, 4 failed, 1 broken files
+WARNING: 25 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 13 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+測試期間發現腳本錯誤(見上方 SCRIPT ERROR)。

@@ -24,8 +24,6 @@ const PARTICLE_GROUP: StringName = &"combat_particles"
 ## 慢動作倍數(1 = 正常)。由場地管理;場地離開場景樹時回到 1。
 static var time_scale: float = 1.0
 
-static var _frames_cache: Dictionary = {}
-static var _particle_cache: Dictionary = {}
 static var _feel: FeelTuning
 static var _particles_alive: int = 0
 static var _particles_by_name: Dictionary = {}
@@ -42,11 +40,15 @@ static func set_feel(tuning: FeelTuning) -> void:
 	_feel = tuning
 
 
-static func frames(fx_name: StringName) -> SpriteFrames:
-	if not _frames_cache.has(fx_name):
-		var path := FRAMES_PATH % [fx_name, fx_name]
-		_frames_cache[fx_name] = load(path) as SpriteFrames if ResourceLoader.exists(path) else null
-	return _frames_cache[fx_name]
+static func frames(fx_name: StringName, host: Node = null) -> SpriteFrames:
+	return _asset(host, FRAMES_PATH % [fx_name, fx_name]) as SpriteFrames
+
+
+static func _asset(host: Node, path: String) -> Resource:
+	var arena := find_arena(host)
+	if arena != null and arena.has_method(&"get_effect_resource"):
+		return arena.call(&"get_effect_resource", path) as Resource
+	return load(path) if ResourceLoader.exists(path) else null
 
 
 ## 找出 node 所在的戰鬥場地(有 spawn_enemy 方法的祖先)。找不到傳回 null。
@@ -72,7 +74,7 @@ static func layer_for(node: Node, ground: bool = false) -> Node:
 static func spawn(host: Node, fx_name: StringName, at: Vector2, rotation: float = 0.0,
 		scale: Vector2 = Vector2.ONE, color: Color = Color.WHITE, ground: bool = false,
 		lifetime: float = 1.0) -> OneShotFx:
-	var sprite_frames := frames(fx_name)
+	var sprite_frames := frames(fx_name, host)
 	if sprite_frames == null or not host.is_inside_tree():
 		return null
 	var fx := OneShotFx.new()
@@ -88,7 +90,7 @@ static func spawn(host: Node, fx_name: StringName, at: Vector2, rotation: float 
 
 ## 掛在 parent 身上、一直循環的特效(例如暈眩星星)。由呼叫者負責移除。
 static func attach(parent: Node2D, fx_name: StringName, offset: Vector2, color: Color = Color.WHITE) -> OneShotFx:
-	var sprite_frames := frames(fx_name)
+	var sprite_frames := frames(fx_name, parent)
 	if sprite_frames == null:
 		return null
 	var fx := OneShotFx.new()
@@ -131,7 +133,7 @@ static func particles(host: Node, particle_name: StringName, at: Vector2, ground
 		return null
 	if int(_particles_by_name.get(particle_name, 0)) >= int(tuning.particle_caps.get(particle_name, 1 << 30)):
 		return null
-	var scene := _particle_scene(particle_name)
+	var scene := _asset(host, PARTICLES_PATH % particle_name) as PackedScene
 	if scene == null:
 		return null
 	var fx := scene.instantiate() as Node2D
@@ -174,13 +176,6 @@ static func _on_particle_exit(particle_name: StringName, points: int) -> void:
 	_particles_alive = maxi(0, _particles_alive - 1)
 	_particle_points = maxi(0, _particle_points - points)
 	_particles_by_name[particle_name] = maxi(0, int(_particles_by_name.get(particle_name, 0)) - 1)
-
-
-static func _particle_scene(particle_name: StringName) -> PackedScene:
-	if not _particle_cache.has(particle_name):
-		var path := PARTICLES_PATH % particle_name
-		_particle_cache[particle_name] = load(path) as PackedScene if ResourceLoader.exists(path) else null
-	return _particle_cache[particle_name]
 
 
 # --- 傷害數字(AP2) ---------------------------------------------------------------

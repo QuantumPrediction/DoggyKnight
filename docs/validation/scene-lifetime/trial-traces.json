@@ -1,0 +1,82 @@
+{
+  "outcome": "Every report matched the #17 case. Level 1-4 covers all attempted entries, including zero-hit wins. The 16 local endpoint samples do not test time or path reachability.",
+  "source_changed_during_run": [],
+  "cases": {
+    "archer_route0_s19_cautious": {
+      "raw_trace_path": "../r01/observer_anchor/archer_route0_s19_cautious.json.trace.json",
+      "trace_sha256": "201b2deeda68d73542b5afce5d87a0cba555144067f495f2d36029e3c858c139",
+      "report_sha256": "c49e74cf9fe1b388f0037b3a05838cb126e8e2fd07823e684b2d16f53909f5f9",
+      "baseline_report_sha256": "c49e74cf9fe1b388f0037b3a05838cb126e8e2fd07823e684b2d16f53909f5f9",
+      "level_attempts": 3,
+      "level_clears": 0,
+      "hits": 53,
+      "damage": 386,
+      "hits_by_source": {
+        "scarecrow.gd": 46,
+        "crow.gd": 1,
+        "scarecrow_captain.gd": 2,
+        "enemy_projectile.gd": 4
+      },
+      "damage_by_source": {
+        "scarecrow.gd": 324,
+        "crow.gd": 6,
+        "scarecrow_captain.gd": 26,
+        "enemy_projectile.gd": 30
+      },
+      "zero_clear_local_endpoints_at_hit": 22
+    },
+    "archer_route0_s19_escape": {
+      "raw_trace_path": "traces/archer_route0_s19_escape.json.trace.json.gz",
+      "trace_sha256": "fb82be66a91367bc539247c4a5707bbbce08de3ecbce21955ff2dd8722ebd950",
+      "report_sha256": "2aabdc419bf598dec297b6152ec3819f48ae798557e54bd178ec499e11f1d54f",
+      "baseline_report_sha256": "2aabdc419bf598dec297b6152ec3819f48ae798557e54bd178ec499e11f1d54f",
+      "level_attempts": 1,
+      "level_clears": 1,
+      "hits": 0,
+      "damage": 0,
+      "hits_by_source": {},
+      "damage_by_source": {},
+      "zero_clear_local_endpoints_at_hit": 0
+    },
+    "archer_route1_s19_cautious": {
+      "raw_trace_path": "traces/archer_route1_s19_cautious.json.trace.json.gz",
+      "trace_sha256": "9afcc27fc4780972305ca31f36002675fef015863f2801ffa6b4736437a46a6d",
+      "report_sha256": "5473b13873603a7fd20a4e167ec676a9432154b5fc04ee712a98c2ec965ffb5c",
+      "baseline_report_sha256": "5473b13873603a7fd20a4e167ec676a9432154b5fc04ee712a98c2ec965ffb5c",
+      "level_attempts": 3,
+      "level_clears": 0,
+      "hits": 48,
+      "damage": 335,
+      "hits_by_source": {
+        "scarecrow.gd": 45,
+        "scarecrow_captain.gd": 2,
+        "enemy_projectile.gd": 1
+      },
+      "damage_by_source": {
+        "scarecrow.gd": 305,
+        "scarecrow_captain.gd": 21,
+        "enemy_projectile.gd": 9
+      },
+      "zero_clear_local_endpoints_at_hit": 14
+    },
+    "archer_route1_s19_escape": {
+      "raw_trace_path": "traces/archer_route1_s19_escape.json.trace.json.gz",
+      "trace_sha256": "79107d046c57ba209bd9e8958f9df2e565d924baaecc0d372bf6b6770a30d06b",
+      "report_sha256": "3f82d956c00a9012e38159c58646541a726cc7b12a62a065b60c70dd1fa2e136",
+      "baseline_report_sha256": "3f82d956c00a9012e38159c58646541a726cc7b12a62a065b60c70dd1fa2e136",
+      "level_attempts": 1,
+      "level_clears": 1,
+      "hits": 3,
+      "damage": 19,
+      "hits_by_source": {
+        "scarecrow.gd": 2,
+        "enemy_projectile.gd": 1
+      },
+      "damage_by_source": {
+        "scarecrow.gd": 12,
+        "enemy_projectile.gd": 7
+      },
+      "zero_clear_local_endpoints_at_hit": 0
+    }
+  }
+}

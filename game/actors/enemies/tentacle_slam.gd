@@ -65,7 +65,7 @@ func _ready() -> void:
 	_telegraph = AttackTelegraph.make_line(direction, length, width)
 	add_child(_telegraph)
 	_left = tell_time
-	var frames := CombatFx.frames(&"tentacle")
+	var frames := CombatFx.frames(&"tentacle", self)
 	if frames != null and frames.has_animation(&"default"):
 		_tip = AnimatedSprite2D.new()
 		_tip.sprite_frames = frames
