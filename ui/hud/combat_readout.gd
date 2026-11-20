@@ -9,6 +9,7 @@ var dodge: Label
 var status: Dictionary = {}
 var meter: float = 0.0
 var accent := Color("b8ddcd")
+var warning_active: bool = false
 var _ended: bool = false
 var _hero: StringName = &""
 var _panel := StyleBoxFlat.new()
@@ -22,8 +23,7 @@ func _ready() -> void:
 	_panel.set_corner_radius_all(4)
 	action = _label(Vector2(5, 2))
 	detail = _label(Vector2(5, 14))
-	dodge = _label(Vector2(5, 30))
-	dodge.add_theme_font_size_override("font_size", 6)
+	dodge = _label(Vector2(5, 29), 6)
 	EventBus.player_tactics_changed.connect(_on_status)
 	EventBus.level_completed.connect(_on_ended)
 	EventBus.level_failed.connect(_on_ended)
@@ -31,15 +31,17 @@ func _ready() -> void:
 	hide()
 	EventBus.player_combat_status_requested.emit()
 
-func _label(at: Vector2) -> Label:
+func _label(at: Vector2, font_size: int = 7) -> Label:
 	var label := UiKit.label("", &"LabelLight")
 	label.position = at
-	label.size = Vector2(WIDTH - 10, 11)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
-	label.add_theme_font_size_override("font_size", 7)
+	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_color_override("font_color", Color("fff0cf"))
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(label)
+	# Apply the compact row size after its font/theme; the default font minimum
+	# otherwise leaves a taller control even after the font is made smaller.
+	label.size = Vector2(WIDTH - 10, 11)
 	return label
 
 func _on_status(value: Dictionary) -> void:
@@ -54,6 +56,16 @@ func _on_status(value: Dictionary) -> void:
 	var key := "UI_TACTIC_%s" % String(status.phase).to_upper()
 	if status.phase in [&"windup", &"ready"]:
 		key += "_" + hero.to_upper()
+	var warning_count := int(status.get("warning_count", 0))
+	warning_active = warning_count > 0
+	if warning_count > 1:
+		key = "UI_TACTIC_WARNING_OVERLAP"
+	elif warning_active:
+		key = "UI_TACTIC_WARNING_LOCKED" if int(status.get("locked_warning_count", 0)) > 0 else "UI_TACTIC_WARNING_TRACKING"
+	action.size.x = WIDTH - (22.0 if warning_active else 10.0)
+	action.add_theme_color_override("font_color", Color("ffe0ae") if warning_active else Color("fff0cf"))
+	_panel.border_color = Color("edb779") if warning_active else Color("8f8066")
+	_panel.set_border_width_all(2 if warning_active else 1)
 	action.text = tr(key)
 	if status.hero == &"archer":
 		meter = float(status.focus)
@@ -79,5 +91,12 @@ func _on_downed() -> void:
 
 func _draw() -> void:
 	draw_style_box(_panel, Rect2(Vector2.ZERO, size))
+	if warning_active:
+		# A steady shape + words, not colour or flashing alone. No extra HUD area.
+		var center := Vector2(WIDTH - 8, 8)
+		var triangle := PackedVector2Array([center + Vector2(0, -4), center + Vector2(4, 4), center + Vector2(-4, 4), center + Vector2(0, -4)])
+		draw_polyline(triangle, Color("ffe0ae"), 1.0, true)
+		draw_line(center + Vector2(0, -1), center + Vector2(0, 1), Color("ffe0ae"), 1.0)
+		draw_circle(center + Vector2(0, 2.5), 0.55, Color("ffe0ae"))
 	draw_rect(Rect2(5, 27, size.x - 10, 1), Color("45615d"))
 	draw_rect(Rect2(5, 27, (size.x - 10) * meter, 1), accent)

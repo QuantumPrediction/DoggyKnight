@@ -1,0 +1,10 @@
+{
+  "initial_capture": "Not executed: xvfb-run executable is absent from this shell PATH.",
+  "setup_attempt": "apt-get install -y xvfb xauth exited 100: no dpkg frontend lock/root access; no packages installed.",
+  "fallback": "Use the existing native desktop display and launch the same registered production showcase through its terminal.",
+  "native_launch_errors": [
+    "python was not on native terminal PATH",
+    "python3 could not find command-runtime /tmp script; shared workspace path was used"
+  ],
+  "final_render": "Native python3 launched the script from the shared workspace; both actual runs exited 0."
+}

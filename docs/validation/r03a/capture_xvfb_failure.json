@@ -1,0 +1,30 @@
+{
+  "status": "preflight failed; game did not launch",
+  "reason": "Could not open a local display socket in command runtime",
+  "bytes": 24328077,
+  "sha256": "d718484681bef58e3b72402e89d441eab97353753a59c4259425d0dc88991749",
+  "lines": 357219,
+  "first_lines": [
+    "_XSERVTransSocketOpenCOTSServer: Unable to open socket for local",
+    "_XSERVTransOpen: transport open failed for local/0cde34d2bc51:0",
+    "_XSERVTransMakeAllCOTSServerListeners: failed to open listener for local",
+    "_XSERVTransSocketOpenCOTSServer: Unable to open socket for unix",
+    "_XSERVTransOpen: transport open failed for unix/0cde34d2bc51:0",
+    "_XSERVTransMakeAllCOTSServerListeners: failed to open listener for unix",
+    "_XSERVTransSocketOpenCOTSServer: Unable to open socket for local",
+    "_XSERVTransOpen: transport open failed for local/0cde34d2bc51:1",
+    "_XSERVTransMakeAllCOTSServerListeners: failed to open listener for local",
+    "_XSERVTransSocketOpenCOTSServer: Unable to open socket for unix",
+    "_XSERVTransOpen: transport open failed for unix/0cde34d2bc51:1",
+    "_XSERVTransMakeAllCOTSServerListeners: failed to open listener for unix"
+  ],
+  "last_lines": [
+    "_XSERVTransSocketOpenCOTSServer: Unable to open socket for unix",
+    "_XSERVTransOpen: transport open failed for unix/0cde34d2bc51:59535",
+    "_XSERVTransMakeAllCOTSServerListeners: failed to open listener for unix",
+    "(EE) ",
+    "Fatal server error:",
+    "(EE) Failed to find a socket to listen on(EE) "
+  ],
+  "retention": "Representative ends and full log hash retained; repeated socket listener failures omitted. Native desktop rendering used instead."
+}

@@ -342,7 +342,7 @@ func _start_rally() -> void:
 	anim_state = &"rally"
 	_play(&"rally", true)
 	for point in _rally_points:
-		var mark := AttackTelegraph.make_circle(8.0, AttackTelegraph.MAGIC)
+		var mark := AttackTelegraph.make_arrival_circle(8.0, AttackTelegraph.MAGIC)
 		add_child(mark)
 		mark.global_position = point
 		_rally_marks.append(mark)

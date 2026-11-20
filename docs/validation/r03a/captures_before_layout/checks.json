@@ -1,0 +1,122 @@
+[
+	{
+		"capture": "tracking_aim",
+		"expected_warnings": 1,
+		"lane_locked": false,
+		"safe": true,
+		"status": {
+			"attack_left": 0.0,
+			"attack_total": 0.39,
+			"focus": 0.5,
+			"focus_bonus": 1.35,
+			"focus_seconds": 0.7,
+			"hero": "archer",
+			"locked_warning_count": 0,
+			"phase": "ready",
+			"roll": "ready",
+			"roll_active_left": 0.0,
+			"roll_duration": 0.3,
+			"roll_left": 0.0,
+			"roll_total": 3.0,
+			"warning_count": 1
+		},
+		"text_fits": true,
+		"warnings_match": true
+	},
+	{
+		"capture": "locked_focus_priority",
+		"expected_warnings": 1,
+		"lane_locked": true,
+		"safe": true,
+		"status": {
+			"attack_left": 0.0,
+			"attack_total": 0.39,
+			"focus": 1.0,
+			"focus_bonus": 1.35,
+			"focus_seconds": 0.7,
+			"hero": "archer",
+			"locked_warning_count": 1,
+			"phase": "ready",
+			"roll": "ready",
+			"roll_active_left": 0.0,
+			"roll_duration": 0.3,
+			"roll_left": 0.0,
+			"roll_total": 3.0,
+			"warning_count": 1
+		},
+		"text_fits": true,
+		"warnings_match": true
+	},
+	{
+		"capture": "overlap_small",
+		"expected_warnings": 2,
+		"lane_locked": true,
+		"safe": true,
+		"status": {
+			"attack_left": 0.0,
+			"attack_total": 0.39,
+			"focus": 1.0,
+			"focus_bonus": 1.35,
+			"focus_seconds": 0.7,
+			"hero": "archer",
+			"locked_warning_count": 2,
+			"phase": "ready",
+			"roll": "ready",
+			"roll_active_left": 0.0,
+			"roll_duration": 0.3,
+			"roll_left": 0.0,
+			"roll_total": 3.0,
+			"warning_count": 2
+		},
+		"text_fits": true,
+		"warnings_match": true
+	},
+	{
+		"capture": "outside_marked_area",
+		"expected_warnings": 0,
+		"lane_locked": true,
+		"safe": true,
+		"status": {
+			"attack_left": 0.0,
+			"attack_total": 0.39,
+			"focus": 0.0,
+			"focus_bonus": 1.35,
+			"focus_seconds": 0.7,
+			"hero": "archer",
+			"locked_warning_count": 0,
+			"phase": "ready",
+			"roll": "ready",
+			"roll_active_left": 0.0,
+			"roll_duration": 0.3,
+			"roll_left": 0.0,
+			"roll_total": 3.0,
+			"warning_count": 0
+		},
+		"text_fits": true,
+		"warnings_match": true
+	},
+	{
+		"capture": "locked_notched",
+		"expected_warnings": 1,
+		"lane_locked": true,
+		"safe": true,
+		"status": {
+			"attack_left": 0.0,
+			"attack_total": 0.39,
+			"focus": 1.0,
+			"focus_bonus": 1.35,
+			"focus_seconds": 0.7,
+			"hero": "archer",
+			"locked_warning_count": 1,
+			"phase": "ready",
+			"roll": "ready",
+			"roll_active_left": 0.0,
+			"roll_duration": 0.3,
+			"roll_left": 0.0,
+			"roll_total": 3.0,
+			"warning_count": 1
+		},
+		"text_fits": true,
+		"warnings_match": true
+	}
+]
