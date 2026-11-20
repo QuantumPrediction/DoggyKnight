@@ -1,5 +1,7 @@
 # 《金毛騎士》原型開發計劃(給 Claude Code)
 
+> 2026-11-20 品質計畫補充：以已合併 0.9.1 為起點，後續品質優先序與驗收見 [QUALITY_9_ROADMAP_ZH.md](QUALITY_9_ROADMAP_ZH.md)，實際來源／完成進度見 [PROJECT_STATE.md](PROJECT_STATE.md)。本文件保留原架構與歷史合約；新計畫不表示未來功能已完成，也不自動變更訊號、存檔或發布授權。
+
 > 2026-11-18 接手補充：擁有人要求 Windows 可玩執行檔與後續 Steam 開發。本輪為整合工作，新增鍵盤操作與 Windows 匯出，保留本文件的手機與原玩法合約；桌面範圍見 `WINDOWS_HANDOVER.md`。下列早期範圍與里程碑保留作開發歷史。
 
 版本:v2.4,2026-11-17。工作名稱《金毛騎士》,repo:`DoggyKnight`。
