@@ -107,23 +107,22 @@ The original failure is preserved in `../0.9.0/route_audit/archer_route0_s7.log`
 
 ## Rendered and native checks
 
-The local implementation contains five final production-engine staged views: tracking aim,
+The [public screenshot index](captures/README.md) contains five final production-engine staged views: tracking aim,
 locked aim/full focus, mage roll cooldown, 360x640 knight and 390x844 simulated
 notch archer. Default size is 540x960. `captures/checks.json` records safe-area containment,
 no overlap with the guard button and text fit for all five. Actors are frozen
 and focus is staged; these are not human playthroughs. Existing artwork is reused.
 
-PNG publication was stopped by automatic approval review. It rejected an opaque
-binary upload because it did not accept prior authorization as covering this
-specific asset. The publication scope is now inspectable UTF-8 source and
-evidence only; the ten new PNGs remain in local commit `91a62f1`. Four blob
-objects had been accepted before rejection, but no branch referenced them.
-The public draft does not reference those new image objects. No alternative
-image-upload route is used. The showcase reproduces the captures, and source/test
-fingerprints are unaffected by omitting validation images.
+PNG publication was initially stopped by automatic approval review because it
+did not accept prior authorization for a specific opaque binary upload. On
+2026-11-20 the owner directly approved public upload of all ten original PNGs
+(five final, five before correction) to this repository and existing draft PR #14,
+acknowledging public visibility. The same connected GitHub service accepted the
+remaining uploads. All ten are now published with unchanged blob/SHA-256 hashes;
+the earlier four accepted blob objects are also referenced by the branch.
 
 The first capture script called a nonexistent helper; its error log and empty
-checks are retained. The second capture set is retained locally in `captures/iteration2`:
+checks are retained. The second capture set is published in `captures/iteration2`:
 it exposed a meter/text overlap and a staging-induced frozen hit flash. The final
 panel is taller, with separate text/meter rows, and the showcase stages focus
 without firing a real arrow. `capture.log` retains the final OpenGL llvmpipe
@@ -139,7 +138,8 @@ Native Linux smoke test used a fresh isolated save and the normal main scene,
 not the showcase: title showed 0.9.1; selected archer; skipped opening and stage
 dialogue; entered 1-1; moved left/right with keyboard; observed focus rebuilding
 (43%) then x1.35 and automatic firing/recovery; paused with Escape, resumed with
-the button, and paused again using the on-screen button. The game is left paused.
+the button, and paused again using the on-screen button. The game was left paused
+at the end of that smoke test.
 `manual.log` has no script errors during this observation. Audio was Dummy.
 This is an operator smoke test, not an unfamiliar-player study, full clear,
 Windows run, real touch test or an audible music assessment.
@@ -149,9 +149,13 @@ There is no 9/10, popularity, retention or release-readiness certification.
 ## Publication
 
 [Draft PR #14](https://github.com/QuantumPrediction/DoggyKnight/pull/14) targets
-the actual default `claude/sleepy-hawking-8cvkvl`. Public implementation
-`37ee0df46a986c820a80a865f2e2a77da338c456`, tree
-`673a198170cdfc96c23a349d7092df9de0243ba6`, exactly matches local `fbd4345`
-after excluding the ten PNGs listed in `publication.json`. Runtime, tests and
-text evidence are byte-identical. Publication follow-ups change documentation
-only; the draft remains unmerged with the archer regression explicitly visible.
+the actual default `claude/sleepy-hawking-8cvkvl`. Initial implementation
+`37ee0df46a986c820a80a865f2e2a77da338c456` was text-only; its mapping is retained
+in `publication.json`. Owner-approved screenshot commit
+`d54e8cd9ae81c0c4a689bd8465fca4034c632ce0` has complete tree
+`5e52a2337fbbae7ec5588eae0483b473ab307271`, exactly equal to local `648f223`
+with all ten PNGs included. Later handoff changes affect documentation only.
+All 731 tested source fingerprints remain unchanged, so this upload-only
+follow-up verifies image integrity and published objects without rerunning the
+unchanged 910-test suite. The draft remains unmerged with the archer regression
+explicitly visible.
