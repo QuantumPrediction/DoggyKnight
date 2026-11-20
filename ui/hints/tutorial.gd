@@ -52,6 +52,7 @@ func _ready() -> void:
 	add_child(bubble)
 	finger = UiKit.texture_rect(FINGER)
 	finger.name = "Finger"
+	finger.visible = not OS.has_feature("pc")
 	add_child(finger)
 	if not EventBus.enemy_died.is_connected(_on_enemy_died):
 		EventBus.enemy_died.connect(_on_enemy_died)
@@ -63,9 +64,9 @@ func _enter(s: Step) -> void:
 	_step_time = 0.0
 	match s:
 		Step.MOVE:
-			bubble_label.text = tr("UI_TUTORIAL_MOVE")
+			bubble_label.text = tr("UI_TUTORIAL_MOVE_PC" if OS.has_feature("pc") else "UI_TUTORIAL_MOVE")
 		Step.ATTACK:
-			bubble_label.text = tr("UI_TUTORIAL_ATTACK")
+			bubble_label.text = tr("UI_TUTORIAL_ATTACK_PC" if OS.has_feature("pc") else "UI_TUTORIAL_ATTACK")
 			UiKit.play_sfx(&"ui_tap")
 		Step.DONE:
 			bubble_label.text = tr("UI_TUTORIAL_DONE")
@@ -99,6 +100,13 @@ func _burst() -> void:
 
 func _input(event: InputEvent) -> void:
 	# 只看,不吃掉觸控(不呼叫 set_input_as_handled)。
+	if event is InputEventKey:
+		for action: StringName in [&"move_left", &"move_right", &"move_up", &"move_down"]:
+			if step == Step.MOVE and event.is_action_pressed(action) and not event.is_echo():
+				_enter(Step.ATTACK)
+			elif step == Step.ATTACK and event.is_action_released(action) and _released_near_enemy():
+				_enter(Step.DONE)
+		return
 	var pos := Vector2.ZERO
 	var pressed := false
 	var released := false
@@ -189,6 +197,8 @@ func _finger_origin() -> Vector2:
 
 
 func _animate_finger() -> void:
+	if not finger.visible:
+		return
 	var base := _finger_origin()
 	if step == Step.MOVE:
 		# 1.6 秒一輪:按下(0.2)→ 往右拖(0.7)→ 放開(0.3)→ 回原位(0.4)
@@ -220,6 +230,8 @@ func _animate_finger() -> void:
 
 
 func _draw() -> void:
+	if finger == null or not finger.visible:
+		return
 	# 拖曳的軌跡:一串小圓點;放手提示:手指上方一圈小光點
 	for p in _trail:
 		draw_rect(Rect2(p.floor(), Vector2(2, 2)), Color(PaletteColors.WHITE, 0.8))

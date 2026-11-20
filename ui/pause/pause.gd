@@ -28,6 +28,8 @@ func _ready() -> void:
 	var title := UiKit.label(tr("UI_PAUSED"), &"LabelTitle")
 	title.custom_minimum_size = Vector2(0, 30)
 	box.add_child(title)
+	if OS.has_feature("pc"):
+		box.add_child(UiKit.label(tr("UI_DESKTOP_CONTROLS"), &"LabelSoft"))
 	resume_button = UiKit.button(tr("UI_RESUME"))
 	resume_button.name = "ResumeButton"
 	resume_button.pressed.connect(func() -> void: EventBus.resume_requested.emit())
