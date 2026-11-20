@@ -2,6 +2,14 @@
 
 Updated: 2026-11-20 (Hong Kong). Version: **0.9.1 development source**.
 
+## Current planning work
+
+The owner requested a robust plan to reach 9/10 on 2026-11-20. The documentation-only branch `codex/quality9-roadmap` starts from live default head `e98d416e60781bf479d4a6df413127758bceaf10`. [The R1 quality roadmap](QUALITY_9_ROADMAP_ZH.md) defines seven gated phases, a first-chapter experience, all 24 quality areas, player/device evidence, failure actions and the next five work packages. These are proposed targets, not completed features or improved scores. No game behavior, balance, assets or save schema changes in this planning work.
+
+Published as [draft PR #15](https://github.com/QuantumPrediction/DoggyKnight/pull/15), not merged. Initial public commit `38a4b0d07b8bc5be820094b00a7a50e4bf7c72eb` and local `d5da0cb58af62ee43e5f7a7f3f68866d9c0acfa5` share tree `103a34bfc8f1663a224e348de355053a06603954`; the subsequent handoff only records publication. All local links in the five changed documents and all 731 tested source fingerprints were checked. No gameplay tests were rerun for this documentation-only change.
+
+The next implementation starts with R01 (archer 1-4 pressure attribution and a second fixed positioning policy) and R02 (native crash/resource lifetime diagnosis). Then validate one combat correction before adding new spatial/objective prototypes. Windows is the first complete playtest target while retaining mobile controls; each platform needs its own hardware evidence. Keep the plan branch and publication status in view before starting another branch; the last merged game remains 0.9.1.
+
 ## Source and publication
 
 - Repository: https://github.com/QuantumPrediction/DoggyKnight
@@ -49,6 +57,8 @@ Save **v11** adds a sanitized route in the chapter's safe-point data. v10 checkp
 ## Owner preference and next work
 
 Keep replies brief. Do not proactively create/upload Windows ZIPs, standalone progress reports or recovery archives unless requested. Keep code, assets, documents, test records and screenshots in the authorized GitHub workflow. Publication and the existing #9–#14 merges are explicitly approved and complete; do not ask again for those completed actions. Future work can use draft PRs. This approval does not activate payments or stores.
+
+Follow the [R1 roadmap](QUALITY_9_ROADMAP_ZH.md) for staged deliverables and acceptance criteria. Its phases are planned; the completed evidence remains listed above.
 
 1. Address the observed archer1-4 regression with mixed melee/ranged pressure traces, additional seeds and distinct positioning policies. Preserve the current paired failures and distinguish fair warnings from encounter balance. Do not tune global HP around two seeds.
 2. Observe unfamiliar players using both routes of each class and the new action/focus/roll indicators. Record comprehension and retry intent before a9/10 claim.
