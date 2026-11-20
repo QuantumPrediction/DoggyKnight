@@ -25,6 +25,9 @@ var half_angle: float = PI / 3.0
 var length: float = 40.0
 var width: float = 12.0
 var color: Color = DANGER
+## Arrival/summon rings share the renderer but are not damage warnings.
+## This annotation is only for presentation; it never changes AI or hit tests.
+var damage_warning: bool = true
 ## Archer-only cue: open moving chevrons while tracking; fixed end brackets at lock.
 var show_aim_lock: bool = false
 var aim_locked: bool = false
@@ -41,6 +44,12 @@ static func make_circle(r: float, tint: Color = DANGER) -> AttackTelegraph:
 	t.shape = Shape.CIRCLE
 	t.radius = r
 	t.color = tint
+	return t
+
+
+static func make_arrival_circle(r: float, tint: Color = MAGIC) -> AttackTelegraph:
+	var t := make_circle(r, tint)
+	t.damage_warning = false
 	return t
 
 
@@ -65,6 +74,8 @@ static func make_line(dir: Vector2, line_length: float, w: float) -> AttackTeleg
 func _ready() -> void:
 	z_index = -1
 	add_to_group(&"combat_fx")
+	if damage_warning:
+		add_to_group(&"attack_warnings")
 
 
 func _process(delta: float) -> void:
@@ -98,6 +109,40 @@ func intersects_sector_body(at: Vector2, body_radius: float) -> bool:
 		if at.distance_squared_to(closest) <= radius_squared:
 			return true
 	return false
+
+
+## Read-only proximity cue. Sector uses the actual hit polygon; circle/line
+## padding is conservative under non-uniform scale, not an impact prediction.
+func overlaps_body(at: Vector2, body_radius: float) -> bool:
+	if shape == Shape.SECTOR:
+		return intersects_sector_body(at, body_radius)
+	var point := to_local(at)
+	var scale_floor := maxf(0.001, minf(global_scale.abs().x, global_scale.abs().y))
+	var padding := maxf(0.0, body_radius) / scale_floor
+	if shape == Shape.CIRCLE:
+		return point.length() <= radius + padding
+	var along := point.dot(direction)
+	var side := point.dot(direction.orthogonal())
+	return along >= -padding and along <= length + padding and absf(side) <= width * 0.5 + padding
+
+
+## x: overlapping visible damage marks; y: marks whose aim is not tracking.
+## No marks means only "no visible warning here", never "safe to attack".
+static func warning_counts(tree: SceneTree, at: Vector2, body_radius: float) -> Vector2i:
+	var counts := Vector2i.ZERO
+	if tree == null:
+		return counts
+	for node in tree.get_nodes_in_group(&"attack_warnings"):
+		var mark := node as AttackTelegraph
+		if mark == null or not mark.damage_warning or mark.is_queued_for_deletion() or not mark.is_visible_in_tree():
+			continue
+		if mark.modulate.a <= 0.0 or mark.self_modulate.a <= 0.0 or absf(mark.global_transform.determinant()) < 0.000001:
+			continue
+		if mark.overlaps_body(at, body_radius):
+			counts.x += 1
+			if not mark.show_aim_lock or mark.aim_locked:
+				counts.y += 1
+	return counts
 
 
 func _draw() -> void:

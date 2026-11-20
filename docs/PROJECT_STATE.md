@@ -2,7 +2,51 @@
 
 Updated: 2026-11-20 (Hong Kong). Version: **0.9.1 development source**.
 
-## Current implementation — R01/R02
+## Current implementation — R03a warning priority
+
+Current work is `codex/combat-timing-r03`, based on public PR #16 head
+`3367a183599b2e1ecbb5efebec341cb7879f3965`; preserve the full #15 → #16 stack.
+The owner asked to continue product work within the authorized enhancement and
+public draft workflow. [Contract](requests/20261120-INT-warning-priority.md) and
+[evidence](validation/r03a/README.md) describe this bounded information/UI change.
+
+**Published as [draft PR #17](https://github.com/QuantumPrediction/DoggyKnight/pull/17), stacked on #16; not merged.**
+Public implementation `9282f88a367b0268f4ad67f092109304360d56d5` and tested local
+`4de053fa7efeda7c7fa6ddcb1cd80a48ea4cc77d` share complete tree
+`5e536bbe2096560500d07b83121e1b9cf319b049`. [Publication mapping](validation/r03a/publication.json)
+records all ten image blob hashes. Subsequent handoff updates only documentation.
+Resume the latest public PR #17 head, preserving any newer local work.
+
+- Overlapping visible enemy attack warnings now outrank the ready/moving title:
+  tracking aim, committed warning or multiple warnings, with words and a steady
+  triangle. Focus/roll clocks remain truthful. Ten arrival/summon sites now use
+  an explicit non-attack marker; appearance and game rules are unchanged.
+- The first five real renders caught a pre-existing lower-row overflow missed
+  by width-only checks. Apply the compact font before sizing the row; all text
+  now stays inside the same 78×42 panel. All five first renders are retained,
+  alongside five final captures at standard, small and simulated-notch sizes.
+- Six new warning regressions failed before implementation and passed after;
+  a seventh layout regression failed before its fix and now passes. Final full regression: 922 tests, zero failed/broken, exit 0; the same
+  27 ObjectDB / 21 resources plus RID shutdown messages remain. First-run 921 passes
+  did not establish correct vertical layout; that evidence is kept explicitly.
+- All eight final archer reports are byte-identical to PR #16 post-fix anchors,
+  including both cautious seed19 failures. Neither bot, combat tuning nor save
+  schema changed. This establishes anchor invariance, not improved balance,
+  human comprehension or fun. The final capture run exits 0 but retains
+  43 ObjectDB / 19 resource and GL texture/font RID shutdown messages.
+- Draft PR #17 is published and not merged. No download build
+  or store/payment activation. R02 crash/cleanup, R03/P1, broad mechanical
+  grids, long sessions, actual hardware and target-player gates remain open.
+  Overall provisional quality remains 6–6.5/10.
+- Next bounded engineering step: isolate retained resource ownership using
+  real flow transitions and verbose shutdown types, preserving the original
+  crash and failures. Prepare an uncoached archer 1-4 observation scenario for
+  real players without treating staged captures/bots as their feedback.
+
+The R01/R02 and earlier sections below are historical checkpoints; resume the
+latest current branch/publication above, not an older stated head.
+
+## Previous implementation — R01/R02
 
 The owner requested repeated development toward the quality goal. Current
 work is `codex/combat-fairness-r01`, based on roadmap PR #15 public head

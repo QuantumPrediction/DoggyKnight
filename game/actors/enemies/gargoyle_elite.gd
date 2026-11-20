@@ -142,7 +142,7 @@ func _start_summon() -> void:
 		var offset := Vector2(side * summon_offset, -8.0 + floorf(float(i) * 0.5) * 16.0)
 		_summon_points.append(CombatMath.clamp_to_arena(global_position + offset, 10.0))
 	for point in _summon_points:
-		var mark := AttackTelegraph.make_circle(9.0, AttackTelegraph.MAGIC)
+		var mark := AttackTelegraph.make_arrival_circle(9.0, AttackTelegraph.MAGIC)
 		add_child(mark)
 		mark.global_position = point
 		_summon_marks.append(mark)

@@ -1,0 +1,64 @@
+{
+  "pr": 17,
+  "url": "https://github.com/QuantumPrediction/DoggyKnight/pull/17",
+  "branch": "codex/combat-timing-r03",
+  "base_branch": "codex/combat-fairness-r01",
+  "base_commit": "3367a183599b2e1ecbb5efebec341cb7879f3965",
+  "status": "published draft, not merged",
+  "local_implementation_commit": "4de053fa7efeda7c7fa6ddcb1cd80a48ea4cc77d",
+  "public_implementation_commit": "9282f88a367b0268f4ad67f092109304360d56d5",
+  "identical_implementation_tree": "5e536bbe2096560500d07b83121e1b9cf319b049",
+  "images": [
+    {
+      "path": "docs/validation/r03a/captures/locked_focus_priority.png",
+      "sha": "b09145fead8364397cce9015f6848585f783181e"
+    },
+    {
+      "path": "docs/validation/r03a/captures/locked_notched.png",
+      "sha": "18465e015ae7c10b85014739e6058dcece062a2b"
+    },
+    {
+      "path": "docs/validation/r03a/captures/outside_marked_area.png",
+      "sha": "38bd3c6f68cfc93a4e8775766ff7908482d1a7d4"
+    },
+    {
+      "path": "docs/validation/r03a/captures/overlap_small.png",
+      "sha": "dffb3cae0b43ab3326c87a62471ff4bb38ed60ab"
+    },
+    {
+      "path": "docs/validation/r03a/captures/tracking_aim.png",
+      "sha": "daf979f4723044ab4d33c0c950bde23f54bb0b3c"
+    },
+    {
+      "path": "docs/validation/r03a/captures_before_layout/locked_focus_priority.png",
+      "sha": "276811974af906ed5f069824a55162f855c9f663"
+    },
+    {
+      "path": "docs/validation/r03a/captures_before_layout/locked_notched.png",
+      "sha": "8d7477e55e70b78721e078d047a2739cbefb98a3"
+    },
+    {
+      "path": "docs/validation/r03a/captures_before_layout/outside_marked_area.png",
+      "sha": "74301e6925c181039e13d6db6f752819b4f675c2"
+    },
+    {
+      "path": "docs/validation/r03a/captures_before_layout/overlap_small.png",
+      "sha": "989ba336ac407c2bad0d38fe6f13565ecfa38782"
+    },
+    {
+      "path": "docs/validation/r03a/captures_before_layout/tracking_aim.png",
+      "sha": "3e594b9d9045e7984f7d4f34275252b31299b47e"
+    }
+  ],
+  "authorization": "Owner's direct approval of game-enhancement code, assets, tests, documents and game validation screenshots to public QuantumPrediction/DoggyKnight, followed by the current request to continue product work.",
+  "publication_block": null,
+  "scope": "Follow-up handoff commit changes documentation only. No new package, automatic merge or store/payment activation.",
+  "validation": {
+    "full_suite": 922,
+    "failed": 0,
+    "broken": 0,
+    "anchor_reports_byte_identical": 8,
+    "final_staged_images": 5,
+    "retained_before_layout_images": 5
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "command": [
+    "godot",
+    "--path",
+    "/workspace/scratch/7c65b3f2f6c8/DoggyKnight",
+    "--rendering-driver",
+    "opengl3",
+    "--audio-driver",
+    "Dummy",
+    "--fixed-fps",
+    "60",
+    "res://tests/integration/warning_priority_showcase.tscn"
+  ],
+  "display": ":0",
+  "environment": {
+    "ART_CAPTURE_DIR": "/workspace/scratch/7c65b3f2f6c8/DoggyKnight/docs/validation/r03a/captures",
+    "LIBGL_ALWAYS_SOFTWARE": "1",
+    "XDG_DATA_HOME": "fresh temporary directory"
+  },
+  "scope": "Staged production rendering on native Linux desktop; not human, target-device or audible validation."
+}

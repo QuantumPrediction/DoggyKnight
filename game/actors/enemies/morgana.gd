@@ -444,7 +444,7 @@ func _start_clones() -> void:
 		var a := (-PI * 0.75 if i % 2 == 0 else -PI * 0.25) + rng.randf_range(-0.3, 0.3)
 		_clone_points.append(CombatMath.clamp_to_arena(center + Vector2.from_angle(a) * clone_offset, 14.0))
 	for point in _clone_points:
-		_add_mark(AttackTelegraph.make_circle(10.0, AttackTelegraph.MAGIC), point)
+		_add_mark(AttackTelegraph.make_arrival_circle(10.0, AttackTelegraph.MAGIC), point)
 
 
 func _call_clones() -> void:

@@ -556,7 +556,7 @@ func _start_echoes() -> void:
 		var side := -1.0 if i % 2 == 0 else 1.0
 		_echo_points.append(CombatMath.clamp_to_arena(global_position + Vector2(side * echo_offset, 10.0), 16.0))
 	for point in _echo_points:
-		_add_mark(AttackTelegraph.make_circle(11.0, AttackTelegraph.MAGIC), point)
+		_add_mark(AttackTelegraph.make_arrival_circle(11.0, AttackTelegraph.MAGIC), point)
 
 
 func _call_echoes() -> void:

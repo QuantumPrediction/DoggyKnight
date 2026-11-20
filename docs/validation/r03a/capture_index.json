@@ -1,0 +1,115 @@
+{
+  "images": [
+    {
+      "path": "captures_before_layout/locked_focus_priority.png",
+      "sha256": "4fd11127e8f8231f266c72269cb2aed8882dd8b2e3e12744b5a9384fc23d295c",
+      "bytes": 772488,
+      "pixels": [
+        540,
+        960
+      ],
+      "scope": "staged production rendering",
+      "accepted_layout": false
+    },
+    {
+      "path": "captures_before_layout/locked_notched.png",
+      "sha256": "f2b5a4fd49602e16ab9229f6c0c967f81a402f044e2212d00dae7ad70b8dbc9e",
+      "bytes": 596728,
+      "pixels": [
+        390,
+        844
+      ],
+      "scope": "staged production rendering",
+      "accepted_layout": false
+    },
+    {
+      "path": "captures_before_layout/outside_marked_area.png",
+      "sha256": "c0f5a1612d2985478632e8c841ec987a29f9b1a5723d9ba853bbd76eca4bd098",
+      "bytes": 406714,
+      "pixels": [
+        360,
+        640
+      ],
+      "scope": "staged production rendering",
+      "accepted_layout": false
+    },
+    {
+      "path": "captures_before_layout/overlap_small.png",
+      "sha256": "1ec415e2c1a871ce28eb17f42085d665bc0d98e9361d22a78662a6ed00284f01",
+      "bytes": 405917,
+      "pixels": [
+        360,
+        640
+      ],
+      "scope": "staged production rendering",
+      "accepted_layout": false
+    },
+    {
+      "path": "captures_before_layout/tracking_aim.png",
+      "sha256": "c716fea52d843e9e4c70fc15da223ad27614943bb22d3ac9ce38429fd5647633",
+      "bytes": 772627,
+      "pixels": [
+        540,
+        960
+      ],
+      "scope": "staged production rendering",
+      "accepted_layout": false
+    },
+    {
+      "path": "captures/locked_focus_priority.png",
+      "sha256": "d77a3a11df7249609e2ca85c03d4bbd4bfb5e74ab38676e3ae27ed4b61272c35",
+      "bytes": 772274,
+      "pixels": [
+        540,
+        960
+      ],
+      "scope": "staged production rendering",
+      "accepted_layout": true
+    },
+    {
+      "path": "captures/locked_notched.png",
+      "sha256": "e472b22249dd126299fd78f9f61670ae72563d3ea9c911efad449c16f1a68ff8",
+      "bytes": 596645,
+      "pixels": [
+        390,
+        844
+      ],
+      "scope": "staged production rendering",
+      "accepted_layout": true
+    },
+    {
+      "path": "captures/outside_marked_area.png",
+      "sha256": "dfab9f70f5bcbd41b8d34159e56a42b14766ee7064aac305381be5854a4a5cc8",
+      "bytes": 406521,
+      "pixels": [
+        360,
+        640
+      ],
+      "scope": "staged production rendering",
+      "accepted_layout": true
+    },
+    {
+      "path": "captures/overlap_small.png",
+      "sha256": "913fb81b2a502410eee1df7d9bbfa387355a333f7ee07e33275ff185e5be4b66",
+      "bytes": 405696,
+      "pixels": [
+        360,
+        640
+      ],
+      "scope": "staged production rendering",
+      "accepted_layout": true
+    },
+    {
+      "path": "captures/tracking_aim.png",
+      "sha256": "2bf0040ab05e32e2aebebaaa644757b539f21cf8731e7f7b6851f8f8c14aa259",
+      "bytes": 772403,
+      "pixels": [
+        540,
+        960
+      ],
+      "scope": "staged production rendering",
+      "accepted_layout": true
+    }
+  ],
+  "baseline": "docs/validation/0.9.1/captures/archer_locked_focus_ready.png"
+}

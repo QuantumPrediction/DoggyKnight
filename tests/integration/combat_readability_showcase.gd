@@ -59,13 +59,19 @@ func shot(name: String) -> void:
 	var readout := hud.get("combat_readout") as CombatReadout
 	var safe := SafeArea.get_safe_rect()
 	var text_fits := true
+	var row_bounds: Array[Rect2] = []
+	var inside := Rect2(Vector2(3, 2), readout.size - Vector2(6, 4))
 	for label in [readout.action, readout.detail, readout.dodge]:
 		text_fits = text_fits and label.get_minimum_size().x <= label.size.x + 0.1
+		text_fits = text_fits and label.get_minimum_size().y <= label.size.y + 0.1 and inside.encloses(label.get_rect())
+		row_bounds.append(label.get_rect())
+	text_fits = text_fits and readout.action.get_rect().end.y <= readout.detail.position.y
+	text_fits = text_fits and readout.detail.get_rect().end.y <= 27.0 and readout.dodge.position.y >= 29.0
 	var guard := hud.get("companion_guard") as Control
 	var fits := safe.encloses(readout.get_global_rect()) and not readout.get_global_rect().intersects(guard.get_global_rect())
 	get_viewport().get_texture().get_image().save_png(out.path_join(name + ".png"))
 	evidence.append({"capture": name, "safe": fits, "text_fits": text_fits,
-		"status": readout.status, "lane_locked": archer._telegraph.aim_locked})
+		"status": readout.status, "lane_locked": archer._telegraph.aim_locked, "text_row_bounds": row_bounds})
 	print("CAPTURE ", name, " safe=", fits, " text=", text_fits)
 
 func run() -> void:

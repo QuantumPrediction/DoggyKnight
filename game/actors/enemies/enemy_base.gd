@@ -387,7 +387,7 @@ func begin_spawn(duration: float = -1.0) -> void:
 	state = State.SPAWNING
 	_spawn_left = t
 	_spawn_total = t
-	_spawn_marker = AttackTelegraph.make_circle(body_radius + 4.0, AttackTelegraph.DUST)
+	_spawn_marker = AttackTelegraph.make_arrival_circle(body_radius + 4.0, AttackTelegraph.DUST)
 	add_child(_spawn_marker)
 	CombatFx.spawn(self, &"dust", global_position, 0.0, Vector2.ONE * 1.5, Color.WHITE, true)
 	CombatFx.particles(self, &"footstep_dust", global_position + Vector2(0, 2), true)

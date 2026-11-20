@@ -438,7 +438,7 @@ func _start_summon() -> void:
 	_clear_summon_marks()
 	_summon_points = _pick_summon_points()
 	for point in _summon_points:
-		var mark := AttackTelegraph.make_circle(8.0, AttackTelegraph.MAGIC)
+		var mark := AttackTelegraph.make_arrival_circle(8.0, AttackTelegraph.MAGIC)
 		add_child(mark)
 		mark.global_position = point
 		_summon_marks.append(mark)

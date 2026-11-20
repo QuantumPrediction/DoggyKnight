@@ -1316,7 +1316,11 @@ func tactics_status() -> Dictionary:
 	if roll.is_active():
 		roll_state = &"rolling" if roll.is_rolling() else (&"cooldown" if roll.cooldown_left > 0.0 else (&"busy" if busy else (&"moving" if moving else &"ready")))
 	var fraction := 0.0 if moving or phase == &"unavailable" else focus_fraction()
+	var warnings := Vector2i.ZERO
+	if phase != &"unavailable" and is_inside_tree() and not is_queued_for_deletion():
+		warnings = AttackTelegraph.warning_counts(get_tree(), global_position, tuning.body_radius)
 	return {"hero": loadout.id, "phase": phase, "focus": fraction,
+		"warning_count": warnings.x, "locked_warning_count": warnings.y,
 		"focus_bonus": loadout.focus_mult, "focus_seconds": loadout.focus_time,
 		"roll": roll_state, "roll_left": roll.cooldown_left, "roll_total": roll.cooldown(),
 		"roll_active_left": roll.roll_left, "roll_duration": roll.roll_time(),
@@ -1327,8 +1331,9 @@ func _publish_tactics() -> void:
 	if not is_inside_tree() or is_queued_for_deletion() or abilities == null or loadout == null:
 		return
 	var status := tactics_status()
-	var key := "%s:%s:%d:%s:%d:%d:%d:%s" % [status.hero, status.phase, roundi(float(status.focus) * 20.0),
-		status.roll, ceili(float(status.roll_left) * 10.0), ceili(float(status.roll_active_left) * 10.0), ceili(float(status.attack_left) * 10.0), float(status.focus) >= 1.0]
+	var key := "%s:%s:%d:%s:%d:%d:%d:%s:%d:%d" % [status.hero, status.phase, roundi(float(status.focus) * 20.0),
+		status.roll, ceili(float(status.roll_left) * 10.0), ceili(float(status.roll_active_left) * 10.0), ceili(float(status.attack_left) * 10.0), float(status.focus) >= 1.0,
+		status.warning_count, status.locked_warning_count]
 	if key != _tactics_key:
 		_tactics_key = key
 		EventBus.player_tactics_changed.emit(status)

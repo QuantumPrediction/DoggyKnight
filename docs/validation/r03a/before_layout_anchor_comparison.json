@@ -1,0 +1,64 @@
+{
+  "baseline": "docs/validation/r01/after_fix_anchors",
+  "current": "docs/validation/r03a/anchors",
+  "cases": [
+    {
+      "case": "archer_route0_s19_cautious",
+      "reports_equal": true,
+      "byte_identical": true,
+      "baseline_sha256": "c49e74cf9fe1b388f0037b3a05838cb126e8e2fd07823e684b2d16f53909f5f9",
+      "current_sha256": "c49e74cf9fe1b388f0037b3a05838cb126e8e2fd07823e684b2d16f53909f5f9"
+    },
+    {
+      "case": "archer_route0_s19_escape",
+      "reports_equal": true,
+      "byte_identical": true,
+      "baseline_sha256": "2aabdc419bf598dec297b6152ec3819f48ae798557e54bd178ec499e11f1d54f",
+      "current_sha256": "2aabdc419bf598dec297b6152ec3819f48ae798557e54bd178ec499e11f1d54f"
+    },
+    {
+      "case": "archer_route0_s7_cautious",
+      "reports_equal": true,
+      "byte_identical": true,
+      "baseline_sha256": "5f10fcf49b3145928d4d1eda77c1d4e753d61828b1af5e437fe63cb9877eb61a",
+      "current_sha256": "5f10fcf49b3145928d4d1eda77c1d4e753d61828b1af5e437fe63cb9877eb61a"
+    },
+    {
+      "case": "archer_route0_s7_escape",
+      "reports_equal": true,
+      "byte_identical": true,
+      "baseline_sha256": "4eb300ccfd7ab3d70506f6972e5bd57513a073fccfd2f48f9ffbf30771fcf971",
+      "current_sha256": "4eb300ccfd7ab3d70506f6972e5bd57513a073fccfd2f48f9ffbf30771fcf971"
+    },
+    {
+      "case": "archer_route1_s19_cautious",
+      "reports_equal": true,
+      "byte_identical": true,
+      "baseline_sha256": "5473b13873603a7fd20a4e167ec676a9432154b5fc04ee712a98c2ec965ffb5c",
+      "current_sha256": "5473b13873603a7fd20a4e167ec676a9432154b5fc04ee712a98c2ec965ffb5c"
+    },
+    {
+      "case": "archer_route1_s19_escape",
+      "reports_equal": true,
+      "byte_identical": true,
+      "baseline_sha256": "3f82d956c00a9012e38159c58646541a726cc7b12a62a065b60c70dd1fa2e136",
+      "current_sha256": "3f82d956c00a9012e38159c58646541a726cc7b12a62a065b60c70dd1fa2e136"
+    },
+    {
+      "case": "archer_route1_s7_cautious",
+      "reports_equal": true,
+      "byte_identical": true,
+      "baseline_sha256": "3e265334e0651c8cc0ed6263040dc8ed4f9b2f668c8dfcd804f2c7afb3c19746",
+      "current_sha256": "3e265334e0651c8cc0ed6263040dc8ed4f9b2f668c8dfcd804f2c7afb3c19746"
+    },
+    {
+      "case": "archer_route1_s7_escape",
+      "reports_equal": true,
+      "byte_identical": true,
+      "baseline_sha256": "ea5ede99a5eaf06364cd099f948ffbe4180c07d7fd2bd2e11fae876a1d2cd58a",
+      "current_sha256": "ea5ede99a5eaf06364cd099f948ffbe4180c07d7fd2bd2e11fae876a1d2cd58a"
+    }
+  ],
+  "all_reports_identical": true,
+  "scope": "Fixed bot reports only; human comprehension, live-device performance and game balance remain unproven."
+}
