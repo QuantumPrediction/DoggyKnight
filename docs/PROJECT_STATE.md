@@ -4,11 +4,25 @@ Updated: 2026-11-20 (Hong Kong). Version: **0.9.1 development source**.
 
 ## Current implementation — R01/R02
 
-The owner requested repeated development toward the quality goal. Current local
+The owner requested repeated development toward the quality goal. Current
 work is `codex/combat-fairness-r01`, based on roadmap PR #15 public head
 `f73213fbded6f346b004794307f47e227a48fcb2`; it retains the complete roadmap.
 [Contract](requests/20261120-INT-pressure-lifetime.md) and
 [evidence](validation/r01/README.md) define this bounded iteration.
+
+**Published as [draft PR #16](https://github.com/QuantumPrediction/DoggyKnight/pull/16),
+stacked on #15; not merged.** Public implementation commit
+`b959d6569c2394a99d7d9776336af148800e2c6e` and tested local commit
+`129f11838514a34aa6cd1b972044063b4cbf2509` share the complete tree
+`772179eaa1018da0fc9f9ea29e26ce25c24a11aa`. The owner directly answered
+"Yes, accept all request for the game enhancement" to the explicit R01/R02 public
+code/tests/docs/validation and draft-PR approval request on 2026-11-20. The same
+publication path then succeeded. Earlier automatic approval rejections are
+history, not a current blocker; [publication record](validation/r01/publication.json)
+preserves them. Subsequent handoff changes only documentation. All 627 current
+source hashes, two regression-test hashes and the final test-log hash still match;
+the unchanged gameplay suite was not rerun for publication. Resume the latest
+public PR #16 head, preserving any newer local work, rather than default or #15 alone.
 
 - Fixed a demonstrated flow-exit defect: the three guard-lesson callbacks now
   disconnect on exit, so an old flow cannot change flags or overwrite its old
@@ -29,7 +43,7 @@ work is `codex/combat-fairness-r01`, based on roadmap PR #15 public head
   plus RIDs; this is local validation, not a GitHub CI pass. No new Windows
   package, image, save schema, balance change or store/payment activation.
 - Daily continuation is enabled from 2026-11-21 at approximately08:00 Hong Kong.
-  It resumes the latest bounded work package, keeps evidence and draft PRs, and
+  It resumes the latest bounded work package, keeps evidence and permitted draft PRs, and
   stops instead of repeatedly reporting a complete external-validation block.
   It cannot self-certify9/10, automatically merge or activate stores/payments.
 

@@ -4,6 +4,13 @@ The owner requested repeated implementation toward the R1 quality roadmap.
 Continue from roadmap PR #15 head `f73213fbded6f346b004794307f47e227a48fcb2`;
 the gameplay baseline is merged 0.9.1. Branch: `codex/combat-fairness-r01`.
 
+Publication approval, 2026-11-20: the owner answered "Yes, accept all request for
+the game enhancement" immediately after the explicit request to publicly upload
+all R01/R02 code, tests, documents and validation records to
+QuantumPrediction/DoggyKnight and create a draft PR, with public visibility
+stated. This resolves the prior publication approval block for this iteration;
+it does not request a merge or activate payments/stores.
+
 - Extend read-only pressure observations to visible warnings, player movement,
   escape candidates and attack phases. Verify the old cautious-policy report
   against its retained baseline before using the new observer for attribution.

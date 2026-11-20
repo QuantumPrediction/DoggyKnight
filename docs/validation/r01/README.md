@@ -126,3 +126,19 @@ Broader fixed development/confirmation seeds, unfamiliar-player comprehension,
 natural economy progression, Windows/mobile/controller input, audible listening,
 long sessions and native-crash attribution remain outstanding. No9/10 or player
 balance certification is claimed. No new art, screenshots or download build.
+
+## Publication status
+
+Published as [draft PR #16](https://github.com/QuantumPrediction/DoggyKnight/pull/16),
+based on roadmap PR #15, not merged. Public implementation commit
+`b959d6569c2394a99d7d9776336af148800e2c6e` exactly matches tested local commit
+`129f11838514a34aa6cd1b972044063b4cbf2509`, complete tree
+`772179eaa1018da0fc9f9ea29e26ce25c24a11aa`.
+
+The owner directly approved this iteration's public code/tests/docs/validation
+and draft PR in this transcript on 2026-11-20. The publication then succeeded;
+earlier automatic approval rejections remain historical entries in
+`publication.json`. Subsequent handoff changes documentation only. All 627
+source hashes, two regression-test hashes and the retained final test-log hash
+were checked unchanged. No game tests were rerun for this publication step and
+no GitHub CI pass is claimed.
