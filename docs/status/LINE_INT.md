@@ -1,3 +1,23 @@
+# 整合進度：0.9.1 已合併，逐項品質評估更新
+
+2026-11-20（香港）。擁有人直接要求合併及分析各部分品質。PR #14 已由草稿轉為可合併並完成合併；後續從預設分支 `claude/sleepy-hawking-8cvkvl` 最新遠端 head 接續。
+
+| 欄位 | 狀態 |
+| --- | --- |
+| 合併 | [PR #14](https://github.com/QuantumPrediction/DoggyKnight/pull/14) closed／merged；提交 `ddd517bb9b91486488717bea6fdf21eb53c3bdf2` |
+| 內容一致性 | 完整 tree `7abbc78693b6c3287509a1053702653f1a0ca8df` 與 PR head `b653742` 完全相同，含十張已批准截圖 |
+| 檢查 | 731 個受測來源指紋不變；既有最終 910 項通過；本輪只合併與更新文件，未重跑無變更測試。GitHub 零 check runs／statuses，沒有 CI 通過可宣稱 |
+| 品質暫評 | 整體約 6–6.5/10，具辨識度的完整原型／早期測試版；逐項評分與依據已更新至既有品質文件，非 Steam 排名或玩家評分 |
+| 主要缺口 | 弓手 1-4 配對試玩退步、原生崩潰未定位、關卡目標較單一、動畫連續性、經濟節奏及目標裝置／真人驗證 |
+| 下一步 | 先處理混合敵群壓力與穩定性，再完善首章目標／配搭／獎勵節奏，最後以陌生玩家與實機驗收；不能將合併視為已達 9/10 |
+| 範圍 | 無遊戲程式變更、無新下載包、無商店／付款啟用；此處與品質評估的後續公開提交只改文件 |
+
+[最新逐項評估](../GOLDEN_KNIGHT_QUALITY_REVIEW_ZH.md) · [來源入口](../PROJECT_STATE.md) · [驗證](../validation/0.9.1/README.md)。
+
+---
+
+以下是合併前的實作及公開紀錄；草稿／未合併字樣保留為歷史。
+
 # 整合進度：0.9.1 戰鬥資訊與可靠性
 
 2026-11-20（香港）。分支 `codex/combat-readability-stability`，基於已合併預設分支 `a8f547e8056c3dc4caa3a5ed0b5e2c7fdfbe1c78`。已公開為[草稿 PR #14](https://github.com/QuantumPrediction/DoggyKnight/pull/14)，未合併。

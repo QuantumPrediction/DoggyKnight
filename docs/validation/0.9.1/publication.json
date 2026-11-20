@@ -1,5 +1,5 @@
 {
-  "status": "draft, unmerged; all ten screenshots published",
+  "status": "merged into claude/sleepy-hawking-8cvkvl",
   "pr": "https://github.com/QuantumPrediction/DoggyKnight/pull/14",
   "branch": "codex/combat-readability-stability",
   "screenshots_commit": "d54e8cd9ae81c0c4a689bd8465fca4034c632ce0",
@@ -147,5 +147,19 @@
     "status": "draft, unmerged",
     "reason": "Automatic approval review rejected an opaque binary screenshot upload; ten PNGs are intentionally excluded, not re-encoded or uploaded through another route. All other implementation/evidence bytes match. Later handoff updates are documentation only."
   },
-  "handoff_note": "Following publication, documentation adds the screenshot index and records resolution. Runtime, tests and original PNG bytes remain unchanged."
+  "handoff_note": "Post-merge source/status/quality-review updates change documentation only. Runtime, tests and original PNG bytes are unchanged.",
+  "merge": {
+    "commit": "ddd517bb9b91486488717bea6fdf21eb53c3bdf2",
+    "tree": "7abbc78693b6c3287509a1053702653f1a0ca8df",
+    "expected_pr_head": "b653742c6209fcf365bcdf8e6e7ee72e96503ce7",
+    "date_hong_kong": "2026-11-20",
+    "authorization": "Owner explicitly requested: please merge and analysis what's the ranking in every part",
+    "method": "merge",
+    "tree_matches_pr_head": true,
+    "check_runs": 0,
+    "commit_statuses": 0,
+    "review_or_comment_entries": 0,
+    "full_regression_rerun": false,
+    "reason": "Tree unchanged from the verified PR head; existing 910-pass log and 731 unchanged source fingerprints inspected. Known bot regression and native-crash investigation remain open."
+  }
 }

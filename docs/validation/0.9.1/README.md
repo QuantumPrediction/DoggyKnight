@@ -148,8 +148,11 @@ There is no 9/10, popularity, retention or release-readiness certification.
 
 ## Publication
 
-[Draft PR #14](https://github.com/QuantumPrediction/DoggyKnight/pull/14) targets
-the actual default `claude/sleepy-hawking-8cvkvl`. Initial implementation
+[PR #14](https://github.com/QuantumPrediction/DoggyKnight/pull/14) was merged at
+the owner's explicit request on 2026-11-20 into the actual default
+`claude/sleepy-hawking-8cvkvl`. Merge `ddd517bb9b91486488717bea6fdf21eb53c3bdf2`
+has tree `7abbc78693b6c3287509a1053702653f1a0ca8df`, identical to final PR head
+`b653742c6209fcf365bcdf8e6e7ee72e96503ce7`. Initial implementation
 `37ee0df46a986c820a80a865f2e2a77da338c456` was text-only; its mapping is retained
 in `publication.json`. Owner-approved screenshot commit
 `d54e8cd9ae81c0c4a689bd8465fca4034c632ce0` has complete tree
@@ -157,5 +160,6 @@ in `publication.json`. Owner-approved screenshot commit
 with all ten PNGs included. Later handoff changes affect documentation only.
 All 731 tested source fingerprints remain unchanged, so this upload-only
 follow-up verifies image integrity and published objects without rerunning the
-unchanged 910-test suite. The draft remains unmerged with the archer regression
-explicitly visible.
+unchanged 910-test suite. The same applies to the later tree-identical merge.
+The archer regression and native crash remain unresolved after integration;
+merge approval is not a gameplay-quality or release-readiness certification.
