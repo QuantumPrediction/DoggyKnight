@@ -28,7 +28,7 @@ func test_only_known_fields_are_saved() -> void:
 			"endless_best", "equipment", "guard_lesson_done", "haptics_on", "hero_class", "level_index", "meta_upgrades", "music_on", "snacks", "sound_on", "story_seen",
 			"tutorial_done", "version"], "只存遊戲進度與設定,沒有任何個人資料")
 	assert_eq(raw["version"], float(SaveStore.VERSION))
-	assert_eq(SaveStore.VERSION, 10, "護陣提示第 10 版")
+	assert_eq(SaveStore.VERSION, 11, "構築路線第 11 版")
 
 
 func test_overwrite_keeps_latest() -> void:

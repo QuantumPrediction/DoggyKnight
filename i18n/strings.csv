@@ -434,3 +434,35 @@ UI_COACH_WAIT,先靠走位避險
 UI_COACH_WAIT_BODY,護陣恢復中。避開紅區；準備好再呼喚。
 UI_COACH_DONE,反擊成功！
 UI_COACH_DONE_BODY,蓄力已用在普通攻擊。暫停可重看提示。
+UI_ROUTE_TITLE,選擇起步路線
+UI_ROUTE_HINT,本輪有效；滿級不再升，把戲自由選
+UI_ROUTE_TONE,起步技能＋1級
+UI_ROUTE_ACTIVE,升級 · %s
+UI_ROUTE_RECOMMEND,搭配
+UI_ENCOUNTER_SUPPLY,磨坊的補給車
+UI_ENCOUNTER_LESSON,風車下的練習
+UI_ENCOUNTER_WATCH,守望岔路
+ROUTE_BULWARK_NAME,守陣
+ROUTE_BULWARK_DESC,吠叫暈眩近敵。受擊 −10%，移速 −8%。守住護陣，再找空檔反擊。
+ROUTE_VANGUARD_NAME,追擊
+ROUTE_VANGUARD_DESC,停步向近敵撲擊。移速 +10%，受擊 +10%。找空檔突進，切忌久站。
+ROUTE_SPELLWEAVER_NAME,連咒
+ROUTE_SPELLWEAVER_DESC,握手增加連擊。攻擊間隔 −10%，移速 −8%。停步施法，連續壓制。
+ROUTE_MISTWALKER_NAME,踏霧
+ROUTE_MISTWALKER_DESC,起步打滾短暫無敵。射程 +12%，攻擊 −10%。閃避後再施法。
+ROUTE_MARKSMAN_NAME,狙擊
+ROUTE_MARKSMAN_DESC,嗅嗅增加暴擊。射程 +15%，攻擊間隔 +10%。拉遠距離，瞄準出手。
+ROUTE_OUTRIDER_NAME,游擊
+ROUTE_OUTRIDER_DESC,起步打滾短暫無敵。移速 +10%，射程 −10%。穿梭後停步射擊。
+EVENT_SUPPLY_REST,圍坐分享
+EVENT_SUPPLY_REST_DESC,回復活力上限的45%。現在補給，不取零食。
+EVENT_SUPPLY_CACHE,搬走補給
+EVENT_SUPPLY_CACHE_DESC,獲得25零食；目前活力只保留70%。適合狀態充足時。
+EVENT_LESSON_PREPARE,先記住要領
+EVENT_LESSON_PREPARE_DESC,下一個基本把戲額外升1級。保留到選用，不超過滿級。
+EVENT_LESSON_TRY,立即試招
+EVENT_LESSON_TRY_DESC,現在多選1次把戲；本輪受到的傷害增加10%。
+EVENT_WATCH_GUARD,結伴前進
+EVENT_WATCH_GUARD_DESC,本輪受擊 −15%，移速 −8%。慢一點，穩住陣形。
+EVENT_WATCH_SCOUT,登高觀察
+EVENT_WATCH_SCOUT_DESC,本輪射程 +12%，受擊 +15%。看得遠，也更怕近敵。

@@ -17,3 +17,10 @@ Read `CLAUDE.md` and the relevant development contract before implementation.
   failures explicitly. Never leave the only handoff in conversation history.
 - Do not claim to have removed the chat conversation limit. Repository checkpoints
   make recovery possible when a conversation ends.
+- Owner preference (2026-11-20): keep replies brief. Do not proactively create or
+  upload downloadable Windows packages, standalone reports, or recovery archives;
+  provide them only when requested. Keep source, documentation and validation in
+  the repository. The owner explicitly approved publishing 0.8.1 code, assets,
+  documents, tests and screenshots to QuantumPrediction/DoggyKnight and a draft PR,
+  and asked to continue development toward the quality goal. Do not ask again for
+  that approved scope. This does not authorize merging or store/payment activation.

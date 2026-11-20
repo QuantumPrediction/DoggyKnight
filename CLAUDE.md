@@ -70,3 +70,7 @@
 ## 0.8.1 整合接續（2026-11-20）
 
 擁有人要求繼續既有工作；接續完整 0.8.0，處理近戰預警／命中一致性、隊長援兵上限、實際裝備打斷互動及對照驗證。合約為 `docs/requests/20261120-INT-captain-fairness.md`。沿用跨線整合與新版 Windows 試玩範圍，無新存檔或 EventBus 合約。
+
+## 0.9.0 整合接續（2026-11-20）
+
+擁有人在當前對話直接批准程式、素材、文件、測試及截圖公開至 QuantumPrediction/DoggyKnight 並建立草稿 PR，要求繼續品質工作。0.8.1 已公開為 PR #12。這輪合約 `docs/requests/20261120-INT-build-routes.md` 允許跨流程、進度、UI、資料及存檔整合；新增 `GameState.run_route`，存檔 v11，沿用既有 EventBus 訊號。擁有人要求除非主動索取，不再製作／上傳下載包、獨立進度報告或復原 ZIP；成果保存在儲存庫，回覆保持簡短。最新狀態仍以 `docs/PROJECT_STATE.md` 為準。

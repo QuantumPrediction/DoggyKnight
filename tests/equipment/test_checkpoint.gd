@@ -102,7 +102,7 @@ func test_engraving_survives_reload_but_waits_for_next_stage_after_retry() -> vo
 	flow.show_title()
 	assert_true(flow._equipment_transaction("attune", "training_sword", "knight", "fire", "coins").ok)
 	var saved := read_save()
-	assert_eq(saved.version, 10)
+	assert_eq(saved.version, 11)
 	assert_eq(saved.equipment.elements.training_sword, "fire")
 	assert_eq(saved.checkpoint.equipment.elements.training_sword, "earth")
 	flow.queue_free()

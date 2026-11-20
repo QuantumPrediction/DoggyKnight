@@ -31,6 +31,8 @@ var equipment_preset: String = "none"
 var equipment_element: String = "default"
 var movement_policy: String = "original"
 var guard_policy: String = "off"
+var route_choice: int = 0
+var build_policy: String = "first"
 var _moving_seconds: float = 0.0
 var _standing_seconds: float = 0.0
 var _empty_swings: int = 0
@@ -77,6 +79,10 @@ func _ready() -> void:
 			movement_policy = arg.trim_prefix("--policy=")
 		elif arg.begins_with("--guard="):
 			guard_policy = arg.trim_prefix("--guard=")
+		elif arg.begins_with("--route="):
+			route_choice = clampi(int(arg.trim_prefix("--route=")), 0, 1)
+		elif arg == "--build=route":
+			build_policy = "route"
 		elif arg.begins_with("--report="):
 			report_path = arg.trim_prefix("--report=")
 		elif arg.begins_with("--max-downs="):
@@ -212,13 +218,14 @@ func _write_report(finished: bool) -> bool:
 		return false
 	file.store_string(JSON.stringify({"schema": 3, "engine": Engine.get_version_info().string,
 		"movement_policy": movement_policy, "guard_policy": guard_policy,
+		"route_choice": route_choice, "build_policy": build_policy, "route": String(GameState.run_route),
 		"hero": String(hero_class), "chapter": chapter, "seed": rng_seed, "hard": hard,
 		"equipment_preset": equipment_preset, "equipment_element": equipment_element, "starting_equipment": _starting_equipment,
 		"training": {}, "speed": speed, "max_downs": max_downs, "max_sim_seconds": max_sim_seconds,
 		"finished": finished, "outcome": _outcome, "downs": _downs, "ultimates": _ultimates,
 		"simulation_seconds": _sim_seconds, "attempts": _attempts,
 		"seed_scope": "Global, flow, enemy spawn order, player crit, loot, equipment drops and minigames; cosmetic camp dialogue RNG is not seeded.",
-		"limits": "Staged gear, class-specific bot, first offered trick, automatic dialogue skip and camp bot. This is engineering evidence, not a human balance or retention study."}, "\t") + "\n")
+		"limits": "Staged gear, class-specific bot; first offered trick unless build_policy=route (eligible evolution, then route preference, then first). Automatic dialogue skip and camp bot. Engineering evidence, not human balance or retention."}, "\t") + "\n")
 	file.close()
 	return true
 
@@ -230,7 +237,7 @@ func _play_level() -> void:
 		await _shot_once("trick_choice", "02_trick_choice")
 		var choice := flow.get_trick_choice()
 		if choice != null and choice.visible:
-			choice.call(&"choose", 0)
+			choice.call(&"choose", _build_choice_index())
 		return
 	var level_id := String(flow.get_session().level.id) if flow.get_session() != null else ""
 	if _level_clock > 6.0:
@@ -241,6 +248,24 @@ func _play_level() -> void:
 		await _shot_once("level_late_" + level_id, "01_level_%s_late" % level_id)
 	_press_ultimate_if_ready()
 	_steer()
+
+func _build_choice_index() -> int:
+	if flow.is_event_open():
+		return route_choice if BuildRoutes.is_route_event(flow.level_events.get_open_id()) else 0
+	if build_policy != "route":
+		return 0
+	var route := BuildRoutes.get_route(GameState.run_route)
+	var offer := flow.progression.get_current_offer()
+	if route == null:
+		return 0
+	for i in offer.size():
+		if offer[i].is_evolution:
+			return i
+	for id in route.preferred:
+		for i in offer.size():
+			if offer[i].id == id:
+				return i
+	return 0
 
 
 func _press_ultimate_if_ready() -> void:

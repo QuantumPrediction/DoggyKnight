@@ -11,6 +11,7 @@ var equipment: Dictionary = EquipmentInventory.defaults()
 var run_equipment: Dictionary = {}
 
 var hero_class: StringName = &"knight"
+var run_route: StringName = &"" # This adventure only; restored through its checkpoint.
 
 var player_stats: StatBlock       # 金毛目前數值(含把戲加成)
 var vigor: int                    # 活力(生命值)
@@ -47,6 +48,7 @@ func _ready() -> void:
 ## 開始新的一輪冒險。零食、設定(音效、音樂、震動)、教學紀錄、最佳星數、難度、通關紀錄與看過的對白
 ## 屬於存檔與設定,不會被重設。
 func reset_run() -> void:
+	run_route = &""
 	guard_lesson_skipped = false
 	hero_class = HeroClasses.valid_id(hero_class)
 	run_equipment = EquipmentInventory.loadout(equipment, String(hero_class))

@@ -70,6 +70,7 @@ func _exit_tree() -> void:
 ## 新的一輪(新遊戲或「繼續」):經驗歸零,等級跟隨 GameState.hero_level;事件加成清空。
 func reset_run() -> void:
 	cancel_choices()
+	GameState.run_route = &""
 	# Rebuild the offer pool for the selected weapon; pounce is melee-only.
 	var pool: Array[StringName] = difficulty.trick_pool.duplicate()
 	if GameState.hero_class != &"knight":
@@ -129,6 +130,7 @@ func emit_exp_changed() -> void:
 ## next_level_bonus 不在快照內:重試時保持原值(DEV_PLAN 4.9:失敗重試時保留)。零食也不還原。
 func take_snapshot() -> Dictionary:
 	return {
+		"route": GameState.run_route,
 		"stats": GameState.player_stats.duplicate(),
 		"tricks": GameState.active_tricks.duplicate(),
 		"hero_level": GameState.hero_level,
@@ -140,6 +142,7 @@ func take_snapshot() -> Dictionary:
 
 func restore_snapshot(snapshot: Dictionary) -> void:
 	cancel_choices()
+	GameState.run_route = BuildRoutes.valid_id(snapshot.get("route", ""), GameState.hero_class)
 	GameState.player_stats = (snapshot["stats"] as StatBlock).duplicate() as StatBlock
 	GameState.active_tricks.assign(snapshot["tricks"] as Array)
 	GameState.hero_level = snapshot["hero_level"]
@@ -156,6 +159,9 @@ func rebuild_stats() -> void:
 	if meta != null:
 		meta.apply_to(stats, base)
 	TrickDeck.apply_modifiers(stats, base, EquipmentInventory.bonuses(GameState.run_equipment, String(GameState.hero_class)).mods, difficulty.min_damage_taken_mult)
+	var route := BuildRoutes.get_route(GameState.run_route)
+	if route != null and route.hero == GameState.hero_class:
+		TrickDeck.apply_modifiers(stats, base, route.modifiers, difficulty.min_damage_taken_mult)
 	for id in GameState.active_tricks:
 		var trick := _find_trick(id)
 		if trick != null and not trick.stat_modifiers.is_empty():
@@ -188,6 +194,24 @@ func add_run_modifier(mods: Dictionary) -> void:
 	GameState.vigor = mini(GameState.vigor, GameState.player_stats.max_vigor)
 	EventBus.vigor_changed.emit(GameState.vigor, GameState.player_stats.max_vigor)   # 上限可能改了
 
+
+func choose_route(id: StringName) -> bool:
+	if not accepting_exp or _choice_open or GameState.run_route != &"":
+		return false
+	var route := BuildRoutes.get_route(BuildRoutes.valid_id(id, GameState.hero_class))
+	if route == null:
+		return false
+	GameState.run_route = route.id
+	# This grant is exactly one level and does not spend a queued event bonus.
+	if _deck.available(GameState.active_tricks).has(route.starter):
+		var saved_bonus := bonus_trick_levels
+		bonus_trick_levels = 0
+		apply_trick(_deck.get_trick(route.starter))
+		bonus_trick_levels = saved_bonus
+		tricks_this_level.append(route.starter)
+		EventBus.trick_chosen.emit(route.starter)
+	rebuild_stats()
+	return true
 
 ## 套用一個把戲(數值類改 player_stats;能力類只記錄,由 A 線執行;進化把戲換掉兩個來源)。
 func apply_trick(trick: TrickData) -> void:
@@ -265,6 +289,7 @@ func _offer_next() -> void:
 	if not _choice_open or _pending_choices <= 0:
 		return
 	_current_offer = _deck.draw(difficulty.trick_offer_count, rng, GameState.active_tricks)
+	_current_offer = BuildRoutes.guide_offer(_current_offer, _deck, GameState.active_tricks, GameState.run_route)
 	if _current_offer.is_empty():
 		push_warning("RunProgression: 沒有可抽的把戲,略過這次選擇")
 		cancel_choices()
@@ -296,7 +321,7 @@ func _on_trick_chosen(trick_id: StringName) -> void:
 
 ## JSON-safe checkpoint of an adventure at a level boundary.
 func export_checkpoint() -> Dictionary:
-	return {"hero_level": GameState.hero_level, "tricks": Array(GameState.active_tricks),
+	return {"route": String(GameState.run_route), "hero_level": GameState.hero_level, "tricks": Array(GameState.active_tricks),
 		"exp_centi": _exp.get_centi(), "run_modifiers": run_modifiers.duplicate(true),
 		"bonus_trick_levels": bonus_trick_levels, "vigor": GameState.vigor,
 		"satisfaction": GameState.satisfaction, "next_level_bonus": GameState.next_level_bonus,
@@ -304,6 +329,7 @@ func export_checkpoint() -> Dictionary:
 
 func import_checkpoint(data: Dictionary) -> void:
 	cancel_choices()
+	GameState.run_route = BuildRoutes.valid_id(data.get("route", ""), GameState.hero_class)
 	GameState.hero_level = int(data.hero_level)
 	GameState.active_tricks.assign(data.tricks)
 	_exp.set_state(GameState.hero_level, int(data.exp_centi))

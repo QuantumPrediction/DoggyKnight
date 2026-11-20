@@ -1,0 +1,76 @@
+[gd_resource type="Resource" script_class="LevelEventTable" format=3]
+
+[ext_resource type="Script" path="res://game/progression/level_event_table.gd" id="1"]
+[ext_resource type="Script" path="res://game/progression/level_event.gd" id="2"]
+[ext_resource type="Script" path="res://game/progression/event_option.gd" id="3"]
+
+[sub_resource type="Resource" id="SUPPLY_REST"]
+script = ExtResource("3")
+title = "EVENT_SUPPLY_REST"
+desc = "EVENT_SUPPLY_REST_DESC"
+icon = "res://assets/portraits/merlin/proud.png"
+tone = "merlin"
+effects = {"heal_ratio": 0.45}
+
+[sub_resource type="Resource" id="SUPPLY_CACHE"]
+script = ExtResource("3")
+title = "EVENT_SUPPLY_CACHE"
+desc = "EVENT_SUPPLY_CACHE_DESC"
+icon = "res://assets/portraits/morgana/smirk.png"
+tone = "morgana"
+effects = {"snacks": 25, "vigor_keep_ratio": 0.7}
+
+[sub_resource type="Resource" id="LESSON_PREPARE"]
+script = ExtResource("3")
+title = "EVENT_LESSON_PREPARE"
+desc = "EVENT_LESSON_PREPARE_DESC"
+icon = "res://assets/portraits/merlin/proud.png"
+tone = "merlin"
+effects = {"bonus_trick_levels": 1}
+
+[sub_resource type="Resource" id="LESSON_TRY"]
+script = ExtResource("3")
+title = "EVENT_LESSON_TRY"
+desc = "EVENT_LESSON_TRY_DESC"
+icon = "res://assets/portraits/morgana/smirk.png"
+tone = "morgana"
+effects = {"trick_choices": 1, "stats": {"damage_taken_mult": 0.1}}
+
+[sub_resource type="Resource" id="WATCH_GUARD"]
+script = ExtResource("3")
+title = "EVENT_WATCH_GUARD"
+desc = "EVENT_WATCH_GUARD_DESC"
+icon = "res://assets/portraits/merlin/proud.png"
+tone = "merlin"
+effects = {"stats": {"damage_taken_mult": -0.15, "move_speed": -0.08}}
+
+[sub_resource type="Resource" id="WATCH_SCOUT"]
+script = ExtResource("3")
+title = "EVENT_WATCH_SCOUT"
+desc = "EVENT_WATCH_SCOUT_DESC"
+icon = "res://assets/portraits/morgana/smirk.png"
+tone = "morgana"
+effects = {"stats": {"attack_range": 0.12, "damage_taken_mult": 0.15}}
+
+[sub_resource type="Resource" id="supply"]
+script = ExtResource("2")
+id = &"chapter1_supply"
+title = "UI_ENCOUNTER_SUPPLY"
+options = Array[ExtResource("3")]([SubResource("SUPPLY_REST"), SubResource("SUPPLY_CACHE")])
+
+[sub_resource type="Resource" id="lesson"]
+script = ExtResource("2")
+id = &"chapter1_lesson"
+title = "UI_ENCOUNTER_LESSON"
+options = Array[ExtResource("3")]([SubResource("LESSON_PREPARE"), SubResource("LESSON_TRY")])
+
+[sub_resource type="Resource" id="watch"]
+script = ExtResource("2")
+id = &"chapter1_watch"
+title = "UI_ENCOUNTER_WATCH"
+options = Array[ExtResource("3")]([SubResource("WATCH_GUARD"), SubResource("WATCH_SCOUT")])
+
+[resource]
+script = ExtResource("1")
+events = Array[ExtResource("2")]([SubResource("supply"), SubResource("lesson"), SubResource("watch")])
+level_events = {&"1-2": &"chapter1_supply", &"1-3": &"chapter1_lesson", &"1-5": &"chapter1_watch"}

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BuildRouteData" format=3]
+
+[ext_resource type="Script" path="res://game/progression/build_route_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"bulwark"
+hero = &"knight"
+title = "ROUTE_BULWARK_NAME"
+description = "ROUTE_BULWARK_DESC"
+starter = &"bark"
+preferred = Array[StringName]([&"bark", &"sit"])
+modifiers = {"damage_taken_mult": -0.1, "move_speed": -0.08}

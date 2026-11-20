@@ -1,0 +1,128 @@
+[
+  {
+    "case": "knight_route0_s7",
+    "exit_code": 0,
+    "route": "bulwark",
+    "finished": true,
+    "downs": 0,
+    "outcome": "complete",
+    "damage": 42,
+    "cleared": 6,
+    "script_error": false
+  },
+  {
+    "case": "knight_route0_s19",
+    "exit_code": 0,
+    "route": "bulwark",
+    "finished": true,
+    "downs": 0,
+    "outcome": "complete",
+    "damage": 26,
+    "cleared": 6,
+    "script_error": false
+  },
+  {
+    "case": "knight_route1_s7",
+    "exit_code": 0,
+    "route": "vanguard",
+    "finished": true,
+    "downs": 1,
+    "outcome": "complete",
+    "damage": 366,
+    "cleared": 6,
+    "script_error": false
+  },
+  {
+    "case": "knight_route1_s19",
+    "exit_code": 0,
+    "route": "vanguard",
+    "finished": true,
+    "downs": 0,
+    "outcome": "complete",
+    "damage": 232,
+    "cleared": 6,
+    "script_error": false
+  },
+  {
+    "case": "mage_route0_s7",
+    "exit_code": 0,
+    "route": "spellweaver",
+    "finished": true,
+    "downs": 0,
+    "outcome": "complete",
+    "damage": 91,
+    "cleared": 6,
+    "script_error": false
+  },
+  {
+    "case": "mage_route0_s19",
+    "exit_code": 0,
+    "route": "spellweaver",
+    "finished": true,
+    "downs": 0,
+    "outcome": "complete",
+    "damage": 99,
+    "cleared": 6,
+    "script_error": false
+  },
+  {
+    "case": "mage_route1_s7",
+    "exit_code": 0,
+    "route": "mistwalker",
+    "finished": true,
+    "downs": 0,
+    "outcome": "complete",
+    "damage": 114,
+    "cleared": 6,
+    "script_error": false
+  },
+  {
+    "case": "mage_route1_s19",
+    "exit_code": 0,
+    "route": "mistwalker",
+    "finished": true,
+    "downs": 0,
+    "outcome": "complete",
+    "damage": 124,
+    "cleared": 6,
+    "script_error": false
+  },
+  {
+    "case": "archer_route0_s7",
+    "exit_code": -6,
+    "script_error": false
+  },
+  {
+    "case": "archer_route0_s19",
+    "exit_code": 0,
+    "route": "marksman",
+    "finished": true,
+    "downs": 0,
+    "outcome": "complete",
+    "damage": 94,
+    "cleared": 6,
+    "script_error": false
+  },
+  {
+    "case": "archer_route1_s7",
+    "exit_code": 0,
+    "route": "outrider",
+    "finished": true,
+    "downs": 0,
+    "outcome": "complete",
+    "damage": 279,
+    "cleared": 6,
+    "script_error": false
+  },
+  {
+    "case": "archer_route1_s19",
+    "exit_code": 1,
+    "route": "outrider",
+    "finished": false,
+    "downs": 3,
+    "outcome": "down_limit",
+    "damage": 377,
+    "cleared": 3,
+    "script_error": false
+  }
+]

@@ -12,7 +12,7 @@ extends Resource
 ##   "trick_choices": int         立即給這麼多次把戲三選一(可能出現進化)。
 
 const KEYS: Array[String] = ["stats", "vigor_keep_ratio", "heal_ratio", "snacks", "bonus_trick_levels",
-		"trick_choices"]
+		"trick_choices", "route"]
 
 @export var title: String                   ## 翻譯鍵
 @export var desc: String                    ## 翻譯鍵

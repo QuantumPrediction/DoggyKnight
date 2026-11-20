@@ -8,7 +8,7 @@ func _initialize() -> void:
 
 
 func _check() -> void:
-	if ProjectSettings.get_setting("application/config/version") != "0.8.1":
+	if ProjectSettings.get_setting("application/config/version") != "0.9.0":
 		push_error("Unexpected packed game version")
 		quit(1)
 		return

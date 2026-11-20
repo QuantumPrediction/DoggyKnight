@@ -1,0 +1,47 @@
+[
+	{
+		"capture": "route_knight",
+		"cards_fit": true,
+		"text_fits": true
+	},
+	{
+		"capture": "route_mage",
+		"cards_fit": true,
+		"text_fits": true
+	},
+	{
+		"capture": "route_archer",
+		"cards_fit": true,
+		"text_fits": true
+	},
+	{
+		"capture": "encounter_1-2",
+		"cards_fit": true,
+		"text_fits": true
+	},
+	{
+		"capture": "encounter_1-3",
+		"cards_fit": true,
+		"text_fits": true
+	},
+	{
+		"capture": "encounter_1-5",
+		"cards_fit": true,
+		"text_fits": true
+	},
+	{
+		"capture": "small_route",
+		"cards_fit": true,
+		"text_fits": true
+	},
+	{
+		"capture": "notched_route",
+		"cards_fit": true,
+		"text_fits": true
+	},
+	{
+		"capture": "guided_upgrade",
+		"cards_fit": true,
+		"text_fits": true
+	}
+]
