@@ -1,0 +1,24 @@
+{
+  "local_commit": "fbd4345c2be6ba158bb9a5cb091e01b47505af8f",
+  "expected_text_only_tree": "673a198170cdfc96c23a349d7092df9de0243ba6",
+  "bytes": 1563822,
+  "entries": 104,
+  "omitted_pngs": [
+    "docs/validation/0.9.1/captures/archer_locked_focus_ready.png",
+    "docs/validation/0.9.1/captures/archer_notched.png",
+    "docs/validation/0.9.1/captures/archer_tracking.png",
+    "docs/validation/0.9.1/captures/iteration2/archer_locked_focus_ready.png",
+    "docs/validation/0.9.1/captures/iteration2/archer_notched.png",
+    "docs/validation/0.9.1/captures/iteration2/archer_tracking.png",
+    "docs/validation/0.9.1/captures/iteration2/knight_small.png",
+    "docs/validation/0.9.1/captures/iteration2/mage_roll_cooldown.png",
+    "docs/validation/0.9.1/captures/knight_small.png",
+    "docs/validation/0.9.1/captures/mage_roll_cooldown.png"
+  ],
+  "public_implementation_commit": "37ee0df46a986c820a80a865f2e2a77da338c456",
+  "public_implementation_tree": "673a198170cdfc96c23a349d7092df9de0243ba6",
+  "pr": "https://github.com/QuantumPrediction/DoggyKnight/pull/14",
+  "base": "a8f547e8056c3dc4caa3a5ed0b5e2c7fdfbe1c78",
+  "status": "draft, unmerged",
+  "reason": "Automatic approval review rejected an opaque binary screenshot upload; ten PNGs are intentionally excluded, not re-encoded or uploaded through another route. All other implementation/evidence bytes match. Later handoff updates are documentation only."
+}

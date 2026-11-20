@@ -1,6 +1,6 @@
 # 整合進度：0.9.1 戰鬥資訊與可靠性
 
-2026-11-20（香港）。分支 `codex/combat-readability-stability`，基於已合併預設分支 `a8f547e8056c3dc4caa3a5ed0b5e2c7fdfbe1c78`。公開結果待下方核實更新；尚未合併新版。
+2026-11-20（香港）。分支 `codex/combat-readability-stability`，基於已合併預設分支 `a8f547e8056c3dc4caa3a5ed0b5e2c7fdfbe1c78`。已公開為[草稿 PR #14](https://github.com/QuantumPrediction/DoggyKnight/pull/14)，未合併。
 
 | 欄位 | 狀態 |
 | --- | --- |
@@ -14,6 +14,7 @@
 | 下載偏好 | 無新 Windows 包、獨立報告或復原 ZIP；先前 Windows 包仍為 0.8.1 |
 | 下一步 | 保持草稿，先擴充弓手 1-4 種子／走位政策與壓力歸因，再決定平衡改動；不要把測試數量當成 9/10 |
 | 授權 | 延續擁有人公開程式／素材／文件／測試／截圖及草稿 PR 的批准；不自動合併新 PR，不啟用商店或付款 |
+| 公開來源 | 實作 `37ee0df`／tree `673a198170cdfc96c23a349d7092df9de0243ba6` 與本地 `fbd4345` 除十張新驗證 PNG 外完全一致；104 個變更檔案皆為可審閱文字。後續只更新公開及接續紀錄；下一輪從 PR #14 最新遠端 head 接續，另保留本地圖片 |
 | 公開限制 | 本機 Git 缺憑證；服務接受四個圖片 blob 後，自動審批拒絕後續不透明圖片上傳，未接受既有授權涵蓋本輪素材。尚無分支引用這些圖片；不改走其他圖片上傳途徑。後續只提交可審閱的 UTF-8 程式／文字證據，十張新 PNG 保留本地 `91a62f1`，不影響遊戲執行 |
 
 證據：[0.9.1 validation](../validation/0.9.1/README.md)。最新入口：[PROJECT_STATE.md](../PROJECT_STATE.md)。

@@ -118,7 +118,7 @@ binary upload because it did not accept prior authorization as covering this
 specific asset. The publication scope is now inspectable UTF-8 source and
 evidence only; the ten new PNGs remain in local commit `91a62f1`. Four blob
 objects had been accepted before rejection, but no branch referenced them.
-The public draft will not reference those new image objects. No alternative
+The public draft does not reference those new image objects. No alternative
 image-upload route is used. The showcase reproduces the captures, and source/test
 fingerprints are unaffected by omitting validation images.
 
@@ -145,3 +145,13 @@ This is an operator smoke test, not an unfamiliar-player study, full clear,
 Windows run, real touch test or an audible music assessment.
 
 There is no 9/10, popularity, retention or release-readiness certification.
+
+## Publication
+
+[Draft PR #14](https://github.com/QuantumPrediction/DoggyKnight/pull/14) targets
+the actual default `claude/sleepy-hawking-8cvkvl`. Public implementation
+`37ee0df46a986c820a80a865f2e2a77da338c456`, tree
+`673a198170cdfc96c23a349d7092df9de0243ba6`, exactly matches local `fbd4345`
+after excluding the ten PNGs listed in `publication.json`. Runtime, tests and
+text evidence are byte-identical. Publication follow-ups change documentation
+only; the draft remains unmerged with the archer regression explicitly visible.
