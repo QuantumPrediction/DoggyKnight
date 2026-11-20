@@ -1,0 +1,102 @@
+[
+	{
+		"capture": "archer_tracking",
+		"lane_locked": false,
+		"safe": true,
+		"status": {
+			"attack_left": 0.0,
+			"attack_total": 0.39,
+			"focus": 0.5,
+			"focus_bonus": 1.35,
+			"focus_seconds": 0.7,
+			"hero": "archer",
+			"phase": "windup",
+			"roll": "ready",
+			"roll_active_left": 0.0,
+			"roll_duration": 0.3,
+			"roll_left": 0.0,
+			"roll_total": 3.0
+		},
+		"text_fits": true
+	},
+	{
+		"capture": "archer_locked_focus_ready",
+		"lane_locked": true,
+		"safe": true,
+		"status": {
+			"attack_left": 0.39,
+			"attack_total": 0.39,
+			"focus": 1.0,
+			"focus_bonus": 1.35,
+			"focus_seconds": 0.7,
+			"hero": "archer",
+			"phase": "recovering",
+			"roll": "ready",
+			"roll_active_left": 0.0,
+			"roll_duration": 0.3,
+			"roll_left": 0.0,
+			"roll_total": 3.0
+		},
+		"text_fits": true
+	},
+	{
+		"capture": "mage_roll_cooldown",
+		"lane_locked": false,
+		"safe": true,
+		"status": {
+			"attack_left": 0.0,
+			"attack_total": 0.64,
+			"focus": 0.0,
+			"focus_bonus": 1.0,
+			"focus_seconds": 0.0,
+			"hero": "mage",
+			"phase": "moving",
+			"roll": "cooldown",
+			"roll_active_left": 0.0,
+			"roll_duration": 0.3,
+			"roll_left": 2.4,
+			"roll_total": 3.0
+		},
+		"text_fits": true
+	},
+	{
+		"capture": "knight_small",
+		"lane_locked": false,
+		"safe": true,
+		"status": {
+			"attack_left": 0.0,
+			"attack_total": 0.38,
+			"focus": 0.0,
+			"focus_bonus": 1.0,
+			"focus_seconds": 0.0,
+			"hero": "knight",
+			"phase": "out_of_range",
+			"roll": "ready",
+			"roll_active_left": 0.0,
+			"roll_duration": 0.3,
+			"roll_left": 0.0,
+			"roll_total": 3.0
+		},
+		"text_fits": true
+	},
+	{
+		"capture": "archer_notched",
+		"lane_locked": true,
+		"safe": true,
+		"status": {
+			"attack_left": 0.0,
+			"attack_total": 0.39,
+			"focus": 1.0,
+			"focus_bonus": 1.35,
+			"focus_seconds": 0.7,
+			"hero": "archer",
+			"phase": "windup",
+			"roll": "ready",
+			"roll_active_left": 0.0,
+			"roll_duration": 0.3,
+			"roll_left": 0.0,
+			"roll_total": 3.0
+		},
+		"text_fits": true
+	}
+]

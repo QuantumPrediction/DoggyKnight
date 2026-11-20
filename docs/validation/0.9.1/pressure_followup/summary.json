@@ -1,0 +1,44 @@
+{
+  "baseline": {
+    "matches_original_report": true,
+    "completed": true,
+    "downs": 0,
+    "damage_by_source": {
+      "scarecrow melee": 71,
+      "projectile": 23
+    },
+    "attempts": {
+      "3": {
+        "scarecrow melee": 71,
+        "projectile": 23
+      }
+    }
+  },
+  "candidate": {
+    "matches_original_report": true,
+    "completed": false,
+    "downs": 3,
+    "damage_by_source": {
+      "scarecrow melee": 324,
+      "crow dive": 6,
+      "projectile": 30,
+      "captain sweep": 26
+    },
+    "attempts": {
+      "3": {
+        "scarecrow melee": 87,
+        "crow dive": 6,
+        "projectile": 14,
+        "captain sweep": 26
+      },
+      "4": {
+        "scarecrow melee": 120,
+        "projectile": 9
+      },
+      "5": {
+        "scarecrow melee": 117,
+        "projectile": 7
+      }
+    }
+  }
+}

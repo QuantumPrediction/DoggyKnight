@@ -46,6 +46,8 @@ signal companion_counter_granted(bonus: float)
 signal companion_guard_coverage(protected: bool)
 signal player_combat_status_requested()
 signal player_combat_readiness(state: StringName, charge_left: float, charge_bonus: float)
+# 0.9.1: real actor snapshot; UI does not advance its own combat clock.
+signal player_tactics_changed(status: Dictionary)
 signal companion_counter_resolved(result: StringName)
 signal guard_lesson_requested()
 signal guard_lesson_completed()

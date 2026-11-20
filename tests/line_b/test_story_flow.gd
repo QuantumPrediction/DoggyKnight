@@ -16,12 +16,16 @@ func before_each() -> void:
 
 
 func after_each() -> void:
+	_stop_log()
+	await super()
+
+
+func _stop_log() -> void:
 	for hook in _log_hooks:
 		var sig: Signal = hook[0]
-		if sig.is_connected(hook[1]):
+		if is_instance_valid(sig.get_object()) and sig.is_connected(hook[1]):
 			sig.disconnect(hook[1])
 	_log_hooks.clear()
-	await super()
 
 
 ## 依次序記下對白、關卡與波次的訊號,例如 ["story:prologue", "level:1-1", "wave:1"]。
@@ -368,6 +372,9 @@ func _check_story_after_then_results(scene: PackedScene) -> void:
 	assert_eq(seen["overlap_frames"], 0, "%s:沒有任何一格同時看到結算與對白框" % where)
 	assert_not_null(flow.get_screen(), where)
 	assert_eq(flow.get_last_result()["level_id"], &"3-1")
+	# Each scene in this parameterised test owns its own captured dialogue box.
+	# Disconnect before freeing it, not only after the last scene has completed.
+	_stop_log()
 	flow.queue_free()
 	flow = null
 	await wait_frames(2)

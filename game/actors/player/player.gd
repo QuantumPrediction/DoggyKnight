@@ -48,6 +48,7 @@ var _focus_elapsed: float = 0.0
 var equipment_combat := EquipmentCombat.new()
 var _companion_counter_pending: bool = false
 var _combat_readiness_key: String = ""
+var _tactics_key: String = ""
 
 var abilities: AbilitySet
 var loyalty: float = 0.0
@@ -193,6 +194,7 @@ func _physics_process(delta: float) -> void:
 	_update_attack(delta, moving)
 	abilities.update(delta)
 	_update_visuals(delta)
+	_publish_tactics()
 	if abilities.is_zooming() or abilities.roll.is_rolling():
 		queue_redraw()
 
@@ -1255,6 +1257,7 @@ func _resolve_companion_counter(result: StringName) -> void:
 
 func _refresh_combat_readiness() -> void:
 	_combat_readiness_key = ""
+	_tactics_key = ""
 	_publish_combat_readiness()
 
 
@@ -1262,6 +1265,7 @@ func _publish_combat_readiness() -> void:
 	# Detached previous-stage actors can await queue_free while new HUDs request state.
 	if not is_inside_tree() or is_queued_for_deletion():
 		return
+	_publish_tactics()
 	if _companion_counter_pending and equipment_combat.charged_left <= 0.0:
 		_resolve_companion_counter(&"expired")
 	var state: StringName = &"idle"
@@ -1288,3 +1292,43 @@ func _publish_combat_readiness() -> void:
 	if key != _combat_readiness_key:
 		_combat_readiness_key = key
 		EventBus.player_combat_readiness.emit(state, remaining, bonus)
+
+
+## Read-only combat snapshot; shared by the HUD and behavioural regression checks.
+func tactics_status() -> Dictionary:
+	var phase: StringName = &"ready"
+	var busy := _ult_left >= 0.0 or _hitstop_left > 0.0 or _flop_left >= 0.0 or _wake_left >= 0.0 or _pounce_left >= 0.0
+	var moving := get_move_input() != Vector2.ZERO
+	if _downed or celebrating:
+		phase = &"unavailable"
+	elif busy:
+		phase = &"busy"
+	elif moving:
+		phase = &"moving"
+	elif _windup_left >= 0.0:
+		phase = &"windup"
+	elif _attack_cooldown > 0.0:
+		phase = &"recovering"
+	elif _nearest_enemy(GameState.player_stats.attack_range) == null:
+		phase = &"out_of_range" if _has_enemies() else &"waiting"
+	var roll := abilities.roll
+	var roll_state: StringName = &"absent"
+	if roll.is_active():
+		roll_state = &"rolling" if roll.is_rolling() else (&"cooldown" if roll.cooldown_left > 0.0 else (&"busy" if busy else (&"moving" if moving else &"ready")))
+	var fraction := 0.0 if moving or phase == &"unavailable" else focus_fraction()
+	return {"hero": loadout.id, "phase": phase, "focus": fraction,
+		"focus_bonus": loadout.focus_mult, "focus_seconds": loadout.focus_time,
+		"roll": roll_state, "roll_left": roll.cooldown_left, "roll_total": roll.cooldown(),
+		"roll_active_left": roll.roll_left, "roll_duration": roll.roll_time(),
+		"attack_left": maxf(0.0, _attack_cooldown), "attack_total": maxf(0.001, GameState.player_stats.attack_interval - loadout.windup)}
+
+
+func _publish_tactics() -> void:
+	if not is_inside_tree() or is_queued_for_deletion() or abilities == null or loadout == null:
+		return
+	var status := tactics_status()
+	var key := "%s:%s:%d:%s:%d:%d:%d:%s" % [status.hero, status.phase, roundi(float(status.focus) * 20.0),
+		status.roll, ceili(float(status.roll_left) * 10.0), ceili(float(status.roll_active_left) * 10.0), ceili(float(status.attack_left) * 10.0), float(status.focus) >= 1.0]
+	if key != _tactics_key:
+		_tactics_key = key
+		EventBus.player_tactics_changed.emit(status)

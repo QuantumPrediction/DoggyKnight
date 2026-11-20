@@ -1,0 +1,24 @@
+== 匯入資源 ==
+== 執行測試 ==
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/line_b/test_story_flow.gd
+  ok      test_new_game_prologue_then_arena_then_l1_before_then_title_card
+  ok      test_back_and_background_during_a_story
+  ok      test_clear_celebration_then_story_after_then_results
+  ok      test_retry_does_not_replay_story_before
+  ok      test_continue_plays_that_levels_story_before_but_not_the_prologue
+  ok      test_ending_order_and_chapter_cleared
+  ok      test_whole_chapter_plays_every_level_story_in_order
+  ok      test_without_a_dialogue_box_the_story_is_skipped
+  ok      test_captain_wave_switches_to_boss_music
+  ok      test_results_wait_until_the_story_after_dialogue_has_faded
+  ok      test_a_box_that_never_hides_does_not_block_the_results
+
+11 tests, 0 failed, 0 broken files
+WARNING: 5 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 2 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+全部測試通過。

@@ -1,0 +1,29 @@
+{
+  "command": [
+    "godot",
+    "--headless",
+    "--path",
+    "/workspace/scratch/fa4600f04bd6/DoggyKnight",
+    "--fixed-fps",
+    "60",
+    "--max-fps",
+    "0",
+    "--disable-render-loop",
+    "res://tests/integration/pressure_trace.tscn",
+    "--",
+    "--speed=1",
+    "--chapter=1",
+    "--class=archer",
+    "--route=0",
+    "--build=route",
+    "--seed=19",
+    "--gear=common1",
+    "--element=earth",
+    "--policy=cautious",
+    "--guard=reactive",
+    "--max-downs=3",
+    "--max-sim-seconds=1200",
+    "--report=/workspace/scratch/7c65b3f2f6c8/DoggyKnight/docs/validation/0.9.1/pressure_followup/baseline_marksman_s19.json"
+  ],
+  "exit_code": 0
+}

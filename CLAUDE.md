@@ -1,5 +1,7 @@
 # CLAUDE.md —《金毛騎士》原型
 
+目前接續入口為 `docs/PROJECT_STATE.md`。0.9.1 在已合併的 0.9.0 上處理戰鬥提示、弓兵預警一致性與測試生命週期；跨線整合合約為 `docs/requests/20261120-INT-combat-readability.md`。不新增下載包、不改存檔／平衡數值；原生崩潰與真人品質驗證仍是待辦。
+
 這是一款像素風手機 RPG 的原型:金毛尋回犬騎士帶著同伴打小怪、升級、打頭目。**最終目標是上架 App Store(iOS)與 Google Play(Android)。** 原型階段不公開上架,但一切按手機與商店的標準來做。完整計劃在 `docs/DEV_PLAN.md`,**動手前先讀它**;商店規定在 `docs/STORE_RELEASE.md`。
 
 ## Windows 接手補充（2026-11-18）

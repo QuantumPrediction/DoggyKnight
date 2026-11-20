@@ -25,6 +25,9 @@ var half_angle: float = PI / 3.0
 var length: float = 40.0
 var width: float = 12.0
 var color: Color = DANGER
+## Archer-only cue: open moving chevrons while tracking; fixed end brackets at lock.
+var show_aim_lock: bool = false
+var aim_locked: bool = false
 var progress: float = 0.0:
 	set(value):
 		progress = clampf(value, 0.0, 1.0)
@@ -165,6 +168,19 @@ func _draw_line(area: Color, fill: Color, edge: Color, ripple: Color) -> void:
 		draw_line(Vector2(x - arm, arm), Vector2(x, 0), a, 1.0)
 		x += spacing
 	draw_rect(Rect2(0, -half_w, length, width), edge, false, 1.0)
+	if show_aim_lock:
+		var ink := Color("fff0c9")
+		var end := minf(length, 20.0)
+		if aim_locked:
+			# Shape, not colour alone, identifies the lane that no longer tracks.
+			for at: float in [2.0, maxf(2.0, length - 2.0)]:
+				draw_line(Vector2(at, -half_w - 2), Vector2(at, half_w + 2), Color("302b32"), 3.0)
+				draw_line(Vector2(at, -half_w - 2), Vector2(at, half_w + 2), ink, 1.0)
+			draw_circle(Vector2(end, 0), 2.5, ink)
+		else:
+			var y := half_w + 2.0
+			for sign_y: float in [-1.0, 1.0]:
+				draw_polyline(PackedVector2Array([Vector2(end - 3, sign_y * y), Vector2(end, sign_y * (y + 3)), Vector2(end + 3, sign_y * y)]), ink, 1.0)
 	draw_set_transform(Vector2.ZERO)
 
 
