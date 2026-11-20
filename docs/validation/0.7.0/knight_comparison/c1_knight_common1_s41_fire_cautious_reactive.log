@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+== 第 1 章 / knight ==
+
+== 試玩結果 ==
+1-1   45.3 秒  擊倒 16  等級  3  把戲 [&"shake", &"play_dead"]  活力 110
+1-2   54.3 秒  擊倒 24  等級  5  把戲 [&"fetch", &"fetch"]  活力 51
+營地:小遊戲完成,活力 118,下一關加成 15%
+1-3   66.3 秒  擊倒 33  等級  7  把戲 [&"high_five", &"dig", &"dig"]  活力 79
+1-4   70.0 秒  擊倒 35  等級  9  把戲 [&"dig", &"roll", &"zoomies"]  活力 32
+營地:小遊戲完成,活力 118,下一關加成 15%
+1-5   65.6 秒  擊倒 34  等級 12  把戲 [&"zoomies", &"zoomies", &"sit", &"roll", &"sniff", &"spin"]  活力 105
+1-6   45.7 秒  擊倒  9  等級 13  把戲 [&"roll", &"sit"]  活力 118
+倒下 0 次;必殺技 11 次;略過對白 16 段;最後活力 118
+PLAYTHROUGH COMPLETE

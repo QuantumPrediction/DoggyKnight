@@ -1,0 +1,29 @@
+== 匯入資源 ==
+== 執行測試 ==
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/line_a/test_captain_fairness.gd
+  ok      test_sweep_cannot_hit_a_body_fully_beyond_the_shown_warning
+  ok      test_sweep_does_not_invent_an_unmarked_rear_contact_circle
+  ok      test_sweep_checks_body_overlap_at_the_visible_side_edge
+  ok      test_sweep_commits_direction_and_clamped_origin_before_player_moves
+  ok      test_sweep_is_cancelled_by_stun_and_cannot_resolve_twice
+  ok      test_rally_respects_remaining_slots_and_warns_only_actual_summons
+  ok      test_rally_never_fills_newly_freed_slots_without_warning
+  ok      test_rally_rechecks_capacity_and_stun_cancels_pending_summons
+  ok      test_regular_and_elite_soldiers_respect_the_warning_boundary
+  ok      test_crowding_does_not_slide_a_committed_soldier_warning
+  FAIL    test_on_hit_equipment_control_keeps_its_recovery_state
+          - attack resolution must not overwrite hit-triggered control: expected 3, got 2
+
+11 tests, 1 failed, 0 broken files
+WARNING: 69 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 43 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 1 RID allocations of type 'N13RendererDummy15MaterialStorage13DummyMaterialE' were leaked at exit.
+ERROR: 1 RID allocations of type 'N13RendererDummy15MaterialStorage11DummyShaderE' were leaked at exit.
+ERROR: 4 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+測試失敗。

@@ -181,12 +181,12 @@ func test_chest_outside_a_level_is_ignored() -> void:
 func test_revive_spends_snacks_and_returns_to_the_same_fight() -> void:
 	make_flow()
 	await wait_frames(1)
+	var cost := _economy().revive_cost(0)
+	GameState.snacks = cost + 40
 	assert_true(await start_new_game())
 	await wait_frames(3)
 	var session := flow.get_session()
 	var level_started := watch_signal(EventBus.level_started)
-	var cost := _economy().revive_cost(0)
-	GameState.snacks = cost + 4
 	assert_true(await _down_and_wait_failure())
 	var result := flow.get_last_result()
 	assert_eq(result["revive_cost"], cost)
@@ -196,8 +196,8 @@ func test_revive_spends_snacks_and_returns_to_the_same_fight() -> void:
 	flow.get_screen().emit_signal(&"revive_pressed")
 	assert_eq(flow.state, FlowMain.State.LEVEL, "回到戰鬥")
 	assert_eq(flow.get_session(), session, "同一關,不重新開始")
-	assert_eq(GameState.snacks, 4, "扣零食")
-	assert_eq(read_save()["snacks"], 4, "立即存檔")
+	assert_eq(GameState.snacks, 40, "扣零食")
+	assert_eq(read_save()["snacks"], 40, "立即存檔")
 	assert_false(flow.get_arena().call(&"get_player").get(&"downed"), "金毛醒來")
 	assert_eq(GameState.vigor, GameState.player_stats.max_vigor)
 	assert_eq(level_started.count, 0, "不重發 level_started")
@@ -207,12 +207,11 @@ func test_revive_spends_snacks_and_returns_to_the_same_fight() -> void:
 	assert_true(session.is_playing())
 	assert_false(get_tree().paused)
 	# 同一關第二次倒下:不能再復活
-	GameState.snacks = 999
 	assert_true(await _down_and_wait_failure())
 	assert_false(flow.get_last_result()["can_revive"], "每關一次")
 	flow.get_screen().emit_signal(&"revive_pressed")
 	assert_eq(flow.state, FlowMain.State.FAILURE, "按了也沒用")
-	assert_eq(GameState.snacks, 999)
+	assert_eq(GameState.snacks, 40)
 	# 再試一次之後又可以復活
 	flow.get_screen().emit_signal(&"retry_pressed")
 	assert_true(await wait_until(in_level))

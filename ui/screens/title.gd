@@ -93,6 +93,7 @@ var _next_cast: float = 3.5
 var _glint: AnimatedSprite2D
 var _petals: CPUParticles2D
 var _buttons: VBoxContainer
+var _equipment_button: Button
 var _gallery_button: Button
 var _version: Label
 var _time: float = 0.0
@@ -216,6 +217,10 @@ func _ready() -> void:
 		gallery.name = "ArtGallery"
 		add_child(gallery))
 	add_child(_gallery_button)
+	_equipment_button = UiKit.button("裝備與商店", &"ButtonAlt", Vector2(70, 24))
+	_equipment_button.add_theme_font_size_override("font_size", 9)
+	_equipment_button.pressed.connect(func() -> void: EventBus.equipment_requested.emit())
+	add_child(_equipment_button)
 	_build_chapter_select()
 	_build_difficulty_panel()
 	_apply_save_state()
@@ -533,6 +538,8 @@ func _layout() -> void:
 	UiKit.place_backdrop(_backdrop)
 	if _gallery_button != null:
 		_gallery_button.position = safe.position + Vector2(8, 8)
+	if _equipment_button != null:
+		_equipment_button.position = Vector2(safe.end.x - 78, safe.position.y + 8)
 	var cx := safe.get_center().x
 	_logo_rest = Vector2(floorf(cx - _logo.size.x * 0.5), floorf(safe.position.y + 44.0))
 	_logo.position.x = _logo_rest.x

@@ -1,0 +1,146 @@
+{
+  "date_hong_kong": "2026-11-19",
+  "version": "0.5.0 development",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "implementation_commit": "c56e9534ebb0a753e05949297e5bac4c915418c0",
+  "full_regression": {
+    "tests": 831,
+    "failed": 0,
+    "broken_files": 0,
+    "exit_code": 0,
+    "log": "full_regression.log",
+    "warning_lines": 8,
+    "error_lines": 53,
+    "log_is_error_free": false,
+    "note": "Existing teardown lambda/null-object errors and exit resource/RID warnings remain; see raw log."
+  },
+  "equipment_tests": {
+    "passed": 28,
+    "failed": 0,
+    "exit_code": 0,
+    "log": "equipment_tests.log"
+  },
+  "numeric_audit": {
+    "states": 330,
+    "unchanged_adjacent_signatures": 0,
+    "previous": 9,
+    "limits": "Production numeric signatures only; physics timing and integer proc effects can quantize practical benefit."
+  },
+  "layout": {
+    "actual_renderer_captures": 12,
+    "all_safe_area_checks_passed": true,
+    "renderer": "Linux Compatibility OpenGL llvmpipe",
+    "sizes": [
+      "540x960",
+      "360x640",
+      "390x844 simulated notch"
+    ],
+    "data": "Most wallets/inventories are staged; no player-save access by capture tool."
+  },
+  "native_ui": {
+    "fresh_save": true,
+    "flow": [
+      "title",
+      "armory",
+      "buy sword",
+      "equip",
+      "forge",
+      "return"
+    ],
+    "coin_balances": [
+      250,
+      110,
+      60
+    ],
+    "final_item_level": 2,
+    "next_forge_disabled": true,
+    "missing_coins": 40,
+    "human_playtest": false
+  },
+  "combat_smoke": [
+    {
+      "case": "c1_knight_common5_s7",
+      "exit_code": 1,
+      "wall_seconds": 62.498,
+      "hero": "knight",
+      "gear": "common5",
+      "chapter": 1,
+      "seed": 7,
+      "outcome": "down_limit",
+      "finished": false,
+      "downs": 3,
+      "cleared": 3,
+      "combat_seconds": 529.6,
+      "damage_taken": 600,
+      "script_error": false,
+      "runtime_error_lines": []
+    },
+    {
+      "case": "c1_archer_epic9_s7",
+      "exit_code": 0,
+      "wall_seconds": 44.255,
+      "hero": "archer",
+      "gear": "epic9",
+      "chapter": 1,
+      "seed": 7,
+      "outcome": "complete",
+      "finished": true,
+      "downs": 0,
+      "cleared": 6,
+      "combat_seconds": 346.733,
+      "damage_taken": 52,
+      "script_error": false,
+      "runtime_error_lines": []
+    }
+  ],
+  "combat_source_match": {
+    "files_per_manifest": 542,
+    "all_match_implementation_commit": true,
+    "note": "Original manifests preserve pre-commit HEAD; their recorded source hashes match the implementation commit."
+  },
+  "not_done": [
+    "Windows/mobile hardware playtest",
+    "new executable export",
+    "human audio/balance evaluation",
+    "FPS benchmark",
+    "store publication",
+    "real payments"
+  ],
+  "sha256": {
+    ".gdignore": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "README.md": "03290149075ee18cae821a1f9bc7ec1103830ddd91e1b2dc5b25816a7a8571e0",
+    "archer_smoke/c1_archer_epic9_s7.json": "0021170ea52709a4eaca7d42408529f2722b170e22a223326cdd8807fda031ca",
+    "archer_smoke/c1_archer_epic9_s7.log": "fe33af121b851da73bc585837d3e7ceda25428cf62e59c8ae07b4e04af13e0e6",
+    "archer_smoke/manifest.json": "7091d586009106ba7412555e7e1ca445248487f9927c157e578c231b69feebbe",
+    "archer_smoke/summary.json": "be869f80c887f7c92da80e81111834426db10d9b7456135b08b6c9c1391ee999",
+    "archer_smoke.log": "ccb45854a759c2e3829969e7f8079b6dc1be6ea66858fc3ec2c6cf1becd971da",
+    "baseline_equipment.log": "66b7318521cb50c9650e826931c1a10e66fcbb603cc5aa34fe8f831dc53e544a",
+    "equipment_audit.json": "ff4640fcad69407cd192067c2b5c04faa9b2409329a3038bf39b5dfe8cc3e34e",
+    "equipment_audit.log": "f2c2759f79b8c302ae4fd27347088da6cd3c61a5a93854b559ab22001ccd6c13",
+    "equipment_iteration.log": "81e223195dd7b6aebdefe4ecac2bbbf6ef8c56ec36eb4a4cb3562f7507c5608f",
+    "equipment_tests.log": "ac59fe4add6b61479d02cb11b85b1140a65562133bddbb2168b393af47a6a279",
+    "final_import.log": "83041f69df1b473c0feec51d50e8b22854b60062806132af8e8db6b9398e8f99",
+    "full_regression.log": "b27cf841bbfae3e356f7c0f62ae92c18863553ea6107ada066f763a685df4958",
+    "knight_smoke/c1_knight_common5_s7.json": "d7458fe5d449d27f5e28a6fe61ecfa182a4766a6994c03550c7200edecddd160",
+    "knight_smoke/c1_knight_common5_s7.log": "4db09673cf3df607719ef10fc794348635358fe82067635a96cc3a57c2048d37",
+    "knight_smoke/manifest.json": "444f30b49458ebd816b846275041a3d0036457b3c9f3383477d4fe4fbe530053",
+    "knight_smoke/summary.json": "6aae5785d4c8dbfc2853e5198dcb318d41e91e083410b684bd0d92c1b59e0202",
+    "knight_smoke.log": "5b9fccc47f52cde2984c0aaa69732a3cfd76f2f06af363a261f9631f08e30503",
+    "native_review.log": "9f36407ca12bf8e69a464263d6a22f3a28df241dac8b2abdc65cabf5b2761b04",
+    "preflight_831.log": "3e4b1d99b941c7984efad5fb7ee890ee02ad9fd6cd23e84609db3c8c193bda02",
+    "render.log": "3cbc12dc275d78b1f6774dcdd8f7ffb896a2dd5222c2b7fa66815a47aebe174d",
+    "screenshots/01_first_loadout.png": "953b79490d82a7d190cf10e1d625a32c96be4ddb6741395869bd3cdb20850bd0",
+    "screenshots/02_common_shop.png": "0cd1184d93412f1822e8334c3617c19faea635452d985e9afe6f495e9aa6d846",
+    "screenshots/03_purchase_preview.png": "fd53df8c431ea716455f72ff1f93402e56fdbcb4f884754f3e4dd5a2ee18b769",
+    "screenshots/04_equipped.png": "7a49814283c466a10ba9ab58a99f6ac5ae8342535dfe89eac4c7ac7b65e11fad",
+    "screenshots/05_forge_preview.png": "16a0a025f88bc7fbe984c6e1b1b85a1dc10e0a40106eb6c8549033d01e68d20d",
+    "screenshots/06_forge_confirm.png": "1aa3eb9d1f9ffc251a74c940d1a2b7cf24dbdf67aefe961a49e6ce29058eb2d6",
+    "screenshots/07_forge_success.png": "4ec27f7efd159fe4a65737cca8957cb9fd31b19ddf2f756104e61985e4ac82e7",
+    "screenshots/08_epic_shop.png": "20deddb61649ac90537b87cb904dbd1b4760f6030843336762dd03ad3d14d3a5",
+    "screenshots/09_chapter_lock.png": "e42b7c4cc74fcef90a143e783525fc3aaf59471c21168738ee40c30c9cfa4b59",
+    "screenshots/10_small_detail.png": "380cfcf20eb57870dd9bc1d8afdd1995e3f4d1cfe715a6c252d0cee015f14be4",
+    "screenshots/11_small_confirm.png": "df09add9c02cb236ca6de51dcd17da3eb70ae3912221a74a449161793b011f4b",
+    "screenshots/12_tall_notch_bow.png": "0d95c177a2558c8b735d34cdf980386cd5a7f5dd57f85536066321247233b69e",
+    "screenshots/layout_checks.json": "b5d59f6d7c4d36aea62006692d98c38e7379bee094592267af04c2bfc8bf924a"
+  }
+}

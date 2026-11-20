@@ -14,6 +14,10 @@
 
 擁有人已要求加入法師與弓箭手選角、重新設計背景音樂和字體，並測試遊戲體驗。`codex/music-classes-type` 接續美術整合分支，可修改相關跨線檔案、職業基準與存檔 v7。本輪明確不匯出新版遊戲。詳見 `docs/requests/20261119-INT-classes-score-contract.md` 及 `docs/MUSIC_CLASSES_TYPOGRAPHY.md`。
 
+## 裝備與檢查點補充（2026-11-19）
+
+擁有人已要求繼續開發並加入普通上限 5 級、史詩上限 9 級的武器、護甲、寶物，頭目掉落與金幣／寶石商城。此為跨線整合，早期不做商店的範圍由本次要求補充。真實付款仍未接通；採平台支付介面，不加入自行收款或授權客戶端發放付費幣。詳見 `docs/requests/20261119-INT-equipment-checkpoints.md`。
+
 ## 你是哪一條線
 
 擁有人會在開場指示中告訴你是 Phase 0、A、B、C、D、整合還是上架(M4)。只做那一線的任務。
@@ -58,3 +62,11 @@
 
 - 需要建置 Android 版時:先執行 `tools/install_android_tooling.sh`(安裝匯出範本與 Android SDK,需要 dl.google.com 與 github.com 的網絡權限),再照 `export/README.md`。
 - 需要截圖時:`xvfb-run -a godot --path . --rendering-driver opengl3`(雲端環境有 Xvfb 與軟體 OpenGL)。注意 Xvfb 沒有視窗管理員,改變視窗大小時要同時設定 `get_tree().root.size`。
+
+## 0.8.0 整合接續（2026-11-20）
+
+擁有人把主開發移回此對話，要求繼續提高完整遊戲品質。本輪接續完整 0.4–0.7 歷史，可跨戰鬥、HUD、流程、存檔、原創圖示、驗證與 Windows 匯出工作；合約為 `docs/requests/20261120-INT-guard-learning.md`。歷史 0.3 輪次的「不匯出新版」不是本輪限制。最新入口仍為 `docs/PROJECT_STATE.md`；不得從測試通過宣稱真人9/10或人氣保證。
+
+## 0.8.1 整合接續（2026-11-20）
+
+擁有人要求繼續既有工作；接續完整 0.8.0，處理近戰預警／命中一致性、隊長援兵上限、實際裝備打斷互動及對照驗證。合約為 `docs/requests/20261120-INT-captain-fairness.md`。沿用跨線整合與新版 Windows 試玩範圍，無新存檔或 EventBus 合約。

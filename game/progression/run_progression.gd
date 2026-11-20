@@ -155,6 +155,7 @@ func rebuild_stats() -> void:
 	var stats := base.duplicate() as StatBlock
 	if meta != null:
 		meta.apply_to(stats, base)
+	TrickDeck.apply_modifiers(stats, base, EquipmentInventory.bonuses(GameState.run_equipment, String(GameState.hero_class)).mods, difficulty.min_damage_taken_mult)
 	for id in GameState.active_tricks:
 		var trick := _find_trick(id)
 		if trick != null and not trick.stat_modifiers.is_empty():
@@ -291,3 +292,26 @@ func _on_trick_chosen(trick_id: StringName) -> void:
 	else:
 		_choice_open = false
 		choice_closed.emit()
+
+
+## JSON-safe checkpoint of an adventure at a level boundary.
+func export_checkpoint() -> Dictionary:
+	return {"hero_level": GameState.hero_level, "tricks": Array(GameState.active_tricks),
+		"exp_centi": _exp.get_centi(), "run_modifiers": run_modifiers.duplicate(true),
+		"bonus_trick_levels": bonus_trick_levels, "vigor": GameState.vigor,
+		"satisfaction": GameState.satisfaction, "next_level_bonus": GameState.next_level_bonus,
+		"rng": str(rng.state), "equipment": GameState.run_equipment.duplicate(true)}
+
+func import_checkpoint(data: Dictionary) -> void:
+	cancel_choices()
+	GameState.hero_level = int(data.hero_level)
+	GameState.active_tricks.assign(data.tricks)
+	_exp.set_state(GameState.hero_level, int(data.exp_centi))
+	run_modifiers.assign(data.run_modifiers)
+	bonus_trick_levels = int(data.bonus_trick_levels)
+	GameState.next_level_bonus = float(data.next_level_bonus)
+	GameState.satisfaction = int(data.satisfaction)
+	GameState.run_equipment = data.equipment.duplicate(true)
+	rng.state = int(data.rng)
+	rebuild_stats()
+	GameState.vigor = clampi(int(data.vigor), 1, GameState.player_stats.max_vigor)

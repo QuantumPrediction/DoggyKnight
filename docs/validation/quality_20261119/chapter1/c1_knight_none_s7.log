@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+== 第 1 章 / knight ==
+
+== 試玩結果 ==
+1-1   68.8 秒  擊倒 16  等級  3  把戲 [&"play_dead", &"zoomies"]  活力 1
+1-2  失敗  41.1 秒  擊倒  7
+1-2  失敗  76.0 秒  擊倒 14
+1-2  失敗 108.0 秒  擊倒 13
+倒下 3 次;必殺技 3 次;略過對白 4 段;最後活力 0
+PLAYTHROUGH TIMEOUT
+WARNING: 14 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 7 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)

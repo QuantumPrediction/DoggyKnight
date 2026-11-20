@@ -36,6 +36,22 @@ signal trick_evolved(evolution_id: StringName)   # v2.4:把戲進化(C 線演出
 signal event_offered(event_id: StringName, options: Array)   # v2.4:關卡中途的抉擇事件;options 是 Array[Dictionary]
 signal snacks_changed(total: int)           # v2.4:零食總數改變
 
+signal equipment_requested()
+signal companion_blocked(at: Vector2)
+signal companion_guard_requested()
+signal companion_guard_status_requested()
+signal companion_guard_state(state: StringName, cooldown_left: float, duration_left: float)
+signal companion_counter_granted(bonus: float)
+# 0.8 integration contract: docs/requests/20261120-INT-guard-learning.md
+signal companion_guard_coverage(protected: bool)
+signal player_combat_status_requested()
+signal player_combat_readiness(state: StringName, charge_left: float, charge_bonus: float)
+signal companion_counter_resolved(result: StringName)
+signal guard_lesson_requested()
+signal guard_lesson_completed()
+signal guard_lesson_dismissed()
+signal boss_intent_changed(enemy_id: StringName, intent: StringName, remaining: float)
+
 # 介面(C 線發出)
 signal ultimate_requested()                 # HUD 的必殺技按鈕被按下;A 線執行後發 ultimate_used
 signal resume_requested()                   # 暫停畫面的「繼續」

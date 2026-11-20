@@ -1,0 +1,19 @@
+[
+  {
+    "case": "c1_knight_common5_s7",
+    "exit_code": 1,
+    "wall_seconds": 62.498,
+    "hero": "knight",
+    "gear": "common5",
+    "chapter": 1,
+    "seed": 7,
+    "outcome": "down_limit",
+    "finished": false,
+    "downs": 3,
+    "cleared": 3,
+    "combat_seconds": 529.6,
+    "damage_taken": 600,
+    "script_error": false,
+    "runtime_error_lines": []
+  }
+]

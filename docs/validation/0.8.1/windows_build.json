@@ -1,0 +1,10 @@
+{
+  "version": "0.8.1",
+  "platform": "Windows x86_64",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "executable_sha256": "cebec27972d5be07a80636d10c42532a33515dc0e355d4e2308682d3c57a4ff9",
+  "executable_size": 220135432,
+  "native_windows_tested": false,
+  "real_payments_enabled": false,
+  "verification": "Official matching templates; embedded pack checked by matching Linux Godot. Not native Windows execution."
+}

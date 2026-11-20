@@ -1,0 +1,158 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+== 第 1 章 / knight ==
+ERROR: Parameter "data.tree" is null.
+   at: get_tree (scene/main/node.h:559)
+   GDScript backtrace (most recent call first):
+       [0] _publish_rally_state (res://game/actors/companions/bulldog.gd:398)
+       [1] _refresh_rally_status (res://game/actors/companions/bulldog.gd:409)
+       [2] _ready (res://ui/hud/companion_guard_control.gd:55)
+       [3] _build (res://ui/hud/hud.gd:200)
+       [4] _ready (res://ui/hud/hud.gd:84)
+       [5] _add_ui (res://game/flow/flow_main.gd:1061)
+       [6] _open_session (res://game/flow/flow_main.gd:685)
+       [7] _start_level (res://game/flow/flow_main.gd:671)
+       [8] _go (res://game/flow/flow_main.gd:1115)
+       [9] cover (res://game/flow/flow_transition.gd:57)
+       [10] _run (res://game/flow/flow_transition.gd:75)
+       [11] finish (res://game/flow/flow_transition.gd:96)
+       [12] _invoke (res://game/flow/flow_transition.gd:83)
+       [13] cover (res://ui/transition/transition.gd:44)
+       [14] _animate (res://ui/transition/transition.gd:72)
+SCRIPT ERROR: Cannot call method 'get_first_node_in_group' on a null value.
+          at: BulldogCompanion._publish_rally_state (res://game/actors/companions/bulldog.gd:398)
+          GDScript backtrace (most recent call first):
+              [0] _publish_rally_state (res://game/actors/companions/bulldog.gd:398)
+              [1] _refresh_rally_status (res://game/actors/companions/bulldog.gd:409)
+              [2] _ready (res://ui/hud/companion_guard_control.gd:55)
+              [3] _build (res://ui/hud/hud.gd:200)
+              [4] _ready (res://ui/hud/hud.gd:84)
+              [5] _add_ui (res://game/flow/flow_main.gd:1061)
+              [6] _open_session (res://game/flow/flow_main.gd:685)
+              [7] _start_level (res://game/flow/flow_main.gd:671)
+              [8] _go (res://game/flow/flow_main.gd:1115)
+              [9] cover (res://game/flow/flow_transition.gd:57)
+              [10] _run (res://game/flow/flow_transition.gd:75)
+              [11] finish (res://game/flow/flow_transition.gd:96)
+              [12] _invoke (res://game/flow/flow_transition.gd:83)
+              [13] cover (res://ui/transition/transition.gd:44)
+              [14] _animate (res://ui/transition/transition.gd:72)
+ERROR: Parameter "data.tree" is null.
+   at: get_tree (scene/main/node.h:559)
+   GDScript backtrace (most recent call first):
+       [0] _publish_rally_state (res://game/actors/companions/bulldog.gd:398)
+       [1] _refresh_rally_status (res://game/actors/companions/bulldog.gd:409)
+       [2] _ready (res://ui/pause/pause.gd:47)
+       [3] _add_ui (res://game/flow/flow_main.gd:1061)
+       [4] _open_session (res://game/flow/flow_main.gd:693)
+       [5] _start_level (res://game/flow/flow_main.gd:671)
+       [6] _go (res://game/flow/flow_main.gd:1115)
+       [7] cover (res://game/flow/flow_transition.gd:57)
+       [8] _run (res://game/flow/flow_transition.gd:75)
+       [9] finish (res://game/flow/flow_transition.gd:96)
+       [10] _invoke (res://game/flow/flow_transition.gd:83)
+       [11] cover (res://ui/transition/transition.gd:44)
+       [12] _animate (res://ui/transition/transition.gd:72)
+SCRIPT ERROR: Cannot call method 'get_first_node_in_group' on a null value.
+          at: BulldogCompanion._publish_rally_state (res://game/actors/companions/bulldog.gd:398)
+          GDScript backtrace (most recent call first):
+              [0] _publish_rally_state (res://game/actors/companions/bulldog.gd:398)
+              [1] _refresh_rally_status (res://game/actors/companions/bulldog.gd:409)
+              [2] _ready (res://ui/pause/pause.gd:47)
+              [3] _add_ui (res://game/flow/flow_main.gd:1061)
+              [4] _open_session (res://game/flow/flow_main.gd:693)
+              [5] _start_level (res://game/flow/flow_main.gd:671)
+              [6] _go (res://game/flow/flow_main.gd:1115)
+              [7] cover (res://game/flow/flow_transition.gd:57)
+              [8] _run (res://game/flow/flow_transition.gd:75)
+              [9] finish (res://game/flow/flow_transition.gd:96)
+              [10] _invoke (res://game/flow/flow_transition.gd:83)
+              [11] cover (res://ui/transition/transition.gd:44)
+              [12] _animate (res://ui/transition/transition.gd:72)
+ERROR: Parameter "data.tree" is null.
+   at: get_tree (scene/main/node.h:559)
+   GDScript backtrace (most recent call first):
+       [0] _publish_rally_state (res://game/actors/companions/bulldog.gd:398)
+       [1] _refresh_rally_status (res://game/actors/companions/bulldog.gd:409)
+       [2] _ready (res://ui/hud/companion_guard_control.gd:55)
+       [3] _build (res://ui/hud/hud.gd:200)
+       [4] _ready (res://ui/hud/hud.gd:84)
+       [5] _add_ui (res://game/flow/flow_main.gd:1061)
+       [6] _open_session (res://game/flow/flow_main.gd:685)
+       [7] _start_level (res://game/flow/flow_main.gd:671)
+       [8] retry_level (res://game/flow/flow_main.gd:648)
+       [9] _go (res://game/flow/flow_main.gd:1115)
+       [10] cover (res://game/flow/flow_transition.gd:57)
+       [11] _run (res://game/flow/flow_transition.gd:75)
+       [12] finish (res://game/flow/flow_transition.gd:96)
+       [13] _invoke (res://game/flow/flow_transition.gd:83)
+       [14] cover (res://ui/transition/transition.gd:44)
+       [15] _animate (res://ui/transition/transition.gd:72)
+SCRIPT ERROR: Cannot call method 'get_first_node_in_group' on a null value.
+          at: BulldogCompanion._publish_rally_state (res://game/actors/companions/bulldog.gd:398)
+          GDScript backtrace (most recent call first):
+              [0] _publish_rally_state (res://game/actors/companions/bulldog.gd:398)
+              [1] _refresh_rally_status (res://game/actors/companions/bulldog.gd:409)
+              [2] _ready (res://ui/hud/companion_guard_control.gd:55)
+              [3] _build (res://ui/hud/hud.gd:200)
+              [4] _ready (res://ui/hud/hud.gd:84)
+              [5] _add_ui (res://game/flow/flow_main.gd:1061)
+              [6] _open_session (res://game/flow/flow_main.gd:685)
+              [7] _start_level (res://game/flow/flow_main.gd:671)
+              [8] retry_level (res://game/flow/flow_main.gd:648)
+              [9] _go (res://game/flow/flow_main.gd:1115)
+              [10] cover (res://game/flow/flow_transition.gd:57)
+              [11] _run (res://game/flow/flow_transition.gd:75)
+              [12] finish (res://game/flow/flow_transition.gd:96)
+              [13] _invoke (res://game/flow/flow_transition.gd:83)
+              [14] cover (res://ui/transition/transition.gd:44)
+              [15] _animate (res://ui/transition/transition.gd:72)
+ERROR: Parameter "data.tree" is null.
+   at: get_tree (scene/main/node.h:559)
+   GDScript backtrace (most recent call first):
+       [0] _publish_rally_state (res://game/actors/companions/bulldog.gd:398)
+       [1] _refresh_rally_status (res://game/actors/companions/bulldog.gd:409)
+       [2] _ready (res://ui/pause/pause.gd:47)
+       [3] _add_ui (res://game/flow/flow_main.gd:1061)
+       [4] _open_session (res://game/flow/flow_main.gd:693)
+       [5] _start_level (res://game/flow/flow_main.gd:671)
+       [6] retry_level (res://game/flow/flow_main.gd:648)
+       [7] _go (res://game/flow/flow_main.gd:1115)
+       [8] cover (res://game/flow/flow_transition.gd:57)
+       [9] _run (res://game/flow/flow_transition.gd:75)
+       [10] finish (res://game/flow/flow_transition.gd:96)
+       [11] _invoke (res://game/flow/flow_transition.gd:83)
+       [12] cover (res://ui/transition/transition.gd:44)
+       [13] _animate (res://ui/transition/transition.gd:72)
+SCRIPT ERROR: Cannot call method 'get_first_node_in_group' on a null value.
+          at: BulldogCompanion._publish_rally_state (res://game/actors/companions/bulldog.gd:398)
+          GDScript backtrace (most recent call first):
+              [0] _publish_rally_state (res://game/actors/companions/bulldog.gd:398)
+              [1] _refresh_rally_status (res://game/actors/companions/bulldog.gd:409)
+              [2] _ready (res://ui/pause/pause.gd:47)
+              [3] _add_ui (res://game/flow/flow_main.gd:1061)
+              [4] _open_session (res://game/flow/flow_main.gd:693)
+              [5] _start_level (res://game/flow/flow_main.gd:671)
+              [6] retry_level (res://game/flow/flow_main.gd:648)
+              [7] _go (res://game/flow/flow_main.gd:1115)
+              [8] cover (res://game/flow/flow_transition.gd:57)
+              [9] _run (res://game/flow/flow_transition.gd:75)
+              [10] finish (res://game/flow/flow_transition.gd:96)
+              [11] _invoke (res://game/flow/flow_transition.gd:83)
+              [12] cover (res://ui/transition/transition.gd:44)
+              [13] _animate (res://ui/transition/transition.gd:72)
+
+== 試玩結果 ==
+1-1   56.7 秒  擊倒 16  等級  3  把戲 [&"play_dead", &"zoomies"]  活力 78
+1-2  失敗  88.7 秒  擊倒 17
+1-2   76.0 秒  擊倒 24  等級  4  把戲 [&"roll"]  活力 9
+營地:小遊戲完成,活力 126,下一關加成 15%
+1-3   82.3 秒  擊倒 33  等級  6  把戲 [&"sniff", &"dig", &"roll"]  活力 69
+1-4  失敗  91.2 秒  擊倒 21
+1-4  失敗  95.2 秒  擊倒 21
+倒下 3 次;必殺技 8 次;略過對白 9 段;最後活力 0
+PLAYTHROUGH TIMEOUT
+WARNING: 25 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 12 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)

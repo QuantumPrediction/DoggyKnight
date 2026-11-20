@@ -36,6 +36,20 @@ func test_spawned_enemy_is_set_up_from_data() -> void:
 	assert_eq(elite.hp, 75)
 	assert_true(elite.visual_scale > 1.2, "精英看起來比較大")
 
+func test_seed_override_controls_initial_enemy_decisions() -> void:
+	make_arena()
+	var data := load("res://data/enemies/crow.tres") as EnemyData
+	var first := data.scene.instantiate() as EnemyBase
+	var second := data.scene.instantiate() as EnemyBase
+	for enemy in [first, second]:
+		enemy.setup(data)
+		enemy.arena = arena
+		enemy.rng_seed_override = 917
+		arena.entities.add_child(enemy)
+	assert_almost_eq(first._retarget_left, second._retarget_left)
+	assert_eq(first.rng.state, second.rng.state, "Spawn identity must not change seeded initial decisions")
+	assert_eq(first.rng.randi(), second.rng.randi())
+
 
 func test_death_leaves_group_immediately_and_emits_once() -> void:
 	make_arena()

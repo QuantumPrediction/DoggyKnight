@@ -21,7 +21,9 @@ static func launch(host: GoldiePlayer, dir: Vector2, mult: float = 1.0, is_ultim
 		existing[0].queue_free()
 	var p := HeroProjectile.new()
 	p.shooter = weakref(host)
-	p.loadout = host.loadout
+	p.loadout = host.loadout.duplicate() as HeroClassData
+	p.loadout.splash_radius += float(host.equipment_combat.effects.get("splash", 0.0))
+	p.loadout.max_hits += roundi(float(host.equipment_combat.effects.get("pierce", 0.0)))
 	p.direction = dir.normalized()
 	p.remaining = GameState.player_stats.attack_range
 	p.multiplier = mult

@@ -238,6 +238,10 @@ func _apply() -> void:
 		footer_label.text = tr("UI_NEXT_CAMP")
 	else:
 		footer_label.text = ""
+	var equipment_reward: Dictionary = _result.get("equipment_reward", {})
+	if not equipment_reward.is_empty():
+		footer_label.text += ("\n" if not footer_label.text.is_empty() else "") + EquipmentInventory.reward_text(equipment_reward)
+		footer_label.add_theme_font_size_override("font_size", 8)
 	footer_label.visible = not footer_label.text.is_empty()
 	# stars and goals (v2.2)
 	stars_row.visible = has_stars()

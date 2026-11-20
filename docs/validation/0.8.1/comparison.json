@@ -1,0 +1,250 @@
+{
+  "totals": {
+    "main": {
+      "before": {
+        "completed": 10,
+        "downs": 7
+      },
+      "after": {
+        "completed": 11,
+        "downs": 5
+      }
+    },
+    "check": {
+      "before": {
+        "completed": 4,
+        "downs": 2
+      },
+      "after": {
+        "completed": 4,
+        "downs": 2
+      }
+    }
+  },
+  "pairs": [
+    {
+      "group": "main",
+      "case": "c1_knight_common1_s7_earth_original_reactive",
+      "hero": "knight",
+      "seed": 7,
+      "policy": "original",
+      "before_finished": false,
+      "after_finished": false,
+      "before_downs": 3,
+      "after_downs": 3,
+      "before_damage": 616,
+      "after_damage": 524,
+      "changed_since_iteration1": []
+    },
+    {
+      "group": "main",
+      "case": "c1_knight_common1_s7_earth_cautious_reactive",
+      "hero": "knight",
+      "seed": 7,
+      "policy": "cautious",
+      "before_finished": true,
+      "after_finished": true,
+      "before_downs": 1,
+      "after_downs": 0,
+      "before_damage": 366,
+      "after_damage": 180,
+      "changed_since_iteration1": []
+    },
+    {
+      "group": "main",
+      "case": "c1_knight_common1_s19_earth_original_reactive",
+      "hero": "knight",
+      "seed": 19,
+      "policy": "original",
+      "before_finished": true,
+      "after_finished": true,
+      "before_downs": 0,
+      "after_downs": 0,
+      "before_damage": 207,
+      "after_damage": 221,
+      "changed_since_iteration1": []
+    },
+    {
+      "group": "main",
+      "case": "c1_knight_common1_s19_earth_cautious_reactive",
+      "hero": "knight",
+      "seed": 19,
+      "policy": "cautious",
+      "before_finished": true,
+      "after_finished": true,
+      "before_downs": 0,
+      "after_downs": 0,
+      "before_damage": 96,
+      "after_damage": 97,
+      "changed_since_iteration1": []
+    },
+    {
+      "group": "main",
+      "case": "c1_mage_common1_s7_earth_original_reactive",
+      "hero": "mage",
+      "seed": 7,
+      "policy": "original",
+      "before_finished": true,
+      "after_finished": true,
+      "before_downs": 0,
+      "after_downs": 0,
+      "before_damage": 71,
+      "after_damage": 105,
+      "changed_since_iteration1": []
+    },
+    {
+      "group": "main",
+      "case": "c1_mage_common1_s7_earth_cautious_reactive",
+      "hero": "mage",
+      "seed": 7,
+      "policy": "cautious",
+      "before_finished": true,
+      "after_finished": true,
+      "before_downs": 0,
+      "after_downs": 0,
+      "before_damage": 112,
+      "after_damage": 92,
+      "changed_since_iteration1": []
+    },
+    {
+      "group": "main",
+      "case": "c1_mage_common1_s19_earth_original_reactive",
+      "hero": "mage",
+      "seed": 19,
+      "policy": "original",
+      "before_finished": true,
+      "after_finished": true,
+      "before_downs": 0,
+      "after_downs": 0,
+      "before_damage": 96,
+      "after_damage": 94,
+      "changed_since_iteration1": []
+    },
+    {
+      "group": "main",
+      "case": "c1_mage_common1_s19_earth_cautious_reactive",
+      "hero": "mage",
+      "seed": 19,
+      "policy": "cautious",
+      "before_finished": false,
+      "after_finished": true,
+      "before_downs": 3,
+      "after_downs": 1,
+      "before_damage": 340,
+      "after_damage": 199,
+      "changed_since_iteration1": []
+    },
+    {
+      "group": "main",
+      "case": "c1_archer_common1_s7_earth_original_reactive",
+      "hero": "archer",
+      "seed": 7,
+      "policy": "original",
+      "before_finished": true,
+      "after_finished": true,
+      "before_downs": 0,
+      "after_downs": 0,
+      "before_damage": 53,
+      "after_damage": 65,
+      "changed_since_iteration1": []
+    },
+    {
+      "group": "main",
+      "case": "c1_archer_common1_s7_earth_cautious_reactive",
+      "hero": "archer",
+      "seed": 7,
+      "policy": "cautious",
+      "before_finished": true,
+      "after_finished": true,
+      "before_downs": 0,
+      "after_downs": 0,
+      "before_damage": 107,
+      "after_damage": 129,
+      "changed_since_iteration1": []
+    },
+    {
+      "group": "main",
+      "case": "c1_archer_common1_s19_earth_original_reactive",
+      "hero": "archer",
+      "seed": 19,
+      "policy": "original",
+      "before_finished": true,
+      "after_finished": true,
+      "before_downs": 0,
+      "after_downs": 0,
+      "before_damage": 91,
+      "after_damage": 109,
+      "changed_since_iteration1": []
+    },
+    {
+      "group": "main",
+      "case": "c1_archer_common1_s19_earth_cautious_reactive",
+      "hero": "archer",
+      "seed": 19,
+      "policy": "cautious",
+      "before_finished": true,
+      "after_finished": true,
+      "before_downs": 0,
+      "after_downs": 1,
+      "before_damage": 88,
+      "after_damage": 244,
+      "changed_since_iteration1": []
+    },
+    {
+      "group": "check",
+      "case": "c1_knight_common1_s37_earth_original_reactive",
+      "hero": "knight",
+      "seed": 37,
+      "policy": "original",
+      "before_finished": true,
+      "after_finished": true,
+      "before_downs": 2,
+      "after_downs": 0,
+      "before_damage": 634,
+      "after_damage": 427,
+      "changed_since_iteration1": []
+    },
+    {
+      "group": "check",
+      "case": "c1_knight_common1_s37_earth_cautious_reactive",
+      "hero": "knight",
+      "seed": 37,
+      "policy": "cautious",
+      "before_finished": true,
+      "after_finished": true,
+      "before_downs": 0,
+      "after_downs": 1,
+      "before_damage": 240,
+      "after_damage": 425,
+      "changed_since_iteration1": []
+    },
+    {
+      "group": "check",
+      "case": "c1_knight_common1_s53_earth_original_reactive",
+      "hero": "knight",
+      "seed": 53,
+      "policy": "original",
+      "before_finished": true,
+      "after_finished": true,
+      "before_downs": 0,
+      "after_downs": 1,
+      "before_damage": 245,
+      "after_damage": 342,
+      "changed_since_iteration1": []
+    },
+    {
+      "group": "check",
+      "case": "c1_knight_common1_s53_earth_cautious_reactive",
+      "hero": "knight",
+      "seed": 53,
+      "policy": "cautious",
+      "before_finished": true,
+      "after_finished": true,
+      "before_downs": 0,
+      "after_downs": 0,
+      "before_damage": 110,
+      "after_damage": 105,
+      "changed_since_iteration1": []
+    }
+  ]
+}

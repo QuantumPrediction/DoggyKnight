@@ -1,0 +1,19 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+== 第 1 章 / knight ==
+
+== 試玩結果 ==
+1-1   44.7 秒  擊倒 16  等級  3  把戲 [&"spin", &"sniff"]  活力 94
+1-2   55.4 秒  擊倒 24  等級  4  把戲 [&"dig"]  活力 65
+營地:小遊戲完成,活力 118,下一關加成 15%
+1-3   67.2 秒  擊倒 33  等級  6  把戲 [&"sit", &"sit", &"wag"]  活力 88
+1-4   70.5 秒  擊倒 35  等級  8  把戲 [&"zoomies", &"fetch", &"zoomies"]  活力 83
+營地:小遊戲完成,活力 118,下一關加成 15%
+1-5   69.7 秒  擊倒 34  等級 10  把戲 [&"sit", &"fetch", &"spin", &"dig", &"bark"]  活力 118
+1-6   55.2 秒  擊倒  9  等級 12  把戲 [&"lion_roar", &"wag", &"roll"]  活力 118
+倒下 0 次;必殺技 14 次;略過對白 16 段;最後活力 118
+PLAYTHROUGH COMPLETE
+WARNING: 32 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 15 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)

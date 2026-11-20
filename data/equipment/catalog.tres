@@ -1,0 +1,458 @@
+[gd_resource type="Resource" script_class="EquipmentRules" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://core/data/equipment_rules.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+items = Array[Dictionary]([
+  {
+    "id": "training_sword",
+    "element": "earth",
+    "name": "衛兵長劍",
+    "slot": "weapon",
+    "quality": "common",
+    "hero": "knight",
+    "group": "guardian",
+    "chapter": 1,
+    "mods": {
+      "attack_damage": 0.12
+    },
+    "per_level_mods": {"attack_interval": -0.01},
+    "effects": {},
+    "desc": "穩定近戰傷害；每次鍛造縮短 1% 基礎攻擊間隔。",
+    "coins": 140,
+    "gems": 0,
+    "icon": 0
+  },
+  {
+    "id": "apprentice_staff",
+    "element": "water",
+    "name": "橡木法杖",
+    "slot": "weapon",
+    "quality": "common",
+    "hero": "mage",
+    "group": "scholar",
+    "chapter": 1,
+    "mods": {
+      "attack_damage": 0.08,
+      "attack_range": 0.06
+    },
+    "effects": {},
+    "desc": "延長施法距離，保留安全走位空間。",
+    "coins": 140,
+    "gems": 0,
+    "icon": 1
+  },
+  {
+    "id": "ash_bow",
+    "element": "wind",
+    "name": "白蠟木弓",
+    "slot": "weapon",
+    "quality": "common",
+    "hero": "archer",
+    "group": "ranger",
+    "chapter": 1,
+    "mods": {
+      "attack_damage": 0.06,
+      "attack_range": 0.12
+    },
+    "effects": {},
+    "desc": "適合停步瞄準與遠距離攻擊。",
+    "coins": 140,
+    "gems": 0,
+    "icon": 2
+  },
+  {
+    "id": "quilted_vest",
+    "element": "earth",
+    "name": "衛兵棉甲",
+    "slot": "armor",
+    "quality": "common",
+    "hero": "all",
+    "group": "guardian",
+    "chapter": 1,
+    "mods": {
+      "max_vigor": 0.1,
+      "damage_taken_mult": -0.04
+    },
+    "effects": {},
+    "desc": "可靠活力與減傷，沒有速度懲罰。",
+    "coins": 100,
+    "gems": 0,
+    "icon": 3
+  },
+  {
+    "id": "ranger_jacket",
+    "element": "wind",
+    "name": "林地皮甲",
+    "slot": "armor",
+    "quality": "common",
+    "hero": "all",
+    "group": "ranger",
+    "chapter": 1,
+    "mods": {
+      "max_vigor": 0.06,
+      "move_speed": 0.08
+    },
+    "effects": {},
+    "desc": "以走位換取生存空間。",
+    "coins": 100,
+    "gems": 0,
+    "icon": 4
+  },
+  {
+    "id": "apprentice_robe",
+    "element": "water",
+    "name": "見習長袍",
+    "slot": "armor",
+    "quality": "common",
+    "hero": "all",
+    "group": "scholar",
+    "chapter": 1,
+    "mods": {
+      "max_vigor": 0.04,
+      "exp_mult": 0.12
+    },
+    "effects": {},
+    "desc": "更快形成當局技能配搭。",
+    "coins": 100,
+    "gems": 0,
+    "icon": 5
+  },
+  {
+    "id": "sunblade",
+    "element": "fire",
+    "name": "日誓之刃",
+    "slot": "weapon",
+    "quality": "epic",
+    "hero": "knight",
+    "group": "guardian",
+    "chapter": 1,
+    "mods": {
+      "attack_damage": 0.12
+    },
+    "effects": {
+      "counter": 0.4
+    },
+    "desc": "受到有效命中後，3 秒內下一次命中加強；連續受擊不疊加。",
+    "coins": 1600,
+    "gems": 120,
+    "icon": 6
+  },
+  {
+    "id": "moonstaff",
+    "element": "water",
+    "name": "月環法杖",
+    "slot": "weapon",
+    "quality": "epic",
+    "hero": "mage",
+    "group": "scholar",
+    "chapter": 2,
+    "mods": {
+      "attack_damage": 0.1
+    },
+    "effects": {
+      "splash": 10.0
+    },
+    "desc": "法球爆炸範圍擴大；保持現有最多 6 個爆炸目標上限。",
+    "coins": 1600,
+    "gems": 120,
+    "icon": 7
+  },
+  {
+    "id": "stormbow",
+    "element": "wind",
+    "name": "翠雷長弓",
+    "slot": "weapon",
+    "quality": "epic",
+    "hero": "archer",
+    "group": "ranger",
+    "chapter": 3,
+    "mods": {
+      "attack_damage": 0.1
+    },
+    "per_level_mods": {"attack_interval": -0.01},
+    "effects": {
+      "pierce": 1.0
+    },
+    "desc": "箭矢額外貫穿目標；每次鍛造縮短 1% 基礎攻擊間隔。",
+    "coins": 1600,
+    "gems": 120,
+    "icon": 8
+  },
+  {
+    "id": "oathplate",
+    "element": "earth",
+    "name": "守誓鎧甲",
+    "slot": "armor",
+    "quality": "epic",
+    "hero": "all",
+    "group": "guardian",
+    "chapter": 1,
+    "mods": {
+      "max_vigor": 0.12,
+      "move_speed": -0.05
+    },
+    "effects": {
+      "guard": 0.35
+    },
+    "desc": "每 12 秒抵擋下一次命中的部分傷害；移動速度稍降。",
+    "coins": 1400,
+    "gems": 100,
+    "icon": 9
+  },
+  {
+    "id": "mistcloak",
+    "element": "wind",
+    "name": "霧行披風",
+    "slot": "armor",
+    "quality": "epic",
+    "hero": "all",
+    "group": "ranger",
+    "chapter": 2,
+    "mods": {
+      "move_speed": 0.08
+    },
+    "effects": {
+      "ambush": 0.25
+    },
+    "desc": "持續移動 1.5 秒蓄勢，停步後下一次命中加強；3 秒內有效。",
+    "coins": 1400,
+    "gems": 100,
+    "icon": 10
+  },
+  {
+    "id": "starrobe",
+    "element": "fire",
+    "name": "星圖法衣",
+    "slot": "armor",
+    "quality": "epic",
+    "hero": "all",
+    "group": "scholar",
+    "chapter": 3,
+    "mods": {
+      "max_vigor": 0.08
+    },
+    "effects": {
+      "loyalty": 0.15
+    },
+    "desc": "加快忠誠度累積，較常使用職業必殺。",
+    "coins": 1400,
+    "gems": 100,
+    "icon": 11
+  },
+  {
+    "id": "pack_bell",
+    "name": "圓桌召集鈴",
+    "slot": "treasure",
+    "quality": "epic",
+    "hero": "all",
+    "group": "guardian",
+    "chapter": 1,
+    "mods": {},
+    "effects": {
+      "pack": 0.3
+    },
+    "desc": "同伴擋彈後，3 秒內下一次命中加強；6 秒冷卻。",
+    "coins": 1800,
+    "gems": 140,
+    "icon": 12
+  },
+  {
+    "id": "hearth_heart",
+    "name": "爐火之心",
+    "slot": "treasure",
+    "quality": "epic",
+    "hero": "all",
+    "group": "guardian",
+    "chapter": 2,
+    "mods": {},
+    "effects": {
+      "wave_heal": 0.04
+    },
+    "desc": "清空一波後恢復最大活力的一部分；不在開場重複治療。",
+    "coins": 1800,
+    "gems": 140,
+    "icon": 13
+  },
+  {
+    "id": "leaf_compass",
+    "name": "尋路葉盤",
+    "slot": "treasure",
+    "quality": "epic",
+    "hero": "all",
+    "group": "ranger",
+    "chapter": 3,
+    "mods": {
+      "pickup_radius": 0.2,
+      "exp_mult": 0.1
+    },
+    "effects": {},
+    "desc": "收集與成長專長，可配不同武器。",
+    "coins": 1800,
+    "gems": 140,
+    "icon": 14
+  },
+  {
+    "id": "star_hourglass",
+    "name": "星砂時計",
+    "slot": "treasure",
+    "quality": "epic",
+    "hero": "all",
+    "group": "scholar",
+    "chapter": 4,
+    "mods": {
+      "attack_interval": -0.04
+    },
+    "effects": {
+      "loyalty": 0.12
+    },
+    "desc": "攻擊間隔縮短並加快忠誠累積。",
+    "coins": 1800,
+    "gems": 140,
+    "icon": 15
+  },
+  {
+    "id": "thorn_badge",
+    "name": "荊棘守護章",
+    "slot": "treasure",
+    "quality": "epic",
+    "hero": "all",
+    "group": "guardian",
+    "chapter": 5,
+    "mods": {},
+    "effects": {
+      "control": 1.0
+    },
+    "desc": "受擊時震懾身邊敵人 0.35 秒；8 秒冷卻，頭目依自身抗性處理。",
+    "coins": 1800,
+    "gems": 140,
+    "icon": 16
+  },
+  {
+    "id": "avalon_grail",
+    "name": "阿瓦隆聖杯",
+    "slot": "treasure",
+    "quality": "epic",
+    "hero": "all",
+    "group": "scholar",
+    "chapter": 6,
+    "mods": {},
+    "effects": {
+      "ult_heal": 0.1
+    },
+    "desc": "使用必殺時恢復活力；最高 15%，不觸發額外必殺或掉落。",
+    "coins": 1800,
+    "gems": 140,
+    "icon": 17
+  }
+])
+
+gem_packs = Array[Dictionary]([{ "id": "gems_120", "amount": 120 }, { "id": "gems_600", "amount": 600 }, { "id": "gems_1200", "amount": 1200 }])
+
+; Element engraving is additive and independent of item forging level.
+elements = {
+  "earth": {
+    "name": "地",
+    "title": "大地守誓",
+    "color": "e1c184",
+    "weapon": {
+      "mods": {
+        "attack_range": 0.1
+      }
+    },
+    "armor": {
+      "mods": {
+        "max_vigor": 0.08
+      }
+    },
+    "resonance": {
+      "mods": {
+        "damage_taken_mult": -0.04
+      },
+      "effects": {
+        "guard": 0.2
+      }
+    },
+    "weapon_text": "攻擊範圍 +10%",
+    "armor_text": "最大活力 +8%",
+    "resonance_text": "承傷倍率 −4%；每 12 秒抵擋下一次命中的 20% 傷害。"
+  },
+  "water": {
+    "name": "水",
+    "title": "潮汐回響",
+    "color": "8ddce7",
+    "weapon": {
+      "effects": {
+        "loyalty": 0.08
+      }
+    },
+    "armor": {
+      "effects": {
+        "wave_heal": 0.01
+      }
+    },
+    "resonance": {
+      "effects": {
+        "wave_heal": 0.02,
+        "ult_heal": 0.03
+      }
+    },
+    "weapon_text": "忠誠累積 +8%",
+    "armor_text": "清波恢復 1% 最大活力",
+    "resonance_text": "額外清波恢復 2%、必殺恢復 3% 最大活力。"
+  },
+  "fire": {
+    "name": "火",
+    "title": "餘燼反攻",
+    "color": "ffa581",
+    "weapon": {
+      "mods": {
+        "attack_damage": 0.08
+      }
+    },
+    "armor": {
+      "effects": {
+        "counter": 0.1
+      }
+    },
+    "resonance": {
+      "mods": {
+        "attack_damage": 0.04
+      },
+      "effects": {
+        "counter": 0.1
+      }
+    },
+    "weapon_text": "攻擊 +8%",
+    "armor_text": "受擊後 3 秒內下一擊 +10%",
+    "resonance_text": "攻擊額外 +4%；受擊後下一擊加成額外 +10%，不連續疊層。"
+  },
+  "wind": {
+    "name": "風",
+    "title": "疾風蓄勢",
+    "color": "bce8c3",
+    "weapon": {
+      "mods": {
+        "attack_interval": -0.04
+      }
+    },
+    "armor": {
+      "mods": {
+        "move_speed": 0.06
+      }
+    },
+    "resonance": {
+      "mods": {
+        "attack_interval": -0.02
+      },
+      "effects": {
+        "ambush": 0.15
+      }
+    },
+    "weapon_text": "基礎攻擊間隔 −4%",
+    "armor_text": "移動速度 +6%",
+    "resonance_text": "基礎攻擊間隔額外 −2%；移動 1.5 秒後停步，3 秒內下一擊 +15%。"
+  }
+}
+effect_caps = {"guard": 0.6, "wave_heal": 0.08, "ult_heal": 0.15}

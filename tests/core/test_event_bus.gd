@@ -3,6 +3,20 @@ extends TestCase
 ## 這個測試失敗,代表有人改了凍結的合約。
 
 const CONTRACT: Dictionary = {
+	"companion_guard_coverage": [["protected", TYPE_BOOL]],
+	"player_combat_status_requested": [],
+	"player_combat_readiness": [["state", TYPE_STRING_NAME], ["charge_left", TYPE_FLOAT], ["charge_bonus", TYPE_FLOAT]],
+	"companion_counter_resolved": [["result", TYPE_STRING_NAME]],
+	"guard_lesson_requested": [],
+	"guard_lesson_completed": [],
+	"guard_lesson_dismissed": [],
+	"equipment_requested": [],
+	"companion_blocked": [["at", TYPE_VECTOR2]],
+	"companion_guard_requested": [],
+	"companion_guard_status_requested": [],
+	"companion_guard_state": [["state", TYPE_STRING_NAME], ["cooldown_left", TYPE_FLOAT], ["duration_left", TYPE_FLOAT]],
+	"companion_counter_granted": [["bonus", TYPE_FLOAT]],
+	"boss_intent_changed": [["enemy_id", TYPE_STRING_NAME], ["intent", TYPE_STRING_NAME], ["remaining", TYPE_FLOAT]],
 	"enemy_died": [["enemy_id", TYPE_STRING_NAME], ["position", TYPE_VECTOR2], ["exp_value", TYPE_INT]],
 	"player_damaged": [["amount", TYPE_INT]],
 	"vigor_changed": [["current", TYPE_INT], ["maximum", TYPE_INT]],

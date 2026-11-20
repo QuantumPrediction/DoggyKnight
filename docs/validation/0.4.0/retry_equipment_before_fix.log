@@ -1,0 +1,41 @@
+== 匯入資源 ==
+== 執行測試 ==
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/equipment/test_checkpoint.gd
+  ok      test_level_boundary_roundtrip_preserves_build_modifiers_and_rng
+  ok      test_first_level_checkpoint_exists_and_unsaved_rewards_roll_back
+  ok      test_clear_award_is_once_and_persisted_with_next_checkpoint
+  ok      test_failed_store_write_rolls_back_purchase
+  ok      test_corrupt_checkpoint_and_legacy_profile_are_safe
+  ok      test_resumed_camp_applies_new_loadout_on_departure
+  FAIL    test_retry_keeps_checkpoint_equipment_until_next_stage
+          - retry must not activate title upgrades early: expected 1, got 5
+
+res://tests/equipment/test_combat.gd
+  ok      test_equipped_staff_modifies_real_projectiles
+  ok      test_equipped_bow_adds_two_targets_at_level_nine
+  ok      test_companion_signal_charges_real_player_next_hit_only
+  ok      test_wave_heal_and_armor_reduction_reach_real_player
+
+res://tests/equipment/test_inventory.gd
+  ok      test_catalog_unique_ids_complete_prices_and_icons
+  ok      test_purchase_upgrade_caps_and_failed_actions_never_spend
+  ok      test_two_currencies_are_alternatives_and_do_not_cross_spend
+  ok      test_class_slots_and_unique_treasures
+  ok      test_sanitizer_rejects_wrong_types_unknown_items_and_invalid_loadouts
+  ok      test_boss_pity_first_clear_and_duplicates
+  ok      test_equipment_bonuses_do_not_compound_and_sets_trigger_once
+  ok      test_proc_cooldowns_single_consumption_and_pause_independence
+
+res://tests/equipment/test_ui_and_payment.gd
+  ok      test_shop_confirmation_and_back_navigation
+  ok      test_disabled_payment_does_not_grant_currency
+
+21 tests, 1 failed, 0 broken files
+WARNING: 5 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 2 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+測試失敗。

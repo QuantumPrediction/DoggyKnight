@@ -1008,9 +1008,10 @@ func _build() -> void:
 	middle.name = "MiddleRow"
 	middle.add_theme_constant_override(&"separation", config.button_gap)
 	_menu.add_child(middle)
-	var half := Vector2(floorf((config.button_size.x - config.button_gap) * 0.5), config.button_size.y)
+	var half := Vector2(floorf((config.button_size.x - config.button_gap * 2.0) / 3.0), config.button_size.y)
 	_training_button = _make_menu_button("TrainingButton", tr("CAMP_TRAINING"), Color("3a5a8a"), Color("12243a"), open_training, middle, half)
 	_companion_button = _make_menu_button("CompanionButton", tr("UI_CAMP_COMPANION"), Color("5a5670"), Color("24203a"), open_companion, middle, half)
+	_make_menu_button("EquipmentButton", "軍械", Color("7b6336"), Color("302518"), func() -> void: EventBus.equipment_requested.emit(), middle, half)
 	if MinigameUi.has_shared_theme():
 		_companion_button.theme_type_variation = &"ButtonAlt"
 	_continue_button = _make_menu_button("ContinueButton", tr("UI_CAMP_CONTINUE"), Color("3a8a5a"), Color("123a24"), leave_camp)

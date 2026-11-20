@@ -41,6 +41,7 @@ var attacks_started: int = 0
 
 var _phase_left: float = 0.0
 var _attack_dir: Vector2 = Vector2.LEFT
+var _attack_origin: Vector2 = Vector2.ZERO
 var _flank: float = 0.0
 var _tell_total: float = 0.5
 var _circle_sign: float = 1.0
@@ -164,10 +165,13 @@ func _start_telegraph(to_target: Vector2, call_friends: bool = true) -> void:
 	_tell_total = tell(telegraph_time)
 	_phase_left = _tell_total
 	_attack_dir = to_target.normalized() if to_target.length() > 0.01 else facing
+	facing = _attack_dir
+	_attack_origin = CombatMath.clamp_to_bounds(global_position + _attack_dir * lunge_distance, arena_margin)
 	desired_velocity = Vector2.ZERO
 	anim_state = &"idle"
 	_show_telegraph(AttackTelegraph.make_sector(attack_radius * visual_scale, _attack_dir,
 			deg_to_rad(attack_half_angle_deg)))
+	_telegraph.global_position = _attack_origin
 	if call_friends:
 		_call_pincer(target)
 
@@ -193,7 +197,10 @@ func is_attacking_target(victim: Node2D) -> bool:
 
 
 func _swing() -> void:
-	_clear_telegraph()
+	if phase != Phase.TELEGRAPH:
+		return
+	var mark := _telegraph
+	var warning_transform := mark.global_transform if is_instance_valid(mark) else Transform2D.IDENTITY
 	phase = Phase.SWING
 	_phase_left = swing_time
 	anim_state = &"attack"
@@ -201,13 +208,22 @@ func _swing() -> void:
 	if sprite != null:
 		sprite.position = _sprite_base_offset + _attack_dir * 2.0
 	# 揮擊時往前踏一步(不穿牆,仍限制在場內)。
-	global_position = CombatMath.clamp_to_bounds(global_position + _attack_dir * lunge_distance, arena_margin)
+	global_position = _attack_origin
 	var slash := CombatFx.spawn(self, &"slash", global_position + _attack_dir * 8.0 * visual_scale,
 			_attack_dir.angle(), Vector2.ONE * 0.8 * visual_scale, Color(0.95, 0.75, 0.45))
 	if slash != null:
 		slash.flip_v = _attack_dir.x < 0.0
-	hit_victims_in_sector(global_position, _attack_dir, attack_radius * visual_scale,
-			deg_to_rad(attack_half_angle_deg), data.contact_damage)
+	if is_instance_valid(mark):
+		# Keep the committed warning fixed while its parent lunges. Resolve last
+		# so equipment control triggered by damage can keep its recovery state.
+		mark.global_transform = warning_transform
+		hit_victims_in_marked_sector(mark, data.contact_damage)
+	_clear_telegraph()
+
+
+func _uses_separation() -> bool:
+	# A committed warning must not slide when another soldier walks into it.
+	return not _is_committed()
 
 
 func _is_committed() -> bool:

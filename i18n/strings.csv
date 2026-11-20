@@ -391,3 +391,46 @@ UI_CLASS_ULTIMATE,必殺技 · %s
 UI_CLASS_STATS,活力 %d　射程 %d
 UI_CLASS_DEPART,以此職業出征
 UI_TUTORIAL_RANGED,停步自動瞄準，移動避開攻擊
+
+UI_GUARD_READY_PC,Q 護陣
+UI_GUARD_READY,呼喚護陣
+UI_GUARD_APPROACH,趕來中
+UI_GUARD_HOLD,護陣 %.1fs
+UI_GUARD_DAZED,同伴暈眩
+UI_GUARD_COOLDOWN,護陣 %ds
+UI_GUARD_CALLED,我來守護！
+UI_GUARD_COUNTER,換你反擊！
+UI_GUARD_HELP,呼喚貝德維爾。圈內減傷 35%；首次擋擊後 3 秒內下一擊 +25%。冷卻 10 秒。
+UI_GUARD_PAUSE_HELP,護陣：Q／盾牌 · 留在圈內
+UI_CAPTAIN_SWEEP,橫掃將至 · 離開扇形
+UI_CAPTAIN_THROW,乾草叉 · 向側面閃
+UI_CAPTAIN_RETURNING,乾草叉會飛回 · 避開路線
+UI_CAPTAIN_OPENING,空檔 %.1fs · 靠近停步反擊
+UI_CAPTAIN_RALLY,召來援兵 · 先清小兵
+UI_CAPTAIN_SHOUT,隊長蓄勢 · 暫時無法命中
+
+UI_GUARD_INSIDE,受保護 %.1fs
+UI_GUARD_OUTSIDE,圈外 %.1fs
+UI_GUARD_CHARGE,蓄力 +%d%% · %.1fs
+UI_GUARD_LESSON_REPLAY,再看護陣提示
+UI_GUARD_LESSON_SKIP,略過本輪提示；暫停可重看
+UI_COACH_EVADE,先閃避・再護陣
+UI_COACH_START_PC,避開紅區。按 Q 護陣；靠近同伴讓牠擋彈。
+UI_COACH_START_TOUCH,避開紅區。點盾牌護陣；靠近同伴讓牠擋彈。
+UI_COACH_DANGER,先躲這一招
+UI_COACH_DANGER_BODY,隊長正在出招。先避開紅區或回旋叉。
+UI_COACH_COUNTER,反擊蓄力已備妥
+UI_COACH_STOP,先找空檔；停下會自動攻擊。別急著換血。
+UI_COACH_RANGE,目標還太遠。避開危險再靠近攻擊距離。
+UI_COACH_RECOVER,攻擊尚在恢復。留意上方蓄力倒數。
+UI_COACH_STRIKE,正在準備普通攻擊；命中才用掉蓄力。
+UI_COACH_INSIDE,你在護陣內
+UI_COACH_BLOCK,同伴擋彈也能給蓄力；不用故意挨打。
+UI_COACH_OUTSIDE,已離開護陣
+UI_COACH_RETURN,圈外沒有護陣減傷。安全時才回到圈內。
+UI_COACH_APPROACH,同伴正趕來
+UI_COACH_APPROACH_BODY,護陣尚未展開。繼續避開敵人的攻擊。
+UI_COACH_WAIT,先靠走位避險
+UI_COACH_WAIT_BODY,護陣恢復中。避開紅區；準備好再呼喚。
+UI_COACH_DONE,反擊成功！
+UI_COACH_DONE_BODY,蓄力已用在普通攻擊。暫停可重看提示。

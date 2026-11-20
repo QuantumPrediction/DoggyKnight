@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RallyRules" format=3]
+
+[ext_resource type="Script" path="res://core/data/rally_rules.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+cooldown = 10.0
+duration = 2.8
+approach_timeout = 1.2
+dash_speed = 150.0
+stand_offset = 14.0
+arrival_distance = 4.0
+radius = 32.0
+reduction = 0.35
+counter_bonus = 0.25

@@ -1,5 +1,7 @@
 # 金毛騎士：2026-11-19 接續與公開提交紀錄
 
+> 本頁保留 0.3.0 的提交歷史。最新版本、分支與下一步請先讀 [PROJECT_STATE.md](PROJECT_STATE.md)。
+
 程式、素材、測試紀錄及截圖已公開提交至 `QuantumPrediction/DoggyKnight`，並建立 [草稿 PR #11](https://github.com/QuantumPrediction/DoggyKnight/pull/11)。此 PR 尚未合併；本次沒有建立新版 EXE、ZIP、Android 或 iOS 遊戲包。
 
 ## 版本與依賴

@@ -155,6 +155,11 @@ var _reached_level: int = 0
 var _camp_pending: bool = false
 var _level_index: int = 0
 var _snapshot: Dictionary = {}
+var _checkpoint: Dictionary = {}
+var _equipment_rng := RandomNumberGenerator.new()
+var _equipment_screen: Control
+var _restoring_checkpoint: bool = false
+var _last_snack_balance: int = 0
 var _last_result: Dictionary = {}
 var _clear_record: Dictionary = {}
 var _pause_open: bool = false
@@ -259,9 +264,17 @@ func _ready() -> void:
 
 	_add_dialogue_box()
 
+	if rng_seed != 0:
+		_equipment_rng.seed = rng_seed + 4
+	else:
+		_equipment_rng.randomize()
 	save_store = SaveStore.new(save_path)
 	_load_save()
 
+	EventBus.equipment_requested.connect(_open_equipment)
+	EventBus.guard_lesson_requested.connect(_replay_guard_lesson)
+	EventBus.guard_lesson_completed.connect(_on_guard_lesson_completed)
+	EventBus.guard_lesson_dismissed.connect(_on_guard_lesson_dismissed)
 	EventBus.back_requested.connect(_on_back_requested)
 	EventBus.app_backgrounded.connect(_on_app_backgrounded)
 	EventBus.resume_requested.connect(_on_resume_requested)
@@ -274,6 +287,7 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	_switch_serial += 1          # 讓還在等轉場的步驟不再繼續
 	for pair: Array in [
+		[EventBus.equipment_requested, _open_equipment],
 		[EventBus.back_requested, _on_back_requested],
 		[EventBus.app_backgrounded, _on_app_backgrounded],
 		[EventBus.resume_requested, _on_resume_requested],
@@ -295,7 +309,7 @@ func _notification(what: int) -> void:
 # --- 給測試與沙盒讀取的狀態 ---
 
 func has_save() -> bool:
-	return _reached_level > 0
+	return _reached_level > 0 or not _checkpoint.is_empty()
 
 
 func get_reached_level() -> int:
@@ -477,14 +491,21 @@ func can_play_story(script: DialogueScript) -> bool:
 # --- 存檔 ---
 
 func save_now() -> bool:
+	if state in [State.CAMP, State.RESULTS] and not _checkpoint.is_empty():
+		_capture_checkpoint()
+	elif not _has_unbanked_level() and not _checkpoint.is_empty():
+		_checkpoint["snacks"] = GameState.snacks
 	return save_store.write_data({
+		"equipment": GameState.equipment,
+		"checkpoint": _checkpoint,
 		"hero_class": String(_run_hero_class),
 		"level_index": _reached_level,
-		"snacks": GameState.snacks,
+		"snacks": int(_checkpoint.get("snacks", GameState.snacks)) if _has_unbanked_level() else GameState.snacks,
 		"sound_on": GameState.sound_on,
 		"music_on": GameState.music_on,
 		"haptics_on": GameState.haptics_on,
 		"tutorial_done": GameState.tutorial_done,
+		"guard_lesson_done": GameState.guard_lesson_done,
 		"best_stars": GameState.best_stars,
 		"camp_pending": _camp_pending and _reached_level > 0,
 		"difficulty": String(_run_difficulty),
@@ -501,6 +522,9 @@ func save_now() -> bool:
 
 func _load_save() -> void:
 	var data := save_store.read()
+	GameState.guard_lesson_done = bool(data.get("guard_lesson_done", false))
+	GameState.equipment = EquipmentInventory.sanitize(data.get("equipment", {}))
+	_checkpoint = AdventureCheckpoint.sanitize(data.get("checkpoint", {}))
 	if data.is_empty():
 		_reached_level = 0
 		_camp_pending = false
@@ -513,6 +537,7 @@ func _load_save() -> void:
 	_reached_level = clampi(data["level_index"], 0, maxi(0, chapter.level_count() - 1))
 	_camp_pending = data["camp_pending"] and _reached_level > 0 and chapter.has_camp_after(_reached_level - 1)
 	GameState.snacks = data["snacks"]
+	_last_snack_balance = GameState.snacks
 	GameState.sound_on = data["sound_on"]
 	GameState.music_on = data["music_on"]
 	GameState.haptics_on = data["haptics_on"]
@@ -536,6 +561,8 @@ func _load_save() -> void:
 # --- 畫面切換 ---
 
 func show_title() -> void:
+	if _has_unbanked_level():
+		GameState.snacks = int(_checkpoint.get("snacks", GameState.snacks))
 	_end_endless_mode()      # 先記錄無盡試煉的波數(_leave_current 會移除關卡)
 	_leave_current()
 	_set_state(State.TITLE)
@@ -556,6 +583,7 @@ func show_title() -> void:
 ## v2.6:章用標題畫面設定的 GameState.chapter(只能選已解鎖的章,否則用最高可選的章)。
 ## 舊的進度立即作廢(開場繪本播到一半 App 被關掉,也不會「繼續」舊的那一輪)。
 func start_new_game() -> void:
+	_checkpoint = {}
 	_run_hero_class = HeroClasses.valid_id(GameState.hero_class)
 	_end_endless_mode()
 	_use_chapter(mini(GameState.chapter, max_selectable_chapter()))
@@ -574,7 +602,7 @@ func start_new_game() -> void:
 		_start_level(0)
 
 
-## 繼續:從存檔的關卡開始全新的一輪(DEV_PLAN B9:存檔只記到達的關卡)。
+## v8 繼續:還原最近的關卡檢查點；v1–v7 缺當局資料時沿用舊版相容行為。
 ## 存檔記錄了「應先進營地」(上一關過關後、進營地之前 App 被關掉)時,先回到那個營地。
 func continue_game() -> void:
 	GameState.hero_class = _run_hero_class
@@ -585,7 +613,17 @@ func continue_game() -> void:
 	progression.reset_run()
 	_prepare_run()
 	GameState.difficulty = _run_difficulty         # 沿用存檔那一輪的難度
+	if not _checkpoint.is_empty():
+		progression.import_checkpoint(_checkpoint)
+		_spawn_rng.state = int(_checkpoint.spawn_rng)
+		_event_rng.state = int(_checkpoint.event_rng)
+		_equipment_rng.state = int(_checkpoint.equipment_rng)
+		GameState.snacks = int(_checkpoint.snacks)
+		_last_snack_balance = GameState.snacks
+		_restoring_checkpoint = true
 	if _camp_pending and index > 0 and chapter.has_camp_after(index - 1):
+		# A resumed camp is a safe place to change equipment before the next level.
+		_restoring_checkpoint = false
 		_level_index = index - 1
 		_enter_camp()
 		return
@@ -600,6 +638,12 @@ func retry_level() -> void:
 		start_endless()
 		return
 	progression.restore_snapshot(_snapshot)
+	if not _checkpoint.is_empty():
+		GameState.snacks = int(_checkpoint.snacks)
+		progression.rng.state = int(_checkpoint.rng)
+		_spawn_rng.state = int(_checkpoint.spawn_rng)
+		GameState.run_equipment = _checkpoint.equipment.duplicate(true)
+		_restoring_checkpoint = true
 	GameState.vigor = GameState.player_stats.max_vigor
 	_start_level(_level_index, false)
 
@@ -614,11 +658,15 @@ func _start_level(index: int, with_story: bool = true) -> void:
 	_leave_current()
 	_level_index = index
 	GameState.level_index = index
+	if not _restoring_checkpoint:
+		GameState.run_equipment = EquipmentInventory.loadout(GameState.equipment, String(GameState.hero_class))
+	_restoring_checkpoint = false
 	progression.rebuild_stats()          # v2.4:營地訓練(在營地剛練的)從這一關生效
 	_snapshot = progression.take_snapshot()
 	_reached_level = index
 	_camp_pending = false
 	_clear_record = {}
+	_capture_checkpoint()
 	save_now()
 	_open_session(level, index, _arriving_companions(index))
 	_story_before_pending = with_story
@@ -705,9 +753,12 @@ func _on_boss_wave_started(_index: int) -> void:
 
 func _on_intro_finished() -> void:
 	_maybe_show_tutorial()
+	_show_guard_lesson(false)
 
 
 func _on_level_cleared() -> void:
+	if not _clear_record.is_empty():
+		return
 	var level := chapter.get_level(_level_index)
 	# 過關:下一關加成用完歸零(失敗重試時保留,見 retry_level)。
 	GameState.next_level_bonus = 0.0
@@ -719,12 +770,19 @@ func _on_level_cleared() -> void:
 	_clear_record = _record_stars(level)
 	var bonus := economy.clear_reward(_clear_record["stars"], _run_difficulty == HARD)
 	_clear_record["snack_bonus"] = bonus
-	rewards.add_snacks(bonus)
+	GameState.snacks += bonus
+	rewards.snacks_this_level += bonus
 	level_events.cancel()
+	_clear_record["equipment_reward"] = EquipmentInventory.reward_clear(GameState.equipment, _run_chapter, level.is_boss, _run_difficulty == HARD, _equipment_rng)
+	if chapter.is_last(_level_index):
+		_checkpoint = {}
+	else:
+		_capture_checkpoint()
 	if _level_index == 0:
 		GameState.tutorial_done = true      # 打完 1-1:已懂得操作,教學不再出現
 	_free_node(_tutorial)
 	_tutorial = null
+	EventBus.snacks_changed.emit(GameState.snacks)
 	save_now()
 	_music(&"play", [&"chapter_clear" if chapter.is_last(_level_index) else &"victory"])
 	if not level.is_boss:
@@ -753,6 +811,9 @@ func _on_level_finished(victory: bool) -> void:
 	_freeze_world(true)
 	_last_result = _build_result(victory)
 	if victory:
+		if not _checkpoint.is_empty():
+			_capture_checkpoint()
+		save_now()
 		var level := chapter.get_level(_level_index)
 		var story := level.story_after
 		if can_play_story(story):
@@ -809,6 +870,7 @@ func _build_result(victory: bool) -> Dictionary:
 	else:
 		goals = StarRating.goals(level, false, time_sec, damage)
 	return {
+		"equipment_reward": _clear_record.get("equipment_reward", {}),
 		"level_id": level.id,
 		"level_name": level.display_name,
 		"victory": victory,
@@ -968,8 +1030,9 @@ func _leave_current() -> void:
 		_session.teardown()
 		_free_node(_session)
 		_session = null
-	for node in [_hud, _trick_choice, _pause, _tutorial, _screen, _credits, _quit_dialog, _camp, _event_ui, _training]:
+	for node in [_equipment_screen, _hud, _trick_choice, _pause, _tutorial, _screen, _credits, _quit_dialog, _camp, _event_ui, _training]:
 		_free_node(node)
+	_equipment_screen = null
 	_event_ui = null
 	_training = null
 	_hud = null
@@ -1435,6 +1498,10 @@ func _on_training_gone(node: Node) -> void:
 # --- EventBus ---
 
 func _on_back_requested() -> void:
+	if _equipment_screen != null:
+		if not _equipment_screen.back():
+			_close_equipment()
+		return
 	match state:
 		State.TITLE:
 			if _quit_dialog != null:
@@ -1484,6 +1551,9 @@ func _on_quit_to_title_requested() -> void:
 ## 零食改變:在標題(訓練)與營地(訓練、小遊戲獎勵)立即存檔;關卡中不存(太頻繁),
 ## 由過關、復活、切到背景、離開關卡時存。
 func _on_snacks_changed(_total: int) -> void:
+	if _has_unbanked_level() and _total < _last_snack_balance:
+		_checkpoint["snacks"] = maxi(0, int(_checkpoint.get("snacks", 0)) + _total - _last_snack_balance)
+	_last_snack_balance = _total
 	if (state == State.TITLE or state == State.CAMP) and save_store != null:
 		save_now()
 
@@ -1498,7 +1568,7 @@ func _on_camp_left() -> void:
 # --- 介面訊號 ---
 
 func _title_is_idle() -> bool:
-	return state == State.TITLE and _credits == null and _quit_dialog == null and _training == null
+	return state == State.TITLE and _credits == null and _quit_dialog == null and _training == null and _equipment_screen == null
 
 
 ## v2.4:標題的「無盡試煉」(打完第一章才有;C 線的標題已先設定 GameState.mode)。
@@ -1591,3 +1661,71 @@ func _on_failure_retry() -> void:
 func _on_failure_title() -> void:
 	if state == State.FAILURE:
 		_go(show_title)
+
+
+# --- Equipment and level-boundary adventure checkpoint (v8) ---
+func _capture_checkpoint() -> void:
+	_checkpoint = progression.export_checkpoint()
+	_checkpoint["spawn_rng"] = str(_spawn_rng.state)
+	_checkpoint["event_rng"] = str(_event_rng.state)
+	_checkpoint["equipment_rng"] = str(_equipment_rng.state)
+	_checkpoint["snacks"] = GameState.snacks
+	_last_snack_balance = GameState.snacks
+
+func _has_unbanked_level() -> bool:
+	return _session != null and not is_endless() and _clear_record.is_empty() and not _checkpoint.is_empty()
+
+func _open_equipment() -> void:
+	if state not in [State.TITLE, State.CAMP] or _equipment_screen != null or _switching or _story_playing:
+		return
+	_equipment_screen = EquipmentScreen.new()
+	_equipment_screen.commit = _equipment_transaction
+	_equipment_screen.closed.connect(_close_equipment)
+	var layer := CanvasLayer.new()
+	layer.layer = 55
+	add_child(layer)
+	layer.add_child(_equipment_screen)
+	_equipment_screen.tree_exited.connect(layer.queue_free)
+
+func _equipment_transaction(action: String, id: String, hero: String, slot: String, currency: String) -> Dictionary:
+	if state not in [State.TITLE, State.CAMP]:
+		return {"ok": false, "message": "請在營地或標題配裝。"}
+	var before := GameState.equipment.duplicate(true)
+	var result := EquipmentInventory.transact(GameState.equipment, action, id, hero, slot, currency, max_selectable_chapter())
+	if result.ok and not save_now():
+		GameState.equipment = before
+		return {"ok": false, "message": "未能儲存，交易已取消。"}
+	return result
+
+
+func _close_equipment() -> void:
+	if _equipment_screen != null:
+		_equipment_screen.queue_free()
+		_equipment_screen = null
+
+
+func _show_guard_lesson(replay: bool) -> void:
+	if state != State.LEVEL or is_endless() or _hud == null or not _hud.has_method(&"show_guard_lesson"):
+		return
+	var level := chapter.get_level(_level_index)
+	if level == null or not level.companions.has(&"bulldog"):
+		return
+	if not replay and (_run_chapter != 1 or _level_index not in [2, 3] or GameState.guard_lesson_done or GameState.guard_lesson_skipped):
+		return
+	GameState.guard_lesson_skipped = false
+	_hud.call(&"show_guard_lesson")
+
+
+func _replay_guard_lesson() -> void:
+	_show_guard_lesson(true)
+
+
+func _on_guard_lesson_completed() -> void:
+	if state != State.LEVEL:
+		return
+	GameState.guard_lesson_done = true
+	save_now()
+
+
+func _on_guard_lesson_dismissed() -> void:
+	GameState.guard_lesson_skipped = true

@@ -1,0 +1,1338 @@
+== 匯入資源 ==
+== 執行測試 ==
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/core/test_app_lifecycle.gd
+  ok      test_backgrounding_emits_once_even_with_two_notifications
+  ok      test_returning_emits_foregrounded_once
+  ok      test_android_back_request
+  ok      test_escape_key_simulates_back_on_desktop
+  ok      test_simulation_helpers_for_sandboxes
+
+res://tests/core/test_art_contract.gd
+  ok      test_every_character_has_sheet_and_frames
+  ok      test_required_animations_exist_and_have_frames
+  ok      test_frame_sizes_follow_the_grid
+  ok      test_fx_frames_have_default_animation
+  ok      test_backgrounds_are_node2d_scenes
+  ok      test_sfx_api
+  ok      test_trick_icons_exist
+  ok      test_v22_particles_are_one_shot_cpu_particles
+  ok      test_v22_backgrounds_exist
+  ok      test_particle_frees_itself_after_playing
+  ok      test_music_and_transition_api
+
+res://tests/core/test_event_bus.gd
+  ok      test_every_contract_signal_exists_with_exact_arguments
+  ok      test_no_signals_outside_the_contract
+
+res://tests/core/test_example.gd
+  ok      test_basic_assertions
+  ok      test_watching_a_signal
+  ok      test_waiting_for_frames
+
+res://tests/core/test_game_state.gd
+  ok      test_reset_run_starts_a_fresh_run
+  ok      test_reset_run_keeps_the_chosen_chapter
+  ok      test_reset_run_keeps_save_data_and_settings
+  ok      test_player_stats_is_a_copy_of_the_base
+  ok      test_base_stats_match_dev_plan_table
+  ok      test_data_classes_have_contract_fields
+  ok      test_level_data_holds_typed_waves
+  ok      test_reset_run_keeps_v22_settings_and_records
+  ok      test_spawn_entry_default_pattern
+  ok      test_haptics_respects_setting_and_merges_bursts
+  ok      test_reset_run_keeps_v23_progress
+  ok      test_reset_run_keeps_v24_meta_progress
+
+res://tests/core/test_project_settings.gd
+  ok      test_portrait_pixel_screen
+  ok      test_renderer_and_mobile_export_prerequisites
+  ok      test_touch_input_and_back_key
+  ok      test_collision_layer_names
+  ok      test_autoloads
+  ok      test_traditional_chinese_strings
+  ok      test_layout_constants
+  ok      test_mobile_power_and_ios_settings
+  ok      test_boot_main_scene_splash_and_theme
+  ok      test_strings_csv_rows_have_exactly_two_columns
+
+res://tests/core/test_screen.gd
+  ok      test_integer_scale_and_viewport_size_for_common_phones
+  ok      test_black_border_is_less_than_one_logical_pixel
+  ok      test_viewport_never_smaller_than_game_area
+  ok      test_safe_area_conversion_android_punch_hole
+  ok      test_safe_area_conversion_iphone_with_tiny_margins
+  ok      test_game_rect_is_centered_game_size
+  ok      test_simulated_notch_on_desktop
+  ok      test_refits_when_window_shrinks_without_size_changed
+
+res://tests/core/test_story_contract.gd
+  ok      test_every_story_key_in_the_script_has_text
+  ok      test_story_csv_rows_have_exactly_two_columns
+  ok      test_portraits_and_illustrations_exist
+  ok      test_new_sprites_have_required_animations
+  ok      test_dialogue_box_plays_advances_and_reports
+  ok      test_dialogue_box_skip
+
+res://tests/core/test_v26_contract.gd
+  ok      test_new_sprites_have_required_animations_and_size
+  ok      test_new_backgrounds_are_node2d_scenes
+  ok      test_new_portraits_and_illustrations
+  ok      test_chapter_fields
+
+res://tests/core/test_v27_contract.gd
+  ok      test_chapter_count_is_six
+  ok      test_new_sprites_have_required_animations_and_size
+  ok      test_new_backgrounds_are_node2d_scenes
+  ok      test_new_portraits_and_illustrations
+  ok      test_projectiles_and_tips
+
+res://tests/equipment/test_checkpoint.gd
+  ok      test_level_boundary_roundtrip_preserves_build_modifiers_and_rng
+  ok      test_first_level_checkpoint_exists_and_unsaved_rewards_roll_back
+  ok      test_clear_award_is_once_and_persisted_with_next_checkpoint
+  ok      test_failed_store_write_rolls_back_purchase
+  ok      test_corrupt_checkpoint_and_legacy_profile_are_safe
+  ok      test_resumed_camp_applies_new_loadout_on_departure
+  ok      test_engraving_survives_reload_but_waits_for_next_stage_after_retry
+  ok      test_engraving_write_failure_rolls_back_shared_item_and_disk
+  ok      test_retry_keeps_checkpoint_equipment_until_next_stage
+
+res://tests/equipment/test_combat.gd
+  ok      test_equipped_staff_modifies_real_projectiles
+  ok      test_equipped_bow_adds_two_targets_at_level_nine
+  ok      test_companion_signal_charges_real_player_next_hit_only
+  ok      test_wave_heal_and_armor_reduction_reach_real_player
+  ok      test_forged_cadence_reaches_melee_and_projectile_cooldown
+  ok      test_earth_resonance_reduces_real_damage_then_waits_for_cooldown
+  ok      test_water_restores_real_vigor_on_wave_and_ultimate_for_all_classes
+  ok      test_fire_damage_and_counter_are_consumed_by_actual_player_hit_path
+  ok      test_wind_changes_real_cooldown_and_move_stop_charge_for_all_classes
+
+res://tests/equipment/test_elements.gd
+  ok      test_all_class_element_pairs_require_both_slots_and_ignore_treasures
+  ok      test_default_and_invalid_affinities_preserve_legacy_collection
+  ok      test_every_weapon_and_armor_can_be_reengraved_without_spending_or_level_loss
+  ok      test_invalid_engraving_actions_are_atomic
+  ok      test_resonance_adds_once_and_mixed_pieces_keep_individual_effects
+  ok      test_element_preview_matches_real_transaction_without_mutating_snapshot
+  ok      test_combined_proc_caps_match_runtime_maxima
+
+res://tests/equipment/test_inventory.gd
+  ok      test_catalog_unique_ids_complete_prices_and_icons
+  ok      test_purchase_upgrade_caps_and_failed_actions_never_spend
+  ok      test_two_currencies_are_alternatives_and_do_not_cross_spend
+  ok      test_class_slots_and_unique_treasures
+  ok      test_sanitizer_rejects_wrong_types_unknown_items_and_invalid_loadouts
+  ok      test_boss_pity_first_clear_and_duplicates
+  ok      test_equipment_bonuses_do_not_compound_and_sets_trigger_once
+  ok      test_proc_cooldowns_single_consumption_and_pause_independence
+  ok      test_effect_only_treasures_improve_at_every_forge_level
+  ok      test_forge_keeps_original_milestone_strength_and_maximum
+
+res://tests/equipment/test_preview.gd
+  ok      test_preview_matches_departure_for_all_classes_and_training
+  ok      test_swap_previews_set_loss_and_never_mutates_profile_or_checkpoint
+  ok      test_treasure_preview_matches_actual_move_between_slots
+  ok      test_forging_plateau_weapons_improves_real_cadence_at_every_rank
+
+res://tests/equipment/test_ui_and_payment.gd
+  ok      test_shop_confirmation_and_back_navigation
+  ok      test_disabled_payment_does_not_grant_currency
+  ok      test_engraving_preview_cancel_confirmation_and_shared_class_notice
+  ok      test_combat_hud_shows_stage_resonance_not_pending_armory_changes
+
+res://tests/integration/test_real_flow.gd
+  ok      test_real_parts_are_used
+  ok      test_two_levels_camp_and_companion
+
+res://tests/line_a/test_abilities.gd
+  ok      test_shake_does_nothing_until_chosen
+  ok      test_shake_doubles_every_fourth_landed_swing
+  ok      test_shake_stacks_shorten_the_interval
+  ok      test_spin_triggers_every_six_seconds
+  ok      test_spin_waits_for_a_target_then_fires_at_once
+  ok      test_bark_stuns_every_eight_seconds
+  ok      test_spin_and_bark_stacking
+  ok      test_rebuild_counts_repeats_and_ignores_stat_tricks
+  ok      test_player_rebuilds_from_game_state_and_listens_to_trick_chosen
+  ok      test_player_spin_hits_nearby_enemies_in_game
+
+res://tests/line_a/test_arena.gd
+  ok      test_arena_contains_player_camera_and_walls
+WARNING: CombatArena: 找不到敵人資料 res://data/enemies/no_such_enemy.tres
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] spawn_enemy (res://game/combat/arena.gd:113)
+         [1] test_spawn_enemy_loads_data_and_stays_inside (res://tests/line_a/test_arena.gd:24)
+         [2] _run (res://tests/framework/test_runner.gd:48)
+         [3] after_each (res://tests/line_a/combat_test_base.gd:49)
+  ok      test_spawn_enemy_loads_data_and_stays_inside
+  ok      test_spawn_points_are_inside_near_edges_and_away_from_player
+  ok      test_clear_removes_enemies_orbs_and_fx_but_keeps_player_and_companion
+  ok      test_spawn_companion_loads_data_once
+  ok      test_set_background_replaces_the_ground
+  ok      test_walls_keep_the_player_inside
+  ok      test_bulldog_guards_taunts_and_gets_dazed_not_hurt
+
+res://tests/line_a/test_companion_guard.gd
+  ok      test_command_runs_to_clamped_ground_point_and_never_teleports
+  ok      test_actual_incoming_damage_and_one_counter_are_bounded_by_circle
+  ok      test_guard_is_available_for_mage_and_does_not_amplify_ultimate
+  ok      test_archer_and_equipment_use_strongest_charge_without_refresh_loop
+  ok      test_blocked_projectile_grants_counter_only_while_player_is_inside
+  ok      test_invulnerable_hit_cannot_farm_counter_or_damage_prevention
+  ok      test_daze_expiry_and_failed_arrival_end_protection_without_refund
+  ok      test_pause_stops_guard_clock_and_rejects_commands
+  ok      test_downed_and_stage_completion_cancel_field
+  ok      test_melee_waits_outside_true_reach_and_is_ready_as_target_arrives
+  ok      test_movement_can_still_cancel_attack_and_real_misses_spend_cooldown
+  ok      test_late_hud_receives_ready_state_and_button_routes_command
+  ok      test_captain_cues_follow_real_attack_and_recovery_timing
+  ok      test_boss_cue_hud_follows_signal_and_clears_at_level_end
+
+res://tests/line_a/test_damage.gd
+  ok      test_player_damage_formula
+  ok      test_damage_taken_formula
+  ok      test_player_announces_vigor_and_loyalty_on_enter
+  ok      test_take_damage_applies_mult_writes_vigor_and_emits
+  ok      test_invulnerability_wears_off_and_player_blinks
+  ok      test_heal_caps_at_max_vigor
+  ok      test_player_downed_once_and_falls_asleep
+  ok      test_swing_damage_uses_live_stats_and_next_level_bonus
+  ok      test_swings_build_loyalty
+  ok      test_revive_wakes_the_player_up
+
+res://tests/line_a/test_desktop_input.gd
+  ok      test_keyboard_movement_is_normalized_and_release_stops
+  ok      test_arrows_and_opposite_directions
+  ok      test_keyboard_release_restores_auto_attack
+  ok      test_space_uses_ultimate_only_with_full_loyalty_and_not_while_paused
+  ok      test_pause_requires_release_before_keyboard_movement_resumes
+  ok      test_keyboard_tutorial_progresses_without_touch
+
+res://tests/line_a/test_enemies.gd
+  ok      test_enemy_data_files_match_dev_plan
+  ok      test_spawned_enemy_is_set_up_from_data
+  ok      test_seed_override_controls_initial_enemy_decisions
+  ok      test_death_leaves_group_immediately_and_emits_once
+  ok      test_spawning_enemy_counts_but_cannot_be_targeted
+  ok      test_hit_flashes_and_knocks_back
+  ok      test_stun_freezes_enemy_and_cancels_telegraph
+  ok      test_separation_keeps_enemies_apart
+  ok      test_scarecrow_telegraphs_before_hitting
+  ok      test_crow_shows_line_then_dives
+  ok      test_boss_enters_phase_two_at_half_hp
+  ok      test_boss_summons_through_arena_and_defeat_scatters_armor
+  ok      test_boss_moves_are_telegraphed
+  ok      test_telegraphing_scarecrow_is_not_knocked_back
+
+res://tests/line_a/test_exp_orb.gd
+  ok      test_orb_pickup_emits_exp_collected_with_raw_value
+  ok      test_pickup_radius_is_read_live
+  ok      test_enemy_death_drops_an_orb_the_player_can_pick_up
+  ok      test_orbs_fly_in_when_the_arena_is_clear
+  ok      test_no_pickup_while_player_is_asleep
+
+res://tests/line_a/test_feel.gd
+  ok      test_combo_counts_kills_and_lapses_after_the_window
+  ok      test_combo_listens_to_enemy_died
+  ok      test_combo_milestones_add_loyalty
+  ok      test_combo_resets_to_zero_when_the_arena_goes_away
+  ok      test_boss_walks_in_invulnerable_and_announces_hp
+  ok      test_boss_phase_two_roar_is_invulnerable_and_glows
+  ok      test_boss_defeat_holds_about_a_second_with_slow_motion
+  ok      test_slow_motion_ends_when_the_arena_leaves
+  ok      test_haptics_for_hit_ultimate_and_boss_slam
+  ok      test_haptics_respect_the_setting
+  ok      test_ultimate_darkens_freezes_enemies_then_strikes
+  ok      test_particles_and_damage_numbers_are_capped
+  ok      test_particle_counter_goes_back_down
+  ok      test_hits_pop_damage_numbers_and_squash
+  ok      test_shake_crit_uses_the_big_number
+  ok      test_trauma_shakes_then_settles_and_swing_nudges
+  ok      test_getting_hit_adds_trauma
+  ok      test_a_single_scarecrow_can_hit_a_stationary_goldie
+  ok      test_scarecrows_surround_instead_of_lining_up
+  ok      test_crow_can_call_a_wingman
+  ok      test_enemies_rise_from_the_ground_and_elite_has_an_aura
+  ok      test_level_completed_makes_goldie_and_bulldog_cheer
+  ok      test_bulldog_says_woof_when_guarding
+
+res://tests/line_a/test_guard_learning.gd
+  ok      test_coverage_tracks_actual_boundary_and_late_request
+  ok      test_block_then_normal_melee_hit_completes_once_without_taking_damage
+  ok      test_miss_preserves_charge_and_does_not_complete_lesson
+  ok      test_ranged_ultimate_does_not_consume_or_complete_normal_hit_does
+  ok      test_expired_charge_clears_feedback_without_teaching_success
+  ok      test_snapshot_explains_movement_range_and_recovery_from_actor_state
+  ok      test_pause_freezes_actual_charge_and_ui_then_death_cancels_lesson
+  ok      test_danger_priority_and_skip_never_pause_or_block_movement
+  ok      test_coach_and_charge_are_in_safe_area_without_control_overlap
+  ok      test_detached_previous_stage_actors_do_not_answer_new_hud_requests
+
+res://tests/line_a/test_hero_classes.gd
+  ok      test_all_loadouts_are_available_and_stats_do_not_mutate_resources
+  ok      test_arrows_travel_before_damage_and_pierce_in_spatial_order
+  ok      test_mage_splash_hits_nearby_targets_once_and_not_distant_enemies
+  ok      test_projectile_misses_outside_lane_and_expires_at_range
+  ok      test_movement_cancels_cast_and_resets_archer_focus
+  ok      test_ranged_ultimate_is_class_specific_and_does_not_refill_itself
+  ok      test_pause_freezes_flying_projectile_and_clear_removes_it
+  ok      test_upgrades_rebuild_from_class_base_and_do_not_offer_melee_pounce
+  ok      test_archer_focus_changes_real_impact_damage
+  ok      test_mage_ultimate_centers_on_target_and_does_not_refill_itself
+  ok      test_flying_shot_expires_after_player_is_freed
+
+res://tests/line_a/test_long_run.gd
+          [long run] 180 s game in 18.0 s real, waves 26, kills 191, exp 213, max alive 24, worst cluster 2, oldest enemy 36.0 s, max fx 121, lingering fx 6, spin 27, bark 20, shake 27, ult 11, dog dazed 17
+  ok      test_three_minute_run_stays_stable
+
+res://tests/line_a/test_player_input.gd
+  ok      test_drag_moves_and_release_stops_without_sliding
+  ok      test_only_the_first_finger_controls_movement
+  ok      test_touch_starting_on_ui_blocker_is_ignored
+  ok      test_pause_releases_the_joystick
+  ok      test_player_attacks_only_when_stopped
+  ok      test_no_swing_without_enemies
+  ok      test_windup_comes_before_the_hit
+  ok      test_ultimate_needs_full_loyalty
+  ok      test_real_touch_events_through_the_viewport
+
+res://tests/line_a/test_v23_enemies.gd
+  ok      test_new_enemy_data_files_match_dev_plan
+  ok      test_archer_aims_for_a_readable_time_then_shoots_an_arrow
+  ok      test_arrow_misses_when_goldie_steps_aside_after_the_lock
+  ok      test_archer_backs_away_when_goldie_comes_close
+  ok      test_bulldog_shield_blocks_arrows_sword_waves_and_pitchforks
+  ok      test_projectile_hits_each_victim_once_and_stops_at_the_wall
+  ok      test_husk_is_not_knocked_back_and_shrugs_off_half_the_bark
+  ok      test_husk_telegraphs_a_shield_bash_then_dashes
+  ok      test_husk_death_scatters_armour_and_a_blue_wisp_flies_off
+  ok      test_captain_announces_itself_for_the_boss_bar
+  ok      test_captain_sweep_rally_and_boomerang_pitchfork
+  ok      test_captain_phase_two_then_defeat_drops_a_purple_feather
+  ok      test_black_knight_announces_and_phase_two_sword_wave_and_husks
+  ok      test_hard_mode_scales_stats_and_telegraphs_without_touching_the_data_file
+  ok      test_attack_slots_limit_simultaneous_melee_attackers_by_level
+  ok      test_archers_crossfire_with_melee_in_later_levels
+  ok      test_pincer_makes_waiting_scarecrows_attack_together_in_later_levels
+  ok      test_enemy_projectiles_are_grouped_and_capped
+  ok      test_clearing_the_arena_mid_guard_and_mid_windup_is_safe
+
+res://tests/line_a/test_v24_loot.gd
+  ok      test_luck_and_dig_raise_drop_chances
+  ok      test_guaranteed_chest_tiers
+  ok      test_elite_drops_a_chest_that_opens_on_touch
+  ok      test_chests_slide_to_the_player_when_the_arena_is_clear
+  ok      test_normal_enemies_rarely_drop_chests_and_the_cap_holds
+  ok      test_snacks_drop_get_pulled_in_and_emit_snack_collected
+  ok      test_dig_snacks_heal_the_player
+  ok      test_elite_drops_guaranteed_snacks
+  ok      test_clear_removes_chests_and_snacks
+  ok      test_revive_is_cute_and_pushes_enemies_away
+  ok      test_loyalty_training_speeds_up_loyalty_gain
+
+res://tests/line_a/test_v24_tricks.gd
+  ok      test_new_ids_are_abilities_and_stat_tricks_are_not
+  ok      test_pounce_range_min_distance_and_cooldown
+  ok      test_roll_is_brief_invulnerability_with_cooldown
+  ok      test_play_dead_has_one_use_per_stack
+  ok      test_zoomies_boosts_speed_after_a_kill
+  ok      test_tornado_tail_hits_around_the_player_continuously
+  ok      test_lion_roar_is_a_bigger_bark_that_hurts_and_guards
+  ok      test_high_five_every_third_landed_swing_throws_a_paw
+  ok      test_meteor_pounce_impacts_on_landing_and_keeps_zoomies
+  ok      test_evolution_replaces_both_sources_and_does_not_stack
+  ok      test_rebuild_with_evolutions_suppresses_sources
+  ok      test_player_rebuilds_evolutions_and_listens_to_trick_evolved
+  ok      test_pounce_leaps_to_a_nearby_enemy_and_swings
+  ok      test_meteor_pounce_landing_hurts_enemies_around
+  ok      test_roll_makes_the_player_invulnerable_when_starting_to_move
+  ok      test_play_dead_saves_the_player_once_per_level
+  ok      test_zoomies_makes_the_player_faster_after_a_kill
+  ok      test_lion_roar_halves_damage_while_enemies_are_stunned
+  ok      test_high_five_paw_print_flies_to_an_enemy
+  ok      test_sniff_adds_crit_chance
+  ok      test_evolution_has_a_visual_flourish
+
+res://tests/line_a/test_v26_bosses.gd
+  ok      test_green_knight_whip_long_red_line_hits_when_standing_and_misses_when_stepping_aside
+  ok      test_green_knight_thorn_ring_and_summon
+  ok      test_green_knight_hat_off_at_half_then_faster_double_whip_and_kneels_when_defeated
+  ok      test_morgana_teleport_shows_a_moon_circle_first
+  ok      test_morgana_foxfire_rain_circles_hit_only_who_stays
+  ok      test_morgana_fan_has_gaps
+  ok      test_morgana_mirror_clones_from_66_percent
+  ok      test_morgana_rotating_beam_from_33_percent_is_avoidable
+  ok      test_morgana_defeat_sits_down_and_clears_clones_and_flames
+  ok      test_lancelot_and_bulldog_stand_on_both_sides_without_overlapping
+  ok      test_lancelot_dashes_at_the_nearest_enemy_then_returns
+  ok      test_lancelot_never_goes_down
+
+res://tests/line_a/test_v26_enemies.gd
+  ok      test_new_enemy_data_files_and_names
+  ok      test_every_new_enemy_can_be_defeated
+  ok      test_chapter_multipliers_stack_with_the_level_ramp_in_story_mode_only
+  ok      test_gargoyle_turns_to_stone_unhittable_and_unpushable
+  ok      test_gargoyle_swoop_is_telegraphed_and_dodgeable
+  ok      test_spellbook_fan_has_gaps_and_more_orbs_on_hard
+  ok      test_spellbook_backs_away_and_orbs_miss_when_standing_in_a_gap
+  ok      test_foxfire_is_fragile_warns_then_bursts
+  ok      test_foxfire_killed_while_warning_never_bursts_and_stops_after_chasing
+  ok      test_shadow_wolves_take_turns_dash_on_a_red_line
+  ok      test_shadow_wolf_dash_misses_after_stepping_off_the_line_and_falls_into_leaves
+  ok      test_gargoyle_elite_is_a_big_boss_that_calls_two_gargoyles_at_half
+  ok      test_phantom_knight_is_a_faster_translucent_black_knight
+
+res://tests/line_a/test_v27_bosses.gd
+  ok      test_kraken_tentacle_red_line_from_the_edge_is_dodgeable
+  ok      test_kraken_ink_bubbles_and_double_tentacles_at_half
+  ok      test_twin_dragons_one_clear_boss_bar_take_turns_sulk_then_rage
+  ok      test_a_lone_dragon_sulking_counts_as_defeated
+  ok      test_dragon_breath_cone_is_dodgeable_and_ice_ring_has_gaps
+  ok      test_mordred_duel_flees_at_half_and_the_field_clears
+  ok      test_mordred_dash_slash_and_shadow_slash_fan_have_room_to_dodge
+  ok      test_mordred_scabbard_shield_only_breaks_to_companions_then_he_is_stunned
+  ok      test_mordred_calls_old_boss_echoes_from_33_percent_and_kneels_when_defeated
+  ok      test_four_companions_stand_apart_without_overlapping
+  ok      test_tristan_plays_music_notes_at_the_nearest_enemy
+  ok      test_gawain_hammer_slam_hits_an_area_and_briefly_stuns
+
+res://tests/line_a/test_v27_enemies.gd
+  ok      test_v27_data_files_names_and_six_chapter_multipliers
+  ok      test_every_v27_enemy_can_be_defeated
+  ok      test_crab_guard_barely_hurts_and_panting_after_a_pinch_is_the_counter_window
+  ok      test_jellyfish_zap_circle_hits_only_who_stays
+  ok      test_crab_elite_harder_shell_and_calls_crabs_at_half
+  ok      test_snowball_shadow_marks_the_landing_spot_first
+  ok      test_snowman_elite_throws_three_with_gaps_and_calls_snowmen
+  ok      test_salamander_dash_leaves_short_embers_that_burn_once
+  ok      test_shadow_knight_shield_blocks_the_front_and_turns_slowly
+  ok      test_lantern_wisp_heals_nearby_enemies_but_not_bosses_and_is_a_priority_target
+
+res://tests/line_b/test_chapter_data.gd
+  ok      test_chapter_files
+  ok      test_levels_follow_the_table
+  ok      test_companions_are_at_most_four_and_6_6_brings_everyone
+  ok      test_bosses_and_mid_bosses_are_where_the_contract_says
+  ok      test_twin_dragons_spawn_together_in_one_wave
+  ok      test_each_new_enemy_is_taught_alone_before_mixing
+    1-1  工作量 46 秒(×1.00 = 46)  敵人 16 隻
+    1-2  工作量 64 秒(×1.00 = 64)  敵人 24 隻
+    1-3  工作量 78 秒(×1.00 = 78)  敵人 33 隻
+    1-4  工作量 91 秒(×1.00 = 91)  敵人 29 隻
+    1-5  工作量 99 秒(×1.00 = 99)  敵人 34 隻
+    1-6  工作量 62 秒(×1.00 = 62)  敵人 1 隻
+    2-1  工作量 57 秒(×1.15 = 66)  敵人 20 隻
+    2-2  工作量 67 秒(×1.15 = 77)  敵人 19 隻
+    2-3  工作量 73 秒(×1.15 = 84)  敵人 25 隻
+    2-4  工作量 82 秒(×1.15 = 94)  敵人 23 隻
+    2-5  工作量 93 秒(×1.15 = 107)  敵人 25 隻
+    2-6  工作量 63 秒(×1.15 = 72)  敵人 1 隻
+    3-1  工作量 39 秒(×1.30 = 50)  敵人 24 隻
+    3-2  工作量 48 秒(×1.30 = 62)  敵人 20 隻
+    3-3  工作量 70 秒(×1.30 = 91)  敵人 22 隻
+    3-4  工作量 70 秒(×1.30 = 91)  敵人 26 隻
+    3-5  工作量 113 秒(×1.30 = 147)  敵人 44 隻
+    3-6  工作量 70 秒(×1.30 = 92)  敵人 1 隻
+    4-1  工作量 50 秒(×1.45 = 72)  敵人 16 隻
+    4-2  工作量 63 秒(×1.45 = 91)  敵人 18 隻
+    4-3  工作量 74 秒(×1.45 = 107)  敵人 25 隻
+    4-4  工作量 80 秒(×1.45 = 116)  敵人 20 隻
+    4-5  工作量 104 秒(×1.45 = 150)  敵人 35 隻
+    4-6  工作量 67 秒(×1.45 = 97)  敵人 1 隻
+    5-1  工作量 50 秒(×1.60 = 80)  敵人 13 隻
+    5-2  工作量 66 秒(×1.60 = 105)  敵人 19 隻
+    5-3  工作量 66 秒(×1.60 = 106)  敵人 31 隻
+    5-4  工作量 82 秒(×1.60 = 131)  敵人 20 隻
+    5-5  工作量 99 秒(×1.60 = 158)  敵人 41 隻
+    5-6  工作量 78 秒(×1.60 = 125)  敵人 2 隻
+    6-1  工作量 43 秒(×1.75 = 75)  敵人 11 隻
+    6-2  工作量 52 秒(×1.75 = 91)  敵人 16 隻
+    6-3  工作量 68 秒(×1.75 = 119)  敵人 25 隻
+    6-4  工作量 85 秒(×1.75 = 149)  敵人 15 隻
+    6-5  工作量 122 秒(×1.75 = 213)  敵人 38 隻
+    6-6  工作量 63 秒(×1.75 = 110)  敵人 1 隻
+  ok      test_chapters_ramp_and_each_5_is_the_hardest_normal_level
+  ok      test_star_goals_are_sensible
+    2-1  經驗 26  升 2 級 → 第 3 級
+    2-2  經驗 38  升 2 級 → 第 5 級
+    2-3  經驗 43  升 2 級 → 第 7 級
+    2-4  經驗 52  升 2 級 → 第 9 級
+    2-5  經驗 56  升 1 級 → 第 10 級
+    2-6  經驗 26  升 1 級 → 第 11 級
+    3-1  經驗 24  升 2 級 → 第 3 級
+    3-2  經驗 31  升 2 級 → 第 5 級
+    3-3  經驗 44  升 2 級 → 第 7 級
+    3-4  經驗 47  升 1 級 → 第 8 級
+    3-5  經驗 80  升 2 級 → 第 10 級
+    3-6  經驗 29  升 1 級 → 第 11 級
+    4-1  經驗 24  升 2 級 → 第 3 級
+    4-2  經驗 36  升 2 級 → 第 5 級
+    4-3  經驗 50  升 2 級 → 第 7 級
+    4-4  經驗 56  升 2 級 → 第 9 級
+    4-5  經驗 71  升 2 級 → 第 11 級
+    4-6  經驗 30  升 0 級 → 第 11 級
+    5-1  經驗 26  升 2 級 → 第 3 級
+    5-2  經驗 38  升 2 級 → 第 5 級
+    5-3  經驗 49  升 2 級 → 第 7 級
+    5-4  經驗 56  升 2 級 → 第 9 級
+    5-5  經驗 70  升 2 級 → 第 11 級
+    5-6  經驗 28  升 0 級 → 第 11 級
+    6-1  經驗 26  升 2 級 → 第 3 級
+    6-2  經驗 36  升 2 級 → 第 5 級
+    6-3  經驗 49  升 2 級 → 第 7 級
+    6-4  經驗 56  升 2 級 → 第 9 級
+    6-5  經驗 90  升 2 級 → 第 11 級
+    6-6  經驗 36  升 1 級 → 第 12 級
+  ok      test_estimated_level_ups_per_chapter
+  ok      test_enemy_data_files_match_when_present
+
+res://tests/line_b/test_chapters.gd
+  ok      test_each_chapter_plays_from_level_1_to_the_ending
+  ok      test_a_new_run_starts_at_level_1_with_a_fresh_hero
+  ok      test_locked_chapters_cannot_be_started
+  ok      test_two_companions_from_2_3
+  ok      test_continue_returns_to_the_saved_chapter_and_level
+  ok      test_continue_into_a_pending_camp_of_chapter_2
+  ok      test_old_saves_convert_to_chapters_cleared
+  ok      test_save_chapter_too_high_for_progress_falls_back
+  ok      test_replaying_an_earlier_chapter_keeps_the_highest_record
+  ok      test_chapter_music_and_fallback
+  ok      test_every_chapter_has_its_music_with_fallback
+  ok      test_real_music_files_decide_the_fallback
+  ok      test_first_chapter_music_is_unchanged
+  ok      test_endless_adds_later_chapter_enemies_and_bosses
+  ok      test_endless_adds_chapters_4_to_6
+  ok      test_endless_backgrounds_follow_chapters_cleared
+  ok      test_endless_run_uses_chapters_cleared
+  ok      test_stand_in_title_picks_only_unlocked_chapters
+  ok      test_stand_in_title_goes_up_to_the_last_chapter
+  ok      test_version_5_saves_open_chapter_4
+  ok      test_continue_into_later_chapters_with_their_companions
+  ok      test_clearing_chapter_6_is_the_end_of_the_story
+  ok      test_only_the_last_chapter_is_the_end
+
+res://tests/line_b/test_endless.gd
+  ok      test_generated_waves_escalate_and_use_every_enemy
+  ok      test_same_seed_same_waves_and_random_background
+  ok      test_endless_run_goes_on_and_records_best
+  ok      test_endless_event_every_ten_waves
+  ok      test_endless_retry_starts_a_new_run_and_title_button_needs_chapter_cleared
+  ok      test_endless_switches_to_hard_scaling_late
+
+res://tests/line_b/test_events.gd
+  ok      test_every_level_has_a_different_event_with_merlin_and_morgana
+  ok      test_event_appears_between_waves_and_pauses_until_chosen
+  ok      test_morgana_option_changes_stats_for_the_run_and_retry_restores
+  ok      test_event_waits_for_trick_choice_and_can_give_tricks
+  ok      test_effects_snacks_vigor_and_bonus_levels
+  ok      test_without_event_ui_the_first_option_is_picked_automatically
+ERROR: Parameter "obj" is null.
+   at: is_connected (core/variant/callable.cpp:558)
+   GDScript backtrace (most recent call first):
+       [0] stop (res://tests/framework/signal_watcher.gd:34)
+       [1] _end_test (res://tests/framework/test_case.gd:80)
+       [2] _run (res://tests/framework/test_runner.gd:50)
+       [3] after_each (res://tests/line_b/flow_test_base.gd:27)
+       [4] wait_frames (res://tests/framework/test_case.gd:69)
+  ok      test_boss_level_event_comes_after_the_intro
+
+res://tests/line_b/test_evolution.gd
+  ok      test_all_trick_files_have_text_icons_and_rules
+  ok      test_difficulty_pool_has_all_base_tricks_and_no_evolutions
+  ok      test_maxed_trick_is_not_offered_again
+  ok      test_evolution_is_offered_first_when_eligible
+  ok      test_evolution_never_appears_in_normal_draws
+  ok      test_choosing_evolution_replaces_both_sources
+  ok      test_level_up_offer_includes_evolution_and_choosing_it_emits_trick_evolved
+  ok      test_bonus_trick_levels_add_copies_up_to_the_cap
+  ok      test_extra_bonus_sums_non_stat_modifiers
+  ok      test_owned_weight_favors_owned_tricks
+  ok      test_snapshot_restores_run_modifiers_and_evolution
+
+res://tests/line_b/test_experience.gd
+  ok      test_thresholds_follow_the_curve
+  ok      test_level_up_exactly_at_threshold
+  ok      test_overflow_carries_into_next_level_and_can_skip_levels
+  ok      test_fractional_exp_mult_is_kept
+  ok      test_exp_collected_applies_exp_mult_and_emits_exp_changed
+  ok      test_level_up_emits_signal_and_offers_tricks
+  ok      test_multiple_level_ups_queue_one_choice_each
+WARNING: RunProgression: 選了不在選項內的把戲 not_offered_trick,略過
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _on_trick_chosen (res://game/progression/run_progression.gd:284)
+         [1] test_trick_chosen_outside_an_offer_is_ignored (res://tests/line_b/test_experience.gd:112)
+         [2] wait_frames (res://tests/framework/test_case.gd:69)
+  ok      test_trick_chosen_outside_an_offer_is_ignored
+  ok      test_exp_outside_a_level_is_ignored
+  ok      test_snapshot_restores_level_exp_stats_and_tricks
+
+res://tests/line_b/test_flow.gd
+  ok      test_boot_shows_title_on_layer_30
+  ok      test_level_uses_layers_10_and_20_and_emits_level_started
+  ok      test_hud_exists_before_the_player_enters
+  ok      test_backgrounding_during_a_level_pauses_and_saves
+  ok      test_clock_excludes_paused_time
+  ok      test_back_button_in_level_toggles_pause
+  ok      test_back_is_ignored_while_choosing_a_trick
+  ok      test_back_on_title_is_ignored_off_android
+  ok      test_back_on_title_asks_to_quit_on_android
+  ok      test_back_closes_credits
+  ok      test_results_have_exactly_the_contract_keys
+  ok      test_failure_flow_and_retry_restores_snapshot
+  ok      test_next_level_bonus_resets_after_completion
+  ok      test_failure_title_button_returns_to_title
+  ok      test_quit_to_title_from_pause
+  ok      test_camp_follows_level_1_2_and_bonus_carries_to_next_level
+  ok      test_companion_joins_from_level_1_3
+  ok      test_companion_is_already_there_after_1_3
+
+res://tests/line_b/test_full_flow.gd
+  ok      test_new_game_to_final_results
+
+res://tests/line_b/test_guard_learning_flow.gd
+  ok      test_v9_save_migrates_without_losing_equipment_or_progress
+  ok      test_intro_shows_optional_lesson_skip_and_pause_replay
+  ok      test_completed_flag_persists_and_replay_remains_available
+  ok      test_before_companion_arrives_no_lesson_or_replay_button
+
+res://tests/line_b/test_hard_mode.gd
+  ok      test_hard_is_ignored_until_the_chapter_is_cleared
+  ok      test_hard_run_saves_stars_separately_and_reports_difficulty
+  ok      test_normal_run_after_clearing_uses_normal_records
+  ok      test_continue_keeps_the_saved_runs_difficulty
+  ok      test_hard_mode_adds_a_few_regular_enemies
+  ok      test_hard_mode_spawns_the_extra_enemies_in_a_wave
+  ok      test_version_3_fields_round_trip
+  ok      test_version_2_save_still_loads_with_v3_defaults
+  ok      test_bad_v3_values_are_cleaned
+  ok      test_story_seen_and_chapter_cleared_load_into_game_state
+
+res://tests/line_b/test_hero_class_flow.gd
+  ok      test_continue_restores_saved_class_instead_of_title_candidate
+  ok      test_retry_preserves_archer_stats_and_class
+  ok      test_endless_class_does_not_overwrite_story_class
+
+res://tests/line_b/test_level_data.gd
+  ok      test_six_level_files_follow_the_table
+  ok      test_level_contents
+  ok      test_chapter_1_order_and_camps
+    1-1  估計 50 秒  經驗 16  升 2 級 → 第 3 級
+    1-2  估計 70 秒  經驗 24  升 1 級 → 第 4 級
+    1-3  估計 85 秒  經驗 39  升 2 級 → 第 6 級
+    1-4  估計 97 秒  經驗 50  升 2 級 → 第 8 級
+    1-5  估計 108 秒  經驗 58  升 1 級 → 第 9 級
+    1-6  估計 64 秒  經驗 26  升 1 級 → 第 10 級
+  ok      test_estimated_length_and_level_ups_are_on_target
+
+res://tests/line_b/test_pacing.gd
+  ok      test_first_wave_waits_for_the_intro
+  ok      test_player_can_move_during_the_intro
+  ok      test_intro_is_in_difficulty_data
+  ok      test_new_game_goes_through_cover_and_reveal
+  ok      test_a_stuck_transition_never_blocks_the_flow
+  ok      test_backgrounding_during_a_transition_pauses_the_new_level
+  ok      test_no_transition_scene_switches_directly
+  ok      test_quitting_during_a_transition_does_not_start_the_old_level
+  ok      test_real_transition_scene_has_the_contract_methods
+  ok      test_music_follows_the_flow
+  ok      test_boss_and_chapter_clear_music
+
+res://tests/line_b/test_save.gd
+  ok      test_round_trip
+  ok      test_only_known_fields_are_saved
+  ok      test_overwrite_keeps_latest
+  ok      test_interrupted_write_keeps_the_old_save
+WARNING: SaveStore: 存檔內容無效,當作沒有存檔
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] read (res://game/flow/save_store.gd:137)
+         [1] test_corrupt_or_wrong_files_mean_no_save (res://tests/line_b/test_save.gd:60)
+         [2] _run (res://tests/framework/test_runner.gd:48)
+         [3] after_each (res://tests/line_b/flow_test_base.gd:27)
+         [4] wait_frames (res://tests/framework/test_case.gd:69)
+WARNING: SaveStore: 存檔內容無效,當作沒有存檔
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] read (res://game/flow/save_store.gd:137)
+         [1] test_corrupt_or_wrong_files_mean_no_save (res://tests/line_b/test_save.gd:64)
+         [2] _run (res://tests/framework/test_runner.gd:48)
+         [3] after_each (res://tests/line_b/flow_test_base.gd:27)
+         [4] wait_frames (res://tests/framework/test_case.gd:69)
+  ok      test_corrupt_or_wrong_files_mean_no_save
+  ok      test_boot_loads_save_and_title_offers_continue
+  ok      test_no_save_hides_continue
+  ok      test_legacy_save_without_checkpoint_starts_saved_level_with_a_fresh_run
+  ok      test_level_start_and_level_complete_write_the_save
+  ok      test_new_game_ignores_old_progress
+
+res://tests/line_b/test_snacks_and_training.gd
+  ok      test_meta_upgrade_table_matches_the_contract
+  ok      test_purchase_spends_snacks_and_emits_snacks_changed
+  ok      test_meta_upgrades_apply_after_reset_run_on_new_game
+  ok      test_save_v4_round_trip_and_old_saves_load
+  ok      test_snacks_from_drops_kills_and_clear_are_saved
+  ok      test_clear_reward_uses_stars_and_hard_mode
+  ok      test_normal_chest_heals_or_gives_snacks
+  ok      test_elite_chest_offers_a_trick_choice
+  ok      test_chest_outside_a_level_is_ignored
+  ok      test_revive_spends_snacks_and_returns_to_the_same_fight
+  ok      test_cannot_revive_without_enough_snacks
+  ok      test_revive_keeps_the_waves_going_until_the_level_is_cleared
+  ok      test_training_opens_from_title_and_saves_on_close
+  ok      test_boss_chest_after_the_fight_becomes_snacks
+
+res://tests/line_b/test_spawn_patterns.gd
+  ok      test_surround_is_telegraphed_then_spawns_on_the_markers
+  ok      test_surround_rings_the_player_at_a_fair_distance
+  ok      test_line_top_is_a_row_and_flips_when_goldie_is_near_the_top
+  ok      test_corners_skip_the_corner_next_to_goldie
+WARNING: WaveSpawner: 不認識的隊形 zigzag,改用 edges
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _schedule (res://game/flow/wave_spawner.gd:228)
+         [1] _start_wave (res://game/flow/wave_spawner.gd:190)
+         [2] step (res://game/flow/wave_spawner.gd:172)
+         [3] test_unknown_pattern_falls_back_to_edges (res://tests/line_b/test_spawn_patterns.gd:156)
+         [4] _run (res://tests/framework/test_runner.gd:48)
+         [5] after_each (res://tests/line_b/flow_test_base.gd:27)
+         [6] wait_frames (res://tests/framework/test_case.gd:69)
+  ok      test_unknown_pattern_falls_back_to_edges
+  ok      test_stop_removes_markers
+  ok      test_every_pattern_in_data_is_known
+  ok      test_levels_have_identity_and_a_climax
+
+res://tests/line_b/test_stand_ins.gd
+  ok      test_stand_in_arena_has_the_contract_methods
+  ok      test_spawned_enemy_is_in_group_and_dies_with_signals
+  ok      test_tap_on_enemy_kills_it
+  ok      test_drag_moves_player_and_release_stops
+  ok      test_player_takes_reduced_damage_and_falls_asleep
+  ok      test_clear_removes_enemies_from_group_immediately
+  ok      test_companion_and_background
+  ok      test_stand_in_screens_match_the_ui_contract
+  ok      test_stand_in_pause_and_trick_choice_listen_to_event_bus
+
+res://tests/line_b/test_stars.gd
+  ok      test_each_goal_is_one_star
+  ok      test_goals_are_in_contract_order_with_translated_text
+  ok      test_all_levels_have_star_thresholds
+  ok      test_results_carry_stars_and_best_is_saved
+  ok      test_damage_taken_costs_the_third_star
+  ok      test_new_best_only_when_improving_and_best_never_drops
+  ok      test_failure_result_has_zero_stars_and_keeps_best
+
+res://tests/line_b/test_story_data.gd
+  ok      test_story_md_has_the_expected_scripts
+  ok      test_every_script_matches_story_md_line_by_line
+  ok      test_lines_have_text_portraits_and_pictures
+  ok      test_levels_and_chapter_use_the_right_scripts
+  ok      test_real_dialogue_box_has_the_contract
+  ok      test_stand_in_dialogue_box_has_the_same_contract
+
+res://tests/line_b/test_story_flow.gd
+  ok      test_new_game_prologue_then_arena_then_l1_before_then_title_card
+  ok      test_back_and_background_during_a_story
+  ok      test_clear_celebration_then_story_after_then_results
+  ok      test_retry_does_not_replay_story_before
+  ok      test_continue_plays_that_levels_story_before_but_not_the_prologue
+  ok      test_ending_order_and_chapter_cleared
+  ok      test_whole_chapter_plays_every_level_story_in_order
+  ok      test_without_a_dialogue_box_the_story_is_skipped
+  ok      test_captain_wave_switches_to_boss_music
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 1 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+   GDScript backtrace (most recent call first):
+       [0] begin (res://game/flow/level_session.gd:152)
+       [1] _begin_level (res://game/flow/flow_main.gd:747)
+       [2] _wait_story_hidden (res://game/flow/flow_main.gd:1186)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Lambda capture at index 0 was freed. Passed "null" instead.
+   at: call (modules/gdscript/gdscript_lambda_callable.cpp:242)
+ERROR: Parameter "obj" is null.
+   at: is_connected (core/variant/callable.cpp:558)
+   GDScript backtrace (most recent call first):
+       [0] after_each (res://tests/line_b/test_story_flow.gd:21)
+       [1] _run (res://tests/framework/test_runner.gd:49)
+       [2] test_results_wait_until_the_story_after_dialogue_has_faded (res://tests/line_b/test_story_flow.gd:322)
+       [3] _check_story_after_then_results (res://tests/line_b/test_story_flow.gd:373)
+       [4] wait_frames (res://tests/framework/test_case.gd:69)
+ERROR: Parameter "obj" is null.
+   at: is_connected (core/variant/callable.cpp:558)
+   GDScript backtrace (most recent call first):
+       [0] after_each (res://tests/line_b/test_story_flow.gd:21)
+       [1] _run (res://tests/framework/test_runner.gd:49)
+       [2] test_results_wait_until_the_story_after_dialogue_has_faded (res://tests/line_b/test_story_flow.gd:322)
+       [3] _check_story_after_then_results (res://tests/line_b/test_story_flow.gd:373)
+       [4] wait_frames (res://tests/framework/test_case.gd:69)
+  ok      test_results_wait_until_the_story_after_dialogue_has_faded
+  ok      test_a_box_that_never_hides_does_not_block_the_results
+
+res://tests/line_b/test_tricks.gd
+  ok      test_trick_data_files_match_the_contract
+  ok      test_draw_three_distinct_for_many_seeds
+  ok      test_draw_is_reproducible_with_a_seed
+  ok      test_draw_more_than_the_pool_returns_whole_pool
+  ok      test_stat_tricks_are_additive_relative_to_base
+  ok      test_sit_stacks_to_0_8_then_0_6_and_has_a_floor
+  ok      test_integer_fields_round
+WARNING: TrickDeck: StatBlock 沒有數值欄位 not_a_stat
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] apply_modifiers (res://game/progression/trick_deck.gd:218)
+         [1] test_unknown_stat_is_ignored (res://tests/line_b/test_tricks.gd:108)
+         [2] _run (res://tests/framework/test_runner.gd:48)
+         [3] after_each (res://tests/line_b/flow_test_base.gd:27)
+         [4] wait_frames (res://tests/framework/test_case.gd:69)
+  ok      test_unknown_stat_is_ignored
+  ok      test_progression_applies_stat_trick_to_game_state
+
+res://tests/line_b/test_tutorial_and_camp.gd
+  ok      test_tutorial_shows_on_first_1_1_and_never_blocks
+  ok      test_tutorial_appears_only_once
+  ok      test_clearing_1_1_counts_as_tutorial_done
+  ok      test_no_tutorial_outside_1_1
+  ok      test_settings_and_records_round_trip_through_the_save
+  ok      test_pause_settings_are_saved_when_the_menu_closes
+  ok      test_version_1_save_still_loads
+  ok      test_bad_star_records_are_cleaned
+  ok      test_level_index_during_camp_is_the_level_just_completed
+  ok      test_app_closed_before_camp_continues_into_the_camp
+
+res://tests/line_b/test_wave_spawner.gd
+  ok      test_waves_run_in_order_and_wait_until_field_is_empty
+  ok      test_entry_delay_and_spacing
+  ok      test_wave_not_cleared_before_all_scheduled_spawns
+  ok      test_boss_summons_count_as_enemies
+  ok      test_spawn_points_are_spread_out_and_avoid_the_player
+  ok      test_stop_halts_spawning
+  ok      test_enemy_not_yet_in_tree_still_counts
+  ok      test_captain_wave_signals_boss_music_once
+  ok      test_boss_level_does_not_signal_a_mini_boss_wave
+
+res://tests/line_c/test_art_line_c.gd
+  ok      test_palette_has_55_colours
+  ok      test_pixel_art_uses_only_the_palette
+  ok      test_frame_counts_and_sizes
+  ok      test_looping_rules
+  ok      test_attack_animations_stay_short
+  ok      test_backgrounds_cover_the_extended_screen
+  ok      test_background_ambience_is_light_and_readable
+  ok      test_trick_icons_are_16px
+  ok      test_app_icons
+
+res://tests/line_c/test_art_v23.gd
+  ok      test_new_sprites_have_exact_cells_and_loop_flags
+  ok      test_portraits_and_pages_are_opaque_palette_art
+  ok      test_portrait_designs_differ_per_expression
+  ok      test_light_sprites_are_additive_and_cheap
+  ok      test_backgrounds_have_shadows_lights_and_a_safe_foreground
+  ok      test_shadow_layer_follows_actor_groups
+  ok      test_story_glows_on_the_armour
+
+res://tests/line_c/test_art_v26_cast.gd
+  ok      test_every_animation_uses_the_same_cell
+  ok      test_new_art_uses_only_the_palette
+  ok      test_feet_line_up_in_every_frame
+  ok      test_bosses_are_recognisable
+  ok      test_one_shot_animations_stay_short
+  ok      test_portraits_are_opaque_48px
+  ok      test_projectiles_have_their_own_art
+  ok      test_particle_scenes_follow_the_pattern
+  ok      test_black_knight_stands_8px_higher
+  ok      test_green_knight_has_bare_phase_two
+
+res://tests/line_c/test_art_v27_cast.gd
+  ok      test_every_animation_uses_the_same_cell
+  ok      test_new_art_uses_only_the_palette
+  ok      test_feet_line_up_on_the_shadow_row
+  ok      test_big_bosses_stand_8px_higher
+  ok      test_loop_flags_and_one_shots_stay_short
+  ok      test_characters_are_recognisable
+  ok      test_portraits_are_opaque_48px_and_differ
+  ok      test_projectiles_have_their_own_art
+  ok      test_particle_scenes_follow_the_pattern
+
+res://tests/line_c/test_audio_fx_polish.gd
+  ok      test_every_track_exists_loops_and_is_qoa
+  ok      test_music_respects_switch_and_ducks
+  ok      test_jingle_does_not_resume_after_toggle
+  ok      test_particles_are_small_crisp_and_one_shot
+  ok      test_sprite_fx_centered_with_default_animation
+
+res://tests/line_c/test_class_select_score.gd
+  ok      test_new_game_opens_class_select_before_starting_and_cancel_preserves_hero
+  ok      test_class_picker_keeps_actions_visible_without_scrolling
+  ok      test_old_and_invalid_saves_default_to_knight_and_new_save_round_trips
+  ok      test_class_art_and_chinese_glyphs_exist
+  ok      test_pressure_stems_match_loop_lengths_and_short_cues_stay_one_shot
+  ok      test_pressure_rises_with_crowd_and_danger_and_mute_stops_both_layers
+
+res://tests/line_c/test_hud.gd
+  ok      test_root_contract
+  ok      test_bars_react_to_signals
+  ok      test_ultimate_button_appears_when_loyalty_is_full
+  ok      test_buttons_block_the_joystick_and_are_big_enough
+  ok      test_pause_button_acts_like_back_key
+  ok      test_wave_banner
+  ok      test_boss_banner_on_boss_level_and_phase
+  ok      test_boss_banner_from_phase_signal_on_other_ids
+  ok      test_layout_stays_inside_safe_area_on_many_phones
+  ok      test_only_blocker_buttons_catch_touches
+
+res://tests/line_c/test_hud_polish.gd
+  ok      test_boss_bar_follows_boss_hp_and_phase
+  ok      test_combo_counter_shows_from_two_and_hides_on_break
+  ok      test_title_card_plays_on_level_started_and_ends_in_time
+  ok      test_final_wave_is_announced
+  ok      test_celebration_and_cut_in
+  ok      test_level_up_pop_text
+  ok      test_vigor_ghost_and_low_vigor_heartbeat
+  ok      test_new_elements_never_catch_touches
+
+res://tests/line_c/test_illustrated.gd
+  ok      test_every_production_level_installs_painted_world
+  ok      test_all_production_cast_has_art_and_original_animation_events
+  ok      test_attack_finishes_and_flip_remains_attached_to_sprite
+  ok      test_every_story_page_and_trick_icon_is_replaced
+  ok      test_gallery_does_not_unlock_chapters_or_change_progress
+
+res://tests/line_c/test_pause.gd
+  ok      test_root_contract
+  ok      test_follows_game_paused
+  ok      test_buttons_emit_requests
+  ok      test_sound_toggle_flips_game_state
+  ok      test_buttons_are_touch_friendly
+
+res://tests/line_c/test_screens.gd
+  ok      test_every_screen_has_the_contract_interface
+  ok      test_title_continue_only_with_a_save
+  ok      test_title_buttons_emit
+  ok      test_results_shows_data_and_final_message
+  ok      test_failure_buttons_emit
+  ok      test_credits_lists_licenses_and_closes
+  ok      test_credits_mirror_docs_licenses
+
+res://tests/line_c/test_screens_polish.gd
+  ok      test_results_stars_light_up_one_by_one
+  ok      test_results_without_v22_keys_still_work
+  ok      test_trick_cards_show_new_or_level
+  ok      test_pause_music_and_haptics_toggles
+  ok      test_buttons_squash_when_pressed
+  ok      test_credits_scroll_by_themselves
+  ok      test_title_has_animated_parts
+
+res://tests/line_c/test_story_ui.gd
+  ok      test_first_tap_completes_the_line_second_tap_advances
+  ok      test_typewriter_finishes_by_itself_and_shows_the_next_arrow
+  ok      test_portrait_sides_name_plate_and_narrator
+  ok      test_storybook_keeps_the_picture_and_turns_the_page
+  ok      test_box_blocks_touches_and_hides_under_the_pause_menu
+  ok      test_skip_button_is_a_real_touch_target
+  ok      test_every_speaker_has_a_voice_pitch_and_all_lines_fit
+  ok      test_title_without_clearing_starts_normal_after_class_confirmation
+  ok      test_title_after_clearing_asks_for_difficulty
+  ok      test_failure_shows_merlin_and_a_tip
+  ok      test_results_hard_badge
+  ok      test_boss_bar_takes_the_name_from_boss_appeared
+
+res://tests/line_c/test_strings_and_sfx.gd
+  ok      test_every_tr_key_used_by_the_ui_exists
+  ok      test_ui_keys_use_the_ui_prefix_or_shared_keys
+  ok      test_trick_and_level_keys_exist_for_dynamic_lookups
+  ok      test_every_sfx_id_has_a_sound_file
+  ok      test_sfx_respects_sound_switch
+
+res://tests/line_c/test_transition_tutorial.gd
+  ok      test_transition_contract_and_durations
+  ok      test_transition_signals
+  ok      test_tutorial_never_eats_touches
+  ok      test_tutorial_steps_with_real_touch_events
+  ok      test_tutorial_finishes_after_attack_or_timeout
+  ok      test_tutorial_finishes_when_an_enemy_falls
+
+res://tests/line_c/test_trick_choice.gd
+  ok      test_root_contract
+  ok      test_shows_three_cards_with_names_and_icons
+  ok      test_tapping_a_card_emits_trick_chosen_and_hides
+  ok      test_choose_directly
+  ok      test_cards_fit_inside_the_safe_area
+  ok      test_painted_badges_do_not_cover_the_skill_description
+
+res://tests/line_c/test_v24_ui.gd
+  ok      test_new_trick_icons_are_16px_and_not_placeholders
+  ok      test_evolution_icons_have_a_golden_frame
+  ok      test_chest_and_snack_frames_keep_the_contract
+  ok      test_new_strings_render_with_the_pixel_font
+  ok      test_evolution_card_has_the_evolve_style
+  ok      test_evolution_parents
+  ok      test_evolution_show_plays_on_trick_evolved_without_catching_touches
+  ok      test_event_choice_root_contract
+  ok      test_event_offered_shows_two_toned_cards_and_choice_emits
+  ok      test_event_cards_are_touch_sized_and_inside_the_safe_area
+  ok      test_event_choice_works_while_paused
+  ok      test_hud_snack_counter
+  ok      test_hud_endless_wave_and_best
+  ok      test_hud_still_only_has_two_touch_catchers
+  ok      test_hud_info_row_stays_inside_the_safe_area
+  ok      test_failure_revive_button_only_when_allowed
+  ok      test_failure_revive_button_shows_cost_and_emits_once
+  ok      test_title_endless_only_after_clearing_and_sets_mode
+  ok      test_title_training_and_story_mode
+  ok      test_title_buttons_fit_small_screen_with_notch
+
+res://tests/line_c/test_v26_world.gd
+  ok      test_new_backgrounds_follow_the_scene_rules
+  ok      test_arena_floors_are_calm
+  ok      test_chapter_select_hidden_before_clearing
+  ok      test_chapter_select_unlocks_up_to_the_next_chapter
+  ok      test_new_game_sets_the_chapter_before_emitting
+  ok      test_legacy_save_counts_as_chapter_one_cleared
+  ok      test_title_backdrop_follows_the_highest_unlocked_chapter
+  ok      test_chapter_select_fits_small_screen_with_notch
+  ok      test_failure_tips_follow_the_chapter
+  ok      test_results_name_the_chapter
+  ok      test_chapter_music_loops
+
+res://tests/line_c/test_v27_story.gd
+  ok      test_pages_are_opaque_palette_art_and_all_different
+  ok      test_night_pages_are_dark_and_the_finale_is_warm
+
+res://tests/line_c/test_v27_world.gd
+  ok      test_new_backgrounds_follow_the_scene_rules
+  ok      test_arena_floors_are_calm
+  ok      test_flying_foes_cast_shadows_on_the_ground
+  ok      test_chapter_select_reaches_the_last_chapter
+  ok      test_locked_chapters_up_to_six
+  ok      test_title_backdrops_for_chapters_four_to_six
+  ok      test_chapter_select_fits_small_screen_with_notch_for_long_names
+  ok      test_failure_tips_by_chapter_cover_one_to_twenty
+  ok      test_endless_tips_use_the_opened_chapters
+  ok      test_results_game_end_only_after_the_final_chapter
+  ok      test_hud_title_card_names_chapters_four_to_six
+  ok      test_chapter_four_to_six_music_loops
+
+res://tests/line_d/test_boss_stress.gd
+[boss-stress] real_arena=true load=1 clones=true beam=true glow=true minions=12 renderer=gl_compatibility display=headless max_fps=60
+  ok      test_boss_fight_load_is_on_the_field
+[boss-stress] real_arena=true load=1 clones=true beam=true glow=true minions=12 renderer=gl_compatibility display=headless max_fps=60
+  ok      test_beam_warns_before_it_spins
+[boss-stress] real_arena=true load=1 clones=true beam=true glow=true minions=12 renderer=gl_compatibility display=headless max_fps=60
+  ok      test_measures_nodes_and_frame_time
+[boss-stress] real_arena=true load=2 clones=true beam=true glow=true minions=24 renderer=gl_compatibility display=headless max_fps=60
+  ok      test_load_multiplier_scales_everything
+[dragon-stress] real_arena=true load=1 clones=true beam=true glow=true minions=7 renderer=gl_compatibility display=headless max_fps=60
+[dragon-stress] dragons=2 companions=4 (stand-ins: [])
+  ok      test_twin_dragons_and_four_companions_are_on_the_field
+[dragon-stress] real_arena=true load=1 clones=true beam=true glow=true minions=7 renderer=gl_compatibility display=headless max_fps=60
+[dragon-stress] dragons=2 companions=4 (stand-ins: [])
+  ok      test_red_dragon_sulks_while_white_dragon_roars
+[dragon-stress] real_arena=true load=1 clones=true beam=true glow=true minions=7 renderer=gl_compatibility display=headless max_fps=60
+[dragon-stress] dragons=2 companions=4 (stand-ins: [])
+  ok      test_dragon_scene_measures_frame_time
+
+res://tests/line_d/test_camp.gd
+  ok      test_emits_camp_entered_on_ready
+  ok      test_continue_emits_camp_left_once
+  ok      test_continue_button_is_wired
+  ok      test_companion_entry_shows_coming_soon
+  ok      test_minigame_round_trip
+  ok      test_minigame_plays_per_visit_limit
+  ok      test_layout_fits_every_phone_size
+  ok      test_camp_plays_its_own_music
+  ok      test_petting_goldie_raises_satisfaction_up_to_cap
+  ok      test_pet_cap_resets_on_next_camp_visit
+  ok      test_pet_satisfaction_never_exceeds_100
+  ok      test_fast_taps_are_ignored_by_cooldown
+  ok      test_goldie_reacts_to_petting
+  ok      test_tapping_goldie_on_screen_pets_her
+  ok      test_no_petting_during_minigame_or_after_leaving
+  ok      test_bulldog_sits_by_fire_from_second_camp
+  ok      test_pet_hint_appears_until_first_pet
+
+res://tests/line_d/test_camp_chapters.gd
+  ok      test_story_path_follows_the_chapter
+  ok      test_chapter_camps_play_their_own_dialogue
+  ok      test_chapter_one_still_plays_camp1_and_camp2
+  ok      test_chapter_two_has_merlin_bulldog_and_lancelot
+  ok      test_chapter_three_lady_of_the_lake_replaces_merlin
+  ok      test_lady_lines_cycle_without_repeating
+  ok      test_tapping_lancelot_says_a_line
+  ok      test_lancelot_on_screen_and_silent_when_busy
+  ok      test_no_lancelot_in_chapter_one
+  ok      test_zones_and_bubbles_fit_every_phone
+  ok      test_new_camp_lines_are_short_and_well_formed
+  ok      test_scenery_follows_the_chapter
+  ok      test_chapter_palettes_are_data
+
+res://tests/line_d/test_camp_story.gd
+  ok      test_first_camp_plays_camp1_before_the_menu
+  ok      test_second_camp_plays_camp2
+  ok      test_default_paths_are_camp1_and_camp2
+  ok      test_no_story_or_missing_file_shows_menu_at_once
+  ok      test_story_plays_once_per_visit
+  ok      test_story_override_from_code
+  ok      test_real_story_files_when_line_b_has_them
+  ok      test_merlin_sits_behind_the_round_table
+  ok      test_tapping_merlin_says_a_camp_line
+  ok      test_merlin_lines_cycle_without_repeating
+  ok      test_fast_taps_on_merlin_are_ignored
+  ok      test_tapping_merlin_on_screen
+  ok      test_merlin_casts_now_and_then
+  ok      test_merlin_hidden_and_silent_during_minigame
+  ok      test_camp_merlin_lines_are_short_and_well_formed
+  ok      test_merlin_zone_and_bubble_fit_every_phone
+
+res://tests/line_d/test_camp_v27.gd
+  ok      test_story_for_chapters_four_to_six
+  ok      test_cast_follows_story_section_18
+  ok      test_chapter_five_bedivere_stays_home_and_gawain_sits_by_the_fire
+  ok      test_tapping_tristan_plays_the_harp_and_says_a_line
+  ok      test_tristan_plays_now_and_then_by_himself
+  ok      test_tapping_gawain_slams_and_says_a_line
+  ok      test_final_camp_everyone_including_lady_and_morgana
+  ok      test_friends_silent_when_busy_and_hidden_during_minigame
+  ok      test_zones_and_bubbles_fit_every_phone
+  ok      test_new_camp_lines_are_short_full_width_and_in_the_font
+  ok      test_cast_layouts_and_friends_are_data
+  ok      test_scenery_for_chapters_four_to_six
+  ok      test_beach_waves_roll_in
+  ok      test_minigames_rotate_in_chapters_four_to_six
+  ok      test_fish_round_trip_in_a_chapter_four_camp
+
+res://tests/line_d/test_export_presets.gd
+  ok      test_file_parses_and_has_presets
+  ok      test_android_package_and_versions
+  ok      test_aab_uses_gradle_with_store_sdk_levels
+  ok      test_only_vibrate_permission
+  ok      test_no_secrets_in_presets
+  ok      test_portrait_only
+  ok      test_ios_preset
+  ok      test_icons_exist
+  ok      test_store_builds_exclude_tests
+
+res://tests/line_d/test_fish_minigame.gd
+  ok      test_chart_is_fair_and_repeatable
+  ok      test_bot_catches_everything_for_100_and_three_stars
+  ok      test_bot_wins_on_every_seed
+  ok      test_standing_still_is_not_enough
+  ok      test_catch_window_perfect_good_miss
+  ok      test_combo_bonus_every_five
+  ok      test_boot_catch_is_cute_and_breaks_combo
+  ok      test_drag_moves_goldie_with_the_first_finger_only
+  ok      test_pauses_when_app_goes_to_background
+  ok      test_layout_fits_every_phone
+  ok      test_draws_every_state_and_chapter_without_errors
+  ok      test_strings_exist_and_fit
+  ok      test_every_minigame_can_play_itself_with_bot_step
+
+res://tests/line_d/test_grading.gd
+  ok      test_scroll_grading_values_match_dev_plan
+  ok      test_grade_thresholds
+  ok      test_vigor_restore_by_grade
+  ok      test_vigor_is_clamped_to_max
+  ok      test_satisfaction_is_clamped
+  ok      test_next_level_bonus_is_set_not_added
+  ok      test_out_of_range_grade_is_clamped
+  ok      test_rewards_on_real_game_state
+  ok      test_snacks_skipped_when_state_has_no_snacks_field
+
+res://tests/line_d/test_minigame.gd
+  ok      test_countdown_then_playing
+  ok      test_timer_runs_and_finishes
+  ok      test_timer_pauses_on_app_backgrounded
+  ok      test_resume_on_foreground_option
+  ok      test_pause_during_countdown_keeps_countdown
+  ok      test_swiping_down_pulls_scroll_and_scores_length
+  ok      test_ink_blot_stops_pulling_until_player_waits
+  ok      test_swiping_on_ink_costs_time_once_per_swipe
+  ok      test_finish_applies_rewards_and_emits
+  ok      test_results_then_close
+  ok      test_swipe_zone_avoids_bottom_gesture_area
+  ok      test_perfect_stop_when_player_stops_at_once
+  ok      test_late_stop_is_good_not_perfect
+  ok      test_mistake_on_ink_is_neither_perfect_nor_good
+  ok      test_perfect_window_boundary
+  ok      test_time_up_vibrates_medium
+  ok      test_results_stars_light_up_one_by_one
+  ok      test_go_text_after_countdown
+  ok      test_scroll_is_the_royal_rulebook
+  ok      test_merlin_asks_if_done_reading_at_the_end
+
+res://tests/line_d/test_platform.gd
+  ok      test_services_are_disabled
+[platform/ads] show_rewarded(continue) — no-op
+  ok      test_rewarded_ad_never_rewards
+[platform/iap] get_products([&"snack_pack"]) — no-op
+[platform/iap] purchase(snack_pack) — no-op
+  ok      test_purchase_always_fails
+[platform/analytics] log_event(level_start, { "level": "1_1" }) — no-op
+  ok      test_analytics_only_logs
+
+res://tests/line_d/test_play_log.gd
+  ok      test_level_completed_writes_one_json_line
+  ok      test_failed_and_minigame_lines_append
+  ok      test_no_identifiers_in_entries
+  ok      test_unknown_level_end_is_still_logged
+  ok      test_rotation_keeps_one_old_file
+  ok      test_disabled_writes_nothing
+
+res://tests/line_d/test_scroll_balance.gd
+    [balance] casual: scores [127, 112, 127, 109, 128] grades [1, 1, 1, 1, 1]
+  ok      test_casual_player_gets_about_one_star
+    [balance] average: scores [168, 178, 176, 179, 173] grades [2, 2, 2, 2, 2]
+  ok      test_average_player_gets_two_stars
+    [balance] skilled: scores [257, 263, 257, 258, 258] grades [3, 3, 3, 3, 3]
+  ok      test_skilled_player_gets_three_stars
+  ok      test_perfect_stops_reward_quick_reactions
+
+res://tests/line_d/test_stress_scene.gd
+[stress] enemy_mix=[[&"scarecrow", 0.5], [&"crow", 0.2], [&"scarecrow_archer", 0.2], [&"armored_husk", 0.1]] projectiles=true glow=true (res://assets/fx/lights/glow.png) dialogue=true
+[stress] enemies=40 real_arena=true fx=true caps=true renderer=gl_compatibility display=headless video_adapter= max_fps=60
+  ok      test_stress_scene_keeps_projectiles_and_glow_alive
+[stress] enemy_mix=[[&"scarecrow", 0.5], [&"crow", 0.2], [&"scarecrow_archer", 0.2], [&"armored_husk", 0.1]] projectiles=true glow=true (res://assets/fx/lights/glow.png) dialogue=false
+[stress] enemies=40 real_arena=true fx=true caps=true renderer=gl_compatibility display=headless video_adapter= max_fps=60
+  ok      test_stress_scene_keeps_chests_snacks_and_evolution_alive
+  ok      test_glow_texture_fallback_is_a_radial_gradient
+
+res://tests/line_d/test_training.gd
+  ok      test_fallback_table_has_five_upgrades_in_order
+  ok      test_reads_any_resource_with_entries_by_field_name
+  ok      test_primary_path_is_b_lines_meta_upgrades
+  ok      test_cost_uses_last_price_when_list_is_short
+  ok      test_buy_only_when_affordable
+  ok      test_level_reads_string_or_stringname_keys
+  ok      test_effect_text_percent_or_points
+  ok      test_lists_five_upgrades_with_prices_and_snacks
+  ok      test_unaffordable_buttons_are_disabled
+  ok      test_buying_spends_snacks_and_emits
+  ok      test_upgrade_effect_spawns_particles
+  ok      test_refreshes_when_snacks_change_elsewhere
+  ok      test_close_button_and_back_key_emit_closed_once
+  ok      test_back_key_closes_and_free_on_close
+  ok      test_fits_safe_area_on_phones
+  ok      test_strings_exist
+  ok      test_camp_menu_has_training_entry
+  ok      test_camp_forwards_upgrades
+  ok      test_scroll_grading_snack_rewards
+  ok      test_minigame_end_adds_snacks_and_emits
+  ok      test_grade_zero_gives_no_snacks_and_no_signal
+
+res://tests/line_d/test_wake_minigame.gd
+  ok      test_chart_is_fair_and_repeatable
+  ok      test_perfect_play_gets_100_and_three_stars
+  ok      test_good_timing_is_two_stars
+  ok      test_doing_nothing_is_zero
+  ok      test_early_tap_is_a_miss_and_spam_breaks_combo
+  ok      test_combo_bonus_every_five
+  ok      test_tapping_wakes_the_knight_with_feedback
+  ok      test_touch_in_a_column_hits_that_knight
+  ok      test_pauses_when_app_goes_to_background
+  ok      test_layout_fits_every_phone
+  ok      test_draws_every_state_without_errors
+  ok      test_strings_exist_and_are_short
+  ok      test_camp_alternates_minigames_from_chapter_two
+  ok      test_wake_round_trip_in_a_chapter_two_camp
+
+874 tests, 0 failed, 0 broken files
+WARNING: 3 RIDs of type "CanvasItem" were leaked.
+   at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2735)
+WARNING: 27 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 21 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 1 RID allocations of type 'P11GodotBody2D' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+全部測試通過。

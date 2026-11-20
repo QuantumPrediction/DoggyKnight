@@ -116,3 +116,24 @@ D 線 M3(2026-11-16):營地新增的金毛像素圖(`game/camp/art/`,由 `game/c
 - `assets/illustrated/hero_classes.png`：使用 OpenAI image_gen，依本遊戲金毛形象生成法師／弓箭手八姿勢圖集；沒有使用外部遊戲角色素材。設計簡述及雜湊見 `CLASS_ART_MANIFEST.json`。
 - `assets/music/*.ogg`：本專案 `tools/audio/compose_score.py` 的原創樂句、編曲與數學合成音色，15 個主音軌和 12 個壓力伴奏，沒有第三方錄音取樣。舊 WAV 的來源仍如上述紀錄。
 - 更新 StorySans／StorySerif 字元子集以涵蓋職業文字；來源及 OFL 授權不變，重建腳本為 `tools/rebuild_story_fonts.py`。沒有移除原授權檔或遊戲內授權文字。
+
+## 2026-11-19 王室軍械庫
+
+- `assets/illustrated/equipment/equipment_atlas.png`：本輪使用 OpenAI image_gen 為 DoggyKnight 生成的 18 件繪本裝備圖集；不是下載的外部遊戲素材。來源、設計摘要、圖格對應及 SHA-256 見同目錄 `ART_MANIFEST.json`。圖集保留淡紙背景，以收藏圖卡使用；本輪沒有建立角色逐件換裝動畫。
+
+
+## 0.5.0 armory artwork (2026-11-19)
+
+`assets/illustrated/equipment/armory_forge.png` is an original GPT Image banner made for this project. `equipment_cutout.png` is a GPT Image transparent-background edit of the project's original 18-item atlas; the original is retained. No third-party characters, logos or additional fonts were introduced. The existing StorySans and StorySerif font licenses still apply. Prompts and hashes: `ARMORY_EXPERIENCE_ZH.md`, `assets/illustrated/equipment/ARMORY_ART_MANIFEST.json`.
+
+## 0.6.0 四元素徽章（2026-11-19）
+
+`assets/illustrated/equipment/element_runes.png` 是本輪使用內建 GPT Image 生成的地、水、火、風原創圖集，透明背景，沒有使用第三方遊戲素材。正式 UI 使用同一張圖集的四個 AtlasTexture 區域，沒有新字體。完整提示、實際尺寸、來源與 SHA-256 保存於同目錄 `ELEMENT_ART_MANIFEST.json`。
+
+## 0.7.0 同伴護陣（2026-11-20）
+
+`assets/illustrated/combat/companion_guard.png` 使用內建 GPT Image 為本專案生成，透明底、青綠盾牌及相連犬掌徽記，用於實際護陣按鈕與戰場標記。沒有使用第三方角色或遊戲素材；完整提示、實際尺寸及 SHA-256 見同目錄 `ART_MANIFEST.json`。字體子集加入新提示字元，沿用現有 Noto OFL 授權。
+
+## 0.8.0 護陣學習圖示（2026-11-20）
+
+`assets/illustrated/combat/guard_lesson_atlas.png` 由內建 GPT Image 為本專案生成：閃避犬掌、護陣盾牌、反擊短劍。原始 RGBA 圖未修改，以 Godot AtlasTexture 裁框顯示於正式提示 UI。提示詞、三個範圍、尺寸與 SHA-256 記錄於同目錄 `GUARD_LESSON_MANIFEST.json`。無第三方遊戲角色或素材。中文字型加入新提示字元，沿用 Noto OFL。

@@ -1,0 +1,86 @@
+[
+	{
+		"actions_inside_safe": true,
+		"name": "01_earth_starter",
+		"root_inside_safe": true,
+		"scroll_height": 140.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "02_earth_weapon",
+		"root_inside_safe": true,
+		"scroll_height": 96.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "03_four_elements",
+		"root_inside_safe": true,
+		"scroll_height": 168.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "04_fire_preview",
+		"root_inside_safe": true,
+		"scroll_height": 168.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "04b_fire_comparison",
+		"root_inside_safe": true,
+		"scroll_height": 168.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "05_fire_confirmation",
+		"root_inside_safe": true,
+		"scroll_height": 137.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "06_mixed_loadout",
+		"root_inside_safe": true,
+		"scroll_height": 140.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "07_matching_armor_preview",
+		"root_inside_safe": true,
+		"scroll_height": 168.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "07b_matching_comparison",
+		"root_inside_safe": true,
+		"scroll_height": 168.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "08_fire_resonance",
+		"root_inside_safe": true,
+		"scroll_height": 140.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "09_small_water_preview",
+		"root_inside_safe": true,
+		"scroll_height": 168.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "10_small_confirmation",
+		"root_inside_safe": true,
+		"scroll_height": 137.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "11_notch_wind_preview",
+		"root_inside_safe": true,
+		"scroll_height": 236.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "12_notch_confirmation",
+		"root_inside_safe": true,
+		"scroll_height": 205.0
+	}
+]

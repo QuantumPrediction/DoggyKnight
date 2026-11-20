@@ -29,11 +29,15 @@ func after_each() -> void:
 
 ## 存檔與設定欄位回到預設值(reset_run 不會重設它們)。
 static func reset_settings() -> void:
+	GameState.equipment = EquipmentInventory.defaults()
+	GameState.run_equipment = {}
 	GameState.snacks = 0
 	GameState.sound_on = true
 	GameState.music_on = true
 	GameState.haptics_on = true
 	GameState.tutorial_done = false
+	GameState.guard_lesson_done = false
+	GameState.guard_lesson_skipped = false
 	GameState.best_stars = {}
 	GameState.difficulty = &"normal"
 	GameState.chapter_cleared = false

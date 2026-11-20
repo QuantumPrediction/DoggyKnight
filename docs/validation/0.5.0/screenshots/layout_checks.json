@@ -1,0 +1,74 @@
+[
+	{
+		"actions_inside_safe": true,
+		"name": "01_first_loadout",
+		"root_inside_safe": true,
+		"scroll_height": 140.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "02_common_shop",
+		"root_inside_safe": true,
+		"scroll_height": 140.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "03_purchase_preview",
+		"root_inside_safe": true,
+		"scroll_height": 152.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "04_equipped",
+		"root_inside_safe": true,
+		"scroll_height": 140.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "05_forge_preview",
+		"root_inside_safe": true,
+		"scroll_height": 140.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "06_forge_confirm",
+		"root_inside_safe": true,
+		"scroll_height": 135.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "07_forge_success",
+		"root_inside_safe": true,
+		"scroll_height": 140.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "08_epic_shop",
+		"root_inside_safe": true,
+		"scroll_height": 140.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "09_chapter_lock",
+		"root_inside_safe": true,
+		"scroll_height": 152.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "10_small_detail",
+		"root_inside_safe": true,
+		"scroll_height": 140.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "11_small_confirm",
+		"root_inside_safe": true,
+		"scroll_height": 135.0
+	},
+	{
+		"actions_inside_safe": true,
+		"name": "12_tall_notch_bow",
+		"root_inside_safe": true,
+		"scroll_height": 208.0
+	}
+]

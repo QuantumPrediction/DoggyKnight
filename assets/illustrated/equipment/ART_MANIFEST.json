@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-19",
+  "asset": "assets/illustrated/equipment/equipment_atlas.png",
+  "source": "OpenAI image_gen, generated for DoggyKnight during the equipment implementation",
+  "sha256": "fcd903fc02e2a73b6cdce25be7cb9aab0289ea9cde73b2cffbcb7be1fd0dd266",
+  "dimensions": [
+    1774,
+    887
+  ],
+  "grid": [
+    6,
+    3
+  ],
+  "design_brief": "18 original storybook fantasy equipment icons in a 6 by 3 atlas. Warm hand-painted metal, wood, fabric and jewel materials; readable silhouettes; no text or external game characters. First row: sword, staff, bow, padded vest, ranger jacket, apprentice robe. Second: sunblade, moonstaff, stormbow, oathplate, mistcloak, starrobe. Third: bell, hearth heart, leaf compass, hourglass, thorn badge, Avalon grail.",
+  "design_brief_note": "Summary of the requested design, not an exact prompt transcript.",
+  "integration": "AtlasTexture regions, width / 6 and height / 3; no pixel editing of generated art.",
+  "known_limit": "Source retains a light paper background with partial alpha. Used as collection cards, not transparent character costumes."
+}

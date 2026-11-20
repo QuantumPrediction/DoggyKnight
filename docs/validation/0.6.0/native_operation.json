@@ -1,0 +1,56 @@
+{
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "platform": "Linux OpenGL compatibility, Mesa llvmpipe",
+  "method": "Native production UI via clicks in an isolated fresh user directory; no staged inventory or wallet grant",
+  "initial_coins": 250,
+  "actions": [
+    "Purchased training_sword for 140 coins",
+    "Equipped training_sword",
+    "Scrolled element preview, changed earth to water with confirmation",
+    "Purchased quilted_vest for 100 coins",
+    "Equipped quilted_vest",
+    "Previewed vigor 126 -> 118, wave heal 0 -> 3%, ultimate heal 0 -> 3%, gained water resonance",
+    "Confirmed free water engraving on armor",
+    "Returned to loadout: water + water, resonance 2/2, vigor 118",
+    "Started knight chapter 1 through normal class selection, skipped introductory stories",
+    "Observed water resonance rune and label under the pause button in the production combat HUD"
+  ],
+  "saved_version": 9,
+  "saved_equipment": {
+    "boss_misses": 0,
+    "coins": 10,
+    "elements": {
+      "quilted_vest": "water",
+      "training_sword": "water"
+    },
+    "first_boss": {},
+    "gems": 0,
+    "last_reward": {
+      "coins": 0,
+      "duplicate": false,
+      "gems": 0,
+      "item": "",
+      "shards": 0
+    },
+    "loadouts": {
+      "archer": {},
+      "knight": {
+        "armor": "quilted_vest",
+        "weapon": "training_sword"
+      },
+      "mage": {}
+    },
+    "owned": {
+      "quilted_vest": 1,
+      "training_sword": 1
+    },
+    "reward_serial": 0,
+    "shards": 0
+  },
+  "finished_with_coins": 10,
+  "notes": [
+    "Stopped the isolated review after confirming the combat HUD; this was not a completed manual chapter or user playtest",
+    "No audio listening review: Dummy audio driver",
+    "No Windows/mobile device certification"
+  ]
+}

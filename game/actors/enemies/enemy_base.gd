@@ -75,6 +75,7 @@ var arena_margin: Vector2 = Vector2(6, 6)         ## 中心離場地邊緣至少
 var anim_state: StringName = &"idle"
 var sprite: AnimatedSprite2D
 var rng := RandomNumberGenerator.new()
+var rng_seed_override: int = 0 # Offline developer runs can seed before _ready; normal play keeps its existing RNG.
 
 var _hitstop_left: float = 0.0
 var _flash_left: float = 0.0
@@ -157,7 +158,7 @@ func _ready() -> void:
 		var fallback := EnemyData.new()
 		fallback.id = StringName(name.to_snake_case())
 		setup(fallback)
-	rng.seed = hash(get_instance_id())
+	rng.seed = rng_seed_override if rng_seed_override != 0 else hash(get_instance_id())
 	_retarget_left = rng.randf() * retarget_interval
 	if arena == null:
 		arena = CombatFx.find_arena(self)
@@ -524,6 +525,19 @@ func hit_victims_in_circle(center: Vector2, radius: float, damage: int) -> int:
 	var count := 0
 	for victim in victims():
 		if center.distance_to(victim.global_position) <= radius + radius_of(victim):
+			victim.call(&"take_damage", damage)
+			count += 1
+	return count
+
+
+## Opt-in for committed, visibly marked melee attacks. Other enemies retain
+## their existing sector contract until their own tells are reviewed.
+func hit_victims_in_marked_sector(mark: AttackTelegraph, damage: int) -> int:
+	var count := 0
+	if not is_instance_valid(mark):
+		return count
+	for victim in victims():
+		if mark.intersects_sector_body(victim.global_position, radius_of(victim)):
 			victim.call(&"take_damage", damage)
 			count += 1
 	return count
