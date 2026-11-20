@@ -1,0 +1,151 @@
+{
+  "status": "draft, unmerged; all ten screenshots published",
+  "pr": "https://github.com/QuantumPrediction/DoggyKnight/pull/14",
+  "branch": "codex/combat-readability-stability",
+  "screenshots_commit": "d54e8cd9ae81c0c4a689bd8465fca4034c632ce0",
+  "screenshots_tree": "5e52a2337fbbae7ec5588eae0483b473ab307271",
+  "matching_local_commit": "648f223a50d9603316020f3d5443514d70cfc8d6",
+  "previous_public_head": "0cfb1d29ecbdce6a8e891f55fcad346328c2dba9",
+  "approval": {
+    "date_hong_kong": "2026-11-20",
+    "scope": "The owner explicitly approved publicly uploading all ten DoggyKnight 0.9.1 validation screenshots (five final and five before correction) to QuantumPrediction/DoggyKnight and adding them to existing draft PR #14, acknowledging that anyone can view the images."
+  },
+  "verification": {
+    "original_pngs": 10,
+    "final": 5,
+    "before_correction": 5,
+    "image_bytes_changed": false,
+    "all_pngs_decode": true,
+    "unchanged_tested_source_fingerprints": 731,
+    "game_code_changed": false,
+    "full_regression_rerun": false,
+    "reason": "Only original PNG publication and handoff documentation changed. Existing 910-test regression remains the source evidence."
+  },
+  "files": [
+    {
+      "path": "docs/validation/0.9.1/captures/archer_locked_focus_ready.png",
+      "size": 772608,
+      "sha": "74527bebae08a346d7e283af45639b23a0d0f7ee",
+      "sha256": "c71376073ff1b9caa5d783513e4210044eb5a91027519c79b1d16a61c6076f62",
+      "mode": "100644",
+      "width": 540,
+      "height": 960,
+      "stage": "final"
+    },
+    {
+      "path": "docs/validation/0.9.1/captures/archer_notched.png",
+      "size": 596601,
+      "sha": "9780c234b93e406692079b54caa13def20e64347",
+      "sha256": "da5c18ea31bd4a0d3acd57d813d25f09b7f903e4d008c9959a6e0a85ebe218ee",
+      "mode": "100644",
+      "width": 390,
+      "height": 844,
+      "stage": "final"
+    },
+    {
+      "path": "docs/validation/0.9.1/captures/archer_tracking.png",
+      "size": 773710,
+      "sha": "ed673c305733c1f0852fe5d80a811168daaf0cc2",
+      "sha256": "cca71acde50b7a6d8f104e1c814faa008ac6eb221c21d071bad69e40097aed91",
+      "mode": "100644",
+      "width": 540,
+      "height": 960,
+      "stage": "final"
+    },
+    {
+      "path": "docs/validation/0.9.1/captures/iteration2/archer_locked_focus_ready.png",
+      "size": 770571,
+      "sha": "715fca43c70b1653ef00c749fec6dd00e4557af6",
+      "sha256": "531e9b08a1b6b02bdc994adf222652e2ee41caea3dba26d157ee5a124843395a",
+      "mode": "100644",
+      "width": 540,
+      "height": 960,
+      "stage": "before_correction"
+    },
+    {
+      "path": "docs/validation/0.9.1/captures/iteration2/archer_notched.png",
+      "size": 598240,
+      "sha": "7ade0863fc2e9e79ad76e8b0b6d31996a3a7c296",
+      "sha256": "9cb79cb2321c34cf091b3f22eabba19ddd977fd8bbb1bc21cb7d41c36f803f02",
+      "mode": "100644",
+      "width": 390,
+      "height": 844,
+      "stage": "before_correction"
+    },
+    {
+      "path": "docs/validation/0.9.1/captures/iteration2/archer_tracking.png",
+      "size": 776859,
+      "sha": "f0400fe3aad05847c6ddc289a14ce525c307ee66",
+      "sha256": "a6e1ecc6bed686eeb2e808308ea44c6ce61f1df84392271f86c764772b930f3d",
+      "mode": "100644",
+      "width": 540,
+      "height": 960,
+      "stage": "before_correction"
+    },
+    {
+      "path": "docs/validation/0.9.1/captures/iteration2/knight_small.png",
+      "size": 405186,
+      "sha": "91df703c3c3f10042a5f4f64f3d987ca53413cd4",
+      "sha256": "f35e1b8ce765519676cf46826c2240221f32f32aeaf827cf2ef6ffa24f9da108",
+      "mode": "100644",
+      "width": 360,
+      "height": 640,
+      "stage": "before_correction"
+    },
+    {
+      "path": "docs/validation/0.9.1/captures/iteration2/mage_roll_cooldown.png",
+      "size": 777871,
+      "sha": "aca5d8c1a65cd0844c69f0eb1963c8d628976a82",
+      "sha256": "9b1ba96dcff494a2bc34d0daae8cc6a57a13ce18b0f701a3f55f8049423a52f2",
+      "mode": "100644",
+      "width": 540,
+      "height": 960,
+      "stage": "before_correction"
+    },
+    {
+      "path": "docs/validation/0.9.1/captures/knight_small.png",
+      "size": 403071,
+      "sha": "30b319c1337af31a6ff43434bf431e453eeefe40",
+      "sha256": "e79507f3db0b9d6bdf904ea851333d37511f7aa7484b6ffb1c0bdb46680e4ae1",
+      "mode": "100644",
+      "width": 360,
+      "height": 640,
+      "stage": "final"
+    },
+    {
+      "path": "docs/validation/0.9.1/captures/mage_roll_cooldown.png",
+      "size": 773744,
+      "sha": "a5449e70acc558a2f05d23967231789c11bf4718",
+      "sha256": "7214eb808c13d427e416b94f9cc6f3f4f9d5dc305b5a8b5fb50e571b5464a616",
+      "mode": "100644",
+      "width": 540,
+      "height": 960,
+      "stage": "final"
+    }
+  ],
+  "initial_text_only_publication": {
+    "local_commit": "fbd4345c2be6ba158bb9a5cb091e01b47505af8f",
+    "expected_text_only_tree": "673a198170cdfc96c23a349d7092df9de0243ba6",
+    "bytes": 1563822,
+    "entries": 104,
+    "omitted_pngs": [
+      "docs/validation/0.9.1/captures/archer_locked_focus_ready.png",
+      "docs/validation/0.9.1/captures/archer_notched.png",
+      "docs/validation/0.9.1/captures/archer_tracking.png",
+      "docs/validation/0.9.1/captures/iteration2/archer_locked_focus_ready.png",
+      "docs/validation/0.9.1/captures/iteration2/archer_notched.png",
+      "docs/validation/0.9.1/captures/iteration2/archer_tracking.png",
+      "docs/validation/0.9.1/captures/iteration2/knight_small.png",
+      "docs/validation/0.9.1/captures/iteration2/mage_roll_cooldown.png",
+      "docs/validation/0.9.1/captures/knight_small.png",
+      "docs/validation/0.9.1/captures/mage_roll_cooldown.png"
+    ],
+    "public_implementation_commit": "37ee0df46a986c820a80a865f2e2a77da338c456",
+    "public_implementation_tree": "673a198170cdfc96c23a349d7092df9de0243ba6",
+    "pr": "https://github.com/QuantumPrediction/DoggyKnight/pull/14",
+    "base": "a8f547e8056c3dc4caa3a5ed0b5e2c7fdfbe1c78",
+    "status": "draft, unmerged",
+    "reason": "Automatic approval review rejected an opaque binary screenshot upload; ten PNGs are intentionally excluded, not re-encoded or uploaded through another route. All other implementation/evidence bytes match. Later handoff updates are documentation only."
+  },
+  "handoff_note": "Following publication, documentation adds the screenshot index and records resolution. Runtime, tests and original PNG bytes remain unchanged."
+}

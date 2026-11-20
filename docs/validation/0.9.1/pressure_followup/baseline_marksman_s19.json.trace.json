@@ -1,0 +1,4024 @@
+{
+	"captain": [
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 76.1151123046875,
+					"hp": 400,
+					"id": "scarecrow_captain",
+					"phase": "INTRO",
+					"phase_left": 0.0,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				43.7994728088379,
+				154.489852905273
+			],
+			"time": 214.116666666729,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 76.1151123046875,
+					"hp": 400,
+					"id": "scarecrow_captain",
+					"phase": "INTRO",
+					"phase_left": 0.0,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				43.7994728088379,
+				154.489852905273
+			],
+			"time": 214.633333333396,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 76.1151123046875,
+					"hp": 400,
+					"id": "scarecrow_captain",
+					"phase": "INTRO",
+					"phase_left": 0.633333333333333,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				43.7994728088379,
+				154.489852905273
+			],
+			"time": 215.150000000063,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 76.1151123046875,
+					"hp": 373,
+					"id": "scarecrow_captain",
+					"phase": "INTRO",
+					"phase_left": 0.116666666666666,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				43.7994728088379,
+				154.489852905273
+			],
+			"time": 215.66666666673,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 77.9729766845703,
+					"hp": 359,
+					"id": "scarecrow_captain",
+					"phase": "THROW_TELL",
+					"phase_left": 0.349999999999999,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				57.2456588745117,
+				164.759719848633
+			],
+			"time": 216.183333333398,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 77.9729766845703,
+					"hp": 339,
+					"id": "scarecrow_captain",
+					"phase": "THROW_WAIT",
+					"phase_left": 3.33333333333333,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				57.2456588745117,
+				164.759719848633
+			],
+			"time": 216.700000000065,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 77.9729766845703,
+					"hp": 322,
+					"id": "scarecrow_captain",
+					"phase": "THROW_RECOVER",
+					"phase_left": 0.599999999999999,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				57.2456588745117,
+				164.759719848633
+			],
+			"time": 217.216666666732,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 77.9729766845703,
+					"hp": 322,
+					"id": "scarecrow_captain",
+					"phase": "THROW_RECOVER",
+					"phase_left": 0.0833333333333323,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				57.2456588745117,
+				164.759719848633
+			],
+			"time": 217.733333333399,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 77.9729766845703,
+					"hp": 295,
+					"id": "scarecrow_captain",
+					"phase": "THROW_RECOVER",
+					"phase_left": 0.0166666666666656,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				57.2456588745117,
+				164.759719848633
+			],
+			"time": 218.250000000066,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 77.9729766845703,
+					"hp": 215,
+					"id": "scarecrow_captain",
+					"phase": "IDLE",
+					"phase_left": 0.499999999999999,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				57.2456588745117,
+				164.759719848633
+			],
+			"time": 218.766666666733,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 77.9729766845703,
+					"hp": 215,
+					"id": "scarecrow_captain",
+					"phase": "RALLY_TELL",
+					"phase_left": 0.983333333333333,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				57.2456588745117,
+				164.759719848633
+			],
+			"time": 219.2833333334,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 77.9729766845703,
+					"hp": 188,
+					"id": "scarecrow_captain",
+					"phase": "SHOUT",
+					"phase_left": 0.366666666666666,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				57.2456588745117,
+				164.759719848633
+			],
+			"time": 219.800000000067,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 77.9729766845703,
+					"hp": 188,
+					"id": "scarecrow_captain",
+					"phase": "IDLE",
+					"phase_left": 0.45,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				57.2456588745117,
+				164.759719848633
+			],
+			"time": 220.316666666734,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 78.0730743408203,
+					"hp": 174,
+					"id": "scarecrow_captain",
+					"phase": "THROW_TELL",
+					"phase_left": 0.533333333333333,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				53.6592559814453,
+				163.099609375
+			],
+			"time": 220.833333333401,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 79.7876052856445,
+					"hp": 174,
+					"id": "scarecrow_captain",
+					"phase": "THROW_TELL",
+					"phase_left": 0.0166666666666666,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				41.8913612365723,
+				157.65234375
+			],
+			"time": 221.350000000068,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 79.7876052856445,
+					"hp": 144,
+					"id": "scarecrow_captain",
+					"phase": "THROW_WAIT",
+					"phase_left": 3.0,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				41.8913612365723,
+				157.65234375
+			],
+			"time": 221.866666666735,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 79.7876052856445,
+					"hp": 124,
+					"id": "scarecrow_captain",
+					"phase": "THROW_WAIT",
+					"phase_left": 2.48333333333334,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				},
+				{
+					"distance": 52.4833221435547,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						16.0,
+						112.0
+					]
+				},
+				{
+					"distance": 64.1562042236328,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						72.0,
+						101.0
+					]
+				},
+				{
+					"distance": 64.1207427978516,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						105.0,
+						169.0
+					]
+				},
+				{
+					"distance": 63.9991607666016,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						51.0,
+						221.0
+					]
+				},
+				{
+					"distance": 49.6355361938477,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						16.0,
+						200.0
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				41.8913612365723,
+				157.65234375
+			],
+			"time": 222.383333333402,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 79.7876052856445,
+					"hp": 97,
+					"id": "scarecrow_captain",
+					"phase": "THROW_WAIT",
+					"phase_left": 1.96666666666667,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				},
+				{
+					"distance": 49.2779769897461,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						17.0531597137451,
+						115.092002868652
+					]
+				},
+				{
+					"distance": 60.8990440368652,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						70.2570114135742,
+						103.762794494629
+					]
+				},
+				{
+					"distance": 60.8587379455566,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						101.75919342041,
+						168.58984375
+					]
+				},
+				{
+					"distance": 61.0059700012207,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						51.8172264099121,
+						217.845413208008
+					]
+				},
+				{
+					"distance": 46.4676666259766,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						16.9994735717773,
+						196.890563964844
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				41.8913612365723,
+				157.65234375
+			],
+			"time": 222.90000000007,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 79.7876052856445,
+					"hp": 97,
+					"id": "scarecrow_captain",
+					"phase": "THROW_WAIT",
+					"phase_left": 1.45000000000001,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				},
+				{
+					"distance": 37.7096099853516,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						21.8095436096191,
+						125.734710693359
+					]
+				},
+				{
+					"distance": 46.9266242980957,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						61.8653411865234,
+						115.188850402832
+					]
+				},
+				{
+					"distance": 46.4033966064453,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						87.4497222900391,
+						166.467742919922
+					]
+				},
+				{
+					"distance": 47.1880340576172,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						53.1079635620117,
+						203.487899780273
+					]
+				},
+				{
+					"distance": 37.3124885559082,
+					"hp": 17,
+					"id": "scarecrow",
+					"position": [
+						20.7504062652588,
+						188.39778137207
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				41.8913612365723,
+				157.65234375
+			],
+			"time": 223.416666666737,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 75.3366394042969,
+					"hp": 97,
+					"id": "scarecrow_captain",
+					"phase": "THROW_RECOVER",
+					"phase_left": 0.133333333333333,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				},
+				{
+					"distance": 31.8643970489502,
+					"hp": 25,
+					"id": "scarecrow",
+					"position": [
+						24.4476318359375,
+						127.16316986084
+					]
+				},
+				{
+					"distance": 40.2483406066895,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						59.8535308837891,
+						116.370811462402
+					]
+				},
+				{
+					"distance": 31.9260005950928,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						73.4335174560547,
+						163.016296386719
+					]
+				},
+				{
+					"distance": 37.1209487915039,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						51.6650123596191,
+						189.104263305664
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				43.1264953613281,
+				152.978668212891
+			],
+			"time": 223.933333333404,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 82.7585906982422,
+					"hp": 97,
+					"id": "scarecrow_captain",
+					"phase": "IDLE",
+					"phase_left": 0.233333333333333,
+					"position": [
+						90.0,
+						94.0
+					],
+					"summons": 0
+				},
+				{
+					"distance": 23.188793182373,
+					"hp": 25,
+					"id": "scarecrow",
+					"position": [
+						24.4476318359375,
+						127.16316986084
+					]
+				},
+				{
+					"distance": 42.7172355651855,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						57.2745933532715,
+						117.903480529785
+					]
+				},
+				{
+					"distance": 32.1594390869141,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						60.0503158569336,
+						158.198135375977
+					]
+				},
+				{
+					"distance": 37.5606460571289,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						49.0611724853516,
+						181.64599609375
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				28.9785671234131,
+				149.904998779297
+			],
+			"time": 224.450000000071,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 56.171760559082,
+					"hp": 97,
+					"id": "scarecrow_captain",
+					"phase": "CHASE",
+					"phase_left": 1.01666666666667,
+					"position": [
+						81.4846572875977,
+						100.310722351074
+					],
+					"summons": 0
+				},
+				{
+					"distance": 13.9121208190918,
+					"hp": 19,
+					"id": "scarecrow",
+					"position": [
+						21.2558708190918,
+						125.434913635254
+					]
+				},
+				{
+					"distance": 26.3558349609375,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						57.2745933532715,
+						117.903480529785
+					]
+				},
+				{
+					"distance": 31.3096294403076,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						55.3649406433105,
+						153.645004272461
+					]
+				},
+				{
+					"distance": 50.2350997924805,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						47.6886367797852,
+						178.978393554688
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				34.1757011413574,
+				130.594863891602
+			],
+			"time": 224.966666666738,
+			"vigor": 62
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 43.8004264831543,
+					"hp": 97,
+					"id": "scarecrow_captain",
+					"phase": "SWEEP_TELL",
+					"phase_left": 0.46,
+					"position": [
+						69.5592575073242,
+						108.564384460449
+					],
+					"summons": 0
+				},
+				{
+					"distance": 14.0366382598877,
+					"hp": 13,
+					"id": "scarecrow",
+					"position": [
+						23.8939590454102,
+						126.863372802734
+					]
+				},
+				{
+					"distance": 25.3991622924805,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						54.6956558227539,
+						119.436149597168
+					]
+				},
+				{
+					"distance": 24.3139667510986,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						53.2291526794434,
+						151.53825378418
+					]
+				},
+				{
+					"distance": 45.332691192627,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						47.6886367797852,
+						178.978393554688
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				34.9895668029785,
+				135.460739135742
+			],
+			"time": 225.483333333405,
+			"vigor": 56
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 46.6457672119141,
+					"hp": 97,
+					"id": "scarecrow_captain",
+					"phase": "SWEEP_RECOVER",
+					"phase_left": 0.6,
+					"position": [
+						66.6381683349609,
+						110.835098266602
+					],
+					"summons": 0
+				},
+				{
+					"distance": 13.987343788147,
+					"hp": 13,
+					"id": "scarecrow",
+					"position": [
+						23.8939590454102,
+						126.863372802734
+					]
+				},
+				{
+					"distance": 31.2005195617676,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						54.0927200317383,
+						119.872940063477
+					]
+				},
+				{
+					"distance": 26.2854995727539,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						53.2291526794434,
+						151.53825378418
+					]
+				},
+				{
+					"distance": 37.7071113586426,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						45.5002288818359,
+						173.825134277344
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				29.8532066345215,
+				139.51774597168
+			],
+			"time": 226.000000000072,
+			"vigor": 56
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 55.7159729003906,
+					"hp": 97,
+					"id": "scarecrow_captain",
+					"phase": "SWEEP_RECOVER",
+					"phase_left": 0.083333333333333,
+					"position": [
+						67.8067626953125,
+						109.991203308105
+					],
+					"summons": 0
+				},
+				{
+					"distance": 22.5825023651123,
+					"hp": 13,
+					"id": "scarecrow",
+					"position": [
+						23.8939590454102,
+						126.863372802734
+					]
+				},
+				{
+					"distance": 31.8423137664795,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						48.6631736755371,
+						124.760353088379
+					]
+				},
+				{
+					"distance": 25.2726650238037,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						53.2291526794434,
+						151.53825378418
+					]
+				},
+				{
+					"distance": 27.3400840759277,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						44.2552719116211,
+						171.095657348633
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				28.0788097381592,
+				149.054733276367
+			],
+			"time": 226.516666666739,
+			"vigor": 56
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 70.0435180664062,
+					"hp": 97,
+					"id": "scarecrow_captain",
+					"phase": "IDLE",
+					"phase_left": 0.166666666666666,
+					"position": [
+						67.8067626953125,
+						109.991203308105
+					],
+					"summons": 0
+				},
+				{
+					"distance": 38.6985969543457,
+					"hp": 13,
+					"id": "scarecrow",
+					"position": [
+						24.4855499267578,
+						129.804458618164
+					]
+				},
+				{
+					"distance": 37.611156463623,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						43.3979682922363,
+						133.535461425781
+					]
+				},
+				{
+					"distance": 28.0848693847656,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						50.5052642822266,
+						150.281112670898
+					]
+				},
+				{
+					"distance": 15.5978479385376,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						44.2552719116211,
+						171.095657348633
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				28.9195346832275,
+				168.248199462891
+			],
+			"time": 227.033333333406,
+			"vigor": 48
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 72.1709060668945,
+					"hp": 97,
+					"id": "scarecrow_captain",
+					"phase": "RALLY_TELL",
+					"phase_left": 0.449999999999999,
+					"position": [
+						67.8067626953125,
+						109.991203308105
+					],
+					"summons": 0
+				},
+				{
+					"distance": 38.8515853881836,
+					"hp": 13,
+					"id": "scarecrow",
+					"position": [
+						24.4855499267578,
+						129.804458618164
+					]
+				},
+				{
+					"distance": 36.2910766601562,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						42.0160636901855,
+						136.198226928711
+					]
+				},
+				{
+					"distance": 29.9387893676758,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						49.966480255127,
+						151.043197631836
+					]
+				},
+				{
+					"distance": 18.6761608123779,
+					"hp": 16,
+					"id": "scarecrow",
+					"position": [
+						44.2552719116211,
+						171.095657348633
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				25.7418251037598,
+				168.635726928711
+			],
+			"time": 227.550000000073,
+			"vigor": 48
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 81.9138793945312,
+					"hp": 97,
+					"id": "scarecrow_captain",
+					"phase": "RALLY_RECOVER",
+					"phase_left": 0.533333333333333,
+					"position": [
+						67.8067626953125,
+						109.991203308105
+					],
+					"summons": 3
+				},
+				{
+					"distance": 41.0768280029297,
+					"hp": 13,
+					"id": "scarecrow",
+					"position": [
+						19.0301666259766,
+						140.084884643555
+					]
+				},
+				{
+					"distance": 47.0830574035645,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						42.0160636901855,
+						136.198226928711
+					]
+				},
+				{
+					"distance": 35.023811340332,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						47.5041847229004,
+						152.756988525391
+					]
+				},
+				{
+					"distance": 18.0382137298584,
+					"hp": 16,
+					"id": "scarecrow",
+					"position": [
+						41.2836418151855,
+						170.684066772461
+					]
+				},
+				{
+					"distance": 74.7895202636719,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						85.1127014160156,
+						134.496398925781
+					]
+				},
+				{
+					"distance": 62.7454681396484,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						29.0985736846924,
+						117.858596801758
+					]
+				},
+				{
+					"distance": 77.9053649902344,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						38.4931182861328,
+						103.610748291016
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				26.1733913421631,
+				180.535842895508
+			],
+			"time": 228.06666666674,
+			"vigor": 40
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 84.9699172973633,
+					"hp": 97,
+					"id": "scarecrow_captain",
+					"phase": "RALLY_RECOVER",
+					"phase_left": 0.0166666666666665,
+					"position": [
+						67.8067626953125,
+						109.991203308105
+					],
+					"summons": 3
+				},
+				{
+					"distance": 32.9920997619629,
+					"hp": 13,
+					"id": "scarecrow",
+					"position": [
+						16.0,
+						153.946853637695
+					]
+				},
+				{
+					"distance": 43.5222625732422,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						38.3531303405762,
+						142.669143676758
+					]
+				},
+				{
+					"distance": 37.6455039978027,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						47.7385635375977,
+						153.041885375977
+					]
+				},
+				{
+					"distance": 75.2602996826172,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						85.1520233154297,
+						136.360214233398
+					]
+				},
+				{
+					"distance": 65.780158996582,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						27.7274532318115,
+						119.058174133301
+					]
+				},
+				{
+					"distance": 80.0935211181641,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						38.1376724243164,
+						105.442924499512
+					]
+				},
+				{
+					"distance": 167.480041503906,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						164.0,
+						282.0
+					]
+				},
+				{
+					"distance": 99.514778137207,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						16.0,
+						86.0
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				27.5846691131592,
+				184.838180541992
+			],
+			"time": 228.583333333407,
+			"vigor": 40
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 91.1206893920898,
+					"hp": 97,
+					"id": "scarecrow_captain",
+					"phase": "IDLE",
+					"phase_left": 0.116666666666666,
+					"position": [
+						67.8067626953125,
+						109.991203308105
+					],
+					"summons": 3
+				},
+				{
+					"distance": 31.7174949645996,
+					"hp": 13,
+					"id": "scarecrow",
+					"position": [
+						16.1277618408203,
+						165.946304321289
+					]
+				},
+				{
+					"distance": 41.4522323608398,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						40.2765884399414,
+						153.081069946289
+					]
+				},
+				{
+					"distance": 39.3700523376465,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						52.1491889953613,
+						160.023590087891
+					]
+				},
+				{
+					"distance": 68.3019256591797,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						83.6415863037109,
+						149.355438232422
+					]
+				},
+				{
+					"distance": 65.0630340576172,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						20.0293350219727,
+						129.598815917969
+					]
+				},
+				{
+					"distance": 75.4633636474609,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						35.6224327087402,
+						118.262916564941
+					]
+				},
+				{
+					"distance": 154.367462158203,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						160.021743774414,
+						279.314331054688
+					]
+				},
+				{
+					"distance": 103.948699951172,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						16.6642303466797,
+						90.753776550293
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				31.6245193481445,
+				193.620300292969
+			],
+			"time": 229.100000000074,
+			"vigor": 40
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 93.264045715332,
+					"hp": 97,
+					"id": "scarecrow_captain",
+					"phase": "SWEEP_TELL",
+					"phase_left": 0.16,
+					"position": [
+						67.8067626953125,
+						109.991203308105
+					],
+					"summons": 3
+				},
+				{
+					"distance": 41.678409576416,
+					"hp": 25,
+					"id": "scarecrow",
+					"position": [
+						38.5441436767578,
+						155.305389404297
+					]
+				},
+				{
+					"distance": 38.8018264770508,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						52.5400581359863,
+						162.93115234375
+					]
+				},
+				{
+					"distance": 65.9197387695312,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						83.9135208129883,
+						154.356903076172
+					]
+				},
+				{
+					"distance": 68.3727645874023,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						20.0293350219727,
+						129.598815917969
+					]
+				},
+				{
+					"distance": 75.6080551147461,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						36.5409622192383,
+						121.118843078613
+					]
+				},
+				{
+					"distance": 138.846466064453,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						149.642639160156,
+						272.529479980469
+					]
+				},
+				{
+					"distance": 94.8138275146484,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						18.5837955474854,
+						103.004173278809
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				33.3578910827637,
+				196.659866333008
+			],
+			"time": 229.616666666742,
+			"vigor": 40
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 104.152740478516,
+					"hp": 97,
+					"id": "scarecrow_captain",
+					"phase": "SWEEP_RECOVER",
+					"phase_left": 0.3,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 3
+				},
+				{
+					"distance": 60.5389251708984,
+					"hp": 25,
+					"id": "scarecrow",
+					"position": [
+						39.634220123291,
+						152.447158813477
+					]
+				},
+				{
+					"distance": 54.8647651672363,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						52.0500068664551,
+						160.791442871094
+					]
+				},
+				{
+					"distance": 71.3766021728516,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						75.042610168457,
+						154.036834716797
+					]
+				},
+				{
+					"distance": 82.2948379516602,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						22.4629669189453,
+						131.353073120117
+					]
+				},
+				{
+					"distance": 91.6704711914062,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						36.5409622192383,
+						121.118843078613
+					]
+				},
+				{
+					"distance": 124.972686767578,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						145.62255859375,
+						269.906677246094
+					]
+				},
+				{
+					"distance": 105.315780639648,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						19.9849910736084,
+						108.452301025391
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				34.4779396057129,
+				212.766098022461
+			],
+			"time": 230.133333333409,
+			"vigor": 40
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 125.013252258301,
+					"hp": 97,
+					"id": "scarecrow_captain",
+					"phase": "IDLE",
+					"phase_left": 0.383333333333333,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 3
+				},
+				{
+					"distance": 85.7562255859375,
+					"hp": 25,
+					"id": "scarecrow",
+					"position": [
+						38.5547332763672,
+						153.407211303711
+					]
+				},
+				{
+					"distance": 73.6992797851562,
+					"hp": 25,
+					"id": "scarecrow",
+					"position": [
+						54.0121269226074,
+						164.138427734375
+					]
+				},
+				{
+					"distance": 86.4334564208984,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						72.1084518432617,
+						153.411758422852
+					]
+				},
+				{
+					"distance": 110.937522888184,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						22.4629669189453,
+						131.353073120117
+					]
+				},
+				{
+					"distance": 117.955139160156,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						36.5409622192383,
+						121.118843078613
+					]
+				},
+				{
+					"distance": 97.4673233032227,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						145.62255859375,
+						269.906677246094
+					]
+				},
+				{
+					"distance": 133.675155639648,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						19.9849910736084,
+						108.452301025391
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				53.5824584960938,
+				237.836456298828
+			],
+			"time": 230.650000000076,
+			"vigor": 40
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 125.403045654297,
+					"hp": 90,
+					"id": "scarecrow_captain",
+					"phase": "THROW_TELL",
+					"phase_left": 0.466666666666667,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 3
+				},
+				{
+					"distance": 86.9256591796875,
+					"hp": 25,
+					"id": "scarecrow",
+					"position": [
+						35.6534080505371,
+						156.42414855957
+					]
+				},
+				{
+					"distance": 73.3867874145508,
+					"hp": 15,
+					"id": "scarecrow",
+					"position": [
+						54.1153259277344,
+						166.002166748047
+					]
+				},
+				{
+					"distance": 85.8268508911133,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						72.1084518432617,
+						153.411758422852
+					]
+				},
+				{
+					"distance": 112.439430236816,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						24.8411979675293,
+						133.181732177734
+					]
+				},
+				{
+					"distance": 117.724670410156,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						37.4658851623535,
+						123.968215942383
+					]
+				},
+				{
+					"distance": 82.6875534057617,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						141.079925537109,
+						267.178375244141
+					]
+				},
+				{
+					"distance": 131.798385620117,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						21.4978446960449,
+						113.842414855957
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				63.4156265258789,
+				238.797256469727
+			],
+			"time": 231.166666666743,
+			"vigor": 40
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 126.152992248535,
+					"hp": 90,
+					"id": "scarecrow_captain",
+					"phase": "THROW_WAIT",
+					"phase_left": 3.45,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 3
+				},
+				{
+					"distance": 87.1121520996094,
+					"hp": 25,
+					"id": "scarecrow",
+					"position": [
+						37.3738212585449,
+						158.881820678711
+					]
+				},
+				{
+					"distance": 73.5738830566406,
+					"hp": 9,
+					"id": "scarecrow",
+					"position": [
+						52.1011276245117,
+						168.225448608398
+					]
+				},
+				{
+					"distance": 82.8864669799805,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						75.9782867431641,
+						156.781814575195
+					]
+				},
+				{
+					"distance": 113.82967376709,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						24.8418045043945,
+						135.176208496094
+					]
+				},
+				{
+					"distance": 119.657928466797,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						38.6532936096191,
+						124.118118286133
+					]
+				},
+				{
+					"distance": 75.8908233642578,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						142.92204284668,
+						261.912292480469
+					]
+				},
+				{
+					"distance": 124.77392578125,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						24.8324203491211,
+						123.334739685059
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				70.421760559082,
+				239.481826782227
+			],
+			"time": 231.68333333341,
+			"vigor": 33
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 126.152992248535,
+					"hp": 90,
+					"id": "scarecrow_captain",
+					"phase": "THROW_WAIT",
+					"phase_left": 2.93333333333334,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 3
+				},
+				{
+					"distance": 87.0998916625977,
+					"hp": 25,
+					"id": "scarecrow",
+					"position": [
+						37.379264831543,
+						158.892837524414
+					]
+				},
+				{
+					"distance": 75.9478073120117,
+					"hp": 16,
+					"id": "scarecrow",
+					"position": [
+						80.271125793457,
+						164.175384521484
+					]
+				},
+				{
+					"distance": 102.244384765625,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						30.7738189697266,
+						145.237701416016
+					]
+				},
+				{
+					"distance": 115.583618164062,
+					"hp": 16,
+					"id": "scarecrow",
+					"position": [
+						42.5806198120117,
+						127.301422119141
+					]
+				},
+				{
+					"distance": 75.8974304199219,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						144.380294799805,
+						256.527526855469
+					]
+				},
+				{
+					"distance": 116.284523010254,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						27.5169372558594,
+						131.401916503906
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				70.421760559082,
+				239.481826782227
+			],
+			"time": 232.200000000077,
+			"vigor": 33
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 126.152992248535,
+					"hp": 90,
+					"id": "scarecrow_captain",
+					"phase": "THROW_WAIT",
+					"phase_left": 2.41666666666667,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 3
+				},
+				{
+					"distance": 73.7052383422852,
+					"hp": 25,
+					"id": "scarecrow",
+					"position": [
+						37.0076065063477,
+						173.785888671875
+					]
+				},
+				{
+					"distance": 63.1105079650879,
+					"hp": 16,
+					"id": "scarecrow",
+					"position": [
+						82.3097305297852,
+						177.501083374023
+					]
+				},
+				{
+					"distance": 88.1193313598633,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						40.4955558776855,
+						156.599746704102
+					]
+				},
+				{
+					"distance": 101.765342712402,
+					"hp": 16,
+					"id": "scarecrow",
+					"position": [
+						49.852237701416,
+						139.816986083984
+					]
+				},
+				{
+					"distance": 77.354118347168,
+					"hp": 9,
+					"id": "scarecrow_archer",
+					"position": [
+						146.625366210938,
+						252.773574829102
+					]
+				},
+				{
+					"distance": 104.287353515625,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						31.9545917510986,
+						142.548202514648
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				70.421760559082,
+				239.481826782227
+			],
+			"time": 232.716666666744,
+			"vigor": 33
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 126.152992248535,
+					"hp": 90,
+					"id": "scarecrow_captain",
+					"phase": "THROW_WAIT",
+					"phase_left": 1.90000000000001,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 3
+				},
+				{
+					"distance": 63.582332611084,
+					"hp": 25,
+					"id": "scarecrow",
+					"position": [
+						33.5361175537109,
+						187.692230224609
+					]
+				},
+				{
+					"distance": 55.1402702331543,
+					"hp": 2,
+					"id": "scarecrow",
+					"position": [
+						85.3868026733398,
+						186.411148071289
+					]
+				},
+				{
+					"distance": 75.61767578125,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						51.2468109130859,
+						166.335708618164
+					]
+				},
+				{
+					"distance": 88.1032638549805,
+					"hp": 16,
+					"id": "scarecrow",
+					"position": [
+						56.3833465576172,
+						152.504196166992
+					]
+				},
+				{
+					"distance": 77.3606262207031,
+					"hp": 9,
+					"id": "scarecrow_archer",
+					"position": [
+						147.049240112305,
+						250.107086181641
+					]
+				},
+				{
+					"distance": 91.8872985839844,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						36.5284538269043,
+						154.073867797852
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				70.421760559082,
+				239.481826782227
+			],
+			"time": 233.233333333411,
+			"vigor": 33
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 126.152992248535,
+					"hp": 90,
+					"id": "scarecrow_captain",
+					"phase": "THROW_WAIT",
+					"phase_left": 1.38333333333334,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 2
+				},
+				{
+					"distance": 53.3446159362793,
+					"hp": 25,
+					"id": "scarecrow",
+					"position": [
+						32.4622192382812,
+						202.002212524414
+					]
+				},
+				{
+					"distance": 61.6792907714844,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						52.2056007385254,
+						180.553848266602
+					]
+				},
+				{
+					"distance": 78.9945220947266,
+					"hp": 16,
+					"id": "scarecrow",
+					"position": [
+						68.2892074584961,
+						160.516098022461
+					]
+				},
+				{
+					"distance": 77.3670959472656,
+					"hp": 9,
+					"id": "scarecrow_archer",
+					"position": [
+						146.090637207031,
+						255.602905273438
+					]
+				},
+				{
+					"distance": 89.891960144043,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						41.6575126647949,
+						154.316207885742
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				70.421760559082,
+				239.481826782227
+			],
+			"time": 233.750000000078,
+			"vigor": 33
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 158.100402832031,
+					"hp": 90,
+					"id": "scarecrow_captain",
+					"phase": "THROW_RECOVER",
+					"phase_left": 0.0500000000000001,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 2
+				},
+				{
+					"distance": 74.610237121582,
+					"hp": 10,
+					"id": "scarecrow",
+					"position": [
+						29.9455585479736,
+						210.186218261719
+					]
+				},
+				{
+					"distance": 80.3599395751953,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						59.6721496582031,
+						192.06022644043
+					]
+				},
+				{
+					"distance": 98.8954772949219,
+					"hp": 16,
+					"id": "scarecrow",
+					"position": [
+						75.0414962768555,
+						172.498352050781
+					]
+				},
+				{
+					"distance": 75.1109848022461,
+					"hp": 9,
+					"id": "scarecrow_archer",
+					"position": [
+						146.090637207031,
+						255.602905273438
+					]
+				},
+				{
+					"distance": 109.101104736328,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						44.9933815002441,
+						165.828018188477
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				72.6521072387695,
+				271.364959716797
+			],
+			"time": 234.266666666745,
+			"vigor": 33
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 156.472946166992,
+					"hp": 90,
+					"id": "scarecrow_captain",
+					"phase": "IDLE",
+					"phase_left": 0.15,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 2
+				},
+				{
+					"distance": 70.5650329589844,
+					"hp": 10,
+					"id": "scarecrow",
+					"position": [
+						32.5490379333496,
+						224.359924316406
+					]
+				},
+				{
+					"distance": 68.1171417236328,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						67.1942825317383,
+						203.388946533203
+					]
+				},
+				{
+					"distance": 83.4372406005859,
+					"hp": 16,
+					"id": "scarecrow",
+					"position": [
+						80.4788513183594,
+						185.213851928711
+					]
+				},
+				{
+					"distance": 59.7271919250488,
+					"hp": 9,
+					"id": "scarecrow_archer",
+					"position": [
+						146.090637207031,
+						255.602905273438
+					]
+				},
+				{
+					"distance": 110.665107727051,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						45.0949783325195,
+						166.214904785156
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				87.7362518310547,
+				268.334869384766
+			],
+			"time": 234.783333333412,
+			"vigor": 33
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 156.339797973633,
+					"hp": 90,
+					"id": "scarecrow_captain",
+					"phase": "RALLY_TELL",
+					"phase_left": 0.433333333333333,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 2
+				},
+				{
+					"distance": 64.8567352294922,
+					"hp": 10,
+					"id": "scarecrow",
+					"position": [
+						39.6196403503418,
+						225.77360534668
+					]
+				},
+				{
+					"distance": 64.090690612793,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						67.5823669433594,
+						207.57063293457
+					]
+				},
+				{
+					"distance": 80.0565490722656,
+					"hp": 16,
+					"id": "scarecrow",
+					"position": [
+						82.5099563598633,
+						188.235778808594
+					]
+				},
+				{
+					"distance": 110.81566619873,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						45.0949783325195,
+						166.214904785156
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				88.8090591430664,
+				268.044128417969
+			],
+			"time": 235.300000000079,
+			"vigor": 33
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 156.339797973633,
+					"hp": 90,
+					"id": "scarecrow_captain",
+					"phase": "RALLY_RECOVER",
+					"phase_left": 0.516666666666666,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 4
+				},
+				{
+					"distance": 65.6061096191406,
+					"hp": 10,
+					"id": "scarecrow",
+					"position": [
+						41.0043334960938,
+						223.112289428711
+					]
+				},
+				{
+					"distance": 66.4806900024414,
+					"hp": 25,
+					"id": "scarecrow",
+					"position": [
+						65.0569381713867,
+						205.951309204102
+					]
+				},
+				{
+					"distance": 79.3120346069336,
+					"hp": 16,
+					"id": "scarecrow",
+					"position": [
+						79.6895294189453,
+						189.25813293457
+					]
+				},
+				{
+					"distance": 109.746566772461,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						50.400016784668,
+						165.238220214844
+					]
+				},
+				{
+					"distance": 148.131942749023,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						94.9989166259766,
+						120.041564941406
+					]
+				},
+				{
+					"distance": 148.131942749023,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						39.6887359619141,
+						128.293395996094
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				88.8090591430664,
+				268.044128417969
+			],
+			"time": 235.816666666746,
+			"vigor": 33
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 156.339797973633,
+					"hp": 90,
+					"id": "scarecrow_captain",
+					"phase": "IDLE",
+					"phase_left": 0.6,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 4
+				},
+				{
+					"distance": 65.6061096191406,
+					"hp": 10,
+					"id": "scarecrow",
+					"position": [
+						41.0043334960938,
+						223.112289428711
+					]
+				},
+				{
+					"distance": 65.2330780029297,
+					"hp": 5,
+					"id": "scarecrow",
+					"position": [
+						67.6932907104492,
+						206.323150634766
+					]
+				},
+				{
+					"distance": 79.3120346069336,
+					"hp": 16,
+					"id": "scarecrow",
+					"position": [
+						79.6895294189453,
+						189.25813293457
+					]
+				},
+				{
+					"distance": 110.005493164062,
+					"hp": 14,
+					"id": "scarecrow_archer",
+					"position": [
+						54.0492248535156,
+						163.674774169922
+					]
+				},
+				{
+					"distance": 145.96533203125,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						95.7673034667969,
+						122.244743347168
+					]
+				},
+				{
+					"distance": 145.806579589844,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						40.2795181274414,
+						130.550704956055
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				88.8090591430664,
+				268.044128417969
+			],
+			"time": 236.333333333414,
+			"vigor": 33
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 156.339797973633,
+					"hp": 90,
+					"id": "scarecrow_captain",
+					"phase": "IDLE",
+					"phase_left": 0.133333333333333,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 3
+				},
+				{
+					"distance": 79.3120346069336,
+					"hp": 16,
+					"id": "scarecrow",
+					"position": [
+						79.6895294189453,
+						189.25813293457
+					]
+				},
+				{
+					"distance": 108.142654418945,
+					"hp": 14,
+					"id": "scarecrow_archer",
+					"position": [
+						59.0692596435547,
+						164.071166992188
+					]
+				},
+				{
+					"distance": 133.832427978516,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						99.8222427368164,
+						134.665618896484
+					]
+				},
+				{
+					"distance": 132.784561157227,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						43.6442680358887,
+						143.176681518555
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				88.8090591430664,
+				268.044128417969
+			],
+			"time": 236.850000000081,
+			"vigor": 33
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 156.339797973633,
+					"hp": 90,
+					"id": "scarecrow_captain",
+					"phase": "IDLE",
+					"phase_left": 0.116666666666666,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 3
+				},
+				{
+					"distance": 79.3120346069336,
+					"hp": 16,
+					"id": "scarecrow",
+					"position": [
+						79.6895294189453,
+						189.25813293457
+					]
+				},
+				{
+					"distance": 108.124908447266,
+					"hp": 14,
+					"id": "scarecrow_archer",
+					"position": [
+						59.2463798522949,
+						164.039108276367
+					]
+				},
+				{
+					"distance": 133.399108886719,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						99.9589614868164,
+						135.111801147461
+					]
+				},
+				{
+					"distance": 132.319488525391,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						43.7662734985352,
+						143.62712097168
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				88.8090591430664,
+				268.044128417969
+			],
+			"time": 237.366666666748,
+			"vigor": 33
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 147.574111938477,
+					"hp": 76,
+					"id": "scarecrow_captain",
+					"phase": "THROW_TELL",
+					"phase_left": 0.2,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 2
+				},
+				{
+					"distance": 121.770164489746,
+					"hp": 9,
+					"id": "scarecrow",
+					"position": [
+						102.555160522461,
+						144.139495849609
+					]
+				},
+				{
+					"distance": 110.598793029785,
+					"hp": 9,
+					"id": "scarecrow",
+					"position": [
+						45.5808715820312,
+						152.712249755859
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				68.2209167480469,
+				260.968994140625
+			],
+			"time": 237.883333333415,
+			"vigor": 33
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 147.574111938477,
+					"hp": 62,
+					"id": "scarecrow_captain",
+					"phase": "THROW_WAIT",
+					"phase_left": 3.18333333333333,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 1
+				},
+				{
+					"distance": 108.337997436523,
+					"hp": 9,
+					"id": "scarecrow",
+					"position": [
+						103.591735839844,
+						158.567687988281
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				68.2209167480469,
+				260.968994140625
+			],
+			"time": 238.400000000082,
+			"vigor": 33
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 147.574111938477,
+					"hp": 62,
+					"id": "scarecrow_captain",
+					"phase": "THROW_WAIT",
+					"phase_left": 2.66666666666667,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 1
+				},
+				{
+					"distance": 94.8810348510742,
+					"hp": 9,
+					"id": "scarecrow",
+					"position": [
+						103.84268951416,
+						173.028671264648
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				68.2209167480469,
+				260.968994140625
+			],
+			"time": 238.916666666749,
+			"vigor": 33
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 112.870483398438,
+					"hp": 62,
+					"id": "scarecrow_captain",
+					"phase": "THROW_RECOVER",
+					"phase_left": 0.533333333333332,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				67.6374359130859,
+				226.270278930664
+			],
+			"time": 239.433333333416,
+			"vigor": 33
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 112.870483398438,
+					"hp": 47,
+					"id": "scarecrow_captain",
+					"phase": "THROW_RECOVER",
+					"phase_left": 0.0166666666666656,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				67.6374359130859,
+				226.270278930664
+			],
+			"time": 239.950000000083,
+			"vigor": 33
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 112.870483398438,
+					"hp": 34,
+					"id": "scarecrow_captain",
+					"phase": "IDLE",
+					"phase_left": 0.0999999999999998,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				67.6374359130859,
+				226.270278930664
+			],
+			"time": 240.46666666675,
+			"vigor": 33
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 97.2455596923828,
+					"hp": 20,
+					"id": "scarecrow_captain",
+					"phase": "CHASE",
+					"phase_left": 0.883333333333334,
+					"position": [
+						66.0023956298828,
+						129.038467407227
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				67.6374359130859,
+				226.270278930664
+			],
+			"time": 240.983333333417,
+			"vigor": 33
+		},
+		{
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 91.6205902099609,
+					"hp": 0,
+					"id": "scarecrow_captain",
+					"phase": "CHASE",
+					"phase_left": 0.733333333333334,
+					"position": [
+						66.0969467163086,
+						134.662643432617
+					],
+					"summons": 0
+				}
+			],
+			"level": "1-4",
+			"player": [
+				67.6374359130859,
+				226.270278930664
+			],
+			"time": 241.500000000084,
+			"vigor": 33
+		}
+	],
+	"damage": [
+		{
+			"amount": 5,
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 31.3334636688232,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						120.732711791992,
+						235.215530395508
+					]
+				},
+				{
+					"distance": 29.6247463226318,
+					"hp": 3,
+					"id": "scarecrow",
+					"position": [
+						104.421272277832,
+						263.362884521484
+					]
+				},
+				{
+					"distance": 32.3411026000977,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						63.8318367004395,
+						257.438507080078
+					]
+				},
+				{
+					"distance": 32.2699394226074,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						65.8353042602539,
+						215.832717895508
+					]
+				},
+				{
+					"distance": 36.9290962219238,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						94.6172790527344,
+						201.19499206543
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				89.5034103393555,
+				237.768295288086
+			],
+			"stack": [
+				{
+					"function": "_trace_damage",
+					"line": 39,
+					"source": "res://tests/integration/pressure_trace.gd"
+				},
+				{
+					"function": "take_damage",
+					"line": 220,
+					"source": "res://game/actors/player/player.gd"
+				},
+				{
+					"function": "hit_victims_in_marked_sector",
+					"line": 541,
+					"source": "res://game/actors/enemies/enemy_base.gd"
+				},
+				{
+					"function": "_swing",
+					"line": 220,
+					"source": "res://game/actors/enemies/scarecrow.gd"
+				},
+				{
+					"function": "_ai",
+					"line": 72,
+					"source": "res://game/actors/enemies/scarecrow.gd"
+				},
+				{
+					"function": "_physics_process",
+					"line": 216,
+					"source": "res://game/actors/enemies/enemy_base.gd"
+				}
+			],
+			"time": 167.050000000025,
+			"vigor": 92
+		},
+		{
+			"amount": 7,
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 25.5622234344482,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						117.925300598145,
+						236.273101806641
+					]
+				},
+				{
+					"distance": 21.0154094696045,
+					"hp": 3,
+					"id": "scarecrow",
+					"position": [
+						104.421272277832,
+						263.362884521484
+					]
+				},
+				{
+					"distance": 29.5325469970703,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						66.6128997802734,
+						256.3134765625
+					]
+				},
+				{
+					"distance": 37.6628837585449,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						68.2558746337891,
+						217.604965209961
+					]
+				},
+				{
+					"distance": 26.8940372467041,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						93.8145599365234,
+						218.24787902832
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				93.9507827758789,
+				245.141571044922
+			],
+			"stack": [
+				{
+					"function": "_trace_damage",
+					"line": 39,
+					"source": "res://tests/integration/pressure_trace.gd"
+				},
+				{
+					"function": "take_damage",
+					"line": 220,
+					"source": "res://game/actors/player/player.gd"
+				},
+				{
+					"function": "hit_victims_in_marked_sector",
+					"line": 541,
+					"source": "res://game/actors/enemies/enemy_base.gd"
+				},
+				{
+					"function": "_swing",
+					"line": 220,
+					"source": "res://game/actors/enemies/scarecrow.gd"
+				},
+				{
+					"function": "_ai",
+					"line": 72,
+					"source": "res://game/actors/enemies/scarecrow.gd"
+				},
+				{
+					"function": "_physics_process",
+					"line": 216,
+					"source": "res://game/actors/enemies/enemy_base.gd"
+				}
+			],
+			"time": 168.133333333359,
+			"vigor": 85
+		},
+		{
+			"amount": 10,
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 23.5279235839844,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						115.117889404297,
+						237.330673217773
+					]
+				},
+				{
+					"distance": 25.0240859985352,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						72.1750335693359,
+						254.063446044922
+					]
+				},
+				{
+					"distance": 35.8587265014648,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						73.7165603637695,
+						225.380722045898
+					]
+				},
+				{
+					"distance": 31.4764633178711,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						93.635383605957,
+						221.242523193359
+					]
+				},
+				{
+					"distance": 172.534729003906,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						52.0,
+						86.0
+					]
+				},
+				{
+					"distance": 169.355224609375,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						128.0,
+						86.0
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				97.1515960693359,
+				252.52197265625
+			],
+			"stack": [
+				{
+					"function": "_trace_damage",
+					"line": 39,
+					"source": "res://tests/integration/pressure_trace.gd"
+				},
+				{
+					"function": "take_damage",
+					"line": 220,
+					"source": "res://game/actors/player/player.gd"
+				},
+				{
+					"function": "hit_victims_in_marked_sector",
+					"line": 541,
+					"source": "res://game/actors/enemies/enemy_base.gd"
+				},
+				{
+					"function": "_swing",
+					"line": 220,
+					"source": "res://game/actors/enemies/scarecrow.gd"
+				},
+				{
+					"function": "_ai",
+					"line": 72,
+					"source": "res://game/actors/enemies/scarecrow.gd"
+				},
+				{
+					"function": "_physics_process",
+					"line": 216,
+					"source": "res://game/actors/enemies/enemy_base.gd"
+				}
+			],
+			"time": 170.033333333361,
+			"vigor": 75
+		},
+		{
+			"amount": 10,
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 59.489185333252,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						108.467216491699,
+						279.664398193359
+					]
+				},
+				{
+					"distance": 27.5362529754639,
+					"hp": 25,
+					"id": "scarecrow",
+					"position": [
+						127.550094604492,
+						249.67448425293
+					]
+				},
+				{
+					"distance": 23.3283348083496,
+					"hp": 11,
+					"id": "scarecrow",
+					"position": [
+						131.09831237793,
+						235.189010620117
+					]
+				},
+				{
+					"distance": 115.244567871094,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						79.8028411865234,
+						152.568328857422
+					]
+				},
+				{
+					"distance": 90.3990478515625,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						130.645599365234,
+						153.598892211914
+					]
+				},
+				{
+					"distance": 135.306442260742,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						18.6716556549072,
+						232.160202026367
+					]
+				},
+				{
+					"distance": 152.020736694336,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						164.0,
+						89.3412322998047
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				153.688262939453,
+				241.011840820312
+			],
+			"stack": [
+				{
+					"function": "_trace_damage",
+					"line": 39,
+					"source": "res://tests/integration/pressure_trace.gd"
+				},
+				{
+					"function": "take_damage",
+					"line": 220,
+					"source": "res://game/actors/player/player.gd"
+				},
+				{
+					"function": "hit_victims_in_marked_sector",
+					"line": 541,
+					"source": "res://game/actors/enemies/enemy_base.gd"
+				},
+				{
+					"function": "_swing",
+					"line": 220,
+					"source": "res://game/actors/enemies/scarecrow.gd"
+				},
+				{
+					"function": "_ai",
+					"line": 72,
+					"source": "res://game/actors/enemies/scarecrow.gd"
+				},
+				{
+					"function": "_physics_process",
+					"line": 216,
+					"source": "res://game/actors/enemies/enemy_base.gd"
+				}
+			],
+			"time": 174.433333333364,
+			"vigor": 65
+		},
+		{
+			"amount": 9,
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 82.1898651123047,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						110.116401672363,
+						271.739501953125
+					]
+				},
+				{
+					"distance": 43.9414825439453,
+					"hp": 1,
+					"id": "scarecrow",
+					"position": [
+						127.342132568359,
+						235.82389831543
+					]
+				},
+				{
+					"distance": 37.0688095092773,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						101.464576721191,
+						168.115295410156
+					]
+				},
+				{
+					"distance": 35.134090423584,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						115.245727539062,
+						159.999755859375
+					]
+				},
+				{
+					"distance": 48.6109428405762,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						85.6179504394531,
+						212.114303588867
+					]
+				},
+				{
+					"distance": 53.6820640563965,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						159.306671142578,
+						147.07487487793
+					]
+				},
+				{
+					"distance": 88.3871231079102,
+					"hp": 4,
+					"id": "scarecrow",
+					"position": [
+						92.3562698364258,
+						271.994140625
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				129.851318359375,
+				191.954116821289
+			],
+			"stack": [
+				{
+					"function": "_trace_damage",
+					"line": 39,
+					"source": "res://tests/integration/pressure_trace.gd"
+				},
+				{
+					"function": "take_damage",
+					"line": 220,
+					"source": "res://game/actors/player/player.gd"
+				},
+				{
+					"function": "_check_hits",
+					"line": 212,
+					"source": "res://game/combat/enemy_projectile.gd"
+				},
+				{
+					"function": "_physics_process",
+					"line": 142,
+					"source": "res://game/combat/enemy_projectile.gd"
+				}
+			],
+			"time": 176.950000000033,
+			"vigor": 56
+		},
+		{
+			"amount": 10,
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 57.3415336608887,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						135.623733520508,
+						253.292129516602
+					]
+				},
+				{
+					"distance": 39.4695892333984,
+					"hp": 1,
+					"id": "scarecrow",
+					"position": [
+						130.216552734375,
+						234.964981079102
+					]
+				},
+				{
+					"distance": 61.8686637878418,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						91.8911285400391,
+						152.788101196289
+					]
+				},
+				{
+					"distance": 61.2852897644043,
+					"hp": 13,
+					"id": "scarecrow_archer",
+					"position": [
+						106.539138793945,
+						142.331604003906
+					]
+				},
+				{
+					"distance": 28.1509571075439,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						108.179916381836,
+						198.522109985352
+					]
+				},
+				{
+					"distance": 29.4822235107422,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						147.058212280273,
+						168.538436889648
+					]
+				},
+				{
+					"distance": 53.0673713684082,
+					"hp": 4,
+					"id": "scarecrow",
+					"position": [
+						103.712760925293,
+						237.904205322266
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				136.213455200195,
+				195.953628540039
+			],
+			"stack": [
+				{
+					"function": "_trace_damage",
+					"line": 39,
+					"source": "res://tests/integration/pressure_trace.gd"
+				},
+				{
+					"function": "take_damage",
+					"line": 220,
+					"source": "res://game/actors/player/player.gd"
+				},
+				{
+					"function": "hit_victims_in_marked_sector",
+					"line": 541,
+					"source": "res://game/actors/enemies/enemy_base.gd"
+				},
+				{
+					"function": "_swing",
+					"line": 220,
+					"source": "res://game/actors/enemies/scarecrow.gd"
+				},
+				{
+					"function": "_ai",
+					"line": 72,
+					"source": "res://game/actors/enemies/scarecrow.gd"
+				},
+				{
+					"function": "_physics_process",
+					"line": 216,
+					"source": "res://game/actors/enemies/enemy_base.gd"
+				}
+			],
+			"time": 178.333333333367,
+			"vigor": 46
+		},
+		{
+			"amount": 7,
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 41.5197792053223,
+					"hp": 25,
+					"id": "scarecrow",
+					"position": [
+						141.055694580078,
+						246.489730834961
+					]
+				},
+				{
+					"distance": 83.5276870727539,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						95.4675369262695,
+						149.238800048828
+					]
+				},
+				{
+					"distance": 80.8951263427734,
+					"hp": 13,
+					"id": "scarecrow_archer",
+					"position": [
+						119.037940979004,
+						135.197555541992
+					]
+				},
+				{
+					"distance": 34.8400535583496,
+					"hp": 11,
+					"id": "scarecrow",
+					"position": [
+						122.615547180176,
+						195.496734619141
+					]
+				},
+				{
+					"distance": 33.9686889648438,
+					"hp": 21,
+					"id": "scarecrow",
+					"position": [
+						146.838912963867,
+						174.606246948242
+					]
+				},
+				{
+					"distance": 37.2135620117188,
+					"hp": 4,
+					"id": "scarecrow",
+					"position": [
+						125.361557006836,
+						229.569763183594
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				155.323211669922,
+				207.498321533203
+			],
+			"stack": [
+				{
+					"function": "_trace_damage",
+					"line": 39,
+					"source": "res://tests/integration/pressure_trace.gd"
+				},
+				{
+					"function": "take_damage",
+					"line": 220,
+					"source": "res://game/actors/player/player.gd"
+				},
+				{
+					"function": "_check_hits",
+					"line": 212,
+					"source": "res://game/combat/enemy_projectile.gd"
+				},
+				{
+					"function": "_physics_process",
+					"line": 142,
+					"source": "res://game/combat/enemy_projectile.gd"
+				}
+			],
+			"time": 180.716666666703,
+			"vigor": 39
+		},
+		{
+			"amount": 7,
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 51.6678810119629,
+					"hp": 13,
+					"id": "scarecrow",
+					"position": [
+						137.477340698242,
+						129.437057495117
+					]
+				},
+				{
+					"distance": 74.8578262329102,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						60.2062187194824,
+						159.335311889648
+					]
+				},
+				{
+					"distance": 65.7209854125977,
+					"hp": 13,
+					"id": "scarecrow_archer",
+					"position": [
+						56.2003593444824,
+						145.240417480469
+					]
+				},
+				{
+					"distance": 26.0232124328613,
+					"hp": 11,
+					"id": "scarecrow",
+					"position": [
+						100.162582397461,
+						121.175224304199
+					]
+				},
+				{
+					"distance": 40.8993873596191,
+					"hp": 4,
+					"id": "scarecrow",
+					"position": [
+						81.872917175293,
+						132.424102783203
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				98.7916564941406,
+				95.1881484985352
+			],
+			"stack": [
+				{
+					"function": "_trace_damage",
+					"line": 39,
+					"source": "res://tests/integration/pressure_trace.gd"
+				},
+				{
+					"function": "take_damage",
+					"line": 220,
+					"source": "res://game/actors/player/player.gd"
+				},
+				{
+					"function": "hit_victims_in_marked_sector",
+					"line": 541,
+					"source": "res://game/actors/enemies/enemy_base.gd"
+				},
+				{
+					"function": "_swing",
+					"line": 220,
+					"source": "res://game/actors/enemies/scarecrow.gd"
+				},
+				{
+					"function": "_ai",
+					"line": 72,
+					"source": "res://game/actors/enemies/scarecrow.gd"
+				},
+				{
+					"function": "_physics_process",
+					"line": 216,
+					"source": "res://game/actors/enemies/enemy_base.gd"
+				}
+			],
+			"time": 187.400000000041,
+			"vigor": 32
+		},
+		{
+			"amount": 6,
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 49.087345123291,
+					"hp": 97,
+					"id": "scarecrow_captain",
+					"phase": "CHASE",
+					"phase_left": 0.766666666666667,
+					"position": [
+						73.7599792480469,
+						105.506057739258
+					],
+					"summons": 0
+				},
+				{
+					"distance": 14.0009078979492,
+					"hp": 19,
+					"id": "scarecrow",
+					"position": [
+						21.2558708190918,
+						125.434913635254
+					]
+				},
+				{
+					"distance": 28.5074558258057,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						57.2745933532715,
+						117.903480529785
+					]
+				},
+				{
+					"distance": 27.4205780029297,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						53.2291526794434,
+						151.53825378418
+					]
+				},
+				{
+					"distance": 48.2898445129395,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						47.6886367797852,
+						178.978393554688
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				33.0651473999023,
+				132.955978393555
+			],
+			"stack": [
+				{
+					"function": "_trace_damage",
+					"line": 39,
+					"source": "res://tests/integration/pressure_trace.gd"
+				},
+				{
+					"function": "take_damage",
+					"line": 220,
+					"source": "res://game/actors/player/player.gd"
+				},
+				{
+					"function": "hit_victims_in_marked_sector",
+					"line": 541,
+					"source": "res://game/actors/enemies/enemy_base.gd"
+				},
+				{
+					"function": "_swing",
+					"line": 220,
+					"source": "res://game/actors/enemies/scarecrow.gd"
+				},
+				{
+					"function": "_ai",
+					"line": 72,
+					"source": "res://game/actors/enemies/scarecrow.gd"
+				},
+				{
+					"function": "_physics_process",
+					"line": 216,
+					"source": "res://game/actors/enemies/enemy_base.gd"
+				}
+			],
+			"time": 225.200000000071,
+			"vigor": 56
+		},
+		{
+			"amount": 8,
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 56.6237182617188,
+					"hp": 97,
+					"id": "scarecrow_captain",
+					"phase": "IDLE",
+					"phase_left": 0.583333333333333,
+					"position": [
+						67.8067626953125,
+						109.991203308105
+					],
+					"summons": 0
+				},
+				{
+					"distance": 24.3724937438965,
+					"hp": 13,
+					"id": "scarecrow",
+					"position": [
+						23.8939590454102,
+						126.863372802734
+					]
+				},
+				{
+					"distance": 30.102180480957,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						46.9751243591309,
+						126.991233825684
+					]
+				},
+				{
+					"distance": 21.9701881408691,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						50.5052642822266,
+						150.281112670898
+					]
+				},
+				{
+					"distance": 25.6770401000977,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						44.2552719116211,
+						171.095657348633
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				28.5409412384033,
+				150.788757324219
+			],
+			"stack": [
+				{
+					"function": "_trace_damage",
+					"line": 39,
+					"source": "res://tests/integration/pressure_trace.gd"
+				},
+				{
+					"function": "take_damage",
+					"line": 220,
+					"source": "res://game/actors/player/player.gd"
+				},
+				{
+					"function": "hit_victims_in_marked_sector",
+					"line": 541,
+					"source": "res://game/actors/enemies/enemy_base.gd"
+				},
+				{
+					"function": "_swing",
+					"line": 220,
+					"source": "res://game/actors/enemies/scarecrow.gd"
+				},
+				{
+					"function": "_ai",
+					"line": 72,
+					"source": "res://game/actors/enemies/scarecrow.gd"
+				},
+				{
+					"function": "_physics_process",
+					"line": 216,
+					"source": "res://game/actors/enemies/enemy_base.gd"
+				}
+			],
+			"time": 226.600000000072,
+			"vigor": 48
+		},
+		{
+			"amount": 8,
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 71.8304901123047,
+					"hp": 97,
+					"id": "scarecrow_captain",
+					"phase": "RALLY_TELL",
+					"phase_left": 0.249999999999999,
+					"position": [
+						67.8067626953125,
+						109.991203308105
+					],
+					"summons": 0
+				},
+				{
+					"distance": 37.2108154296875,
+					"hp": 13,
+					"id": "scarecrow",
+					"position": [
+						23.3392753601074,
+						132.357055664062
+					]
+				},
+				{
+					"distance": 36.2480735778809,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						42.0160636901855,
+						136.198226928711
+					]
+				},
+				{
+					"distance": 29.0912857055664,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						49.966480255127,
+						151.043197631836
+					]
+				},
+				{
+					"distance": 13.9896221160889,
+					"hp": 16,
+					"id": "scarecrow",
+					"position": [
+						41.2836418151855,
+						170.684066772461
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				27.3577499389648,
+				169.350250244141
+			],
+			"stack": [
+				{
+					"function": "_trace_damage",
+					"line": 39,
+					"source": "res://tests/integration/pressure_trace.gd"
+				},
+				{
+					"function": "take_damage",
+					"line": 220,
+					"source": "res://game/actors/player/player.gd"
+				},
+				{
+					"function": "hit_victims_in_marked_sector",
+					"line": 541,
+					"source": "res://game/actors/enemies/enemy_base.gd"
+				},
+				{
+					"function": "_swing",
+					"line": 220,
+					"source": "res://game/actors/enemies/scarecrow.gd"
+				},
+				{
+					"function": "_ai",
+					"line": 72,
+					"source": "res://game/actors/enemies/scarecrow.gd"
+				},
+				{
+					"function": "_physics_process",
+					"line": 216,
+					"source": "res://game/actors/enemies/enemy_base.gd"
+				}
+			],
+			"time": 227.733333333407,
+			"vigor": 40
+		},
+		{
+			"amount": 7,
+			"attack_range": 158.92,
+			"attempt": 3,
+			"enemies": [
+				{
+					"distance": 126.008728027344,
+					"hp": 90,
+					"id": "scarecrow_captain",
+					"phase": "THROW_TELL",
+					"phase_left": 0.4,
+					"position": [
+						65.7397537231445,
+						113.415748596191
+					],
+					"summons": 3
+				},
+				{
+					"distance": 89.5196762084961,
+					"hp": 25,
+					"id": "scarecrow",
+					"position": [
+						35.6534080505371,
+						156.42414855957
+					]
+				},
+				{
+					"distance": 74.9295196533203,
+					"hp": 15,
+					"id": "scarecrow",
+					"position": [
+						54.1153259277344,
+						166.002166748047
+					]
+				},
+				{
+					"distance": 86.0073318481445,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						72.1084518432617,
+						153.411758422852
+					]
+				},
+				{
+					"distance": 115.120895385742,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						24.8125858306885,
+						133.202606201172
+					]
+				},
+				{
+					"distance": 119.736534118652,
+					"hp": 31,
+					"id": "scarecrow",
+					"position": [
+						37.5040893554688,
+						123.940338134766
+					]
+				},
+				{
+					"distance": 76.9579925537109,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						141.33268737793,
+						266.504180908203
+					]
+				},
+				{
+					"distance": 132.730621337891,
+					"hp": 23,
+					"id": "scarecrow_archer",
+					"position": [
+						22.0450038909912,
+						115.345848083496
+					]
+				}
+			],
+			"level": "1-4",
+			"player": [
+				69.3155288696289,
+				239.373733520508
+			],
+			"stack": [
+				{
+					"function": "_trace_damage",
+					"line": 39,
+					"source": "res://tests/integration/pressure_trace.gd"
+				},
+				{
+					"function": "take_damage",
+					"line": 220,
+					"source": "res://game/actors/player/player.gd"
+				},
+				{
+					"function": "_check_hits",
+					"line": 212,
+					"source": "res://game/combat/enemy_projectile.gd"
+				},
+				{
+					"function": "_physics_process",
+					"line": 142,
+					"source": "res://game/combat/enemy_projectile.gd"
+				}
+			],
+			"time": 231.216666666743,
+			"vigor": 33
+		}
+	],
+	"scope": "Read-only snapshots and synchronous damage call stacks; same bot policy and RNG."
+}

@@ -80,6 +80,7 @@ func _ai(delta: float) -> void:
 				_aim_at(target.global_position)
 			if _telegraph != null:
 				_telegraph.progress = progress
+				_telegraph.aim_locked = progress >= aim_track_ratio
 			if _phase_left <= 0.0:
 				_release()
 		Phase.RELEASE:
@@ -176,6 +177,8 @@ func _start_aim() -> void:
 	anim_state = &"aim"
 	_play(&"aim", true)
 	_show_telegraph(AttackTelegraph.make_line(facing, 10.0, projectile.telegraph_width()))
+	_telegraph.show_aim_lock = true
+	_telegraph.aim_locked = aim_track_ratio <= 0.0
 	_aim_at(target.global_position)
 
 
@@ -191,6 +194,8 @@ func _aim_at(point: Vector2) -> void:
 
 
 func _release() -> void:
+	if phase != Phase.AIM or _telegraph == null or state == State.DYING:
+		return
 	_clear_telegraph()
 	release_attack_slot()
 	phase = Phase.RELEASE
@@ -212,6 +217,10 @@ func is_attacking_target(_victim: Node2D) -> bool:
 
 func _is_committed() -> bool:
 	return phase == Phase.AIM
+
+
+func _uses_separation() -> bool:
+	return phase != Phase.AIM
 
 
 func _cancel_attack() -> void:

@@ -6,6 +6,7 @@ const CONTRACT: Dictionary = {
 	"companion_guard_coverage": [["protected", TYPE_BOOL]],
 	"player_combat_status_requested": [],
 	"player_combat_readiness": [["state", TYPE_STRING_NAME], ["charge_left", TYPE_FLOAT], ["charge_bonus", TYPE_FLOAT]],
+	"player_tactics_changed": [["status", TYPE_DICTIONARY]],
 	"companion_counter_resolved": [["result", TYPE_STRING_NAME]],
 	"guard_lesson_requested": [],
 	"guard_lesson_completed": [],

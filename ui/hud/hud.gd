@@ -60,6 +60,7 @@ var active_element: String = ""
 var guard_coach: GuardCoach
 var companion_guard: CompanionGuardControl
 var boss_tactic: Label
+var combat_readout: CombatReadout
 
 var _plate: NinePatchRect
 var _bar_icons: Array[TextureRect] = []
@@ -198,6 +199,9 @@ func _build() -> void:
 	companion_guard = CompanionGuardControl.new()
 	companion_guard.name = "CompanionGuard"
 	add_child(companion_guard)
+	combat_readout = CombatReadout.new()
+	combat_readout.name = "CombatReadout"
+	add_child(combat_readout)
 
 	boss_bar = BossBar.new()
 	boss_bar.name = "BossBar"
@@ -357,6 +361,7 @@ func apply_layout(safe: Rect2, game: Rect2) -> void:
 	guard_coach.layout(safe)
 	ultimate_button.position = pos.floor()
 	companion_guard.position = Vector2(maxf(safe.position.x + MARGIN + 8.0, pos.x - 47.0), minf(pos.y, safe.end.y - 49.0)).floor()
+	combat_readout.position = Vector2(safe.position.x + MARGIN, minf(pos.y, safe.end.y - CombatReadout.HEIGHT - MARGIN)).floor()
 	ultimate_label.size = ultimate_label.get_minimum_size()
 	ultimate_label.position = Vector2(
 		floorf(minf(ultimate_button.position.x + 16.0 - ultimate_label.size.x * 0.5, safe.end.x - MARGIN - ultimate_label.size.x)),

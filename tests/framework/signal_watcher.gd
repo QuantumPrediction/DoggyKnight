@@ -31,8 +31,10 @@ func last_args() -> Array:
 
 
 func stop() -> void:
-	if _callable.is_valid() and _signal.is_connected(_callable):
+	if is_instance_valid(_signal.get_object()) and _callable.is_valid() and _signal.is_connected(_callable):
 		_signal.disconnect(_callable)
+	_signal = Signal()
+	_callable = Callable()
 
 
 func _record(args: Array) -> void:
