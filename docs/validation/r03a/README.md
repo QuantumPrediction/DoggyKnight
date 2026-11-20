@@ -4,6 +4,12 @@
 PR #16 head `3367a183599b2e1ecbb5efebec341cb7879f3965`.
 [Contract](../../requests/20261120-INT-warning-priority.md).
 
+Published as [draft PR #17](https://github.com/QuantumPrediction/DoggyKnight/pull/17), stacked on #16, not merged.
+The public implementation `9282f88a367b0268f4ad67f092109304360d56d5` and tested local
+`4de053fa7efeda7c7fa6ddcb1cd80a48ea4cc77d` share complete tree
+`5e536bbe2096560500d07b83121e1b9cf319b049`; [publication mapping](publication.json)
+records all ten uploaded PNG blob hashes. Subsequent handoff changes only docs.
+
 ## Product change and limits
 
 The retained [0.9.1 baseline](../0.9.1/captures/archer_locked_focus_ready.png)

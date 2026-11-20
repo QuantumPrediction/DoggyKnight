@@ -10,6 +10,13 @@ The owner asked to continue product work within the authorized enhancement and
 public draft workflow. [Contract](requests/20261120-INT-warning-priority.md) and
 [evidence](validation/r03a/README.md) describe this bounded information/UI change.
 
+**Published as [draft PR #17](https://github.com/QuantumPrediction/DoggyKnight/pull/17), stacked on #16; not merged.**
+Public implementation `9282f88a367b0268f4ad67f092109304360d56d5` and tested local
+`4de053fa7efeda7c7fa6ddcb1cd80a48ea4cc77d` share complete tree
+`5e536bbe2096560500d07b83121e1b9cf319b049`. [Publication mapping](validation/r03a/publication.json)
+records all ten image blob hashes. Subsequent handoff updates only documentation.
+Resume the latest public PR #17 head, preserving any newer local work.
+
 - Overlapping visible enemy attack warnings now outrank the ready/moving title:
   tracking aim, committed warning or multiple warnings, with words and a steady
   triangle. Focus/roll clocks remain truthful. Ten arrival/summon sites now use
@@ -27,7 +34,7 @@ public draft workflow. [Contract](requests/20261120-INT-warning-priority.md) and
   schema changed. This establishes anchor invariance, not improved balance,
   human comprehension or fun. The final capture run exits 0 but retains
   43 ObjectDB / 19 resource and GL texture/font RID shutdown messages.
-- Publication is being prepared; this branch is not merged. No download build
+- Draft PR #17 is published and not merged. No download build
   or store/payment activation. R02 crash/cleanup, R03/P1, broad mechanical
   grids, long sessions, actual hardware and target-player gates remain open.
   Overall provisional quality remains 6–6.5/10.
