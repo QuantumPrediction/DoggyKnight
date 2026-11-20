@@ -40,3 +40,7 @@ DOGGY_ROUTE_AUDIT_OUT=/tmp/doggy-route-new-run python tools/run_route_audit.py
 The original guided-upgrade staging forgot to populate the owned starter, incorrectly displaying NEW. Its image is retained at `captures/iteration1/guided_upgrade_missing_owned_state.png`; final staging includes bark and correctly displays Lv2. This was a showcase-data correction, not a live route-grant change. `capture.log` retains OpenGL llvmpipe and exit leak warnings. Existing generated artwork is reused; no new bitmap artwork was generated in this round.
 
 Native Windows/mobile, hardware touch/controller, audible music evaluation, unfamiliar-player understanding, repeat-play intent, long-term economy and route balance remain unverified. The isolated native crash remains open even when follow-ups succeed. This draft is not a 9/10 certification.
+
+## Publication
+
+Recovered 0.8.1 is [draft PR #12](https://github.com/QuantumPrediction/DoggyKnight/pull/12). This 0.9 implementation is [draft PR #13](https://github.com/QuantumPrediction/DoggyKnight/pull/13), stacked above it. `publication.json` maps local implementation commits to public snapshot commits and their verified identical Git trees. The follow-up changes only publication/handoff documentation. Neither PR was merged.

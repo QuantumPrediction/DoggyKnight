@@ -1,0 +1,19 @@
+{
+  "repository": "QuantumPrediction/DoggyKnight",
+  "transport": "Git Data API via connected GitHub; CLI authentication unavailable",
+  "authorized_scope": "Source, assets, documents, tests, screenshots and draft PR; no merge",
+  "recovered_081": {
+    "local_checkpoint": "84e10a4a692f004d502a506f1b1736dd79bcafbc",
+    "public_commit": "34e3ca95f058ad45707ef69510771ac08f16e127",
+    "tree": "d860984cc31e68aefe9f2b22b19b1fe6a492263c",
+    "pr": "https://github.com/QuantumPrediction/DoggyKnight/pull/12"
+  },
+  "implementation_090": {
+    "local_commit": "563665e5f4f64fe4f0cd4c494014ab5ebd944cf4",
+    "public_commit": "0872941e698b53a6ac60c857eb48443551eac3cb",
+    "tree": "bb0757c48e950446c9196d2fe644c5ca335f8d14",
+    "pr": "https://github.com/QuantumPrediction/DoggyKnight/pull/13"
+  },
+  "verification": "Each published snapshot tree equals its local source tree; subsequent handoff-only commit will record these receipts.",
+  "downloads_created": false
+}

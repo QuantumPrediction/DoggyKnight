@@ -619,7 +619,7 @@
     }
   },
   "evidence_sha256": {
-    "README.md": "9313de70f2fdb5990ff612c7055d60b12ec175bb5120f2548a7dd0ec2caeea70",
+    "README.md": "5930cf454cd91177f4494344b3078edf2ed1564e59f3bf9bac7413aadd1ceacf",
     "capture.log": "d7cdbabb52f9d3703b8723d83be889693ce0cf56ce32b38b4c5207229635efa3",
     "captures/checks.json": "e814bcac9f63d4fc14ad05b2f7dbb378e91f4895ed67cb35669c2fb35ae61355",
     "captures/encounter_1-2.png": "12ff9e404c0d740dc03a4a54202789fda057d044afa4e00584f83520155c07e0",
@@ -677,7 +677,8 @@
     "route_audit/manifest.json": "719a596242548679ebad2b2f977cc0a64f5722219e702c82a3d988b487d1340b",
     "route_audit/summary.json": "9d1eeffe3db7b589bb0a44f7038b9f0e5953276254bd57d3ea22bf9a236c3db6",
     "route_audit_run.log": "ce763e6ffc786aa78b1919711648a573c2278412e437c37c3d41efe13605e1da",
-    "routes_iteration1.log": "5bc88141dbe4701f2e90d2dec6b5eea3b7600c6dfdee1448da05a50dc80c79a3"
+    "routes_iteration1.log": "5bc88141dbe4701f2e90d2dec6b5eea3b7600c6dfdee1448da05a50dc80c79a3",
+    "publication.json": "164cd2b80205aff9e2ddff2e37bcd7ba77fe34157b2cb22feb878dffa3a657fd"
   },
   "limits": [
     "existing teardown/RID/resource warnings",
