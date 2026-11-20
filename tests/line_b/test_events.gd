@@ -55,6 +55,8 @@ func test_every_level_has_a_different_event_with_merlin_and_morgana() -> void:
 
 func test_event_appears_between_waves_and_pauses_until_chosen() -> void:
 	make_flow(false, 1234, false, true)
+	# Generic legacy-event contract; production route selection has separate coverage.
+	flow.events = LevelEventTable.load_default().duplicate(true)
 	await wait_frames(1)
 	var offered := watch_signal(EventBus.event_offered)
 	var cleared := watch_signal(EventBus.wave_cleared)
@@ -89,6 +91,8 @@ func test_event_appears_between_waves_and_pauses_until_chosen() -> void:
 
 func test_morgana_option_changes_stats_for_the_run_and_retry_restores() -> void:
 	make_flow(false, 1234, false, true)
+	# Generic legacy-event contract; production route selection has separate coverage.
+	flow.events = LevelEventTable.load_default().duplicate(true)
 	await wait_frames(1)
 	assert_true(await start_new_game())
 	assert_true(await _wait_event())
@@ -117,6 +121,8 @@ func _next_level() -> bool:
 
 func test_event_waits_for_trick_choice_and_can_give_tricks() -> void:
 	make_flow(false, 1234, false, true)
+	# Generic legacy-event contract; production route selection has separate coverage.
+	flow.events = LevelEventTable.load_default().duplicate(true)
 	await wait_frames(1)
 	assert_true(await start_new_game())
 	var session := flow.get_session()
@@ -143,6 +149,8 @@ func test_event_waits_for_trick_choice_and_can_give_tricks() -> void:
 
 func test_effects_snacks_vigor_and_bonus_levels() -> void:
 	make_flow(false, 1234, false, true)
+	# Generic legacy-event contract; production route selection has separate coverage.
+	flow.events = LevelEventTable.load_default().duplicate(true)
 	await wait_frames(1)
 	assert_true(await start_new_game())
 	var table := LevelEventTable.load_default()
@@ -161,6 +169,8 @@ func test_effects_snacks_vigor_and_bonus_levels() -> void:
 
 func test_without_event_ui_the_first_option_is_picked_automatically() -> void:
 	make_flow(false, 1234, false, true)
+	# Generic legacy-event contract; production route selection has separate coverage.
+	flow.events = LevelEventTable.load_default().duplicate(true)
 	await wait_frames(1)
 	assert_true(await start_new_game())
 	flow.get_event_ui().queue_free()

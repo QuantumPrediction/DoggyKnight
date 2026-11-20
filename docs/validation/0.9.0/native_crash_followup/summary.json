@@ -1,0 +1,23 @@
+[
+  {
+    "repeat": 1,
+    "exit_code": 0,
+    "finished": true,
+    "downs": 1,
+    "damage": 250
+  },
+  {
+    "repeat": 2,
+    "exit_code": 0,
+    "finished": true,
+    "downs": 1,
+    "damage": 250
+  },
+  {
+    "repeat": 3,
+    "exit_code": 0,
+    "finished": true,
+    "downs": 1,
+    "damage": 250
+  }
+]

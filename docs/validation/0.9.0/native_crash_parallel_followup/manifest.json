@@ -1,0 +1,31 @@
+{
+  "command_without_report": [
+    "godot",
+    "--headless",
+    "--path",
+    "/workspace/scratch/fa4600f04bd6/DoggyKnight",
+    "--fixed-fps",
+    "60",
+    "--max-fps",
+    "0",
+    "--disable-render-loop",
+    "res://tests/integration/playthrough_bot.tscn",
+    "--",
+    "--speed=1",
+    "--chapter=1",
+    "--class=archer",
+    "--route=0",
+    "--build=route",
+    "--seed=7",
+    "--gear=common1",
+    "--element=earth",
+    "--policy=cautious",
+    "--guard=reactive",
+    "--max-downs=3",
+    "--max-sim-seconds=1200"
+  ],
+  "copies": 3,
+  "parallel_workers": 3,
+  "isolated_saves": true,
+  "purpose": "Repeat original native-crash case under three-process concurrency; original audit result is retained. Full regression and import have completed."
+}

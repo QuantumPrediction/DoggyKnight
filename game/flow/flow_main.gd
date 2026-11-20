@@ -1345,6 +1345,14 @@ func _on_event_due(_index: int) -> void:
 			_last_endless_event = event.id
 	else:
 		event = events.event_for_level(_session.level.id)
+		# Override only the production first-chapter table. Custom test/lab tables
+		# and later chapters/endless keep their existing event contract.
+		if events.resource_path == LevelEventTable.DEFAULT_PATH and _session.level.id == &"1-1" and GameState.run_route == &"":
+			event = BuildRoutes.event_for(GameState.hero_class)
+		elif events.resource_path == LevelEventTable.DEFAULT_PATH:
+			var encounter := BuildRoutes.encounter_for(_session.level.id)
+			if encounter != null:
+				event = encounter
 	level_events.offer(event)
 
 

@@ -10,7 +10,7 @@ extends Control
 ## 卡片出現後短暫不接受點擊,避免玩家原本按著畫面的手指一放開就誤選。
 
 const INPUT_DELAY: float = 0.45
-const CARD_SIZE: Vector2 = Vector2(168, 70)
+const CARD_SIZE: Vector2 = Vector2(168, 92)
 const CARD_GAP: float = 8.0
 const PORTRAITS: Dictionary = {
 	&"merlin": "res://assets/portraits/merlin/proud.png",
@@ -43,7 +43,8 @@ func _ready() -> void:
 	_title.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_title.add_child(UiKit.label(tr("UI_EVENT_TITLE"), &"LabelLight"))
 	_box.add_child(_title)
-	_hint = UiKit.label(tr("UI_EVENT_HINT"), &"LabelLight")
+	_hint = UiKit.wrapped_label(tr("UI_EVENT_HINT"), 164, &"LabelLight")
+	_hint.add_theme_font_size_override(&"font_size", 8)
 	_hint.name = "Hint"
 	_box.add_child(_hint)
 	visible = false
@@ -58,6 +59,8 @@ func show_event(id: StringName, options: Array) -> void:
 	cards.clear()
 	_tones.clear()
 	event_id = id
+	(_title.get_child(0) as Label).text = tr(BuildRoutes.event_title(id))
+	_hint.text = tr("UI_ROUTE_HINT" if BuildRoutes.is_route_event(id) else "UI_EVENT_HINT")
 	for i in options.size():
 		var opt: Dictionary = options[i] if options[i] is Dictionary else {}
 		var card := _make_card(opt, i)
@@ -121,6 +124,7 @@ func _process(delta: float) -> void:
 func _make_card(opt: Dictionary, index: int) -> Button:
 	var tone := StringName(String(opt.get("tone", "")))
 	var morgana := tone == &"morgana"
+	var route := tone == &"route"
 	var card := Button.new()
 	card.name = "Card%d" % index
 	card.theme_type_variation = &"CardMorgana" if morgana else (&"CardMerlin" if tone == &"merlin" else &"CardButton")
@@ -147,9 +151,13 @@ func _make_card(opt: Dictionary, index: int) -> Button:
 	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	holder.position = Vector2(5, floorf((CARD_SIZE.y - 52) * 0.5))
 	holder.size = Vector2(52, 52)
-	var path: String = PORTRAITS.get(tone, "")
+	var path: String = String(opt.get("icon", "")) if route else String(PORTRAITS.get(tone, ""))
 	if path != "" and ResourceLoader.exists(path):
 		var face := UiKit.texture_rect(load(path) as Texture2D)
+		face.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		face.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		face.custom_minimum_size = Vector2(44, 44)
+		face.size = Vector2(44, 44)
 		face.position = Vector2(2, 2)
 		holder.add_child(face)
 	holder.add_child(UiKit.texture_rect(PORTRAIT_FRAME))
@@ -157,12 +165,13 @@ func _make_card(opt: Dictionary, index: int) -> Button:
 
 	var text_x := 61.0
 	var text_w := CARD_SIZE.x - text_x - 5.0
-	var tone_key := "UI_EVENT_MORGANA" if morgana else ("UI_EVENT_MERLIN" if tone == &"merlin" else "")
+	var tone_key := "UI_ROUTE_TONE" if route else ("UI_EVENT_MORGANA" if morgana else ("UI_EVENT_MERLIN" if tone == &"merlin" else ""))
 	# v2.6:第三章梅林被抓走了,祝福改由湖中仙女給(docs/STORY.md 第 13 節)
 	if tone_key == "UI_EVENT_MERLIN" and GameState.mode == &"story" and GameState.chapter == 3:
 		tone_key = "UI_EVENT_LADY"
 	var tone_label := UiKit.label(tr(tone_key) if tone_key != "" else "", soft, HORIZONTAL_ALIGNMENT_LEFT)
 	tone_label.name = "Tone"
+	tone_label.add_theme_font_size_override(&"font_size", 8)
 	tone_label.position = Vector2(text_x, 3)
 	tone_label.size = Vector2(text_w - 18, 13)
 	tone_label.modulate = Color(PaletteColors.LILAC) if morgana else Color.WHITE
@@ -174,10 +183,12 @@ func _make_card(opt: Dictionary, index: int) -> Button:
 	title.size = Vector2(text_w, 14)
 	card.add_child(title)
 	var desc := UiKit.wrapped_label(tr(String(opt.get("desc", ""))), text_w, light)
+	desc.add_theme_font_size_override(&"font_size", 9)
+	desc.add_theme_constant_override(&"line_spacing", 0)
 	desc.name = "Description"
 	desc.autowrap_mode = TextServer.AUTOWRAP_ARBITRARY
 	desc.position = Vector2(text_x, 32)
-	desc.size = Vector2(text_w, 36)
+	desc.size = Vector2(text_w, 56)
 	card.add_child(desc)
 
 	# 右上角的小圖示(選項資料提供的路徑;沒有就不顯示)
@@ -187,7 +198,11 @@ func _make_card(opt: Dictionary, index: int) -> Button:
 		if tex != null:
 			var icon := UiKit.texture_rect(tex)
 			icon.name = "Icon"
-			icon.position = Vector2(CARD_SIZE.x - tex.get_size().x - 4, 3)
+			icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			icon.custom_minimum_size = Vector2(12, 12)
+			icon.size = Vector2(12, 12)
+			icon.position = Vector2(CARD_SIZE.x - 16, 3)
 			card.add_child(icon)
 
 	return card

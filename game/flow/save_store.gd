@@ -37,7 +37,7 @@ extends RefCounted
 
 ## 第 9 版:武器與護甲的元素刻印。舊裝備使用目錄的固有元素，等級與收藏保留。
 ## 第 10 版:護陣實戰提示完成旗標；舊存檔預設未完成。
-const VERSION: int = 10
+const VERSION: int = 11
 ## 營地訓練等級的上限(存檔清理用;實際上限在 data/progression/meta_upgrades.tres)。
 const MAX_META_LEVEL: int = 99
 const DEFAULT_PATH: String = "user://save.json"

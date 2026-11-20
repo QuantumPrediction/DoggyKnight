@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BuildRouteData" format=3]
+
+[ext_resource type="Script" path="res://game/progression/build_route_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"mistwalker"
+hero = &"mage"
+title = "ROUTE_MISTWALKER_NAME"
+description = "ROUTE_MISTWALKER_DESC"
+starter = &"roll"
+preferred = Array[StringName]([&"roll", &"bark", &"sit"])
+modifiers = {"attack_range": 0.12, "attack_damage": -0.1}

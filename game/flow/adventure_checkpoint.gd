@@ -7,7 +7,7 @@ static func sanitize(value: Variant) -> Dictionary:
 	var data: Dictionary = value
 	if not data.get("tricks", null) is Array or not data.get("run_modifiers", null) is Array:
 		return {}
-	var out := {"hero_level": maxi(1, EquipmentInventory.number(data.get("hero_level", 1), 1, 1000)),
+	var out := {"route": String(BuildRoutes.valid_id(data.get("route", ""))), "hero_level": maxi(1, EquipmentInventory.number(data.get("hero_level", 1), 1, 1000)),
 		"exp_centi": EquipmentInventory.number(data.get("exp_centi", 0), 0, 1000000),
 		"vigor": maxi(1, EquipmentInventory.number(data.get("vigor", 100), 100, 100000)),
 		"satisfaction": EquipmentInventory.number(data.get("satisfaction", 0), 0, 100),

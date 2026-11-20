@@ -1,0 +1,28 @@
+== 匯入資源 ==
+== 執行測試 ==
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/routes/test_build_routes.gd
+  ok      test_all_six_routes_grant_the_actual_player_ability_and_tradeoff
+  ok      test_route_choice_rejects_wrong_class_duplicate_and_open_upgrade
+  ok      test_starter_respects_caps_evolution_and_pending_bonus
+  ok      test_snapshot_retry_and_new_run_reset_route_without_stacking
+  ok      test_checkpoint_roundtrip_old_save_and_invalid_route
+  ok      test_guided_offers_are_legal_unique_and_leave_unrouted_rng_unchanged
+  ok      test_evolutions_and_exhausted_preferred_skills_are_preserved
+  ok      test_three_encounters_have_real_costs_rewards_and_single_resolution
+
+res://tests/routes/test_route_flow.gd
+  ok      test_production_first_event_chooses_route_and_retry_restores_boundary
+  ok      test_banked_route_survives_actual_save_and_continue
+  ok      test_route_cards_show_costs_fit_safe_area_and_reject_double_taps
+
+11 tests, 0 failed, 0 broken files
+WARNING: 114 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 75 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 7 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+全部測試通過。

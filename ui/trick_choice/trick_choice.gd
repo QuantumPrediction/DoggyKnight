@@ -43,6 +43,8 @@ func _ready() -> void:
 
 ## 顯示把戲選項(通常由 EventBus.trick_offered 呼叫)。
 func show_options(options: Array) -> void:
+	var route := BuildRoutes.get_route(GameState.run_route)
+	_title_label.text = tr("UI_ROUTE_ACTIVE") % tr(route.title) if route != null else tr("UI_LEVEL_UP")
 	for c in cards:
 		c.queue_free()
 	cards.clear()
@@ -138,6 +140,9 @@ func _make_card(trick: TrickData) -> Button:
 	var text_w := CARD_SIZE.x - text_x - 4.0
 	var name_label := UiKit.label(tr(trick.display_name), &"", HORIZONTAL_ALIGNMENT_LEFT)
 	name_label.name = "Name"
+	var route := BuildRoutes.get_route(GameState.run_route)
+	if route != null and route.preferred.has(trick.id):
+		name_label.text = "%s · %s" % [tr(trick.display_name), tr("UI_ROUTE_RECOMMEND")]
 	name_label.add_theme_font_size_override(&"font_size", 11)
 	name_label.vertical_alignment = VERTICAL_ALIGNMENT_TOP
 	name_label.position = Vector2(text_x, 4)

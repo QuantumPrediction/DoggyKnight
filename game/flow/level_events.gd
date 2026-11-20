@@ -97,6 +97,8 @@ func choose(index: int) -> bool:
 ## 套用一個選項的效果(EventOption 的說明)。
 func apply(option: EventOption) -> void:
 	var e := option.effects
+	if e.has("route"):
+		progression.choose_route(StringName(e["route"]))
 	if e.get("stats", null) is Dictionary:
 		progression.add_run_modifier(e["stats"])
 	if e.has("vigor_keep_ratio"):
