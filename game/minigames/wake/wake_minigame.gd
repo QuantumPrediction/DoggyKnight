@@ -402,45 +402,9 @@ func _draw() -> void:
 
 ## 城堡大廳:石牆、拱窗(月亮)、兩面圓桌旗、燭台。
 func _draw_hall(screen: Vector2) -> void:
-	draw_rect(Rect2(Vector2.ZERO, screen), _cfg.wall_color)
-	var dark := _cfg.wall_dark_color
-	# 石塊
-	var y := 0.0
-	var row := 0
-	while y < _table_y:
-		draw_rect(Rect2(0, y, screen.x, 1), dark)
-		var bx := 7.0 if row % 2 == 0 else 0.0
-		while bx < screen.x:
-			draw_rect(Rect2(bx, y + 1, 1, 8), dark)
-			bx += 14.0
-		y += 9.0
-		row += 1
-	# 拱窗與月亮
-	var cx := roundf(screen.x * 0.5)
-	var win := Rect2(cx - 18, maxf(_head_y - 108.0, SafeArea.get_safe_rect().position.y + 44.0), 36, 44)
-	draw_rect(win.grow(2), dark)
-	draw_circle(Vector2(cx, win.position.y), 20.0, dark)
-	draw_rect(win, _cfg.window_color)
-	draw_circle(Vector2(cx, win.position.y), 18.0, _cfg.window_color)
-	draw_circle(Vector2(cx + 7, win.position.y + 4), 6.0, Color("fff3c4"))
-	draw_circle(Vector2(cx + 10, win.position.y + 2), 5.0, _cfg.window_color)
-	for s in 5:
-		var star := Vector2(cx - 12 + s * 6, win.position.y + 10 + (s % 2) * 9)
-		var tw := 0.4 + 0.6 * absf(sin(_anim_time * 1.7 + s))
-		draw_rect(Rect2(star, Vector2.ONE), Color(1, 1, 0.85, tw))
-	draw_rect(Rect2(cx - 1, win.position.y - 18, 2, 62), dark)
-	draw_rect(Rect2(cx - 18, win.position.y + 18, 36, 2), dark)
-	# 圓桌旗(左右各一面)
-	for side: float in [-1.0, 1.0]:
-		var bx2 := roundf(cx + side * screen.x * 0.33)
-		var top := maxf(_head_y - 104.0, SafeArea.get_safe_rect().position.y + 40.0)
-		draw_rect(Rect2(bx2 - 8, top - 2, 16, 2), Color("8a6a3a"))
-		draw_rect(Rect2(bx2 - 7, top, 14, 30), Color("3d5aa8"))
-		draw_colored_polygon(PackedVector2Array([Vector2(bx2 - 7, top + 30), Vector2(bx2, top + 36), Vector2(bx2 + 7, top + 30)]), Color("3d5aa8"))
-		draw_arc(Vector2(bx2, top + 14), 4.0, 0, TAU, 14, Color("ffe066"), 1.0)
-	# 地板
-	draw_rect(Rect2(0, _table_y, screen.x, screen.y - _table_y), _cfg.floor_color)
-	draw_rect(Rect2(0, _table_y, screen.x, 1), _cfg.floor_color.lightened(0.15))
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	draw_texture_rect(StoryArt.cell("minigame_worlds", 1, 0, 2, 2), Rect2(Vector2.ZERO, screen), false)
+	draw_rect(Rect2(0, 0, screen.x, 23), Color(0.04, 0.09, 0.08, 0.72))
 
 
 func _draw_table(screen: Vector2) -> void:
@@ -484,55 +448,9 @@ func _draw_knight(lane: int) -> void:
 		lift = (1.0 if sin(_anim_time * 1.6 + lane * 1.1) > 0.0 else 0.0) + 1.0
 		if float(k["snore"]) > 0.0:
 			lift += 1.0 if sin(float(k["snore"]) * 30.0) > 0.0 else 0.0
-	# 以頭的中心為原點、放大 knight_scale 倍來畫(像素保持方正)
-	draw_set_transform(base, 0.0, Vector2(s, s))
-	var c := Vector2(0, lift)
-	# 盔甲肩膀(被桌子蓋住下半)
-	draw_rect(Rect2(-11, 5, 22, 10), ink)
-	draw_rect(Rect2(-10, 6, 20, 9), _cfg.armor_color)
-	draw_rect(Rect2(-10, 6, 20, 1), _cfg.armor_color.lightened(0.25))
-	draw_rect(Rect2(-1, 8, 3, 3), plume)
-	# 耳朵:睡著時垂下,醒來豎起
-	for side: float in [-1.0, 1.0]:
-		var ear := c + Vector2(-11.0 if side < 0 else 8.0, 0)
-		if awake:
-			draw_rect(Rect2(ear + Vector2(0, -11), Vector2(3, 7)), ink)
-			draw_rect(Rect2(ear + Vector2(1 if side < 0 else 0, -10), Vector2(2, 5)), fur.darkened(0.2))
-		else:
-			draw_rect(Rect2(ear + Vector2(0, -5), Vector2(3, 9)), ink)
-			draw_rect(Rect2(ear + Vector2(1 if side < 0 else 0, -4), Vector2(2, 7)), fur.darkened(0.2))
-	# 頭
-	# 圓角:四個角各缺一格
-	draw_rect(Rect2(c + Vector2(-8, -7), Vector2(16, 13)), ink)
-	draw_rect(Rect2(c + Vector2(-9, -6), Vector2(18, 11)), ink)
-	draw_rect(Rect2(c + Vector2(-7, -6), Vector2(14, 11)), fur)
-	draw_rect(Rect2(c + Vector2(-8, -5), Vector2(16, 9)), fur)
-	draw_rect(Rect2(c + Vector2(-7, -6), Vector2(14, 1)), fur.lightened(0.15))
-	# 頭盔:頭頂的半圓與羽飾
-	draw_rect(Rect2(c + Vector2(-9, -10), Vector2(18, 5)), ink)
-	draw_rect(Rect2(c + Vector2(-8, -9), Vector2(16, 3)), _cfg.armor_color)
-	draw_rect(Rect2(c + Vector2(-5, -12), Vector2(10, 3)), ink)
-	draw_rect(Rect2(c + Vector2(-4, -11), Vector2(8, 2)), _cfg.armor_color.lightened(0.2))
-	var sway := 1.0 if sin(_anim_time * (5.0 if awake else 2.0) + lane) > 0.0 else 0.0
-	draw_rect(Rect2(c + Vector2(-1, -17), Vector2(3, 6)), plume)
-	draw_rect(Rect2(c + Vector2(sway, -19), Vector2(2, 3)), plume.lightened(0.2))
-	# 口鼻
-	draw_rect(Rect2(c + Vector2(-3, 1), Vector2(6, 4)), fur.lightened(0.3))
-	draw_rect(Rect2(c + Vector2(-1, 1), Vector2(2, 1)), ink)
-	# 眼睛與腮紅
-	if awake:
-		for side: float in [-1.0, 1.0]:
-			var e := c + Vector2(-5.0 if side < 0 else 3.0, -4)
-			draw_rect(Rect2(e, Vector2(2, 2)), ink)
-			draw_rect(Rect2(e, Vector2(1, 1)), MinigameUi.WHITE)
-		draw_rect(Rect2(c + Vector2(-1, 3), Vector2(2, 1)), Color("e85a6a"))   # 開心張嘴
-	else:
-		for side: float in [-1.0, 1.0]:
-			var e := c + Vector2(-5.0 if side < 0 else 3.0, -2)
-			draw_rect(Rect2(e, Vector2(2, 1)), ink)
-	draw_rect(Rect2(c + Vector2(-7, 0), Vector2(2, 1)), Color(1, 0.55, 0.6, 0.8))
-	draw_rect(Rect2(c + Vector2(5, 0), Vector2(2, 1)), Color(1, 0.55, 0.6, 0.8))
-	draw_set_transform_matrix(Transform2D.IDENTITY)
+	var code: String = ["bulldog", "lancelot", "tristan", "gawain"][lane % 4]
+	var tex := StoryArt.actor(code, 3 if awake else 0)
+	draw_texture_rect(tex, Rect2(base + Vector2(-15, -14 + lift) * s, Vector2(30, 42) * s), false, Color.WHITE if awake else Color(0.72, 0.79, 0.79))
 	if awake:
 		return
 	# 鼻子吹的泡泡(慢慢變大變小)與 Zzz(用畫面座標畫,不跟著放大)

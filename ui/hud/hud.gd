@@ -151,7 +151,10 @@ func _build() -> void:
 
 	pause_button = UiKit.button("", &"ButtonAlt", Vector2(26, 26))
 	pause_button.name = "PauseButton"
-	pause_button.icon = preload("res://assets/ui/icon_pause.png")
+	pause_button.icon = StoryArt.ui_icon("icon_pause")
+	pause_button.expand_icon = true
+	pause_button.add_theme_constant_override(&"icon_max_width", 10)
+	pause_button.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	pause_button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	pause_button.add_to_group(TOUCH_BLOCKER_GROUP)
 	pause_button.pressed.connect(_on_pause_pressed)

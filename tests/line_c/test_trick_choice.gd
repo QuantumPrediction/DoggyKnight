@@ -89,3 +89,11 @@ func test_cards_fit_inside_the_safe_area() -> void:
 			assert_true(r.position.y - prev_bottom >= 4.0, "卡片之間至少 4 像素")
 			prev_bottom = r.end.y
 		ui.call("choose", 0)
+
+func test_painted_badges_do_not_cover_the_skill_description() -> void:
+	ui.call("show_options", [load("res://data/tricks/fetch.tres"), load("res://data/tricks/lion_roar.tres"), load("res://data/tricks/tornado_tail.tres")])
+	await wait_frames(3)
+	for card: Button in ui.get("cards"):
+		var badge := card.get_node("Badge") as Control
+		var description := card.get_node("Description") as Control
+		assert_true(badge.position.y + badge.size.y * 1.12 <= description.position.y, "even the pulsing badge stays above description")

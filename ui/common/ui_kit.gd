@@ -176,7 +176,7 @@ static func place_backdrop(t: TextureRect) -> void:
 	if t.texture == null:
 		return
 	var screen := SafeArea.get_screen_size()
-	t.size = t.texture.get_size()
+	t.size = screen if t.texture.resource_path.begins_with("res://assets/ui/title_bg") else t.texture.get_size()
 	t.position = ((screen - t.size) * 0.5).floor()
 
 

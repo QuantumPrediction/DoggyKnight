@@ -95,11 +95,20 @@ func toggle_haptics() -> void:
 
 func _refresh_sound() -> void:
 	sound_button.text = tr("UI_SOUND_ON") if GameState.sound_on else tr("UI_SOUND_OFF")
-	sound_button.icon = preload("res://assets/ui/icon_sound_on.png") if GameState.sound_on else preload("res://assets/ui/icon_sound_off.png")
+	sound_button.icon = StoryArt.ui_icon("icon_sound_on")
+	sound_button.expand_icon = true
+	sound_button.add_theme_constant_override(&"icon_max_width", 10)
+	sound_button.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	music_button.text = tr("UI_MUSIC_ON") if GameState.music_on else tr("UI_MUSIC_OFF")
-	music_button.icon = preload("res://assets/ui/icon_music_on.png") if GameState.music_on else preload("res://assets/ui/icon_music_off.png")
+	music_button.icon = StoryArt.ui_icon("icon_music_on")
+	music_button.expand_icon = true
+	music_button.add_theme_constant_override(&"icon_max_width", 10)
+	music_button.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	haptics_button.text = tr("UI_HAPTICS_ON") if GameState.haptics_on else tr("UI_HAPTICS_OFF")
-	haptics_button.icon = preload("res://assets/ui/icon_vibrate_on.png") if GameState.haptics_on else preload("res://assets/ui/icon_vibrate_off.png")
+	haptics_button.icon = StoryArt.ui_icon("icon_vibrate_on")
+	haptics_button.expand_icon = true
+	haptics_button.add_theme_constant_override(&"icon_max_width", 10)
+	haptics_button.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 
 
 func _process(_delta: float) -> void:

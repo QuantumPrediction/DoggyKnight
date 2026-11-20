@@ -138,12 +138,15 @@ func _make_card(trick: TrickData) -> Button:
 	var text_w := CARD_SIZE.x - text_x - 4.0
 	var name_label := UiKit.label(tr(trick.display_name), &"", HORIZONTAL_ALIGNMENT_LEFT)
 	name_label.name = "Name"
+	name_label.add_theme_font_size_override(&"font_size", 11)
 	name_label.vertical_alignment = VERTICAL_ALIGNMENT_TOP
 	name_label.position = Vector2(text_x, 4)
 	name_label.size = Vector2(text_w, 14)
 	card.add_child(name_label)
 	var desc := UiKit.wrapped_label(tr(trick.description), text_w, &"LabelSoft")
 	desc.name = "Description"
+	desc.add_theme_font_size_override(&"font_size", 9)
+	desc.add_theme_constant_override(&"line_spacing", 0)
 	desc.position = Vector2(text_x, 21)
 	desc.size = Vector2(text_w, 30)
 	card.add_child(desc)
@@ -156,12 +159,25 @@ func _make_card(trick: TrickData) -> Button:
 	else:
 		badge.theme_type_variation = &"Ribbon" if learned_count(trick.id) == 0 else &"PanelDark"
 	badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var tag := StyleBoxFlat.new()
+	tag.bg_color = Color("334b40") if not evolution else Color("66502c")
+	tag.border_color = Color("bc9a59")
+	tag.set_border_width_all(1)
+	tag.set_corner_radius_all(2)
+	tag.content_margin_left = 3
+	tag.content_margin_right = 3
+	tag.content_margin_top = 1
+	tag.content_margin_bottom = 1
+	badge.add_theme_stylebox_override(&"panel", tag)
 	var badge_label := UiKit.label(badge_text_for(trick), &"LabelLight")
+	badge_label.add_theme_font_size_override(&"font_size", 8)
 	badge_label.name = "Text"
 	badge.add_child(badge_label)
 	card.add_child(badge)
 	badge.size = badge.get_minimum_size()
 	badge.position = Vector2(CARD_SIZE.x - badge.size.x + 2, -5)
+	# Once attached, the inherited font resolves; shrink the pre-tree fallback size.
+	_fit_badge.call_deferred(badge)
 	if evolution:
 		# 標記一直輕輕跳動,卡片閃金光
 		badge.pivot_offset = badge.size * 0.5
@@ -173,6 +189,13 @@ func _make_card(trick: TrickData) -> Button:
 		gt.tween_property(card, "self_modulate", Color(1.35, 1.25, 0.9), 0.15)
 		gt.tween_property(card, "self_modulate", Color.WHITE, 0.3)
 	return card
+
+func _fit_badge(badge: PanelContainer) -> void:
+	if not is_instance_valid(badge) or badge.is_queued_for_deletion():
+		return
+	badge.reset_size()
+	badge.position = Vector2(CARD_SIZE.x - badge.size.x - 3, 3)
+	badge.pivot_offset = badge.size * 0.5
 
 
 ## 進化卡片:大圖示下面顯示「甲 + 乙」兩個原把戲的小圖示。

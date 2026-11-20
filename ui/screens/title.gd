@@ -90,6 +90,7 @@ var _next_cast: float = 3.5
 var _glint: AnimatedSprite2D
 var _petals: CPUParticles2D
 var _buttons: VBoxContainer
+var _gallery_button: Button
 var _version: Label
 var _time: float = 0.0
 var _logo_rest: Vector2 = Vector2.ZERO
@@ -144,6 +145,10 @@ func _ready() -> void:
 	_goldie = _cast_box(cast[1], false)   # v2.5:32 px 的圖放大 2 倍
 	_goldie.name = "Goldie"
 	add_child(_goldie)
+	# The cover illustration already contains the hero; avoid overlapping duplicate figures.
+	_goldie.hide()
+	_bulldog.hide()
+	_merlin.hide()
 	_cleared_label = UiKit.label(_cleared_text(), &"LabelPop")
 	_cleared_label.name = "ChapterCleared"
 	_cleared_label.visible = effective_cleared() >= 1
@@ -196,6 +201,17 @@ func _ready() -> void:
 			&"LabelLight", HORIZONTAL_ALIGNMENT_RIGHT)
 	add_child(_version)
 
+	_gallery_button = UiKit.button("美術巡覽", &"ButtonAlt", Vector2(58, 24))
+	_gallery_button.name = "ArtGalleryButton"
+	_gallery_button.add_theme_font_size_override(&"font_size", 9)
+	_gallery_button.pressed.connect(func() -> void:
+		if get_node_or_null("ArtGallery") != null:
+			return
+		var gallery := CanvasLayer.new()
+		gallery.set_script(load("res://ui/illustrated/art_gallery.gd"))
+		gallery.name = "ArtGallery"
+		add_child(gallery))
+	add_child(_gallery_button)
 	_build_chapter_select()
 	_build_difficulty_panel()
 	_apply_save_state()
@@ -506,6 +522,8 @@ func _layout() -> void:
 	var safe := SafeArea.get_safe_rect()
 	var screen := SafeArea.get_screen_size()
 	UiKit.place_backdrop(_backdrop)
+	if _gallery_button != null:
+		_gallery_button.position = safe.position + Vector2(8, 8)
 	var cx := safe.get_center().x
 	_logo_rest = Vector2(floorf(cx - _logo.size.x * 0.5), floorf(safe.position.y + 44.0))
 	_logo.position.x = _logo_rest.x
@@ -528,8 +546,10 @@ func _layout() -> void:
 	var center := (screen * 0.5).floor()
 	_goldie.position = center + Vector2(-34, -14)
 	_goldie.position.y = minf(_goldie.position.y, cast_floor - _goldie.size.y - 2.0)
-	_bulldog.position = _goldie.position + Vector2(-50, 10)
-	_merlin.position = _goldie.position + Vector2(50, 8)
+	_bulldog.scale = Vector2.ONE * 0.65
+	_merlin.scale = Vector2.ONE * 0.65
+	_bulldog.position = _goldie.position + Vector2(-44, 24)
+	_merlin.position = _goldie.position + Vector2(62, 22)
 	_cleared_label.size = _cleared_label.get_minimum_size()
 	_cleared_label.position = Vector2(floorf(cx - _cleared_label.size.x * 0.5), _subtitle.position.y + _subtitle.size.y + 1.0)
 	var cap := Rect2(_subtitle.position, _subtitle.size)

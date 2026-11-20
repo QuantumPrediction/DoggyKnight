@@ -300,10 +300,10 @@ func _build() -> void:
 	_content.add_child(_title)
 	_snack_icon = TextureRect.new()
 	_snack_icon.name = "SnackIcon"
-	_snack_icon.texture = _snack_texture
+	_snack_icon.texture = StoryArt.ui_icon("icon_snack")
 	_snack_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_snack_icon.stretch_mode = TextureRect.STRETCH_SCALE
-	_snack_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_snack_icon.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_snack_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_content.add_child(_snack_icon)
 	_snack_label = MinigameUi.make_label("0", MinigameUi.FONT_S, Color("ffe066"))
@@ -480,7 +480,7 @@ func _draw_row(id: StringName) -> void:
 	row.draw_rect(Rect2(tag.position, Vector2(tag.size.x, 1)), fill.lightened(0.3))
 	row.draw_rect(Rect2(tag.position + Vector2(0, tag.size.y - 1), Vector2(tag.size.x, 1)), fill.darkened(0.3))
 	if not maxed and _snack_texture != null:
-		row.draw_texture(_snack_texture, (tag.position + Vector2(2, (tag.size.y - 8.0) * 0.5)).round(), Color(1, 1, 1, 1.0 if affordable else 0.5))
+		row.draw_texture_rect(StoryArt.ui_icon("icon_snack"), Rect2(tag.position + Vector2(2, (tag.size.y - 8.0) * 0.5), Vector2(8, 8)), false, Color(1, 1, 1, 1.0 if affordable else 0.5))
 	# 等級:max_level 格(最多畫 5 格)
 	var max_level := mini(int(e["max_level"]), 5)
 	for i in max_level:
@@ -495,23 +495,8 @@ func _draw_row(id: StringName) -> void:
 
 
 func _draw_icon(ci: CanvasItem, id: StringName, center: Vector2) -> void:
-	var tex: Texture2D = config.icons.get(id)
-	if tex != null:
-		ci.draw_texture(tex, (center - tex.get_size() * 0.5).round())
-		return
-	match id:
-		&"vitality":
-			MinigameUi.draw_heart(ci, center, 2.0)
-		&"strength":
-			_draw_glyph(ci, center, SWORD, {"o": MinigameUi.INK, "a": Color("c8d0e0"), "b": Color.WHITE, "c": Color("ffc23a"), "d": Color("8a5a32")})
-		&"agility":
-			_draw_glyph(ci, center, FEATHER, {"o": MinigameUi.INK, "a": Color("6ac8ff"), "b": Color("d8f2ff")})
-		&"loyalty":
-			_draw_paw(ci, center, Color("ffb36a"))
-		&"luck":
-			_draw_glyph(ci, center, CLOVER, {"o": MinigameUi.INK, "a": Color("6ad86a"), "b": Color("c8ffc8"), "d": Color("3a8a3a")})
-		_:
-			MinigameUi.draw_star(ci, center, 6.0, true)
+	var index: int = {&"vitality": 0, &"strength": 7, &"agility": 2, &"loyalty": 1, &"luck": 14}.get(id, 5)
+	ci.draw_texture_rect(StoryArt.cell("ui_icons", index % 4, index / 4), Rect2(center - Vector2(8, 8), Vector2(16, 16)), false)
 
 
 const SWORD: Array[String] = ["...o....", "..obo...", "..oao...", "..oao...", "..oao...", "occccco.", "..odo...", "..oco..."]

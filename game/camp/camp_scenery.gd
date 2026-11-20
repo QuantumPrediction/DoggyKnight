@@ -75,6 +75,8 @@ func advance(delta: float) -> void:
 func _draw() -> void:
 	if config == null:
 		return
+	if _draw_illustrated():
+		return
 	match part:
 		Part.SKY:
 			_draw_sky()
@@ -722,3 +724,18 @@ func _draw_ellipse(center: Vector2, radii: Vector2, color: Color) -> void:
 		var a := TAU * i / 28.0
 		pts.append((center + Vector2(cos(a) * radii.x, sin(a) * radii.y)).round())
 	draw_colored_polygon(pts, color)
+
+
+func _draw_illustrated() -> bool:
+	var tex := StoryArt.cell("camp_sheet", (chapter - 1) % 3, (chapter - 1) / 3, 3, 2)
+	if tex == null:
+		return false
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	if part == Part.SKY:
+		var screen := SafeArea.get_screen_size()
+		draw_texture_rect(tex, Rect2(Vector2.ZERO, screen), false)
+		# Darken the header only; character space keeps its painted warmth.
+		draw_rect(Rect2(0, 0, screen.x, 69), Color(0.03, 0.07, 0.08, 0.67))
+	elif part == Part.GLOW:
+		draw_circle(fire_spot, 15.0, Color(1.0, 0.55, 0.16, 0.04 * flicker), true, -1, true)
+	return true

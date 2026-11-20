@@ -7,7 +7,7 @@ extends Control
 @export var fill_light: Color = PaletteColors.PINK
 ## 填色底下那一列的陰影色(高度 4 像素以上才畫)。
 @export var fill_dark: Color = PaletteColors.RED_D
-@export var empty_color: Color = PaletteColors.PLUM
+@export var empty_color: Color = Color("132b2b")
 @export var trail_color: Color = PaletteColors.WHITE
 ## 填滿時閃爍(忠誠度條用)。
 @export var flash_when_full: bool = false

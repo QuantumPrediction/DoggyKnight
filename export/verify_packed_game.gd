@@ -27,6 +27,13 @@ func _check() -> void:
 			push_error("Missing companion " + companion)
 			quit(1)
 			return
+	var art_count := 0
+	for name: String in ["app_icon", "bosses_avalon", "bosses_royal", "camp_sheet", "chapter_1", "chapter_2", "chapter_3", "chapter_4", "chapter_5", "chapter_6", "extra_cast", "foes_elements", "foes_magic", "foes_meadow", "fx_sheet", "hero_sheet", "minigame_worlds", "party_sheet", "story_1", "story_2", "story_3", "story_4", "story_5", "story_6", "story_cast", "title_art", "trick_icons", "ui_icons"]:
+		if load("res://assets/illustrated/%s.png" % name) == null:
+			push_error("Missing illustrated asset: " + name)
+			quit(1)
+			return
+		art_count += 1
 	if ResourceLoader.exists("res://tests/framework/test_runner.tscn"):
 		push_error("Test scene incorrectly included in playtest")
 		quit(1)
@@ -41,7 +48,7 @@ func _check() -> void:
 		push_error("Desktop pause menu exceeds the base game viewport")
 		quit(1)
 		return
-	print("PACK_OK: %d levels, 4 companions, production UI; tests excluded" % checked)
+	print("PACK_OK: %d levels, 4 companions, %d illustrated textures, production UI; tests excluded" % [checked, art_count])
 	pause.queue_free()
 	await process_frame
 	quit(0)

@@ -9,7 +9,7 @@ func _setting(name: String) -> Variant:
 func test_portrait_pixel_screen() -> void:
 	assert_eq(_setting("display/window/size/viewport_width"), 180)
 	assert_eq(_setting("display/window/size/viewport_height"), 320)
-	assert_eq(_setting("display/window/stretch/mode"), "viewport")
+	assert_eq(_setting("display/window/stretch/mode"), "canvas_items")
 	assert_eq(_setting("display/window/stretch/aspect"), "expand")
 	assert_eq(_setting("display/window/stretch/scale_mode"), "integer")
 	assert_eq(_setting("display/window/handheld/orientation"), 1, "直向")
@@ -65,11 +65,11 @@ func test_mobile_power_and_ios_settings() -> void:
 
 func test_boot_main_scene_splash_and_theme() -> void:
 	assert_eq(_setting("application/run/main_scene"), "res://game/flow/main.tscn", "開機進入正式流程")
-	assert_eq(_setting("application/boot_splash/image"), "res://assets/app_icon/splash.png")
-	assert_eq(_setting("application/boot_splash/use_filter"), false, "啟動畫面像素不模糊")
+	assert_eq(_setting("application/boot_splash/image"), "res://assets/illustrated/title_art.png")
+	assert_eq(_setting("application/boot_splash/use_filter"), true, "繪本啟動畫面平滑縮放")
 	assert_eq(_setting("gui/theme/custom"), "res://ui/theme/main_theme.tres", "全域像素字主題")
 	assert_true(ResourceLoader.exists("res://game/flow/main.tscn"))
-	assert_true(ResourceLoader.exists("res://assets/app_icon/splash.png"))
+	assert_true(ResourceLoader.exists("res://assets/illustrated/title_art.png"))
 	assert_true(ResourceLoader.exists("res://ui/theme/main_theme.tres"))
 
 
