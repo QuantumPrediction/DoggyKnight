@@ -7,6 +7,9 @@ const BASE_STATS: StatBlock = preload("res://data/player/goldie_base_stats.tres"
 ## v2.7:故事模式的總章數(DEV_PLAN 4.14)。選章、存檔、結算一律用這個常數,不要另外寫死。
 const CHAPTER_COUNT: int = 6
 
+var equipment: Dictionary = EquipmentInventory.defaults()
+var run_equipment: Dictionary = {}
+
 var hero_class: StringName = &"knight"
 
 var player_stats: StatBlock       # 金毛目前數值(含把戲加成)
@@ -21,6 +24,8 @@ var next_level_bonus: float       # 小遊戲表現換來的下一關加成,0.05
 var sound_on: bool = true         # 音效開關,隨存檔保存
 var music_on: bool = true         # v2.2:背景音樂開關,隨存檔保存
 var haptics_on: bool = true       # v2.2:震動開關,隨存檔保存
+var guard_lesson_done: bool = false # v10: actual protected normal-hit charge used
+var guard_lesson_skipped: bool = false # This run only; pause can replay.
 var tutorial_done: bool = false   # v2.2:第一關的操作提示已看過,隨存檔保存
 var best_stars: Dictionary = {}   # v2.2:每關最佳星數 {關卡 id: 0 至 3},隨存檔保存(困難模式用「關卡 id:hard」)
 var difficulty: StringName = &"normal"   # v2.3:&"normal" 或 &"hard";新遊戲時由標題畫面設定,隨存檔保存
@@ -42,7 +47,9 @@ func _ready() -> void:
 ## 開始新的一輪冒險。零食、設定(音效、音樂、震動)、教學紀錄、最佳星數、難度、通關紀錄與看過的對白
 ## 屬於存檔與設定,不會被重設。
 func reset_run() -> void:
+	guard_lesson_skipped = false
 	hero_class = HeroClasses.valid_id(hero_class)
+	run_equipment = EquipmentInventory.loadout(equipment, String(hero_class))
 	player_stats = base_stats().duplicate() as StatBlock
 	vigor = player_stats.max_vigor
 	satisfaction = 0

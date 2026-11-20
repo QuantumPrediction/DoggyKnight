@@ -14,7 +14,7 @@ const RESULT_KEYS: Array[String] = [
 	# DEV_PLAN 4.13(v2.6)
 	"chapter", "chapter_name", "chapters_cleared", "chapter_count", "next_chapter_unlocked",
 	# DEV_PLAN 4.14(v2.7):打完最後一章(第六章)= 全劇終
-	"game_complete",
+	"game_complete", "equipment_reward",
 ]
 
 
@@ -267,7 +267,7 @@ func test_failure_title_button_returns_to_title() -> void:
 	assert_true(await wait_until(func() -> bool: return flow.state == FlowMain.State.FAILURE))
 	flow.get_screen().emit_signal(&"title_pressed")
 	assert_true(await wait_until(func() -> bool: return flow.state == FlowMain.State.TITLE))
-	assert_true(flow.has_save() == false, "1-1 失敗:沒有可以繼續的進度")
+	assert_true(flow.has_save(), "第一關失敗仍可從 v8 關卡檢查點續玩")
 	assert_false(get_tree().paused)
 
 

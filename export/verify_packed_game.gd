@@ -8,6 +8,15 @@ func _initialize() -> void:
 
 
 func _check() -> void:
+	if ProjectSettings.get_setting("application/config/version") != "0.8.1":
+		push_error("Unexpected packed game version")
+		quit(1)
+		return
+	for path: String in ["res://ui/hints/guard_coach.gd", "res://assets/illustrated/combat/guard_lesson_atlas.png", "res://game/equipment/equipment_inventory.gd"]:
+		if load(path) == null:
+			push_error("Missing current production feature: " + path)
+			quit(1)
+			return
 	if load("res://game/combat/arena.tscn") == null:
 		push_error("Missing production arena")
 		quit(1)

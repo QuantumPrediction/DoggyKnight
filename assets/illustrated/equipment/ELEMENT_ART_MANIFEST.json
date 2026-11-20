@@ -1,0 +1,25 @@
+{
+  "generator": "Built-in GPT Image",
+  "date_hong_kong": "2026-11-19",
+  "path": "assets/illustrated/equipment/element_runes.png",
+  "sha256": "33412830c309bd83c742ae1821bd69b7f6b201879a6993dc59a7007da1469e66",
+  "bytes": 2058983,
+  "actual_dimensions": [
+    1254,
+    1254
+  ],
+  "mode": "RGBA",
+  "requested_transparency": true,
+  "prompt": "Use case: stylized-concept. Asset type: production elemental rune atlas for Golden Knight, a warm hand-painted medieval storybook game. Create ONE square 1024x1024 sprite atlas with exactly FOUR equally sized isolated circular crafted medallions in an exact 2 columns by 2 rows layout. Each medallion centered in its own 512x512 quadrant with at least 70 pixels transparent margin to every quadrant edge, no overlap. Top left: EARTH, a bold ochre mountain and a small emerald crystal carved into aged bronze. Top right: WATER, a bold turquoise curling wave carved into silver-blue metal. Bottom left: FIRE, a warm orange-red flame carved into burnished copper. Bottom right: WIND, an ivory feather and a clear jade wind curl carved into pale gold. Consistent outer size, clean strong silhouettes, compact circular rim, artisan enamel and engraved metal, restrained painted highlights, readable as small game UI badges. Different recognizable shapes as well as colors. Actual transparent alpha background outside each circular medallion; no square tile backgrounds, no surrounding scene, no letters, no text, no numbers, no watermark, no extra icons. No weapons or characters. This is a usable game asset, not a UI mockup.",
+  "grid": [
+    [
+      "earth",
+      "water"
+    ],
+    [
+      "fire",
+      "wind"
+    ]
+  ],
+  "integration": "AtlasTexture quadrants used by armory and combat HUD. Original generated pixels retained; no processing or redrawing."
+}

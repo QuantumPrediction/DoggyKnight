@@ -1,0 +1,41 @@
+[
+	{
+		"body_outside": true,
+		"capture": "01_committed_sweep",
+		"safe_area": true,
+		"vigor": 100
+	},
+	{
+		"capture": "02_dodge_and_opening",
+		"no_damage": true,
+		"safe_area": true,
+		"same_origin": true,
+		"vigor": 100
+	},
+	{
+		"capture": "03_one_remaining_reinforcement",
+		"living_summons": 3,
+		"safe_area": true,
+		"vigor": 100,
+		"warnings": 1
+	},
+	{
+		"cap": 4,
+		"capture": "04_four_summon_limit",
+		"living_summons": 4,
+		"safe_area": true,
+		"vigor": 100
+	},
+	{
+		"capture": "05_small_warning",
+		"safe_area": true,
+		"vigor": 100,
+		"warning": true
+	},
+	{
+		"capture": "06_notched_warning",
+		"safe_area": true,
+		"vigor": 100,
+		"warning": true
+	}
+]

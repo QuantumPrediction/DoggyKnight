@@ -1,0 +1,32 @@
+== 匯入資源 ==
+== 執行測試 ==
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/line_a/test_companion_guard.gd
+  ok      test_command_runs_to_clamped_ground_point_and_never_teleports
+  ok      test_actual_incoming_damage_and_one_counter_are_bounded_by_circle
+  ok      test_guard_is_available_for_mage_and_does_not_amplify_ultimate
+  ok      test_archer_and_equipment_use_strongest_charge_without_refresh_loop
+  ok      test_blocked_projectile_grants_counter_only_while_player_is_inside
+  ok      test_invulnerable_hit_cannot_farm_counter_or_damage_prevention
+  ok      test_daze_expiry_and_failed_arrival_end_protection_without_refund
+  ok      test_pause_stops_guard_clock_and_rejects_commands
+  ok      test_downed_and_stage_completion_cancel_field
+  ok      test_melee_waits_outside_true_reach_and_is_ready_as_target_arrives
+  ok      test_movement_can_still_cancel_attack_and_real_misses_spend_cooldown
+  ok      test_late_hud_receives_ready_state_and_button_routes_command
+  ok      test_captain_cues_follow_real_attack_and_recovery_timing
+  ok      test_boss_cue_hud_follows_signal_and_clears_at_level_end
+
+14 tests, 0 failed, 0 broken files
+WARNING: 96 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 64 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 2 RID allocations of type 'N13RendererDummy15MaterialStorage13DummyMaterialE' were leaked at exit.
+ERROR: 1 RID allocations of type 'N13RendererDummy15MaterialStorage11DummyShaderE' were leaked at exit.
+ERROR: 10 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 2 RID allocations of type 'PN18TextServerAdvanced22ShapedTextDataAdvancedE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+全部測試通過。

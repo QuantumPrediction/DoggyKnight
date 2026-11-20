@@ -1,0 +1,34 @@
+{
+  "tool": "Built-in GPT Image",
+  "date": "2026-11-20",
+  "purpose": "Three production icons in the optional guard coach",
+  "file": "guard_lesson_atlas.png",
+  "transparent_background": true,
+  "size": [
+    2172,
+    724
+  ],
+  "sha256": "61f387ae9d4954f3fce1a1914016c97d2fa49d81c565d1961b18a24737408a66",
+  "regions": {
+    "evade": [
+      0,
+      0,
+      724,
+      724
+    ],
+    "guard": [
+      724,
+      0,
+      724,
+      724
+    ],
+    "counter": [
+      1448,
+      0,
+      724,
+      724
+    ]
+  },
+  "processing": "Original generated RGBA pixels; Godot AtlasTexture regions only, no image editing.",
+  "prompt": "Use case: illustration-story. Asset type: production tutorial icon atlas for the existing Golden Knight storybook action game. Create one horizontal image, aspect ratio 3:1, containing exactly THREE separate equal square cells, with generous transparent padding around every object and no cell background. Hand-painted medieval storybook enamel icons, luminous restrained gold and dark teal, readable bold silhouettes at small UI sizes, fine but controlled brush texture. LEFT cell: two small golden dog pawprints stepping sideways past a curved coral-red danger swoosh, expressing evade. MIDDLE cell: a stout gold-edged dark teal shield bearing two simple golden pawprints, with a small pale turquoise protective arc, expressing companion protection. RIGHT cell: a short gold-hilted silver knight sword making one clean warm golden counterattack swoosh, expressing a precise return strike. Keep each complete object entirely inside its own third, centered with at least 12 percent empty margin. All three objects share matching scale, light from upper left, coherent crafted fantasy style. Transparent background with clean alpha including gaps, no opaque tiles, no paper, no checkerboard, no words, no numbers, no arrows between cells, no frame, no watermark, no extra objects. These are icons, not a diagram or a screenshot."
+}

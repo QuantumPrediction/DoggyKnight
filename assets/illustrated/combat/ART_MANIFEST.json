@@ -1,0 +1,17 @@
+{
+  "tool": "Built-in GPT Image",
+  "date": "2026-11-20",
+  "purpose": "Production companion guard HUD and world indicator",
+  "file": "companion_guard.png",
+  "prompt": "Use case: illustration-story. Asset type: production ability icon for Golden Knight, a polished warm storybook adventure about a golden retriever knight and bulldog companion. Create one exquisite medieval shield medallion icon, centered, isolated on a truly transparent background. The shield is deep desaturated teal enamel with a thick beautifully beveled antique gold rim; its center bears two small linked canine paw prints in ivory and gold, signifying two canine companions protecting each other. A short blue linen ribbon curves behind the lower half, a restrained crescent of soft cyan magic and three warm golden sparks frame the shield. Hand-painted material texture, readable bold silhouette, warm amber highlights, carefully crafted artisan fantasy game UI, appropriate for a friendly all ages game. Square 1024x1024, shield fills 78 percent of canvas, comfortable transparent padding. No text, no letters, no numbers, no UI buttons, no tile background, no checkerboard, no watermark, no blood. Keep the paw insignia and shield very legible at 64 pixels.",
+  "transparent_background": true,
+  "sha256": "f2ecfed808aad85cf2693899142ecfa04a5cd3b392e5c5b9545992457ccaa046",
+  "size": [
+    1254,
+    1254
+  ],
+  "alpha_extrema": [
+    0,
+    255
+  ]
+}

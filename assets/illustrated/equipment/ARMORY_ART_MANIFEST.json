@@ -1,0 +1,20 @@
+{
+  "generator": "Built-in GPT Image",
+  "date_hong_kong": "2026-11-19",
+  "assets": [
+    {
+      "path": "assets/illustrated/equipment/armory_forge.png",
+      "bytes": 2486604,
+      "sha256": "22a4eb5006f651c79e31b716467c14b6aa0b7cad0d8f52d67dd11c183792df4e"
+    },
+    {
+      "path": "assets/illustrated/equipment/equipment_cutout.png",
+      "bytes": 1910890,
+      "sha256": "59874a673efb5be98a1d4853e0e1ac58ffab7e9f9ca5e0ce2e891d3352575cc0"
+    }
+  ],
+  "forge_prompt": "Wide 3:1 royal medieval forge banner; warm bulldog master smith and golden retriever knight on the right; quiet dark teal stone wall on the left for live UI; amber/gold storybook illustration; no text, logos or buttons.",
+  "cutout_prompt": "Edit the existing 6 by 3 equipment atlas: remove only the white paper background to transparent alpha; preserve all 18 objects, exact cells, order, designs and details. No tile backgrounds.",
+  "cutout_source": "assets/illustrated/equipment/equipment_atlas.png",
+  "integration": "Original atlas retained; armory now samples equipment_cutout.png with the same indexed cells. Full production prompts are recorded in docs/ARMORY_EXPERIENCE_ZH.md."
+}

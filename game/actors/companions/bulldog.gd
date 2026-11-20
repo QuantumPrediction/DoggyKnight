@@ -25,6 +25,19 @@ const COMPANION_GROUP: StringName = &"companion"
 const ENEMY_GROUP: StringName = &"enemy"
 const PLAYER_GROUP: StringName = &"player"
 const GUARD_COLOR := Color(0.55, 0.8, 1.0, 0.6)
+const RALLY_RULES: RallyRules = preload("res://data/companions/rally_rules.tres")
+const RALLY_ICON: Texture2D = preload("res://assets/illustrated/combat/companion_guard.png")
+
+@export var rally_rules: RallyRules = RALLY_RULES
+var rally_cooldown_left: float = 0.0
+var rally_left: float = 0.0
+var rally_approach_left: float = 0.0
+var rally_destination: Vector2 = Vector2.ZERO
+var rally_counter_given: bool = false
+var rally_commands: int = 0
+var rally_protected_hits: int = 0
+var rally_prevented_damage: int = 0
+var _rally_status: String = ""
 
 @export_group("移動")
 @export var move_speed: float = 55.0
@@ -112,7 +125,11 @@ func _ready() -> void:
 		_frame_size = frames.get_frame_texture(&"idle", 0).get_size()
 	_arena_margin = CombatMath.sprite_margin(_frame_size, body_radius)
 	EventBus.level_completed.connect(_on_level_completed)
+	EventBus.player_downed.connect(_cancel_rally)
+	EventBus.companion_guard_requested.connect(request_rally)
+	EventBus.companion_guard_status_requested.connect(_refresh_rally_status)
 	_play(&"idle")
+	_publish_rally_state()
 
 
 func _physics_process(delta: float) -> void:
@@ -128,10 +145,13 @@ func _physics_process(delta: float) -> void:
 		queue_redraw()
 	var player := get_tree().get_first_node_in_group(PLAYER_GROUP) as Node2D
 	var desired := Vector2.ZERO
+	rally_cooldown_left = maxf(0.0, rally_cooldown_left - delta)
 	if mode == Mode.DAZED:
 		_daze_left -= delta
 		if _daze_left <= 0.0:
 			_recover()
+	elif rally_approach_left > 0.0 or rally_left > 0.0:
+		desired = _act_rally(delta, player)
 	else:
 		_think(player)
 		desired = _act(delta, player)
@@ -148,6 +168,7 @@ func _physics_process(delta: float) -> void:
 	_update_bounce(delta)
 	if mode == Mode.GUARD:
 		queue_redraw()
+	_publish_rally_state()
 
 
 # --- 合約與狀態 -------------------------------------------------------------------
@@ -175,6 +196,7 @@ func is_dazed() -> bool:
 
 
 func _daze() -> void:
+	_cancel_rally()
 	_set_mode(Mode.DAZED)
 	_daze_left = daze_time
 	daze_meter = 0.0
@@ -215,6 +237,10 @@ func woof() -> bool:
 
 ## 盾擋下投射物(由 EnemyProjectile 呼叫):「鏘!」、火花、光圈、盾發亮。不受傷。
 func block_projectile(projectile: Node2D) -> void:
+	EventBus.companion_blocked.emit(global_position)
+	var player := get_tree().get_first_node_in_group(PLAYER_GROUP) as Node2D
+	if player != null and is_protecting(player.global_position):
+		_grant_rally_counter()
 	blocks += 1
 	_block_flash_left = block_flash_time
 	_bump_anim_left = maxf(_bump_anim_left, 0.12)
@@ -252,6 +278,7 @@ func celebrate() -> void:
 	if celebrating:
 		return
 	celebrating = true
+	_cancel_rally()
 	_target_enemy = null
 	if mode != Mode.DAZED:
 		_set_mode(Mode.FOLLOW)
@@ -261,6 +288,128 @@ func celebrate() -> void:
 
 func _on_level_completed(_level_id: StringName) -> void:
 	celebrate()
+
+
+# --- Commanded guard ----------------------------------------------------------
+
+func request_rally() -> bool:
+	if not is_inside_tree() or get_tree().paused or celebrating or mode == Mode.DAZED or rally_cooldown_left > 0.0:
+		return false
+	var player := get_tree().get_first_node_in_group(PLAYER_GROUP) as GoldiePlayer
+	if player == null or player.is_downed() or player.celebrating or get_tree().get_nodes_in_group(ENEMY_GROUP).is_empty():
+		return false
+	rally_destination = CombatMath.clamp_to_bounds(player.global_position + player.facing.normalized() * rally_rules.stand_offset, _arena_margin)
+	rally_cooldown_left = rally_rules.cooldown
+	rally_approach_left = rally_rules.approach_timeout
+	rally_left = 0.0
+	rally_counter_given = false
+	rally_commands += 1
+	_target_enemy = null
+	_set_mode(Mode.APPROACH)
+	_say(tr("UI_GUARD_CALLED"), 0.75)
+	CombatFx.sfx(&"bark", &"ui_tap")
+	_publish_rally_state()
+	queue_redraw()
+	return true
+
+
+func _act_rally(delta: float, player: Node2D) -> Vector2:
+	if player == null or (player.has_method(&"is_downed") and player.call(&"is_downed")):
+		_cancel_rally()
+		return Vector2.ZERO
+	if rally_approach_left > 0.0:
+		var offset := rally_destination - global_position
+		if offset.length() <= rally_rules.arrival_distance:
+			rally_approach_left = 0.0
+			rally_left = rally_rules.duration
+			velocity = Vector2.ZERO
+			_set_mode(Mode.GUARD)
+			CombatFx.ring(self, global_position, 4.0, rally_rules.radius, 0.3, Color("83ddd4"), 1.5)
+		elif rally_approach_left <= delta:
+			_cancel_rally()
+			return Vector2.ZERO
+		else:
+			rally_approach_left -= delta
+			facing = offset.normalized()
+			return facing * minf(rally_rules.dash_speed, offset.length() / maxf(delta, 0.001))
+	else:
+		rally_left = maxf(0.0, rally_left - delta)
+		if rally_left <= 0.0:
+			_cancel_rally()
+			return Vector2.ZERO
+	# Hold the chosen patch of ground. Leaving the ring gives up its protection.
+	_target_enemy = _pick_enemy(player)
+	if _is_valid_enemy(_target_enemy):
+		facing = (_target_enemy.global_position - global_position).normalized()
+		_bump_timer += delta
+		if _bump_timer >= bump_interval and _gap_to(_target_enemy) <= bump_reach:
+			_bump()
+	queue_redraw()
+	return Vector2.ZERO
+
+
+func is_protecting(at: Vector2) -> bool:
+	return rally_left > 0.0 and mode == Mode.GUARD and not celebrating and global_position.distance_to(at) <= rally_rules.radius
+
+
+func protect_player(at: Vector2, amount: int) -> int:
+	if amount <= 0 or not is_protecting(at):
+		return amount
+	var reduced := maxi(1, roundi(float(amount) * (1.0 - rally_rules.reduction)))
+	if reduced < amount:
+		rally_protected_hits += 1
+		rally_prevented_damage += amount - reduced
+		_block_flash_left = block_flash_time
+		_grant_rally_counter()
+		CombatFx.sfx(&"husk_clank", &"hit")
+	return reduced
+
+
+func _grant_rally_counter() -> void:
+	if rally_counter_given:
+		return
+	rally_counter_given = true
+	EventBus.companion_counter_granted.emit(rally_rules.counter_bonus)
+	_say(tr("UI_GUARD_COUNTER"), 0.85)
+
+
+func _cancel_rally() -> void:
+	var was_active := rally_left > 0.0 or rally_approach_left > 0.0
+	rally_left = 0.0
+	rally_approach_left = 0.0
+	if was_active and mode != Mode.DAZED:
+		_set_mode(Mode.FOLLOW)
+	queue_redraw()
+	_publish_rally_state()
+
+
+func _publish_rally_state() -> void:
+	# Detached previous-stage actors can await queue_free while new HUDs request state.
+	if not is_inside_tree() or is_queued_for_deletion():
+		return
+	var state: StringName = &"ready"
+	if celebrating:
+		state = &"unavailable"
+	elif mode == Mode.DAZED:
+		state = &"dazed"
+	elif rally_approach_left > 0.0:
+		state = &"approach"
+	elif rally_left > 0.0:
+		state = &"guard"
+	elif rally_cooldown_left > 0.0:
+		state = &"cooldown"
+	var hero := get_tree().get_first_node_in_group(PLAYER_GROUP) as GoldiePlayer
+	var protected := hero != null and not hero.is_downed() and is_protecting(hero.global_position)
+	var key := "%s:%d:%d:%s" % [state, ceili(rally_cooldown_left), ceili(rally_left * 10.0), protected]
+	if key != _rally_status:
+		_rally_status = key
+		EventBus.companion_guard_state.emit(state, rally_cooldown_left, rally_left)
+		EventBus.companion_guard_coverage.emit(protected)
+
+
+func _refresh_rally_status() -> void:
+	_rally_status = ""
+	_publish_rally_state()
 
 
 # --- 判斷與行動 -------------------------------------------------------------------
@@ -416,6 +565,16 @@ func _play(anim: StringName, restart: bool = false) -> void:
 
 
 func _draw() -> void:
+	if rally_left > 0.0:
+		# A true world-space circle matches the actual distance test, not an ellipse.
+		var r := rally_rules.radius
+		draw_circle(Vector2.ZERO, r, Color(0.22, 0.78, 0.7, 0.10))
+		draw_arc(Vector2.ZERO, r, 0.0, TAU, 64, Color(0.52, 0.9, 0.84, 0.8), 1.0, true)
+		draw_arc(Vector2.ZERO, r + 2.0, -PI * 0.5, -PI * 0.5 + TAU * rally_left / rally_rules.duration, 64, Color(1.0, 0.84, 0.43, 0.9), 1.6, true)
+		draw_texture_rect(RALLY_ICON, Rect2(-7, -_frame_size.y * 0.5 - 18, 14, 14), false)
+	elif rally_approach_left > 0.0:
+		var dest := to_local(rally_destination)
+		draw_arc(dest, 6.0, 0, TAU, 20, Color("83ddd4"), 1.2, true)
 	var w := _frame_size.x * 0.32
 	draw_set_transform(Vector2(0, _frame_size.y * 0.42), 0.0, Vector2(1.0, 0.4))
 	draw_circle(Vector2.ZERO, w, Color(0, 0, 0, 0.25))

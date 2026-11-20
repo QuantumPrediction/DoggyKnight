@@ -537,7 +537,7 @@ func test_version_5_saves_open_chapter_4() -> void:
 	assert_true(store.write_data({"level_index": 4, "chapter": 6, "chapters_cleared": 5, "chapter_cleared": true}))
 	data = store.read()
 	assert_eq(data["version"], SaveStore.VERSION)
-	assert_eq(SaveStore.VERSION, 7)
+	assert_eq(SaveStore.VERSION, 10)
 	assert_eq(data["chapter"], 6)
 	assert_eq(data["chapters_cleared"], 5)
 	# 開機:第 5 版全破的存檔 → 標題可以選到第四章、預設第四章;沒有要繼續的關卡
@@ -553,7 +553,7 @@ func test_version_5_saves_open_chapter_4() -> void:
 	var started := watch_signal(EventBus.level_started)
 	assert_true(await start_new_game())
 	assert_eq(started.last_args(), [&"4-1"])
-	assert_eq(read_save()["version"], 7, "寫回時是第 7 版")
+	assert_eq(read_save()["version"], 10, "寫回時保留元素刻印與護陣提示完成狀態")
 	assert_eq(read_save()["chapter"], 4)
 
 

@@ -20,6 +20,7 @@ extends RefCounted
 ##   chapter(v5):這一輪冒險的章(1 至 GameState.CHAPTER_COUNT;「繼續冒險」回到這一章,level_index 是這一章裡的關卡)。
 ##   chapters_cleared(v5):已打完的最高章數(0 至 GameState.CHAPTER_COUNT)。
 ##   第 6 版(v2.7 六章):欄位和第 5 版一樣,只是章數由 3 變成 GameState.CHAPTER_COUNT(= 6)。
+## 第 8 版:完整故事關卡檢查點及裝備經濟；舊檔沒有的當局資料不會猜測還原。
 ## 第 7 版:hero_class 記錄故事存檔職業(knight / mage / archer)。
 ## 向下相容:第 1 至 6 版存檔都可以讀,缺的欄位用預設值;
 ## 但第 1 版存檔已經到達第 2 關以後,表示玩家玩過第一關,tutorial_done 視為 true;
@@ -34,7 +35,9 @@ extends RefCounted
 ##
 ## 寫入是同步的(不用 await),所以在 app_backgrounded 裡呼叫可以立即完成。
 
-const VERSION: int = 7
+## 第 9 版:武器與護甲的元素刻印。舊裝備使用目錄的固有元素，等級與收藏保留。
+## 第 10 版:護陣實戰提示完成旗標；舊存檔預設未完成。
+const VERSION: int = 10
 ## 營地訓練等級的上限(存檔清理用;實際上限在 data/progression/meta_upgrades.tres)。
 const MAX_META_LEVEL: int = 99
 const DEFAULT_PATH: String = "user://save.json"
@@ -59,6 +62,8 @@ func temp_path() -> String:
 ## 所有欄位與預設值(沒有存檔、或舊版存檔缺少欄位時用這些)。
 static func defaults() -> Dictionary:
 	return {
+		"equipment": EquipmentInventory.defaults(),
+		"checkpoint": {},
 		"hero_class": "knight",
 		"level_index": 0,
 		"snacks": 0,
@@ -66,6 +71,7 @@ static func defaults() -> Dictionary:
 		"music_on": true,
 		"haptics_on": true,
 		"tutorial_done": false,
+		"guard_lesson_done": false,
 		"best_stars": {},
 		"camp_pending": false,
 		"difficulty": "normal",
@@ -159,6 +165,8 @@ static func sanitize(raw: Dictionary) -> Dictionary:
 	var d := defaults()
 	var cleared := clampi(_int_field(raw, "chapters_cleared", d["chapters_cleared"]), 0, GameState.CHAPTER_COUNT)
 	return {
+		"equipment": EquipmentInventory.sanitize(raw.get("equipment", {})),
+		"checkpoint": AdventureCheckpoint.sanitize(raw.get("checkpoint", {})),
 		"hero_class": String(HeroClasses.valid_id(raw.get("hero_class", "knight"))),
 		"level_index": _int_field(raw, "level_index", d["level_index"]),
 		"snacks": _int_field(raw, "snacks", d["snacks"]),
@@ -166,6 +174,7 @@ static func sanitize(raw: Dictionary) -> Dictionary:
 		"music_on": _bool_field(raw, "music_on", d["music_on"]),
 		"haptics_on": _bool_field(raw, "haptics_on", d["haptics_on"]),
 		"tutorial_done": _bool_field(raw, "tutorial_done", d["tutorial_done"]),
+		"guard_lesson_done": _bool_field(raw, "guard_lesson_done", false),
 		"best_stars": _stars_field(raw.get("best_stars", {})),
 		"camp_pending": _bool_field(raw, "camp_pending", d["camp_pending"]),
 		"difficulty": _difficulty_field(raw.get("difficulty", d["difficulty"])),

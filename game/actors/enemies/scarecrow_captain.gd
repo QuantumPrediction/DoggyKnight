@@ -60,12 +60,14 @@ var fork_in_hand: bool = true
 var _phase_left: float = 0.0
 var _move_index: int = 0
 var _sweep_dir: Vector2 = Vector2.DOWN
+var _sweep_origin: Vector2 = Vector2.ZERO
 var _throw_dir: Vector2 = Vector2.DOWN
 var _throw_length: float = 100.0
 var _fork: EnemyProjectile
 var _rally_points: Array[Vector2] = []
 var _rally_marks: Array[AttackTelegraph] = []
 var _shout_ring_left: float = 0.0
+var _intent_key: String = ""
 
 
 func _on_activated() -> void:
@@ -146,6 +148,22 @@ func _ai(delta: float) -> void:
 				CombatFx.ring(self, global_position, 8.0, 44.0, 0.35, Color(PURPLE, 0.75), 2.0)
 			if _phase_left <= 0.0:
 				_go_idle()
+	_publish_intent()
+
+
+func _publish_intent() -> void:
+	var intent: StringName = &""
+	match phase:
+		Phase.SWEEP_TELL: intent = &"sweep"
+		Phase.THROW_TELL: intent = &"throw"
+		Phase.THROW_WAIT: intent = &"returning"
+		Phase.SWEEP_RECOVER, Phase.THROW_RECOVER, Phase.RALLY_RECOVER: intent = &"opening"
+		Phase.RALLY_TELL: intent = &"rally"
+		Phase.SHOUT: intent = &"shout"
+	var key := "%s:%d" % [intent, ceili(maxf(0, _phase_left) * 10)]
+	if key != _intent_key:
+		_intent_key = key
+		EventBus.boss_intent_changed.emit(&"scarecrow_captain", intent, maxf(0, _phase_left))
 
 
 # --- 選招 -----------------------------------------------------------------------
@@ -204,6 +222,8 @@ func _start_sweep() -> void:
 	var to_target := target.global_position - global_position
 	_sweep_dir = to_target.normalized() if to_target.length() > 0.5 else facing
 	facing = _sweep_dir
+	desired_velocity = Vector2.ZERO
+	_sweep_origin = CombatMath.clamp_to_bounds(global_position + _sweep_dir * sweep_lunge, arena_margin)
 	phase = Phase.SWEEP_TELL
 	_phase_left = _tell_time(sweep_telegraph)
 	anim_state = &"attack"
@@ -211,22 +231,29 @@ func _start_sweep() -> void:
 	if sprite != null:
 		sprite.pause()
 	_show_telegraph(AttackTelegraph.make_sector(sweep_radius, _sweep_dir, deg_to_rad(sweep_half_angle_deg)))
+	_telegraph.global_position = _sweep_origin
 	Sfx.play(&"boss_warning", -6.0)
 
 
 func _sweep() -> void:
-	_clear_telegraph()
+	if phase != Phase.SWEEP_TELL:
+		return
+	var mark := _telegraph
+	var warning_transform := mark.global_transform if is_instance_valid(mark) else Transform2D.IDENTITY
 	phase = Phase.SWEEP_RECOVER
 	_phase_left = rest(sweep_recover)
 	if sprite != null:
 		sprite.position = _sprite_base_offset + _sweep_dir * 2.0
 		sprite.play(&"attack")
-	global_position = CombatMath.clamp_to_bounds(global_position + _sweep_dir * sweep_lunge, arena_margin)
+	global_position = _sweep_origin
 	var slash := CombatFx.spawn(self, &"slash", global_position + _sweep_dir * 12.0, _sweep_dir.angle(),
 			Vector2.ONE * 1.4, Color(0.95, 0.78, 0.45))
 	if slash != null:
 		slash.flip_v = _sweep_dir.x < 0.0
-	hit_victims_in_sector(global_position, _sweep_dir, sweep_radius, deg_to_rad(sweep_half_angle_deg), data.contact_damage)
+	if is_instance_valid(mark):
+		mark.global_transform = warning_transform
+		hit_victims_in_marked_sector(mark, data.contact_damage)
+	_clear_telegraph()
 	CombatFx.sfx(&"whoosh", &"swing")
 
 
@@ -304,13 +331,16 @@ func _end_throw(lost: bool) -> void:
 # --- 號令稻草人 ---------------------------------------------------------------------
 
 func _start_rally() -> void:
+	_clear_rally_marks()
+	_rally_points = _pick_rally_points()
+	if _rally_points.is_empty():
+		_go_idle()
+		return
 	moves_started[&"rally"] += 1
 	phase = Phase.RALLY_TELL
 	_phase_left = _tell_time(rally_telegraph)
 	anim_state = &"rally"
 	_play(&"rally", true)
-	_clear_rally_marks()
-	_rally_points = _pick_rally_points()
 	for point in _rally_points:
 		var mark := AttackTelegraph.make_circle(8.0, AttackTelegraph.MAGIC)
 		add_child(mark)
@@ -321,20 +351,26 @@ func _start_rally() -> void:
 
 func _pick_rally_points() -> Array[Vector2]:
 	var points: Array[Vector2] = []
+	var count := mini(rally_count, maxi(0, max_summons_alive - alive_summons()))
 	var forward := facing if facing.length() > 0.1 else Vector2.DOWN
-	for i in rally_count:
-		var t := 0.0 if rally_count <= 1 else float(i) / float(rally_count - 1) - 0.5
+	for i in count:
+		var t := 0.0 if count <= 1 else float(i) / float(count - 1) - 0.5
 		var dir := forward.rotated(t * 2.4)
 		points.append(CombatMath.clamp_to_arena(global_position + dir * rally_spread, 10.0))
 	return points
 
 
 func _rally() -> void:
+	if phase != Phase.RALLY_TELL:
+		return
 	_clear_rally_marks()
 	phase = Phase.RALLY_RECOVER
 	_phase_left = rest(rally_recover)
 	anim_state = &"idle"
-	summon_at(rally_enemy, _rally_points)
+	# Never add unannounced reinforcements if more slots open during the tell.
+	var count := mini(_rally_points.size(), maxi(0, max_summons_alive - alive_summons()))
+	summon_at(rally_enemy, _rally_points.slice(0, count))
+	_rally_points.clear()
 
 
 func _clear_rally_marks() -> void:
@@ -378,6 +414,7 @@ func _tick_boss(_delta: float) -> bool:
 
 func _on_defeat_started() -> void:
 	_clear_rally_marks()
+	EventBus.boss_intent_changed.emit(&"scarecrow_captain", &"", 0.0)
 
 
 func _cancel_attack() -> void:

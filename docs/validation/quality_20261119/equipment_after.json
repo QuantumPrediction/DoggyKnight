@@ -1,0 +1,6177 @@
+{
+	"economy": {
+		"cohort_seed_start": 110000,
+		"cohort_trials": 10000,
+		"common_upgrade_cost": 630,
+		"epic_upgrade_cost": 3600,
+		"first_epic_boss_p10_median_p90": [
+			1,
+			4,
+			5
+		],
+		"normal_chapter_coins": 360,
+		"six_chapters_plus_start_coins": 2410,
+		"unique_epics_p10_median_p90": [
+			1,
+			1,
+			2
+		]
+	},
+	"engine": "4.7.2-stable (official)",
+	"method": "Production inventory/stat calls. Isolated single-item rows at zero training, no tricks. Proc values do not prove per-hit gains after integer rounding. Economy trials simulate six chapter boss rewards; no player sessions.",
+	"rows": [
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "training_sword",
+			"level": 1,
+			"stats": {
+				"attack_damage": 11,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "training_sword",
+			"level": 2,
+			"stats": {
+				"attack_damage": 12,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "training_sword",
+			"level": 3,
+			"stats": {
+				"attack_damage": 12,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": true
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "training_sword",
+			"level": 4,
+			"stats": {
+				"attack_damage": 12,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": true
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "training_sword",
+			"level": 5,
+			"stats": {
+				"attack_damage": 12,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": true
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "quilted_vest",
+			"level": 1,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 0.96,
+				"exp_mult": 1.0,
+				"max_vigor": 110,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "quilted_vest",
+			"level": 2,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 0.95,
+				"exp_mult": 1.0,
+				"max_vigor": 113,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "quilted_vest",
+			"level": 3,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 0.94,
+				"exp_mult": 1.0,
+				"max_vigor": 115,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "quilted_vest",
+			"level": 4,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 0.93,
+				"exp_mult": 1.0,
+				"max_vigor": 118,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "quilted_vest",
+			"level": 5,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 0.92,
+				"exp_mult": 1.0,
+				"max_vigor": 120,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "ranger_jacket",
+			"level": 1,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 106,
+				"move_speed": 75.6,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "ranger_jacket",
+			"level": 2,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 108,
+				"move_speed": 77.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "ranger_jacket",
+			"level": 3,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 109,
+				"move_speed": 78.4,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "ranger_jacket",
+			"level": 4,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 111,
+				"move_speed": 79.8,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "ranger_jacket",
+			"level": 5,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 112,
+				"move_speed": 81.2,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "apprentice_robe",
+			"level": 1,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.12,
+				"max_vigor": 104,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "apprentice_robe",
+			"level": 2,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.15,
+				"max_vigor": 105,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "apprentice_robe",
+			"level": 3,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.18,
+				"max_vigor": 106,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "apprentice_robe",
+			"level": 4,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.21,
+				"max_vigor": 107,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "apprentice_robe",
+			"level": 5,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.24,
+				"max_vigor": 108,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"counter": 0.4
+			},
+			"hero": "knight",
+			"item": "sunblade",
+			"level": 1,
+			"stats": {
+				"attack_damage": 11,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"counter": 0.43
+			},
+			"hero": "knight",
+			"item": "sunblade",
+			"level": 2,
+			"stats": {
+				"attack_damage": 11,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"counter": 0.46
+			},
+			"hero": "knight",
+			"item": "sunblade",
+			"level": 3,
+			"stats": {
+				"attack_damage": 12,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"counter": 0.48
+			},
+			"hero": "knight",
+			"item": "sunblade",
+			"level": 4,
+			"stats": {
+				"attack_damage": 12,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"counter": 0.5
+			},
+			"hero": "knight",
+			"item": "sunblade",
+			"level": 5,
+			"stats": {
+				"attack_damage": 12,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"counter": 0.52
+			},
+			"hero": "knight",
+			"item": "sunblade",
+			"level": 6,
+			"stats": {
+				"attack_damage": 12,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"counter": 0.546666666666667
+			},
+			"hero": "knight",
+			"item": "sunblade",
+			"level": 7,
+			"stats": {
+				"attack_damage": 12,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"counter": 0.573333333333333
+			},
+			"hero": "knight",
+			"item": "sunblade",
+			"level": 8,
+			"stats": {
+				"attack_damage": 12,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"counter": 0.6
+			},
+			"hero": "knight",
+			"item": "sunblade",
+			"level": 9,
+			"stats": {
+				"attack_damage": 12,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.35
+			},
+			"hero": "knight",
+			"item": "oathplate",
+			"level": 1,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 112,
+				"move_speed": 66.5,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.37625
+			},
+			"hero": "knight",
+			"item": "oathplate",
+			"level": 2,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 114,
+				"move_speed": 66.0625,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.4025
+			},
+			"hero": "knight",
+			"item": "oathplate",
+			"level": 3,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 115,
+				"move_speed": 65.625,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.42
+			},
+			"hero": "knight",
+			"item": "oathplate",
+			"level": 4,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 117,
+				"move_speed": 65.1875,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.4375
+			},
+			"hero": "knight",
+			"item": "oathplate",
+			"level": 5,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 118,
+				"move_speed": 64.75,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.455
+			},
+			"hero": "knight",
+			"item": "oathplate",
+			"level": 6,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 120,
+				"move_speed": 64.3125,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.478333333333333
+			},
+			"hero": "knight",
+			"item": "oathplate",
+			"level": 7,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 121,
+				"move_speed": 63.875,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.501666666666667
+			},
+			"hero": "knight",
+			"item": "oathplate",
+			"level": 8,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 123,
+				"move_speed": 63.4375,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.525
+			},
+			"hero": "knight",
+			"item": "oathplate",
+			"level": 9,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 124,
+				"move_speed": 63.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.25
+			},
+			"hero": "knight",
+			"item": "mistcloak",
+			"level": 1,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 75.6,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.26875
+			},
+			"hero": "knight",
+			"item": "mistcloak",
+			"level": 2,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 76.3,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.2875
+			},
+			"hero": "knight",
+			"item": "mistcloak",
+			"level": 3,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 77.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.3
+			},
+			"hero": "knight",
+			"item": "mistcloak",
+			"level": 4,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 77.7,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.3125
+			},
+			"hero": "knight",
+			"item": "mistcloak",
+			"level": 5,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 78.4,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.325
+			},
+			"hero": "knight",
+			"item": "mistcloak",
+			"level": 6,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 79.1,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.341666666666667
+			},
+			"hero": "knight",
+			"item": "mistcloak",
+			"level": 7,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 79.8,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.358333333333333
+			},
+			"hero": "knight",
+			"item": "mistcloak",
+			"level": 8,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 80.5,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.375
+			},
+			"hero": "knight",
+			"item": "mistcloak",
+			"level": 9,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 81.2,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.15
+			},
+			"hero": "knight",
+			"item": "starrobe",
+			"level": 1,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 108,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.16125
+			},
+			"hero": "knight",
+			"item": "starrobe",
+			"level": 2,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 109,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.1725
+			},
+			"hero": "knight",
+			"item": "starrobe",
+			"level": 3,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 110,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.18
+			},
+			"hero": "knight",
+			"item": "starrobe",
+			"level": 4,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 111,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.1875
+			},
+			"hero": "knight",
+			"item": "starrobe",
+			"level": 5,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 112,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.195
+			},
+			"hero": "knight",
+			"item": "starrobe",
+			"level": 6,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 113,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.205
+			},
+			"hero": "knight",
+			"item": "starrobe",
+			"level": 7,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 114,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.215
+			},
+			"hero": "knight",
+			"item": "starrobe",
+			"level": 8,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 115,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.225
+			},
+			"hero": "knight",
+			"item": "starrobe",
+			"level": 9,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 116,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.3
+			},
+			"hero": "knight",
+			"item": "pack_bell",
+			"level": 1,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.3225
+			},
+			"hero": "knight",
+			"item": "pack_bell",
+			"level": 2,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.345
+			},
+			"hero": "knight",
+			"item": "pack_bell",
+			"level": 3,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.36
+			},
+			"hero": "knight",
+			"item": "pack_bell",
+			"level": 4,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.375
+			},
+			"hero": "knight",
+			"item": "pack_bell",
+			"level": 5,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.39
+			},
+			"hero": "knight",
+			"item": "pack_bell",
+			"level": 6,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.41
+			},
+			"hero": "knight",
+			"item": "pack_bell",
+			"level": 7,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.43
+			},
+			"hero": "knight",
+			"item": "pack_bell",
+			"level": 8,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.45
+			},
+			"hero": "knight",
+			"item": "pack_bell",
+			"level": 9,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.04
+			},
+			"hero": "knight",
+			"item": "hearth_heart",
+			"level": 1,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.043
+			},
+			"hero": "knight",
+			"item": "hearth_heart",
+			"level": 2,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.046
+			},
+			"hero": "knight",
+			"item": "hearth_heart",
+			"level": 3,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.048
+			},
+			"hero": "knight",
+			"item": "hearth_heart",
+			"level": 4,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.05
+			},
+			"hero": "knight",
+			"item": "hearth_heart",
+			"level": 5,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.052
+			},
+			"hero": "knight",
+			"item": "hearth_heart",
+			"level": 6,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.0546666666666667
+			},
+			"hero": "knight",
+			"item": "hearth_heart",
+			"level": 7,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.0573333333333333
+			},
+			"hero": "knight",
+			"item": "hearth_heart",
+			"level": 8,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.06
+			},
+			"hero": "knight",
+			"item": "hearth_heart",
+			"level": 9,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "leaf_compass",
+			"level": 1,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.1,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 28.8
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "leaf_compass",
+			"level": 2,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.1125,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 29.4
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "leaf_compass",
+			"level": 3,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.125,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 30.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "leaf_compass",
+			"level": 4,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.1375,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 30.6
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "leaf_compass",
+			"level": 5,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.15,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 31.2
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "leaf_compass",
+			"level": 6,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.1625,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 31.8
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "leaf_compass",
+			"level": 7,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.175,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 32.4
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "leaf_compass",
+			"level": 8,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.1875,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 33.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "knight",
+			"item": "leaf_compass",
+			"level": 9,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.2,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 33.6
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.12
+			},
+			"hero": "knight",
+			"item": "star_hourglass",
+			"level": 1,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.48,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.129
+			},
+			"hero": "knight",
+			"item": "star_hourglass",
+			"level": 2,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.4775,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.138
+			},
+			"hero": "knight",
+			"item": "star_hourglass",
+			"level": 3,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.475,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.144
+			},
+			"hero": "knight",
+			"item": "star_hourglass",
+			"level": 4,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.4725,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.15
+			},
+			"hero": "knight",
+			"item": "star_hourglass",
+			"level": 5,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.47,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.156
+			},
+			"hero": "knight",
+			"item": "star_hourglass",
+			"level": 6,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.4675,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.164
+			},
+			"hero": "knight",
+			"item": "star_hourglass",
+			"level": 7,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.465,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.172
+			},
+			"hero": "knight",
+			"item": "star_hourglass",
+			"level": 8,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.4625,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.18
+			},
+			"hero": "knight",
+			"item": "star_hourglass",
+			"level": 9,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.46,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.0
+			},
+			"hero": "knight",
+			"item": "thorn_badge",
+			"level": 1,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.075
+			},
+			"hero": "knight",
+			"item": "thorn_badge",
+			"level": 2,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.15
+			},
+			"hero": "knight",
+			"item": "thorn_badge",
+			"level": 3,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.2
+			},
+			"hero": "knight",
+			"item": "thorn_badge",
+			"level": 4,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.25
+			},
+			"hero": "knight",
+			"item": "thorn_badge",
+			"level": 5,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.3
+			},
+			"hero": "knight",
+			"item": "thorn_badge",
+			"level": 6,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.36666666666667
+			},
+			"hero": "knight",
+			"item": "thorn_badge",
+			"level": 7,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.43333333333333
+			},
+			"hero": "knight",
+			"item": "thorn_badge",
+			"level": 8,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.5
+			},
+			"hero": "knight",
+			"item": "thorn_badge",
+			"level": 9,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.1
+			},
+			"hero": "knight",
+			"item": "avalon_grail",
+			"level": 1,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.1075
+			},
+			"hero": "knight",
+			"item": "avalon_grail",
+			"level": 2,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.115
+			},
+			"hero": "knight",
+			"item": "avalon_grail",
+			"level": 3,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.12
+			},
+			"hero": "knight",
+			"item": "avalon_grail",
+			"level": 4,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.125
+			},
+			"hero": "knight",
+			"item": "avalon_grail",
+			"level": 5,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.13
+			},
+			"hero": "knight",
+			"item": "avalon_grail",
+			"level": 6,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.136666666666667
+			},
+			"hero": "knight",
+			"item": "avalon_grail",
+			"level": 7,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.143333333333333
+			},
+			"hero": "knight",
+			"item": "avalon_grail",
+			"level": 8,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.15
+			},
+			"hero": "knight",
+			"item": "avalon_grail",
+			"level": 9,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.5,
+				"attack_range": 28.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 70.0,
+				"pickup_radius": 24.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "apprentice_staff",
+			"level": 1,
+			"stats": {
+				"attack_damage": 16,
+				"attack_interval": 0.9,
+				"attack_range": 93.28,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "apprentice_staff",
+			"level": 2,
+			"stats": {
+				"attack_damage": 17,
+				"attack_interval": 0.9,
+				"attack_range": 94.6,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "apprentice_staff",
+			"level": 3,
+			"stats": {
+				"attack_damage": 17,
+				"attack_interval": 0.9,
+				"attack_range": 95.92,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "apprentice_staff",
+			"level": 4,
+			"stats": {
+				"attack_damage": 17,
+				"attack_interval": 0.9,
+				"attack_range": 97.24,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "apprentice_staff",
+			"level": 5,
+			"stats": {
+				"attack_damage": 17,
+				"attack_interval": 0.9,
+				"attack_range": 98.56,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "quilted_vest",
+			"level": 1,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 0.96,
+				"exp_mult": 1.0,
+				"max_vigor": 83,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "quilted_vest",
+			"level": 2,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 0.95,
+				"exp_mult": 1.0,
+				"max_vigor": 84,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "quilted_vest",
+			"level": 3,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 0.94,
+				"exp_mult": 1.0,
+				"max_vigor": 86,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "quilted_vest",
+			"level": 4,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 0.93,
+				"exp_mult": 1.0,
+				"max_vigor": 88,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "quilted_vest",
+			"level": 5,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 0.92,
+				"exp_mult": 1.0,
+				"max_vigor": 90,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "ranger_jacket",
+			"level": 1,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 80,
+				"move_speed": 73.44,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "ranger_jacket",
+			"level": 2,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 81,
+				"move_speed": 74.8,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "ranger_jacket",
+			"level": 3,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 82,
+				"move_speed": 76.16,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "ranger_jacket",
+			"level": 4,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 83,
+				"move_speed": 77.52,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "ranger_jacket",
+			"level": 5,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 84,
+				"move_speed": 78.88,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "apprentice_robe",
+			"level": 1,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.12,
+				"max_vigor": 78,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "apprentice_robe",
+			"level": 2,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.15,
+				"max_vigor": 79,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "apprentice_robe",
+			"level": 3,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.18,
+				"max_vigor": 80,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "apprentice_robe",
+			"level": 4,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.21,
+				"max_vigor": 80,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "apprentice_robe",
+			"level": 5,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.24,
+				"max_vigor": 81,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"splash": 10.0
+			},
+			"hero": "mage",
+			"item": "moonstaff",
+			"level": 1,
+			"stats": {
+				"attack_damage": 17,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"splash": 10.75
+			},
+			"hero": "mage",
+			"item": "moonstaff",
+			"level": 2,
+			"stats": {
+				"attack_damage": 17,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"splash": 11.5
+			},
+			"hero": "mage",
+			"item": "moonstaff",
+			"level": 3,
+			"stats": {
+				"attack_damage": 17,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"splash": 12.0
+			},
+			"hero": "mage",
+			"item": "moonstaff",
+			"level": 4,
+			"stats": {
+				"attack_damage": 17,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"splash": 12.5
+			},
+			"hero": "mage",
+			"item": "moonstaff",
+			"level": 5,
+			"stats": {
+				"attack_damage": 17,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"splash": 13.0
+			},
+			"hero": "mage",
+			"item": "moonstaff",
+			"level": 6,
+			"stats": {
+				"attack_damage": 17,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"splash": 13.6666666666667
+			},
+			"hero": "mage",
+			"item": "moonstaff",
+			"level": 7,
+			"stats": {
+				"attack_damage": 18,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"splash": 14.3333333333333
+			},
+			"hero": "mage",
+			"item": "moonstaff",
+			"level": 8,
+			"stats": {
+				"attack_damage": 18,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"splash": 15.0
+			},
+			"hero": "mage",
+			"item": "moonstaff",
+			"level": 9,
+			"stats": {
+				"attack_damage": 18,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.35
+			},
+			"hero": "mage",
+			"item": "oathplate",
+			"level": 1,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 84,
+				"move_speed": 64.6,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.37625
+			},
+			"hero": "mage",
+			"item": "oathplate",
+			"level": 2,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 64.175,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.4025
+			},
+			"hero": "mage",
+			"item": "oathplate",
+			"level": 3,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 86,
+				"move_speed": 63.75,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.42
+			},
+			"hero": "mage",
+			"item": "oathplate",
+			"level": 4,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 87,
+				"move_speed": 63.325,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.4375
+			},
+			"hero": "mage",
+			"item": "oathplate",
+			"level": 5,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 89,
+				"move_speed": 62.9,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.455
+			},
+			"hero": "mage",
+			"item": "oathplate",
+			"level": 6,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 90,
+				"move_speed": 62.475,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.478333333333333
+			},
+			"hero": "mage",
+			"item": "oathplate",
+			"level": 7,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 91,
+				"move_speed": 62.05,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.501666666666667
+			},
+			"hero": "mage",
+			"item": "oathplate",
+			"level": 8,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 92,
+				"move_speed": 61.625,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.525
+			},
+			"hero": "mage",
+			"item": "oathplate",
+			"level": 9,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 93,
+				"move_speed": 61.2,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.25
+			},
+			"hero": "mage",
+			"item": "mistcloak",
+			"level": 1,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 73.44,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.26875
+			},
+			"hero": "mage",
+			"item": "mistcloak",
+			"level": 2,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 74.12,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.2875
+			},
+			"hero": "mage",
+			"item": "mistcloak",
+			"level": 3,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 74.8,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.3
+			},
+			"hero": "mage",
+			"item": "mistcloak",
+			"level": 4,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 75.48,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.3125
+			},
+			"hero": "mage",
+			"item": "mistcloak",
+			"level": 5,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 76.16,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.325
+			},
+			"hero": "mage",
+			"item": "mistcloak",
+			"level": 6,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 76.84,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.341666666666667
+			},
+			"hero": "mage",
+			"item": "mistcloak",
+			"level": 7,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 77.52,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.358333333333333
+			},
+			"hero": "mage",
+			"item": "mistcloak",
+			"level": 8,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 78.2,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.375
+			},
+			"hero": "mage",
+			"item": "mistcloak",
+			"level": 9,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 78.88,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.15
+			},
+			"hero": "mage",
+			"item": "starrobe",
+			"level": 1,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 81,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.16125
+			},
+			"hero": "mage",
+			"item": "starrobe",
+			"level": 2,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 82,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.1725
+			},
+			"hero": "mage",
+			"item": "starrobe",
+			"level": 3,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 83,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.18
+			},
+			"hero": "mage",
+			"item": "starrobe",
+			"level": 4,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 83,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.1875
+			},
+			"hero": "mage",
+			"item": "starrobe",
+			"level": 5,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 84,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.195
+			},
+			"hero": "mage",
+			"item": "starrobe",
+			"level": 6,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.205
+			},
+			"hero": "mage",
+			"item": "starrobe",
+			"level": 7,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 86,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.215
+			},
+			"hero": "mage",
+			"item": "starrobe",
+			"level": 8,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 86,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.225
+			},
+			"hero": "mage",
+			"item": "starrobe",
+			"level": 9,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 87,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.3
+			},
+			"hero": "mage",
+			"item": "pack_bell",
+			"level": 1,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.3225
+			},
+			"hero": "mage",
+			"item": "pack_bell",
+			"level": 2,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.345
+			},
+			"hero": "mage",
+			"item": "pack_bell",
+			"level": 3,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.36
+			},
+			"hero": "mage",
+			"item": "pack_bell",
+			"level": 4,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.375
+			},
+			"hero": "mage",
+			"item": "pack_bell",
+			"level": 5,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.39
+			},
+			"hero": "mage",
+			"item": "pack_bell",
+			"level": 6,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.41
+			},
+			"hero": "mage",
+			"item": "pack_bell",
+			"level": 7,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.43
+			},
+			"hero": "mage",
+			"item": "pack_bell",
+			"level": 8,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.45
+			},
+			"hero": "mage",
+			"item": "pack_bell",
+			"level": 9,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.04
+			},
+			"hero": "mage",
+			"item": "hearth_heart",
+			"level": 1,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.043
+			},
+			"hero": "mage",
+			"item": "hearth_heart",
+			"level": 2,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.046
+			},
+			"hero": "mage",
+			"item": "hearth_heart",
+			"level": 3,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.048
+			},
+			"hero": "mage",
+			"item": "hearth_heart",
+			"level": 4,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.05
+			},
+			"hero": "mage",
+			"item": "hearth_heart",
+			"level": 5,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.052
+			},
+			"hero": "mage",
+			"item": "hearth_heart",
+			"level": 6,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.0546666666666667
+			},
+			"hero": "mage",
+			"item": "hearth_heart",
+			"level": 7,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.0573333333333333
+			},
+			"hero": "mage",
+			"item": "hearth_heart",
+			"level": 8,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.06
+			},
+			"hero": "mage",
+			"item": "hearth_heart",
+			"level": 9,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "leaf_compass",
+			"level": 1,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.1,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 33.6
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "leaf_compass",
+			"level": 2,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.1125,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 34.3
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "leaf_compass",
+			"level": 3,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.125,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 35.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "leaf_compass",
+			"level": 4,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.1375,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 35.7
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "leaf_compass",
+			"level": 5,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.15,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 36.4
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "leaf_compass",
+			"level": 6,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.1625,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 37.1
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "leaf_compass",
+			"level": 7,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.175,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 37.8
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "leaf_compass",
+			"level": 8,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.1875,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 38.5
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "mage",
+			"item": "leaf_compass",
+			"level": 9,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.2,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 39.2
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.12
+			},
+			"hero": "mage",
+			"item": "star_hourglass",
+			"level": 1,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.864,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.129
+			},
+			"hero": "mage",
+			"item": "star_hourglass",
+			"level": 2,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.8595,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.138
+			},
+			"hero": "mage",
+			"item": "star_hourglass",
+			"level": 3,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.855,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.144
+			},
+			"hero": "mage",
+			"item": "star_hourglass",
+			"level": 4,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.8505,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.15
+			},
+			"hero": "mage",
+			"item": "star_hourglass",
+			"level": 5,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.846,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.156
+			},
+			"hero": "mage",
+			"item": "star_hourglass",
+			"level": 6,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.8415,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.164
+			},
+			"hero": "mage",
+			"item": "star_hourglass",
+			"level": 7,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.837,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.172
+			},
+			"hero": "mage",
+			"item": "star_hourglass",
+			"level": 8,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.8325,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.18
+			},
+			"hero": "mage",
+			"item": "star_hourglass",
+			"level": 9,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.828,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.0
+			},
+			"hero": "mage",
+			"item": "thorn_badge",
+			"level": 1,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.075
+			},
+			"hero": "mage",
+			"item": "thorn_badge",
+			"level": 2,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.15
+			},
+			"hero": "mage",
+			"item": "thorn_badge",
+			"level": 3,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.2
+			},
+			"hero": "mage",
+			"item": "thorn_badge",
+			"level": 4,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.25
+			},
+			"hero": "mage",
+			"item": "thorn_badge",
+			"level": 5,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.3
+			},
+			"hero": "mage",
+			"item": "thorn_badge",
+			"level": 6,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.36666666666667
+			},
+			"hero": "mage",
+			"item": "thorn_badge",
+			"level": 7,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.43333333333333
+			},
+			"hero": "mage",
+			"item": "thorn_badge",
+			"level": 8,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.5
+			},
+			"hero": "mage",
+			"item": "thorn_badge",
+			"level": 9,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.1
+			},
+			"hero": "mage",
+			"item": "avalon_grail",
+			"level": 1,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.1075
+			},
+			"hero": "mage",
+			"item": "avalon_grail",
+			"level": 2,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.115
+			},
+			"hero": "mage",
+			"item": "avalon_grail",
+			"level": 3,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.12
+			},
+			"hero": "mage",
+			"item": "avalon_grail",
+			"level": 4,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.125
+			},
+			"hero": "mage",
+			"item": "avalon_grail",
+			"level": 5,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.13
+			},
+			"hero": "mage",
+			"item": "avalon_grail",
+			"level": 6,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.136666666666667
+			},
+			"hero": "mage",
+			"item": "avalon_grail",
+			"level": 7,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.143333333333333
+			},
+			"hero": "mage",
+			"item": "avalon_grail",
+			"level": 8,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.15
+			},
+			"hero": "mage",
+			"item": "avalon_grail",
+			"level": 9,
+			"stats": {
+				"attack_damage": 15,
+				"attack_interval": 0.9,
+				"attack_range": 88.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 75,
+				"move_speed": 68.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "ash_bow",
+			"level": 1,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.55,
+				"attack_range": 129.92,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "ash_bow",
+			"level": 2,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.55,
+				"attack_range": 133.4,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "ash_bow",
+			"level": 3,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.55,
+				"attack_range": 136.88,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "ash_bow",
+			"level": 4,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.55,
+				"attack_range": 140.36,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "ash_bow",
+			"level": 5,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.55,
+				"attack_range": 143.84,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "quilted_vest",
+			"level": 1,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 0.96,
+				"exp_mult": 1.0,
+				"max_vigor": 94,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "quilted_vest",
+			"level": 2,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 0.95,
+				"exp_mult": 1.0,
+				"max_vigor": 96,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "quilted_vest",
+			"level": 3,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 0.94,
+				"exp_mult": 1.0,
+				"max_vigor": 98,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "quilted_vest",
+			"level": 4,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 0.93,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "quilted_vest",
+			"level": 5,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 0.92,
+				"exp_mult": 1.0,
+				"max_vigor": 102,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "ranger_jacket",
+			"level": 1,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 90,
+				"move_speed": 84.24,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "ranger_jacket",
+			"level": 2,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 91,
+				"move_speed": 85.8,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "ranger_jacket",
+			"level": 3,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 93,
+				"move_speed": 87.36,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "ranger_jacket",
+			"level": 4,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 94,
+				"move_speed": 88.92,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "ranger_jacket",
+			"level": 5,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 95,
+				"move_speed": 90.48,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "apprentice_robe",
+			"level": 1,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.12,
+				"max_vigor": 88,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "apprentice_robe",
+			"level": 2,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.15,
+				"max_vigor": 89,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "apprentice_robe",
+			"level": 3,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.18,
+				"max_vigor": 90,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "apprentice_robe",
+			"level": 4,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.21,
+				"max_vigor": 91,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "apprentice_robe",
+			"level": 5,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.24,
+				"max_vigor": 92,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pierce": 1
+			},
+			"hero": "archer",
+			"item": "stormbow",
+			"level": 1,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pierce": 1
+			},
+			"hero": "archer",
+			"item": "stormbow",
+			"level": 2,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": true
+		},
+		{
+			"effects": {
+				"pierce": 1
+			},
+			"hero": "archer",
+			"item": "stormbow",
+			"level": 3,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": true
+		},
+		{
+			"effects": {
+				"pierce": 1
+			},
+			"hero": "archer",
+			"item": "stormbow",
+			"level": 4,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": true
+		},
+		{
+			"effects": {
+				"pierce": 1
+			},
+			"hero": "archer",
+			"item": "stormbow",
+			"level": 5,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": true
+		},
+		{
+			"effects": {
+				"pierce": 1
+			},
+			"hero": "archer",
+			"item": "stormbow",
+			"level": 6,
+			"stats": {
+				"attack_damage": 10,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": true
+		},
+		{
+			"effects": {
+				"pierce": 1
+			},
+			"hero": "archer",
+			"item": "stormbow",
+			"level": 7,
+			"stats": {
+				"attack_damage": 11,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pierce": 1
+			},
+			"hero": "archer",
+			"item": "stormbow",
+			"level": 8,
+			"stats": {
+				"attack_damage": 11,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": true
+		},
+		{
+			"effects": {
+				"pierce": 2
+			},
+			"hero": "archer",
+			"item": "stormbow",
+			"level": 9,
+			"stats": {
+				"attack_damage": 11,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.35
+			},
+			"hero": "archer",
+			"item": "oathplate",
+			"level": 1,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 95,
+				"move_speed": 74.1,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.37625
+			},
+			"hero": "archer",
+			"item": "oathplate",
+			"level": 2,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 96,
+				"move_speed": 73.6125,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.4025
+			},
+			"hero": "archer",
+			"item": "oathplate",
+			"level": 3,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 98,
+				"move_speed": 73.125,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.42
+			},
+			"hero": "archer",
+			"item": "oathplate",
+			"level": 4,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 99,
+				"move_speed": 72.6375,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.4375
+			},
+			"hero": "archer",
+			"item": "oathplate",
+			"level": 5,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 100,
+				"move_speed": 72.15,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.455
+			},
+			"hero": "archer",
+			"item": "oathplate",
+			"level": 6,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 102,
+				"move_speed": 71.6625,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.478333333333333
+			},
+			"hero": "archer",
+			"item": "oathplate",
+			"level": 7,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 103,
+				"move_speed": 71.175,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.501666666666667
+			},
+			"hero": "archer",
+			"item": "oathplate",
+			"level": 8,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 104,
+				"move_speed": 70.6875,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"guard": 0.525
+			},
+			"hero": "archer",
+			"item": "oathplate",
+			"level": 9,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 105,
+				"move_speed": 70.2,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.25
+			},
+			"hero": "archer",
+			"item": "mistcloak",
+			"level": 1,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 84.24,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.26875
+			},
+			"hero": "archer",
+			"item": "mistcloak",
+			"level": 2,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 85.02,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.2875
+			},
+			"hero": "archer",
+			"item": "mistcloak",
+			"level": 3,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 85.8,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.3
+			},
+			"hero": "archer",
+			"item": "mistcloak",
+			"level": 4,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 86.58,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.3125
+			},
+			"hero": "archer",
+			"item": "mistcloak",
+			"level": 5,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 87.36,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.325
+			},
+			"hero": "archer",
+			"item": "mistcloak",
+			"level": 6,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 88.14,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.341666666666667
+			},
+			"hero": "archer",
+			"item": "mistcloak",
+			"level": 7,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 88.92,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.358333333333333
+			},
+			"hero": "archer",
+			"item": "mistcloak",
+			"level": 8,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 89.7,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ambush": 0.375
+			},
+			"hero": "archer",
+			"item": "mistcloak",
+			"level": 9,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 90.48,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.15
+			},
+			"hero": "archer",
+			"item": "starrobe",
+			"level": 1,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 92,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.16125
+			},
+			"hero": "archer",
+			"item": "starrobe",
+			"level": 2,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 93,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.1725
+			},
+			"hero": "archer",
+			"item": "starrobe",
+			"level": 3,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 94,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.18
+			},
+			"hero": "archer",
+			"item": "starrobe",
+			"level": 4,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 94,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.1875
+			},
+			"hero": "archer",
+			"item": "starrobe",
+			"level": 5,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 95,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.195
+			},
+			"hero": "archer",
+			"item": "starrobe",
+			"level": 6,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 96,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.205
+			},
+			"hero": "archer",
+			"item": "starrobe",
+			"level": 7,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 97,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.215
+			},
+			"hero": "archer",
+			"item": "starrobe",
+			"level": 8,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 98,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.225
+			},
+			"hero": "archer",
+			"item": "starrobe",
+			"level": 9,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 99,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.3
+			},
+			"hero": "archer",
+			"item": "pack_bell",
+			"level": 1,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.3225
+			},
+			"hero": "archer",
+			"item": "pack_bell",
+			"level": 2,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.345
+			},
+			"hero": "archer",
+			"item": "pack_bell",
+			"level": 3,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.36
+			},
+			"hero": "archer",
+			"item": "pack_bell",
+			"level": 4,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.375
+			},
+			"hero": "archer",
+			"item": "pack_bell",
+			"level": 5,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.39
+			},
+			"hero": "archer",
+			"item": "pack_bell",
+			"level": 6,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.41
+			},
+			"hero": "archer",
+			"item": "pack_bell",
+			"level": 7,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.43
+			},
+			"hero": "archer",
+			"item": "pack_bell",
+			"level": 8,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"pack": 0.45
+			},
+			"hero": "archer",
+			"item": "pack_bell",
+			"level": 9,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.04
+			},
+			"hero": "archer",
+			"item": "hearth_heart",
+			"level": 1,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.043
+			},
+			"hero": "archer",
+			"item": "hearth_heart",
+			"level": 2,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.046
+			},
+			"hero": "archer",
+			"item": "hearth_heart",
+			"level": 3,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.048
+			},
+			"hero": "archer",
+			"item": "hearth_heart",
+			"level": 4,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.05
+			},
+			"hero": "archer",
+			"item": "hearth_heart",
+			"level": 5,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.052
+			},
+			"hero": "archer",
+			"item": "hearth_heart",
+			"level": 6,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.0546666666666667
+			},
+			"hero": "archer",
+			"item": "hearth_heart",
+			"level": 7,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.0573333333333333
+			},
+			"hero": "archer",
+			"item": "hearth_heart",
+			"level": 8,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"wave_heal": 0.06
+			},
+			"hero": "archer",
+			"item": "hearth_heart",
+			"level": 9,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "leaf_compass",
+			"level": 1,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.1,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 33.6
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "leaf_compass",
+			"level": 2,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.1125,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 34.3
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "leaf_compass",
+			"level": 3,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.125,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 35.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "leaf_compass",
+			"level": 4,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.1375,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 35.7
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "leaf_compass",
+			"level": 5,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.15,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 36.4
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "leaf_compass",
+			"level": 6,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.1625,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 37.1
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "leaf_compass",
+			"level": 7,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.175,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 37.8
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "leaf_compass",
+			"level": 8,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.1875,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 38.5
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {},
+			"hero": "archer",
+			"item": "leaf_compass",
+			"level": 9,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.2,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 39.2
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.12
+			},
+			"hero": "archer",
+			"item": "star_hourglass",
+			"level": 1,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.528,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.129
+			},
+			"hero": "archer",
+			"item": "star_hourglass",
+			"level": 2,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.52525,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.138
+			},
+			"hero": "archer",
+			"item": "star_hourglass",
+			"level": 3,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.5225,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.144
+			},
+			"hero": "archer",
+			"item": "star_hourglass",
+			"level": 4,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.51975,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.15
+			},
+			"hero": "archer",
+			"item": "star_hourglass",
+			"level": 5,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.517,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.156
+			},
+			"hero": "archer",
+			"item": "star_hourglass",
+			"level": 6,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.51425,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.164
+			},
+			"hero": "archer",
+			"item": "star_hourglass",
+			"level": 7,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.5115,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.172
+			},
+			"hero": "archer",
+			"item": "star_hourglass",
+			"level": 8,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.50875,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"loyalty": 0.18
+			},
+			"hero": "archer",
+			"item": "star_hourglass",
+			"level": 9,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.506,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.0
+			},
+			"hero": "archer",
+			"item": "thorn_badge",
+			"level": 1,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.075
+			},
+			"hero": "archer",
+			"item": "thorn_badge",
+			"level": 2,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.15
+			},
+			"hero": "archer",
+			"item": "thorn_badge",
+			"level": 3,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.2
+			},
+			"hero": "archer",
+			"item": "thorn_badge",
+			"level": 4,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.25
+			},
+			"hero": "archer",
+			"item": "thorn_badge",
+			"level": 5,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.3
+			},
+			"hero": "archer",
+			"item": "thorn_badge",
+			"level": 6,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.36666666666667
+			},
+			"hero": "archer",
+			"item": "thorn_badge",
+			"level": 7,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.43333333333333
+			},
+			"hero": "archer",
+			"item": "thorn_badge",
+			"level": 8,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"control": 1.5
+			},
+			"hero": "archer",
+			"item": "thorn_badge",
+			"level": 9,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.1
+			},
+			"hero": "archer",
+			"item": "avalon_grail",
+			"level": 1,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.1075
+			},
+			"hero": "archer",
+			"item": "avalon_grail",
+			"level": 2,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.115
+			},
+			"hero": "archer",
+			"item": "avalon_grail",
+			"level": 3,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.12
+			},
+			"hero": "archer",
+			"item": "avalon_grail",
+			"level": 4,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.125
+			},
+			"hero": "archer",
+			"item": "avalon_grail",
+			"level": 5,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.13
+			},
+			"hero": "archer",
+			"item": "avalon_grail",
+			"level": 6,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.136666666666667
+			},
+			"hero": "archer",
+			"item": "avalon_grail",
+			"level": 7,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.143333333333333
+			},
+			"hero": "archer",
+			"item": "avalon_grail",
+			"level": 8,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		},
+		{
+			"effects": {
+				"ult_heal": 0.15
+			},
+			"hero": "archer",
+			"item": "avalon_grail",
+			"level": 9,
+			"stats": {
+				"attack_damage": 9,
+				"attack_interval": 0.55,
+				"attack_range": 116.0,
+				"damage_taken_mult": 1.0,
+				"exp_mult": 1.0,
+				"max_vigor": 85,
+				"move_speed": 78.0,
+				"pickup_radius": 28.0
+			},
+			"unchanged_from_previous": false
+		}
+	],
+	"schema": 1,
+	"unchanged_upgrades": [
+		{
+			"from": 2,
+			"hero": "knight",
+			"item": "training_sword",
+			"to": 3
+		},
+		{
+			"from": 3,
+			"hero": "knight",
+			"item": "training_sword",
+			"to": 4
+		},
+		{
+			"from": 4,
+			"hero": "knight",
+			"item": "training_sword",
+			"to": 5
+		},
+		{
+			"from": 1,
+			"hero": "archer",
+			"item": "stormbow",
+			"to": 2
+		},
+		{
+			"from": 2,
+			"hero": "archer",
+			"item": "stormbow",
+			"to": 3
+		},
+		{
+			"from": 3,
+			"hero": "archer",
+			"item": "stormbow",
+			"to": 4
+		},
+		{
+			"from": 4,
+			"hero": "archer",
+			"item": "stormbow",
+			"to": 5
+		},
+		{
+			"from": 5,
+			"hero": "archer",
+			"item": "stormbow",
+			"to": 6
+		},
+		{
+			"from": 7,
+			"hero": "archer",
+			"item": "stormbow",
+			"to": 8
+		}
+	]
+}

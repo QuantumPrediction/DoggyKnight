@@ -1,0 +1,13 @@
+# Add persistent equipment, elemental builds and companion guard lessons
+
+Players previously had no persistent equipment or complete stage build checkpoint in the public classes/music branch. This draft carries the complete recovered 0.4–0.8 progression chain: 18 named items, common Lv5 / epic Lv9 caps, four slots per class, forging, deterministic coin/gem purchases, boss rewards/pity, real stat comparisons, and free earth/water/fire/wind engraving with matching weapon/armor resonance. Stage resume/retry retains the checkpointed class and build; real-money payments remain disabled.
+
+Add the Q/touch Bedivere guard command and actual captain attack/opening cues. The new optional first-chapter lesson explains danger, circle coverage and normal-hit counter use from real actor signals. It can be dismissed or replayed from pause, and completes only after an earned counter is consumed. Misses, ultimates, expiry and death do not complete it. Save v10 migrates older profiles. Detached actors no longer answer next-stage HUD status requests. New illustrated icons, compact pause layout and a current Windows x64 playtest are included in this development milestone; the binary is delivered separately, not committed to Git.
+
+This is a stacked draft against `codex/music-classes-type` (PR #11), following PRs #9 and #10. It does not replace the main branch or merge those dependencies.
+
+Validation and exact source fingerprints are in `docs/validation/0.8.0`. Full Godot 4.7.2 regression: 874 tests, zero failed assertions/broken files. Fourteen focused lesson/lifecycle/save checks pass. Ten staged OpenGL captures cover normal/small/notched layouts; a separate rendered, normal-damage knight bot completes all six first-chapter stages with no downs. Six fixed-step class/seed smoke cases retain one genuine knight loss and five completions; knight outcomes match the same 0.7 cases, so this is not a demonstrated balance improvement. Final bot runs have no script errors. Exported Windows pack validation covers version, new production resources, all 36 stages, companions and exclusion of tests.
+
+Existing test cleanup errors and exit resource/RID warnings remain. No native Windows/mobile, controller, manual-audio, human retention or 9/10 validation is claimed. Staged screenshots and the faster rendered bot are labelled separately from the fixed-step audit. Failed test, layout and scene-lifecycle iterations are retained.
+
+Next: unfamiliar-player first-chapter sessions, attribution of knight 1-4 pressure, two distinct class build routes and three encounter choices, then cleanup and target-device validation.

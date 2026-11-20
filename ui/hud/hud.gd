@@ -54,6 +54,12 @@ var wave_label: Label
 var best_icon: TextureRect
 var best_label: Label
 var evolution: EvolutionShow
+var resonance_icon: TextureRect
+var resonance_label: Label
+var active_element: String = ""
+var guard_coach: GuardCoach
+var companion_guard: CompanionGuardControl
+var boss_tactic: Label
 
 var _plate: NinePatchRect
 var _bar_icons: Array[TextureRect] = []
@@ -88,6 +94,7 @@ func _ready() -> void:
 	EventBus.boss_phase_changed.connect(_on_boss_phase_changed)
 	EventBus.boss_hp_changed.connect(_on_boss_hp_changed)
 	EventBus.boss_appeared.connect(_on_boss_appeared)
+	EventBus.boss_intent_changed.connect(_on_boss_intent)
 	EventBus.combo_changed.connect(_on_combo_changed)
 	EventBus.player_damaged.connect(_on_player_damaged)
 	EventBus.snacks_changed.connect(_on_snacks_changed)
@@ -101,6 +108,7 @@ func _ready() -> void:
 	loyalty_bar.snap_to_value()
 	set_snacks(GameState.snacks, false)
 	_refresh_endless(0)
+	_refresh_resonance()
 	relayout()
 
 
@@ -148,6 +156,17 @@ func _build() -> void:
 			preload("res://assets/ui/icon_paw.png"), 5)
 	loyalty_bar.flash_when_full = true
 	_build_info_row()
+	resonance_icon = TextureRect.new()
+	resonance_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	resonance_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	resonance_icon.size = Vector2(11, 11)
+	resonance_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	resonance_icon.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	add_child(resonance_icon)
+	resonance_label = UiKit.label("共鳴")
+	resonance_label.add_theme_font_size_override("font_size", 6)
+	resonance_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(resonance_label)
 
 	pause_button = UiKit.button("", &"ButtonAlt", Vector2(26, 26))
 	pause_button.name = "PauseButton"
@@ -176,10 +195,21 @@ func _build() -> void:
 	ultimate_label.name = "UltimateLabel"
 	ultimate_label.visible = false
 	add_child(ultimate_label)
+	companion_guard = CompanionGuardControl.new()
+	companion_guard.name = "CompanionGuard"
+	add_child(companion_guard)
 
 	boss_bar = BossBar.new()
 	boss_bar.name = "BossBar"
 	add_child(boss_bar)
+	boss_tactic = UiKit.label("", &"LabelLight")
+	boss_tactic.name = "BossTactic"
+	boss_tactic.add_theme_font_size_override("font_size", 7)
+	boss_tactic.add_theme_color_override("font_outline_color", Color("102923"))
+	boss_tactic.add_theme_constant_override("outline_size", 2)
+	boss_tactic.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	boss_tactic.visible = false
+	add_child(boss_tactic)
 
 	banner = PanelContainer.new()
 	banner.name = "Banner"
@@ -221,6 +251,10 @@ func _build() -> void:
 	evolution = EvolutionShow.new()
 	evolution.name = "Evolution"
 	add_child(evolution)
+	guard_coach = GuardCoach.new()
+	guard_coach.name = "GuardCoach"
+	add_child(guard_coach)
+	guard_coach.visibility_changed.connect(relayout)
 
 
 ## 底板最下一行:零食(左)與無盡試煉的波數、最佳紀錄(右)。
@@ -282,6 +316,9 @@ func apply_layout(safe: Rect2, game: Rect2) -> void:
 
 	pause_button.size = pause_button.custom_minimum_size
 	pause_button.position = Vector2(floorf(safe.end.x - MARGIN - pause_button.size.x), top_left.y)
+	resonance_icon.position = pause_button.position + Vector2(0, 28)
+	resonance_label.size = resonance_label.get_minimum_size()
+	resonance_label.position = pause_button.position + Vector2(12, 28)
 
 	var bar_x := level_badge.position.x + level_badge.size.x + 3.0
 	var icon_w := 10.0
@@ -303,6 +340,8 @@ func apply_layout(safe: Rect2, game: Rect2) -> void:
 	var boss_w := floorf(minf(160.0, safe.size.x - MARGIN * 2 - 8))
 	boss_bar.layout(boss_w)
 	boss_bar.position = Vector2(floorf(safe.get_center().x - boss_w * 0.5), top_left.y + 32 + INFO_ROW_H)
+	boss_tactic.position = Vector2(boss_bar.position.x, boss_bar.position.y + boss_bar.size.y + 1)
+	boss_tactic.size = Vector2(boss_w, 11)
 
 	combo.position = Vector2(floorf(safe.end.x - MARGIN - combo.size.x),
 			top_left.y + INFO_ROW_H + (56.0 if boss_bar.visible else 32.0))
@@ -313,7 +352,11 @@ func apply_layout(safe: Rect2, game: Rect2) -> void:
 	var pos := arena.end - ultimate_button.size - ULTIMATE_INSET
 	pos.x = minf(pos.x, safe.end.x - ultimate_button.size.x - MARGIN)
 	pos.y = minf(pos.y, safe.end.y - ultimate_button.size.y - ULTIMATE_BOTTOM_CLEARANCE)
+	if guard_coach.visible:
+		pos.y = minf(pos.y, safe.end.y - GuardCoach.HEIGHT - 54.0)
+	guard_coach.layout(safe)
 	ultimate_button.position = pos.floor()
+	companion_guard.position = Vector2(maxf(safe.position.x + MARGIN + 8.0, pos.x - 47.0), minf(pos.y, safe.end.y - 49.0)).floor()
 	ultimate_label.size = ultimate_label.get_minimum_size()
 	ultimate_label.position = Vector2(
 		floorf(minf(ultimate_button.position.x + 16.0 - ultimate_label.size.x * 0.5, safe.end.x - MARGIN - ultimate_label.size.x)),
@@ -483,6 +526,8 @@ func _on_combo_changed(count: int) -> void:
 
 
 func _on_level_started(level_id: StringName) -> void:
+	boss_tactic.hide()
+	_refresh_resonance()
 	_banner_queue.clear()
 	_boss_banner_shown = false
 	_celebrating = false
@@ -590,10 +635,12 @@ func _on_boss_phase_changed(phase: int) -> void:
 
 
 func _on_level_completed(_level_id: StringName) -> void:
+	boss_tactic.hide()
 	celebrate()
 
 
 func _on_level_failed(_level_id: StringName) -> void:
+	boss_tactic.hide()
 	combo.set_count(0)
 	_banner_queue.clear()
 
@@ -703,3 +750,28 @@ func _next_banner() -> void:
 	_banner_tween.tween_interval(item["hold"])
 	_banner_tween.tween_property(banner, "modulate:a", 0.0, 0.25)
 	_banner_tween.tween_callback(_next_banner)
+
+
+func _refresh_resonance() -> void:
+	active_element = EquipmentInventory.resonance(GameState.run_equipment, String(GameState.hero_class))
+	resonance_icon.visible = active_element != ""
+	resonance_label.visible = active_element != ""
+	resonance_icon.texture = ElementArt.icon(active_element)
+	resonance_label.add_theme_color_override("font_color", ElementArt.color(active_element))
+
+
+func _on_boss_intent(enemy_id: StringName, intent: StringName, remaining: float) -> void:
+	if enemy_id != &"scarecrow_captain":
+		return
+	boss_tactic.visible = intent != &"" and not _celebrating
+	if not boss_tactic.visible:
+		return
+	var key := "UI_CAPTAIN_" + String(intent).to_upper()
+	boss_tactic.text = tr(key) % remaining if intent == &"opening" else tr(key)
+	boss_tactic.add_theme_color_override("font_color", Color("abefda") if intent == &"opening" else Color("ffe3a7"))
+	relayout()
+
+
+func show_guard_lesson() -> void:
+	guard_coach.begin()
+	relayout()

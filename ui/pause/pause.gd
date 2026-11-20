@@ -11,6 +11,7 @@ var sound_button: Button
 var music_button: Button
 var haptics_button: Button
 var title_button: Button
+var lesson_button: Button
 var _panel: PanelContainer
 
 
@@ -23,13 +24,27 @@ func _ready() -> void:
 	_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	add_child(_panel)
 	var box := VBoxContainer.new()
-	box.add_theme_constant_override(&"separation", int(UiKit.GAP))
+	box.add_theme_constant_override(&"separation", 4)
 	_panel.add_child(box)
 	var title := UiKit.label(tr("UI_PAUSED"), &"LabelTitle")
-	title.custom_minimum_size = Vector2(0, 30)
+	title.add_theme_color_override(&"font_color", Color("302b24"))
+	title.add_theme_font_size_override("font_size", 20)
+	title.custom_minimum_size = Vector2(0, 28)
 	box.add_child(title)
 	if OS.has_feature("pc"):
-		box.add_child(UiKit.label(tr("UI_DESKTOP_CONTROLS"), &"LabelSoft"))
+		var controls := UiKit.label(tr("UI_DESKTOP_CONTROLS"), &"LabelSoft")
+		controls.add_theme_font_size_override("font_size", 10)
+		box.add_child(controls)
+	var guard_help := UiKit.label(tr("UI_GUARD_PAUSE_HELP"), &"LabelSoft")
+	guard_help.add_theme_font_size_override("font_size", 7)
+	box.add_child(guard_help)
+	lesson_button = UiKit.button(tr("UI_GUARD_LESSON_REPLAY"), &"ButtonAlt", Vector2(130, 20))
+	lesson_button.name = "GuardLessonButton"
+	lesson_button.visible = false
+	lesson_button.pressed.connect(_replay_lesson)
+	box.add_child(lesson_button)
+	EventBus.companion_guard_state.connect(_on_guard_state)
+	EventBus.companion_guard_status_requested.emit()
 	resume_button = UiKit.button(tr("UI_RESUME"))
 	resume_button.name = "ResumeButton"
 	resume_button.pressed.connect(func() -> void: EventBus.resume_requested.emit())
@@ -122,3 +137,12 @@ func _layout() -> void:
 	var safe := SafeArea.get_safe_rect()
 	_panel.size = _panel.get_minimum_size()
 	_panel.position = UiKit.center_in(safe, _panel.size)
+
+
+func _on_guard_state(value: StringName, _cooldown: float, _duration: float) -> void:
+	lesson_button.visible = value != &"unavailable" and GameState.mode != &"endless"
+
+
+func _replay_lesson() -> void:
+	EventBus.resume_requested.emit()
+	EventBus.guard_lesson_requested.emit()

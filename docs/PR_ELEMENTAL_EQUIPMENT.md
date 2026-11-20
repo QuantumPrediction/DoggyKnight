@@ -1,0 +1,9 @@
+# Add a persistent armory, stage resume and four-element builds
+
+Players can buy and forge permanent weapons, armor and treasures, compare their actual loadout changes, and resume the current story stage with its original build. Weapons and armor now also support free earth, water, fire and wind engraving: matching both slots grants one resonance, while mixed pieces keep individual effects. A water weapon and water armor, for example, grant loyalty gain, wave healing and ultimate healing; a different armor removes the matching resonance and the preview shows that loss before confirmation.
+
+The branch includes the recovered equipment/quality work after `codex/music-classes-type` (PR #11): 18 items, common Lv.5/epic Lv.9 forging, named coin/gem purchases, boss pity, two-piece family sets, illustrated workshop and real-stat previews. Real payments remain disabled. Save v9 sanitizes affinities and preserves per-stage equipment/element snapshots; failed writes roll back transactions. Shared armor engraving is explicitly shown to affect its users.
+
+Validation: exact Godot 4.7.2; 846 full regression tests and 43 targeted equipment tests pass. Fourteen real OpenGL screenshots cover normal/small/notched UI; separate native operation bought and equipped a starter set, engraved it for free and observed the water resonance in combat. Seed-7 starter chapter smoke completed 10/12 cases; knight earth/fire reached the three-down cap at 1-4. Failed cases and existing teardown/resource warnings are retained in `docs/validation/0.6.0`.
+
+Balance is provisional. Default affinities change existing equipped builds; engraving effects do not scale with forge level. The one-seed bot audit is not a human win rate, quality score or platform certification. No merge, real payment activation, store release or new executable export is part of this draft.

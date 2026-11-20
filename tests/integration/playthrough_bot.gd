@@ -27,6 +27,24 @@ var rng_seed: int = 7
 var chapter: int = 1
 var hard: bool = false
 var hero_class: StringName = &"knight"
+var equipment_preset: String = "none"
+var equipment_element: String = "default"
+var movement_policy: String = "original"
+var guard_policy: String = "off"
+var _moving_seconds: float = 0.0
+var _standing_seconds: float = 0.0
+var _empty_swings: int = 0
+var _last_swing_count: int = 0
+var report_path: String = ""
+var max_downs: int = 0 # Existing interactive bot behavior remains unlimited by default.
+var max_sim_seconds: float = 0.0
+var _sim_seconds: float = 0.0
+var _attempts: Array[Dictionary] = []
+var _outcome: String = "wall_timeout"
+var _starting_equipment: Dictionary = {}
+var _enemy_serial: int = 0
+var _player_serial: int = 0
+var _minigame_serial: int = 0
 
 var _downs: int = 0
 var _ultimates: int = 0
@@ -51,12 +69,34 @@ func _ready() -> void:
 			hard = true
 		elif arg.begins_with("--class="):
 			hero_class = HeroClasses.valid_id(arg.trim_prefix("--class="))
+		elif arg.begins_with("--gear="):
+			equipment_preset = arg.trim_prefix("--gear=")
+		elif arg.begins_with("--element="):
+			equipment_element = arg.trim_prefix("--element=")
+		elif arg.begins_with("--policy="):
+			movement_policy = arg.trim_prefix("--policy=")
+		elif arg.begins_with("--guard="):
+			guard_policy = arg.trim_prefix("--guard=")
+		elif arg.begins_with("--report="):
+			report_path = arg.trim_prefix("--report=")
+		elif arg.begins_with("--max-downs="):
+			max_downs = maxi(0, int(arg.trim_prefix("--max-downs=")))
+		elif arg.begins_with("--max-sim-seconds="):
+			max_sim_seconds = maxf(0.0, float(arg.trim_prefix("--max-sim-seconds=")))
+	if not ["original", "cautious"].has(movement_policy) or not ["off", "reactive"].has(guard_policy) or not preload("res://tests/integration/equipment_profiles.gd").PRESETS.has(equipment_preset) or (equipment_element != "default" and not EquipmentInventory.ELEMENTS.has(equipment_element)):
+		push_error("Unknown equipment preset: " + equipment_preset)
+		get_tree().quit(2)
+		return
 	if not shots_dir.is_empty():
 		DirAccess.make_dir_recursive_absolute(shots_dir)
 	_run()
 
 
 func _run() -> void:
+	seed(rng_seed)
+	Loot.seed_rng(rng_seed + 200)
+	# node_added fires before _ready: actor initial decisions must use the test seed too.
+	get_tree().node_added.connect(_seed_added_node)
 	SaveStore.new(SAVE_PATH).delete()
 	flow = (load("res://game/flow/main.tscn") as PackedScene).instantiate() as FlowMain
 	flow.save_path = SAVE_PATH
@@ -65,7 +105,12 @@ func _run() -> void:
 	add_child(flow)
 	EventBus.player_downed.connect(func() -> void: _downs += 1)
 	EventBus.ultimate_used.connect(func() -> void: _ultimates += 1)
-	EventBus.level_started.connect(func(_id: StringName) -> void: _level_clock = 0.0)
+	EventBus.level_started.connect(func(_id: StringName) -> void:
+		_level_clock = 0.0
+		_moving_seconds = 0.0
+		_standing_seconds = 0.0
+		_empty_swings = 0
+		_last_swing_count = 0)
 	await _frames(10)
 	await _shot("00_title")
 	# 標題畫面在 new_game_pressed 之前設定章與難度(DEV_PLAN 4.11、4.13);機器人直接設定。
@@ -73,6 +118,13 @@ func _run() -> void:
 	GameState.chapter_cleared = GameState.chapter_cleared or chapter > 1 or hard
 	GameState.chapter = chapter
 	GameState.hero_class = hero_class
+	GameState.meta_upgrades = {}
+	GameState.equipment = preload("res://tests/integration/equipment_profiles.gd").make(String(hero_class), equipment_preset)
+	if equipment_element != "default":
+		for id: String in GameState.equipment.owned:
+			if EquipmentInventory.item(id).slot in ["weapon", "armor"]:
+				EquipmentInventory.transact(GameState.equipment, "attune", id, String(hero_class), equipment_element)
+	_starting_equipment = EquipmentInventory.loadout(GameState.equipment, String(hero_class))
 	GameState.difficulty = &"hard" if hard else &"normal"
 	print("== 第 %d 章%s / %s ==" % [chapter, "(困難)" if hard else "", hero_class])
 	flow.get_screen().emit_signal(&"new_game_pressed")
@@ -81,6 +133,10 @@ func _run() -> void:
 	var finished := false
 	while Time.get_ticks_msec() - started < TIMEOUT_MS:
 		await get_tree().process_frame
+		_sim_seconds += get_process_delta_time()
+		if max_sim_seconds > 0.0 and _sim_seconds >= max_sim_seconds:
+			_outcome = "simulation_limit"
+			break
 		if _skip_dialogues():
 			continue
 		match flow.state:
@@ -91,14 +147,20 @@ func _run() -> void:
 				await _on_results()
 			FlowMain.State.FAILURE:
 				var r := flow.get_last_result()
+				_record_attempt(r)
 				_level_lines.append("%s  失敗 %5.1f 秒  擊倒 %2d" % [r["level_id"], r["time_sec"], r["kills"]])
 				await _shot("fail_%s" % r["level_id"])
+				if max_downs > 0 and _downs >= max_downs:
+					_outcome = "down_limit"
+					break
 				flow.get_screen().emit_signal(&"retry_pressed")
 				await _frames(5)
 			FlowMain.State.CAMP:
 				await _play_camp()
 			FlowMain.State.TITLE:
-				finished = true
+				# Returning to title alone must never count as a successful chapter.
+				finished = not _attempts.is_empty() and bool(_attempts[-1].get("is_final", false)) and bool(_attempts[-1].get("victory", false))
+				_outcome = "complete" if finished else "unexpected_title"
 				break
 	Engine.time_scale = 1.0
 	print("\n== 試玩結果 ==")
@@ -106,8 +168,59 @@ func _run() -> void:
 		print(line)
 	print("倒下 %d 次;必殺技 %d 次;略過對白 %d 段;最後活力 %d" % [_downs, _ultimates, _dialogues, GameState.vigor])
 	print("PLAYTHROUGH %s" % ("COMPLETE" if finished else "TIMEOUT"))
+	var report_ok := _write_report(finished)
 	SaveStore.new(SAVE_PATH).delete()
-	get_tree().quit(0 if finished else 1)
+	get_tree().quit(2 if not report_ok else (0 if finished else 1))
+
+func _seed_added_node(node: Node) -> void:
+	if node is EnemyBase:
+		_enemy_serial += 1
+		(node as EnemyBase).rng_seed_override = rng_seed + 10000 + _enemy_serial * 97
+	elif node is GoldiePlayer:
+		_player_serial += 1
+		(node as GoldiePlayer).rng.seed = rng_seed + 100 + _player_serial
+	elif node is MinigameBase:
+		_minigame_serial += 1
+		var minigame := node as MinigameBase
+		minigame.config = minigame.config.duplicate() as MinigameConfig if minigame.config != null else MinigameConfig.new()
+		minigame.config.rng_seed = rng_seed + 300 + _minigame_serial
+
+func _record_attempt(result: Dictionary) -> void:
+	var row := result.duplicate(true)
+	row["remaining_vigor"] = GameState.vigor
+	row["max_vigor"] = GameState.player_stats.max_vigor
+	row["build_tricks"] = GameState.active_tricks.duplicate()
+	row["moving_seconds"] = _moving_seconds
+	row["standing_seconds"] = _standing_seconds
+	row["melee_empty_swings"] = _empty_swings
+	row["guard_commands"] = 0
+	row["guard_protected_hits"] = 0
+	row["guard_prevented_damage"] = 0
+	for node in get_tree().get_nodes_in_group(&"companion"):
+		if node.has_method(&"is_protecting"):
+			row["guard_commands"] += int(node.get("rally_commands"))
+			row["guard_protected_hits"] += int(node.get("rally_protected_hits"))
+			row["guard_prevented_damage"] += int(node.get("rally_prevented_damage"))
+	_attempts.append(row)
+
+func _write_report(finished: bool) -> bool:
+	if report_path.is_empty():
+		return true
+	var file := FileAccess.open(report_path, FileAccess.WRITE)
+	if file == null:
+		push_error("Cannot write bot report: " + report_path)
+		return false
+	file.store_string(JSON.stringify({"schema": 3, "engine": Engine.get_version_info().string,
+		"movement_policy": movement_policy, "guard_policy": guard_policy,
+		"hero": String(hero_class), "chapter": chapter, "seed": rng_seed, "hard": hard,
+		"equipment_preset": equipment_preset, "equipment_element": equipment_element, "starting_equipment": _starting_equipment,
+		"training": {}, "speed": speed, "max_downs": max_downs, "max_sim_seconds": max_sim_seconds,
+		"finished": finished, "outcome": _outcome, "downs": _downs, "ultimates": _ultimates,
+		"simulation_seconds": _sim_seconds, "attempts": _attempts,
+		"seed_scope": "Global, flow, enemy spawn order, player crit, loot, equipment drops and minigames; cosmetic camp dialogue RNG is not seeded.",
+		"limits": "Staged gear, class-specific bot, first offered trick, automatic dialogue skip and camp bot. This is engineering evidence, not a human balance or retention study."}, "\t") + "\n")
+	file.close()
+	return true
 
 
 func _play_level() -> void:
@@ -147,15 +260,18 @@ func _steer() -> void:
 	var nearest: Node2D = null
 	var nearest_distance := INF
 	var danger := Vector2.ZERO
+	var nearby_count := 0
 	for node in get_tree().get_nodes_in_group(&"enemy"):
 		var enemy := node as Node2D
 		if enemy == null or not is_instance_valid(enemy):
 			continue
 		var distance := enemy.global_position.distance_to(player.global_position)
+		if distance < 55.0:
+			nearby_count += 1
 		var telegraph: Variant = enemy.get(&"_telegraph")
 		var is_boss := enemy is BlackKnightBoss
 		var reach := BOSS_DANGER_DISTANCE if is_boss else DANGER_DISTANCE
-		if telegraph != null and is_instance_valid(telegraph) and distance < reach:
+		if movement_policy == "original" and telegraph != null and is_instance_valid(telegraph) and distance < reach:
 			var away := (player.global_position - enemy.global_position).normalized()
 			danger += away * (reach - distance)
 			if is_boss:
@@ -166,6 +282,9 @@ func _steer() -> void:
 			nearest_distance = distance
 			nearest = enemy
 	danger += _telegraph_escape(player.global_position)
+	if guard_policy == "reactive" and EventBus.has_signal(&"companion_guard_requested") and (nearby_count >= 2 or danger != Vector2.ZERO):
+		# Uses the same public command as Q/touch. It does not edit stats or clocks.
+		EventBus.emit_signal(&"companion_guard_requested")
 	var direction := Vector2.ZERO
 	if danger != Vector2.ZERO:
 		direction = danger.normalized()
@@ -174,6 +293,9 @@ func _steer() -> void:
 			direction = (direction + (Layout.ARENA_RECT.get_center() - player.global_position).normalized()).normalized()
 	elif nearest != null:
 		var desired := ATTACK_DISTANCE if hero_class == &"knight" else GameState.player_stats.attack_range * 0.72
+		if movement_policy == "cautious" and hero_class == &"knight":
+			var body: Variant = nearest.get(&"body_radius")
+			desired = GameState.player_stats.attack_range + (float(body) if body != null else 6.0) - 4.0
 		if nearest_distance > desired:
 			direction = (nearest.global_position - player.global_position).normalized()
 		elif hero_class != &"knight" and nearest_distance < 32.0:
@@ -182,6 +304,15 @@ func _steer() -> void:
 			if Layout.ARENA_RECT.grow(-14.0).has_point(player.global_position + away * 18.0):
 				direction = away
 	player.call(&"set_move_override", direction)
+	if direction == Vector2.ZERO:
+		_standing_seconds += get_process_delta_time()
+	else:
+		_moving_seconds += get_process_delta_time()
+	if hero_class == &"knight":
+		var swings := int(player.get(&"swing_count"))
+		if swings > _last_swing_count and int(player.get(&"last_swing_hits")) == 0:
+			_empty_swings += swings - _last_swing_count
+		_last_swing_count = swings
 
 
 ## v2.7:新頭目(章魚王、雙龍、莫德雷德等)把預警直接放在場上(AttackTelegraph,群組 combat_fx),
@@ -225,6 +356,7 @@ func _telegraph_escape(at: Vector2) -> Vector2:
 func _on_results() -> void:
 	_level_clock = 0.0   # 下一關在畫面露出前就進入 LEVEL;由結算時歸零,截圖才會在關卡進行中拍
 	var r := flow.get_last_result()
+	_record_attempt(r)
 	_level_lines.append("%s  %5.1f 秒  擊倒 %2d  等級 %2d  把戲 %s  活力 %d" % [
 			r["level_id"], r["time_sec"], r["kills"], r["hero_level"], r["tricks"], GameState.vigor])
 	await _frames(20)

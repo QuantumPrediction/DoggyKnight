@@ -45,6 +45,10 @@ const ULT_Z := 9                          ## 必殺技時金毛升到暗幕(8)�
 var loadout: HeroClassData
 var _focus_elapsed: float = 0.0
 
+var equipment_combat := EquipmentCombat.new()
+var _companion_counter_pending: bool = false
+var _combat_readiness_key: String = ""
+
 var abilities: AbilitySet
 var loyalty: float = 0.0
 var facing: Vector2 = Vector2.RIGHT
@@ -116,6 +120,11 @@ func _ready() -> void:
 		joystick.configure(tuning)
 	abilities = AbilitySet.new(self, ability_tuning)
 	abilities.rebuild(GameState.active_tricks)
+	equipment_combat.setup(GameState.run_equipment, String(GameState.hero_class))
+	EventBus.companion_blocked.connect(_on_equipment_block)
+	EventBus.companion_counter_granted.connect(_on_companion_counter)
+	EventBus.player_combat_status_requested.connect(_refresh_combat_readiness)
+	EventBus.wave_cleared.connect(_on_equipment_wave)
 	EventBus.trick_chosen.connect(_on_trick_chosen)
 	EventBus.trick_evolved.connect(_on_trick_evolved)
 	EventBus.enemy_died.connect(_on_enemy_died)
@@ -129,9 +138,11 @@ func _ready() -> void:
 	_emit_vigor()
 	_emit_loyalty()
 	_sync_tornado_fx()
+	_publish_combat_readiness()
 
 
 func _physics_process(delta: float) -> void:
+	_publish_combat_readiness()
 	if _downed:
 		velocity = Vector2.ZERO
 		return
@@ -153,6 +164,8 @@ func _physics_process(delta: float) -> void:
 	var stats := GameState.player_stats
 	var input := get_move_input()
 	var moving := input != Vector2.ZERO
+	equipment_combat.tick(delta, moving)
+	_publish_combat_readiness()
 	if _pounce_left >= 0.0:
 		if moving:
 			_cancel_pounce()
@@ -193,6 +206,13 @@ func take_damage(amount: int) -> void:
 	var guard := abilities.damage_taken_mult()
 	if guard != 1.0:
 		final = maxi(1, roundi(float(final) * guard))
+	final = equipment_combat.incoming(final)
+	for companion in get_tree().get_nodes_in_group(&"companion"):
+		if companion is BulldogCompanion and companion.is_protecting(global_position):
+			final = companion.protect_player(global_position, final)
+			break # A guard field never stacks with another companion's field.
+	if equipment_combat.trigger_control():
+		_push_enemies(equipment_combat.rules.control_radius, 0.0, equipment_combat.rules.control_time * float(equipment_combat.effects.get("control", 1.0)))
 	if GameState.vigor - final <= 0 and abilities.play_dead.try_save():
 		_save_by_playing_dead()
 		return
@@ -283,6 +303,9 @@ func get_move_input() -> Vector2:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if not get_tree().paused and event.is_action_pressed(&"companion_guard") and not event.is_echo():
+		get_viewport().set_input_as_handled()
+		EventBus.companion_guard_requested.emit()
 	if not get_tree().paused and event.is_action_pressed(&"ultimate") and not event.is_echo():
 		get_viewport().set_input_as_handled()
 		EventBus.ultimate_requested.emit()
@@ -329,8 +352,10 @@ func _update_attack(delta: float, moving: bool) -> void:
 
 func _start_windup() -> void:
 	var stats := GameState.player_stats
-	_attack_target = _nearest_enemy(stats.attack_range * (tuning.target_search_mult if loadout.id == &"knight" else 1.0))
-	if loadout.id != &"knight" and _attack_target == null:
+	# Commit only when a target is actually within reach (including its body radius).
+	# Searching farther made melee spend cooldown on empty space before enemies arrived.
+	_attack_target = _nearest_enemy(stats.attack_range)
+	if _attack_target == null:
 		return
 	if _attack_target != null:
 		_face_toward(_attack_target.global_position)
@@ -367,6 +392,8 @@ func _swing() -> void:
 	if not hits.is_empty() and rng.randf() < crit_chance():
 		mult *= ability_tuning.crit_multiplier
 		crit_count += 1
+	if not hits.is_empty():
+		mult *= _consume_attack_charge()
 	var damage := CombatMath.player_damage(stats, GameState.next_level_bonus, mult)
 	swing_count += 1
 	last_swing_hits = hits.size()
@@ -458,7 +485,7 @@ func add_loyalty(amount: float) -> void:
 func loyalty_gain_mult() -> float:
 	var upgrades := GameState.meta_upgrades
 	var level: int = int(upgrades.get(&"loyalty", upgrades.get("loyalty", 0)))
-	return 1.0 + tuning.loyalty_meta_bonus_per_level * float(maxi(0, level))
+	return 1.0 + tuning.loyalty_meta_bonus_per_level * float(maxi(0, level)) + float(equipment_combat.effects.get("loyalty", 0.0))
 
 
 func can_use_ultimate() -> bool:
@@ -500,6 +527,7 @@ func use_ultimate() -> bool:
 	_ult_left = windup
 	_emit_loyalty()
 	EventBus.ultimate_used.emit()
+	heal(roundi(GameState.player_stats.max_vigor * minf(0.15, float(equipment_combat.effects.get("ult_heal", 0.0)))))
 	if windup <= 0.0:
 		_ultimate_strike()
 	return true
@@ -877,6 +905,8 @@ func celebrate() -> void:
 	if _downed or celebrating:
 		return
 	celebrating = true
+	_resolve_companion_counter(&"cancelled")
+	_publish_combat_readiness()
 	_cancel_windup()
 	_cheer_left = 0.0
 	_cheer_count = 0
@@ -1066,6 +1096,8 @@ func _cheer(delta: float) -> void:
 
 func _go_down() -> void:
 	_downed = true
+	_resolve_companion_counter(&"cancelled")
+	_publish_combat_readiness()
 	_cancel_pounce()
 	_flop_left = -1.0
 	_wake_left = -1.0
@@ -1157,7 +1189,7 @@ func _fire_projectile() -> void:
 
 func projectile_impact_damage(mult: float, is_ultimate: bool) -> int:
 	if not is_ultimate:
-		mult *= abilities.on_swing_landed()
+		mult *= abilities.on_swing_landed() * _consume_attack_charge()
 		if rng.randf() < crit_chance():
 			mult *= ability_tuning.crit_multiplier
 			crit_count += 1
@@ -1184,3 +1216,75 @@ func _class_ultimate() -> void:
 
 func focus_fraction() -> float:
 	return clampf(_focus_elapsed / loadout.focus_time, 0.0, 1.0) if loadout.focus_time > 0.0 else 0.0
+
+
+func _on_equipment_block(at: Vector2) -> void:
+	if _downed or celebrating or global_position.distance_to(at) > equipment_combat.rules.synergy_radius:
+		return
+	if equipment_combat.companion_block():
+		CombatFx.ring(self, global_position, 3.0, 20.0, 0.3, Color("edce75"), 1.5)
+		Sfx.play(&"pickup", -6.0)
+
+func _on_equipment_wave(_index: int) -> void:
+	heal(roundi(GameState.player_stats.max_vigor * minf(0.08, float(equipment_combat.effects.get("wave_heal", 0.0)))))
+
+
+func _on_companion_counter(bonus: float) -> void:
+	if not _downed and not celebrating:
+		equipment_combat.charge(bonus) # Strongest charge wins; fire/wind/pack cannot multiply it.
+		_companion_counter_pending = true
+		_publish_combat_readiness()
+		CombatFx.ring(self, global_position, 3.0, 18.0, 0.3, Color("edce75"), 1.5)
+
+
+# Charge feedback uses the same combat clock and consumption points as damage.
+func _consume_attack_charge() -> float:
+	var charged := equipment_combat.charged_left > 0.0
+	var multiplier := equipment_combat.consume_attack()
+	_resolve_companion_counter(&"used" if charged else &"expired")
+	_publish_combat_readiness()
+	return multiplier
+
+
+func _resolve_companion_counter(result: StringName) -> void:
+	if not _companion_counter_pending:
+		return
+	_companion_counter_pending = false
+	EventBus.companion_counter_resolved.emit(result)
+
+
+func _refresh_combat_readiness() -> void:
+	_combat_readiness_key = ""
+	_publish_combat_readiness()
+
+
+func _publish_combat_readiness() -> void:
+	# Detached previous-stage actors can await queue_free while new HUDs request state.
+	if not is_inside_tree() or is_queued_for_deletion():
+		return
+	if _companion_counter_pending and equipment_combat.charged_left <= 0.0:
+		_resolve_companion_counter(&"expired")
+	var state: StringName = &"idle"
+	var remaining := equipment_combat.charged_left
+	var bonus := equipment_combat.charge_bonus
+	if _downed or celebrating:
+		state = &"unavailable"
+		remaining = 0.0
+		bonus = 0.0
+	elif remaining > 0.0:
+		if _ult_left >= 0.0 or _hitstop_left > 0.0 or _flop_left >= 0.0 or _wake_left >= 0.0:
+			state = &"busy"
+		elif get_move_input() != Vector2.ZERO:
+			state = &"moving"
+		elif _windup_left >= 0.0:
+			state = &"windup"
+		elif _attack_cooldown > 0.0:
+			state = &"recovering"
+		elif _nearest_enemy(GameState.player_stats.attack_range) == null:
+			state = &"out_of_range"
+		else:
+			state = &"ready"
+	var key := "%s:%d:%d" % [state, ceili(remaining * 10.0), roundi(bonus * 100.0)]
+	if key != _combat_readiness_key:
+		_combat_readiness_key = key
+		EventBus.player_combat_readiness.emit(state, remaining, bonus)

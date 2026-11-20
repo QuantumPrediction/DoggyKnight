@@ -1,0 +1,26 @@
+[
+  {
+    "hero": "knight",
+    "seed": 7,
+    "gear": "none",
+    "equal_fields": {
+      "attempts": true,
+      "downs": true,
+      "ultimates": true,
+      "outcome": true
+    },
+    "limits": "Only these two cases were repeated. Cosmetic timing, resource-exit diagnostics and wall-clock duration are excluded. This is not cross-platform determinism."
+  },
+  {
+    "hero": "mage",
+    "seed": 7,
+    "gear": "none",
+    "equal_fields": {
+      "attempts": true,
+      "downs": true,
+      "ultimates": true,
+      "outcome": true
+    },
+    "limits": "Only these two cases were repeated. Cosmetic timing, resource-exit diagnostics and wall-clock duration are excluded. This is not cross-platform determinism."
+  }
+]

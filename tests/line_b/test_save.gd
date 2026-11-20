@@ -24,11 +24,11 @@ func test_only_known_fields_are_saved() -> void:
 	var raw: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(SAVE_PATH))
 	var keys := raw.keys()
 	keys.sort()
-	assert_eq(keys, ["best_stars", "camp_pending", "chapter", "chapter_cleared", "chapters_cleared", "difficulty",
-			"endless_best", "haptics_on", "hero_class", "level_index", "meta_upgrades", "music_on", "snacks", "sound_on", "story_seen",
+	assert_eq(keys, ["best_stars", "camp_pending", "chapter", "chapter_cleared", "chapters_cleared", "checkpoint", "difficulty",
+			"endless_best", "equipment", "guard_lesson_done", "haptics_on", "hero_class", "level_index", "meta_upgrades", "music_on", "snacks", "sound_on", "story_seen",
 			"tutorial_done", "version"], "只存遊戲進度與設定,沒有任何個人資料")
 	assert_eq(raw["version"], float(SaveStore.VERSION))
-	assert_eq(SaveStore.VERSION, 7, "職業存檔第 7 版")
+	assert_eq(SaveStore.VERSION, 10, "護陣提示第 10 版")
 
 
 func test_overwrite_keeps_latest() -> void:
@@ -90,7 +90,7 @@ func test_no_save_hides_continue() -> void:
 	assert_false(flow.get_screen().get(&"_continue_button").visible)
 
 
-func test_continue_starts_saved_level_with_a_fresh_run() -> void:
+func test_legacy_save_without_checkpoint_starts_saved_level_with_a_fresh_run() -> void:
 	SaveStore.new(SAVE_PATH).write(2, 0, true)
 	GameState.hero_level = 5
 	GameState.active_tricks.append(&"sit")

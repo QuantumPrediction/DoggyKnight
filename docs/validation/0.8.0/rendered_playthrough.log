@@ -1,0 +1,22 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+== 第 1 章 / knight ==
+
+== 試玩結果 ==
+1-1   48.7 秒  擊倒 16  等級  3  把戲 [&"spin", &"sniff"]  活力 126
+1-2   52.2 秒  擊倒 24  等級  4  把戲 [&"dig"]  活力 124
+營地:小遊戲完成,活力 126,下一關加成 10%
+1-3   61.1 秒  擊倒 33  等級  6  把戲 [&"sit", &"sit", &"wag"]  活力 126
+1-4   77.2 秒  擊倒 38  等級  8  把戲 [&"zoomies", &"fetch", &"zoomies"]  活力 124
+營地:小遊戲完成,活力 126,下一關加成 10%
+1-5   66.1 秒  擊倒 34  等級 10  把戲 [&"sit", &"fetch", &"spin", &"dig", &"bark"]  活力 126
+1-6   63.9 秒  擊倒 11  等級 12  把戲 [&"lion_roar", &"wag", &"roll"]  活力 126
+倒下 0 次;必殺技 16 次;略過對白 16 段;最後活力 126
+PLAYTHROUGH COMPLETE
+WARNING: 13 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 6 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)

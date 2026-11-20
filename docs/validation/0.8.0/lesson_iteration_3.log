@@ -1,0 +1,33 @@
+== 匯入資源 ==
+== 執行測試 ==
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/line_a/test_guard_learning.gd
+  ok      test_coverage_tracks_actual_boundary_and_late_request
+  ok      test_block_then_normal_melee_hit_completes_once_without_taking_damage
+  ok      test_miss_preserves_charge_and_does_not_complete_lesson
+  ok      test_ranged_ultimate_does_not_consume_or_complete_normal_hit_does
+  ok      test_expired_charge_clears_feedback_without_teaching_success
+  ok      test_snapshot_explains_movement_range_and_recovery_from_actor_state
+  ok      test_pause_freezes_actual_charge_and_ui_then_death_cancels_lesson
+  ok      test_danger_priority_and_skip_never_pause_or_block_movement
+  ok      test_coach_and_charge_are_in_safe_area_without_control_overlap
+
+res://tests/line_b/test_guard_learning_flow.gd
+  ok      test_v9_save_migrates_without_losing_equipment_or_progress
+  ok      test_intro_shows_optional_lesson_skip_and_pause_replay
+  ok      test_completed_flag_persists_and_replay_remains_available
+  ok      test_before_companion_arrives_no_lesson_or_replay_button
+
+13 tests, 0 failed, 0 broken files
+WARNING: 107 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 59 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 2 RID allocations of type 'N13RendererDummy15MaterialStorage13DummyMaterialE' were leaked at exit.
+ERROR: 1 RID allocations of type 'N13RendererDummy15MaterialStorage11DummyShaderE' were leaked at exit.
+ERROR: 14 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 4 RID allocations of type 'PN18TextServerAdvanced22ShapedTextDataAdvancedE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+全部測試通過。

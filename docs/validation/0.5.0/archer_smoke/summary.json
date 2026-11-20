@@ -1,0 +1,19 @@
+[
+  {
+    "case": "c1_archer_epic9_s7",
+    "exit_code": 0,
+    "wall_seconds": 44.255,
+    "hero": "archer",
+    "gear": "epic9",
+    "chapter": 1,
+    "seed": 7,
+    "outcome": "complete",
+    "finished": true,
+    "downs": 0,
+    "cleared": 6,
+    "combat_seconds": 346.733,
+    "damage_taken": 52,
+    "script_error": false,
+    "runtime_error_lines": []
+  }
+]

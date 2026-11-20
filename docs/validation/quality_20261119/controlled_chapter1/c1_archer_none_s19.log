@@ -1,0 +1,16 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+== 第 1 章 / archer ==
+
+== 試玩結果 ==
+1-1   42.4 秒  擊倒 16  等級  3  把戲 [&"wag", &"fetch"]  活力 85
+1-2  失敗  65.2 秒  擊倒 14
+1-2   72.9 秒  擊倒 24  等級  5  把戲 [&"fetch", &"roll"]  活力 31
+營地:小遊戲完成,活力 85,下一關加成 15%
+1-3   56.9 秒  擊倒 33  等級  7  把戲 [&"shake", &"high_five", &"roll"]  活力 85
+1-4   83.0 秒  擊倒 41  等級 10  把戲 [&"roll", &"wag", &"sit", &"spin"]  活力 22
+營地:小遊戲完成,活力 85,下一關加成 15%
+1-5   61.7 秒  擊倒 34  等級 12  把戲 [&"sniff", &"sit", &"play_dead", &"spin", &"spin"]  活力 81
+1-6   47.0 秒  擊倒  9  等級 14  把戲 [&"tornado_tail", &"sit", &"bark"]  活力 85
+倒下 1 次;必殺技 17 次;略過對白 16 段;最後活力 85
+PLAYTHROUGH COMPLETE

@@ -1,0 +1,93 @@
+[
+	{
+		"actual_protection": false,
+		"boss_cue_safe": true,
+		"boss_tactic": "",
+		"caption": "Q 護陣",
+		"caption_safe": true,
+		"name": "01_guard_ready",
+		"no_overlap": true,
+		"pause_safe": true,
+		"safe": true,
+		"state": "ready",
+		"vigor": 100
+	},
+	{
+		"actual_protection": true,
+		"boss_cue_safe": true,
+		"boss_tactic": "乾草叉 · 向側面閃",
+		"caption": "護陣 2.8s",
+		"caption_safe": true,
+		"name": "02_guard_and_telegraph",
+		"no_overlap": true,
+		"pause_safe": true,
+		"safe": true,
+		"state": "guard",
+		"vigor": 100
+	},
+	{
+		"actual_protection": true,
+		"boss_cue_safe": true,
+		"boss_tactic": "空檔 0.7s · 靠近停步反擊",
+		"caption": "護陣 2.8s",
+		"caption_safe": true,
+		"name": "03_counter_opening",
+		"no_overlap": true,
+		"pause_safe": true,
+		"safe": true,
+		"state": "guard",
+		"vigor": 90
+	},
+	{
+		"actual_protection": true,
+		"boss_cue_safe": true,
+		"boss_tactic": "空檔 0.7s · 靠近停步反擊",
+		"caption": "護陣 2.8s",
+		"caption_safe": true,
+		"name": "04_small_guard",
+		"no_overlap": true,
+		"pause_safe": true,
+		"safe": true,
+		"state": "guard",
+		"vigor": 90
+	},
+	{
+		"actual_protection": true,
+		"boss_cue_safe": true,
+		"boss_tactic": "空檔 0.7s · 靠近停步反擊",
+		"caption": "護陣 2.8s",
+		"caption_safe": true,
+		"name": "05_notch_guard",
+		"no_overlap": true,
+		"pause_safe": true,
+		"safe": true,
+		"state": "guard",
+		"vigor": 90
+	},
+	{
+		"actual_protection": true,
+		"boss_cue_safe": true,
+		"boss_tactic": "空檔 0.7s · 靠近停步反擊",
+		"caption": "護陣 2.8s",
+		"caption_safe": true,
+		"name": "06_pause_controls",
+		"no_overlap": true,
+		"pause_safe": true,
+		"safe": true,
+		"state": "guard",
+		"vigor": 90
+	},
+	{
+		"actual_protection": true,
+		"boss_cue_safe": true,
+		"boss_tactic": "空檔 0.7s · 靠近停步反擊",
+		"caption": "護陣 2.8s",
+		"caption_safe": true,
+		"name": "07_notch_pause",
+		"no_overlap": true,
+		"pause_safe": true,
+		"safe": true,
+		"state": "guard",
+		"vigor": 90
+	}
+]

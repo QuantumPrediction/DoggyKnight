@@ -1,0 +1,67 @@
+[
+  {
+    "file": ".gdignore",
+    "bytes": 1,
+    "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+  },
+  {
+    "file": "README.md",
+    "bytes": 4808,
+    "sha256": "23fc74edaee8111dd444e004ec97690df1e80dccfecc95a58d673585ef54bfcc"
+  },
+  {
+    "file": "equipment_20.log",
+    "bytes": 1606,
+    "sha256": "4ac9feacb6b37b4632d5877fe1e44b2e0382d8564b285dd05e4846fe84d59282"
+  },
+  {
+    "file": "final_regression_823.log",
+    "bytes": 64691,
+    "sha256": "6b711231d310779192cbe71cc285b70fcfc25e70aca82921a017f0c734b4d0dd"
+  },
+  {
+    "file": "regression_820.log",
+    "bytes": 65482,
+    "sha256": "f258250c366ffa56a75a707aa78aa73a72302d42726e5f39fa8b4c6d361dc705"
+  },
+  {
+    "file": "render.log",
+    "bytes": 494,
+    "sha256": "0fdc850fe83838b21ddd08d666af382840c720a1e2f47cdefd2b3c0030a7cdf3"
+  },
+  {
+    "file": "retry_equipment_after_fix.log",
+    "bytes": 1916,
+    "sha256": "c5586746bf58e5eb605ddec820beb08294104a895cba3bcd837a4b799bdd5c67"
+  },
+  {
+    "file": "retry_equipment_before_fix.log",
+    "bytes": 1986,
+    "sha256": "4e5e4b610924a1f2a230c2d01c76054c349c86b5c57dd01fee56c5f042aafe4c"
+  },
+  {
+    "file": "screenshots/equipment_arcade.png",
+    "bytes": 162646,
+    "sha256": "882ef2845531fe28b07406adf70c529fb1d6fdeda1ffb45e9444082e13d1adeb"
+  },
+  {
+    "file": "screenshots/equipment_confirm.png",
+    "bytes": 124697,
+    "sha256": "5974e3507f9966a06e041df5131a4c60c361d04739dcf5f0c323428f25cd860d"
+  },
+  {
+    "file": "screenshots/equipment_detail.png",
+    "bytes": 114157,
+    "sha256": "5db3d87401bcb08d9123915fb1709246c0b70017779333706121dd4c56ad0245"
+  },
+  {
+    "file": "screenshots/equipment_loadout.png",
+    "bytes": 151176,
+    "sha256": "1e8d20ad4ad5b29e2c151540247b2d7261cbd8008377f6bf27d4269b2449364f"
+  },
+  {
+    "file": "screenshots/equipment_small.png",
+    "bytes": 80874,
+    "sha256": "ff55f2b79c267d129525c154ce4723faf654e83304335508941cafb05f73ffab"
+  }
+]

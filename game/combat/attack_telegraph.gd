@@ -79,6 +79,24 @@ func is_hot() -> bool:
 	return progress >= FLASH_FROM
 
 
+## Use the rendered wedge itself, including its straight side edges and polygonal
+## arc. A body entirely outside this warning cannot be hit by a marked sweep.
+func intersects_sector_body(at: Vector2, body_radius: float) -> bool:
+	if shape != Shape.SECTOR:
+		return false
+	var polygon := _sector_points(radius)
+	for i in polygon.size():
+		polygon[i] = global_transform * polygon[i]
+	if Geometry2D.is_point_in_polygon(at, polygon):
+		return true
+	var radius_squared := maxf(0.0, body_radius) ** 2
+	for i in polygon.size():
+		var closest := Geometry2D.get_closest_point_to_segment(at, polygon[i], polygon[(i + 1) % polygon.size()])
+		if at.distance_squared_to(closest) <= radius_squared:
+			return true
+	return false
+
+
 func _draw() -> void:
 	var p := pulse()
 	var hot := is_hot()

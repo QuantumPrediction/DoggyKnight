@@ -1,0 +1,657 @@
+{
+	"attempts": [
+		{
+			"best_stars": 0,
+			"build_tricks": [
+				"dig"
+			],
+			"can_revive": false,
+			"chapter": 1,
+			"chapter_count": 6,
+			"chapter_name": "CHAPTER_1",
+			"chapters_cleared": 0,
+			"damage_taken": 136,
+			"difficulty": "normal",
+			"equipment_reward": {},
+			"event_tone": "merlin",
+			"game_complete": false,
+			"guard_commands": 0,
+			"guard_prevented_damage": 0,
+			"guard_protected_hits": 0,
+			"hero_level": 2,
+			"is_final": false,
+			"kills": 7,
+			"level_count": 6,
+			"level_id": "1-1",
+			"level_index": 0,
+			"level_name": "LEVEL_1_1",
+			"max_vigor": 126,
+			"melee_empty_swings": 0,
+			"mode": "story",
+			"moving_seconds": 57.849999999998,
+			"new_best": false,
+			"next_chapter_unlocked": false,
+			"next_is_camp": false,
+			"remaining_vigor": 0,
+			"revive_cost": 15,
+			"snack_bonus": 0,
+			"snacks": 1,
+			"snacks_earned": 1,
+			"standing_seconds": 14.7000000000003,
+			"star_goals": [
+				{
+					"key": "STAR_CLEAR",
+					"met": false,
+					"text": "過關",
+					"value": 0
+				},
+				{
+					"key": "STAR_TIME",
+					"met": false,
+					"text": "70 秒內過關",
+					"value": 70
+				},
+				{
+					"key": "STAR_DAMAGE",
+					"met": false,
+					"text": "失去的活力不超過 16",
+					"value": 16
+				}
+			],
+			"stars": 0,
+			"time_sec": 71.5833333333306,
+			"tricks": [
+				"dig"
+			],
+			"victory": false
+		},
+		{
+			"best_stars": 2,
+			"build_tricks": [
+				"dig",
+				"dig"
+			],
+			"can_revive": false,
+			"chapter": 1,
+			"chapter_count": 6,
+			"chapter_name": "CHAPTER_1",
+			"chapters_cleared": 0,
+			"damage_taken": 6,
+			"difficulty": "normal",
+			"equipment_reward": {
+				"coins": 40,
+				"duplicate": false,
+				"gems": 0,
+				"item": "",
+				"shards": 0
+			},
+			"event_tone": "merlin",
+			"game_complete": false,
+			"guard_commands": 0,
+			"guard_prevented_damage": 0,
+			"guard_protected_hits": 0,
+			"hero_level": 3,
+			"is_final": false,
+			"kills": 16,
+			"level_count": 6,
+			"level_id": "1-1",
+			"level_index": 0,
+			"level_name": "LEVEL_1_1",
+			"max_vigor": 126,
+			"melee_empty_swings": 0,
+			"mode": "story",
+			"moving_seconds": 59.9833333333312,
+			"new_best": false,
+			"next_chapter_unlocked": false,
+			"next_is_camp": false,
+			"remaining_vigor": 122,
+			"revive_cost": 15,
+			"snack_bonus": 13,
+			"snacks": 19,
+			"snacks_earned": 19,
+			"standing_seconds": 15.7500000000004,
+			"star_goals": [
+				{
+					"key": "STAR_CLEAR",
+					"met": true,
+					"text": "過關",
+					"value": 0
+				},
+				{
+					"key": "STAR_TIME",
+					"met": false,
+					"text": "70 秒內過關",
+					"value": 70
+				},
+				{
+					"key": "STAR_DAMAGE",
+					"met": true,
+					"text": "失去的活力不超過 16",
+					"value": 16
+				}
+			],
+			"stars": 2,
+			"time_sec": 73.7666666666638,
+			"tricks": [
+				"dig",
+				"dig"
+			],
+			"victory": true
+		},
+		{
+			"best_stars": 0,
+			"build_tricks": [
+				"dig",
+				"dig",
+				"roll",
+				"roll"
+			],
+			"can_revive": true,
+			"chapter": 1,
+			"chapter_count": 6,
+			"chapter_name": "CHAPTER_1",
+			"chapters_cleared": 0,
+			"damage_taken": 137,
+			"difficulty": "normal",
+			"equipment_reward": {},
+			"event_tone": "merlin",
+			"game_complete": false,
+			"guard_commands": 0,
+			"guard_prevented_damage": 0,
+			"guard_protected_hits": 0,
+			"hero_level": 4,
+			"is_final": false,
+			"kills": 17,
+			"level_count": 6,
+			"level_id": "1-2",
+			"level_index": 1,
+			"level_name": "LEVEL_1_2",
+			"max_vigor": 126,
+			"melee_empty_swings": 0,
+			"mode": "story",
+			"moving_seconds": 85.0999999999965,
+			"new_best": false,
+			"next_chapter_unlocked": false,
+			"next_is_camp": false,
+			"remaining_vigor": 0,
+			"revive_cost": 23,
+			"snack_bonus": 0,
+			"snacks": 26,
+			"snacks_earned": 7,
+			"standing_seconds": 23.3833333333333,
+			"star_goals": [
+				{
+					"key": "STAR_CLEAR",
+					"met": false,
+					"text": "過關",
+					"value": 0
+				},
+				{
+					"key": "STAR_TIME",
+					"met": false,
+					"text": "75 秒內過關",
+					"value": 75
+				},
+				{
+					"key": "STAR_DAMAGE",
+					"met": false,
+					"text": "失去的活力不超過 24",
+					"value": 24
+				}
+			],
+			"stars": 0,
+			"time_sec": 107.516666666662,
+			"tricks": [
+				"roll"
+			],
+			"victory": false
+		},
+		{
+			"best_stars": 1,
+			"build_tricks": [
+				"dig",
+				"dig",
+				"roll",
+				"roll"
+			],
+			"can_revive": false,
+			"chapter": 1,
+			"chapter_count": 6,
+			"chapter_name": "CHAPTER_1",
+			"chapters_cleared": 0,
+			"damage_taken": 53,
+			"difficulty": "normal",
+			"equipment_reward": {
+				"coins": 40,
+				"duplicate": false,
+				"gems": 0,
+				"item": "",
+				"shards": 0
+			},
+			"event_tone": "merlin",
+			"game_complete": false,
+			"guard_commands": 0,
+			"guard_prevented_damage": 0,
+			"guard_protected_hits": 0,
+			"hero_level": 4,
+			"is_final": false,
+			"kills": 24,
+			"level_count": 6,
+			"level_id": "1-2",
+			"level_index": 1,
+			"level_name": "LEVEL_1_2",
+			"max_vigor": 126,
+			"melee_empty_swings": 0,
+			"mode": "story",
+			"moving_seconds": 66.2333333333309,
+			"new_best": false,
+			"next_chapter_unlocked": false,
+			"next_is_camp": true,
+			"remaining_vigor": 85,
+			"revive_cost": 23,
+			"snack_bonus": 9,
+			"snacks": 38,
+			"snacks_earned": 19,
+			"standing_seconds": 25.0333333333332,
+			"star_goals": [
+				{
+					"key": "STAR_CLEAR",
+					"met": true,
+					"text": "過關",
+					"value": 0
+				},
+				{
+					"key": "STAR_TIME",
+					"met": false,
+					"text": "75 秒內過關",
+					"value": 75
+				},
+				{
+					"key": "STAR_DAMAGE",
+					"met": false,
+					"text": "失去的活力不超過 24",
+					"value": 24
+				}
+			],
+			"stars": 1,
+			"time_sec": 89.2833333333296,
+			"tricks": [
+				"roll"
+			],
+			"victory": true
+		},
+		{
+			"best_stars": 1,
+			"build_tricks": [
+				"dig",
+				"dig",
+				"roll",
+				"roll",
+				"dig",
+				"fetch",
+				"fetch"
+			],
+			"can_revive": false,
+			"chapter": 1,
+			"chapter_count": 6,
+			"chapter_name": "CHAPTER_1",
+			"chapters_cleared": 0,
+			"damage_taken": 64,
+			"difficulty": "normal",
+			"equipment_reward": {
+				"coins": 40,
+				"duplicate": false,
+				"gems": 0,
+				"item": "",
+				"shards": 0
+			},
+			"event_tone": "merlin",
+			"game_complete": false,
+			"guard_commands": 8,
+			"guard_prevented_damage": 8,
+			"guard_protected_hits": 3,
+			"hero_level": 6,
+			"is_final": false,
+			"kills": 33,
+			"level_count": 6,
+			"level_id": "1-3",
+			"level_index": 2,
+			"level_name": "LEVEL_1_3",
+			"max_vigor": 126,
+			"melee_empty_swings": 0,
+			"mode": "story",
+			"moving_seconds": 59.1999999999979,
+			"new_best": false,
+			"next_chapter_unlocked": false,
+			"next_is_camp": false,
+			"remaining_vigor": 114,
+			"revive_cost": 31,
+			"snack_bonus": 9,
+			"snacks": 78,
+			"snacks_earned": 30,
+			"standing_seconds": 26.8833333333331,
+			"star_goals": [
+				{
+					"key": "STAR_CLEAR",
+					"met": true,
+					"text": "過關",
+					"value": 0
+				},
+				{
+					"key": "STAR_TIME",
+					"met": false,
+					"text": "72 秒內過關",
+					"value": 72
+				},
+				{
+					"key": "STAR_DAMAGE",
+					"met": false,
+					"text": "失去的活力不超過 28",
+					"value": 28
+				}
+			],
+			"stars": 1,
+			"time_sec": 84.1166666666632,
+			"tricks": [
+				"dig",
+				"fetch",
+				"fetch"
+			],
+			"victory": true
+		},
+		{
+			"best_stars": 1,
+			"build_tricks": [
+				"dig",
+				"dig",
+				"roll",
+				"roll",
+				"dig",
+				"fetch",
+				"fetch",
+				"fetch",
+				"zoomies",
+				"roll",
+				"spin"
+			],
+			"can_revive": false,
+			"chapter": 1,
+			"chapter_count": 6,
+			"chapter_name": "CHAPTER_1",
+			"chapters_cleared": 0,
+			"damage_taken": 125,
+			"difficulty": "normal",
+			"equipment_reward": {
+				"coins": 40,
+				"duplicate": false,
+				"gems": 0,
+				"item": "",
+				"shards": 0
+			},
+			"event_tone": "merlin",
+			"game_complete": false,
+			"guard_commands": 9,
+			"guard_prevented_damage": 5,
+			"guard_protected_hits": 2,
+			"hero_level": 9,
+			"is_final": false,
+			"kills": 38,
+			"level_count": 6,
+			"level_id": "1-4",
+			"level_index": 3,
+			"level_name": "LEVEL_1_4",
+			"max_vigor": 126,
+			"melee_empty_swings": 0,
+			"mode": "story",
+			"moving_seconds": 56.2499999999981,
+			"new_best": false,
+			"next_chapter_unlocked": false,
+			"next_is_camp": true,
+			"remaining_vigor": 126,
+			"revive_cost": 39,
+			"snack_bonus": 9,
+			"snacks": 126,
+			"snacks_earned": 48,
+			"standing_seconds": 45.8499999999987,
+			"star_goals": [
+				{
+					"key": "STAR_CLEAR",
+					"met": true,
+					"text": "過關",
+					"value": 0
+				},
+				{
+					"key": "STAR_TIME",
+					"met": false,
+					"text": "78 秒內過關",
+					"value": 78
+				},
+				{
+					"key": "STAR_DAMAGE",
+					"met": false,
+					"text": "失去的活力不超過 30",
+					"value": 30
+				}
+			],
+			"stars": 1,
+			"time_sec": 100.166666666662,
+			"tricks": [
+				"fetch",
+				"zoomies",
+				"roll",
+				"spin"
+			],
+			"victory": true
+		},
+		{
+			"best_stars": 2,
+			"build_tricks": [
+				"dig",
+				"dig",
+				"roll",
+				"roll",
+				"dig",
+				"zoomies",
+				"roll",
+				"spin",
+				"high_five",
+				"spin",
+				"zoomies",
+				"spin"
+			],
+			"can_revive": false,
+			"chapter": 1,
+			"chapter_count": 6,
+			"chapter_name": "CHAPTER_1",
+			"chapters_cleared": 0,
+			"damage_taken": 99,
+			"difficulty": "normal",
+			"equipment_reward": {
+				"coins": 40,
+				"duplicate": false,
+				"gems": 0,
+				"item": "",
+				"shards": 0
+			},
+			"event_tone": "merlin",
+			"game_complete": false,
+			"guard_commands": 6,
+			"guard_prevented_damage": 0,
+			"guard_protected_hits": 0,
+			"hero_level": 11,
+			"is_final": false,
+			"kills": 34,
+			"level_count": 6,
+			"level_id": "1-5",
+			"level_index": 4,
+			"level_name": "LEVEL_1_5",
+			"max_vigor": 126,
+			"melee_empty_swings": 0,
+			"mode": "story",
+			"moving_seconds": 38.8666666666657,
+			"new_best": false,
+			"next_chapter_unlocked": false,
+			"next_is_camp": false,
+			"remaining_vigor": 118,
+			"revive_cost": 47,
+			"snack_bonus": 13,
+			"snacks": 181,
+			"snacks_earned": 45,
+			"standing_seconds": 39.1499999999991,
+			"star_goals": [
+				{
+					"key": "STAR_CLEAR",
+					"met": true,
+					"text": "過關",
+					"value": 0
+				},
+				{
+					"key": "STAR_TIME",
+					"met": true,
+					"text": "78 秒內過關",
+					"value": 78
+				},
+				{
+					"key": "STAR_DAMAGE",
+					"met": false,
+					"text": "失去的活力不超過 32",
+					"value": 32
+				}
+			],
+			"stars": 2,
+			"time_sec": 76.099999999997,
+			"tricks": [
+				"shake",
+				"high_five",
+				"spin",
+				"zoomies",
+				"spin"
+			],
+			"victory": true
+		},
+		{
+			"best_stars": 3,
+			"build_tricks": [
+				"dig",
+				"dig",
+				"roll",
+				"roll",
+				"dig",
+				"zoomies",
+				"roll",
+				"spin",
+				"high_five",
+				"spin",
+				"zoomies",
+				"spin",
+				"zoomies",
+				"bark",
+				"bark"
+			],
+			"can_revive": false,
+			"chapter": 1,
+			"chapter_count": 6,
+			"chapter_name": "CHAPTER_1",
+			"chapters_cleared": 1,
+			"damage_taken": 14,
+			"difficulty": "normal",
+			"equipment_reward": {
+				"coins": 160,
+				"duplicate": false,
+				"gems": 20,
+				"item": "",
+				"shards": 2
+			},
+			"event_tone": "merlin",
+			"game_complete": false,
+			"guard_commands": 5,
+			"guard_prevented_damage": 0,
+			"guard_protected_hits": 0,
+			"hero_level": 13,
+			"is_final": true,
+			"kills": 9,
+			"level_count": 6,
+			"level_id": "1-6",
+			"level_index": 5,
+			"level_name": "LEVEL_1_6",
+			"max_vigor": 126,
+			"melee_empty_swings": 0,
+			"mode": "story",
+			"moving_seconds": 27.2833333333331,
+			"new_best": false,
+			"next_chapter_unlocked": true,
+			"next_is_camp": false,
+			"remaining_vigor": 126,
+			"revive_cost": 55,
+			"snack_bonus": 17,
+			"snacks": 229,
+			"snacks_earned": 48,
+			"standing_seconds": 28.833333333333,
+			"star_goals": [
+				{
+					"key": "STAR_CLEAR",
+					"met": true,
+					"text": "過關",
+					"value": 0
+				},
+				{
+					"key": "STAR_TIME",
+					"met": true,
+					"text": "55 秒內過關",
+					"value": 55
+				},
+				{
+					"key": "STAR_DAMAGE",
+					"met": true,
+					"text": "失去的活力不超過 30",
+					"value": 30
+				}
+			],
+			"stars": 3,
+			"time_sec": 54.1666666666649,
+			"tricks": [
+				"zoomies",
+				"bark",
+				"bark"
+			],
+			"victory": true
+		}
+	],
+	"chapter": 1,
+	"downs": 2,
+	"engine": "4.7.2-stable (official)",
+	"equipment_element": "earth",
+	"equipment_preset": "common1",
+	"finished": true,
+	"guard_policy": "reactive",
+	"hard": false,
+	"hero": "knight",
+	"limits": "Staged gear, class-specific bot, first offered trick, automatic dialogue skip and camp bot. This is engineering evidence, not a human balance or retention study.",
+	"max_downs": 3,
+	"max_sim_seconds": 1200.0,
+	"movement_policy": "original",
+	"outcome": "complete",
+	"schema": 3,
+	"seed": 37,
+	"seed_scope": "Global, flow, enemy spawn order, player crit, loot, equipment drops and minigames; cosmetic camp dialogue RNG is not seeded.",
+	"simulation_seconds": 676.949999999713,
+	"speed": 1.0,
+	"starting_equipment": {
+		"elements": {
+			"quilted_vest": "earth",
+			"training_sword": "earth"
+		},
+		"loadouts": {
+			"knight": {
+				"armor": "quilted_vest",
+				"weapon": "training_sword"
+			}
+		},
+		"owned": {
+			"quilted_vest": 1,
+			"training_sword": 1
+		}
+	},
+	"training": {},
+	"ultimates": 15
+}

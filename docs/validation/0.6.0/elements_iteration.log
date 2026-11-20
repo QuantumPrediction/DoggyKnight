@@ -1,0 +1,919 @@
+== 匯入資源 ==
+== 執行測試 ==
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/equipment/test_checkpoint.gd
+  ok      test_level_boundary_roundtrip_preserves_build_modifiers_and_rng
+  ok      test_first_level_checkpoint_exists_and_unsaved_rewards_roll_back
+  ok      test_clear_award_is_once_and_persisted_with_next_checkpoint
+  ok      test_failed_store_write_rolls_back_purchase
+  ok      test_corrupt_checkpoint_and_legacy_profile_are_safe
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [2] _start_level (res://game/flow/flow_main.gd:659)
+              [3] _go (res://game/flow/flow_main.gd:1109)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: RunProgression.rebuild_stats (res://game/progression/run_progression.gd:158)
+          GDScript backtrace (most recent call first):
+              [0] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [1] _start_level (res://game/flow/flow_main.gd:659)
+              [2] _go (res://game/flow/flow_main.gd:1109)
+  ok      test_resumed_camp_applies_new_loadout_on_departure
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [2] _prepare_run (res://game/flow/flow_main.gd:1378)
+              [3] start_new_game (res://game/flow/flow_main.gd:587)
+              [4] _go (res://game/flow/flow_main.gd:1109)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: RunProgression.rebuild_stats (res://game/progression/run_progression.gd:158)
+          GDScript backtrace (most recent call first):
+              [0] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [1] _prepare_run (res://game/flow/flow_main.gd:1378)
+              [2] start_new_game (res://game/flow/flow_main.gd:587)
+              [3] _go (res://game/flow/flow_main.gd:1109)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [2] _start_level (res://game/flow/flow_main.gd:659)
+              [3] start_new_game (res://game/flow/flow_main.gd:597)
+              [4] _go (res://game/flow/flow_main.gd:1109)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: RunProgression.rebuild_stats (res://game/progression/run_progression.gd:158)
+          GDScript backtrace (most recent call first):
+              [0] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [1] _start_level (res://game/flow/flow_main.gd:659)
+              [2] start_new_game (res://game/flow/flow_main.gd:597)
+              [3] _go (res://game/flow/flow_main.gd:1109)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [2] _prepare_run (res://game/flow/flow_main.gd:1378)
+              [3] continue_game (res://game/flow/flow_main.gd:609)
+              [4] test_retry_keeps_checkpoint_equipment_until_next_stage (res://tests/equipment/test_checkpoint.gd:103)
+              [5] start_new_game (res://tests/line_b/flow_test_base.gd:153)
+              [6] wait_until (res://tests/line_b/flow_test_base.gd:146)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: RunProgression.rebuild_stats (res://game/progression/run_progression.gd:158)
+          GDScript backtrace (most recent call first):
+              [0] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [1] _prepare_run (res://game/flow/flow_main.gd:1378)
+              [2] continue_game (res://game/flow/flow_main.gd:609)
+              [3] test_retry_keeps_checkpoint_equipment_until_next_stage (res://tests/equipment/test_checkpoint.gd:103)
+              [4] start_new_game (res://tests/line_b/flow_test_base.gd:153)
+              [5] wait_until (res://tests/line_b/flow_test_base.gd:146)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [2] import_checkpoint (res://game/progression/run_progression.gd:316)
+              [3] continue_game (res://game/flow/flow_main.gd:612)
+              [4] test_retry_keeps_checkpoint_equipment_until_next_stage (res://tests/equipment/test_checkpoint.gd:103)
+              [5] start_new_game (res://tests/line_b/flow_test_base.gd:153)
+              [6] wait_until (res://tests/line_b/flow_test_base.gd:146)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: RunProgression.rebuild_stats (res://game/progression/run_progression.gd:158)
+          GDScript backtrace (most recent call first):
+              [0] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [1] import_checkpoint (res://game/progression/run_progression.gd:316)
+              [2] continue_game (res://game/flow/flow_main.gd:612)
+              [3] test_retry_keeps_checkpoint_equipment_until_next_stage (res://tests/equipment/test_checkpoint.gd:103)
+              [4] start_new_game (res://tests/line_b/flow_test_base.gd:153)
+              [5] wait_until (res://tests/line_b/flow_test_base.gd:146)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [2] _start_level (res://game/flow/flow_main.gd:659)
+              [3] continue_game (res://game/flow/flow_main.gd:627)
+              [4] test_retry_keeps_checkpoint_equipment_until_next_stage (res://tests/equipment/test_checkpoint.gd:103)
+              [5] start_new_game (res://tests/line_b/flow_test_base.gd:153)
+              [6] wait_until (res://tests/line_b/flow_test_base.gd:146)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: RunProgression.rebuild_stats (res://game/progression/run_progression.gd:158)
+          GDScript backtrace (most recent call first):
+              [0] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [1] _start_level (res://game/flow/flow_main.gd:659)
+              [2] continue_game (res://game/flow/flow_main.gd:627)
+              [3] test_retry_keeps_checkpoint_equipment_until_next_stage (res://tests/equipment/test_checkpoint.gd:103)
+              [4] start_new_game (res://tests/line_b/flow_test_base.gd:153)
+              [5] wait_until (res://tests/line_b/flow_test_base.gd:146)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [2] _start_level (res://game/flow/flow_main.gd:659)
+              [3] retry_level (res://game/flow/flow_main.gd:643)
+              [4] test_retry_keeps_checkpoint_equipment_until_next_stage (res://tests/equipment/test_checkpoint.gd:108)
+              [5] wait_until (res://tests/line_b/flow_test_base.gd:146)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: RunProgression.rebuild_stats (res://game/progression/run_progression.gd:158)
+          GDScript backtrace (most recent call first):
+              [0] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [1] _start_level (res://game/flow/flow_main.gd:659)
+              [2] retry_level (res://game/flow/flow_main.gd:643)
+              [3] test_retry_keeps_checkpoint_equipment_until_next_stage (res://tests/equipment/test_checkpoint.gd:108)
+              [4] wait_until (res://tests/line_b/flow_test_base.gd:146)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [2] _start_level (res://game/flow/flow_main.gd:659)
+              [3] _go (res://game/flow/flow_main.gd:1109)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: RunProgression.rebuild_stats (res://game/progression/run_progression.gd:158)
+          GDScript backtrace (most recent call first):
+              [0] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [1] _start_level (res://game/flow/flow_main.gd:659)
+              [2] _go (res://game/flow/flow_main.gd:1109)
+  ok      test_retry_keeps_checkpoint_equipment_until_next_stage
+
+res://tests/equipment/test_combat.gd
+SCRIPT ERROR: Invalid access to property or key 'water' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] setup (res://game/equipment/equipment_combat.gd:14)
+              [2] _ready (res://game/actors/player/player.gd:121)
+              [3] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [4] test_equipped_staff_modifies_real_projectiles (res://tests/equipment/test_combat.gd:17)
+              [5] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'effects' on a base object of type 'Dictionary'.
+          at: EquipmentCombat.setup (res://game/equipment/equipment_combat.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] setup (res://game/equipment/equipment_combat.gd:14)
+              [1] _ready (res://game/actors/player/player.gd:121)
+              [2] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [3] test_equipped_staff_modifies_real_projectiles (res://tests/equipment/test_combat.gd:17)
+              [4] _run (res://tests/framework/test_runner.gd:48)
+  FAIL    test_equipped_staff_modifies_real_projectiles
+          - expected 37.0 ± 0.0001, got 22.0
+SCRIPT ERROR: Invalid access to property or key 'wind' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] setup (res://game/equipment/equipment_combat.gd:14)
+              [2] _ready (res://game/actors/player/player.gd:121)
+              [3] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [4] test_equipped_bow_adds_two_targets_at_level_nine (res://tests/equipment/test_combat.gd:28)
+              [5] _run (res://tests/framework/test_runner.gd:48)
+              [6] after_each (res://tests/equipment/test_combat.gd:10)
+              [7] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'effects' on a base object of type 'Dictionary'.
+          at: EquipmentCombat.setup (res://game/equipment/equipment_combat.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] setup (res://game/equipment/equipment_combat.gd:14)
+              [1] _ready (res://game/actors/player/player.gd:121)
+              [2] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [3] test_equipped_bow_adds_two_targets_at_level_nine (res://tests/equipment/test_combat.gd:28)
+              [4] _run (res://tests/framework/test_runner.gd:48)
+              [5] after_each (res://tests/equipment/test_combat.gd:10)
+              [6] after_each (res://tests/line_a/combat_test_base.gd:49)
+  FAIL    test_equipped_bow_adds_two_targets_at_level_nine
+          - expected 4, got 2
+  ok      test_companion_signal_charges_real_player_next_hit_only
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] setup (res://game/equipment/equipment_combat.gd:14)
+              [2] _ready (res://game/actors/player/player.gd:121)
+              [3] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [4] test_wave_heal_and_armor_reduction_reach_real_player (res://tests/equipment/test_combat.gd:51)
+              [5] _run (res://tests/framework/test_runner.gd:48)
+              [6] after_each (res://tests/equipment/test_combat.gd:10)
+              [7] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'effects' on a base object of type 'Dictionary'.
+          at: EquipmentCombat.setup (res://game/equipment/equipment_combat.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] setup (res://game/equipment/equipment_combat.gd:14)
+              [1] _ready (res://game/actors/player/player.gd:121)
+              [2] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [3] test_wave_heal_and_armor_reduction_reach_real_player (res://tests/equipment/test_combat.gd:51)
+              [4] _run (res://tests/framework/test_runner.gd:48)
+              [5] after_each (res://tests/equipment/test_combat.gd:10)
+              [6] after_each (res://tests/line_a/combat_test_base.gd:49)
+  FAIL    test_wave_heal_and_armor_reduction_reach_real_player
+          - expected 54, got 50
+          - oathplate proc reduces first hit to 13: expected 41, got 30
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [2] test_forged_cadence_reaches_melee_and_projectile_cooldown (res://tests/equipment/test_combat.gd:69)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+              [4] after_each (res://tests/equipment/test_combat.gd:10)
+              [5] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: RunProgression.rebuild_stats (res://game/progression/run_progression.gd:158)
+          GDScript backtrace (most recent call first):
+              [0] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [1] test_forged_cadence_reaches_melee_and_projectile_cooldown (res://tests/equipment/test_combat.gd:69)
+              [2] _run (res://tests/framework/test_runner.gd:48)
+              [3] after_each (res://tests/equipment/test_combat.gd:10)
+              [4] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] setup (res://game/equipment/equipment_combat.gd:14)
+              [2] _ready (res://game/actors/player/player.gd:121)
+              [3] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [4] test_forged_cadence_reaches_melee_and_projectile_cooldown (res://tests/equipment/test_combat.gd:70)
+              [5] _run (res://tests/framework/test_runner.gd:48)
+              [6] after_each (res://tests/equipment/test_combat.gd:10)
+              [7] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'effects' on a base object of type 'Dictionary'.
+          at: EquipmentCombat.setup (res://game/equipment/equipment_combat.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] setup (res://game/equipment/equipment_combat.gd:14)
+              [1] _ready (res://game/actors/player/player.gd:121)
+              [2] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [3] test_forged_cadence_reaches_melee_and_projectile_cooldown (res://tests/equipment/test_combat.gd:70)
+              [4] _run (res://tests/framework/test_runner.gd:48)
+              [5] after_each (res://tests/equipment/test_combat.gd:10)
+              [6] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'wind' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [2] test_forged_cadence_reaches_melee_and_projectile_cooldown (res://tests/equipment/test_combat.gd:69)
+              [3] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: RunProgression.rebuild_stats (res://game/progression/run_progression.gd:158)
+          GDScript backtrace (most recent call first):
+              [0] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [1] test_forged_cadence_reaches_melee_and_projectile_cooldown (res://tests/equipment/test_combat.gd:69)
+              [2] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'wind' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] setup (res://game/equipment/equipment_combat.gd:14)
+              [2] _ready (res://game/actors/player/player.gd:121)
+              [3] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [4] test_forged_cadence_reaches_melee_and_projectile_cooldown (res://tests/equipment/test_combat.gd:70)
+              [5] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'effects' on a base object of type 'Dictionary'.
+          at: EquipmentCombat.setup (res://game/equipment/equipment_combat.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] setup (res://game/equipment/equipment_combat.gd:14)
+              [1] _ready (res://game/actors/player/player.gd:121)
+              [2] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [3] test_forged_cadence_reaches_melee_and_projectile_cooldown (res://tests/equipment/test_combat.gd:70)
+              [4] after_each (res://tests/line_a/combat_test_base.gd:49)
+  FAIL    test_forged_cadence_reaches_melee_and_projectile_cooldown
+          - expected 0.375 ± 0.0001, got 0.38
+          - expected 0.3625 ± 0.0001, got 0.39
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [2] _element_arena (res://tests/equipment/test_combat.gd:89)
+              [3] test_earth_resonance_reduces_real_damage_then_waits_for_cooldown (res://tests/equipment/test_combat.gd:94)
+              [4] _run (res://tests/framework/test_runner.gd:48)
+              [5] after_each (res://tests/equipment/test_combat.gd:10)
+              [6] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: RunProgression.rebuild_stats (res://game/progression/run_progression.gd:158)
+          GDScript backtrace (most recent call first):
+              [0] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [1] _element_arena (res://tests/equipment/test_combat.gd:89)
+              [2] test_earth_resonance_reduces_real_damage_then_waits_for_cooldown (res://tests/equipment/test_combat.gd:94)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+              [4] after_each (res://tests/equipment/test_combat.gd:10)
+              [5] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] setup (res://game/equipment/equipment_combat.gd:14)
+              [2] _ready (res://game/actors/player/player.gd:121)
+              [3] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [4] _element_arena (res://tests/equipment/test_combat.gd:91)
+              [5] test_earth_resonance_reduces_real_damage_then_waits_for_cooldown (res://tests/equipment/test_combat.gd:94)
+              [6] _run (res://tests/framework/test_runner.gd:48)
+              [7] after_each (res://tests/equipment/test_combat.gd:10)
+              [8] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'effects' on a base object of type 'Dictionary'.
+          at: EquipmentCombat.setup (res://game/equipment/equipment_combat.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] setup (res://game/equipment/equipment_combat.gd:14)
+              [1] _ready (res://game/actors/player/player.gd:121)
+              [2] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [3] _element_arena (res://tests/equipment/test_combat.gd:91)
+              [4] test_earth_resonance_reduces_real_damage_then_waits_for_cooldown (res://tests/equipment/test_combat.gd:94)
+              [5] _run (res://tests/framework/test_runner.gd:48)
+              [6] after_each (res://tests/equipment/test_combat.gd:10)
+              [7] after_each (res://tests/line_a/combat_test_base.gd:49)
+  FAIL    test_earth_resonance_reduces_real_damage_then_waits_for_cooldown
+          - 20 * .92 rounded then 20% shield rounded: expected 14, got 20
+          - expected 18, got 20
+          - expected 14, got 20
+SCRIPT ERROR: Invalid access to property or key 'water' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [2] _element_arena (res://tests/equipment/test_combat.gd:89)
+              [3] test_water_restores_real_vigor_on_wave_and_ultimate_for_all_classes (res://tests/equipment/test_combat.gd:111)
+              [4] _run (res://tests/framework/test_runner.gd:48)
+              [5] after_each (res://tests/equipment/test_combat.gd:10)
+              [6] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: RunProgression.rebuild_stats (res://game/progression/run_progression.gd:158)
+          GDScript backtrace (most recent call first):
+              [0] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [1] _element_arena (res://tests/equipment/test_combat.gd:89)
+              [2] test_water_restores_real_vigor_on_wave_and_ultimate_for_all_classes (res://tests/equipment/test_combat.gd:111)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+              [4] after_each (res://tests/equipment/test_combat.gd:10)
+              [5] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'water' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] setup (res://game/equipment/equipment_combat.gd:14)
+              [2] _ready (res://game/actors/player/player.gd:121)
+              [3] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [4] _element_arena (res://tests/equipment/test_combat.gd:91)
+              [5] test_water_restores_real_vigor_on_wave_and_ultimate_for_all_classes (res://tests/equipment/test_combat.gd:111)
+              [6] _run (res://tests/framework/test_runner.gd:48)
+              [7] after_each (res://tests/equipment/test_combat.gd:10)
+              [8] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'effects' on a base object of type 'Dictionary'.
+          at: EquipmentCombat.setup (res://game/equipment/equipment_combat.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] setup (res://game/equipment/equipment_combat.gd:14)
+              [1] _ready (res://game/actors/player/player.gd:121)
+              [2] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [3] _element_arena (res://tests/equipment/test_combat.gd:91)
+              [4] test_water_restores_real_vigor_on_wave_and_ultimate_for_all_classes (res://tests/equipment/test_combat.gd:111)
+              [5] _run (res://tests/framework/test_runner.gd:48)
+              [6] after_each (res://tests/equipment/test_combat.gd:10)
+              [7] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'water' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [2] _element_arena (res://tests/equipment/test_combat.gd:89)
+              [3] test_water_restores_real_vigor_on_wave_and_ultimate_for_all_classes (res://tests/equipment/test_combat.gd:111)
+              [4] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: RunProgression.rebuild_stats (res://game/progression/run_progression.gd:158)
+          GDScript backtrace (most recent call first):
+              [0] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [1] _element_arena (res://tests/equipment/test_combat.gd:89)
+              [2] test_water_restores_real_vigor_on_wave_and_ultimate_for_all_classes (res://tests/equipment/test_combat.gd:111)
+              [3] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'water' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] setup (res://game/equipment/equipment_combat.gd:14)
+              [2] _ready (res://game/actors/player/player.gd:121)
+              [3] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [4] _element_arena (res://tests/equipment/test_combat.gd:91)
+              [5] test_water_restores_real_vigor_on_wave_and_ultimate_for_all_classes (res://tests/equipment/test_combat.gd:111)
+              [6] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'effects' on a base object of type 'Dictionary'.
+          at: EquipmentCombat.setup (res://game/equipment/equipment_combat.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] setup (res://game/equipment/equipment_combat.gd:14)
+              [1] _ready (res://game/actors/player/player.gd:121)
+              [2] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [3] _element_arena (res://tests/equipment/test_combat.gd:91)
+              [4] test_water_restores_real_vigor_on_wave_and_ultimate_for_all_classes (res://tests/equipment/test_combat.gd:111)
+              [5] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'water' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [2] _element_arena (res://tests/equipment/test_combat.gd:89)
+              [3] test_water_restores_real_vigor_on_wave_and_ultimate_for_all_classes (res://tests/equipment/test_combat.gd:111)
+              [4] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: RunProgression.rebuild_stats (res://game/progression/run_progression.gd:158)
+          GDScript backtrace (most recent call first):
+              [0] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [1] _element_arena (res://tests/equipment/test_combat.gd:89)
+              [2] test_water_restores_real_vigor_on_wave_and_ultimate_for_all_classes (res://tests/equipment/test_combat.gd:111)
+              [3] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'water' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] setup (res://game/equipment/equipment_combat.gd:14)
+              [2] _ready (res://game/actors/player/player.gd:121)
+              [3] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [4] _element_arena (res://tests/equipment/test_combat.gd:91)
+              [5] test_water_restores_real_vigor_on_wave_and_ultimate_for_all_classes (res://tests/equipment/test_combat.gd:111)
+              [6] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'effects' on a base object of type 'Dictionary'.
+          at: EquipmentCombat.setup (res://game/equipment/equipment_combat.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] setup (res://game/equipment/equipment_combat.gd:14)
+              [1] _ready (res://game/actors/player/player.gd:121)
+              [2] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [3] _element_arena (res://tests/equipment/test_combat.gd:91)
+              [4] test_water_restores_real_vigor_on_wave_and_ultimate_for_all_classes (res://tests/equipment/test_combat.gd:111)
+              [5] after_each (res://tests/line_a/combat_test_base.gd:49)
+  FAIL    test_water_restores_real_vigor_on_wave_and_ultimate_for_all_classes
+          - expected 23, got 20
+          - expected 26, got 20
+          - expected 1.08 ± 0.0001, got 1.0
+          - expected 22, got 20
+          - expected 24, got 20
+          - expected 1.08 ± 0.0001, got 1.0
+          - expected 23, got 20
+          - expected 26, got 20
+          - expected 1.08 ± 0.0001, got 1.0
+SCRIPT ERROR: Invalid access to property or key 'fire' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [2] _element_arena (res://tests/equipment/test_combat.gd:89)
+              [3] test_fire_damage_and_counter_are_consumed_by_actual_player_hit_path (res://tests/equipment/test_combat.gd:124)
+              [4] _run (res://tests/framework/test_runner.gd:48)
+              [5] after_each (res://tests/equipment/test_combat.gd:10)
+              [6] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: RunProgression.rebuild_stats (res://game/progression/run_progression.gd:158)
+          GDScript backtrace (most recent call first):
+              [0] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [1] _element_arena (res://tests/equipment/test_combat.gd:89)
+              [2] test_fire_damage_and_counter_are_consumed_by_actual_player_hit_path (res://tests/equipment/test_combat.gd:124)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+              [4] after_each (res://tests/equipment/test_combat.gd:10)
+              [5] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'fire' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] setup (res://game/equipment/equipment_combat.gd:14)
+              [2] _ready (res://game/actors/player/player.gd:121)
+              [3] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [4] _element_arena (res://tests/equipment/test_combat.gd:91)
+              [5] test_fire_damage_and_counter_are_consumed_by_actual_player_hit_path (res://tests/equipment/test_combat.gd:124)
+              [6] _run (res://tests/framework/test_runner.gd:48)
+              [7] after_each (res://tests/equipment/test_combat.gd:10)
+              [8] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'effects' on a base object of type 'Dictionary'.
+          at: EquipmentCombat.setup (res://game/equipment/equipment_combat.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] setup (res://game/equipment/equipment_combat.gd:14)
+              [1] _ready (res://game/actors/player/player.gd:121)
+              [2] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [3] _element_arena (res://tests/equipment/test_combat.gd:91)
+              [4] test_fire_damage_and_counter_are_consumed_by_actual_player_hit_path (res://tests/equipment/test_combat.gd:124)
+              [5] _run (res://tests/framework/test_runner.gd:48)
+              [6] after_each (res://tests/equipment/test_combat.gd:10)
+              [7] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid assignment of property or key 'crit_chance' with value of type 'float' on a base object of type 'Resource (AbilityTuning)'.
+          at: test_fire_damage_and_counter_are_consumed_by_actual_player_hit_path (res://tests/equipment/test_combat.gd:126)
+          GDScript backtrace (most recent call first):
+              [0] test_fire_damage_and_counter_are_consumed_by_actual_player_hit_path (res://tests/equipment/test_combat.gd:126)
+              [1] _run (res://tests/framework/test_runner.gd:48)
+              [2] after_each (res://tests/equipment/test_combat.gd:10)
+              [3] after_each (res://tests/line_a/combat_test_base.gd:49)
+  ok      test_fire_damage_and_counter_are_consumed_by_actual_player_hit_path
+SCRIPT ERROR: Invalid access to property or key 'wind' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [2] _element_arena (res://tests/equipment/test_combat.gd:89)
+              [3] test_wind_changes_real_cooldown_and_move_stop_charge_for_all_classes (res://tests/equipment/test_combat.gd:136)
+              [4] _run (res://tests/framework/test_runner.gd:48)
+              [5] after_each (res://tests/equipment/test_combat.gd:10)
+              [6] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: RunProgression.rebuild_stats (res://game/progression/run_progression.gd:158)
+          GDScript backtrace (most recent call first):
+              [0] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [1] _element_arena (res://tests/equipment/test_combat.gd:89)
+              [2] test_wind_changes_real_cooldown_and_move_stop_charge_for_all_classes (res://tests/equipment/test_combat.gd:136)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+              [4] after_each (res://tests/equipment/test_combat.gd:10)
+              [5] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'wind' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] setup (res://game/equipment/equipment_combat.gd:14)
+              [2] _ready (res://game/actors/player/player.gd:121)
+              [3] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [4] _element_arena (res://tests/equipment/test_combat.gd:91)
+              [5] test_wind_changes_real_cooldown_and_move_stop_charge_for_all_classes (res://tests/equipment/test_combat.gd:136)
+              [6] _run (res://tests/framework/test_runner.gd:48)
+              [7] after_each (res://tests/equipment/test_combat.gd:10)
+              [8] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'effects' on a base object of type 'Dictionary'.
+          at: EquipmentCombat.setup (res://game/equipment/equipment_combat.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] setup (res://game/equipment/equipment_combat.gd:14)
+              [1] _ready (res://game/actors/player/player.gd:121)
+              [2] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [3] _element_arena (res://tests/equipment/test_combat.gd:91)
+              [4] test_wind_changes_real_cooldown_and_move_stop_charge_for_all_classes (res://tests/equipment/test_combat.gd:136)
+              [5] _run (res://tests/framework/test_runner.gd:48)
+              [6] after_each (res://tests/equipment/test_combat.gd:10)
+              [7] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'wind' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [2] _element_arena (res://tests/equipment/test_combat.gd:89)
+              [3] test_wind_changes_real_cooldown_and_move_stop_charge_for_all_classes (res://tests/equipment/test_combat.gd:136)
+              [4] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: RunProgression.rebuild_stats (res://game/progression/run_progression.gd:158)
+          GDScript backtrace (most recent call first):
+              [0] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [1] _element_arena (res://tests/equipment/test_combat.gd:89)
+              [2] test_wind_changes_real_cooldown_and_move_stop_charge_for_all_classes (res://tests/equipment/test_combat.gd:136)
+              [3] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'wind' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] setup (res://game/equipment/equipment_combat.gd:14)
+              [2] _ready (res://game/actors/player/player.gd:121)
+              [3] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [4] _element_arena (res://tests/equipment/test_combat.gd:91)
+              [5] test_wind_changes_real_cooldown_and_move_stop_charge_for_all_classes (res://tests/equipment/test_combat.gd:136)
+              [6] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'effects' on a base object of type 'Dictionary'.
+          at: EquipmentCombat.setup (res://game/equipment/equipment_combat.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] setup (res://game/equipment/equipment_combat.gd:14)
+              [1] _ready (res://game/actors/player/player.gd:121)
+              [2] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [3] _element_arena (res://tests/equipment/test_combat.gd:91)
+              [4] test_wind_changes_real_cooldown_and_move_stop_charge_for_all_classes (res://tests/equipment/test_combat.gd:136)
+              [5] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'wind' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [2] _element_arena (res://tests/equipment/test_combat.gd:89)
+              [3] test_wind_changes_real_cooldown_and_move_stop_charge_for_all_classes (res://tests/equipment/test_combat.gd:136)
+              [4] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: RunProgression.rebuild_stats (res://game/progression/run_progression.gd:158)
+          GDScript backtrace (most recent call first):
+              [0] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [1] _element_arena (res://tests/equipment/test_combat.gd:89)
+              [2] test_wind_changes_real_cooldown_and_move_stop_charge_for_all_classes (res://tests/equipment/test_combat.gd:136)
+              [3] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'wind' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] setup (res://game/equipment/equipment_combat.gd:14)
+              [2] _ready (res://game/actors/player/player.gd:121)
+              [3] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [4] _element_arena (res://tests/equipment/test_combat.gd:91)
+              [5] test_wind_changes_real_cooldown_and_move_stop_charge_for_all_classes (res://tests/equipment/test_combat.gd:136)
+              [6] after_each (res://tests/line_a/combat_test_base.gd:49)
+SCRIPT ERROR: Invalid access to property or key 'effects' on a base object of type 'Dictionary'.
+          at: EquipmentCombat.setup (res://game/equipment/equipment_combat.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] setup (res://game/equipment/equipment_combat.gd:14)
+              [1] _ready (res://game/actors/player/player.gd:121)
+              [2] make_arena (res://tests/line_a/combat_test_base.gd:16)
+              [3] _element_arena (res://tests/equipment/test_combat.gd:91)
+              [4] test_wind_changes_real_cooldown_and_move_stop_charge_for_all_classes (res://tests/equipment/test_combat.gd:136)
+              [5] after_each (res://tests/line_a/combat_test_base.gd:49)
+  FAIL    test_wind_changes_real_cooldown_and_move_stop_charge_for_all_classes
+          - expected 0.47 ± 0.0001, got 0.5
+          - expected 74.2 ± 0.0001, got 70.0
+          - expected 0.35 ± 0.0001, got 0.38
+          - expected 1.15 ± 0.0001, got 1.0
+          - expected 0.846 ± 0.0001, got 0.9
+          - expected 72.08 ± 0.0001, got 68.0
+          - expected 0.586 ± 0.0001, got 0.64
+          - expected 1.15 ± 0.0001, got 1.0
+          - expected 0.517 ± 0.0001, got 0.55
+          - expected 82.68 ± 0.0001, got 78.0
+          - expected 0.357 ± 0.0001, got 0.39
+          - expected 1.15 ± 0.0001, got 1.0
+
+res://tests/equipment/test_elements.gd
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] test_all_class_element_pairs_require_both_slots_and_ignore_treasures (res://tests/equipment/test_elements.gd:25)
+              [2] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'resonance' on a base object of type 'Dictionary'.
+          at: test_all_class_element_pairs_require_both_slots_and_ignore_treasures (res://tests/equipment/test_elements.gd:25)
+          GDScript backtrace (most recent call first):
+              [0] test_all_class_element_pairs_require_both_slots_and_ignore_treasures (res://tests/equipment/test_elements.gd:25)
+              [1] _run (res://tests/framework/test_runner.gd:48)
+  ok      test_all_class_element_pairs_require_both_slots_and_ignore_treasures
+  ok      test_default_and_invalid_affinities_preserve_legacy_collection
+  ok      test_every_weapon_and_armor_can_be_reengraved_without_spending_or_level_loss
+  ok      test_invalid_engraving_actions_are_atomic
+SCRIPT ERROR: Invalid access to property or key 'fire' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] test_resonance_adds_once_and_mixed_pieces_keep_individual_effects (res://tests/equipment/test_elements.gd:73)
+              [2] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: test_resonance_adds_once_and_mixed_pieces_keep_individual_effects (res://tests/equipment/test_elements.gd:74)
+          GDScript backtrace (most recent call first):
+              [0] test_resonance_adds_once_and_mixed_pieces_keep_individual_effects (res://tests/equipment/test_elements.gd:74)
+              [1] _run (res://tests/framework/test_runner.gd:48)
+  ok      test_resonance_adds_once_and_mixed_pieces_keep_individual_effects
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] stats (res://game/equipment/equipment_preview.gd:14)
+              [2] compare_element (res://game/equipment/equipment_preview.gd:45)
+              [3] test_element_preview_matches_real_transaction_without_mutating_snapshot (res://tests/equipment/test_elements.gd:95)
+              [4] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: stats (res://game/equipment/equipment_preview.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] stats (res://game/equipment/equipment_preview.gd:14)
+              [1] compare_element (res://game/equipment/equipment_preview.gd:45)
+              [2] test_element_preview_matches_real_transaction_without_mutating_snapshot (res://tests/equipment/test_elements.gd:95)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] stats (res://game/equipment/equipment_preview.gd:14)
+              [2] compare_element (res://game/equipment/equipment_preview.gd:45)
+              [3] test_element_preview_matches_real_transaction_without_mutating_snapshot (res://tests/equipment/test_elements.gd:95)
+              [4] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: stats (res://game/equipment/equipment_preview.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] stats (res://game/equipment/equipment_preview.gd:14)
+              [1] compare_element (res://game/equipment/equipment_preview.gd:45)
+              [2] test_element_preview_matches_real_transaction_without_mutating_snapshot (res://tests/equipment/test_elements.gd:95)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] compare_element (res://game/equipment/equipment_preview.gd:45)
+              [2] test_element_preview_matches_real_transaction_without_mutating_snapshot (res://tests/equipment/test_elements.gd:95)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] compare_element (res://game/equipment/equipment_preview.gd:45)
+              [2] test_element_preview_matches_real_transaction_without_mutating_snapshot (res://tests/equipment/test_elements.gd:95)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] stats (res://game/equipment/equipment_preview.gd:14)
+              [2] test_element_preview_matches_real_transaction_without_mutating_snapshot (res://tests/equipment/test_elements.gd:98)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: stats (res://game/equipment/equipment_preview.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] stats (res://game/equipment/equipment_preview.gd:14)
+              [1] test_element_preview_matches_real_transaction_without_mutating_snapshot (res://tests/equipment/test_elements.gd:98)
+              [2] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid call. Nonexistent function 'get' in base 'Nil'.
+          at: test_element_preview_matches_real_transaction_without_mutating_snapshot (res://tests/equipment/test_elements.gd:100)
+          GDScript backtrace (most recent call first):
+              [0] test_element_preview_matches_real_transaction_without_mutating_snapshot (res://tests/equipment/test_elements.gd:100)
+              [1] _run (res://tests/framework/test_runner.gd:48)
+  ok      test_element_preview_matches_real_transaction_without_mutating_snapshot
+SCRIPT ERROR: Invalid access to property or key 'water' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] test_combined_proc_caps_match_runtime_maxima (res://tests/equipment/test_elements.gd:112)
+              [2] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'effects' on a base object of type 'Dictionary'.
+          at: test_combined_proc_caps_match_runtime_maxima (res://tests/equipment/test_elements.gd:113)
+          GDScript backtrace (most recent call first):
+              [0] test_combined_proc_caps_match_runtime_maxima (res://tests/equipment/test_elements.gd:113)
+              [1] _run (res://tests/framework/test_runner.gd:48)
+  ok      test_combined_proc_caps_match_runtime_maxima
+
+res://tests/equipment/test_inventory.gd
+  ok      test_catalog_unique_ids_complete_prices_and_icons
+  ok      test_purchase_upgrade_caps_and_failed_actions_never_spend
+  ok      test_two_currencies_are_alternatives_and_do_not_cross_spend
+  ok      test_class_slots_and_unique_treasures
+  ok      test_sanitizer_rejects_wrong_types_unknown_items_and_invalid_loadouts
+  ok      test_boss_pity_first_clear_and_duplicates
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] test_equipment_bonuses_do_not_compound_and_sets_trigger_once (res://tests/equipment/test_inventory.gd:90)
+              [2] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: test_equipment_bonuses_do_not_compound_and_sets_trigger_once (res://tests/equipment/test_inventory.gd:91)
+          GDScript backtrace (most recent call first):
+              [0] test_equipment_bonuses_do_not_compound_and_sets_trigger_once (res://tests/equipment/test_inventory.gd:91)
+              [1] _run (res://tests/framework/test_runner.gd:48)
+  ok      test_equipment_bonuses_do_not_compound_and_sets_trigger_once
+  ok      test_proc_cooldowns_single_consumption_and_pause_independence
+  ok      test_effect_only_treasures_improve_at_every_forge_level
+  ok      test_forge_keeps_original_milestone_strength_and_maximum
+
+res://tests/equipment/test_preview.gd
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [2] test_preview_matches_departure_for_all_classes_and_training (res://tests/equipment/test_preview.gd:25)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: RunProgression.rebuild_stats (res://game/progression/run_progression.gd:158)
+          GDScript backtrace (most recent call first):
+              [0] rebuild_stats (res://game/progression/run_progression.gd:158)
+              [1] test_preview_matches_departure_for_all_classes_and_training (res://tests/equipment/test_preview.gd:25)
+              [2] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] stats (res://game/equipment/equipment_preview.gd:14)
+              [2] test_preview_matches_departure_for_all_classes_and_training (res://tests/equipment/test_preview.gd:26)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: stats (res://game/equipment/equipment_preview.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] stats (res://game/equipment/equipment_preview.gd:14)
+              [1] test_preview_matches_departure_for_all_classes_and_training (res://tests/equipment/test_preview.gd:26)
+              [2] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Cannot call method 'get' on a null value.
+          at: test_preview_matches_departure_for_all_classes_and_training (res://tests/equipment/test_preview.gd:28)
+          GDScript backtrace (most recent call first):
+              [0] test_preview_matches_departure_for_all_classes_and_training (res://tests/equipment/test_preview.gd:28)
+              [1] _run (res://tests/framework/test_runner.gd:48)
+  ok      test_preview_matches_departure_for_all_classes_and_training
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] stats (res://game/equipment/equipment_preview.gd:14)
+              [2] compare (res://game/equipment/equipment_preview.gd:33)
+              [3] test_swap_previews_set_loss_and_never_mutates_profile_or_checkpoint (res://tests/equipment/test_preview.gd:38)
+              [4] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: stats (res://game/equipment/equipment_preview.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] stats (res://game/equipment/equipment_preview.gd:14)
+              [1] compare (res://game/equipment/equipment_preview.gd:33)
+              [2] test_swap_previews_set_loss_and_never_mutates_profile_or_checkpoint (res://tests/equipment/test_preview.gd:38)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] stats (res://game/equipment/equipment_preview.gd:14)
+              [2] compare (res://game/equipment/equipment_preview.gd:33)
+              [3] test_swap_previews_set_loss_and_never_mutates_profile_or_checkpoint (res://tests/equipment/test_preview.gd:38)
+              [4] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: stats (res://game/equipment/equipment_preview.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] stats (res://game/equipment/equipment_preview.gd:14)
+              [1] compare (res://game/equipment/equipment_preview.gd:33)
+              [2] test_swap_previews_set_loss_and_never_mutates_profile_or_checkpoint (res://tests/equipment/test_preview.gd:38)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] compare (res://game/equipment/equipment_preview.gd:33)
+              [2] test_swap_previews_set_loss_and_never_mutates_profile_or_checkpoint (res://tests/equipment/test_preview.gd:38)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] compare (res://game/equipment/equipment_preview.gd:33)
+              [2] test_swap_previews_set_loss_and_never_mutates_profile_or_checkpoint (res://tests/equipment/test_preview.gd:38)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'sets' on a base object of type 'Dictionary'.
+          at: test_swap_previews_set_loss_and_never_mutates_profile_or_checkpoint (res://tests/equipment/test_preview.gd:39)
+          GDScript backtrace (most recent call first):
+              [0] test_swap_previews_set_loss_and_never_mutates_profile_or_checkpoint (res://tests/equipment/test_preview.gd:39)
+              [1] _run (res://tests/framework/test_runner.gd:48)
+  ok      test_swap_previews_set_loss_and_never_mutates_profile_or_checkpoint
+  ok      test_treasure_preview_matches_actual_move_between_slots
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] stats (res://game/equipment/equipment_preview.gd:14)
+              [2] compare (res://game/equipment/equipment_preview.gd:33)
+              [3] test_forging_plateau_weapons_improves_real_cadence_at_every_rank (res://tests/equipment/test_preview.gd:63)
+              [4] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: stats (res://game/equipment/equipment_preview.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] stats (res://game/equipment/equipment_preview.gd:14)
+              [1] compare (res://game/equipment/equipment_preview.gd:33)
+              [2] test_forging_plateau_weapons_improves_real_cadence_at_every_rank (res://tests/equipment/test_preview.gd:63)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] stats (res://game/equipment/equipment_preview.gd:14)
+              [2] compare (res://game/equipment/equipment_preview.gd:33)
+              [3] test_forging_plateau_weapons_improves_real_cadence_at_every_rank (res://tests/equipment/test_preview.gd:63)
+              [4] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'mods' on a base object of type 'Dictionary'.
+          at: stats (res://game/equipment/equipment_preview.gd:14)
+          GDScript backtrace (most recent call first):
+              [0] stats (res://game/equipment/equipment_preview.gd:14)
+              [1] compare (res://game/equipment/equipment_preview.gd:33)
+              [2] test_forging_plateau_weapons_improves_real_cadence_at_every_rank (res://tests/equipment/test_preview.gd:63)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] compare (res://game/equipment/equipment_preview.gd:33)
+              [2] test_forging_plateau_weapons_improves_real_cadence_at_every_rank (res://tests/equipment/test_preview.gd:63)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: bonuses (res://game/equipment/equipment_inventory.gd:187)
+          GDScript backtrace (most recent call first):
+              [0] bonuses (res://game/equipment/equipment_inventory.gd:187)
+              [1] compare (res://game/equipment/equipment_preview.gd:33)
+              [2] test_forging_plateau_weapons_improves_real_cadence_at_every_rank (res://tests/equipment/test_preview.gd:63)
+              [3] _run (res://tests/framework/test_runner.gd:48)
+SCRIPT ERROR: Invalid access to property or key 'attack_interval' on a base object of type 'Nil'.
+          at: test_forging_plateau_weapons_improves_real_cadence_at_every_rank (res://tests/equipment/test_preview.gd:64)
+          GDScript backtrace (most recent call first):
+              [0] test_forging_plateau_weapons_improves_real_cadence_at_every_rank (res://tests/equipment/test_preview.gd:64)
+              [1] _run (res://tests/framework/test_runner.gd:48)
+  ok      test_forging_plateau_weapons_improves_real_cadence_at_every_rank
+
+res://tests/equipment/test_ui_and_payment.gd
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: EquipmentScreen._details_refresh (res://ui/equipment/equipment_screen.gd:367)
+          GDScript backtrace (most recent call first):
+              [0] _details_refresh (res://ui/equipment/equipment_screen.gd:367)
+              [1] show_item (res://ui/equipment/equipment_screen.gd:642)
+              [2] test_shop_confirmation_and_back_navigation (res://tests/equipment/test_ui_and_payment.gd:11)
+              [3] wait_frames (res://tests/framework/test_case.gd:69)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: EquipmentScreen._details_refresh (res://ui/equipment/equipment_screen.gd:367)
+          GDScript backtrace (most recent call first):
+              [0] _details_refresh (res://ui/equipment/equipment_screen.gd:367)
+              [1] _ask (res://ui/equipment/equipment_screen.gd:588)
+              [2] test_shop_confirmation_and_back_navigation (res://tests/equipment/test_ui_and_payment.gd:12)
+              [3] wait_frames (res://tests/framework/test_case.gd:69)
+SCRIPT ERROR: Invalid access to property or key 'earth' on a base object of type 'Dictionary'.
+          at: EquipmentScreen._details_refresh (res://ui/equipment/equipment_screen.gd:367)
+          GDScript backtrace (most recent call first):
+              [0] _details_refresh (res://ui/equipment/equipment_screen.gd:367)
+              [1] refresh (res://ui/equipment/equipment_screen.gd:258)
+              [2] _execute (res://ui/equipment/equipment_screen.gd:606)
+              [3] _confirm_transaction (res://ui/equipment/equipment_screen.gd:595)
+              [4] test_shop_confirmation_and_back_navigation (res://tests/equipment/test_ui_and_payment.gd:14)
+              [5] wait_frames (res://tests/framework/test_case.gd:69)
+  ok      test_shop_confirmation_and_back_navigation
+  ok      test_disabled_payment_does_not_grant_currency
+
+39 tests, 7 failed, 0 broken files
+WARNING: 69 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 46 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 16 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+測試期間發現腳本錯誤(見上方 SCRIPT ERROR)。
