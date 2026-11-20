@@ -167,6 +167,7 @@ var _pause_when_ready: bool = false
 var _run_difficulty: StringName = NORMAL
 ## v2.6:這一輪冒險的章(1 至 GameState.CHAPTER_COUNT;存檔;「繼續冒險」時寫回 GameState.chapter)。
 var _run_chapter: int = 1
+var _run_hero_class: StringName = &"knight"
 ## 這一關開打前要先播 story_before(新的一關、繼續冒險;重試時為 false)。
 var _story_before_pending: bool = false
 ## 轉場露出後要播的整頁故事(開場繪本、預告),與播完之後要做的事。
@@ -477,6 +478,7 @@ func can_play_story(script: DialogueScript) -> bool:
 
 func save_now() -> bool:
 	return save_store.write_data({
+		"hero_class": String(_run_hero_class),
 		"level_index": _reached_level,
 		"snacks": GameState.snacks,
 		"sound_on": GameState.sound_on,
@@ -504,6 +506,8 @@ func _load_save() -> void:
 		_camp_pending = false
 		_use_chapter(mini(GameState.chapter, max_selectable_chapter()))
 		return
+	_run_hero_class = HeroClasses.valid_id(data["hero_class"])
+	GameState.hero_class = _run_hero_class
 	GameState.chapters_cleared = data["chapters_cleared"]
 	_use_chapter(mini(int(data["chapter"]), max_selectable_chapter()))
 	_reached_level = clampi(data["level_index"], 0, maxi(0, chapter.level_count() - 1))
@@ -552,6 +556,7 @@ func show_title() -> void:
 ## v2.6:章用標題畫面設定的 GameState.chapter(只能選已解鎖的章,否則用最高可選的章)。
 ## 舊的進度立即作廢(開場繪本播到一半 App 被關掉,也不會「繼續」舊的那一輪)。
 func start_new_game() -> void:
+	_run_hero_class = HeroClasses.valid_id(GameState.hero_class)
 	_end_endless_mode()
 	_use_chapter(mini(GameState.chapter, max_selectable_chapter()))
 	GameState.reset_run()
@@ -572,6 +577,7 @@ func start_new_game() -> void:
 ## 繼續:從存檔的關卡開始全新的一輪(DEV_PLAN B9:存檔只記到達的關卡)。
 ## 存檔記錄了「應先進營地」(上一關過關後、進營地之前 App 被關掉)時,先回到那個營地。
 func continue_game() -> void:
+	GameState.hero_class = _run_hero_class
 	var index := _reached_level
 	_end_endless_mode()
 	_use_chapter(_run_chapter)                  # 存檔那一輪的章(不理標題上選了哪一章)
@@ -1437,6 +1443,8 @@ func _on_back_requested() -> void:
 				pass              # 訓練介面自己處理返回鍵(發 closed);不詢問離開
 			elif _credits != null:
 				_close_credits()
+			elif _screen != null and _screen.has_method(&"close_class_select") and _screen.call(&"close_class_select"):
+				pass
 			elif platform_name == "Android":
 				_open_quit_dialog()
 			# iOS 與桌面:沒有「離開」這回事,略過。

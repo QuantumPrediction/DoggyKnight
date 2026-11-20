@@ -20,7 +20,8 @@ extends RefCounted
 ##   chapter(v5):這一輪冒險的章(1 至 GameState.CHAPTER_COUNT;「繼續冒險」回到這一章,level_index 是這一章裡的關卡)。
 ##   chapters_cleared(v5):已打完的最高章數(0 至 GameState.CHAPTER_COUNT)。
 ##   第 6 版(v2.7 六章):欄位和第 5 版一樣,只是章數由 3 變成 GameState.CHAPTER_COUNT(= 6)。
-## 向下相容:第 1 至 5 版存檔都可以讀,缺的欄位用預設值;
+## 第 7 版:hero_class 記錄故事存檔職業(knight / mage / archer)。
+## 向下相容:第 1 至 6 版存檔都可以讀,缺的欄位用預設值;
 ## 但第 1 版存檔已經到達第 2 關以後,表示玩家玩過第一關,tutorial_done 視為 true;
 ## 第 4 版以前沒有 chapters_cleared:chapter_cleared 為 true 時視為 chapters_cleared = 1(DEV_PLAN 4.13)。
 ## chapters_cleared ≥ 1 時 chapter_cleared 一定是 true(第一章通關仍是困難模式與無盡試煉的條件)。
@@ -33,7 +34,7 @@ extends RefCounted
 ##
 ## 寫入是同步的(不用 await),所以在 app_backgrounded 裡呼叫可以立即完成。
 
-const VERSION: int = 6
+const VERSION: int = 7
 ## 營地訓練等級的上限(存檔清理用;實際上限在 data/progression/meta_upgrades.tres)。
 const MAX_META_LEVEL: int = 99
 const DEFAULT_PATH: String = "user://save.json"
@@ -58,6 +59,7 @@ func temp_path() -> String:
 ## 所有欄位與預設值(沒有存檔、或舊版存檔缺少欄位時用這些)。
 static func defaults() -> Dictionary:
 	return {
+		"hero_class": "knight",
 		"level_index": 0,
 		"snacks": 0,
 		"sound_on": true,
@@ -157,6 +159,7 @@ static func sanitize(raw: Dictionary) -> Dictionary:
 	var d := defaults()
 	var cleared := clampi(_int_field(raw, "chapters_cleared", d["chapters_cleared"]), 0, GameState.CHAPTER_COUNT)
 	return {
+		"hero_class": String(HeroClasses.valid_id(raw.get("hero_class", "knight"))),
 		"level_index": _int_field(raw, "level_index", d["level_index"]),
 		"snacks": _int_field(raw, "snacks", d["snacks"]),
 		"sound_on": _bool_field(raw, "sound_on", d["sound_on"]),

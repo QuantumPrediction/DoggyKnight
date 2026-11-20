@@ -70,6 +70,12 @@ func _exit_tree() -> void:
 ## 新的一輪(新遊戲或「繼續」):經驗歸零,等級跟隨 GameState.hero_level;事件加成清空。
 func reset_run() -> void:
 	cancel_choices()
+	# Rebuild the offer pool for the selected weapon; pounce is melee-only.
+	var pool: Array[StringName] = difficulty.trick_pool.duplicate()
+	if GameState.hero_class != &"knight":
+		pool.erase(&"pounce")
+	_deck = TrickDeck.new(pool)
+	_deck.owned_weight = difficulty.owned_trick_weight
 	_exp.set_state(GameState.hero_level, 0)
 	tricks_this_level.clear()
 	run_modifiers.clear()
@@ -145,7 +151,7 @@ func restore_snapshot(snapshot: Dictionary) -> void:
 ## 由頭計算金毛的數值:基準 → 營地訓練 → 把戲 → 事件加成。寫回現有的 GameState.player_stats
 ## (同一個物件,別線拿著它也看得到新數值);活力超過新的上限時降到上限。
 func rebuild_stats() -> void:
-	var base := GameState.BASE_STATS
+	var base := GameState.base_stats()
 	var stats := base.duplicate() as StatBlock
 	if meta != null:
 		meta.apply_to(stats, base)
@@ -177,7 +183,7 @@ func add_run_modifier(mods: Dictionary) -> void:
 	if mods.is_empty():
 		return
 	run_modifiers.append(mods.duplicate(true))
-	TrickDeck.apply_modifiers(GameState.player_stats, GameState.BASE_STATS, mods, difficulty.min_damage_taken_mult)
+	TrickDeck.apply_modifiers(GameState.player_stats, GameState.base_stats(), mods, difficulty.min_damage_taken_mult)
 	GameState.vigor = mini(GameState.vigor, GameState.player_stats.max_vigor)
 	EventBus.vigor_changed.emit(GameState.vigor, GameState.player_stats.max_vigor)   # 上限可能改了
 
@@ -194,7 +200,7 @@ func apply_trick(trick: TrickData) -> void:
 			break
 		GameState.active_tricks.append(trick.id)
 		if not trick.stat_modifiers.is_empty():
-			TrickDeck.apply_modifiers(GameState.player_stats, GameState.BASE_STATS, trick.stat_modifiers,
+			TrickDeck.apply_modifiers(GameState.player_stats, GameState.base_stats(), trick.stat_modifiers,
 					difficulty.min_damage_taken_mult)
 
 

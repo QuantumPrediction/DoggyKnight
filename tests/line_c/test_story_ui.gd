@@ -184,13 +184,14 @@ func _title() -> Control:
 	return t
 
 
-func test_title_without_clearing_starts_normal_right_away() -> void:
+func test_title_without_clearing_starts_normal_after_class_confirmation() -> void:
 	GameState.chapter_cleared = false
 	GameState.difficulty = &"hard"
 	var t := _title()
 	var started := watch_signal(Signal(t, &"new_game_pressed"))
 	(t.get("new_game_button") as Button).pressed.emit()
-	assert_eq(started.count, 1, "直接開始")
+	t.get_class_select().confirm_button.pressed.emit()
+	assert_eq(started.count, 1, "選職業後直接開始")
 	assert_eq(GameState.difficulty, &"normal")
 	assert_false(t.call(&"is_difficulty_open"))
 	assert_not_null(t.get_node_or_null(^"Merlin"), "標題主視覺有梅林")
@@ -202,11 +203,13 @@ func test_title_after_clearing_asks_for_difficulty() -> void:
 	var t := _title()
 	var started := watch_signal(Signal(t, &"new_game_pressed"))
 	(t.get("new_game_button") as Button).pressed.emit()
+	t.get_class_select().confirm_button.pressed.emit()
 	assert_true(t.call(&"is_difficulty_open"), "打完第一章:先選難度")
 	assert_eq(started.count, 0)
 	(t.get("back_button") as Button).pressed.emit()
 	assert_false(t.call(&"is_difficulty_open"), "返回")
 	(t.get("new_game_button") as Button).pressed.emit()
+	t.get_class_select().confirm_button.pressed.emit()
 	(t.get("hard_button") as Button).pressed.emit()
 	assert_eq(GameState.difficulty, &"hard", "設定好難度才發訊號")
 	assert_eq(started.count, 1)

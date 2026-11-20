@@ -128,6 +128,7 @@ func test_chapter_select_hidden_before_clearing() -> void:
 	t.connect("new_game_pressed", func() -> void: seen.append(GameState.chapter))
 	GameState.chapter = 3
 	(t.get("new_game_button") as Button).pressed.emit()
+	t.get_class_select().confirm_button.pressed.emit()
 	assert_eq(seen, [1] as Array[int], "沒有選章時一律第一章")
 
 
@@ -153,6 +154,7 @@ func test_new_game_sets_the_chapter_before_emitting() -> void:
 	var seen: Array[int] = []
 	t.connect("new_game_pressed", func() -> void: seen.append(GameState.chapter))
 	(t.get("new_game_button") as Button).pressed.emit()
+	t.get_class_select().confirm_button.pressed.emit()
 	assert_true(t.call(&"is_difficulty_open"), "通關後先選難度")
 	(t.get("normal_button") as Button).pressed.emit()
 	assert_eq(seen, [3] as Array[int], "發 new_game_pressed 時 GameState.chapter 已是 3")

@@ -31,12 +31,16 @@ func _update() -> void:
 	var pose := StoryArt.pose(code, anim, sprite.frame)
 	if actor_code == "camp_goldie":
 		pose = 3 if sprite.animation == &"happy" else (1 if sprite.animation == &"blink" else 0)
-	_tex = StoryArt.actor(code, pose)
+	if code in ["goldie", "camp_goldie"] and GameState.hero_class != &"knight":
+		pose = StoryArt.pose("goldie", anim, sprite.frame)
+		_tex = StoryArt.hero(GameState.hero_class, pose)
+	else:
+		_tex = StoryArt.actor(code, pose)
 	if _tex == null:
 		return
 	sprite.self_modulate.a = 0.0
 	scale = Vector2(-1 if sprite.flip_h else 1, -1 if sprite.flip_v else 1)
-	var key := "%s/%d/%s/%s" % [anim, pose, sprite.centered, sprite.offset]
+	var key := "%s/%d/%s/%s" % [String(anim) + String(GameState.hero_class), pose, sprite.centered, sprite.offset]
 	if key != _last_key:
 		_last_key = key
 		queue_redraw()

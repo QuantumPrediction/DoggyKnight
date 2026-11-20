@@ -26,6 +26,7 @@ var speed: float = 4.0
 var rng_seed: int = 7
 var chapter: int = 1
 var hard: bool = false
+var hero_class: StringName = &"knight"
 
 var _downs: int = 0
 var _ultimates: int = 0
@@ -48,6 +49,8 @@ func _ready() -> void:
 			chapter = clampi(int(arg.trim_prefix("--chapter=")), 1, GameState.CHAPTER_COUNT)
 		elif arg == "--hard":
 			hard = true
+		elif arg.begins_with("--class="):
+			hero_class = HeroClasses.valid_id(arg.trim_prefix("--class="))
 	if not shots_dir.is_empty():
 		DirAccess.make_dir_recursive_absolute(shots_dir)
 	_run()
@@ -69,8 +72,9 @@ func _run() -> void:
 	GameState.chapters_cleared = maxi(GameState.chapters_cleared, chapter - 1)
 	GameState.chapter_cleared = GameState.chapter_cleared or chapter > 1 or hard
 	GameState.chapter = chapter
+	GameState.hero_class = hero_class
 	GameState.difficulty = &"hard" if hard else &"normal"
-	print("== 第 %d 章%s ==" % [chapter, "(困難)" if hard else ""])
+	print("== 第 %d 章%s / %s ==" % [chapter, "(困難)" if hard else "", hero_class])
 	flow.get_screen().emit_signal(&"new_game_pressed")
 	Engine.time_scale = speed
 	var started := Time.get_ticks_msec()
@@ -168,8 +172,15 @@ func _steer() -> void:
 		var ahead := player.global_position + direction * 14.0
 		if not Layout.ARENA_RECT.grow(-14.0).has_point(ahead):
 			direction = (direction + (Layout.ARENA_RECT.get_center() - player.global_position).normalized()).normalized()
-	elif nearest != null and nearest_distance > ATTACK_DISTANCE:
-		direction = (nearest.global_position - player.global_position).normalized()
+	elif nearest != null:
+		var desired := ATTACK_DISTANCE if hero_class == &"knight" else GameState.player_stats.attack_range * 0.72
+		if nearest_distance > desired:
+			direction = (nearest.global_position - player.global_position).normalized()
+		elif hero_class != &"knight" and nearest_distance < 32.0:
+			# Kiting uses the same visible positions as a player. Never edit combat stats.
+			var away := (player.global_position - nearest.global_position).normalized()
+			if Layout.ARENA_RECT.grow(-14.0).has_point(player.global_position + away * 18.0):
+				direction = away
 	player.call(&"set_move_override", direction)
 
 

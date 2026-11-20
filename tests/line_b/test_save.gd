@@ -25,10 +25,10 @@ func test_only_known_fields_are_saved() -> void:
 	var keys := raw.keys()
 	keys.sort()
 	assert_eq(keys, ["best_stars", "camp_pending", "chapter", "chapter_cleared", "chapters_cleared", "difficulty",
-			"endless_best", "haptics_on", "level_index", "meta_upgrades", "music_on", "snacks", "sound_on", "story_seen",
+			"endless_best", "haptics_on", "hero_class", "level_index", "meta_upgrades", "music_on", "snacks", "sound_on", "story_seen",
 			"tutorial_done", "version"], "只存遊戲進度與設定,沒有任何個人資料")
 	assert_eq(raw["version"], float(SaveStore.VERSION))
-	assert_eq(SaveStore.VERSION, 6, "v2.7 起第 6 版")
+	assert_eq(SaveStore.VERSION, 7, "職業存檔第 7 版")
 
 
 func test_overwrite_keeps_latest() -> void:

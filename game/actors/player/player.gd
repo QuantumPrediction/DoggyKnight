@@ -42,6 +42,9 @@ const ULT_Z := 9                          ## 必殺技時金毛升到暗幕(8)�
 @export var tuning: PlayerTuning = DEFAULT_TUNING
 @export var ability_tuning: AbilityTuning = DEFAULT_ABILITY_TUNING
 
+var loadout: HeroClassData
+var _focus_elapsed: float = 0.0
+
 var abilities: AbilitySet
 var loyalty: float = 0.0
 var facing: Vector2 = Vector2.RIGHT
@@ -98,6 +101,7 @@ var revive_count: int = 0
 
 
 func _ready() -> void:
+	loadout = HeroClasses.get_data(GameState.hero_class)
 	sprite = $Sprite as AnimatedSprite2D
 	joystick = get_node_or_null(^"JoystickLayer/Joystick") as TouchJoystick
 	if feel == null:
@@ -303,6 +307,9 @@ func clear_move_override() -> void:
 # --- 自動攻擊(A2) --------------------------------------------------------------
 
 func _update_attack(delta: float, moving: bool) -> void:
+	_focus_elapsed = 0.0 if moving else _focus_elapsed + delta
+	if loadout.id == &"archer":
+		queue_redraw()
 	_attack_cooldown = maxf(0.0, _attack_cooldown - delta)
 	if moving:
 		if _windup_left >= 0.0:
@@ -316,16 +323,18 @@ func _update_attack(delta: float, moving: bool) -> void:
 			_swing()
 		return
 	if _attack_cooldown <= 0.0 and not celebrating and _has_enemies():
-		if not _try_pounce():
+		if loadout.id != &"knight" or not _try_pounce():
 			_start_windup()
 
 
 func _start_windup() -> void:
 	var stats := GameState.player_stats
-	_attack_target = _nearest_enemy(stats.attack_range * tuning.target_search_mult)
+	_attack_target = _nearest_enemy(stats.attack_range * (tuning.target_search_mult if loadout.id == &"knight" else 1.0))
+	if loadout.id != &"knight" and _attack_target == null:
+		return
 	if _attack_target != null:
 		_face_toward(_attack_target.global_position)
-	_windup_left = tuning.attack_windup
+	_windup_left = tuning.attack_windup if loadout.id == &"knight" else loadout.windup
 	_play(&"attack", true)
 	sprite.pause()
 	# 蓄力:身體壓扁、往後縮一點。
@@ -344,6 +353,9 @@ func _cancel_windup() -> void:
 
 
 func _swing() -> void:
+	if loadout.id != &"knight":
+		_fire_projectile()
+		return
 	_windup_left = -1.0
 	var stats := GameState.player_stats
 	if _is_valid_target(_attack_target):
@@ -513,16 +525,20 @@ func _ultimate_strike() -> void:
 	var damage := CombatMath.player_damage(GameState.player_stats, GameState.next_level_bonus,
 			tuning.ultimate_damage_mult)
 	var targets := _enemies_in_radius(tuning.ultimate_radius)
+	if loadout.id != &"knight":
+		_class_ultimate()
+		targets.clear()
 	Sfx.play(&"ultimate")
 	CombatFx.haptic(feel.haptic_ultimate)
 	CombatFx.trauma(self, feel.trauma_ultimate)
-	var size := tuning.ultimate_radius * 2.0
-	var fx_frames := CombatFx.frames(&"ultimate_slash")
-	var fx_scale := 2.5
-	if fx_frames != null and fx_frames.get_frame_count(&"default") > 0:
-		fx_scale = size / maxf(1.0, fx_frames.get_frame_texture(&"default", 0).get_width())
-	CombatFx.spawn(self, &"ultimate_slash", global_position, 0.0, Vector2.ONE * fx_scale)
-	CombatFx.ring(self, global_position, 8.0, tuning.ultimate_radius, 0.4, Color(1.0, 0.86, 0.35, 0.95), 3.0)
+	if loadout.id == &"knight":
+		var size := tuning.ultimate_radius * 2.0
+		var fx_frames := CombatFx.frames(&"ultimate_slash")
+		var fx_scale := 2.5
+		if fx_frames != null and fx_frames.get_frame_count(&"default") > 0:
+			fx_scale = size / maxf(1.0, fx_frames.get_frame_texture(&"default", 0).get_width())
+		CombatFx.spawn(self, &"ultimate_slash", global_position, 0.0, Vector2.ONE * fx_scale)
+		CombatFx.ring(self, global_position, 8.0, tuning.ultimate_radius, 0.4, Color(1.0, 0.86, 0.35, 0.95), 3.0)
 	# 白色閃光與爆發的光點放在暗幕之上、金毛之下,不會蓋住金毛。
 	var overlay_ok := _ult_overlay != null and is_instance_valid(_ult_overlay) and _ult_overlay.is_inside_tree()
 	var flash := CombatFx.ring(self, global_position, 4.0, tuning.ultimate_radius * 0.8, 0.18, Color(1, 1, 1, 0.5), 1.0, false, true)
@@ -1106,6 +1122,8 @@ func _draw() -> void:
 	draw_set_transform(Vector2(0, _frame_size.y * 0.42), 0.0, Vector2(1.0, 0.4))
 	draw_circle(Vector2.ZERO, w, Color(0, 0, 0, 0.25))
 	draw_set_transform(Vector2.ZERO)
+	if loadout != null and loadout.id == &"archer" and not _downed and not celebrating and focus_fraction() > 0.02:
+		draw_arc(Vector2(0, _frame_size.y * 0.42), 7.0, -PI * 0.5, -PI * 0.5 + TAU * focus_fraction(), 24, loadout.accent, 1.2, true)
 	# 暴衝與打滾:身後的速度線。
 	if abilities != null and (abilities.is_zooming() or abilities.roll.is_rolling()) and velocity.length() > 4.0:
 		var back := -velocity.normalized()
@@ -1114,3 +1132,55 @@ func _draw() -> void:
 		for k: int in [-1, 1]:
 			var start := (back * 7.0 + side * 3.0 * float(k)).round()
 			draw_line(start, start + (back * 5.0).round(), c, 1.0)
+
+
+func _fire_projectile() -> void:
+	_windup_left = -1.0
+	if not _is_valid_target(_attack_target):
+		_attack_target = _nearest_enemy(GameState.player_stats.attack_range)
+	if _attack_target == null:
+		_play(&"idle")
+		return
+	_face_toward(_attack_target.global_position)
+	_attack_target = null
+	var mult := loadout.focus_mult if loadout.focus_time > 0.0 and _focus_elapsed >= loadout.focus_time else 1.0
+	HeroProjectile.launch(self, facing, mult)
+	swing_count += 1
+	last_swing_hits = 0
+	last_swing_damage = 0
+	_attack_cooldown = maxf(0.0, GameState.player_stats.attack_interval - loadout.windup)
+	_attack_anim_left = tuning.attack_anim_time
+	sprite.play(&"attack")
+	sprite.scale = Vector2(0.96, 1.04)
+	Sfx.play(&"magic" if loadout.id == &"mage" else &"arrow_shot", -5.0)
+
+
+func projectile_impact_damage(mult: float, is_ultimate: bool) -> int:
+	if not is_ultimate:
+		mult *= abilities.on_swing_landed()
+		if rng.randf() < crit_chance():
+			mult *= ability_tuning.crit_multiplier
+			crit_count += 1
+	return CombatMath.player_damage(GameState.player_stats, GameState.next_level_bonus, mult)
+
+
+func _class_ultimate() -> void:
+	var target := _nearest_enemy(GameState.player_stats.attack_range)
+	if target != null:
+		_face_toward(target.global_position)
+	if loadout.id == &"archer":
+		for i in loadout.ultimate_projectiles:
+			var angle := (float(i) - float(loadout.ultimate_projectiles - 1) * 0.5) * loadout.ultimate_spread
+			HeroProjectile.launch(self, facing.rotated(angle), loadout.ultimate_mult, true)
+		return
+	var center := target.global_position if target != null else global_position
+	var damage := projectile_impact_damage(loadout.ultimate_mult, true)
+	CombatFx.ring(self, center, 6.0, loadout.ultimate_radius, 0.5, loadout.accent, 2.0)
+	CombatFx.spawn(self, &"magic_orb", center, 0.0, Vector2.ONE * 3.0)
+	for enemy in get_tree().get_nodes_in_group(ENEMY_GROUP):
+		if _is_valid_target(enemy) and center.distance_to(enemy.global_position) - _radius_of(enemy) <= loadout.ultimate_radius:
+			_strike(enemy, damage, tuning.ultimate_knockback_speed * 0.5)
+
+
+func focus_fraction() -> float:
+	return clampf(_focus_elapsed / loadout.focus_time, 0.0, 1.0) if loadout.focus_time > 0.0 else 0.0

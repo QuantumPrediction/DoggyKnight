@@ -1,0 +1,262 @@
+{
+  "engine": "4.7.2",
+  "renderer": "Compatibility / Mesa llvmpipe",
+  "captures": [
+    {
+      "capture": "review3/battle_archer.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "c57813bb8656a0a7e3a4af1b79447da76c6b3a10ff68a1da82c9e1d159333f75"
+    },
+    {
+      "capture": "review3/battle_knight.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "f63049f7d131a10e2ce03139de455b0f2691a3fb1e47121e3950897f007e67bc"
+    },
+    {
+      "capture": "review3/battle_mage.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "dda917ce9afe5403641a14bc6be05cd1eebb6f577eb2ce9d65efe9907b12b393"
+    },
+    {
+      "capture": "review3/select_archer.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "af35e160c7104164d1c1fe8b2e8814a40654c42261504c401ba64a8200130cd3"
+    },
+    {
+      "capture": "review3/select_knight.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "2af5e914f42c137e92fdd5c8f8ffdfa3bd6a3f26225ee8c6369ad0d10922c8af"
+    },
+    {
+      "capture": "review3/select_mage.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "e490f6798ada2b58808698177e758a6e15e98b1df5dd05e26f9480821187d9eb"
+    },
+    {
+      "capture": "review3/small_select.png",
+      "size": [
+        360,
+        640
+      ],
+      "sha256": "f593a9297abbcdb44f7639c54d1a851007dee7f10c4c8d64ab5aa1c647333450"
+    },
+    {
+      "capture": "review3/title.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "442d1f03da039cb5d16275f855baa6bdabaad8c09f83c7d26dc584a7d6366362"
+    },
+    {
+      "capture": "review3/ultimate_archer.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "e7291cdde1c2623806f9e1e68586ea41fdd0ddd86e5a49050fb4195451c72193"
+    },
+    {
+      "capture": "review3/ultimate_knight.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "d3591c6cb30df736523e937dfacc4ee034d7d8779d3ec6d921c33ad163641e47"
+    },
+    {
+      "capture": "review3/ultimate_mage.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "4cafb4a64f59702c0f76ee6123c22f8a155d090ef904b9101154ff5d5d11d648"
+    },
+    {
+      "capture": "review3_world/01_title.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "ecae00df28fa75e5f30a7400ad09c5d9e4df903854df8bf066d105c79a3abbad"
+    },
+    {
+      "capture": "review3_world/02_chapter_1.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "27df900fac182cb8609e027b9eb79e424260b7661d1ee182384c3baad75fd45d"
+    },
+    {
+      "capture": "review3_world/03_chapter_2.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "f04c89b8b9237087860bb72ef0a1917647f51cf1d800da1f287ee0417b146d7f"
+    },
+    {
+      "capture": "review3_world/04_chapter_3.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "515809cfee777f78bbe3a011e5af53b4977730f2025bb839a548dbf843a684d8"
+    },
+    {
+      "capture": "review3_world/05_chapter_4.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "7e32e5c0f4653c9119e453eb9bf3ac947fd403687180d86b2933023751939709"
+    },
+    {
+      "capture": "review3_world/06_chapter_5.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "cc90f6e12186ff65211a71ee6ff7ec0a33ea471ba0644d363f4129aa6608c23e"
+    },
+    {
+      "capture": "review3_world/07_chapter_6.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "03261a7113c297323897c36fdd70e2f4c6ac439c200ca71c538f715f1168b1ef"
+    },
+    {
+      "capture": "review3_world/08_camp.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "eec7a4d6465c703a9b4bbd14bf30bf434e16d4ee77c3973a7009e143ece363e6"
+    },
+    {
+      "capture": "review3_world/09_training.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "21d2bb92ac82c480f7fa43cd79404e3b579a5a71547e60b2beaa1cbd26e1c5db"
+    },
+    {
+      "capture": "review3_world/10_gallery.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "e6fc68cc689b5c4ef652d3cd63494de158cabe830296274f7ababa438d2957b5"
+    },
+    {
+      "capture": "review3_world/11_story.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "e9f59042c085aaa05e5b2df2d9e5fc4e9dc32bf538088a7c6c751ef79e140585"
+    },
+    {
+      "capture": "review3_world/12_upgrades.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "c8f567c14884087aea5a7e0085c522f9e036e3afcdb73b10336d10e8c54abdd8"
+    },
+    {
+      "capture": "review3_world/13_minigame.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "d43c330e6570a7fe6f20cd0a33c554b44b550d4f318e68a7dc4b66210b4ab639"
+    },
+    {
+      "capture": "review3_world/14_boss_1.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "97e3ad77e15b2a62207845d59fd70b48b981dd49d1ba7d231fc918e119b191b2"
+    },
+    {
+      "capture": "review3_world/15_boss_2.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "e3ed3d31145e3b95fd96324cd6ce1086b3b67cc65256c83b0eb396168a7d4afc"
+    },
+    {
+      "capture": "review3_world/16_boss_3.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "89948bd58cfec241855ced071d3f1c0d3625835c351d78b447c57303887348cd"
+    },
+    {
+      "capture": "review3_world/17_boss_4.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "dd4f8cc87be95f54283fee510664241ec9cea838cfbd55f1408d9bad9a9675ae"
+    },
+    {
+      "capture": "review3_world/18_boss_5.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "034fe217a0813938fc8e2658f7a437076aae0dd66fbd103309a16eaa693b0876"
+    },
+    {
+      "capture": "review3_world/19_boss_6.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "fb692aa4e583d4eba83fc11c7a27fa72557fb7a6d1b83d8c1cfcd991930d2881"
+    },
+    {
+      "capture": "review3_world/20_wake.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "e244fda40fac058617fbcf96a786d399ed606ed351c1c49488f5f69fcf3183e1"
+    },
+    {
+      "capture": "review3_world/21_fish.png",
+      "size": [
+        540,
+        960
+      ],
+      "sha256": "b279f1c544d5aa99a69f1bf69512f4dce9e88b8f81e3b89db96bd98578fb1dc0"
+    }
+  ]
+}

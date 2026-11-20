@@ -365,6 +365,7 @@ func test_title_endless_only_after_clearing_and_sets_mode() -> void:
 	var seen: Array[StringName] = []
 	u.connect("endless_pressed", func() -> void: seen.append(GameState.mode))
 	b.pressed.emit()
+	u.get_class_select().confirm_button.pressed.emit()
 	assert_eq(seen, [&"endless"] as Array[StringName], "發 endless_pressed 前已設定 mode")
 
 
@@ -377,6 +378,7 @@ func test_title_training_and_story_mode() -> void:
 	assert_eq(w.count, 1)
 	var n := watch_signal(Signal(t, "new_game_pressed"))
 	(t.get("new_game_button") as Button).pressed.emit()
+	t.get_class_select().confirm_button.pressed.emit()
 	assert_eq(n.count, 1)
 	assert_eq(GameState.mode, &"story", "開始冒險回到故事模式")
 

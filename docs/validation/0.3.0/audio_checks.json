@@ -1,0 +1,191 @@
+{
+  "boss": {
+    "seconds": 61.93546875,
+    "peak": 0.38261,
+    "rms": 0.08799,
+    "seam": 0.00511,
+    "finite": true
+  },
+  "boss_2": {
+    "seconds": 64.0,
+    "peak": 0.36283,
+    "rms": 0.08608,
+    "seam": 0.00107,
+    "finite": true
+  },
+  "boss_2_pressure": {
+    "seconds": 64.0,
+    "peak": 0.28117,
+    "rms": 0.04234,
+    "seam": 0.00314,
+    "finite": true
+  },
+  "boss_3": {
+    "seconds": 66.20690625,
+    "peak": 0.44844,
+    "rms": 0.10834,
+    "seam": 0.00123,
+    "finite": true
+  },
+  "boss_3_pressure": {
+    "seconds": 66.20690625,
+    "peak": 0.30312,
+    "rms": 0.04335,
+    "seam": 0.00382,
+    "finite": true
+  },
+  "boss_4": {
+    "seconds": 60.0,
+    "peak": 0.3916,
+    "rms": 0.0914,
+    "seam": 0.00202,
+    "finite": true
+  },
+  "boss_4_pressure": {
+    "seconds": 60.0,
+    "peak": 0.277,
+    "rms": 0.04546,
+    "seam": 0.00157,
+    "finite": true
+  },
+  "boss_5": {
+    "seconds": 59.0769375,
+    "peak": 0.38126,
+    "rms": 0.08818,
+    "seam": 0.00134,
+    "finite": true
+  },
+  "boss_5_pressure": {
+    "seconds": 59.0769375,
+    "peak": 0.28234,
+    "rms": 0.04439,
+    "seam": 0.00241,
+    "finite": true
+  },
+  "boss_6": {
+    "seconds": 60.952375,
+    "peak": 0.38782,
+    "rms": 0.09027,
+    "seam": 0.00065,
+    "finite": true
+  },
+  "boss_6_pressure": {
+    "seconds": 60.952375,
+    "peak": 0.28833,
+    "rms": 0.04288,
+    "seam": 0.00571,
+    "finite": true
+  },
+  "boss_pressure": {
+    "seconds": 61.93546875,
+    "peak": 0.26403,
+    "rms": 0.04431,
+    "seam": 0.00395,
+    "finite": true
+  },
+  "camp": {
+    "seconds": 101.052625,
+    "peak": 0.33182,
+    "rms": 0.06042,
+    "seam": 0.00154,
+    "finite": true
+  },
+  "field": {
+    "seconds": 73.84615625,
+    "peak": 0.46122,
+    "rms": 0.10043,
+    "seam": 0.00725,
+    "finite": true
+  },
+  "field_2": {
+    "seconds": 76.8,
+    "peak": 0.40725,
+    "rms": 0.07157,
+    "seam": 0.00411,
+    "finite": true
+  },
+  "field_2_pressure": {
+    "seconds": 76.8,
+    "peak": 0.18892,
+    "rms": 0.01489,
+    "seam": 0.00054,
+    "finite": true
+  },
+  "field_3": {
+    "seconds": 87.27271875,
+    "peak": 0.40592,
+    "rms": 0.10206,
+    "seam": 0.00363,
+    "finite": true
+  },
+  "field_3_pressure": {
+    "seconds": 87.27271875,
+    "peak": 0.2099,
+    "rms": 0.014,
+    "seam": 0.00053,
+    "finite": true
+  },
+  "field_4": {
+    "seconds": 71.111125,
+    "peak": 0.38618,
+    "rms": 0.07415,
+    "seam": 0.00303,
+    "finite": true
+  },
+  "field_4_pressure": {
+    "seconds": 71.111125,
+    "peak": 0.1864,
+    "rms": 0.01546,
+    "seam": 0.00053,
+    "finite": true
+  },
+  "field_5": {
+    "seconds": 81.702125,
+    "peak": 0.40616,
+    "rms": 0.07531,
+    "seam": 0.00334,
+    "finite": true
+  },
+  "field_5_pressure": {
+    "seconds": 81.702125,
+    "peak": 0.22424,
+    "rms": 0.0144,
+    "seam": 0.00053,
+    "finite": true
+  },
+  "field_6": {
+    "seconds": 75.294125,
+    "peak": 0.45676,
+    "rms": 0.10361,
+    "seam": 0.00328,
+    "finite": true
+  },
+  "field_6_pressure": {
+    "seconds": 75.294125,
+    "peak": 0.1865,
+    "rms": 0.01502,
+    "seam": 0.00053,
+    "finite": true
+  },
+  "field_pressure": {
+    "seconds": 73.84615625,
+    "peak": 0.19371,
+    "rms": 0.01519,
+    "seam": 0.00054,
+    "finite": true
+  },
+  "story": {
+    "seconds": 106.66665625,
+    "peak": 0.35112,
+    "rms": 0.08207,
+    "seam": 0.00169,
+    "finite": true
+  },
+  "title": {
+    "seconds": 83.47825,
+    "peak": 0.44509,
+    "rms": 0.09969,
+    "seam": 0.00474,
+    "finite": true
+  }
+}

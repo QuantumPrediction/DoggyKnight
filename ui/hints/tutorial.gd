@@ -67,6 +67,8 @@ func _enter(s: Step) -> void:
 			bubble_label.text = tr("UI_TUTORIAL_MOVE_PC" if OS.has_feature("pc") else "UI_TUTORIAL_MOVE")
 		Step.ATTACK:
 			bubble_label.text = tr("UI_TUTORIAL_ATTACK_PC" if OS.has_feature("pc") else "UI_TUTORIAL_ATTACK")
+			if GameState.hero_class != &"knight":
+				bubble_label.text = tr("UI_TUTORIAL_RANGED")
 			UiKit.play_sfx(&"ui_tap")
 		Step.DONE:
 			bubble_label.text = tr("UI_TUTORIAL_DONE")

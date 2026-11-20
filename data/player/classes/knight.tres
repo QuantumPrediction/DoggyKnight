@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="HeroClassData" load_steps=3 format=3]
+[ext_resource type="Script" path="res://core/data/hero_class_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/player/goldie_base_stats.tres" id="2"]
+[resource]
+script = ExtResource("1")
+id = &"knight"
+display_name = "UI_CLASS_KNIGHT"
+description = "UI_CLASS_KNIGHT_DESC"
+tactic = "UI_CLASS_KNIGHT_TACTIC"
+ultimate_name = "UI_CLASS_KNIGHT_ULT"
+stats = ExtResource("2")

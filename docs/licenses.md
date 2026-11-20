@@ -110,3 +110,9 @@ D 線 M3(2026-11-16):營地新增的金毛像素圖(`game/camp/art/`,由 `game/c
 - `assets/illustrated/`：使用 OpenAI image_gen 生成的本專案美術；28 個原始 PNG，生成提示與修改請求見 `ART_PROMPTS.json`，檔案校驗見 `ART_MANIFEST.json`。來源為生成工具，並非購買或下載的第三方素材包。
 - `StorySans.otf` 與 `StorySerif.otf`：Noto Sans CJK TC / Noto Serif CJK TC 的字元子集，來源 https://github.com/notofonts/noto-cjk ，SIL Open Font License 1.1；完整版權與授權保存於 `assets/fonts/Noto_CJK_LICENSE.txt`，遊戲製作名單亦顯示全文。
 - 上面的像素圖、Cubic 11 與音樂紀錄為保留資源的來源，並不表示本版本的新插畫由舊像素生成器產生。
+
+## 2026-11-19 職業與配樂
+
+- `assets/illustrated/hero_classes.png`：使用 OpenAI image_gen，依本遊戲金毛形象生成法師／弓箭手八姿勢圖集；沒有使用外部遊戲角色素材。設計簡述及雜湊見 `CLASS_ART_MANIFEST.json`。
+- `assets/music/*.ogg`：本專案 `tools/audio/compose_score.py` 的原創樂句、編曲與數學合成音色，15 個主音軌和 12 個壓力伴奏，沒有第三方錄音取樣。舊 WAV 的來源仍如上述紀錄。
+- 更新 StorySans／StorySerif 字元子集以涵蓋職業文字；來源及 OFL 授權不變，重建腳本為 `tools/rebuild_story_fonts.py`。沒有移除原授權檔或遊戲內授權文字。
