@@ -1,0 +1,16 @@
+[
+  "godot",
+  "--headless",
+  "--verbose",
+  "--path",
+  ".",
+  "--fixed-fps",
+  "60",
+  "--max-fps",
+  "0",
+  "--disable-render-loop",
+  "res://tests/integration/lifecycle_probe.tscn",
+  "--",
+  "--cycles=3",
+  "--report=/workspace/scratch/7c65b3f2f6c8/DoggyKnight/docs/validation/r01/lifecycle_verbose.json"
+]

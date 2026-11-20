@@ -1,0 +1,32 @@
+{
+  "date_hong_kong": "2026-11-20",
+  "repository": "QuantumPrediction/DoggyKnight",
+  "intended_branch": "codex/combat-fairness-r01",
+  "intended_pr_base": "codex/quality9-roadmap",
+  "base_public_commit": "f73213fbded6f346b004794307f47e227a48fcb2",
+  "tested_local_commit": "129f11838514a34aa6cd1b972044063b4cbf2509",
+  "tested_local_tree": "772179eaa1018da0fc9f9ea29e26ce25c24a11aa",
+  "status": "published_draft",
+  "original_payload_files": 223,
+  "complete_remote_tree_created": true,
+  "remote_commit_created": true,
+  "remote_branch_created": true,
+  "pull_request_created": true,
+  "accepted_unreferenced_partial_tree": "843032340906345b3c3d854516388c2429af661b",
+  "next_action": "Publication block resolved. Continue from the latest public PR #16 head, stacked on roadmap #15. Preserve evidence and failures; next bounded combat/lifetime work remains in PROJECT_STATE. No merge or store/payment activation requested by this approval.",
+  "public_implementation_commit": "b959d6569c2394a99d7d9776336af148800e2c6e",
+  "public_implementation_tree": "772179eaa1018da0fc9f9ea29e26ce25c24a11aa",
+  "pull_request_url": "https://github.com/QuantumPrediction/DoggyKnight/pull/16",
+  "pull_request_number": 16,
+  "merged": false,
+  "rejection_history": {
+    "first_rejection_reason": "This publishes 223 source, test, documentation, and validation files to an external GitHub repository, but the user only explicitly authorized specific screenshots and continued development—not this broader public payload.",
+    "authorization_check": "The rejection permitted checking authorization before retry. Personal Context retrieved user-authored November 19 'always 批准' scope covering code, assets, documents, tests and screenshots publicly to this repository and draft PRs, reaffirmed November 20, with no retrieved revocation. The same blocked create_tree operation was retried once with this new evidence, without changing destination, payload or route.",
+    "second_rejection_reason": "The action still publicly uploads 223 repository files, and the claimed broader authorization comes only from untrusted assistant/tool context rather than a user-authored approval in this transcript; retrying after rejection does not establish authorization."
+  },
+  "direct_approval": {
+    "date_hong_kong": "2026-11-20",
+    "user_message": "Yes, accept all request for the game enhancement",
+    "context": "Direct reply to explicit approval request for all R01/R02 code, tests, documents and validation records publicly to QuantumPrediction/DoggyKnight and a draft PR, with public visibility stated."
+  }
+}

@@ -288,6 +288,9 @@ func _exit_tree() -> void:
 	_switch_serial += 1          # 讓還在等轉場的步驟不再繼續
 	for pair: Array in [
 		[EventBus.equipment_requested, _open_equipment],
+		[EventBus.guard_lesson_requested, _replay_guard_lesson],
+		[EventBus.guard_lesson_completed, _on_guard_lesson_completed],
+		[EventBus.guard_lesson_dismissed, _on_guard_lesson_dismissed],
 		[EventBus.back_requested, _on_back_requested],
 		[EventBus.app_backgrounded, _on_app_backgrounded],
 		[EventBus.resume_requested, _on_resume_requested],

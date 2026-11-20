@@ -1,0 +1,101 @@
+{
+  "rows": [
+    {
+      "hero": "knight",
+      "route": 0,
+      "cautious": {
+        "finished": 4,
+        "cases": 4,
+        "downs": 0,
+        "damage": 127
+      },
+      "escape": {
+        "finished": 4,
+        "cases": 4,
+        "downs": 0,
+        "damage": 107
+      }
+    },
+    {
+      "hero": "knight",
+      "route": 1,
+      "cautious": {
+        "finished": 4,
+        "cases": 4,
+        "downs": 2,
+        "damage": 1177
+      },
+      "escape": {
+        "finished": 4,
+        "cases": 4,
+        "downs": 0,
+        "damage": 497
+      }
+    },
+    {
+      "hero": "mage",
+      "route": 0,
+      "cautious": {
+        "finished": 4,
+        "cases": 4,
+        "downs": 2,
+        "damage": 646
+      },
+      "escape": {
+        "finished": 4,
+        "cases": 4,
+        "downs": 0,
+        "damage": 60
+      }
+    },
+    {
+      "hero": "mage",
+      "route": 1,
+      "cautious": {
+        "finished": 4,
+        "cases": 4,
+        "downs": 0,
+        "damage": 480
+      },
+      "escape": {
+        "finished": 4,
+        "cases": 4,
+        "downs": 0,
+        "damage": 61
+      }
+    },
+    {
+      "hero": "archer",
+      "route": 0,
+      "cautious": {
+        "finished": 3,
+        "cases": 4,
+        "downs": 6,
+        "damage": 1108
+      },
+      "escape": {
+        "finished": 4,
+        "cases": 4,
+        "downs": 0,
+        "damage": 99
+      }
+    },
+    {
+      "hero": "archer",
+      "route": 1,
+      "cautious": {
+        "finished": 3,
+        "cases": 4,
+        "downs": 7,
+        "damage": 1563
+      },
+      "escape": {
+        "finished": 4,
+        "cases": 4,
+        "downs": 0,
+        "damage": 217
+      }
+    }
+  ],
+  "interpretation": "Same gameplay version, different bot policies. This is not a before/after game improvement or a human win-rate estimate."
+}

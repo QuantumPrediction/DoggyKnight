@@ -2,18 +2,63 @@
 
 Updated: 2026-11-20 (Hong Kong). Version: **0.9.1 development source**.
 
-## Current planning work
+## Current implementation — R01/R02
+
+The owner requested repeated development toward the quality goal. Current
+work is `codex/combat-fairness-r01`, based on roadmap PR #15 public head
+`f73213fbded6f346b004794307f47e227a48fcb2`; it retains the complete roadmap.
+[Contract](requests/20261120-INT-pressure-lifetime.md) and
+[evidence](validation/r01/README.md) define this bounded iteration.
+
+**Published as [draft PR #16](https://github.com/QuantumPrediction/DoggyKnight/pull/16),
+stacked on #15; not merged.** Public implementation commit
+`b959d6569c2394a99d7d9776336af148800e2c6e` and tested local commit
+`129f11838514a34aa6cd1b972044063b4cbf2509` share the complete tree
+`772179eaa1018da0fc9f9ea29e26ce25c24a11aa`. The owner directly answered
+"Yes, accept all request for the game enhancement" to the explicit R01/R02 public
+code/tests/docs/validation and draft-PR approval request on 2026-11-20. The same
+publication path then succeeded. Earlier automatic approval rejections are
+history, not a current blocker; [publication record](validation/r01/publication.json)
+preserves them. Subsequent handoff changes only documentation. All 627 current
+source hashes, two regression-test hashes and the final test-log hash still match;
+the unchanged gameplay suite was not rerun for publication. Resume the latest
+public PR #16 head, preserving any newer local work, rather than default or #15 alone.
+
+- Fixed a demonstrated flow-exit defect: the three guard-lesson callbacks now
+  disconnect on exit, so an old flow cannot change flags or overwrite its old
+  checkpoint. The two new regression cases fail before the fix; all six guard
+  flow cases pass afterward. This does not explain/fix the historical native crash.
+- Added read-only warning/position/input snapshots and a separate fixed escape
+  policy. The observer exactly reproduces the old marksman seed19 report; all12
+  old cautious reports are unchanged. The48-case pilot gives cautious22/24,
+  17 downs versus escape24/24,0 downs under the same game rules. Keep both archer
+  seed19 failures; bot policy gains are not gameplay improvements or human ratings.
+- Thirty real flow/scene churn cycles leave no players, enemies or orphan nodes;
+  warmed resource/node counts are stable. Shutdown resource/RID warnings and the
+  old thread-notification crash remain unresolved. This is not a long-session or
+  Windows/mobile qualification.
+- Full regression: 915 tests, zero failed/broken, exit0. All eight post-fix
+  archer reports exactly match their pilot reports, including the two retained
+  cautious seed19 failures. Shutdown still reports 27 ObjectDB/21 resources
+  plus RIDs; this is local validation, not a GitHub CI pass. No new Windows
+  package, image, save schema, balance change or store/payment activation.
+- Daily continuation is enabled from 2026-11-21 at approximately08:00 Hong Kong.
+  It resumes the latest bounded work package, keeps evidence and permitted draft PRs, and
+  stops instead of repeatedly reporting a complete external-validation block.
+  It cannot self-certify9/10, automatically merge or activate stores/payments.
+
+## Roadmap foundation — PR #15
 
 The owner requested a robust plan to reach 9/10 on 2026-11-20. The documentation-only branch `codex/quality9-roadmap` starts from live default head `e98d416e60781bf479d4a6df413127758bceaf10`. [The R1 quality roadmap](QUALITY_9_ROADMAP_ZH.md) defines seven gated phases, a first-chapter experience, all 24 quality areas, player/device evidence, failure actions and the next five work packages. These are proposed targets, not completed features or improved scores. No game behavior, balance, assets or save schema changes in this planning work.
 
 Published as [draft PR #15](https://github.com/QuantumPrediction/DoggyKnight/pull/15), not merged. Initial public commit `38a4b0d07b8bc5be820094b00a7a50e4bf7c72eb` and local `d5da0cb58af62ee43e5f7a7f3f68866d9c0acfa5` share tree `103a34bfc8f1663a224e348de355053a06603954`; the subsequent handoff only records publication. All local links in the five changed documents and all 731 tested source fingerprints were checked. No gameplay tests were rerun for this documentation-only change.
 
-The next implementation starts with R01 (archer 1-4 pressure attribution and a second fixed positioning policy) and R02 (native crash/resource lifetime diagnosis). Then validate one combat correction before adding new spatial/objective prototypes. Windows is the first complete playtest target while retaining mobile controls; each platform needs its own hardware evidence. Keep the plan branch and publication status in view before starting another branch; the last merged game remains 0.9.1.
+R1 prioritized R01 (archer 1-4 pressure attribution and a second fixed positioning policy) and R02 (native crash/resource lifetime diagnosis); current results are above. Validate combat changes before adding new spatial/objective prototypes. Windows is the first complete playtest target while retaining mobile controls; each platform needs its own hardware evidence. Keep current implementation branches and their publication status in view before starting another branch; the last merged game remains 0.9.1.
 
 ## Source and publication
 
 - Repository: https://github.com/QuantumPrediction/DoggyKnight
-- **Current source is the default branch `claude/sleepy-hawking-8cvkvl`, containing complete 0.9.1.** The owner explicitly requested “please merge and analysis what's the ranking in every part” on 2026-11-20. [PR #14](https://github.com/QuantumPrediction/DoggyKnight/pull/14) is confirmed closed/merged at `ddd517bb9b91486488717bea6fdf21eb53c3bdf2`; its complete tree `7abbc78693b6c3287509a1053702653f1a0ca8df` equals the tested/documented PR head `b653742c6209fcf365bcdf8e6e7ee72e96503ce7`, including all ten PNGs. Continue from the live default head. Subsequent handoff/quality-review updates are documentation only.
+- **Last merged game is 0.9.1 on default branch `claude/sleepy-hawking-8cvkvl`; current follow-up work is identified above.** The owner explicitly requested “please merge and analysis what's the ranking in every part” on 2026-11-20. [PR #14](https://github.com/QuantumPrediction/DoggyKnight/pull/14) is confirmed closed/merged at `ddd517bb9b91486488717bea6fdf21eb53c3bdf2`; its complete tree `7abbc78693b6c3287509a1053702653f1a0ca8df` equals the tested/documented PR head `b653742c6209fcf365bcdf8e6e7ee72e96503ce7`, including all ten PNGs. Preserve the newer stacked work when continuing; do not restart from default alone.
 - The final head had zero check runs, zero commit statuses and no review/comment entries. Its 731 tested source fingerprints remain unchanged and the existing final log has 910 passes; no GitHub CI pass is claimed. No game test was rerun for this tree-identical merge. Known archer and native-crash concerns remain open despite the owner-approved integration.
 - Screenshot publication block was resolved before this merge: the owner directly approved all ten original 0.9.1 PNGs for public upload. Screenshot commit `d54e8cd9ae81c0c4a689bd8465fca4034c632ce0` matched local `648f223`; hashes and public paths were verified. Earlier rejection/text-only notes are historical. See [publication mapping](validation/0.9.1/publication.json) and [screenshot index](validation/0.9.1/captures/README.md).
 - Updated [quality review](GOLDEN_KNIGHT_QUALITY_REVIEW_ZH.md): overall provisional 6–6.5/10, a recognizable complete prototype/early test build. Stronger areas are identity, equipment/build systems and continuation; encounter variety, economy, balance, animation and target-device reliability still constrain the overall experience. Scores are design judgments, not player ratings or market ranks.
@@ -60,7 +105,7 @@ Keep replies brief. Do not proactively create/upload Windows ZIPs, standalone pr
 
 Follow the [R1 roadmap](QUALITY_9_ROADMAP_ZH.md) for staged deliverables and acceptance criteria. Its phases are planned; the completed evidence remains listed above.
 
-1. Address the observed archer1-4 regression with mixed melee/ranged pressure traces, additional seeds and distinct positioning policies. Preserve the current paired failures and distinguish fair warnings from encounter balance. Do not tune global HP around two seeds.
+1. Continue R01 from the retained 48-case pilot and frozen escape policy. The old-policy failures are unchanged; do not rerun this pilot and call it new progress. Use traces to distinguish readable escape opportunities from overlapping attacks, then register one focused candidate and evaluate the roadmap development/confirmation grids. Preserve the paired failures and do not tune global HP around two seeds.
 2. Observe unfamiliar players using both routes of each class and the new action/focus/roll indicators. Record comprehension and retry intent before a9/10 claim.
 3. Reproduce/diagnose the native thread-notification crash and remaining resource warnings. The callback fixes above do not solve these; successful repeats alone are insufficient.
 4. Validate target Windows/mobile hardware and controls/audio when available. Expand the proven first-chapter loop afterward. No popularity or 9/10 certification has been established.

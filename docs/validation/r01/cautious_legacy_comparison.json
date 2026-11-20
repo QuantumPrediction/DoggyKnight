@@ -1,0 +1,50 @@
+[
+  {
+    "case": "archer_route0_s19",
+    "same_report": true
+  },
+  {
+    "case": "archer_route0_s7",
+    "same_report": true
+  },
+  {
+    "case": "archer_route1_s19",
+    "same_report": true
+  },
+  {
+    "case": "archer_route1_s7",
+    "same_report": true
+  },
+  {
+    "case": "knight_route0_s19",
+    "same_report": true
+  },
+  {
+    "case": "knight_route0_s7",
+    "same_report": true
+  },
+  {
+    "case": "knight_route1_s19",
+    "same_report": true
+  },
+  {
+    "case": "knight_route1_s7",
+    "same_report": true
+  },
+  {
+    "case": "mage_route0_s19",
+    "same_report": true
+  },
+  {
+    "case": "mage_route0_s7",
+    "same_report": true
+  },
+  {
+    "case": "mage_route1_s19",
+    "same_report": true
+  },
+  {
+    "case": "mage_route1_s7",
+    "same_report": true
+  }
+]

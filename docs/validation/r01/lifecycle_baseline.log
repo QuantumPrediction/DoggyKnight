@@ -1,0 +1,39 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+{"cycle":1,"enemies_remaining":0,"memory_static":123671941.0,"nodes":26.0,"objects":1995.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":287.0}
+{"cycle":2,"enemies_remaining":0,"memory_static":136432369.0,"nodes":26.0,"objects":2005.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":289.0}
+{"cycle":3,"enemies_remaining":0,"memory_static":136907025.0,"nodes":26.0,"objects":2032.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":4,"enemies_remaining":0,"memory_static":136886563.0,"nodes":26.0,"objects":2030.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":5,"enemies_remaining":0,"memory_static":136918119.0,"nodes":26.0,"objects":2030.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":6,"enemies_remaining":0,"memory_static":136928205.0,"nodes":26.0,"objects":2031.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":7,"enemies_remaining":0,"memory_static":136920151.0,"nodes":26.0,"objects":2030.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":8,"enemies_remaining":0,"memory_static":136908843.0,"nodes":26.0,"objects":2029.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":9,"enemies_remaining":0,"memory_static":136930749.0,"nodes":26.0,"objects":2031.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":10,"enemies_remaining":0,"memory_static":136971871.0,"nodes":26.0,"objects":2029.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":11,"enemies_remaining":0,"memory_static":136985607.0,"nodes":26.0,"objects":2030.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":12,"enemies_remaining":0,"memory_static":137008229.0,"nodes":26.0,"objects":2032.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":13,"enemies_remaining":0,"memory_static":136987743.0,"nodes":26.0,"objects":2030.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":14,"enemies_remaining":0,"memory_static":136975935.0,"nodes":26.0,"objects":2029.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":15,"enemies_remaining":0,"memory_static":137007663.0,"nodes":26.0,"objects":2032.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":16,"enemies_remaining":0,"memory_static":136978071.0,"nodes":26.0,"objects":2029.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":17,"enemies_remaining":0,"memory_static":136991631.0,"nodes":26.0,"objects":2030.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":18,"enemies_remaining":0,"memory_static":137014253.0,"nodes":26.0,"objects":2032.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":19,"enemies_remaining":0,"memory_static":136993767.0,"nodes":26.0,"objects":2030.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":20,"enemies_remaining":0,"memory_static":137104791.0,"nodes":26.0,"objects":2029.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":21,"enemies_remaining":0,"memory_static":137127165.0,"nodes":26.0,"objects":2031.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":22,"enemies_remaining":0,"memory_static":137106751.0,"nodes":26.0,"objects":2029.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":23,"enemies_remaining":0,"memory_static":137107731.0,"nodes":26.0,"objects":2029.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":24,"enemies_remaining":0,"memory_static":137130105.0,"nodes":26.0,"objects":2031.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":25,"enemies_remaining":0,"memory_static":137109691.0,"nodes":26.0,"objects":2029.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":26,"enemies_remaining":0,"memory_static":137110671.0,"nodes":26.0,"objects":2029.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":27,"enemies_remaining":0,"memory_static":137133045.0,"nodes":26.0,"objects":2031.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":28,"enemies_remaining":0,"memory_static":137112631.0,"nodes":26.0,"objects":2029.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":29,"enemies_remaining":0,"memory_static":137113947.0,"nodes":26.0,"objects":2029.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+{"cycle":30,"enemies_remaining":0,"memory_static":137136321.0,"nodes":26.0,"objects":2031.0,"orphans":0.0,"players_remaining":0,"reached_level":true,"resources":299.0}
+WARNING: 90 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 49 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 11 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced22ShapedTextDataAdvancedE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.

@@ -1,0 +1,34 @@
+[
+  {
+    "case": "archer_route0_s19_cautious",
+    "report_unchanged": true
+  },
+  {
+    "case": "archer_route0_s19_escape",
+    "report_unchanged": true
+  },
+  {
+    "case": "archer_route0_s7_cautious",
+    "report_unchanged": true
+  },
+  {
+    "case": "archer_route0_s7_escape",
+    "report_unchanged": true
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "report_unchanged": true
+  },
+  {
+    "case": "archer_route1_s19_escape",
+    "report_unchanged": true
+  },
+  {
+    "case": "archer_route1_s7_cautious",
+    "report_unchanged": true
+  },
+  {
+    "case": "archer_route1_s7_escape",
+    "report_unchanged": true
+  }
+]
