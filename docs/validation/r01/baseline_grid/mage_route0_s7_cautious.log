@@ -1,0 +1,19 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+== 第 1 章 / mage ==
+
+== 試玩結果 ==
+1-1   44.5 秒  擊倒 16  等級  3  把戲 [&"sit", &"shake", &"shake"]  活力 73
+1-2   62.4 秒  擊倒 24  等級  5  把戲 [&"shake", &"fetch"]  活力 78
+營地:小遊戲完成,活力 84,下一關加成 15%
+1-3   58.5 秒  擊倒 33  等級  7  把戲 [&"high_five", &"sniff"]  活力 84
+1-4   77.8 秒  擊倒 38  等級 10  把戲 [&"sit", &"sniff", &"play_dead", &"wag"]  活力 36
+營地:小遊戲完成,活力 84,下一關加成 15%
+1-5   70.8 秒  擊倒 34  等級 12  把戲 [&"wag", &"wag", &"bark", &"sit", &"lion_roar"]  活力 84
+1-6   37.1 秒  擊倒  5  等級 13  把戲 [&"spin", &"tornado_tail"]  活力 84
+倒下 0 次;必殺技 11 次;略過對白 16 段;最後活力 84
+PLAYTHROUGH COMPLETE
+WARNING: 29 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 13 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)

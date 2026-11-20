@@ -79,3 +79,24 @@ func test_before_companion_arrives_no_lesson_or_replay_button() -> void:
 	assert_false(flow._pause.lesson_button.visible)
 	EventBus.guard_lesson_requested.emit()
 	assert_false(flow._hud.guard_coach.visible)
+
+func test_detached_flow_cannot_complete_or_save_an_old_lesson() -> void:
+	await enter_stage(2)
+	var saved_before := FileAccess.get_file_as_string(SAVE_PATH)
+	remove_child(flow)
+	GameState.guard_lesson_done = false
+	EventBus.guard_lesson_completed.emit()
+	assert_false(GameState.guard_lesson_done, "an exited flow cannot change the active run")
+	assert_eq(FileAccess.get_file_as_string(SAVE_PATH), saved_before, "an exited flow cannot overwrite a checkpoint")
+
+func test_detached_flow_disconnects_all_guard_lesson_callbacks() -> void:
+	make_flow()
+	remove_child(flow)
+	GameState.guard_lesson_skipped = false
+	EventBus.guard_lesson_dismissed.emit()
+	assert_false(GameState.guard_lesson_skipped)
+	for pair in [[EventBus.guard_lesson_requested, flow._replay_guard_lesson],
+		[EventBus.guard_lesson_completed, flow._on_guard_lesson_completed],
+		[EventBus.guard_lesson_dismissed, flow._on_guard_lesson_dismissed]]:
+		var signal_value: Signal = pair[0]
+		assert_false(signal_value.is_connected(pair[1]), "guard callbacks follow the same exit boundary as pause/input callbacks")

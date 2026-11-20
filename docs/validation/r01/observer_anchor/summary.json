@@ -1,0 +1,21 @@
+[
+  {
+    "case": "archer_route0_s19_cautious",
+    "hero": "archer",
+    "route_choice": 0,
+    "seed": 19,
+    "policy": "cautious",
+    "exit_code": 1,
+    "elapsed_seconds": 25.156,
+    "route": "marksman",
+    "finished": false,
+    "downs": 3,
+    "outcome": "down_limit",
+    "damage": 386,
+    "cleared": 3,
+    "simulated_seconds": 372.983333333323,
+    "script_error": false,
+    "engine_error": true,
+    "native_crash": false
+  }
+]

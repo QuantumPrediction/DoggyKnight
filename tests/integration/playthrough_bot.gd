@@ -47,6 +47,8 @@ var _starting_equipment: Dictionary = {}
 var _enemy_serial: int = 0
 var _player_serial: int = 0
 var _minigame_serial: int = 0
+var _escape_direction: Vector2 = Vector2.ZERO
+var _escape_think_left: float = 0.0
 
 var _downs: int = 0
 var _ultimates: int = 0
@@ -89,7 +91,7 @@ func _ready() -> void:
 			max_downs = maxi(0, int(arg.trim_prefix("--max-downs=")))
 		elif arg.begins_with("--max-sim-seconds="):
 			max_sim_seconds = maxf(0.0, float(arg.trim_prefix("--max-sim-seconds=")))
-	if not ["original", "cautious"].has(movement_policy) or not ["off", "reactive"].has(guard_policy) or not preload("res://tests/integration/equipment_profiles.gd").PRESETS.has(equipment_preset) or (equipment_element != "default" and not EquipmentInventory.ELEMENTS.has(equipment_element)):
+	if not ["original", "cautious", "escape"].has(movement_policy) or not ["off", "reactive"].has(guard_policy) or not preload("res://tests/integration/equipment_profiles.gd").PRESETS.has(equipment_preset) or (equipment_element != "default" and not EquipmentInventory.ELEMENTS.has(equipment_element)):
 		push_error("Unknown equipment preset: " + equipment_preset)
 		get_tree().quit(2)
 		return
@@ -116,7 +118,9 @@ func _run() -> void:
 		_moving_seconds = 0.0
 		_standing_seconds = 0.0
 		_empty_swings = 0
-		_last_swing_count = 0)
+		_last_swing_count = 0
+		_escape_direction = Vector2.ZERO
+		_escape_think_left = 0.0)
 	await _frames(10)
 	await _shot("00_title")
 	# 標題畫面在 new_game_pressed 之前設定章與難度(DEV_PLAN 4.11、4.13);機器人直接設定。
@@ -328,6 +332,13 @@ func _steer() -> void:
 			var away := (player.global_position - nearest.global_position).normalized()
 			if Layout.ARENA_RECT.grow(-14.0).has_point(player.global_position + away * 18.0):
 				direction = away
+	if movement_policy == "escape":
+		_escape_think_left -= get_process_delta_time()
+		if _escape_think_left <= 0.0:
+			_escape_think_left = 0.12
+			_escape_direction = preload("res://tests/integration/escape_policy.gd").choose(
+				get_tree(), player.global_position, hero_class, GameState.player_stats.attack_range, _escape_direction)
+		direction = _escape_direction
 	player.call(&"set_move_override", direction)
 	if direction == Vector2.ZERO:
 		_standing_seconds += get_process_delta_time()

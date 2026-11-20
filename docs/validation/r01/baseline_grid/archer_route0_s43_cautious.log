@@ -1,0 +1,20 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+== 第 1 章 / archer ==
+
+== 試玩結果 ==
+1-1   40.1 秒  擊倒 16  等級  3  把戲 [&"sniff", &"shake", &"shake"]  活力 75
+1-2   54.3 秒  擊倒 24  等級  4  把戲 [&"sniff"]  活力 81
+營地:小遊戲完成,活力 97,下一關加成 15%
+1-3   53.3 秒  擊倒 33  等級  6  把戲 [&"shake", &"sniff"]  活力 97
+1-4  失敗  58.8 秒  擊倒 24
+1-4   77.7 秒  擊倒 38  等級  8  把戲 [&"fetch", &"high_five", &"spin"]  活力 31
+營地:小遊戲完成,活力 97,下一關加成 15%
+1-5   65.4 秒  擊倒 34  等級 11  把戲 [&"roll", &"roll", &"roll", &"wag", &"spin", &"spin"]  活力 85
+1-6   35.5 秒  擊倒  7  等級 12  把戲 [&"tornado_tail", &"zoomies"]  活力 84
+倒下 1 次;必殺技 15 次;略過對白 16 段;最後活力 84
+PLAYTHROUGH COMPLETE
+WARNING: 31 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 14 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)

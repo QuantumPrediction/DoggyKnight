@@ -1,0 +1,182 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/line_b/test_guard_learning_flow.gd
+  ok      test_v9_save_migrates_without_losing_equipment_or_progress
+  ok      test_intro_shows_optional_lesson_skip_and_pause_replay
+  ok      test_completed_flag_persists_and_replay_remains_available
+  ok      test_before_companion_arrives_no_lesson_or_replay_button
+  FAIL    test_detached_flow_cannot_complete_or_save_an_old_lesson
+          - an exited flow cannot change the active run: expected false
+          - an exited flow cannot overwrite a checkpoint: expected "{
+	\"best_stars\": {},
+	\"camp_pending\": false,
+	\"chapter\": 1,
+	\"chapter_cleared\": false,
+	\"chapters_cleared\": 0,
+	\"checkpoint\": {
+		\"bonus_trick_levels\": 0,
+		\"equipment\": {
+			\"boss_misses\": 0,
+			\"coins\": 250,
+			\"elements\": {},
+			\"first_boss\": {},
+			\"gems\": 0,
+			\"last_reward\": {
+				\"coins\": 0,
+				\"duplicate\": false,
+				\"gems\": 0,
+				\"item\": \"\",
+				\"shards\": 0
+			},
+			\"loadouts\": {
+				\"archer\": {},
+				\"knight\": {},
+				\"mage\": {}
+			},
+			\"owned\": {},
+			\"reward_serial\": 0,
+			\"shards\": 0
+		},
+		\"equipment_rng\": \"-6289660193894605520\",
+		\"event_rng\": \"5792947655968153091\",
+		\"exp_centi\": 0,
+		\"hero_level\": 1,
+		\"next_level_bonus\": 0.0,
+		\"rng\": \"5147283058137325692\",
+		\"route\": \"\",
+		\"run_modifiers\": [],
+		\"satisfaction\": 0,
+		\"snacks\": 0,
+		\"spawn_rng\": \"-6935324791725432919\",
+		\"tricks\": [],
+		\"vigor\": 100
+	},
+	\"difficulty\": \"normal\",
+	\"endless_best\": 0,
+	\"equipment\": {
+		\"boss_misses\": 0,
+		\"coins\": 250,
+		\"elements\": {},
+		\"first_boss\": {},
+		\"gems\": 0,
+		\"last_reward\": {
+			\"coins\": 0,
+			\"duplicate\": false,
+			\"gems\": 0,
+			\"item\": \"\",
+			\"shards\": 0
+		},
+		\"loadouts\": {
+			\"archer\": {},
+			\"knight\": {},
+			\"mage\": {}
+		},
+		\"owned\": {},
+		\"reward_serial\": 0,
+		\"shards\": 0
+	},
+	\"guard_lesson_done\": false,
+	\"haptics_on\": true,
+	\"hero_class\": \"knight\",
+	\"level_index\": 2,
+	\"meta_upgrades\": {},
+	\"music_on\": true,
+	\"snacks\": 0,
+	\"sound_on\": true,
+	\"story_seen\": {},
+	\"tutorial_done\": false,
+	\"version\": 11
+}", got "{
+	\"best_stars\": {},
+	\"camp_pending\": false,
+	\"chapter\": 1,
+	\"chapter_cleared\": false,
+	\"chapters_cleared\": 0,
+	\"checkpoint\": {
+		\"bonus_trick_levels\": 0,
+		\"equipment\": {
+			\"boss_misses\": 0,
+			\"coins\": 250,
+			\"elements\": {},
+			\"first_boss\": {},
+			\"gems\": 0,
+			\"last_reward\": {
+				\"coins\": 0,
+				\"duplicate\": false,
+				\"gems\": 0,
+				\"item\": \"\",
+				\"shards\": 0
+			},
+			\"loadouts\": {
+				\"archer\": {},
+				\"knight\": {},
+				\"mage\": {}
+			},
+			\"owned\": {},
+			\"reward_serial\": 0,
+			\"shards\": 0
+		},
+		\"equipment_rng\": \"-6289660193894605520\",
+		\"event_rng\": \"5792947655968153091\",
+		\"exp_centi\": 0,
+		\"hero_level\": 1,
+		\"next_level_bonus\": 0.0,
+		\"rng\": \"5147283058137325692\",
+		\"route\": \"\",
+		\"run_modifiers\": [],
+		\"satisfaction\": 0,
+		\"snacks\": 0,
+		\"spawn_rng\": \"-6935324791725432919\",
+		\"tricks\": [],
+		\"vigor\": 100
+	},
+	\"difficulty\": \"normal\",
+	\"endless_best\": 0,
+	\"equipment\": {
+		\"boss_misses\": 0,
+		\"coins\": 250,
+		\"elements\": {},
+		\"first_boss\": {},
+		\"gems\": 0,
+		\"last_reward\": {
+			\"coins\": 0,
+			\"duplicate\": false,
+			\"gems\": 0,
+			\"item\": \"\",
+			\"shards\": 0
+		},
+		\"loadouts\": {
+			\"archer\": {},
+			\"knight\": {},
+			\"mage\": {}
+		},
+		\"owned\": {},
+		\"reward_serial\": 0,
+		\"shards\": 0
+	},
+	\"guard_lesson_done\": true,
+	\"haptics_on\": true,
+	\"hero_class\": \"knight\",
+	\"level_index\": 2,
+	\"meta_upgrades\": {},
+	\"music_on\": true,
+	\"snacks\": 0,
+	\"sound_on\": true,
+	\"story_seen\": {},
+	\"tutorial_done\": false,
+	\"version\": 11
+}"
+  FAIL    test_detached_flow_disconnects_all_guard_lesson_callbacks
+          - expected false
+          - guard callbacks follow the same exit boundary as pause/input callbacks: expected false
+          - guard callbacks follow the same exit boundary as pause/input callbacks: expected false
+          - guard callbacks follow the same exit boundary as pause/input callbacks: expected false
+
+6 tests, 2 failed, 0 broken files
+WARNING: 76 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 39 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 9 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.

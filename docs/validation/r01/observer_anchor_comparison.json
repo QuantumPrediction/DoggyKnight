@@ -1,0 +1,30 @@
+{
+  "observer_report_equals_retained_0_9_1": true,
+  "per_1_4_attempt": [
+    {
+      "attempt": 3,
+      "samples": 151,
+      "samples_without_clear_local_step": 10,
+      "damaging_hits": 18,
+      "hits_without_clear_local_step": 10,
+      "damage": 133
+    },
+    {
+      "attempt": 4,
+      "samples": 119,
+      "samples_without_clear_local_step": 9,
+      "damaging_hits": 17,
+      "hits_without_clear_local_step": 6,
+      "damage": 129
+    },
+    {
+      "attempt": 5,
+      "samples": 138,
+      "samples_without_clear_local_step": 8,
+      "damaging_hits": 18,
+      "hits_without_clear_local_step": 6,
+      "damage": 124
+    }
+  ],
+  "interpretation": "Visible warning overlap contributes to pressure; local geometry is not a reachability proof. No balance improvement or human fairness claim."
+}
