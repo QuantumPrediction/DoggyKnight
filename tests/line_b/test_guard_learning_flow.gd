@@ -53,11 +53,26 @@ func test_completed_flag_persists_and_replay_remains_available() -> void:
 	await enter_stage(3)
 	var coach: GuardCoach = flow._hud.guard_coach
 	assert_true(coach.visible)
+	var completion := watch_signal(EventBus.guard_lesson_completed)
+	var arena: CombatArena = flow.get_arena()
+	var mark := AttackTelegraph.make_circle(3.0)
+	arena.add_child(mark)
+	mark.global_position = arena.get_player().global_position + Vector2(13, 0)
 	# Combat-side tests verify this event can only follow actual charge consumption.
 	EventBus.companion_counter_granted.emit(.25)
 	EventBus.companion_counter_resolved.emit(&"used")
 	assert_true(GameState.guard_lesson_done)
 	assert_true(read_save().guard_lesson_done)
+	coach._process(0.01)
+	assert_false(coach.heading.is_visible_in_tree(), "persistence happens even while the card is deferred")
+	var save_after_done := FileAccess.get_sha256(SAVE_PATH)
+	var music_setting := GameState.music_on
+	GameState.music_on = not music_setting
+	EventBus.companion_counter_granted.emit(.25)
+	EventBus.companion_counter_resolved.emit(&"used")
+	assert_eq(completion.count, 1, "one logical completion per lesson")
+	assert_eq(FileAccess.get_sha256(SAVE_PATH), save_after_done, "no duplicate save during deferral")
+	GameState.music_on = music_setting
 	flow.queue_free()
 	await wait_frames(2)
 	GameState.guard_lesson_done = false

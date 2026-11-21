@@ -1,0 +1,753 @@
+{
+  "baseline": {
+    "checkout_head": "838c620959ed6d4c6f094b56c427438e53064c9a",
+    "engine": "4.7.2.stable.official.ed1daf0bf",
+    "source_sha256": "8e2775b4b8382f6fd8d19a27de3c282e02de1649a32d23a718054378c61fe52e",
+    "source_sha256_after": "8e2775b4b8382f6fd8d19a27de3c282e02de1649a32d23a718054378c61fe52e",
+    "source_unchanged": true,
+    "source_fingerprint_schema": "git-index-paths-plus-capture-v1: sorted path + NUL + binary SHA256",
+    "source_file_count": 2187,
+    "same_tree_as_public_base": "6324bee961df29f8ee1fcb5147204f9efb219f95"
+  },
+  "candidate": {
+    "checkout_head": "8d21d1bc56f73741e9fa9b003715095395421877",
+    "engine": "4.7.2.stable.official.ed1daf0bf",
+    "source_sha256": "3a5deddb57250b1815d38f695d7d7aae7b3353926d748467852dee08151f1486",
+    "source_sha256_after": "3a5deddb57250b1815d38f695d7d7aae7b3353926d748467852dee08151f1486",
+    "source_unchanged": true,
+    "source_fingerprint_schema": "git-index-paths-plus-capture-v1: sorted path + NUL + binary SHA256",
+    "source_file_count": 2187
+  },
+  "comparison": [
+    {
+      "route": "marksman",
+      "case": "20980.1",
+      "display": "X11",
+      "adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+      "renderer": "opengl3",
+      "frames": 35,
+      "identical_original_pngs": 35,
+      "matching_trace_sha256": "e89ff4858aa8d32eef3523a0c5d7bd6617fa7f478bccec7d4e4f4a2edd6555bd",
+      "matching_report_sha256": "c49e74cf9fe1b388f0037b3a05838cb126e8e2fd07823e684b2d16f53909f5f9",
+      "matching_post_draw_attack_and_player_geometry_all_frames": true,
+      "selected_candidate_metadata": [
+        {
+          "tick": 4960,
+          "production_overlap": 0,
+          "coach_hud": {
+            "coach_close_active": false,
+            "coach_px": [
+              [
+                8.0,
+                552.0
+              ],
+              [
+                352.0,
+                632.0
+              ]
+            ],
+            "coach_slot": false,
+            "guard_button_px": [
+              [
+                192.0,
+                516.0
+              ],
+              [
+                260.0,
+                584.0
+              ]
+            ],
+            "guard_button_visible": true,
+            "lesson_completed": false,
+            "lesson_completion_signals": 1,
+            "pause_button_px": [
+              [
+                300.0,
+                8.0
+              ],
+              [
+                352.0,
+                60.0
+              ]
+            ],
+            "persisted_completion_flag": true,
+            "readout_px": [
+              [
+                8.0,
+                516.0
+              ],
+              [
+                164.0,
+                600.0
+              ]
+            ],
+            "readout_warning": false,
+            "success_drawn": false,
+            "success_nearby_warning": false,
+            "ultimate_button_px": [
+              [
+                280.0,
+                516.0
+              ],
+              [
+                344.0,
+                580.0
+              ]
+            ],
+            "ultimate_button_visible": false
+          }
+        },
+        {
+          "tick": 4961,
+          "production_overlap": 0,
+          "coach_hud": {
+            "coach_close_active": false,
+            "coach_px": [
+              [
+                8.0,
+                552.0
+              ],
+              [
+                352.0,
+                632.0
+              ]
+            ],
+            "coach_slot": false,
+            "guard_button_px": [
+              [
+                192.0,
+                516.0
+              ],
+              [
+                260.0,
+                584.0
+              ]
+            ],
+            "guard_button_visible": true,
+            "lesson_completed": false,
+            "lesson_completion_signals": 1,
+            "pause_button_px": [
+              [
+                300.0,
+                8.0
+              ],
+              [
+                352.0,
+                60.0
+              ]
+            ],
+            "persisted_completion_flag": true,
+            "readout_px": [
+              [
+                8.0,
+                516.0
+              ],
+              [
+                164.0,
+                600.0
+              ]
+            ],
+            "readout_warning": false,
+            "success_drawn": false,
+            "success_nearby_warning": false,
+            "ultimate_button_px": [
+              [
+                280.0,
+                516.0
+              ],
+              [
+                344.0,
+                580.0
+              ]
+            ],
+            "ultimate_button_visible": false
+          }
+        },
+        {
+          "tick": 4989,
+          "production_overlap": 1,
+          "coach_hud": {
+            "coach_close_active": false,
+            "coach_px": [
+              [
+                8.0,
+                552.0
+              ],
+              [
+                352.0,
+                632.0
+              ]
+            ],
+            "coach_slot": false,
+            "guard_button_px": [
+              [
+                192.0,
+                516.0
+              ],
+              [
+                260.0,
+                584.0
+              ]
+            ],
+            "guard_button_visible": true,
+            "lesson_completed": false,
+            "lesson_completion_signals": 1,
+            "pause_button_px": [
+              [
+                300.0,
+                8.0
+              ],
+              [
+                352.0,
+                60.0
+              ]
+            ],
+            "persisted_completion_flag": true,
+            "readout_px": [
+              [
+                8.0,
+                516.0
+              ],
+              [
+                164.0,
+                600.0
+              ]
+            ],
+            "readout_warning": true,
+            "success_drawn": false,
+            "success_nearby_warning": false,
+            "ultimate_button_px": [
+              [
+                280.0,
+                516.0
+              ],
+              [
+                344.0,
+                580.0
+              ]
+            ],
+            "ultimate_button_visible": false
+          }
+        },
+        {
+          "tick": 4990,
+          "production_overlap": 2,
+          "coach_hud": {
+            "coach_close_active": false,
+            "coach_px": [
+              [
+                8.0,
+                552.0
+              ],
+              [
+                352.0,
+                632.0
+              ]
+            ],
+            "coach_slot": false,
+            "guard_button_px": [
+              [
+                192.0,
+                516.0
+              ],
+              [
+                260.0,
+                584.0
+              ]
+            ],
+            "guard_button_visible": true,
+            "lesson_completed": false,
+            "lesson_completion_signals": 1,
+            "pause_button_px": [
+              [
+                300.0,
+                8.0
+              ],
+              [
+                352.0,
+                60.0
+              ]
+            ],
+            "persisted_completion_flag": true,
+            "readout_px": [
+              [
+                8.0,
+                516.0
+              ],
+              [
+                164.0,
+                600.0
+              ]
+            ],
+            "readout_warning": true,
+            "success_drawn": false,
+            "success_nearby_warning": false,
+            "ultimate_button_px": [
+              [
+                280.0,
+                516.0
+              ],
+              [
+                344.0,
+                580.0
+              ]
+            ],
+            "ultimate_button_visible": false
+          }
+        },
+        {
+          "tick": 4992,
+          "production_overlap": 1,
+          "coach_hud": {
+            "coach_close_active": false,
+            "coach_px": [
+              [
+                8.0,
+                552.0
+              ],
+              [
+                352.0,
+                632.0
+              ]
+            ],
+            "coach_slot": false,
+            "guard_button_px": [
+              [
+                192.0,
+                516.0
+              ],
+              [
+                260.0,
+                584.0
+              ]
+            ],
+            "guard_button_visible": true,
+            "lesson_completed": false,
+            "lesson_completion_signals": 1,
+            "pause_button_px": [
+              [
+                300.0,
+                8.0
+              ],
+              [
+                352.0,
+                60.0
+              ]
+            ],
+            "persisted_completion_flag": true,
+            "readout_px": [
+              [
+                8.0,
+                516.0
+              ],
+              [
+                164.0,
+                600.0
+              ]
+            ],
+            "readout_warning": true,
+            "success_drawn": false,
+            "success_nearby_warning": false,
+            "ultimate_button_px": [
+              [
+                280.0,
+                516.0
+              ],
+              [
+                344.0,
+                580.0
+              ]
+            ],
+            "ultimate_button_visible": false
+          }
+        }
+      ],
+      "shutdown_notes": {
+        "base": [],
+        "candidate": []
+      }
+    },
+    {
+      "route": "outrider",
+      "case": "17197.2",
+      "display": "X11",
+      "adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+      "renderer": "opengl3",
+      "frames": 35,
+      "identical_original_pngs": 2,
+      "matching_trace_sha256": "a5c1f7a3cac728ea71c81a155741b478263357ad5214f09eafd7a7636b002acb",
+      "matching_report_sha256": "5473b13873603a7fd20a4e167ec676a9432154b5fc04ee712a98c2ec965ffb5c",
+      "matching_post_draw_attack_and_player_geometry_all_frames": true,
+      "selected_candidate_metadata": [
+        {
+          "tick": 365,
+          "production_overlap": 0,
+          "coach_hud": {
+            "coach_close_active": true,
+            "coach_px": [
+              [
+                8.0,
+                552.0
+              ],
+              [
+                352.0,
+                632.0
+              ]
+            ],
+            "coach_slot": true,
+            "guard_button_px": [
+              [
+                192.0,
+                452.0
+              ],
+              [
+                260.0,
+                520.0
+              ]
+            ],
+            "guard_button_visible": true,
+            "lesson_completed": true,
+            "lesson_completion_signals": 1,
+            "pause_button_px": [
+              [
+                300.0,
+                8.0
+              ],
+              [
+                352.0,
+                60.0
+              ]
+            ],
+            "persisted_completion_flag": true,
+            "readout_px": [
+              [
+                8.0,
+                452.0
+              ],
+              [
+                164.0,
+                536.0
+              ]
+            ],
+            "readout_warning": false,
+            "success_drawn": true,
+            "success_nearby_warning": false,
+            "ultimate_button_px": [
+              [
+                280.0,
+                452.0
+              ],
+              [
+                344.0,
+                516.0
+              ]
+            ],
+            "ultimate_button_visible": false
+          }
+        },
+        {
+          "tick": 366,
+          "production_overlap": 0,
+          "coach_hud": {
+            "coach_close_active": false,
+            "coach_px": [
+              [
+                8.0,
+                552.0
+              ],
+              [
+                352.0,
+                632.0
+              ]
+            ],
+            "coach_slot": true,
+            "guard_button_px": [
+              [
+                192.0,
+                452.0
+              ],
+              [
+                260.0,
+                520.0
+              ]
+            ],
+            "guard_button_visible": true,
+            "lesson_completed": true,
+            "lesson_completion_signals": 1,
+            "pause_button_px": [
+              [
+                300.0,
+                8.0
+              ],
+              [
+                352.0,
+                60.0
+              ]
+            ],
+            "persisted_completion_flag": true,
+            "readout_px": [
+              [
+                8.0,
+                452.0
+              ],
+              [
+                164.0,
+                536.0
+              ]
+            ],
+            "readout_warning": false,
+            "success_drawn": false,
+            "success_nearby_warning": true,
+            "ultimate_button_px": [
+              [
+                280.0,
+                452.0
+              ],
+              [
+                344.0,
+                516.0
+              ]
+            ],
+            "ultimate_button_visible": false
+          }
+        },
+        {
+          "tick": 374,
+          "production_overlap": 1,
+          "coach_hud": {
+            "coach_close_active": false,
+            "coach_px": [
+              [
+                8.0,
+                552.0
+              ],
+              [
+                352.0,
+                632.0
+              ]
+            ],
+            "coach_slot": true,
+            "guard_button_px": [
+              [
+                192.0,
+                452.0
+              ],
+              [
+                260.0,
+                520.0
+              ]
+            ],
+            "guard_button_visible": true,
+            "lesson_completed": true,
+            "lesson_completion_signals": 1,
+            "pause_button_px": [
+              [
+                300.0,
+                8.0
+              ],
+              [
+                352.0,
+                60.0
+              ]
+            ],
+            "persisted_completion_flag": true,
+            "readout_px": [
+              [
+                8.0,
+                452.0
+              ],
+              [
+                164.0,
+                536.0
+              ]
+            ],
+            "readout_warning": true,
+            "success_drawn": false,
+            "success_nearby_warning": true,
+            "ultimate_button_px": [
+              [
+                280.0,
+                452.0
+              ],
+              [
+                344.0,
+                516.0
+              ]
+            ],
+            "ultimate_button_visible": false
+          }
+        },
+        {
+          "tick": 375,
+          "production_overlap": 2,
+          "coach_hud": {
+            "coach_close_active": false,
+            "coach_px": [
+              [
+                8.0,
+                552.0
+              ],
+              [
+                352.0,
+                632.0
+              ]
+            ],
+            "coach_slot": true,
+            "guard_button_px": [
+              [
+                192.0,
+                452.0
+              ],
+              [
+                260.0,
+                520.0
+              ]
+            ],
+            "guard_button_visible": true,
+            "lesson_completed": true,
+            "lesson_completion_signals": 1,
+            "pause_button_px": [
+              [
+                300.0,
+                8.0
+              ],
+              [
+                352.0,
+                60.0
+              ]
+            ],
+            "persisted_completion_flag": true,
+            "readout_px": [
+              [
+                8.0,
+                452.0
+              ],
+              [
+                164.0,
+                536.0
+              ]
+            ],
+            "readout_warning": true,
+            "success_drawn": false,
+            "success_nearby_warning": true,
+            "ultimate_button_px": [
+              [
+                280.0,
+                452.0
+              ],
+              [
+                344.0,
+                516.0
+              ]
+            ],
+            "ultimate_button_visible": false
+          }
+        },
+        {
+          "tick": 397,
+          "production_overlap": 1,
+          "coach_hud": {
+            "coach_close_active": false,
+            "coach_px": [
+              [
+                8.0,
+                552.0
+              ],
+              [
+                352.0,
+                632.0
+              ]
+            ],
+            "coach_slot": true,
+            "guard_button_px": [
+              [
+                192.0,
+                452.0
+              ],
+              [
+                260.0,
+                520.0
+              ]
+            ],
+            "guard_button_visible": true,
+            "lesson_completed": true,
+            "lesson_completion_signals": 1,
+            "pause_button_px": [
+              [
+                300.0,
+                8.0
+              ],
+              [
+                352.0,
+                60.0
+              ]
+            ],
+            "persisted_completion_flag": true,
+            "readout_px": [
+              [
+                8.0,
+                452.0
+              ],
+              [
+                164.0,
+                536.0
+              ]
+            ],
+            "readout_warning": true,
+            "success_drawn": false,
+            "success_nearby_warning": true,
+            "ultimate_button_px": [
+              [
+                280.0,
+                452.0
+              ],
+              [
+                344.0,
+                516.0
+              ]
+            ],
+            "ultimate_button_visible": false
+          }
+        }
+      ],
+      "shutdown_notes": {
+        "base": [
+          "WARNING: 10 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+          "ERROR: 5 resources still in use at exit (run with --verbose for details)."
+        ],
+        "candidate": []
+      }
+    }
+  ],
+  "paired_pixel_comparison": {
+    "method": "Compare native PNG RGB with Pillow ImageChops.difference; rectangle coordinates [left,top,right_exclusive,bottom_exclusive]",
+    "results": {
+      "marksman": {
+        "equal_rgb_ticks": 35,
+        "changed_rgb_ticks": 0
+      },
+      "outrider": {
+        "equal_rgb_ticks": 2,
+        "changed_rgb_ticks": 33,
+        "first_changed_tick": 366,
+        "last_changed_tick": 398,
+        "exclusive_change_bbox_px": [
+          8,
+          552,
+          352,
+          632
+        ],
+        "outside_rect_rgb_differences": 0,
+        "sample_changed_rgb_pixels": {
+          "366": 27444,
+          "375": 27444,
+          "397": 27444
+        },
+        "all_changed_frame_rgb_difference_range": [
+          27444,
+          27444
+        ]
+      }
+    }
+  }
+}

@@ -49,6 +49,9 @@ signal player_combat_readiness(state: StringName, charge_left: float, charge_bon
 # 0.9.1: real actor snapshot; UI does not advance its own combat clock.
 # R03a adds visible warning_count / locked_warning_count; never a safety verdict.
 signal player_tactics_changed(status: Dictionary)
+# Presentation-only, synchronous read after actor physics; see 20261121-INT-guard-success-toast.md.
+signal guard_success_context_requested(warning_padding: float)
+signal guard_success_context_observed(nearby_warning: bool, drag_active: bool)
 signal companion_counter_resolved(result: StringName)
 signal guard_lesson_requested()
 signal guard_lesson_completed()

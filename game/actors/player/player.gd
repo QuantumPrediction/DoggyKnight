@@ -125,6 +125,7 @@ func _ready() -> void:
 	EventBus.companion_blocked.connect(_on_equipment_block)
 	EventBus.companion_counter_granted.connect(_on_companion_counter)
 	EventBus.player_combat_status_requested.connect(_refresh_combat_readiness)
+	EventBus.guard_success_context_requested.connect(_observe_guard_success_context)
 	EventBus.wave_cleared.connect(_on_equipment_wave)
 	EventBus.trick_chosen.connect(_on_trick_chosen)
 	EventBus.trick_evolved.connect(_on_trick_evolved)
@@ -1325,6 +1326,16 @@ func tactics_status() -> Dictionary:
 		"roll": roll_state, "roll_left": roll.cooldown_left, "roll_total": roll.cooldown(),
 		"roll_active_left": roll.roll_left, "roll_duration": roll.roll_time(),
 		"attack_left": maxf(0.0, _attack_cooldown), "attack_total": maxf(0.001, GameState.player_stats.attack_interval - loadout.windup)}
+
+
+## A padded visibility check for one optional card. It does not advance combat
+## or change the separate, body-only threat count used by the tactical HUD.
+func _observe_guard_success_context(warning_padding: float) -> void:
+	if not is_inside_tree() or is_queued_for_deletion() or _downed or celebrating:
+		return
+	var nearby := AttackTelegraph.warning_counts(get_tree(), global_position,
+			tuning.body_radius + maxf(0.0, warning_padding)).x > 0
+	EventBus.guard_success_context_observed.emit(nearby, joystick != null and joystick.is_active())
 
 
 func _publish_tactics() -> void:

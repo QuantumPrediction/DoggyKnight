@@ -1,6 +1,6 @@
 # CLAUDE.md —《金毛騎士》原型
 
-本輪實際畫面以合併 [PR #20](https://github.com/QuantumPrediction/DoggyKnight/pull/20) 的 `d81716d` 為基準。兩個同伴方向扇形在起手的畫面都已可見一部分，但持續有角色及介面遮擋。只加測試與量測，沒有更改正式玩法或介面；下一輪可比較一個不搬動觸控按鈕的被動介面避讓方案。接續前先核對實際預設分支及進行中的 PR；見 [整合狀態](docs/PROJECT_STATE.md) 與 [本輪證據](docs/validation/scarecrow-render-cues/README.md)。
+本輪以合併 [PR #21](https://github.com/QuantumPrediction/DoggyKnight/pull/21) 的 `8d21d1b` 為基準，讓非必要的反擊成功卡在附近有預警時暫緩，不延後完成或寫檔、不搬動正在使用的通用控件。接續前先核對實際預設分支及進行中的 PR；見 [整合狀態](docs/PROJECT_STATE.md) 與 [本輪證據](docs/validation/guard-success-toast/README.md)。
 
 目前接續入口為 `docs/PROJECT_STATE.md`。0.9.1 在已合併的 0.9.0 上處理戰鬥提示、弓兵預警一致性與測試生命週期；跨線整合合約為 `docs/requests/20261120-INT-combat-readability.md`。不新增下載包、不改存檔／平衡數值；原生崩潰與真人品質驗證仍是待辦。
 

@@ -12,3 +12,7 @@ combo_tiers = Array[int]([5, 10, 20])
 low_vigor_ratio = 0.3
 heartbeat_rate = 1.6
 level_pop_time = 1.1
+guard_success_time = 2.2
+guard_success_limit = 4.4
+guard_success_clear_time = 0.2
+guard_success_warning_padding = 6.0

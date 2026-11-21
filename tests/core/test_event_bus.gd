@@ -7,6 +7,8 @@ const CONTRACT: Dictionary = {
 	"player_combat_status_requested": [],
 	"player_combat_readiness": [["state", TYPE_STRING_NAME], ["charge_left", TYPE_FLOAT], ["charge_bonus", TYPE_FLOAT]],
 	"player_tactics_changed": [["status", TYPE_DICTIONARY]],
+	"guard_success_context_requested": [["warning_padding", TYPE_FLOAT]],
+	"guard_success_context_observed": [["nearby_warning", TYPE_BOOL], ["drag_active", TYPE_BOOL]],
 	"companion_counter_resolved": [["result", TYPE_STRING_NAME]],
 	"guard_lesson_requested": [],
 	"guard_lesson_completed": [],

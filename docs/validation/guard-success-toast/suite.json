@@ -1,0 +1,60 @@
+{
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "final_render_inputs_sha256": "3a5deddb57250b1815d38f695d7d7aae7b3353926d748467852dee08151f1486",
+  "exact_separate_regression_tracked_patch_sha256": "e2225fd4e4dc1e3bbeb026197929cffe445a9eabbf759f9515d301aad872956a",
+  "tests": {
+    "focused": {
+      "command": "TEST_TIMEOUT=900 bash tools/run_tests.sh guard_learning",
+      "passed": 21,
+      "failed": 0,
+      "broken": 0,
+      "exit_code": 0,
+      "log_sha256": "73ee98347d3a18b7ee6682db3e703aea21fb909ca42a4fa8f153914c6ec7053e",
+      "remaining_exit_warnings": [
+        "WARNING: 57 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 13 resources still in use at exit (run with --verbose for details).",
+        "ERROR: 9 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.",
+        "ERROR: 5 RID allocations of type 'PN18TextServerAdvanced22ShapedTextDataAdvancedE' were leaked at exit.",
+        "ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit."
+      ]
+    },
+    "warning": {
+      "command": "TEST_TIMEOUT=900 bash tools/run_tests.sh warning_readout",
+      "passed": 8,
+      "failed": 0,
+      "broken": 0,
+      "exit_code": 0,
+      "log_sha256": "a81564cf9f35e88fdb7160f458574c183f55cff384b8a79f88d99870a0f060c7",
+      "remaining_exit_warnings": [
+        "WARNING: 35 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 15 resources still in use at exit (run with --verbose for details).",
+        "ERROR: 2 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.",
+        "ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit."
+      ]
+    },
+    "contract": {
+      "command": "TEST_TIMEOUT=900 bash tools/run_tests.sh test_event_bus",
+      "passed": 2,
+      "failed": 0,
+      "broken": 0,
+      "exit_code": 0,
+      "log_sha256": "b7d3654ba1836d045623fcf296f1591b9213599489f70930dbb446d2c11d94e5",
+      "remaining_exit_warnings": []
+    },
+    "full": {
+      "command": "TEST_TIMEOUT=900 bash tools/run_tests.sh",
+      "passed": 936,
+      "failed": 0,
+      "broken": 0,
+      "exit_code": 0,
+      "log_sha256": "b460f858a0366c32d101eb4c041fca34451b0b151b4d9dcb945a82a28d25136d",
+      "remaining_exit_warnings": [
+        "WARNING: 3 RIDs of type \"CanvasItem\" were leaked.",
+        "WARNING: 33 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 24 resources still in use at exit (run with --verbose for details).",
+        "ERROR: 1 RID allocations of type 'P11GodotBody2D' were leaked at exit.",
+        "ERROR: 1 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit."
+      ]
+    }
+  }
+}
