@@ -1,0 +1,92 @@
+{
+  "registered_base": "d81716df4c7d81fd49d368c6d42262fddc6adf93",
+  "checkout_head": "d81716df4c7d81fd49d368c6d42262fddc6adf93",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "source_sha256": "8e2775b4b8382f6fd8d19a27de3c282e02de1649a32d23a718054378c61fe52e",
+  "source_sha256_after": "8e2775b4b8382f6fd8d19a27de3c282e02de1649a32d23a718054378c61fe52e",
+  "source_fingerprint_schema": "git-index-paths-plus-capture-v1: sorted path + NUL + binary SHA256",
+  "source_file_count": 2187,
+  "changed_source_paths": [],
+  "source_unchanged": true,
+  "registered_base_tree": "9c61aa482a0362bfa772ba97ae65cc64a42d2ed7",
+  "prior_transport_attempt": {
+    "source_unchanged_original_gate": false,
+    "original_pre_import_sha256": "35abee3804b7487166d4a971119b595e81618ab36b3bf409c41b6936513f4a3f",
+    "final_legacy_scope_sha256_omitting_only_generated_translations": "35abee3804b7487166d4a971119b595e81618ab36b3bf409c41b6936513f4a3f",
+    "generated_paths": [
+      "i18n/story.zh_TW.translation",
+      "i18n/strings.zh_TW.translation"
+    ],
+    "used_for_final_acceptance": false
+  },
+  "display_scope": {
+    "resolution_px": [
+      360,
+      640
+    ],
+    "audio_driver": "Dummy",
+    "fixed_fps": 60,
+    "root_viewport_signal": "RenderingServer.frame_post_draw",
+    "test_kind": "native display render, software OpenGL; not a platform device or optical latency or human trial"
+  },
+  "production_delta": "none (integration diagnostic files and documentation only)",
+  "cases": [
+    {
+      "case": "marksman",
+      "target": "20980.1",
+      "start": 4961,
+      "entry": 4990,
+      "impact": 4992,
+      "accepted": true,
+      "engine_exit": 1,
+      "complete_report_identical": true,
+      "complete_trace_identical": true,
+      "trace_sha256": "e89ff4858aa8d32eef3523a0c5d7bd6617fa7f478bccec7d4e4f4a2edd6555bd",
+      "report_sha256": "c49e74cf9fe1b388f0037b3a05838cb126e8e2fd07823e684b2d16f53909f5f9",
+      "display": "X11",
+      "adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+      "render_device": "opengl3",
+      "captured_frames": 35,
+      "missing_physics_ticks": [],
+      "multiple_draw_ticks": {},
+      "first_eligible_draw_tick": 4961,
+      "first_visible_pixels": {
+        "tick": 4961,
+        "finding": "exposed selected outline strips, confirmed in original PNGs (not a claim of complete-sector readability)"
+      },
+      "problems": [],
+      "first_pass_identical_original_pngs": 35,
+      "native_shutdown_note": [
+        "WARNING: 10 ObjectDB instances were leaked at exit",
+        "ERROR: 5 resources still in use at exit"
+      ]
+    },
+    {
+      "case": "outrider",
+      "target": "17197.2",
+      "start": 366,
+      "entry": 375,
+      "impact": 397,
+      "accepted": true,
+      "engine_exit": 1,
+      "complete_report_identical": true,
+      "complete_trace_identical": true,
+      "trace_sha256": "a5c1f7a3cac728ea71c81a155741b478263357ad5214f09eafd7a7636b002acb",
+      "report_sha256": "5473b13873603a7fd20a4e167ec676a9432154b5fc04ee712a98c2ec965ffb5c",
+      "display": "X11",
+      "adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+      "render_device": "opengl3",
+      "captured_frames": 35,
+      "missing_physics_ticks": [],
+      "multiple_draw_ticks": {},
+      "first_eligible_draw_tick": 366,
+      "first_visible_pixels": {
+        "tick": 366,
+        "finding": "exposed selected outline strips, confirmed in original PNGs (not a claim of complete-sector readability)"
+      },
+      "problems": [],
+      "first_pass_identical_original_pngs": 35,
+      "native_shutdown_note": []
+    }
+  ]
+}

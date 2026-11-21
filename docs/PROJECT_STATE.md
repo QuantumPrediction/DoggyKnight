@@ -2,13 +2,22 @@
 
 Updated: 2026-11-21 (Hong Kong). Version: **0.9.1 development source**.
 
-## Current diagnostic — chapter 1-4 companion-directed swings
+## Current diagnostic — chapter 1-4 rendered companion warnings
 
-The evidence originates on work branch `codex/companion-swing-lanes` at base `7d63fffd4ca455837899679ca4b125b030f1f4b3`, the verified merge of #19. Recheck the live default and any in-progress PR before starting the next work. No download was built. [Registered scope](requests/20261121-INT-companion-swing-lanes.md) · [Replay evidence](validation/companion-swing-lanes/README.md)
+The capture evidence originates on work branch `codex/scarecrow-render-cues` at the verified merge of [PR #20](https://github.com/QuantumPrediction/DoggyKnight/pull/20), `d81716df4c7d81fd49d368c6d42262fddc6adf93`. Recheck the live default and in-progress PRs before continuing. [Registered scope](requests/20261121-INT-scarecrow-render-cues.md) · [Rendered results](validation/scarecrow-render-cues/README.md)
+
+- On a real Linux OpenGL window, 35 completed 360×640 viewport draws per case matched the two archived control reports and tick traces byte for byte. Parts of the selected sectors appeared at their first eligible physics ticks: Marksman `20980.1` at 4961 and Outrider `17197.2` at 366. This measures produced pixels, not screen latency or human perception.
+- The selected outline intersects different HUD layers in the two cases. The tactical readout covers part of the Marksman outline; the shifted companion-guard button overlaps much of the Outrider outline. Actors also cover parts of the cue. Both HUDs show the warning count transition from one to two, not which way to dodge. The two controls still reach the three-down limit; no gameplay or production UI changed and no new download was built.
+- All 8 focused checks and the full 931-test suite passed. Existing object, resource and renderer cleanup warnings remain.
+- Next: register a presentation-only comparison that defers the noncritical guard-success toast during nearby attacks without moving touch targets or hiding tactical warnings. Compare conflict and no-conflict views, and measure visible cue and escape space before claiming improvement. Uncoached players, the native crash, actual Windows/mobile/audio/controller and long-session checks remain separate gates. Provisional project quality remains 6–6.5/10.
+
+## Previous diagnostic — chapter 1-4 companion-directed swing controls
+
+The evidence originated on work branch `codex/companion-swing-lanes` and was merged in [PR #20](https://github.com/QuantumPrediction/DoggyKnight/pull/20) at `d81716df4c7d81fd49d368c6d42262fddc6adf93`, from the verified merge of #19. No download was built. [Registered scope](requests/20261121-INT-companion-swing-lanes.md) · [Replay evidence](validation/companion-swing-lanes/README.md)
 
 - Two predeclared, previously untested ally-directed swings had four stop and seven lateral interventions with no damage, roll or immunity; one late lateral move kept the original 5 damage. The two complete original chapter reports and their per-tick streams matched #19 exactly. Both cautious runs still reached the three-down limit.
 - All 23 outside-at-start hits were aligned with the last entry, actual input and other production warnings. The selected attacks were eligible to draw on their first physics tick, but no actual rendered frame was measured. No production timing, damage, AI, encounter, UI, assets or save changes.
-- Next: inspect first actually drawn cue and the before/at-entry frame in a native window. Only try a narrow boundary-contrast change if the render evidence shows the sector is hard to see. Validate with uncoached players separately. Current target-player count is zero and provisional project quality remains 6–6.5/10. Crash attribution and hardware/audio/long-session gates remain separate.
+- The actual native-window follow-up is recorded above. Uncoached player observations remain at zero; crash attribution and target platform/audio/long-session checks are separate.
 
 ## Previous implementation — chapter 1-4 scarecrow escape windows
 
