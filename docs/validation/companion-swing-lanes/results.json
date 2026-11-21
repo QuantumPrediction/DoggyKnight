@@ -1,0 +1,525 @@
+[
+  {
+    "case": "archer_route0_s19_cautious",
+    "id": "20980.1",
+    "direction": "stop",
+    "delay": 28,
+    "window_ticks": 31,
+    "input_tick": 4989,
+    "terminal_tick": 4992,
+    "outcome": "impact",
+    "covers": false,
+    "launch_roll": "absent",
+    "rolling": false,
+    "immune": false,
+    "damage": 0,
+    "classification": "stopped_outside",
+    "matched_prefix_rows": 2322,
+    "prefix_sha256": "f5916618417f0665a94b66ace5792b83bd54ccf936d0ed178780f711de480eb3",
+    "suffix_sha256": "e368ad7d2b92205d5c43fa68164dc0e7264f968ebc98aea73824ebca02983652",
+    "same_attack": true,
+    "control_hits": [
+      {
+        "tick": 4992,
+        "source": "scarecrow.gd",
+        "id": "20980.1",
+        "amount": 5
+      }
+    ],
+    "hits": [],
+    "steering": [
+      0.0,
+      0.0
+    ],
+    "terminal_position": [
+      95.0311737060547,
+      248.262084960938
+    ],
+    "impact_input": [
+      0.0,
+      0.0
+    ],
+    "render_frame_observed": false,
+    "suffix_file": "forks/archer_route0_s19_cautious_stop_28.jsonl.gz"
+  },
+  {
+    "case": "archer_route0_s19_cautious",
+    "id": "20980.1",
+    "direction": "left",
+    "delay": 28,
+    "window_ticks": 31,
+    "input_tick": 4989,
+    "terminal_tick": 4992,
+    "outcome": "impact",
+    "covers": true,
+    "launch_roll": "absent",
+    "rolling": false,
+    "immune": true,
+    "damage": 5,
+    "classification": "unproven",
+    "matched_prefix_rows": 2322,
+    "prefix_sha256": "f5916618417f0665a94b66ace5792b83bd54ccf936d0ed178780f711de480eb3",
+    "suffix_sha256": "9631511e3fee03775b1e39958e0f68cca6cb214a81db414fb5b24356ca6547b2",
+    "same_attack": true,
+    "control_hits": [
+      {
+        "tick": 4992,
+        "source": "scarecrow.gd",
+        "id": "20980.1",
+        "amount": 5
+      }
+    ],
+    "hits": [
+      {
+        "tick": 4992,
+        "source": "scarecrow.gd",
+        "id": "20980.1",
+        "amount": 5
+      }
+    ],
+    "steering": [
+      -0.341210693120956,
+      -0.939986824989319
+    ],
+    "terminal_position": [
+      93.9828643798828,
+      245.486724853516
+    ],
+    "impact_input": [
+      -0.341210693120956,
+      -0.939986824989319
+    ],
+    "render_frame_observed": false,
+    "suffix_file": "forks/archer_route0_s19_cautious_left_28.jsonl.gz"
+  },
+  {
+    "case": "archer_route0_s19_cautious",
+    "id": "20980.1",
+    "direction": "right",
+    "delay": 28,
+    "window_ticks": 31,
+    "input_tick": 4989,
+    "terminal_tick": 4992,
+    "outcome": "impact",
+    "covers": false,
+    "launch_roll": "absent",
+    "rolling": false,
+    "immune": false,
+    "damage": 0,
+    "classification": "lateral_clear",
+    "matched_prefix_rows": 2322,
+    "prefix_sha256": "f5916618417f0665a94b66ace5792b83bd54ccf936d0ed178780f711de480eb3",
+    "suffix_sha256": "773839582b02fa8c217ea523e9400df9cd9dd1d34481c076cc41b1a3d520c663",
+    "same_attack": true,
+    "control_hits": [
+      {
+        "tick": 4992,
+        "source": "scarecrow.gd",
+        "id": "20980.1",
+        "amount": 5
+      }
+    ],
+    "hits": [],
+    "steering": [
+      0.341210693120956,
+      0.939986824989319
+    ],
+    "terminal_position": [
+      95.6558609008789,
+      250.133377075195
+    ],
+    "impact_input": [
+      0.341210693120956,
+      0.939986824989319
+    ],
+    "render_frame_observed": false,
+    "suffix_file": "forks/archer_route0_s19_cautious_right_28.jsonl.gz"
+  },
+  {
+    "case": "archer_route0_s19_cautious",
+    "id": "20980.1",
+    "direction": "stop",
+    "delay": 22,
+    "window_ticks": 31,
+    "input_tick": 4983,
+    "terminal_tick": 4992,
+    "outcome": "impact",
+    "covers": false,
+    "launch_roll": "absent",
+    "rolling": false,
+    "immune": false,
+    "damage": 0,
+    "classification": "stopped_outside",
+    "matched_prefix_rows": 2316,
+    "prefix_sha256": "7d4ffd2d102e0e445ad5a4ebed3eefffd59968bf1866609332620263cf5fad88",
+    "suffix_sha256": "0783dfc187e64e226c449f6dde878352561c402daa435ba0dec179c76a229950",
+    "same_attack": true,
+    "control_hits": [
+      {
+        "tick": 4992,
+        "source": "scarecrow.gd",
+        "id": "20980.1",
+        "amount": 5
+      }
+    ],
+    "hits": [],
+    "steering": [
+      0.0,
+      0.0
+    ],
+    "terminal_position": [
+      94.0228652954102,
+      244.737243652344
+    ],
+    "impact_input": [
+      0.0,
+      0.0
+    ],
+    "render_frame_observed": false,
+    "suffix_file": "forks/archer_route0_s19_cautious_stop_22.jsonl.gz"
+  },
+  {
+    "case": "archer_route0_s19_cautious",
+    "id": "20980.1",
+    "direction": "left",
+    "delay": 22,
+    "window_ticks": 31,
+    "input_tick": 4983,
+    "terminal_tick": 4992,
+    "outcome": "impact",
+    "covers": false,
+    "launch_roll": "absent",
+    "rolling": false,
+    "immune": false,
+    "damage": 0,
+    "classification": "lateral_clear",
+    "matched_prefix_rows": 2316,
+    "prefix_sha256": "7d4ffd2d102e0e445ad5a4ebed3eefffd59968bf1866609332620263cf5fad88",
+    "suffix_sha256": "09ac351af7b2825c032ebe35a264fd78374bf2eb591e2d677f0c2e93468a552c",
+    "same_attack": true,
+    "control_hits": [
+      {
+        "tick": 4992,
+        "source": "scarecrow.gd",
+        "id": "20980.1",
+        "amount": 5
+      }
+    ],
+    "hits": [],
+    "steering": [
+      -0.341210693120956,
+      -0.939986824989319
+    ],
+    "terminal_position": [
+      92.0925979614258,
+      239.869400024414
+    ],
+    "impact_input": [
+      -0.341210693120956,
+      -0.939986824989319
+    ],
+    "render_frame_observed": false,
+    "suffix_file": "forks/archer_route0_s19_cautious_left_22.jsonl.gz"
+  },
+  {
+    "case": "archer_route0_s19_cautious",
+    "id": "20980.1",
+    "direction": "right",
+    "delay": 22,
+    "window_ticks": 31,
+    "input_tick": 4983,
+    "terminal_tick": 4992,
+    "outcome": "impact",
+    "covers": false,
+    "launch_roll": "absent",
+    "rolling": false,
+    "immune": false,
+    "damage": 0,
+    "classification": "lateral_clear",
+    "matched_prefix_rows": 2316,
+    "prefix_sha256": "7d4ffd2d102e0e445ad5a4ebed3eefffd59968bf1866609332620263cf5fad88",
+    "suffix_sha256": "bb0b7c7f0f39e8a12b336f12ec94eb6c41e9e83d471375e4b30fe596b1fb0941",
+    "same_attack": true,
+    "control_hits": [
+      {
+        "tick": 4992,
+        "source": "scarecrow.gd",
+        "id": "20980.1",
+        "amount": 5
+      }
+    ],
+    "hits": [],
+    "steering": [
+      0.341210693120956,
+      0.939986824989319
+    ],
+    "terminal_position": [
+      98.2409057617188,
+      256.214385986328
+    ],
+    "impact_input": [
+      0.341210693120956,
+      0.939986824989319
+    ],
+    "render_frame_observed": false,
+    "suffix_file": "forks/archer_route0_s19_cautious_right_22.jsonl.gz"
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "id": "17197.2",
+    "direction": "stop",
+    "delay": 8,
+    "window_ticks": 31,
+    "input_tick": 374,
+    "terminal_tick": 397,
+    "outcome": "impact",
+    "covers": false,
+    "launch_roll": "cooldown",
+    "rolling": false,
+    "immune": false,
+    "damage": 0,
+    "classification": "stopped_outside",
+    "matched_prefix_rows": 109,
+    "prefix_sha256": "336f5777d977a8672f09dc3768d1fac7077a4af5a200093967fabed1e9dd7fc0",
+    "suffix_sha256": "769019612008b4c953a084cb43549b77d56e4188c3b34146c4fd762527cf979f",
+    "same_attack": true,
+    "control_hits": [
+      {
+        "tick": 397,
+        "source": "scarecrow.gd",
+        "id": "17197.2",
+        "amount": 7
+      }
+    ],
+    "hits": [],
+    "steering": [
+      0.0,
+      0.0
+    ],
+    "terminal_position": [
+      78.3805084228516,
+      254.339157104492
+    ],
+    "impact_input": [
+      0.0,
+      0.0
+    ],
+    "render_frame_observed": false,
+    "suffix_file": "forks/archer_route1_s19_cautious_stop_08.jsonl.gz"
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "id": "17197.2",
+    "direction": "left",
+    "delay": 8,
+    "window_ticks": 31,
+    "input_tick": 374,
+    "terminal_tick": 397,
+    "outcome": "impact",
+    "covers": false,
+    "launch_roll": "cooldown",
+    "rolling": false,
+    "immune": false,
+    "damage": 0,
+    "classification": "lateral_clear",
+    "matched_prefix_rows": 109,
+    "prefix_sha256": "336f5777d977a8672f09dc3768d1fac7077a4af5a200093967fabed1e9dd7fc0",
+    "suffix_sha256": "bd0907db5dbb81b58f4b8ee66b1b302914c7bb6e485800d19f15b85a94a1f07f",
+    "same_attack": true,
+    "control_hits": [
+      {
+        "tick": 397,
+        "source": "scarecrow.gd",
+        "id": "17197.2",
+        "amount": 7
+      }
+    ],
+    "hits": [],
+    "steering": [
+      -0.240476593375206,
+      0.970654964447021
+    ],
+    "terminal_position": [
+      68.9112396240234,
+      282.0
+    ],
+    "impact_input": [
+      -0.240476593375206,
+      0.970654964447021
+    ],
+    "render_frame_observed": false,
+    "suffix_file": "forks/archer_route1_s19_cautious_left_08.jsonl.gz"
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "id": "17197.2",
+    "direction": "right",
+    "delay": 8,
+    "window_ticks": 31,
+    "input_tick": 374,
+    "terminal_tick": 397,
+    "outcome": "impact",
+    "covers": false,
+    "launch_roll": "cooldown",
+    "rolling": false,
+    "immune": false,
+    "damage": 0,
+    "classification": "lateral_clear",
+    "matched_prefix_rows": 109,
+    "prefix_sha256": "336f5777d977a8672f09dc3768d1fac7077a4af5a200093967fabed1e9dd7fc0",
+    "suffix_sha256": "641c8e2899f5ecdca3419882fa546a31c248d4f80c9fcbafa8c8dbd9b6eb960d",
+    "same_attack": true,
+    "control_hits": [
+      {
+        "tick": 397,
+        "source": "scarecrow.gd",
+        "id": "17197.2",
+        "amount": 7
+      }
+    ],
+    "hits": [],
+    "steering": [
+      0.240476593375206,
+      -0.970654964447021
+    ],
+    "terminal_position": [
+      93.3828506469727,
+      195.509826660156
+    ],
+    "impact_input": [
+      0.240476593375206,
+      -0.970654964447021
+    ],
+    "render_frame_observed": false,
+    "suffix_file": "forks/archer_route1_s19_cautious_right_08.jsonl.gz"
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "id": "17197.2",
+    "direction": "stop",
+    "delay": 2,
+    "window_ticks": 31,
+    "input_tick": 368,
+    "terminal_tick": 397,
+    "outcome": "impact",
+    "covers": false,
+    "launch_roll": "cooldown",
+    "rolling": false,
+    "immune": false,
+    "damage": 0,
+    "classification": "stopped_outside",
+    "matched_prefix_rows": 102,
+    "prefix_sha256": "c4f790b777b759dd89ed09640a753708fe8b46200d75758d82888a6e03c635e1",
+    "suffix_sha256": "2f6617582140f519d4058d8da32bc7e1f22f211e85e9201c92e0cf753d2836bb",
+    "same_attack": true,
+    "control_hits": [
+      {
+        "tick": 397,
+        "source": "scarecrow.gd",
+        "id": "17197.2",
+        "amount": 7
+      }
+    ],
+    "hits": [],
+    "steering": [
+      0.0,
+      0.0
+    ],
+    "terminal_position": [
+      76.2191543579102,
+      261.709320068359
+    ],
+    "impact_input": [
+      0.0,
+      0.0
+    ],
+    "render_frame_observed": false,
+    "suffix_file": "forks/archer_route1_s19_cautious_stop_02.jsonl.gz"
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "id": "17197.2",
+    "direction": "left",
+    "delay": 2,
+    "window_ticks": 31,
+    "input_tick": 368,
+    "terminal_tick": 397,
+    "outcome": "impact",
+    "covers": false,
+    "launch_roll": "cooldown",
+    "rolling": false,
+    "immune": false,
+    "damage": 0,
+    "classification": "lateral_clear",
+    "matched_prefix_rows": 102,
+    "prefix_sha256": "c4f790b777b759dd89ed09640a753708fe8b46200d75758d82888a6e03c635e1",
+    "suffix_sha256": "2d3a9d54761eb78e5320f479d1f028e645330e9915e278fac29d740eaf3822ad",
+    "same_attack": true,
+    "control_hits": [
+      {
+        "tick": 397,
+        "source": "scarecrow.gd",
+        "id": "17197.2",
+        "amount": 7
+      }
+    ],
+    "hits": [],
+    "steering": [
+      -0.240476593375206,
+      0.970654964447021
+    ],
+    "terminal_position": [
+      56.7135162353516,
+      282.0
+    ],
+    "impact_input": [
+      -0.240476593375206,
+      0.970654964447021
+    ],
+    "render_frame_observed": false,
+    "suffix_file": "forks/archer_route1_s19_cautious_left_02.jsonl.gz"
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "id": "17197.2",
+    "direction": "right",
+    "delay": 2,
+    "window_ticks": 31,
+    "input_tick": 368,
+    "terminal_tick": 397,
+    "outcome": "impact",
+    "covers": false,
+    "launch_roll": "cooldown",
+    "rolling": false,
+    "immune": false,
+    "damage": 0,
+    "classification": "lateral_clear",
+    "matched_prefix_rows": 102,
+    "prefix_sha256": "c4f790b777b759dd89ed09640a753708fe8b46200d75758d82888a6e03c635e1",
+    "suffix_sha256": "fa36ed86b3ae423c09629dae8286040eb74bd06a249bb7741ce38ccc1623bbc6",
+    "same_attack": true,
+    "control_hits": [
+      {
+        "tick": 397,
+        "source": "scarecrow.gd",
+        "id": "17197.2",
+        "amount": 7
+      }
+    ],
+    "hits": [],
+    "steering": [
+      0.240476593375206,
+      -0.970654964447021
+    ],
+    "terminal_position": [
+      93.4729843139648,
+      187.428283691406
+    ],
+    "impact_input": [
+      0.240476593375206,
+      -0.970654964447021
+    ],
+    "render_frame_observed": false,
+    "suffix_file": "forks/archer_route1_s19_cautious_right_02.jsonl.gz"
+  }
+]

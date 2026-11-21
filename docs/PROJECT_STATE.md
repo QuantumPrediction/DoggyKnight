@@ -2,11 +2,19 @@
 
 Updated: 2026-11-21 (Hong Kong). Version: **0.9.1 development source**.
 
-## Current implementation — chapter 1-4 scarecrow escape windows
+## Current diagnostic — chapter 1-4 companion-directed swings
+
+The evidence originates on work branch `codex/companion-swing-lanes` at base `7d63fffd4ca455837899679ca4b125b030f1f4b3`, the verified merge of #19. Recheck the live default and any in-progress PR before starting the next work. No download was built. [Registered scope](requests/20261121-INT-companion-swing-lanes.md) · [Replay evidence](validation/companion-swing-lanes/README.md)
+
+- Two predeclared, previously untested ally-directed swings had four stop and seven lateral interventions with no damage, roll or immunity; one late lateral move kept the original 5 damage. The two complete original chapter reports and their per-tick streams matched #19 exactly. Both cautious runs still reached the three-down limit.
+- All 23 outside-at-start hits were aligned with the last entry, actual input and other production warnings. The selected attacks were eligible to draw on their first physics tick, but no actual rendered frame was measured. No production timing, damage, AI, encounter, UI, assets or save changes.
+- Next: inspect first actually drawn cue and the before/at-entry frame in a native window. Only try a narrow boundary-contrast change if the render evidence shows the sector is hard to see. Validate with uncoached players separately. Current target-player count is zero and provisional project quality remains 6–6.5/10. Crash attribution and hardware/audio/long-session gates remain separate.
+
+## Previous implementation — chapter 1-4 scarecrow escape windows
 
 On 2026-11-21 the default branch `claude/sleepy-hawking-8cvkvl` contained merged PRs #15–18, at `b05224258e0bdc70cfde7d0cb874a6b36d7f4617`. This round branches directly from that merge. [Registered candidate](requests/20261121-INT-scarecrow-window.md) · [Measurements, failures and replay commands](validation/scarecrow-window/README.md)
 
-Published as [draft PR #19](https://github.com/QuantumPrediction/DoggyKnight/pull/19), targeting the current default branch. Public commit `562e6f622b135abd099dcbda3d1fdc4c48717f2b` has complete tree `6800b3cf03042ac87da4be675714f8983b6a5a1b`; the next public commit only records this publication handoff.
+Published as [draft PR #19](https://github.com/QuantumPrediction/DoggyKnight/pull/19), then merged into the default branch at `7d63fffd4ca455837899679ca4b125b030f1f4b3`. Its complete merged tree `df6caa02e6bcc3c71123612c0363439b6ef4ffa9` equals the reviewed public head. Public implementation `562e6f622b135abd099dcbda3d1fdc4c48717f2b` has complete tree `6800b3cf03042ac87da4be675714f8983b6a5a1b`; its next commit only records the publication handoff.
 
 - A passive probe follows the game's damage-warning filter and records every physics tick of each ordinary scarecrow warning, including paused frames, moving enemies, player velocity, roll availability, bounds and the exact pre-damage sector. All four original seed-19 chapter reports and their 1-4 damage-source tallies were reproduced. The two cautious down-limit failures remain.
 - The first ordinary hits in both cautious routes came from swings aimed at the companion while the archer still stood outside the sector at cue onset. For the first directly targeted, initially covered nonimmune hit on each route, radial walking last succeeded after 25/31 ticks for marksman and 17/31 for outrider. Every later tick in that direction took the original damage. All 95 interventions and their failures are archived. The registered wind-up extension was not warranted; ordinary scarecrow timing and damage remain at the frozen settings.

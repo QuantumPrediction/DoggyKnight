@@ -1,0 +1,44 @@
+{
+  "baseline": "7d63fffd4ca455837899679ca4b125b030f1f4b3",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "engine_sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+  "source_sha256": "6ab3f5425e58985bf4f55405f6e5a5272bbda3f61856f62af606bde22ee677cd",
+  "runner_sha256": "adc553016c479db832f2af71298739046f999a045a22aeee3cbbeb34e360cfe7",
+  "headless": true,
+  "actual_rendered_frame": "unverified",
+  "control": [
+    {
+      "case": "archer_route0_s19_cautious",
+      "exit_code": 1,
+      "report_sha256": "c49e74cf9fe1b388f0037b3a05838cb126e8e2fd07823e684b2d16f53909f5f9",
+      "raw_sha256": "e89ff4858aa8d32eef3523a0c5d7bd6617fa7f478bccec7d4e4f4a2edd6555bd"
+    },
+    {
+      "case": "archer_route1_s19_cautious",
+      "exit_code": 1,
+      "report_sha256": "5473b13873603a7fd20a4e167ec676a9432154b5fc04ee712a98c2ec965ffb5c",
+      "raw_sha256": "a5c1f7a3cac728ea71c81a155741b478263357ad5214f09eafd7a7636b002acb"
+    }
+  ],
+  "case_selection": [
+    {
+      "case": "archer_route0_s19_cautious",
+      "id": "20980.1",
+      "start": 4961,
+      "last_entry_delay": 29,
+      "ticks_to_impact": 2
+    },
+    {
+      "case": "archer_route1_s19_cautious",
+      "id": "17197.2",
+      "start": 366,
+      "last_entry_delay": 9,
+      "ticks_to_impact": 22
+    }
+  ],
+  "counts": {
+    "stopped_outside": 4,
+    "unproven": 1,
+    "lateral_clear": 7
+  }
+}
