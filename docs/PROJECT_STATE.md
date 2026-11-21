@@ -1,8 +1,16 @@
 # Golden Knight — current project state
 
-Updated: 2026-11-20 (Hong Kong). Version: **0.9.1 development source**.
+Updated: 2026-11-21 (Hong Kong). Version: **0.9.1 development source**.
 
-## Current implementation — battle resource lifetime and archer 1-4
+## Current implementation — chapter 1-4 scarecrow escape windows
+
+On 2026-11-21 the default branch `claude/sleepy-hawking-8cvkvl` contained merged PRs #15–18, at `b05224258e0bdc70cfde7d0cb874a6b36d7f4617`. This round branches directly from that merge. [Registered candidate](requests/20261121-INT-scarecrow-window.md) · [Measurements, failures and replay commands](validation/scarecrow-window/README.md)
+
+- A passive probe follows the game's damage-warning filter and records every physics tick of each ordinary scarecrow warning, including paused frames, moving enemies, player velocity, roll availability, bounds and the exact pre-damage sector. All four original seed-19 chapter reports and their 1-4 damage-source tallies were reproduced. The two cautious down-limit failures remain.
+- The first ordinary hits in both cautious routes came from swings aimed at the companion while the archer still stood outside the sector at cue onset. For the first directly targeted, initially covered nonimmune hit on each route, radial walking last succeeded after 25/31 ticks for marksman and 17/31 for outrider. Every later tick in that direction took the original damage. All 95 interventions and their failures are archived. The registered wind-up extension was not warranted; ordinary scarecrow timing and damage remain at the frozen settings.
+- The eight focused tests and the complete 931-test suite passed. Target-player trials still total zero. Overall provisional quality remains 6–6.5/10. The next engineering pass can align the 23 outside-at-start hits with the last entry into a sector, input changes and simultaneous threats. The uncoached 1-4 session can then test whether players recognise those overlapping sectors. The native crash, device, controller, listening, retention and independent target-quality review gates remain open. [Existing playtest scenario](validation/scene-lifetime/archer-trial.md) · [24-part rubric](QUALITY_9_ROADMAP_ZH.md)
+
+## Previous implementation — battle resource lifetime and archer 1-4
 
 Work continues on `codex/scene-resource-lifetime` from PR #17 head `70dc412ab8e1ac330e7ecfa57cd1581ddba06f62`. The previous releases through PR #14 are merged. The current stack starts at #15. [Contract](requests/20261120-INT-scene-resource-lifetime.md) · [Measured results and reproduction](validation/scene-lifetime/README.md)
 

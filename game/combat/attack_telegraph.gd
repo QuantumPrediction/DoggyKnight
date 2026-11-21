@@ -134,15 +134,17 @@ static func warning_counts(tree: SceneTree, at: Vector2, body_radius: float) -> 
 		return counts
 	for node in tree.get_nodes_in_group(&"attack_warnings"):
 		var mark := node as AttackTelegraph
-		if mark == null or not mark.damage_warning or mark.is_queued_for_deletion() or not mark.is_visible_in_tree():
-			continue
-		if mark.modulate.a <= 0.0 or mark.self_modulate.a <= 0.0 or absf(mark.global_transform.determinant()) < 0.000001:
+		if mark == null or not mark.is_visible_damage_warning():
 			continue
 		if mark.overlaps_body(at, body_radius):
 			counts.x += 1
 			if not mark.show_aim_lock or mark.aim_locked:
 				counts.y += 1
 	return counts
+
+
+func is_visible_damage_warning() -> bool:
+	return damage_warning and not is_queued_for_deletion() and is_visible_in_tree() and modulate.a > 0.0 and self_modulate.a > 0.0 and absf(global_transform.determinant()) >= 0.000001
 
 
 func _draw() -> void:

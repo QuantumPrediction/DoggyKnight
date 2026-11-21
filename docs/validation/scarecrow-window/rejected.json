@@ -1,0 +1,27 @@
+{
+  "status": "Rejected. Four paused engine ticks absent across five simultaneous/in-flight warnings in marksman cautious.",
+  "stage": "before recording paused physics ticks",
+  "old_probe_sha256": "da421f18379a0cfc8ec64f182e545413715414c4f61c48847762e5a3b782232c",
+  "current_probe_sha256": "07bfe901ce25424544037b3669b5d1fdeba7e609ef218b87846d97c75533ec62",
+  "case": "archer_route0_s19_cautious",
+  "raw_sha256": "1f9cad380360dc464bdf10dec33e8a8ed784c93a70969dff188a67680f300647",
+  "old_report_sha256": "c49e74cf9fe1b388f0037b3a05838cb126e8e2fd07823e684b2d16f53909f5f9",
+  "missing_by_swing": {
+    "18070.2": [
+      1033
+    ],
+    "19913.1": [
+      3537
+    ],
+    "23211.1": [
+      7923
+    ],
+    "23502.1": [
+      7923
+    ],
+    "24569.5": [
+      9171
+    ]
+  },
+  "standalone_check": "An initial --check-only --script load omitted project autoloads and failed to resolve EventBus. All scene-entry runs used the project and completed, including focused and full suites. Kept as standalone-check-only in the logs."
+}

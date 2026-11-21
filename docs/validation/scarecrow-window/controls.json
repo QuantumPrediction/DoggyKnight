@@ -1,0 +1,521 @@
+[
+  {
+    "case": "archer_route0_s19_cautious",
+    "report_sha256": "c49e74cf9fe1b388f0037b3a05838cb126e8e2fd07823e684b2d16f53909f5f9",
+    "old_trace_sha256": "201b2deeda68d73542b5afce5d87a0cba555144067f495f2d36029e3c858c139",
+    "raw_sha256": "e89ff4858aa8d32eef3523a0c5d7bd6617fa7f478bccec7d4e4f4a2edd6555bd",
+    "exit_code": 1,
+    "selected": "17294.1",
+    "old_damage": [
+      53,
+      386,
+      46,
+      324
+    ],
+    "starts": 303,
+    "impacts": 279,
+    "cancelled": 24,
+    "impact_ticks": {
+      "31": 274,
+      "32": 5
+    },
+    "hit_started_outside": 11,
+    "hit_aimed_at_companion": 25,
+    "selected_start": {
+      "angle": 1.0471975511966,
+      "attempt": 3,
+      "covers": false,
+      "dir": [
+        -0.576569795608521,
+        -0.817047953605652
+      ],
+      "id": "17294.1",
+      "op": "begin",
+      "origin": [
+        104.421272277832,
+        263.362884521484
+      ],
+      "p": {
+        "accel_time": 0.06,
+        "bounds": [
+          16.0,
+          86.0,
+          164.0,
+          282.0
+        ],
+        "cue_radius": 6.0,
+        "decel_time": 0.04,
+        "holding_move": false,
+        "immune": false,
+        "input": [
+          0.0,
+          0.0
+        ],
+        "phase": "recovering",
+        "radius": 6.0,
+        "roll": "absent",
+        "roll_left": 0.0,
+        "rolling_left": 0.0,
+        "speed": 88.92,
+        "v": [
+          0.0,
+          0.0
+        ],
+        "xy": [
+          90.0,
+          232.0
+        ]
+      },
+      "player_target": false,
+      "radius": 24.0,
+      "t": 261,
+      "tell_seconds": 0.5,
+      "tracking": false,
+      "visible": true
+    },
+    "selected_impact": {
+      "covers": true,
+      "dir": [
+        -0.576569795608521,
+        -0.817047953605652
+      ],
+      "id": "17294.1",
+      "op": "impact",
+      "origin": [
+        104.421272277832,
+        263.362884521484
+      ],
+      "p": {
+        "accel_time": 0.06,
+        "bounds": [
+          16.0,
+          86.0,
+          164.0,
+          282.0
+        ],
+        "cue_radius": 6.0,
+        "decel_time": 0.04,
+        "holding_move": true,
+        "immune": false,
+        "input": [
+          0.182435035705566,
+          0.98321795463562
+        ],
+        "phase": "moving",
+        "radius": 6.0,
+        "roll": "absent",
+        "roll_left": 0.0,
+        "rolling_left": 0.0,
+        "speed": 88.92,
+        "v": [
+          16.2221221923828,
+          87.4277420043945
+        ],
+        "xy": [
+          89.5034103393555,
+          237.768295288086
+        ]
+      },
+      "t": 292,
+      "tracking": false
+    },
+    "arrival_overlaps": 0,
+    "damage": 386,
+    "frames": 12641,
+    "legacy_only": 19,
+    "legacy_overcounts": 119,
+    "op": "end",
+    "other_overlaps": 0,
+    "queued_overlaps": 122,
+    "real_multi": 1741
+  },
+  {
+    "case": "archer_route0_s19_escape",
+    "report_sha256": "2aabdc419bf598dec297b6152ec3819f48ae798557e54bd178ec499e11f1d54f",
+    "old_trace_sha256": "fb82be66a91367bc539247c4a5707bbbce08de3ecbce21955ff2dd8722ebd950",
+    "raw_sha256": "a7304b49ab738b0cb7926f278c2c213b04f73a6d4172993f5cc0dad75d99b5c6",
+    "exit_code": 0,
+    "selected": "17294.1",
+    "old_damage": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "starts": 34,
+    "impacts": 28,
+    "cancelled": 6,
+    "impact_ticks": {
+      "31": 27,
+      "64": 1
+    },
+    "hit_started_outside": 0,
+    "hit_aimed_at_companion": 0,
+    "selected_start": {
+      "angle": 1.0471975511966,
+      "attempt": 3,
+      "covers": true,
+      "dir": [
+        0.409662127494812,
+        0.912237346172333
+      ],
+      "id": "17294.1",
+      "op": "begin",
+      "origin": [
+        78.9868621826172,
+        207.475891113281
+      ],
+      "p": {
+        "accel_time": 0.06,
+        "bounds": [
+          16.0,
+          86.0,
+          164.0,
+          282.0
+        ],
+        "cue_radius": 6.0,
+        "decel_time": 0.04,
+        "holding_move": false,
+        "immune": false,
+        "input": [
+          0.0,
+          0.0
+        ],
+        "phase": "windup",
+        "radius": 6.0,
+        "roll": "absent",
+        "roll_left": 0.0,
+        "rolling_left": 0.0,
+        "speed": 88.92,
+        "v": [
+          0.0,
+          0.0
+        ],
+        "xy": [
+          90.0,
+          232.0
+        ]
+      },
+      "player_target": true,
+      "radius": 24.0,
+      "t": 287,
+      "tell_seconds": 0.5,
+      "tracking": false,
+      "visible": true
+    },
+    "selected_impact": {
+      "covers": false,
+      "dir": [
+        0.409662127494812,
+        0.912237346172333
+      ],
+      "id": "17294.1",
+      "op": "impact",
+      "origin": [
+        78.9868621826172,
+        207.475891113281
+      ],
+      "p": {
+        "accel_time": 0.06,
+        "bounds": [
+          16.0,
+          86.0,
+          164.0,
+          282.0
+        ],
+        "cue_radius": 6.0,
+        "decel_time": 0.04,
+        "holding_move": false,
+        "immune": false,
+        "input": [
+          0.0,
+          0.0
+        ],
+        "phase": "windup",
+        "radius": 6.0,
+        "roll": "absent",
+        "roll_left": 0.0,
+        "rolling_left": 0.0,
+        "speed": 88.92,
+        "v": [
+          0.0,
+          0.0
+        ],
+        "xy": [
+          80.6638107299805,
+          264.846466064453
+        ]
+      },
+      "t": 318,
+      "tracking": false
+    },
+    "arrival_overlaps": 0,
+    "damage": 0,
+    "frames": 3947,
+    "legacy_only": 0,
+    "legacy_overcounts": 0,
+    "op": "end",
+    "other_overlaps": 0,
+    "queued_overlaps": 0,
+    "real_multi": 38
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "report_sha256": "5473b13873603a7fd20a4e167ec676a9432154b5fc04ee712a98c2ec965ffb5c",
+    "old_trace_sha256": "9afcc27fc4780972305ca31f36002675fef015863f2801ffa6b4736437a46a6d",
+    "raw_sha256": "a5c1f7a3cac728ea71c81a155741b478263357ad5214f09eafd7a7636b002acb",
+    "exit_code": 1,
+    "selected": "17391.1",
+    "old_damage": [
+      48,
+      335,
+      45,
+      305
+    ],
+    "starts": 322,
+    "impacts": 298,
+    "cancelled": 24,
+    "impact_ticks": {
+      "31": 296,
+      "64": 2
+    },
+    "hit_started_outside": 12,
+    "hit_aimed_at_companion": 23,
+    "selected_start": {
+      "angle": 1.0471975511966,
+      "attempt": 3,
+      "covers": false,
+      "dir": [
+        0.944362699985504,
+        0.328905999660492
+      ],
+      "id": "17391.1",
+      "op": "begin",
+      "origin": [
+        58.0189819335938,
+        238.193237304688
+      ],
+      "p": {
+        "accel_time": 0.06,
+        "bounds": [
+          16.0,
+          86.0,
+          164.0,
+          282.0
+        ],
+        "cue_radius": 6.0,
+        "decel_time": 0.04,
+        "holding_move": false,
+        "immune": true,
+        "input": [
+          0.0,
+          0.0
+        ],
+        "phase": "recovering",
+        "radius": 6.0,
+        "roll": "rolling",
+        "roll_left": 1.65333333333333,
+        "rolling_left": 0.133333333333333,
+        "speed": 243.945,
+        "v": [
+          0.0,
+          0.0
+        ],
+        "xy": [
+          89.6822204589844,
+          231.317428588867
+        ]
+      },
+      "player_target": false,
+      "radius": 24.0,
+      "t": 277,
+      "tell_seconds": 0.5,
+      "tracking": false,
+      "visible": true
+    },
+    "selected_impact": {
+      "covers": true,
+      "dir": [
+        0.944362699985504,
+        0.328905999660492
+      ],
+      "id": "17391.1",
+      "op": "impact",
+      "origin": [
+        58.0189819335938,
+        238.193237304688
+      ],
+      "p": {
+        "accel_time": 0.06,
+        "bounds": [
+          16.0,
+          86.0,
+          164.0,
+          282.0
+        ],
+        "cue_radius": 6.0,
+        "decel_time": 0.04,
+        "holding_move": true,
+        "immune": false,
+        "input": [
+          0.27657088637352,
+          -0.960993528366089
+        ],
+        "phase": "moving",
+        "radius": 6.0,
+        "roll": "cooldown",
+        "roll_left": 1.13666666666667,
+        "rolling_left": 0.0,
+        "speed": 162.63,
+        "v": [
+          29.5311279296875,
+          -104.327850341797
+        ],
+        "xy": [
+          84.3891067504883,
+          249.148986816406
+        ]
+      },
+      "t": 308,
+      "tracking": false
+    },
+    "arrival_overlaps": 0,
+    "damage": 335,
+    "frames": 13582,
+    "legacy_only": 25,
+    "legacy_overcounts": 94,
+    "op": "end",
+    "other_overlaps": 0,
+    "queued_overlaps": 96,
+    "real_multi": 1337
+  },
+  {
+    "case": "archer_route1_s19_escape",
+    "report_sha256": "3f82d956c00a9012e38159c58646541a726cc7b12a62a065b60c70dd1fa2e136",
+    "old_trace_sha256": "79107d046c57ba209bd9e8958f9df2e565d924baaecc0d372bf6b6770a30d06b",
+    "raw_sha256": "56143046a6f0e55d3fe31dd8429d481d1f098f3e649c96d1e9f3f7b2bc8d1d9e",
+    "exit_code": 0,
+    "selected": "18652.1",
+    "old_damage": [
+      3,
+      19,
+      2,
+      12
+    ],
+    "starts": 55,
+    "impacts": 48,
+    "cancelled": 7,
+    "impact_ticks": {
+      "31": 48
+    },
+    "hit_started_outside": 0,
+    "hit_aimed_at_companion": 0,
+    "selected_start": {
+      "angle": 1.0471975511966,
+      "attempt": 3,
+      "covers": true,
+      "dir": [
+        0.645964384078979,
+        0.763367533683777
+      ],
+      "id": "18652.1",
+      "op": "begin",
+      "origin": [
+        25.018102645874,
+        155.308990478516
+      ],
+      "p": {
+        "accel_time": 0.06,
+        "bounds": [
+          16.0,
+          86.0,
+          164.0,
+          282.0
+        ],
+        "cue_radius": 6.0,
+        "decel_time": 0.04,
+        "holding_move": false,
+        "immune": false,
+        "input": [
+          0.0,
+          0.0
+        ],
+        "phase": "recovering",
+        "radius": 6.0,
+        "roll": "ready",
+        "roll_left": 0.0,
+        "rolling_left": 0.0,
+        "speed": 120.12,
+        "v": [
+          0.0,
+          0.0
+        ],
+        "xy": [
+          42.1893997192383,
+          175.601150512695
+        ]
+      },
+      "player_target": true,
+      "radius": 24.0,
+      "t": 1386,
+      "tell_seconds": 0.5,
+      "tracking": false,
+      "visible": true
+    },
+    "selected_impact": {
+      "covers": true,
+      "dir": [
+        0.645964384078979,
+        0.763367533683777
+      ],
+      "id": "18652.1",
+      "op": "impact",
+      "origin": [
+        25.018102645874,
+        155.308990478516
+      ],
+      "p": {
+        "accel_time": 0.06,
+        "bounds": [
+          16.0,
+          86.0,
+          164.0,
+          282.0
+        ],
+        "cue_radius": 6.0,
+        "decel_time": 0.04,
+        "holding_move": false,
+        "immune": false,
+        "input": [
+          0.0,
+          0.0
+        ],
+        "phase": "windup",
+        "radius": 6.0,
+        "roll": "cooldown",
+        "roll_left": 1.40333333333334,
+        "rolling_left": 0.0,
+        "speed": 120.12,
+        "v": [
+          0.0,
+          0.0
+        ],
+        "xy": [
+          49.2235107421875,
+          170.31071472168
+        ]
+      },
+      "t": 1417,
+      "tracking": false
+    },
+    "arrival_overlaps": 0,
+    "damage": 19,
+    "frames": 4800,
+    "legacy_only": 5,
+    "legacy_overcounts": 5,
+    "op": "end",
+    "other_overlaps": 0,
+    "queued_overlaps": 5,
+    "real_multi": 12
+  }
+]

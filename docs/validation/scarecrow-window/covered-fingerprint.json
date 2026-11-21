@@ -1,0 +1,8 @@
+{
+  "primary_source_sha256": "dfe2c8a9269e00bcba0ad9634969f1a8d9e819a92395218e256bc3cc57ee43f3",
+  "supplemental_runner_sha256": "8f47b2d6fd02674dc44053739336263f13be2f0bf669bc90a1c608fab17c6bf7",
+  "targets": {
+    "archer_route0_s19_cautious": "17585.4",
+    "archer_route1_s19_cautious": "18070.1"
+  }
+}
