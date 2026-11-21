@@ -1,6 +1,6 @@
 # CLAUDE.md —《金毛騎士》原型
 
-目前從 [草稿 PR #18](https://github.com/QuantumPrediction/DoggyKnight/pull/18) 的 `codex/scene-resource-lifetime` 接續。遊戲現已按場地回收特效，修正淡出期間配樂持續播放，並提供獨立存檔的弓手 1-4 真人試玩場景。最新結果與待驗收項目見 [整合狀態](docs/PROJECT_STATE.md) 及 [重現紀錄](docs/validation/scene-lifetime/README.md)。
+目前從 [草稿 PR #19](https://github.com/QuantumPrediction/DoggyKnight/pull/19) 的 `codex/scarecrow-escape-window` 接續。逐物理幀觀察與 95 次配對重播確認兩條弓手路線各有普通步行可逃的實際窗口，因此保留普通稻草人的既有預警時間與傷害。最新結果與待驗收項目見 [整合狀態](docs/PROJECT_STATE.md) 及 [重現紀錄](docs/validation/scarecrow-window/README.md)。
 
 目前接續入口為 `docs/PROJECT_STATE.md`。0.9.1 在已合併的 0.9.0 上處理戰鬥提示、弓兵預警一致性與測試生命週期；跨線整合合約為 `docs/requests/20261120-INT-combat-readability.md`。不新增下載包、不改存檔／平衡數值；原生崩潰與真人品質驗證仍是待辦。
 
