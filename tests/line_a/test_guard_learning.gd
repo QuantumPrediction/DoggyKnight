@@ -190,9 +190,153 @@ func test_detached_previous_stage_actors_do_not_answer_new_hud_requests() -> voi
 	dog_parent.remove_child(dog)
 	var coverage := watch_signal(EventBus.companion_guard_coverage)
 	var readiness := watch_signal(EventBus.player_combat_readiness)
+	var presentation := watch_signal(EventBus.guard_success_context_observed)
 	EventBus.companion_guard_status_requested.emit()
 	EventBus.player_combat_status_requested.emit()
+	EventBus.guard_success_context_requested.emit(6.0)
 	assert_eq(coverage.count, 0, "old actors cannot overwrite the next stage HUD")
 	assert_eq(readiness.count, 0)
+	assert_eq(presentation.count, 0)
 	player_parent.add_child(player)
 	dog_parent.add_child(dog)
+
+
+func _success_warning(edge_from_center: float) -> AttackTelegraph:
+	var mark := AttackTelegraph.make_sector(20.0, Vector2.RIGHT, PI / 4.0)
+	arena.add_child(mark)
+	mark.global_position = player.global_position - Vector2(20.0 + edge_from_center, 0.0)
+	return mark
+
+
+func _game_control_rects() -> Array[Rect2]:
+	return [hud.companion_guard.button.get_global_rect(), hud.ultimate_button.get_global_rect(),
+		hud.pause_button.get_global_rect(), hud.combat_readout.get_global_rect()]
+
+
+func test_success_before_nearby_warning_yields_only_the_optional_card() -> void:
+	prepare(&"archer")
+	var coach: GuardCoach = hud.guard_coach
+	var done := watch_signal(EventBus.guard_lesson_completed)
+	var skipped := watch_signal(EventBus.guard_lesson_dismissed)
+	var controls := _game_control_rects()
+	charge_by_block()
+	player.projectile_impact_damage(1.0, false)
+	coach._process(0.01)
+	assert_eq(done.count, 1)
+	assert_eq(coach.heading.text, tr("UI_COACH_DONE"))
+	assert_true(coach.heading.is_visible_in_tree(), "success has already been presented")
+	var close_center := coach.dismiss_button.get_global_rect().get_center()
+	assert_true(TouchJoystick.is_blocked(get_tree(), close_center))
+	var mark := _success_warning(9.0)
+	assert_eq(player.tactics_status().warning_count, 0, "body still outside the real warning")
+	coach._process(0.01)
+	assert_false(coach.heading.is_visible_in_tree(), "nearby warning interrupts an already visible success card")
+	assert_false(TouchJoystick.is_blocked(get_tree(), close_center), "no invisible dismiss touch target")
+	assert_eq(_game_control_rects(), controls, "no reflow on the first danger frame")
+	mark.queue_free()
+	coach._process(0.19)
+	assert_false(coach.heading.is_visible_in_tree(), "short glimpses of an empty arena do not flicker")
+	coach._process(0.02)
+	assert_true(coach.heading.is_visible_in_tree(), "remaining success presentation returns")
+	assert_eq(_game_control_rects(), controls)
+	assert_eq(done.count, 1)
+	assert_eq(skipped.count, 0)
+
+
+func test_warning_before_success_does_not_hide_the_lesson_or_tactical_warning() -> void:
+	prepare()
+	var coach: GuardCoach = hud.guard_coach
+	var done := watch_signal(EventBus.guard_lesson_completed)
+	_success_warning(3.0)
+	player._publish_tactics()
+	coach._process(0.01)
+	assert_true(coach.heading.is_visible_in_tree(), "active lesson is unchanged")
+	var controls := _game_control_rects()
+	charge_by_block()
+	player._swing()
+	coach._process(0.01)
+	assert_true(coach.completed)
+	assert_eq(done.count, 1)
+	assert_false(coach.heading.is_visible_in_tree())
+	assert_true(hud.combat_readout.warning_active)
+	assert_eq(hud.combat_readout.action.text, tr("UI_TACTIC_WARNING_LOCKED"))
+	assert_eq(_game_control_rects(), controls)
+
+
+func test_no_threat_success_retains_original_show_and_expiry() -> void:
+	prepare()
+	var coach: GuardCoach = hud.guard_coach
+	var done := watch_signal(EventBus.guard_lesson_completed)
+	var distant := _success_warning(30.0)
+	var hidden := _success_warning(4.0)
+	hidden.hide()
+	var arrival := AttackTelegraph.make_arrival_circle(20.0)
+	arena.add_child(arrival)
+	arrival.global_position = player.global_position
+	charge_by_block()
+	player._swing()
+	coach._process(2.19)
+	assert_true(coach.heading.is_visible_in_tree(), "far, hidden and arrival marks do not defer the toast")
+	assert_true(distant.is_visible_damage_warning())
+	assert_eq(coach.heading.text, tr("UI_COACH_DONE"))
+	coach._process(0.02)
+	assert_false(coach.visible)
+	assert_eq(done.count, 1)
+
+
+func test_expired_success_never_moves_game_controls_during_real_drag() -> void:
+	prepare()
+	var coach: GuardCoach = hud.guard_coach
+	var controls := _game_control_rects()
+	var mark := _success_warning(9.0)
+	charge_by_block()
+	player._swing()
+	var touch := InputEventScreenTouch.new()
+	touch.index = 4
+	touch.position = Vector2(20, 160)
+	touch.pressed = true
+	player.joystick.handle_input(touch)
+	var drag := InputEventScreenDrag.new()
+	drag.index = touch.index
+	drag.position = touch.position + Vector2(9, 0)
+	player.joystick.handle_input(drag)
+	assert_true(player.joystick.is_active())
+	assert_eq(player.joystick.get_vector(), Vector2.RIGHT)
+	coach._process(4.5)
+	assert_false(coach.heading.is_visible_in_tree())
+	assert_eq(_game_control_rects(), controls)
+	mark.queue_free()
+	coach._process(0.21)
+	assert_true(coach.visible, "hold the reservation until the touch ends")
+	assert_false(coach.heading.is_visible_in_tree(), "an expired card must not return")
+	assert_eq(_game_control_rects(), controls)
+	assert_eq(player.joystick.get_vector(), Vector2.RIGHT, "the original drag still controls movement")
+	touch.pressed = false
+	player.joystick.handle_input(touch)
+	coach._process(0.01)
+	assert_false(coach.visible)
+	assert_ne(_game_control_rects(), controls, "safe release restores the actual layout")
+
+
+func test_deferred_success_freezes_on_pause_and_cancels_on_down_and_reopen() -> void:
+	prepare()
+	var coach: GuardCoach = hud.guard_coach
+	var done := watch_signal(EventBus.guard_lesson_completed)
+	_success_warning(9.0)
+	charge_by_block()
+	player._swing()
+	coach._process(0.03)
+	assert_false(coach.heading.is_visible_in_tree())
+	var deadline := coach._success_limit_left
+	get_tree().paused = true
+	await wait_frames(4)
+	assert_eq(coach._success_limit_left, deadline)
+	get_tree().paused = false
+	player._go_down()
+	assert_false(coach.visible)
+	assert_eq(coach._success_limit_left, 0.0)
+	coach.begin()
+	assert_false(coach.completed)
+	assert_true(coach.heading.is_visible_in_tree(), "a new lesson is not waiting on the old success")
+	assert_ne(coach.heading.text, tr("UI_COACH_DONE"))
+	assert_eq(done.count, 1)

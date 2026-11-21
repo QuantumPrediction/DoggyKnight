@@ -2,7 +2,16 @@
 
 Updated: 2026-11-21 (Hong Kong). Version: **0.9.1 development source**.
 
-## Current diagnostic — chapter 1-4 rendered companion warnings
+## Current work — chapter 1-4 guard-success card
+
+The change originates on `codex/guard-success-toast` from the verified merge of [PR #21](https://github.com/QuantumPrediction/DoggyKnight/pull/21), `8d21d1bc56f73741e9fa9b003715095395421877`. Recheck the live default and open PRs before continuing. [Registered comparison](requests/20261121-INT-guard-success-toast.md) · [Evidence](validation/guard-success-toast/README.md)
+
+- Nearby attack warnings take priority over the optional success card. It waits for a short clear window without delaying the original guard lesson completion or save. Combat controls keep their previous positions during the warning and an active joystick drag. The hidden card's own close button no longer occupies touch space; the tactical danger readout stays unchanged.
+- On two 360×640 native Linux replays, both complete reports and traces matched exactly. Marksman 35/35 renders were byte-identical. In Outrider, the original and candidate both showed the card before the warning; only the lower card footprint changed on the 33 sampled draws from the warning onset. The guard button did not move, so its overlap with the warning remains.
+- The guard and flow checks (21), warning/readout checks (8), EventBus contract checks (2), and the full 936-test regression passed locally. Existing shutdown warnings remain.
+- No attack, balance, enemy, AI or save format change; no new download. Do not infer better human comprehension, Windows/mobile/input-device qualification, or a native crash fix. Next, observe how unfamiliar players read actual first-chapter combat without coaching and prototype the first deliberate guard-to-counter choice before widening scope.
+
+## Previous diagnostic — chapter 1-4 rendered companion warnings
 
 The capture evidence originates on work branch `codex/scarecrow-render-cues` at the verified merge of [PR #20](https://github.com/QuantumPrediction/DoggyKnight/pull/20), `d81716df4c7d81fd49d368c6d42262fddc6adf93`. Recheck the live default and in-progress PRs before continuing. [Registered scope](requests/20261121-INT-scarecrow-render-cues.md) · [Rendered results](validation/scarecrow-render-cues/README.md)
 

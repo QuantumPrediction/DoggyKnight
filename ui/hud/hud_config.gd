@@ -18,3 +18,8 @@ extends Resource
 @export var heartbeat_rate: float = 1.6
 ## 「等級 N!」彈出文字停留秒數。
 @export var level_pop_time: float = 1.1
+## 反擊成功卡的呈現設定，不作用於戰鬥。看到附近預警時暫緩。
+@export var guard_success_time: float = 2.2
+@export var guard_success_limit: float = 4.4
+@export var guard_success_clear_time: float = 0.20
+@export var guard_success_warning_padding: float = 6.0
