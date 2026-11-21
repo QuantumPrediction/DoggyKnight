@@ -33,7 +33,7 @@ func _ready() -> void:
 			_delay = int(arg.trim_prefix("--delay="))
 		elif arg.begins_with("--direction="):
 			_direction = arg.trim_prefix("--direction=")
-	if not _fork.is_empty() and (_delay < 0 or _direction not in ["radial", "left", "right"]):
+	if not _fork.is_empty() and (_delay < 0 or _direction not in ["radial", "left", "right", "stop"]):
 		push_error("Invalid fork delay/direction")
 		get_tree().quit(2)
 		return
@@ -200,6 +200,8 @@ func _physics_process(_delta: float) -> void:
 			_steering = mark.direction.orthogonal()
 		elif _direction == "right":
 			_steering = -mark.direction.orthogonal()
+		elif _direction == "stop":
+			_steering = Vector2.ZERO
 		_write({"op": "input", "t": _tick(), "id": _fork, "dir": _point(_steering), "delay": _delay})
 		_overriding = true
 		player.set_move_override(_steering)

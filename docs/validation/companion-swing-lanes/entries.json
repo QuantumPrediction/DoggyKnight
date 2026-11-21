@@ -1,0 +1,1041 @@
+[
+  {
+    "case": "archer_route0_s19_cautious",
+    "id": "17294.1",
+    "attempt": 3,
+    "player_target": false,
+    "warning_eligible_tick": 261,
+    "last_entry_tick": 292,
+    "impact_tick": 292,
+    "ticks_to_impact": 0,
+    "preceding_position": [
+      89.233039855957,
+      236.311172485352
+    ],
+    "preceding_input": [
+      0.518290877342224,
+      0.855204403400421
+    ],
+    "preceding_velocity": [
+      17.4702548980713,
+      67.8561477661133
+    ],
+    "preceding_roll": "absent",
+    "preceding_other_overlaps": [
+      "sector",
+      "sector"
+    ],
+    "entry_position": [
+      89.5034103393555,
+      237.768295288086
+    ],
+    "entry_input": [
+      0.182435035705566,
+      0.98321795463562
+    ],
+    "entry_velocity": [
+      16.2221221923828,
+      87.4277420043945
+    ],
+    "entry_roll": "absent",
+    "entry_phase": "moving",
+    "entry_snapshot": "impact",
+    "entry_other_overlaps": null,
+    "max_overlap_in_attack": 3,
+    "selected_damage": 5
+  },
+  {
+    "case": "archer_route0_s19_cautious",
+    "id": "17391.3",
+    "attempt": 3,
+    "player_target": false,
+    "warning_eligible_tick": 440,
+    "last_entry_tick": 461,
+    "impact_tick": 471,
+    "ticks_to_impact": 10,
+    "preceding_position": [
+      99.9491271972656,
+      267.082641601562
+    ],
+    "preceding_input": [
+      0.157381370663643,
+      -0.987537920475006
+    ],
+    "preceding_velocity": [
+      -52.0697250366211,
+      -29.1177883148193
+    ],
+    "preceding_roll": "absent",
+    "preceding_other_overlaps": [],
+    "entry_position": [
+      99.405891418457,
+      266.344146728516
+    ],
+    "entry_input": [
+      0.239350631833076,
+      -0.970933198928833
+    ],
+    "entry_velocity": [
+      -32.5940284729004,
+      -44.3094749450684
+    ],
+    "entry_roll": "absent",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [],
+    "max_overlap_in_attack": 2,
+    "selected_damage": 10
+  },
+  {
+    "case": "archer_route0_s19_cautious",
+    "id": "18167.3",
+    "attempt": 3,
+    "player_target": false,
+    "warning_eligible_tick": 2076,
+    "last_entry_tick": 2086,
+    "impact_tick": 2107,
+    "ticks_to_impact": 21,
+    "preceding_position": [
+      139.69206237793,
+      89.0693359375
+    ],
+    "preceding_input": [
+      -0.946495294570923,
+      -0.322717815637589
+    ],
+    "preceding_velocity": [
+      -84.1623611450195,
+      -28.6960678100586
+    ],
+    "preceding_roll": "absent",
+    "preceding_other_overlaps": [
+      "sector"
+    ],
+    "entry_position": [
+      138.294525146484,
+      88.5761566162109
+    ],
+    "entry_input": [
+      -0.943004310131073,
+      -0.332780629396439
+    ],
+    "entry_velocity": [
+      -83.8519439697266,
+      -29.5908527374268
+    ],
+    "entry_roll": "absent",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [],
+    "max_overlap_in_attack": 2,
+    "selected_damage": 5
+  },
+  {
+    "case": "archer_route0_s19_cautious",
+    "id": "20980.1",
+    "attempt": 4,
+    "player_target": false,
+    "warning_eligible_tick": 4961,
+    "last_entry_tick": 4990,
+    "impact_tick": 4992,
+    "ticks_to_impact": 2,
+    "preceding_position": [
+      95.0311737060547,
+      248.262084960938
+    ],
+    "preceding_input": [
+      -0.351472854614258,
+      -0.936198055744171
+    ],
+    "preceding_velocity": [
+      -5.32132911682129,
+      -8.65004920959473
+    ],
+    "preceding_roll": "absent",
+    "preceding_other_overlaps": [
+      "sector"
+    ],
+    "entry_position": [
+      94.8070220947266,
+      247.72917175293
+    ],
+    "entry_input": [
+      -0.352104067802429,
+      -0.935960829257965
+    ],
+    "entry_velocity": [
+      -13.4492998123169,
+      -31.9744167327881
+    ],
+    "entry_roll": "absent",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [
+      "sector"
+    ],
+    "max_overlap_in_attack": 2,
+    "selected_damage": 5
+  },
+  {
+    "case": "archer_route0_s19_cautious",
+    "id": "20980.3",
+    "attempt": 4,
+    "player_target": false,
+    "warning_eligible_tick": 5129,
+    "last_entry_tick": 5159,
+    "impact_tick": 5160,
+    "ticks_to_impact": 1,
+    "preceding_position": [
+      100.51358795166,
+      262.145874023438
+    ],
+    "preceding_input": [
+      0.0576151385903358,
+      -0.998338878154755
+    ],
+    "preceding_velocity": [
+      5.12313795089722,
+      -88.7722930908203
+    ],
+    "preceding_roll": "absent",
+    "preceding_other_overlaps": [
+      "sector"
+    ],
+    "entry_position": [
+      100.431175231934,
+      260.666168212891
+    ],
+    "entry_input": [
+      -0.0556082054972649,
+      -0.998452663421631
+    ],
+    "entry_velocity": [
+      -4.9446816444397,
+      -88.7824096679688
+    ],
+    "entry_roll": "absent",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [
+      "sector"
+    ],
+    "max_overlap_in_attack": 2,
+    "selected_damage": 10
+  },
+  {
+    "case": "archer_route0_s19_cautious",
+    "id": "22241.1",
+    "attempt": 4,
+    "player_target": false,
+    "warning_eligible_tick": 6187,
+    "last_entry_tick": 6206,
+    "impact_tick": 6218,
+    "ticks_to_impact": 12,
+    "preceding_position": [
+      140.857727050781,
+      166.477767944336
+    ],
+    "preceding_input": [
+      -0.939976274967194,
+      -0.341239869594574
+    ],
+    "preceding_velocity": [
+      -83.5826873779297,
+      -30.3430480957031
+    ],
+    "preceding_roll": "absent",
+    "preceding_other_overlaps": [
+      "sector"
+    ],
+    "entry_position": [
+      139.41682434082,
+      166.131195068359
+    ],
+    "entry_input": [
+      -0.972270369529724,
+      -0.233859613537788
+    ],
+    "entry_velocity": [
+      -86.4542770385742,
+      -20.7947959899902
+    ],
+    "entry_roll": "absent",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [
+      "sector"
+    ],
+    "max_overlap_in_attack": 3,
+    "selected_damage": 6
+  },
+  {
+    "case": "archer_route0_s19_cautious",
+    "id": "24375.1",
+    "attempt": 5,
+    "player_target": false,
+    "warning_eligible_tick": 8675,
+    "last_entry_tick": 8692,
+    "impact_tick": 8706,
+    "ticks_to_impact": 14,
+    "preceding_position": [
+      96.528205871582,
+      246.105361938477
+    ],
+    "preceding_input": [
+      -0.522837102413177,
+      -0.852432668209076
+    ],
+    "preceding_velocity": [
+      -12.9456729888916,
+      46.6626014709473
+    ],
+    "preceding_roll": "absent",
+    "preceding_other_overlaps": [
+      "sector"
+    ],
+    "entry_position": [
+      96.2158584594727,
+      246.482894897461
+    ],
+    "entry_input": [
+      -0.483508586883545,
+      -0.875339686870575
+    ],
+    "entry_velocity": [
+      -18.7406959533691,
+      22.6520252227783
+    ],
+    "entry_roll": "absent",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [
+      "sector"
+    ],
+    "max_overlap_in_attack": 2,
+    "selected_damage": 5
+  },
+  {
+    "case": "archer_route0_s19_cautious",
+    "id": "24181.2",
+    "attempt": 5,
+    "player_target": false,
+    "warning_eligible_tick": 8764,
+    "last_entry_tick": 8772,
+    "impact_tick": 8795,
+    "ticks_to_impact": 23,
+    "preceding_position": [
+      94.6303329467773,
+      256.304901123047
+    ],
+    "preceding_input": [
+      0.00372841721400619,
+      -0.999993085861206
+    ],
+    "preceding_velocity": [
+      -7.2475528717041,
+      -81.249137878418
+    ],
+    "preceding_roll": "absent",
+    "preceding_other_overlaps": [
+      "sector"
+    ],
+    "entry_position": [
+      94.516357421875,
+      254.827285766602
+    ],
+    "entry_input": [
+      -0.0769072100520134,
+      -0.997038245201111
+    ],
+    "entry_velocity": [
+      -6.83858919143677,
+      -88.6566390991211
+    ],
+    "entry_roll": "absent",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [
+      "sector"
+    ],
+    "max_overlap_in_attack": 3,
+    "selected_damage": 7
+  },
+  {
+    "case": "archer_route0_s19_cautious",
+    "id": "24375.3",
+    "attempt": 5,
+    "player_target": false,
+    "warning_eligible_tick": 8851,
+    "last_entry_tick": 8864,
+    "impact_tick": 8882,
+    "ticks_to_impact": 18,
+    "preceding_position": [
+      101.562156677246,
+      258.405456542969
+    ],
+    "preceding_input": [
+      -0.759880185127258,
+      -0.650063157081604
+    ],
+    "preceding_velocity": [
+      -69.0062561035156,
+      -50.8825492858887
+    ],
+    "preceding_roll": "absent",
+    "preceding_other_overlaps": [
+      "sector"
+    ],
+    "entry_position": [
+      100.641723632812,
+      257.243927001953
+    ],
+    "entry_input": [
+      -0.621073365211487,
+      -0.78375244140625
+    ],
+    "entry_velocity": [
+      -55.2258415222168,
+      -69.6912689208984
+    ],
+    "entry_roll": "absent",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [
+      "sector"
+    ],
+    "max_overlap_in_attack": 4,
+    "selected_damage": 10
+  },
+  {
+    "case": "archer_route0_s19_cautious",
+    "id": "27091.3",
+    "attempt": 5,
+    "player_target": false,
+    "warning_eligible_tick": 12287,
+    "last_entry_tick": 12316,
+    "impact_tick": 12318,
+    "ticks_to_impact": 2,
+    "preceding_position": [
+      134.967636108398,
+      273.137054443359
+    ],
+    "preceding_input": [
+      0.856384754180908,
+      -0.516338229179382
+    ],
+    "preceding_velocity": [
+      -44.1977691650391,
+      1.56395626068115
+    ],
+    "preceding_roll": "absent",
+    "preceding_other_overlaps": [],
+    "entry_position": [
+      134.612518310547,
+      273.008483886719
+    ],
+    "entry_input": [
+      0.849180936813354,
+      -0.528102159500122
+    ],
+    "entry_velocity": [
+      -21.3068408966064,
+      -7.71480369567871
+    ],
+    "entry_roll": "absent",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [],
+    "max_overlap_in_attack": 2,
+    "selected_damage": 4
+  },
+  {
+    "case": "archer_route0_s19_cautious",
+    "id": "26315.12",
+    "attempt": 5,
+    "player_target": false,
+    "warning_eligible_tick": 12566,
+    "last_entry_tick": 12567,
+    "impact_tick": 12597,
+    "ticks_to_impact": 30,
+    "preceding_position": [
+      151.846481323242,
+      273.493621826172
+    ],
+    "preceding_input": [
+      0.0,
+      0.0
+    ],
+    "preceding_velocity": [
+      0.0,
+      0.0
+    ],
+    "preceding_roll": "absent",
+    "preceding_other_overlaps": [],
+    "entry_position": [
+      151.438583374023,
+      273.549194335938
+    ],
+    "entry_input": [
+      -0.990851223468781,
+      0.134958803653717
+    ],
+    "entry_velocity": [
+      -24.4740257263184,
+      3.33348250389099
+    ],
+    "entry_roll": "absent",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [],
+    "max_overlap_in_attack": 1,
+    "selected_damage": 8
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "id": "17391.1",
+    "attempt": 3,
+    "player_target": false,
+    "warning_eligible_tick": 277,
+    "last_entry_tick": 285,
+    "impact_tick": 308,
+    "ticks_to_impact": 23,
+    "preceding_position": [
+      88.6010894775391,
+      236.03125
+    ],
+    "preceding_input": [
+      -0.445338696241379,
+      0.895362198352814
+    ],
+    "preceding_velocity": [
+      -92.3021850585938,
+      88.0154724121094
+    ],
+    "preceding_roll": "rolling",
+    "preceding_other_overlaps": [
+      "sector"
+    ],
+    "entry_position": [
+      87.2838668823242,
+      238.605682373047
+    ],
+    "entry_input": [
+      -0.257467836141586,
+      0.966286897659302
+    ],
+    "entry_velocity": [
+      -79.0331497192383,
+      154.466125488281
+    ],
+    "entry_roll": "rolling",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [
+      "sector"
+    ],
+    "max_overlap_in_attack": 2,
+    "selected_damage": 5
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "id": "17197.2",
+    "attempt": 3,
+    "player_target": false,
+    "warning_eligible_tick": 366,
+    "last_entry_tick": 375,
+    "impact_tick": 397,
+    "ticks_to_impact": 22,
+    "preceding_position": [
+      77.4669647216797,
+      254.951141357422
+    ],
+    "preceding_input": [
+      0.819777011871338,
+      -0.572682857513428
+    ],
+    "preceding_velocity": [
+      111.110656738281,
+      -74.4322509765625
+    ],
+    "preceding_roll": "cooldown",
+    "preceding_other_overlaps": [
+      "sector"
+    ],
+    "entry_position": [
+      79.2631683349609,
+      252.959747314453
+    ],
+    "entry_input": [
+      0.661558568477631,
+      -0.749893486499786
+    ],
+    "entry_velocity": [
+      107.772399902344,
+      -119.483734130859
+    ],
+    "entry_roll": "cooldown",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [
+      "sector"
+    ],
+    "max_overlap_in_attack": 2,
+    "selected_damage": 7
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "id": "18458.1",
+    "attempt": 3,
+    "player_target": false,
+    "warning_eligible_tick": 1610,
+    "last_entry_tick": 1636,
+    "impact_tick": 1641,
+    "ticks_to_impact": 5,
+    "preceding_position": [
+      114.467010498047,
+      117.510795593262
+    ],
+    "preceding_input": [
+      0.89618045091629,
+      -0.443689793348312
+    ],
+    "preceding_velocity": [
+      79.5451812744141,
+      -80.9370193481445
+    ],
+    "preceding_roll": "cooldown",
+    "preceding_other_overlaps": [
+      "sector"
+    ],
+    "entry_position": [
+      115.72966003418,
+      116.714363098145
+    ],
+    "entry_input": [
+      0.485395878553391,
+      0.874294519424438
+    ],
+    "entry_velocity": [
+      75.7587661743164,
+      -47.785888671875
+    ],
+    "entry_roll": "cooldown",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [
+      "sector"
+    ],
+    "max_overlap_in_attack": 2,
+    "selected_damage": 5
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "id": "18361.7",
+    "attempt": 3,
+    "player_target": false,
+    "warning_eligible_tick": 2266,
+    "last_entry_tick": 2270,
+    "impact_tick": 2297,
+    "ticks_to_impact": 27,
+    "preceding_position": [
+      26.3658103942871,
+      98.8463897705078
+    ],
+    "preceding_input": [
+      0.627583622932434,
+      -0.778549134731293
+    ],
+    "preceding_velocity": [
+      100.756332397461,
+      -132.495666503906
+    ],
+    "preceding_roll": "rolling",
+    "preceding_other_overlaps": [],
+    "entry_position": [
+      28.2909049987793,
+      97.4352493286133
+    ],
+    "entry_input": [
+      0.912277340888977,
+      0.409573018550873
+    ],
+    "entry_velocity": [
+      115.505645751953,
+      -84.6682662963867
+    ],
+    "entry_roll": "rolling",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [],
+    "max_overlap_in_attack": 5,
+    "selected_damage": 5
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "id": "18167.8",
+    "attempt": 3,
+    "player_target": false,
+    "warning_eligible_tick": 2442,
+    "last_entry_tick": 2447,
+    "impact_tick": 2473,
+    "ticks_to_impact": 26,
+    "preceding_position": [
+      35.1858367919922,
+      95.7431335449219
+    ],
+    "preceding_input": [
+      -0.0311427731066942,
+      0.999514997005463
+    ],
+    "preceding_velocity": [
+      115.079933166504,
+      51.476261138916
+    ],
+    "preceding_roll": "cooldown",
+    "preceding_other_overlaps": [
+      "sector"
+    ],
+    "entry_position": [
+      36.4997673034668,
+      97.1763458251953
+    ],
+    "entry_input": [
+      -0.105507485568523,
+      0.994418501853943
+    ],
+    "entry_velocity": [
+      78.8358917236328,
+      85.9925155639648
+    ],
+    "entry_roll": "cooldown",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [
+      "sector"
+    ],
+    "max_overlap_in_attack": 2,
+    "selected_damage": 8
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "id": "19816.1",
+    "attempt": 3,
+    "player_target": false,
+    "warning_eligible_tick": 3870,
+    "last_entry_tick": 3895,
+    "impact_tick": 3901,
+    "ticks_to_impact": 6,
+    "preceding_position": [
+      71.905647277832,
+      189.201248168945
+    ],
+    "preceding_input": [
+      -0.0877666771411896,
+      0.996141076087952
+    ],
+    "preceding_velocity": [
+      -10.5425338745117,
+      119.656471252441
+    ],
+    "preceding_roll": "cooldown",
+    "preceding_other_overlaps": [
+      "sector"
+    ],
+    "entry_position": [
+      71.2496490478516,
+      191.092727661133
+    ],
+    "entry_input": [
+      -0.327670484781265,
+      0.944792091846466
+    ],
+    "entry_velocity": [
+      -39.3597793579102,
+      113.488426208496
+    ],
+    "entry_roll": "cooldown",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [
+      "sector",
+      "sector"
+    ],
+    "max_overlap_in_attack": 3,
+    "selected_damage": 4
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "id": "19719.2",
+    "attempt": 3,
+    "player_target": false,
+    "warning_eligible_tick": 3921,
+    "last_entry_tick": 3945,
+    "impact_tick": 3952,
+    "ticks_to_impact": 7,
+    "preceding_position": [
+      68.8592758178711,
+      194.577056884766
+    ],
+    "preceding_input": [
+      -0.146811172366142,
+      0.989164531230927
+    ],
+    "preceding_velocity": [
+      31.3629245758057,
+      94.6262359619141
+    ],
+    "preceding_roll": "moving",
+    "preceding_other_overlaps": [
+      "sector",
+      "sector"
+    ],
+    "entry_position": [
+      69.2064895629883,
+      196.969650268555
+    ],
+    "entry_input": [
+      0.0724424347281456,
+      0.997372627258301
+    ],
+    "entry_velocity": [
+      20.8327007293701,
+      143.555953979492
+    ],
+    "entry_roll": "moving",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [
+      "sector",
+      "sector",
+      "sector"
+    ],
+    "max_overlap_in_attack": 4,
+    "selected_damage": 5
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "id": "20301.1",
+    "attempt": 4,
+    "player_target": false,
+    "warning_eligible_tick": 4418,
+    "last_entry_tick": 4431,
+    "impact_tick": 4449,
+    "ticks_to_impact": 18,
+    "preceding_position": [
+      87.4254989624023,
+      248.426742553711
+    ],
+    "preceding_input": [
+      -0.243432596325874,
+      -0.969917833805084
+    ],
+    "preceding_velocity": [
+      -72.4939651489258,
+      -103.679718017578
+    ],
+    "preceding_roll": "cooldown",
+    "preceding_other_overlaps": [
+      "sector"
+    ],
+    "entry_position": [
+      85.4993362426758,
+      246.925598144531
+    ],
+    "entry_input": [
+      -0.862656652927399,
+      -0.505790054798126
+    ],
+    "entry_velocity": [
+      -115.569763183594,
+      -90.0688323974609
+    ],
+    "entry_roll": "cooldown",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [
+      "sector"
+    ],
+    "max_overlap_in_attack": 2,
+    "selected_damage": 5
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "id": "20107.2",
+    "attempt": 4,
+    "player_target": false,
+    "warning_eligible_tick": 4506,
+    "last_entry_tick": 4517,
+    "impact_tick": 4537,
+    "ticks_to_impact": 20,
+    "preceding_position": [
+      77.6626815795898,
+      249.308181762695
+    ],
+    "preceding_input": [
+      0.897386133670807,
+      -0.441246181726456
+    ],
+    "preceding_velocity": [
+      132.781219482422,
+      -62.5679550170898
+    ],
+    "preceding_roll": "moving",
+    "preceding_other_overlaps": [
+      "sector"
+    ],
+    "entry_position": [
+      79.721435546875,
+      247.545135498047
+    ],
+    "entry_input": [
+      0.759547352790833,
+      -0.650452017784119
+    ],
+    "entry_velocity": [
+      123.525192260742,
+      -105.783012390137
+    ],
+    "entry_roll": "moving",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [
+      "sector"
+    ],
+    "max_overlap_in_attack": 3,
+    "selected_damage": 7
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "id": "21368.2",
+    "attempt": 4,
+    "player_target": false,
+    "warning_eligible_tick": 5732,
+    "last_entry_tick": 5755,
+    "impact_tick": 5763,
+    "ticks_to_impact": 8,
+    "preceding_position": [
+      152.551742553711,
+      169.573486328125
+    ],
+    "preceding_input": [
+      -0.252912908792496,
+      -0.967489063739777
+    ],
+    "preceding_velocity": [
+      -61.0922927856445,
+      -140.679351806641
+    ],
+    "preceding_roll": "rolling",
+    "preceding_other_overlaps": [
+      "sector"
+    ],
+    "entry_position": [
+      151.407958984375,
+      165.983901977539
+    ],
+    "entry_input": [
+      -0.270644813776016,
+      -0.962679266929626
+    ],
+    "entry_velocity": [
+      -68.6271896362305,
+      -215.375274658203
+    ],
+    "entry_roll": "rolling",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [
+      "sector"
+    ],
+    "max_overlap_in_attack": 3,
+    "selected_damage": 8
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "id": "21271.5",
+    "attempt": 4,
+    "player_target": false,
+    "warning_eligible_tick": 6013,
+    "last_entry_tick": 6042,
+    "impact_tick": 6044,
+    "ticks_to_impact": 2,
+    "preceding_position": [
+      159.22428894043,
+      190.161514282227
+    ],
+    "preceding_input": [
+      -0.420858174562454,
+      -0.907126486301422
+    ],
+    "preceding_velocity": [
+      -12.4323959350586,
+      -165.780654907227
+    ],
+    "preceding_roll": "moving",
+    "preceding_other_overlaps": [],
+    "entry_position": [
+      158.183258056641,
+      187.374816894531
+    ],
+    "entry_input": [
+      -0.370937347412109,
+      -0.92865788936615
+    ],
+    "entry_velocity": [
+      -62.4622268676758,
+      -167.201385498047
+    ],
+    "entry_roll": "moving",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [],
+    "max_overlap_in_attack": 1,
+    "selected_damage": 8
+  },
+  {
+    "case": "archer_route1_s19_cautious",
+    "id": "24375.1",
+    "attempt": 5,
+    "player_target": false,
+    "warning_eligible_tick": 9938,
+    "last_entry_tick": 9952,
+    "impact_tick": 9969,
+    "ticks_to_impact": 17,
+    "preceding_position": [
+      84.4631042480469,
+      249.750793457031
+    ],
+    "preceding_input": [
+      -0.981772184371948,
+      -0.190061792731285
+    ],
+    "preceding_velocity": [
+      -86.5486602783203,
+      108.788131713867
+    ],
+    "preceding_roll": "cooldown",
+    "preceding_other_overlaps": [
+      "sector"
+    ],
+    "entry_position": [
+      83.3539733886719,
+      250.888824462891
+    ],
+    "entry_input": [
+      0.273115456104279,
+      -0.961981296539307
+    ],
+    "entry_velocity": [
+      -66.5478897094727,
+      68.2819671630859
+    ],
+    "entry_roll": "cooldown",
+    "entry_phase": "moving",
+    "entry_snapshot": "post-actor",
+    "entry_other_overlaps": [
+      "sector"
+    ],
+    "max_overlap_in_attack": 2,
+    "selected_damage": 5
+  }
+]
