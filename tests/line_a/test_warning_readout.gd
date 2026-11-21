@@ -29,6 +29,26 @@ func soldier() -> ScarecrowEnemy:
 	enemy._start_telegraph(Vector2.RIGHT, false)
 	return enemy
 
+func test_scarecrow_observer_receives_frozen_geometry_before_damage_and_no_cancelled_impact() -> void:
+	var enemy := spawn(&"scarecrow", Vector2(70, 180)) as ScarecrowEnemy
+	enemy.set_physics_process(false)
+	enemy.target = player
+	var events: Array = []
+	enemy.warning_committed.connect(func(mark: AttackTelegraph) -> void:
+		events.append(["start", mark.global_transform, mark.direction, GameState.vigor]))
+	enemy.swing_resolving.connect(func(mark: AttackTelegraph) -> void:
+		events.append(["impact", mark.global_transform, mark.direction, GameState.vigor]))
+	enemy._start_telegraph(Vector2.RIGHT, false)
+	enemy._cancel_attack()
+	assert_eq(events.size(), 1, "cancellation emits no resolution")
+	enemy._start_telegraph(Vector2.RIGHT, false)
+	enemy._swing()
+	assert_eq(events.size(), 3)
+	assert_eq(events[1][0], "start")
+	assert_eq(events[2][0], "impact")
+	assert_eq(events[1].slice(1), events[2].slice(1), "same committed transform, direction and pre-hit vigor")
+	assert_true(GameState.vigor < int(events[2][3]), "damage follows the resolution event")
+
 func test_committed_warning_takes_priority_without_changing_focus_or_combat() -> void:
 	var enemy := soldier()
 	player._focus_elapsed = player.loadout.focus_time

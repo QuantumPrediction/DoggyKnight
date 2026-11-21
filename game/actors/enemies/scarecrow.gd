@@ -17,6 +17,10 @@ extends EnemyBase
 
 enum Phase { APPROACH, TELEGRAPH, SWING, RECOVER }
 
+## Exact committed geometry for non-mutating combat observers.
+signal warning_committed(mark: AttackTelegraph)
+signal swing_resolving(mark: AttackTelegraph)
+
 @export_group("攻擊")
 @export var attack_trigger_range: float = 18.0    ## 與目標「身體邊緣」的距離小於這個就開始預警(要比金毛的擊退遠)
 @export var attack_radius: float = 24.0
@@ -172,6 +176,7 @@ func _start_telegraph(to_target: Vector2, call_friends: bool = true) -> void:
 	_show_telegraph(AttackTelegraph.make_sector(attack_radius * visual_scale, _attack_dir,
 			deg_to_rad(attack_half_angle_deg)))
 	_telegraph.global_position = _attack_origin
+	warning_committed.emit(_telegraph)
 	if call_friends:
 		_call_pincer(target)
 
@@ -217,6 +222,7 @@ func _swing() -> void:
 		# Keep the committed warning fixed while its parent lunges. Resolve last
 		# so equipment control triggered by damage can keep its recovery state.
 		mark.global_transform = warning_transform
+		swing_resolving.emit(mark)
 		hit_victims_in_marked_sector(mark, data.contact_damage)
 	_clear_telegraph()
 

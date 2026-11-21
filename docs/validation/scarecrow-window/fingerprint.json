@@ -1,0 +1,29 @@
+{
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "source_sha256": "dfe2c8a9269e00bcba0ad9634969f1a8d9e819a92395218e256bc3cc57ee43f3",
+  "source_paths": [
+    "core",
+    "game",
+    "data",
+    "ui",
+    "i18n",
+    "project.godot",
+    "tests/integration",
+    "tools/run_pressure_audit.py",
+    "tools/probe_scarecrow_windows.py"
+  ],
+  "source_definition": "sorted relative path + NUL + binary SHA256 for each file; see source_digest()",
+  "tested_against": "b05224258e0bdc70cfde7d0cb874a6b36d7f4617",
+  "fixed_fps": 60,
+  "delays": [
+    0,
+    15,
+    24,
+    30
+  ],
+  "directions": [
+    "radial",
+    "left",
+    "right"
+  ]
+}
