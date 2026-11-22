@@ -1,0 +1,118 @@
+{
+	"best_stars": {
+		"1-1": 2,
+		"1-2": 3,
+		"1-3": 3
+	},
+	"camp_pending": false,
+	"chapter": 1,
+	"chapter_cleared": false,
+	"chapters_cleared": 0,
+	"checkpoint": {
+		"bonus_trick_levels": 0,
+		"equipment": {
+			"boss_misses": 0,
+			"coins": 250,
+			"elements": {
+				"ash_bow": "earth",
+				"ranger_jacket": "earth"
+			},
+			"first_boss": {},
+			"gems": 0,
+			"last_reward": {
+				"coins": 0,
+				"duplicate": false,
+				"gems": 0,
+				"item": "",
+				"shards": 0
+			},
+			"loadouts": {
+				"archer": {
+					"armor": "ranger_jacket",
+					"weapon": "ash_bow"
+				},
+				"knight": {},
+				"mage": {}
+			},
+			"owned": {
+				"ash_bow": 1,
+				"ranger_jacket": 1
+			},
+			"reward_serial": 0,
+			"shards": 0
+		},
+		"equipment_rng": "8917338790263572125",
+		"event_rng": "2553202566416779120",
+		"exp_centi": 200,
+		"hero_level": 6,
+		"next_level_bonus": 0.0,
+		"rng": "-7198122308789325824",
+		"route": "outrider",
+		"run_modifiers": [],
+		"satisfaction": 30,
+		"snacks": 79,
+		"spawn_rng": "8092688602376159158",
+		"tricks": [
+			"roll",
+			"roll",
+			"roll",
+			"zoomies",
+			"wag",
+			"zoomies",
+			"zoomies"
+		],
+		"vigor": 89
+	},
+	"difficulty": "normal",
+	"endless_best": 0,
+	"equipment": {
+		"boss_misses": 0,
+		"coins": 130,
+		"elements": {
+			"ash_bow": "earth",
+			"ranger_jacket": "earth"
+		},
+		"first_boss": {},
+		"gems": 0,
+		"last_reward": {
+			"coins": 40,
+			"duplicate": false,
+			"gems": 0,
+			"item": "",
+			"shards": 0
+		},
+		"loadouts": {
+			"archer": {
+				"armor": "ranger_jacket",
+				"weapon": "ash_bow"
+			},
+			"knight": {},
+			"mage": {}
+		},
+		"owned": {
+			"ash_bow": 1,
+			"ranger_jacket": 1
+		},
+		"reward_serial": 3,
+		"shards": 0
+	},
+	"guard_lesson_done": false,
+	"haptics_on": true,
+	"hero_class": "archer",
+	"level_index": 3,
+	"meta_upgrades": {},
+	"music_on": true,
+	"snacks": 79,
+	"sound_on": true,
+	"story_seen": {
+		"camp1": true,
+		"l1_after": true,
+		"l1_before": true,
+		"l2_after": true,
+		"l2_before": true,
+		"l3_before": true,
+		"prologue": true
+	},
+	"tutorial_done": true,
+	"version": 11
+}

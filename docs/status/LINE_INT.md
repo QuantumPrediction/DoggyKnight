@@ -1,4 +1,18 @@
-# 整合進度　首章鍵盤選牌與恢復戰鬥
+# 整合進度　三職業美術與動作
+
+2026-11-23（香港）。[草稿 #26](https://github.com/QuantumPrediction/DoggyKnight/pull/26) 的 `codex/storybook-combat-motion` 接續 [#25](https://github.com/QuantumPrediction/DoggyKnight/pull/25)。公開受測來源 `7429b3634c19ff04dea5cbf9c461776d93dc73fb`；移除臨時驗證流程後的遊戲 tree 為 `b0007fe639d0007225c25f127d84542d1404a099`。
+
+| 項目 | 本輪結果 |
+| --- | --- |
+| 角色 | 騎士、法師、弓箭手各有四個跑姿和四段普通攻擊，真正出手才換圖，另有各自的眨眼、歡呼及蜷睡 |
+| 裝備與特效 | 三把起始武器、三件寶物、箭矢、經驗晶片及骨頭零食。友方劍光、法球、命中各四格 |
+| 閱讀 | 真實 Linux 渲染驗出「緒」缺字令翻滾提示超出面板。改為「起步可翻滾」後，五個場景由 1/5 到 5/5 通過；按鈕與預警的位置照舊 |
+| 回歸 | Ubuntu 全套 968/968，美術 8/8、警示 9/9，三職業 480 筆戰鬥紀錄逐位元組相同。原環境與歷史兩路三倒吻合。Ubuntu 舊新版均為神射三倒、遊騎兩倒後通章，兩份戰報及兩份存檔同機逐位元組吻合，跨機差異待查 |
+| 交接 | 五張最終原生遊戲截圖可看至 2027-02-21（香港）。十張前後原始對照短期保存，指紋在專案。當工作環境可用，依既有授權手動補存原圖。禁止讓 CI 取得倉庫寫權的實際審批已遵守 |
+
+下一輪優先處理同伴舉盾、格擋和反擊的辨識度，並觀察真手機 360×640 混戰與幀時間。目標玩家 0 人，Windows／手機／手把、聆聽、留存及市場仍待驗收，暫評 6–6.5/10。[動作示範](../validation/hero-motion/hero-demo.gif) · [實際遊戲截圖](https://github.com/QuantumPrediction/DoggyKnight/actions/runs/45067182880/artifacts/14772175663) · [驗證紀錄](../validation/hero-motion/README.md)
+
+## 前輪　首章鍵盤選牌與恢復戰鬥
 
 2026-11-23（香港）。[草稿 #25](https://github.com/QuantumPrediction/DoggyKnight/pull/25) 分支 `codex/keyboard-choice-cards` 基於 [草稿 #24](https://github.com/QuantumPrediction/DoggyKnight/pull/24) 的 `8859306a2c29769b02c36101d2b6104f4e91358c`。公開實作 `9b9e02e37e795fd8e8839e303484e8f604643307` 與本地受測提交共用 tree `71cd5438cc9ba363a1d99cf50ad696689fe045a2`。
 
