@@ -1,4 +1,4 @@
-extends Control
+extends "res://ui/common/choice_card_menu.gd"
 ## 升級選把戲(C9,DEV_PLAN 4.4、4.9)。B 線把它放在第 20 層 CanvasLayer。
 ##
 ## 聽 EventBus.trick_offered(options: Array[TrickData]),顯示三張卡片(圖示、名稱、一行說明)。
@@ -14,12 +14,10 @@ const CARD_SIZE: Vector2 = Vector2(168, 54)
 const CARD_GAP: float = 6.0
 const ICON_SCALE: int = 2
 
-var cards: Array[Button] = []
 var _ids: Array[StringName] = []
 var _title: PanelContainer
 var _title_label: Label
 var _box: Control
-var _accept_at: float = 0.0
 
 
 func _ready() -> void:
@@ -58,7 +56,7 @@ func show_options(options: Array) -> void:
 		cards.append(card)
 		_ids.append(trick.id)
 	visible = true
-	_accept_at = Time.get_ticks_msec() / 1000.0 + INPUT_DELAY
+	_open_card_input(INPUT_DELAY)
 	_layout()
 	_title.pivot_offset = _title.size * 0.5
 	_title.scale = Vector2(0.3, 0.3)
@@ -121,7 +119,6 @@ func _make_card(trick: TrickData) -> Button:
 	var evolution := trick.is_evolution
 	var card := Button.new()
 	card.theme_type_variation = &"CardEvolve" if evolution else &"CardButton"
-	card.focus_mode = Control.FOCUS_NONE
 	card.custom_minimum_size = CARD_SIZE
 	card.size = CARD_SIZE
 	card.name = "Card_%s" % trick.id

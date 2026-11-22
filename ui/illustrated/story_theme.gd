@@ -61,5 +61,13 @@ static func install() -> void:
 	focus.border_color = Color("fff2c5")
 	focus.set_border_width_all(1)
 	focus.set_expand_margin_all(1)
-	for type in [&"Button", &"ButtonAlt", &"ButtonViolet", &"CardButton"]:
+	for type in [&"Button", &"ButtonAlt", &"ButtonViolet"]:
 		theme.set_stylebox(&"focus", type, focus)
+	# Draw inside the parchment so focus stays legible over any battlefield.
+	var card_focus := StyleBoxFlat.new()
+	card_focus.draw_center = false
+	card_focus.border_color = Color("205249")
+	card_focus.set_border_width_all(2)
+	card_focus.set_corner_radius_all(2)
+	for type in [&"CardButton", &"CardEvolve", &"CardMerlin", &"CardMorgana"]:
+		theme.set_stylebox(&"focus", type, card_focus)

@@ -1,4 +1,4 @@
-extends Control
+extends "res://ui/common/choice_card_menu.gd"
 ## 抉擇事件介面(CV3,DEV_PLAN 4.12、第 17 節)。B 線把它放在第 20 層 CanvasLayer(和把戲選擇一樣)。
 ##
 ## 聽 EventBus.event_offered(event_id, options):options 是 Array[Dictionary],每項
@@ -22,14 +22,12 @@ const PORTRAITS: Dictionary = {
 const PORTRAIT_FRAME: Texture2D = preload("res://assets/ui/portrait_frame.png")
 const GLOW: Texture2D = preload("res://assets/fx/lights/glow_52.png")
 
-var cards: Array[Button] = []
 var event_id: StringName = &""
 
 var _tones: Array[StringName] = []
 var _title: PanelContainer
 var _hint: Label
 var _box: Control
-var _accept_at: float = 0.0
 var _time: float = 0.0
 
 
@@ -71,7 +69,7 @@ func show_event(id: StringName, options: Array) -> void:
 		cards.append(card)
 		_tones.append(StringName(String(opt.get("tone", ""))))
 	visible = true
-	_accept_at = Time.get_ticks_msec() / 1000.0 + INPUT_DELAY
+	_open_card_input(INPUT_DELAY)
 	_layout()
 	UiKit.play_sfx(&"event")
 	_title.pivot_offset = _title.size * 0.5
@@ -131,7 +129,6 @@ func _make_card(opt: Dictionary, index: int) -> Button:
 	var card := Button.new()
 	card.name = "Card%d" % index
 	card.theme_type_variation = &"CardMorgana" if morgana else (&"CardMerlin" if tone == &"merlin" else &"CardButton")
-	card.focus_mode = Control.FOCUS_NONE
 	card.custom_minimum_size = CARD_SIZE
 	card.size = CARD_SIZE
 	card.pressed.connect(_on_card_pressed.bind(index))
