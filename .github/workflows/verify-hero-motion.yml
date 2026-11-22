@@ -1,60 +1,115 @@
-name: Photograph the three heroes on Linux
+name: Verify the three heroes and photograph the HUD
 on:
   pull_request:
     branches: ['codex/keyboard-choice-cards']
     types: [synchronize]
-    paths: ['.github/workflows/verify-hero-motion.yml']
+    paths: ['.github/workflows/verify-hero-motion.yml', 'i18n/strings.csv', 'tests/**', 'ui/**', 'game/**']
 permissions:
   contents: read
+env:
+  CANDIDATE: ${{ github.event.pull_request.head.sha }}
+  BEFORE: c6dacba728cab1afa404911e82b051aba58d0b89
 jobs:
-  render:
+  verify:
     if: github.repository == 'QuantumPrediction/DoggyKnight' && github.event.repository.private == false && github.head_ref == 'codex/storybook-combat-motion'
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        task: [regression, pictures]
     steps:
-      - name: Check out the tested public art and install the exact engine
+      - name: Check out both public checkpoints and install the exact engine
         run: |
           set -euo pipefail
-          source_sha=c6dacba728cab1afa404911e82b051aba58d0b89
           git init -q .
-          git fetch -q --depth=1 https://github.com/QuantumPrediction/DoggyKnight.git "$source_sha"
-          git checkout -q --detach FETCH_HEAD
-          test "$(git rev-parse HEAD)" = "$source_sha"
+          git fetch -q --depth=1 https://github.com/QuantumPrediction/DoggyKnight.git "$CANDIDATE" "$BEFORE"
+          git checkout -q --detach "$CANDIDATE"
+          git worktree add --detach "$RUNNER_TEMP/before" "$BEFORE"
           stem=Godot_v4.7.2-stable_linux.x86_64
           curl -fsSL --retry 3 "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/$stem.zip" -o "$RUNNER_TEMP/godot.zip"
           unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP"
           mv "$RUNNER_TEMP/$stem" "$RUNNER_TEMP/godot"
           "$RUNNER_TEMP/godot" --version | grep -F '4.7.2.stable.official.ed1daf0bf'
-      - name: Render the five production views and check their geometry
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      - name: Exercise the hero bindings, HUD and full game
+        if: matrix.task == 'regression'
+        env:
+          TEST_TIMEOUT: 900
         run: |
           set -euo pipefail
-          export XDG_DATA_HOME="$RUNNER_TEMP/render-profile"
-          export ART_CAPTURE_DIR="$RUNNER_TEMP/stills"
+          bash tools/run_tests.sh storybook_motion
+          bash tools/run_tests.sh warning_readout
+          bash tools/run_tests.sh
+      - name: Compare all event rows and the two known route failures
+        if: always() && matrix.task == 'regression'
+        run: |
+          set -euo pipefail
+          records="$RUNNER_TEMP/records"
+          XDG_DATA_HOME="$RUNNER_TEMP/motion-profile" MOTION_CAPTURE_DIR="$records" godot --headless --path . --fixed-fps 60 --max-fps 0 --script res://tools/capture_hero_motion.gd
+          echo "6eceb2822e1e18d6884e6e8e5bb6789d608e402f80e05e4ffaabd853454d408d  $records/events.tsv" | sha256sum --check
+          echo "BEGIN_HERO_EVENT_ROWS"
+          cat "$records/events.tsv"
+          echo "END_HERO_EVENT_ROWS"
+          for route in 0 1; do
+            account="$RUNNER_TEMP/seed19-$route"
+            mkdir -p "$account"
+            status=0
+            XDG_DATA_HOME="$account" godot --headless --path . --fixed-fps 60 --max-fps 0 --disable-render-loop res://tests/integration/archer_entry_capture.tscn -- --speed=1 --chapter=1 --class=archer --route="$route" --build=route --seed=19 --gear=common1 --element=earth --policy=cautious --guard=reactive --max-downs=3 --max-sim-seconds=1200 --report="$RUNNER_TEMP/route-$route.json" || status=$?
+            test "$status" = 1
+            cmp "$RUNNER_TEMP/route-$route.json" "docs/validation/r03a/anchors/archer_route${route}_s19_cautious.json"
+            save=archer_1_4_checkpoint.json
+            if test "$route" = 1; then save=archer_1_4_outrider_checkpoint.json; fi
+            cmp "$account/godot/app_userdata/金毛騎士/archer_1_4_entry.json" "tests/fixtures/$save"
+            sha256sum "$RUNNER_TEMP/route-$route.json" "tests/fixtures/$save"
+          done
+      - name: Render the five actual HUD views at each revision
+        if: matrix.task == 'pictures'
+        run: |
+          set -euo pipefail
           export LIBGL_ALWAYS_SOFTWARE=1
-          engine="$RUNNER_TEMP/godot"
-          "$engine" --headless --path . --import > "$RUNNER_TEMP/import.log" 2>&1
-          xvfb-run -a -s '-screen 0 1280x1024x24' "$engine" --path . --display-driver x11 --rendering-method gl_compatibility --audio-driver Dummy res://tests/integration/combat_readability_showcase.tscn
+          for version in before after; do
+            project="$GITHUB_WORKSPACE"
+            if test "$version" = before; then project="$RUNNER_TEMP/before"; fi
+            export ART_CAPTURE_DIR="$RUNNER_TEMP/gallery/$version"
+            export XDG_DATA_HOME="$RUNNER_TEMP/profile-$version"
+            mkdir -p "$ART_CAPTURE_DIR"
+            godot --headless --path "$project" --import > "$RUNNER_TEMP/import-$version.log" 2>&1
+            status=0
+            xvfb-run -a -s '-screen 0 1280x1024x24' godot --path "$project" --display-driver x11 --rendering-method gl_compatibility --audio-driver Dummy res://tests/integration/combat_readability_showcase.tscn || status=$?
+            echo "$status" > "$ART_CAPTURE_DIR/exit-code.txt"
+          done
           python3 - <<'PY'
           import hashlib, json, os, struct
           from pathlib import Path
-          folder = Path(os.environ['ART_CAPTURE_DIR'])
+          root = Path(os.environ['RUNNER_TEMP']) / 'gallery'
           expected = {'archer_tracking': (540,960), 'archer_locked_focus_ready': (540,960), 'mage_roll_cooldown': (540,960), 'knight_small': (360,640), 'archer_notched': (390,844)}
-          rows = json.loads((folder / 'checks.json').read_bytes())
-          assert {r['capture'] for r in rows} == set(expected)
-          assert all(r['safe'] and r['text_fits'] for r in rows)
-          for name, dims in expected.items():
-              data = (folder / (name + '.png')).read_bytes()
-              assert data[:8] == bytes.fromhex('89504e470d0a1a0a') and struct.unpack('>II', data[16:24]) == dims
-              assert len(data) < 3500000
-              print('FRAME_SHA256', name, hashlib.sha256(data).hexdigest(), len(data))
+          flags = {}
+          for version in ('before', 'after'):
+              folder = root/version
+              rows = json.loads((folder/'checks.json').read_bytes())
+              by_name = {r['capture']:r for r in rows}
+              assert set(by_name) == set(expected) and len(rows)==len(expected)
+              flags[version] = {}
+              for name, size in expected.items():
+                  data = (folder/(name+'.png')).read_bytes()
+                  assert data[:8]==bytes.fromhex('89504e470d0a1a0a') and struct.unpack('>II',data[16:24])==size
+                  assert len(data)<3500000
+                  row = by_name[name]
+                  flags[version][name] = {'safe':row['safe'],'text_fits':row['text_fits']}
+                  print('HUD_FRAME', version, name, json.dumps(flags[version][name]), hashlib.sha256(data).hexdigest(), len(data), flush=True)
+          assert all(v['safe'] for v in flags['before'].values())
+          assert not all(v['text_fits'] for v in flags['before'].values())
+          assert all(v['safe'] and v['text_fits'] for v in flags['after'].values())
+          assert (root/'before'/'exit-code.txt').read_text().strip()=='1'
+          assert (root/'after'/'exit-code.txt').read_text().strip()=='0'
           PY
-      - name: Retain the native screenshot evidence
+      - name: Preserve before and after, including every failed view
+        if: always() && matrix.task == 'pictures'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: native-hero-stills
-          path: |
-            ${{ runner.temp }}/stills/*.png
-            ${{ runner.temp }}/stills/checks.json
-          if-no-files-found: error
+          path: ${{ runner.temp }}/gallery
+          if-no-files-found: warn
           compression-level: 0
           retention-days: 1
