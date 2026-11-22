@@ -51,6 +51,8 @@
 
 ## 開發與建置
 
+桌面開發版的路線、事件與升級卡可以用 ↑／↓ 或 Tab 切換，按 Enter 確認。也可直接點選卡片。這組鍵盤操作適用於此分支的原始碼。
+
 - 引擎：**Godot 4.7.2 stable**，一般版，Compatibility renderer。
 - 匯入 `project.godot`，主場景為 `game/flow/main.tscn`。
 - 完整測試：`tools/run_tests.sh`；可用 `GODOT=/path/to/godot` 指定引擎。

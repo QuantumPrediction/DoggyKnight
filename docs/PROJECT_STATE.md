@@ -1,8 +1,18 @@
 # Golden Knight — current project state
 
-Updated: 2026-11-22 (Hong Kong). Version: **0.9.1 development source**.
+Updated: 2026-11-23 (Hong Kong). Version: **0.9.1 development source**.
 
-## Current work — both archer routes in the uncoached 1-4 trial
+## Current work — keyboard choices in chapter one
+
+[Draft #25](https://github.com/QuantumPrediction/DoggyKnight/pull/25) on `codex/keyboard-choice-cards` stacks on [draft #24](https://github.com/QuantumPrediction/DoggyKnight/pull/24) at `8859306a2c29769b02c36101d2b6104f4e91358c`. [Public implementation](https://github.com/QuantumPrediction/DoggyKnight/commit/9b9e02e37e795fd8e8839e303484e8f604643307) and the tested local commit `b255592dff62e0c787417dcd9334a3921f9bc482` share tree `71cd5438cc9ba363a1d99cf50ad696689fe045a2`.
+
+- Event, route and upgrade cards now take keyboard focus. The arrow keys or Tab cycle through the offer. Enter or Space selects a card. Holding confirm as cards arrive cannot make a late choice. The focus outline stays inside the card, and clicking or tapping another card selects the one touched.
+- On #24, five of seven new input checks failed. Enter activated a background button twice and the real chapter flow stayed paused without a route. All seven now pass, including taking Outrider and Roll, applying a chosen upgrade once, and returning to combat without triggering an ultimate. The full Godot run passed 959/959. The original shutdown warnings remain. [Registered comparisons](requests/20261123-INT-choice-card-input.md) · [Evidence and replay instructions](validation/choice-card-input/README.md)
+- Both cautious seed-19 archer reports and their 1-4 saves still match the archives byte for byte, including three downs per route. Gamepad and touch coverage used engine input events. This round produced no new native capture. Total target-player sessions are zero and provisional quality remains 6–6.5/10.
+
+Next, verify the entire keyboard and controller path from a fresh title screen through class selection, route, first upgrade and resumed battle on Windows. Check first-tap behavior on a phone. Until those devices are available, the same path can be exercised through normal GUI events to locate the first remaining break. Keep the separate [two-route uncoached trial](validation/scene-lifetime/archer-trial.md) available for 6–8 participants. Guard-warning occlusion, the historical native crash, long sessions, audio, retention and market validation remain open.
+
+## Previous work — both archer routes in the uncoached 1-4 trial
 
 [Draft #24](https://github.com/QuantumPrediction/DoggyKnight/pull/24) on `codex/archer-guard-trial-pair` is based on [draft #23](https://github.com/QuantumPrediction/DoggyKnight/pull/23) at `a6595b21a970c1f7b7586cb7d8e7e461863b7959`. Public implementation `9b67f1b365e98031bc96bc042e7875ae8b59f6f8` has the tested tree `7d088aebe14c1cd3bfe79296e4f5a563f14ebf20`. [Playable entries and observer sheet](validation/scene-lifetime/archer-trial.md) · [Validation](validation/archer-guard-trial/README.md)
 

@@ -1,0 +1,55 @@
+== 匯入資源 ==
+== 執行測試 ==
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/integration/test_choice_card_input.gd
+  FAIL    test_route_arrows_and_tab_stay_on_the_current_offer
+          - route opens on its first card: expected true
+          - Down selects the second card during the entrance: expected true
+          - horizontal navigation stays in this column: expected true
+          - Tab wraps inside the offer: expected true
+          - Shift+Tab wraps back: expected true
+          - expected [[&"route_archer", 1]], got Array[Array]([])
+          - expected false
+          - the underlying HUD must receive no activation: expected 0, got 2
+  FAIL    test_upgrades_ignore_early_hold_echo_and_require_a_fresh_press
+          - Up wraps to the third upgrade: expected true
+          - expected [[&"shake"]], got Array[Array]([])
+          - an echo and orphan release cannot choose the next offer: expected 1, got 0
+          - a single-card offer stays reachable: expected [[&"shake"], [&"sit"]], got Array[Array]([])
+          - expected false
+  ok      test_pressing_a_different_card_with_the_pointer_still_selects_it
+  ok      test_touch_can_select_the_third_upgrade_after_the_guard
+  FAIL    test_dpad_and_south_button_use_the_same_native_card_focus
+          - synthetic D-pad Down and south-button select the second card: expected [[&"route_archer", 1]], got Array[Array]([])
+  FAIL    test_focus_ring_is_visible_against_all_four_paper_styles
+          - CardButton has a two-pixel focus edge: expected true
+          - CardButton/normal focus contrast: expected true
+          - CardButton/hover focus contrast: expected true
+          - CardButton/pressed focus contrast: expected true
+          - CardMerlin has a two-pixel focus edge: expected true
+          - CardMerlin/normal focus contrast: expected true
+          - CardMerlin/hover focus contrast: expected true
+          - CardMerlin/pressed focus contrast: expected true
+          - CardMorgana has a two-pixel focus edge: expected true
+          - CardMorgana/normal focus contrast: expected true
+          - CardMorgana/hover focus contrast: expected true
+          - CardMorgana/pressed focus contrast: expected true
+          - CardEvolve has a two-pixel focus edge: expected true
+          - CardEvolve/normal focus contrast: expected true
+          - CardEvolve/hover focus contrast: expected true
+          - CardEvolve/pressed focus contrast: expected true
+  FAIL    test_first_chapter_route_and_upgrade_resume_the_real_flow
+          - the second route changes the actual run: expected &"outrider", got &""
+          - expected true
+          - the fight resumes after a route choice: expected false
+
+7 tests, 5 failed, 0 broken files
+WARNING: 73 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 35 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 6 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+測試失敗。
