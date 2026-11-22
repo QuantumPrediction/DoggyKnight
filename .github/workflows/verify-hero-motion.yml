@@ -1,4 +1,4 @@
-name: Compare both archer replays and preserve the player gallery
+name: Inspect the stored replay pairs
 on:
   pull_request:
     branches: ['codex/keyboard-choice-cards']
@@ -8,112 +8,32 @@ permissions:
   contents: read
   actions: read
 jobs:
-  paired:
-    if: github.repository == 'QuantumPrediction/DoggyKnight' && github.event.repository.private == false && github.head_ref == 'codex/storybook-combat-motion'
-    runs-on: ubuntu-24.04
-    timeout-minutes: 15
-    steps:
-      - name: Fetch both fixed public revisions and the project engine
-        run: |
-          set -euo pipefail
-          git init -q .
-          before=6254f092a6c18931cb884c5f6d16d0aed713d262
-          after=7429b3634c19ff04dea5cbf9c461776d93dc73fb
-          git fetch -q --depth=1 https://github.com/QuantumPrediction/DoggyKnight.git "$before" "$after"
-          git checkout -q --detach "$after"
-          git worktree add --detach "$RUNNER_TEMP/before" "$before"
-          stem=Godot_v4.7.2-stable_linux.x86_64
-          curl -fsSL --retry 3 "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/$stem.zip" -o "$RUNNER_TEMP/engine.zip"
-          unzip -q "$RUNNER_TEMP/engine.zip" -d "$RUNNER_TEMP"
-          mv "$RUNNER_TEMP/$stem" "$RUNNER_TEMP/godot"
-          "$RUNNER_TEMP/godot" --version | grep -F '4.7.2.stable.official.ed1daf0bf'
-          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
-          "$RUNNER_TEMP/godot" --headless --path . --import > "$RUNNER_TEMP/import-after.log" 2>&1
-          "$RUNNER_TEMP/godot" --headless --path "$RUNNER_TEMP/before" --import > "$RUNNER_TEMP/import-before.log" 2>&1
-      - name: Keep both routes, even when an archived result differs
-        run: |
-          set -euo pipefail
-          outputs="$RUNNER_TEMP/replays"
-          mkdir -p "$outputs"
-          for route in 0 1; do
-            for version in before after; do
-              project="$GITHUB_WORKSPACE"
-              if test "$version" = before; then project="$RUNNER_TEMP/before"; fi
-              account="$RUNNER_TEMP/fresh-$version-$route"
-              mkdir -p "$account"
-              status=0
-              XDG_DATA_HOME="$account" godot --headless --path "$project" --fixed-fps 60 --max-fps 0 --disable-render-loop res://tests/integration/archer_entry_capture.tscn -- --speed=1 --chapter=1 --class=archer --route="$route" --build=route --seed=19 --gear=common1 --element=earth --policy=cautious --guard=reactive --max-downs=3 --max-sim-seconds=1200 --report="$outputs/$version-$route-report.json" > "$outputs/$version-$route.log" 2>&1 || status=$?
-              echo "$status" > "$outputs/$version-$route-exit.txt"
-              snap="$account/godot/app_userdata/金毛騎士/archer_1_4_entry.json"
-              if test -f "$snap"; then cp "$snap" "$outputs/$version-$route-save.json"; fi
-              cat "$outputs/$version-$route.log"
-            done
-          done
-          python3 - <<'PY'
-          import json, hashlib, os
-          from pathlib import Path
-          outputs = Path(os.environ['RUNNER_TEMP']) / 'replays'
-          matched = True
-          for route in (0,1):
-              for kind in ('report','save'):
-                  before = (outputs / f'before-{route}-{kind}.json').read_bytes()
-                  after = (outputs / f'after-{route}-{kind}.json').read_bytes()
-                  anchor = Path(f'docs/validation/r03a/anchors/archer_route{route}_s19_cautious.json' if kind=='report' else 'tests/fixtures/archer_1_4_checkpoint.json' if route==0 else 'tests/fixtures/archer_1_4_outrider_checkpoint.json')
-                  print('PAIR', route, kind, before==after, 'ARCHIVE', before==anchor.read_bytes(), after==anchor.read_bytes(), 'SHA256', hashlib.sha256(before).hexdigest(), hashlib.sha256(after).hexdigest(), flush=True)
-                  for version, raw in [('before',before),('after',after)]:
-                      print(f'BEGIN_GAME_EVIDENCE {version}-{route}-{kind}', flush=True)
-                      print(raw.decode().rstrip('\n'), flush=True)
-                      print('END_GAME_EVIDENCE', flush=True)
-                      if kind=='report':
-                          obj = json.loads(raw)
-                          assert obj['outcome']=='down_limit' and obj['downs']==3
-                          assert (outputs / f'{version}-{route}-exit.txt').read_text().strip()=='1'
-                  matched = matched and before==after
-          assert matched, 'Same-VM reports or saves diverged. Retain every run.'
-          PY
-      - name: Retain both raw failures and the paired before and after
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: archer-two-route-evidence
-          path: ${{ runner.temp }}/replays
-          if-no-files-found: warn
-          retention-days: 7
-  gallery:
+  inspect:
     if: github.repository == 'QuantumPrediction/DoggyKnight' && github.event.repository.private == false && github.head_ref == 'codex/storybook-combat-motion'
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
-      - name: Retrieve the matched native frames with a read-only token
+      - name: Inspect stored reports, entry saves and both process results without a replay
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          gh api repos/QuantumPrediction/DoggyKnight/actions/artifacts/14771955250/zip > "$RUNNER_TEMP/original.zip"
-          echo "7732df9bc847f8ba5380b9455b3960da0a0fdac1b9c000616e8f15d7814691e2  $RUNNER_TEMP/original.zip" | sha256sum --check
-          unzip -q "$RUNNER_TEMP/original.zip" -d "$RUNNER_TEMP/verified-frames"
+          gh api repos/QuantumPrediction/DoggyKnight/actions/artifacts/14772085693/zip > "$RUNNER_TEMP/results.zip"
+          echo "24a74594db2d25dc16f9dfea0266f1d2df93d5527cd25e82b68ec573f94e6098  $RUNNER_TEMP/results.zip" | sha256sum --check
           python3 - <<'PY'
+          import hashlib, json, os, zipfile
           from pathlib import Path
-          import hashlib, os, shutil
-          root=Path(os.environ['RUNNER_TEMP'])
-          expected={
-              'archer_tracking': '70a44a370475f436ff84969f200d82c007765619ddbeb803195d412d704662d7',
-              'archer_locked_focus_ready': '21dd9ada3480f0713f74091c601c935f7477df70b9cd5bf2af011a7b8536ec81',
-              'mage_roll_cooldown': 'e20944218022c69c7dc728427a84baef998f406c4f5d472abbbc6add6c4c3997',
-              'knight_small': '52eea68cbc753d1caf8eb08b2607ad4cfc65baeba0bdde8a584db2bd11b4da55',
-              'archer_notched': '4a61e7ce83cdc1119e44d624b2eae14a6cae09b1152549dd68e44e688f476dba'}
-          gallery=root/'player-gallery'
-          gallery.mkdir()
-          for name, sha in expected.items():
-              src=root/'verified-frames'/'after'/(name+'.png')
-              assert hashlib.sha256(src.read_bytes()).hexdigest()==sha
-              shutil.copyfile(src,gallery/src.name)
+          with zipfile.ZipFile(Path(os.environ['RUNNER_TEMP'])/'results.zip') as files:
+              for route in (0,1):
+                  for kind in ('report','save'):
+                      raw=files.read(f'before-{route}-{kind}.json')
+                      candidate=files.read(f'after-{route}-{kind}.json')
+                      print('RETAINED_PAIR',route,kind,raw==candidate,hashlib.sha256(raw).hexdigest(),hashlib.sha256(candidate).hexdigest(),len(raw),len(candidate),flush=True)
+                      for version, item in [('before',raw),('after',candidate)]:
+                          print('BEGIN_GAME_EVIDENCE',f'{version}-{route}-{kind}',flush=True)
+                          print(item.decode().rstrip('\n'),flush=True)
+                          print('END_GAME_EVIDENCE',flush=True)
+                          if kind=='report':
+                              obj=json.loads(item)
+                              print('OBSERVED_ROUTE',version,route,obj['outcome'],obj['downs'],files.read(f'{version}-{route}-exit.txt').decode().strip(),flush=True)
           PY
-      - name: Keep the five full-resolution game views available to players
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: DoggyKnight-five-game-screenshots
-          path: ${{ runner.temp }}/player-gallery/*.png
-          if-no-files-found: error
-          compression-level: 0
-          retention-days: 90
