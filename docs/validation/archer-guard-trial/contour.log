@@ -1,0 +1,14 @@
+test_all_ten_archived_metadata_gates_are_present (__main__.ContourControls.test_all_ten_archived_metadata_gates_are_present) ... ok
+test_archived_reference_files (__main__.ContourControls.test_archived_reference_files) ... ok
+test_incomplete_manifests_cannot_waive_controls_or_persistence (__main__.ContourControls.test_incomplete_manifests_cannot_waive_controls_or_persistence) ... ok
+test_knockout_attribution (__main__.ContourControls.test_knockout_attribution) ... ok
+test_new_foreground_decoration (__main__.ContourControls.test_new_foreground_decoration) ... ok
+test_recovered_edge (__main__.ContourControls.test_recovered_edge) ... ok
+test_registered_pixels_are_unique_and_inside_plate (__main__.ContourControls.test_registered_pixels_are_unique_and_inside_plate) ... ok
+test_threshold_boundary (__main__.ContourControls.test_threshold_boundary) ... ok
+test_uniform_fill_and_one_sided_step (__main__.ContourControls.test_uniform_fill_and_one_sided_step) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.019s
+
+OK

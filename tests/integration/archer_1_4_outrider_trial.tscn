@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://tests/integration/archer_1_4_trial.tscn" id="1"]
+
+[node name="OutriderTrial" instance=ExtResource("1")]
+checkpoint_path = "res://tests/fixtures/archer_1_4_outrider_checkpoint.json"
