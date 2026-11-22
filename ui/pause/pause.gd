@@ -77,6 +77,9 @@ func _on_game_paused(paused: bool) -> void:
 	if paused:
 		_refresh_sound()
 		_layout()
+		# Desktop accept should resume, including after back-to-title was focused.
+		if OS.has_feature("pc"):
+			resume_button.grab_focus()
 		_panel.scale = Vector2(0.85, 0.85)
 		_panel.pivot_offset = _panel.size * 0.5
 		var t := create_tween()

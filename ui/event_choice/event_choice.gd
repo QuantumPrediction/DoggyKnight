@@ -12,6 +12,9 @@ extends Control
 const INPUT_DELAY: float = 0.45
 const CARD_SIZE: Vector2 = Vector2(168, 92)
 const CARD_GAP: float = 8.0
+const CARD_INK := Color("302b24")
+const MERLIN_INK := Color("35434b")
+const MORGANA_INK := Color("48324e")
 const PORTRAITS: Dictionary = {
 	&"merlin": "res://assets/portraits/merlin/proud.png",
 	&"morgana": "res://assets/portraits/morgana/smirk.png",
@@ -133,8 +136,6 @@ func _make_card(opt: Dictionary, index: int) -> Button:
 	card.size = CARD_SIZE
 	card.pressed.connect(_on_card_pressed.bind(index))
 	UiKit.add_squash(card)
-	var light := &"LabelLight" if morgana else &""
-	var soft := &"LabelLight" if morgana else &"LabelSoft"
 
 	# 頭像後面呼吸的光暈(加亮混合):梅林是溫暖的藍光,摩根娜是神秘的紫光
 	var glow := UiKit.texture_rect(GLOW)
@@ -153,11 +154,7 @@ func _make_card(opt: Dictionary, index: int) -> Button:
 	holder.size = Vector2(52, 52)
 	var path: String = String(opt.get("icon", "")) if route else String(PORTRAITS.get(tone, ""))
 	if path != "" and ResourceLoader.exists(path):
-		var face := UiKit.texture_rect(load(path) as Texture2D)
-		face.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		face.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		face.custom_minimum_size = Vector2(44, 44)
-		face.size = Vector2(44, 44)
+		var face := _card_image(load(path) as Texture2D, Vector2(44, 44))
 		face.position = Vector2(2, 2)
 		holder.add_child(face)
 	holder.add_child(UiKit.texture_rect(PORTRAIT_FRAME))
@@ -169,26 +166,22 @@ func _make_card(opt: Dictionary, index: int) -> Button:
 	# v2.6:第三章梅林被抓走了,祝福改由湖中仙女給(docs/STORY.md 第 13 節)
 	if tone_key == "UI_EVENT_MERLIN" and GameState.mode == &"story" and GameState.chapter == 3:
 		tone_key = "UI_EVENT_LADY"
-	var tone_label := UiKit.label(tr(tone_key) if tone_key != "" else "", soft, HORIZONTAL_ALIGNMENT_LEFT)
+	var tone_label := _card_label(tr(tone_key) if tone_key != "" else "", 8, MORGANA_INK if morgana else MERLIN_INK)
 	tone_label.name = "Tone"
-	tone_label.add_theme_font_size_override(&"font_size", 8)
 	tone_label.position = Vector2(text_x, 3)
 	tone_label.size = Vector2(text_w - 18, 13)
-	tone_label.modulate = Color(PaletteColors.LILAC) if morgana else Color.WHITE
 	card.add_child(tone_label)
-	var title := UiKit.label(tr(String(opt.get("title", ""))), light, HORIZONTAL_ALIGNMENT_LEFT)
+	var title := _card_label(tr(String(opt.get("title", ""))), 10, CARD_INK)
 	title.name = "Name"
 	title.vertical_alignment = VERTICAL_ALIGNMENT_TOP
 	title.position = Vector2(text_x, 17)
-	title.size = Vector2(text_w, 14)
+	title.size = Vector2(text_w, 16)
 	card.add_child(title)
-	var desc := UiKit.wrapped_label(tr(String(opt.get("desc", ""))), text_w, light)
-	desc.add_theme_font_size_override(&"font_size", 9)
+	var desc := _card_label(tr(String(opt.get("desc", ""))), 9, CARD_INK, true)
 	desc.add_theme_constant_override(&"line_spacing", 0)
 	desc.name = "Description"
-	desc.autowrap_mode = TextServer.AUTOWRAP_ARBITRARY
-	desc.position = Vector2(text_x, 32)
-	desc.size = Vector2(text_w, 56)
+	desc.position = Vector2(text_x, 34)
+	desc.size = Vector2(text_w, 54)
 	card.add_child(desc)
 
 	# 右上角的小圖示(選項資料提供的路徑;沒有就不顯示)
@@ -196,16 +189,41 @@ func _make_card(opt: Dictionary, index: int) -> Button:
 	if icon_path != "" and ResourceLoader.exists(icon_path):
 		var tex := load(icon_path) as Texture2D
 		if tex != null:
-			var icon := UiKit.texture_rect(tex)
+			var icon := _card_image(tex, Vector2(12, 12))
 			icon.name = "Icon"
-			icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-			icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			icon.custom_minimum_size = Vector2(12, 12)
-			icon.size = Vector2(12, 12)
 			icon.position = Vector2(CARD_SIZE.x - 16, 3)
 			card.add_child(icon)
 
 	return card
+
+
+func _card_image(texture: Texture2D, dimensions: Vector2) -> TextureRect:
+	# Set only the intended display minimum. Shrinking UiKit's texture-sized
+	# minimum in the same frame leaves a cached 48px portrait in a 12px slot.
+	var image := TextureRect.new()
+	image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	image.texture = texture
+	image.custom_minimum_size = dimensions
+	image.size = dimensions
+	image.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	image.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return image
+
+
+func _card_label(text: String, font_size: int, ink: Color, wrap: bool = false) -> Label:
+	# Measure with the final CJK font before sizing; inherited fallback font
+	# metrics previously made the title overlap the cost description.
+	var label := Label.new()
+	label.add_theme_font_override(&"font", get_theme_font(&"font", &"Label"))
+	label.add_theme_font_size_override(&"font_size", font_size)
+	label.add_theme_color_override(&"font_color", ink)
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART if wrap else TextServer.AUTOWRAP_OFF
+	label.vertical_alignment = VERTICAL_ALIGNMENT_TOP
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	label.text = text
+	return label
 
 
 func _layout() -> void:
