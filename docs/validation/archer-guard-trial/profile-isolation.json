@@ -1,0 +1,26 @@
+{
+  "synthetic_profile": true,
+  "before": {
+    "save.json": "7066f2853ad0e9daa51c631feb7f985dbead60f16672f52ef5499ef6884124b5",
+    "save.json.bak": "c03fdbf9a16a464f7cb75626b32c765658746c0dec225d2aba99828f33f48ebc",
+    "save.json.tmp": "7ad04e56a19a698dda3144a981483a70f3ce3ed9748017de148b34a1147e3782",
+    "playlog.jsonl": "50bc412f7985d2ca86e3c6c6a16369b7c04c234cc2f7862d9b7e5c34af4c2a1e"
+  },
+  "after_simultaneous_scene_launches": {
+    "save.json": "7066f2853ad0e9daa51c631feb7f985dbead60f16672f52ef5499ef6884124b5",
+    "save.json.bak": "c03fdbf9a16a464f7cb75626b32c765658746c0dec225d2aba99828f33f48ebc",
+    "save.json.tmp": "7ad04e56a19a698dda3144a981483a70f3ce3ed9748017de148b34a1147e3782",
+    "playlog.jsonl": "50bc412f7985d2ca86e3c6c6a16369b7c04c234cc2f7862d9b7e5c34af4c2a1e"
+  },
+  "after_focused_tests": {
+    "save.json": "7066f2853ad0e9daa51c631feb7f985dbead60f16672f52ef5499ef6884124b5",
+    "save.json.bak": "c03fdbf9a16a464f7cb75626b32c765658746c0dec225d2aba99828f33f48ebc",
+    "save.json.tmp": "7ad04e56a19a698dda3144a981483a70f3ce3ed9748017de148b34a1147e3782",
+    "playlog.jsonl": "50bc412f7985d2ca86e3c6c6a16369b7c04c234cc2f7862d9b7e5c34af4c2a1e"
+  },
+  "exit_codes": {
+    "marksman-entry": 0,
+    "outrider-entry": 0,
+    "focused-final": 0
+  }
+}

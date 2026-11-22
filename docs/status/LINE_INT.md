@@ -1,4 +1,18 @@
-# 整合進度　事件卡、存檔及暫停操作
+# 整合進度　首章兩條弓手路線的無提示試玩
+
+2026-11-22（香港）。[草稿 #24](https://github.com/QuantumPrediction/DoggyKnight/pull/24) 分支 `codex/archer-guard-trial-pair` 接續 [草稿 #23](https://github.com/QuantumPrediction/DoggyKnight/pull/23) 的 `a6595b21a970c1f7b7586cb7d8e7e461863b7959`。公開實作 `9b67f1b365e98031bc96bc042e7875ae8b59f6f8` 與本地受測來源同 tree `7d088aebe14c1cd3bfe79296e4f5a563f14ebf20`。
+
+| 項目 | 交接 |
+| --- | --- |
+| 已完成 | 保留原神射入口，新增遊騎 1-4 入口。兩份存檔直接來自各自的正式 1-3 過關流程，完整工程戰報均逐位元組吻合，各三次倒下照錄 |
+| 操作與隔離 | 兩路都能續玩、閱讀開場、移動及按 Q 呼喚同伴。重開遊騎可取得乾淨的教學狀態。兩場同時啟動後，既有存檔、備份、暫存檔及遊玩紀錄的四個指紋均相同 |
+| 回歸 | 完整 952/952。#22 與本分支各通過同一組三項試玩檢查，既有外框工具九項通過。原始退出警告隨測試輸出保留 |
+| 下一步 | 6–8 位自願玩家各進行約五分鐘首輪，自由選擇走位或停步。分路記錄實際反擊機會、附近預警、下一動作及事後原話。退出、未接觸與無法判定都保留 |
+| 尚待驗收 | 目標玩家 0 人。遊騎護陣按鈕與神射戰術面板的遮擋仍在，本輪沒有新原生畫面。原生崩潰、長局、Windows／手機／手把、聆聽、留存及市場尚待驗證，沿用 6–6.5/10 |
+
+[啟動指令與主持人紀錄表](../validation/scene-lifetime/archer-trial.md) · [來源、重跑及驗證](../validation/archer-guard-trial/README.md)
+
+## 前輪　事件卡、存檔及暫停操作
 
 2026-11-22（香港）。接續 `codex/guard-hud-contour`／[草稿 PR #23](https://github.com/QuantumPrediction/DoggyKnight/pull/23)，未合併。正式修正 source commit `c79919cdb39636c6b3a619f31caf9f909b89634e`，tree `59bde2a97f460c125745ef96eddb3edb3de8e9a5`。
 

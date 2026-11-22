@@ -2,7 +2,18 @@
 
 Updated: 2026-11-22 (Hong Kong). Version: **0.9.1 development source**.
 
-## Current work — readable choices and reliable progress
+## Current work — both archer routes in the uncoached 1-4 trial
+
+[Draft #24](https://github.com/QuantumPrediction/DoggyKnight/pull/24) on `codex/archer-guard-trial-pair` is based on [draft #23](https://github.com/QuantumPrediction/DoggyKnight/pull/23) at `a6595b21a970c1f7b7586cb7d8e7e461863b7959`. Public implementation `9b67f1b365e98031bc96bc042e7875ae8b59f6f8` has the tested tree `7d088aebe14c1cd3bfe79296e4f5a563f14ebf20`. [Playable entries and observer sheet](validation/scene-lifetime/archer-trial.md) · [Validation](validation/archer-guard-trial/README.md)
+
+- Players can now start 1-4 as the Outrider or the Marksman with normal dialogue and controls. Each route loads its own first committed save after clearing 1-3. The Outrider arrives with 89 vigor and Roll III. The Marksman has 97 vigor and its existing build. Both full seed-19 reports match their archives byte for byte, including all six downs. Each launch uses a fresh temporary profile.
+- The observer sheet distinguishes calling the companion, earning a charge, using a counter near a warning, seeing the success card, and what the player does next. Keep every first session and record unknown or absent exposure. Balance versions within the same route and keep a voluntary retry separate.
+- Godot passed 952/952 tests on the implementation tree. The same three headless trial checks passed on #22 and this branch. All four pre-existing synthetic player files survived two simultaneous launches byte for byte. The nine existing contour-tool checks also passed.
+- The rejected 0.60 backplates remain withdrawn. The known guard-button and tactics-panel intersections still need human observation. Target-player sessions total zero. The native crash, cleanup warnings, long sessions, Windows, mobile, controller, listening, retention and market evidence remain open. Provisional quality remains 6–6.5/10.
+
+Next, use the two frozen entries with 6–8 uncoached participants when available. Record the first action and the participant's own explanation after play. Use recurring, observable confusion to select one presentation or encounter change.
+
+## Previous work — readable choices and reliable progress
 
 Continue `codex/guard-hud-contour` and [draft PR #23](https://github.com/QuantumPrediction/DoggyKnight/pull/23), based on merged #22. Source commit `c79919cdb39636c6b3a619f31caf9f909b89634e` has complete source tree `59bde2a97f460c125745ef96eddb3edb3de8e9a5`. Subsequent commits add validation and handoff only. Recheck the live head before continuing; do not merge without owner authorization.
 
