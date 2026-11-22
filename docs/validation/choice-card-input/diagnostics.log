@@ -1,0 +1,276 @@
+
+=== input-before.log | Four initial cases on the original production menus.
+SHA256 b4963f5a22c406f3560d530a424d20fc4aa3bb00e71ead88a0b77eff5e240895
+== 匯入資源 ==
+== 執行測試 ==
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/integration/test_choice_card_input.gd
+  FAIL    test_route_arrows_and_tab_stay_on_the_current_offer
+          - route opens on its first card: expected Object(Button,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 0),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"oversampling_with_scale":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"custom_minimum_size":Vector2(168, 92),"custom_maximum_size":Vector2(-1, -1),"propagate_maximum_size":false,"clip_contents":false,"layout_mode":0,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":-176.0,"offset_top":70.0,"offset_right":-8.0,"offset_bottom":162.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(84, 46),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"offset_transform_enabled":false,"offset_transform_position":Vector2(0, 0),"offset_transform_position_ratio":Vector2(0, 0),"offset_transform_scale":Vector2(1, 1),"offset_transform_rotation":0.0,"offset_transform_pivot":Vector2(0, 0),"offset_transform_pivot_ratio":Vector2(0.5, 0.5),"offset_transform_visual_only":true,"localize_numeral_system":true,"layout_direction":0,"translation_context":&"","tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"CardButton","disabled":false,"toggle_mode":false,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"text":"","icon":null,"flat":false,"alignment":1,"text_overrun_behavior":0,"autowrap_mode":0,"autowrap_trim_flags":128,"clip_text":false,"icon_alignment":0,"vertical_icon_alignment":1,"expand_icon":false,"text_direction":0,"language":"","script":null)
+, got Object(Button,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"oversampling_with_scale":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"custom_minimum_size":Vector2(0, 0),"custom_maximum_size":Vector2(-1, -1),"propagate_maximum_size":false,"clip_contents":false,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"offset_transform_enabled":false,"offset_transform_position":Vector2(0, 0),"offset_transform_position_ratio":Vector2(0, 0),"offset_transform_scale":Vector2(1, 1),"offset_transform_rotation":0.0,"offset_transform_pivot":Vector2(0, 0),"offset_transform_pivot_ratio":Vector2(0.5, 0.5),"offset_transform_visual_only":true,"localize_numeral_system":true,"layout_direction":0,"translation_context":&"","tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":false,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"text":"HUD","icon":null,"flat":false,"alignment":1,"text_overrun_behavior":0,"autowrap_mode":0,"autowrap_trim_flags":128,"clip_text":false,"icon_alignment":0,"vertical_icon_alignment":1,"expand_icon":false,"text_direction":0,"language":"","script":null)
+
+          - Down selects the second card during the entrance: expected Object(Button,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 0),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"oversampling_with_scale":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"custom_minimum_size":Vector2(168, 92),"custom_maximum_size":Vector2(-1, -1),"propagate_maximum_size":false,"clip_contents":false,"layout_mode":0,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":328.0,"offset_top":170.0,"offset_right":496.0,"offset_bottom":262.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(84, 46),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"offset_transform_enabled":false,"offset_transform_position":Vector2(0, 0),"offset_transform_position_ratio":Vector2(0, 0),"offset_transform_scale":Vector2(1, 1),"offset_transform_rotation":0.0,"offset_transform_pivot":Vector2(0, 0),"offset_transform_pivot_ratio":Vector2(0.5, 0.5),"offset_transform_visual_only":true,"localize_numeral_system":true,"layout_direction":0,"translation_context":&"","tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"CardButton","disabled":false,"toggle_mode":false,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"text":"","icon":null,"flat":false,"alignment":1,"text_overrun_behavior":0,"autowrap_mode":0,"autowrap_trim_flags":128,"clip_text":false,"icon_alignment":0,"vertical_icon_alignment":1,"expand_icon":false,"text_direction":0,"language":"","script":null)
+, got Object(Button,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"oversampling_with_scale":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"custom_minimum_size":Vector2(0, 0),"custom_maximum_size":Vector2(-1, -1),"propagate_maximum_size":false,"clip_contents":false,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"offset_transform_enabled":false,"offset_transform_position":Vector2(0, 0),"offset_transform_position_ratio":Vector2(0, 0),"offset_transform_scale":Vector2(1, 1),"offset_transform_rotation":0.0,"offset_transform_pivot":Vector2(0, 0),"offset_transform_pivot_ratio":Vector2(0.5, 0.5),"offset_transform_visual_only":true,"localize_numeral_system":true,"layout_direction":0,"translation_context":&"","tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":false,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"text":"HUD","icon":null,"flat":false,"alignment":1,"text_overrun_behavior":0,"autowrap_mode":0,"autowrap_trim_flags":128,"clip_text":false,"icon_alignment":0,"vertical_icon_alignment":1,"expand_icon":false,"text_direction":0,"language":"","script":null)
+
+          - horizontal navigation stays in this column: expected Object(Button,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 0),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"oversampling_with_scale":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"custom_minimum_size":Vector2(168, 92),"custom_maximum_size":Vector2(-1, -1),"propagate_maximum_size":false,"clip_contents":false,"layout_mode":0,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":328.0,"offset_top":170.0,"offset_right":496.0,"offset_bottom":262.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(84, 46),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"offset_transform_enabled":false,"offset_transform_position":Vector2(0, 0),"offset_transform_position_ratio":Vector2(0, 0),"offset_transform_scale":Vector2(1, 1),"offset_transform_rotation":0.0,"offset_transform_pivot":Vector2(0, 0),"offset_transform_pivot_ratio":Vector2(0.5, 0.5),"offset_transform_visual_only":true,"localize_numeral_system":true,"layout_direction":0,"translation_context":&"","tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"CardButton","disabled":false,"toggle_mode":false,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"text":"","icon":null,"flat":false,"alignment":1,"text_overrun_behavior":0,"autowrap_mode":0,"autowrap_trim_flags":128,"clip_text":false,"icon_alignment":0,"vertical_icon_alignment":1,"expand_icon":false,"text_direction":0,"language":"","script":null)
+, got Object(Button,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"oversampling_with_scale":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"custom_minimum_size":Vector2(0, 0),"custom_maximum_size":Vector2(-1, -1),"propagate_maximum_size":false,"clip_contents":false,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"offset_transform_enabled":false,"offset_transform_position":Vector2(0, 0),"offset_transform_position_ratio":Vector2(0, 0),"offset_transform_scale":Vector2(1, 1),"offset_transform_rotation":0.0,"offset_transform_pivot":Vector2(0, 0),"offset_transform_pivot_ratio":Vector2(0.5, 0.5),"offset_transform_visual_only":true,"localize_numeral_system":true,"layout_direction":0,"translation_context":&"","tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":false,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"text":"HUD","icon":null,"flat":false,"alignment":1,"text_overrun_behavior":0,"autowrap_mode":0,"autowrap_trim_flags":128,"clip_text":false,"icon_alignment":0,"vertical_icon_alignment":1,"expand_icon":false,"text_direction":0,"language":"","script":null)
+
+          - Tab wraps inside the offer: expected Object(Button,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 0),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"oversampling_with_scale":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"custom_minimum_size":Vector2(168, 92),"custom_maximum_size":Vector2(-1, -1),"propagate_maximum_size":false,"clip_contents":false,"layout_mode":0,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":-176.0,"offset_top":70.0,"offset_right":-8.0,"offset_bottom":162.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(84, 46),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"offset_transform_enabled":false,"offset_transform_position":Vector2(0, 0),"offset_transform_position_ratio":Vector2(0, 0),"offset_transform_scale":Vector2(1, 1),"offset_transform_rotation":0.0,"offset_transform_pivot":Vector2(0, 0),"offset_transform_pivot_ratio":Vector2(0.5, 0.5),"offset_transform_visual_only":true,"localize_numeral_system":true,"layout_direction":0,"translation_context":&"","tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"CardButton","disabled":false,"toggle_mode":false,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"text":"","icon":null,"flat":false,"alignment":1,"text_overrun_behavior":0,"autowrap_mode":0,"autowrap_trim_flags":128,"clip_text":false,"icon_alignment":0,"vertical_icon_alignment":1,"expand_icon":false,"text_direction":0,"language":"","script":null)
+, got Object(Button,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"oversampling_with_scale":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"custom_minimum_size":Vector2(0, 0),"custom_maximum_size":Vector2(-1, -1),"propagate_maximum_size":false,"clip_contents":false,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"offset_transform_enabled":false,"offset_transform_position":Vector2(0, 0),"offset_transform_position_ratio":Vector2(0, 0),"offset_transform_scale":Vector2(1, 1),"offset_transform_rotation":0.0,"offset_transform_pivot":Vector2(0, 0),"offset_transform_pivot_ratio":Vector2(0.5, 0.5),"offset_transform_visual_only":true,"localize_numeral_system":true,"layout_direction":0,"translation_context":&"","tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":false,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"text":"HUD","icon":null,"flat":false,"alignment":1,"text_overrun_behavior":0,"autowrap_mode":0,"autowrap_trim_flags":128,"clip_text":false,"icon_alignment":0,"vertical_icon_alignment":1,"expand_icon":false,"text_direction":0,"language":"","script":null)
+
+          - Shift+Tab wraps back: expected Object(Button,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 0),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"oversampling_with_scale":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"custom_minimum_size":Vector2(168, 92),"custom_maximum_size":Vector2(-1, -1),"propagate_maximum_size":false,"clip_contents":false,"layout_mode":0,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":328.0,"offset_top":170.0,"offset_right":496.0,"offset_bottom":262.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(84, 46),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"offset_transform_enabled":false,"offset_transform_position":Vector2(0, 0),"offset_transform_position_ratio":Vector2(0, 0),"offset_transform_scale":Vector2(1, 1),"offset_transform_rotation":0.0,"offset_transform_pivot":Vector2(0, 0),"offset_transform_pivot_ratio":Vector2(0.5, 0.5),"offset_transform_visual_only":true,"localize_numeral_system":true,"layout_direction":0,"translation_context":&"","tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"CardButton","disabled":false,"toggle_mode":false,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"text":"","icon":null,"flat":false,"alignment":1,"text_overrun_behavior":0,"autowrap_mode":0,"autowrap_trim_flags":128,"clip_text":false,"icon_alignment":0,"vertical_icon_alignment":1,"expand_icon":false,"text_direction":0,"language":"","script":null)
+, got Object(Button,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"oversampling_with_scale":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"custom_minimum_size":Vector2(0, 0),"custom_maximum_size":Vector2(-1, -1),"propagate_maximum_size":false,"clip_contents":false,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"offset_transform_enabled":false,"offset_transform_position":Vector2(0, 0),"offset_transform_position_ratio":Vector2(0, 0),"offset_transform_scale":Vector2(1, 1),"offset_transform_rotation":0.0,"offset_transform_pivot":Vector2(0, 0),"offset_transform_pivot_ratio":Vector2(0.5, 0.5),"offset_transform_visual_only":true,"localize_numeral_system":true,"layout_direction":0,"translation_context":&"","tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":false,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"text":"HUD","icon":null,"flat":false,"alignment":1,"text_overrun_behavior":0,"autowrap_mode":0,"autowrap_trim_flags":128,"clip_text":false,"icon_alignment":0,"vertical_icon_alignment":1,"expand_icon":false,"text_direction":0,"language":"","script":null)
+
+          - expected [[&"route_archer", 1]], got Array[Array]([])
+          - expected false
+  FAIL    test_upgrades_ignore_early_hold_echo_and_require_a_fresh_press
+          - Up wraps to the third upgrade: expected Object(Button,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"oversampling_with_scale":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"custom_minimum_size":Vector2(168, 54),"custom_maximum_size":Vector2(-1, -1),"propagate_maximum_size":false,"clip_contents":false,"layout_mode":0,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":76.0,"offset_top":203.0,"offset_right":244.0,"offset_bottom":257.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(84, 27),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"offset_transform_enabled":false,"offset_transform_position":Vector2(0, 0),"offset_transform_position_ratio":Vector2(0, 0),"offset_transform_scale":Vector2(1, 1),"offset_transform_rotation":0.0,"offset_transform_pivot":Vector2(0, 0),"offset_transform_pivot_ratio":Vector2(0.5, 0.5),"offset_transform_visual_only":true,"localize_numeral_system":true,"layout_direction":0,"translation_context":&"","tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"CardButton","disabled":false,"toggle_mode":false,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"text":"","icon":null,"flat":false,"alignment":1,"text_overrun_behavior":0,"autowrap_mode":0,"autowrap_trim_flags":128,"clip_text":false,"icon_alignment":0,"vertical_icon_alignment":1,"expand_icon":false,"text_direction":0,"language":"","script":null)
+, got Object(Button,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"oversampling_with_scale":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"custom_minimum_size":Vector2(0, 0),"custom_maximum_size":Vector2(-1, -1),"propagate_maximum_size":false,"clip_contents":false,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"offset_transform_enabled":false,"offset_transform_position":Vector2(0, 0),"offset_transform_position_ratio":Vector2(0, 0),"offset_transform_scale":Vector2(1, 1),"offset_transform_rotation":0.0,"offset_transform_pivot":Vector2(0, 0),"offset_transform_pivot_ratio":Vector2(0.5, 0.5),"offset_transform_visual_only":true,"localize_numeral_system":true,"layout_direction":0,"translation_context":&"","tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":false,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"text":"HUD","icon":null,"flat":false,"alignment":1,"text_overrun_behavior":0,"autowrap_mode":0,"autowrap_trim_flags":128,"clip_text":false,"icon_alignment":0,"vertical_icon_alignment":1,"expand_icon":false,"text_direction":0,"language":"","script":null)
+
+          - expected [[&"shake"]], got Array[Array]([])
+          - an echo and orphan release cannot choose the next offer: expected 1, got 0
+          - a single-card offer stays reachable: expected [[&"shake"], [&"sit"]], got Array[Array]([])
+          - expected false
+  ok      test_pressing_a_different_card_with_the_pointer_still_selects_it
+  FAIL    test_first_chapter_route_and_upgrade_resume_the_real_flow
+          - the second route changes the actual run: expected &"outrider", got &""
+          - expected true
+          - the fight resumes after a route choice: expected false
+
+4 tests, 3 failed, 0 broken files
+WARNING: 75 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 36 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 6 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+測試失敗。
+
+=== input-base-final.log | Intermediate importer saw changing source in the working checkout. Excluded as a baseline.
+SHA256 3ccc0012172dee6a59bcbbb72bacb777b66719ad9d909153fbb1fdafda76a66e
+== 匯入資源 ==
+== 執行測試 ==
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/integration/test_choice_card_input.gd
+  FAIL    test_route_arrows_and_tab_stay_on_the_current_offer
+          - expected [[&"route_archer", 1]], got Array[Array]([])
+          - expected false
+  ok      test_upgrades_ignore_early_hold_echo_and_require_a_fresh_press
+  ok      test_pressing_a_different_card_with_the_pointer_still_selects_it
+  ok      test_touch_can_select_the_third_upgrade_after_the_guard
+  ok      test_first_chapter_route_and_upgrade_resume_the_real_flow
+
+5 tests, 1 failed, 0 broken files
+WARNING: 69 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 33 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 6 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+測試失敗。
+
+=== input-candidate-1.log | Early candidate with the engine timer.
+SHA256 e5fe448c1ba24301e8049cba1ac3b712af0648edc8b36c09ae57f6b9bd7206f5
+== 匯入資源 ==
+== 執行測試 ==
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/integration/test_choice_card_input.gd
+  FAIL    test_route_arrows_and_tab_stay_on_the_current_offer
+          - expected [[&"route_archer", 1]], got Array[Array]([])
+          - expected false
+  ok      test_upgrades_ignore_early_hold_echo_and_require_a_fresh_press
+  ok      test_pressing_a_different_card_with_the_pointer_still_selects_it
+  ok      test_touch_can_select_the_third_upgrade_after_the_guard
+  FAIL    test_first_chapter_route_and_upgrade_resume_the_real_flow
+          - the second route changes the actual run: expected &"outrider", got &""
+          - expected true
+          - the fight resumes after a route choice: expected false
+
+5 tests, 2 failed, 0 broken files
+WARNING: 75 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 36 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 6 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+測試失敗。
+
+=== candidate-direct.log | Direct engine rerun with the engine timer.
+SHA256 b8cadfe34f433172fd702688c3f20a9347959ad340221583da617f44a08f4ea3
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/integration/test_choice_card_input.gd
+  ok      test_route_arrows_and_tab_stay_on_the_current_offer
+  ok      test_upgrades_ignore_early_hold_echo_and_require_a_fresh_press
+  FAIL    test_pressing_a_different_card_with_the_pointer_still_selects_it
+          - clicking away from the starting focus chooses that card: expected [[&"route_archer", 1]], got Array[Array]([])
+  ok      test_touch_can_select_the_third_upgrade_after_the_guard
+  FAIL    test_first_chapter_route_and_upgrade_resume_the_real_flow
+          - the second route changes the actual run: expected &"outrider", got &""
+          - expected true
+          - the fight resumes after a route choice: expected false
+
+5 tests, 2 failed, 0 broken files
+WARNING: 59 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 28 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 6 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+
+=== clock-probe.log | Wall clock measurements of the early test timer.
+SHA256 2fc81e2097934e2c1fa4e744863562e6ee2b600c25bb3f695a9cd62decef2af9
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/integration/test_choice_card_input.gd
+probe: waited_ms=103 focus=Card1 paused=true
+  FAIL    test_route_arrows_and_tab_stay_on_the_current_offer
+          - expected [[&"route_archer", 1]], got Array[Array]([])
+          - expected false
+probe: waited_ms=594 focus=Card_wag paused=true
+probe: waited_ms=615 focus=@Button@32 paused=true
+  ok      test_upgrades_ignore_early_hold_echo_and_require_a_fresh_press
+probe: waited_ms=579 focus=Card0 paused=true
+  ok      test_pressing_a_different_card_with_the_pointer_still_selects_it
+probe: waited_ms=611 focus=Card_wag paused=true
+  ok      test_touch_can_select_the_third_upgrade_after_the_guard
+probe: waited_ms=224 focus=Card0 paused=true
+  FAIL    test_first_chapter_route_and_upgrade_resume_the_real_flow
+          - the second route changes the actual run: expected &"outrider", got &""
+          - expected true
+          - the fight resumes after a route choice: expected false
+
+5 tests, 2 failed, 0 broken files
+WARNING: 59 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 28 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 6 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+
+=== input-map.log | Project input mappings reported by the engine.
+SHA256 e8f036574152e8c01aaa8851b4a086417e35b5fc674cbe1a992b6bf349192ab2
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ui_down => ["Down", "Joypad Button 12 (D-pad Down)", "Joypad Motion on Axis 1 (Left Stick Y-Axis, Joystick 0 Y-Axis) with Value 1.00"]
+ui_up => ["Up", "Joypad Button 11 (D-pad Up)", "Joypad Motion on Axis 1 (Left Stick Y-Axis, Joystick 0 Y-Axis) with Value -1.00"]
+ui_focus_next => ["Tab"]
+ui_accept => ["Enter", "Kp Enter", "Space"]
+Joypad Button 12 (D-pad Down) device=0 down=true accept=false
+Joypad Button 0 (Bottom Action, Sony Cross, Xbox A, Nintendo B) device=0 down=false accept=false
+
+=== candidate-clock-fixed.log | Monotonic timer; before local gamepad confirm was added.
+SHA256 a9bfb4c5e7814b144d5ac4064a38db2c7f5a391d09d0cb5e10b302af11037ce8
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/integration/test_choice_card_input.gd
+  ok      test_route_arrows_and_tab_stay_on_the_current_offer
+  ok      test_upgrades_ignore_early_hold_echo_and_require_a_fresh_press
+  ok      test_pressing_a_different_card_with_the_pointer_still_selects_it
+  ok      test_touch_can_select_the_third_upgrade_after_the_guard
+  FAIL    test_dpad_and_south_button_use_the_same_native_card_focus
+          - synthetic D-pad Down and south-button select the second card: expected [[&"route_archer", 1]], got Array[Array]([])
+  ok      test_focus_ring_is_visible_against_all_four_paper_styles
+  ok      test_first_chapter_route_and_upgrade_resume_the_real_flow
+
+7 tests, 1 failed, 0 broken files
+WARNING: 71 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 34 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 6 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+
+=== frozen-before.log | Original production in its own separate checkout, before the final Space assertion.
+SHA256 fabc2080d984ab3a29e4b2729be13f22b34f9680946c5583ec868f78d5803b42
+== 匯入資源 ==
+== 執行測試 ==
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/integration/test_choice_card_input.gd
+  FAIL    test_route_arrows_and_tab_stay_on_the_current_offer
+          - route opens on its first card: expected true
+          - Down selects the second card during the entrance: expected true
+          - horizontal navigation stays in this column: expected true
+          - Tab wraps inside the offer: expected true
+          - Shift+Tab wraps back: expected true
+          - expected [[&"route_archer", 1]], got Array[Array]([])
+          - expected false
+          - the underlying HUD must receive no activation: expected 0, got 2
+  FAIL    test_upgrades_ignore_early_hold_echo_and_require_a_fresh_press
+          - Up wraps to the third upgrade: expected true
+          - expected [[&"shake"]], got Array[Array]([])
+          - an echo and orphan release cannot choose the next offer: expected 1, got 0
+          - a single-card offer stays reachable: expected [[&"shake"], [&"sit"]], got Array[Array]([])
+          - expected false
+  ok      test_pressing_a_different_card_with_the_pointer_still_selects_it
+  ok      test_touch_can_select_the_third_upgrade_after_the_guard
+  FAIL    test_dpad_and_south_button_use_the_same_native_card_focus
+          - synthetic D-pad Down and south-button select the second card: expected [[&"route_archer", 1]], got Array[Array]([])
+  FAIL    test_focus_ring_is_visible_against_all_four_paper_styles
+          - CardButton has a two-pixel focus edge: expected true
+          - CardButton/normal focus contrast: expected true
+          - CardButton/hover focus contrast: expected true
+          - CardButton/pressed focus contrast: expected true
+          - CardMerlin has a two-pixel focus edge: expected true
+          - CardMerlin/normal focus contrast: expected true
+          - CardMerlin/hover focus contrast: expected true
+          - CardMerlin/pressed focus contrast: expected true
+          - CardMorgana has a two-pixel focus edge: expected true
+          - CardMorgana/normal focus contrast: expected true
+          - CardMorgana/hover focus contrast: expected true
+          - CardMorgana/pressed focus contrast: expected true
+          - CardEvolve has a two-pixel focus edge: expected true
+          - CardEvolve/normal focus contrast: expected true
+          - CardEvolve/hover focus contrast: expected true
+          - CardEvolve/pressed focus contrast: expected true
+  FAIL    test_first_chapter_route_and_upgrade_resume_the_real_flow
+          - the second route changes the actual run: expected &"outrider", got &""
+          - expected true
+          - the fight resumes after a route choice: expected false
+
+7 tests, 5 failed, 0 broken files
+WARNING: 59 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 28 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 6 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+測試失敗。
+
+=== candidate-pad.log | First green candidate, before the final Space assertion.
+SHA256 e4fbdea940ccb464e5064cbb2488262425e98f2f8aaf3e23368ed9f86fae918a
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/integration/test_choice_card_input.gd
+  ok      test_route_arrows_and_tab_stay_on_the_current_offer
+  ok      test_upgrades_ignore_early_hold_echo_and_require_a_fresh_press
+  ok      test_pressing_a_different_card_with_the_pointer_still_selects_it
+  ok      test_touch_can_select_the_third_upgrade_after_the_guard
+  ok      test_dpad_and_south_button_use_the_same_native_card_focus
+  ok      test_focus_ring_is_visible_against_all_four_paper_styles
+  ok      test_first_chapter_route_and_upgrade_resume_the_real_flow
+
+7 tests, 0 failed, 0 broken files
+WARNING: 67 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 32 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: 6 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+
+=== xorg-start.log | Local Xorg startup attempt; no captured image.
+SHA256 de5e0001ee73246e024d82bea0a832bb3b2fef01b13c3bfd135c263363c3b86b
+Original Xorg output as a JSON string (including final spaces):
+"_XSERVTransSocketOpenCOTSServer: Unable to open socket for local\n_XSERVTransOpen: transport open failed for local/5b2ddf5858e4:94\n_XSERVTransMakeAllCOTSServerListeners: failed to open listener for local\n_XSERVTransSocketOpenCOTSServer: Unable to open socket for unix\n_XSERVTransOpen: transport open failed for unix/5b2ddf5858e4:94\n_XSERVTransMakeAllCOTSServerListeners: failed to open listener for unix\n(EE) \nFatal server error:\n(EE) Cannot establish any listening sockets - Make sure an X server isn't already running(EE) \n(EE) \nPlease consult the The X.Org Foundation support \n\t at http://wiki.x.org\n for help. \n(EE) Please also check the log file at \"../dev-evidence/xorg.log\" for additional information.\n(EE) \n(EE) Server terminated with error (1). Closing log file.\n"

@@ -1,4 +1,17 @@
-# 整合進度　首章兩條弓手路線的無提示試玩
+# 整合進度　首章鍵盤選牌與恢復戰鬥
+
+2026-11-23（香港）。[草稿 #25](https://github.com/QuantumPrediction/DoggyKnight/pull/25) 分支 `codex/keyboard-choice-cards` 基於 [草稿 #24](https://github.com/QuantumPrediction/DoggyKnight/pull/24) 的 `8859306a2c29769b02c36101d2b6104f4e91358c`。公開實作 `9b9e02e37e795fd8e8839e303484e8f604643307` 與本地受測提交共用 tree `71cd5438cc9ba363a1d99cf50ad696689fe045a2`。
+
+| 項目 | 本輪結果 |
+| --- | --- |
+| 卡關 | #24 的路線及升級卡不能取得焦點。方向鍵／Enter 選不到遊騎，正式戰鬥繼續暫停。另一個對照中底下按鈕被啟動兩次 |
+| 操作 | 首張卡取得焦點，在本批以方向鍵或 Tab 循環，Enter／空白鍵確認。手把南側面鍵沿用卡片的確認處理。按住或自動重複會保留選擇機會，指標仍可直接點其他卡 |
+| 驗證 | 同一測試檔在原版 7 項有 5 項失敗，本輪 7/7，全套 959/959。正式弓手流程取得遊騎、打滾、指定升級並恢復戰鬥，空白鍵沒有誤放必殺技。兩條種子 19 戰報及兩份存檔逐位元組吻合，仍各三次倒下 |
+| 尚待驗收 | 本輪沒有原生畫面，觸控與手把使用引擎事件。目標玩家 0 人，暫評 6–6.5/10。退出資源警告、原生崩潰、實機、聆聽、長局與市場驗證仍在追蹤 |
+
+接續時從新存檔用 Windows 鍵盤／手把走完標題、選角、路線、首次升級與恢復戰鬥，另在手機核對第一次點選。實機尚未到位時，可先讓正式 GUI 收到同一路徑的輸入，記錄第一個必須改用滑鼠的地方。原有 6–8 人無提示試玩可獨立進行。[修正前後、完整輸出與重跑](../validation/choice-card-input/README.md) · [兩條路線試玩入口](../validation/scene-lifetime/archer-trial.md)
+
+## 前輪　首章兩條弓手路線的無提示試玩
 
 2026-11-22（香港）。[草稿 #24](https://github.com/QuantumPrediction/DoggyKnight/pull/24) 分支 `codex/archer-guard-trial-pair` 接續 [草稿 #23](https://github.com/QuantumPrediction/DoggyKnight/pull/23) 的 `a6595b21a970c1f7b7586cb7d8e7e461863b7959`。公開實作 `9b67f1b365e98031bc96bc042e7875ae8b59f6f8` 與本地受測來源同 tree `7d088aebe14c1cd3bfe79296e4f5a563f14ebf20`。
 
