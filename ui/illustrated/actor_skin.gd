@@ -1,16 +1,16 @@
 extends Node2D
-## Render authored high-resolution poses over the existing timing/physics rig.
-## The original SpriteFrames still control animation_finished, durations and hitboxes.
+## Original SpriteFrames still own the timing, completion signal and combat dimensions.
 var actor_code: String = ""
 var sprite: AnimatedSprite2D
-var _last_key: String = ""
 var _tex: Texture2D
-var _size: Vector2
+var _rect: Rect2
 
 func _ready() -> void:
 	sprite = get_parent() as AnimatedSprite2D
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	use_parent_material = true
+	if actor_code == "goldie":
+		StoryArt.prepare_combat_paint(HeroClasses.valid_id(GameState.hero_class))
 	_update()
 
 func _process(_delta: float) -> void:
@@ -25,32 +25,40 @@ func _update() -> void:
 	var original := sprite.sprite_frames.get_frame_texture(sprite.animation, mini(sprite.frame, count - 1))
 	if original == null:
 		return
-	_size = original.get_size()
-	var code := actor_code
-	var anim: StringName = &"rest" if actor_code == "camp_goldie" and sprite.animation != &"happy" else sprite.animation
-	var pose := StoryArt.pose(code, anim, sprite.frame)
-	if actor_code == "camp_goldie":
-		pose = 3 if sprite.animation == &"happy" else (1 if sprite.animation == &"blink" else 0)
-	if code in ["goldie", "camp_goldie"] and GameState.hero_class != &"knight":
-		pose = StoryArt.pose("goldie", anim, sprite.frame)
-		_tex = StoryArt.hero(GameState.hero_class, pose)
-	else:
-		_tex = StoryArt.actor(code, pose)
-	if _tex == null:
-		return
-	sprite.self_modulate.a = 0.0
-	scale = Vector2(-1 if sprite.flip_h else 1, -1 if sprite.flip_v else 1)
-	var key := "%s/%d/%s/%s" % [String(anim) + String(GameState.hero_class), pose, sprite.centered, sprite.offset]
-	if key != _last_key:
-		_last_key = key
+	var texture := _drawing(count)
+	var size := original.get_size()
+	var at := sprite.offset - (size * 0.5 if sprite.centered else Vector2.ZERO)
+	size.y -= float(sprite.sprite_frames.get_meta(&"foot_lift", 0))
+	var rect := Rect2(at, size)
+	if actor_code == "goldie" and texture != null and texture.get_size() == StoryArt.HERO_TILE:
+		var units_per_pixel := size.y / StoryArt.HERO_TILE.y
+		rect.position.x += size.x * 0.5 - StoryArt.HERO_HIP_X * units_per_pixel
+		rect.size.x = StoryArt.HERO_TILE.x * units_per_pixel
+	var breath := 1.0
+	if actor_code == "goldie" and sprite.animation in [&"idle", &"sleep"]:
+		breath += 0.012 * sin(TAU * (sprite.frame + sprite.frame_progress) / count)
+	scale = Vector2(-1.0 if sprite.flip_h else 1.0, -breath if sprite.flip_v else breath)
+	# Anchor the idle breath at the painted soles rather than bobbing the entire body.
+	position.y = (at.y + size.y * StoryArt.HERO_SOLE_Y / StoryArt.HERO_TILE.y) * (1.0 - breath) * (-1.0 if sprite.flip_v else 1.0)
+	sprite.self_modulate.a = 0.0 if texture != null else 1.0
+	if texture != _tex or rect != _rect:
+		_tex = texture
+		_rect = rect
 		queue_redraw()
 
+func _drawing(count: int) -> Texture2D:
+	if actor_code == "goldie":
+		return StoryArt.hero_motion(HeroClasses.valid_id(GameState.hero_class), sprite, count)
+	if actor_code == "camp_goldie":
+		if GameState.hero_class != &"knight":
+			var anim: StringName = &"happy" if sprite.animation == &"happy" else &"rest"
+			return StoryArt.hero(GameState.hero_class, StoryArt.pose("goldie", anim, sprite.frame))
+		var pose := 3 if sprite.animation == &"happy" else (1 if sprite.animation == &"blink" else 0)
+		return StoryArt.actor(actor_code, pose)
+	if sprite is OneShotFx and (sprite as OneShotFx).player_ink:
+		return StoryArt.action_effect(0 if actor_code == "fx:slash" else 2, sprite.frame)
+	return StoryArt.actor(actor_code, StoryArt.pose(actor_code, sprite.animation, sprite.frame))
+
 func _draw() -> void:
-	if _tex == null or sprite == null:
-		return
-	var at := sprite.offset - (_size * 0.5 if sprite.centered else Vector2.ZERO)
-	var lift := float(sprite.sprite_frames.get_meta(&"foot_lift", 0))
-	var height := _size.y - lift
-	var dest := Rect2(at, Vector2(_size.x, height))
-	# Keep the feet on the original shadow row, including lifted boss sprites.
-	draw_texture_rect(_tex, dest, false)
+	if _tex != null:
+		draw_texture_rect(_tex, _rect, false)

@@ -14,6 +14,8 @@ var damage: int = 0
 var hits: int = 0
 var hit_ids: Array[int] = []
 var _tex: Texture2D
+var _flight_frames: Array[Texture2D] = []
+var _paint_distance: float = 0.0
 
 static func launch(host: GoldiePlayer, dir: Vector2, mult: float = 1.0, is_ultimate: bool = false) -> HeroProjectile:
 	var existing := host.get_tree().get_nodes_in_group(&"hero_projectile")
@@ -35,7 +37,12 @@ static func launch(host: GoldiePlayer, dir: Vector2, mult: float = 1.0, is_ultim
 func _ready() -> void:
 	add_to_group(&"hero_projectile")
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	_tex = StoryArt.actor("fx:magic_orb" if loadout.id == &"mage" else "fx:arrow")
+	if loadout.id == &"mage":
+		for frame in 4:
+			_flight_frames.append(StoryArt.action_effect(1, frame))
+		_tex = _flight_frames[0]
+	else:
+		_tex = StoryArt.object_icon("hero_arrow")
 	rotation = direction.angle()
 	z_index = 2
 
@@ -77,6 +84,12 @@ func _physics_process(delta: float) -> void:
 			return
 	global_position = to
 	remaining -= distance
+	if not _flight_frames.is_empty():
+		_paint_distance += distance
+		var drawing := _flight_frames[floori(_paint_distance / 4.0) % _flight_frames.size()]
+		if _tex != drawing:
+			_tex = drawing
+			queue_redraw()
 	if remaining <= 0.0 or not Layout.ARENA_RECT.grow(12).has_point(global_position):
 		queue_free()
 
@@ -93,5 +106,7 @@ func _hit(host: GoldiePlayer, enemy: Node2D, amount: int) -> void:
 func _draw() -> void:
 	if _tex == null:
 		return
-	var dim := Vector2(14, 10) if loadout.id == &"mage" else Vector2(16, 7)
-	draw_texture_rect(_tex, Rect2(-dim * 0.5, dim), false)
+	# Register the spell core and the arrow tip at the position used by swept collision.
+	var dim := Vector2(14, 14) if loadout.id == &"mage" else Vector2(16, 16)
+	var pivot := Vector2(0.74, 0.5) if loadout.id == &"mage" else Vector2(0.96, 0.5)
+	draw_texture_rect(_tex, Rect2(-dim * pivot, dim), false)

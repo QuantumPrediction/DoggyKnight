@@ -85,7 +85,7 @@ func _ready() -> void:
 func select(id: StringName) -> void:
 	selected = HeroClasses.valid_id(id)
 	var data := HeroClasses.get_data(selected)
-	_portrait.texture = StoryArt.hero(selected)
+	_portrait.texture = StoryArt.motion_pose(selected, 0)
 	_description.text = tr(data.description)
 	_tactic.text = tr(data.tactic)
 	_ultimate.text = tr("UI_CLASS_ULTIMATE") % tr(data.ultimate_name)

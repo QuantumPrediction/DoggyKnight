@@ -61,8 +61,8 @@ func _update() -> void:
 				_kind = "ultimate"
 				_tex = StoryArt.ui_icon("ultimate")
 			elif _code == "cutin_goldie":
-				_kind = "image"
-				_tex = StoryArt.hero(GameState.hero_class, 4)
+				_kind = "cutin"
+				_tex = StoryArt.motion_pose(GameState.hero_class, 5)
 			elif _code in ["logo", "logo_2x"]:
 				_kind = "logo"
 			elif _code in ["dialogue_panel", "panel", "page_frame", "portrait_frame", "name_plate", "hud_plate", "panel_dark", "ribbon", "ribbon_gold"]:
@@ -87,6 +87,11 @@ func _draw() -> void:
 		"image":
 			if _tex != null:
 				draw_texture_rect(_tex, rect, false)
+		"cutin":
+			if _tex != null:
+				var source := _tex.get_size()
+				var fitted := source * minf(rect.size.x / source.x, rect.size.y / source.y)
+				draw_texture_rect(_tex, Rect2(rect.get_center() - fitted * 0.5, fitted), false)
 		"cover":
 			if _tex != null:
 				draw_texture_rect(_tex, rect, false)

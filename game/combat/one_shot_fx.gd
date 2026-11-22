@@ -7,6 +7,7 @@ extends AnimatedSprite2D
 
 const GROUP: StringName = &"combat_fx"
 
+var player_ink: bool = false
 var lifetime: float = 1.0
 var drift: Vector2 = Vector2.ZERO        ## 每秒移動(例如向上飄的魔法煙)
 var fade_out: bool = false               ## 最後 40% 的時間逐漸透明
