@@ -1,7 +1,8 @@
 name: Verify hero motion on the recovery branch
 on:
-  push:
-    branches: ['codex/storybook-combat-motion']
+  pull_request:
+    branches: ['codex/keyboard-choice-cards']
+    types: [opened, synchronize, reopened]
     paths:
       - '.github/workflows/verify-hero-motion.yml'
       - 'assets/illustrated/motion/**'
@@ -13,7 +14,9 @@ permissions:
   contents: read
 jobs:
   verify:
-    if: github.repository == 'QuantumPrediction/DoggyKnight' && github.event.repository.private == false
+    if: github.repository == 'QuantumPrediction/DoggyKnight' && github.event.repository.private == false && github.head_ref == 'codex/storybook-combat-motion'
+    env:
+      TEST_SOURCE: ${{ github.event.pull_request.head.sha }}
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     steps:
@@ -21,9 +24,9 @@ jobs:
         run: |
           set -eu
           git init -q .
-          git fetch -q --depth=1 https://github.com/QuantumPrediction/DoggyKnight.git "$GITHUB_SHA"
+          git fetch -q --depth=1 https://github.com/QuantumPrediction/DoggyKnight.git "$TEST_SOURCE"
           git checkout -q --detach FETCH_HEAD
-          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git rev-parse HEAD)" = "$TEST_SOURCE"
       - name: Install the project's official Godot build
         run: |
           set -eu
