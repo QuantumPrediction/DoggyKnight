@@ -9,11 +9,15 @@ var _samples: Array[Dictionary] = []
 var _images: Array[Image] = []
 var _capture_error: String
 var _lesson_completions: int = 0
+var _without_selected_ink := false
+var _muted_mark: AttackTelegraph
 
 
 func _ready() -> void:
 	for arg: String in OS.get_cmdline_user_args():
-		if arg.begins_with("--capture-dir="):
+		if arg == "--without-selected-ink":
+			_without_selected_ink = true
+		elif arg.begins_with("--capture-dir="):
 			_capture_dir = arg.trim_prefix("--capture-dir=")
 		elif arg.begins_with("--capture-id="):
 			_capture_id = arg.trim_prefix("--capture-id=")
@@ -27,6 +31,8 @@ func _ready() -> void:
 		push_error("Capture needs a real display, registered tick range and fresh output directory.")
 		get_tree().quit(2)
 		return
+	if _without_selected_ink:
+		RenderingServer.frame_pre_draw.connect(_mute_selected_draw)
 	RenderingServer.frame_post_draw.connect(_capture_drawn_frame)
 	EventBus.guard_lesson_completed.connect(_note_lesson_completion)
 	super()
@@ -36,7 +42,22 @@ func _note_lesson_completion() -> void:
 	_lesson_completions += 1
 
 
+# RenderingServer only. Node visibility is also read by the production hit and HUD logic.
+func _mute_selected_draw() -> void:
+	if _level_epoch < 0 or not _in_trial() or _tick() < _first_tick or _tick() > _last_tick:
+		return
+	if _live.has(_capture_id):
+		var mark := _live[_capture_id].mark.get_ref() as AttackTelegraph
+		if mark != null and mark.is_visible_damage_warning():
+			_muted_mark = mark
+			RenderingServer.canvas_item_set_visible(mark.get_canvas_item(), false)
+
+
 func _capture_drawn_frame() -> void:
+	var muted := is_instance_valid(_muted_mark)
+	if muted:
+		RenderingServer.canvas_item_set_visible(_muted_mark.get_canvas_item(), _muted_mark.is_visible_in_tree())
+		_muted_mark = null
 	if _level_epoch < 0 or not _in_trial():
 		return
 	var tick := _tick()
@@ -75,7 +96,7 @@ func _capture_drawn_frame() -> void:
 		return
 	_samples.append({"tick": tick, "process_frame": Engine.get_process_frames(),
 		"file": "tick_%05d_draw_%03d.png" % [tick, _samples.size()], "image_size": [image.get_width(), image.get_height()],
-		"warning_eligible": eligible, "progress": progress, "selected_sector_px": own, "nearby_sectors_px": other,
+		"selected_ink_muted": muted, "warning_eligible": eligible, "progress": progress, "selected_sector_px": own, "nearby_sectors_px": other,
 		"player_px": _point(to_pixels * player.get_global_transform_with_canvas().origin),
 		"player_world": _point(player.global_position), "production_overlap": AttackTelegraph.warning_counts(
 			get_tree(), player.global_position, player.tuning.body_radius).x, "coach_hud": hud})
@@ -98,10 +119,23 @@ func _hud_state(to_pixels: Transform2D) -> Dictionary:
 		"lesson_completed": coach.completed, "persisted_completion_flag": GameState.guard_lesson_done,
 		"lesson_completion_signals": _lesson_completions,
 		"coach_px": _screen_rect(coach, to_pixels), "coach_close_active": coach.dismiss_button.is_visible_in_tree(),
+		"foreground": {"guard_state": guard.state, "guard_disabled": guard.button.disabled,
+			"guard_tint": guard.button.modulate.to_html(), "icon_path": guard.button.icon.resource_path,
+			"guard_label": guard.status_label.text, "charge_label": guard.charge_label.text,
+			"charge_visible": guard.charge_label.is_visible_in_tree(), "action": readout.action.text,
+			"detail": readout.detail.text, "dodge": readout.dodge.text, "meter": readout.meter,
+			"accent": readout.accent.to_html(), "action_ink": readout.action.get_theme_color(&"font_color").to_html(),
+			"safe_px": _rect_points(UiKit.safe_rect(), to_pixels),
+			"guard_blocks_touch": guard.button.is_in_group(&"ui_touch_blocker"),
+			"guard_mouse_filter": guard.button.mouse_filter, "readout_mouse_filter": readout.mouse_filter},
 		"guard_button_px": _screen_rect(guard.button, to_pixels), "guard_button_visible": guard.button.is_visible_in_tree(),
 		"ultimate_button_px": _screen_rect(ultimate, to_pixels), "ultimate_button_visible": ultimate.is_visible_in_tree(),
 		"pause_button_px": _screen_rect(pause, to_pixels), "readout_px": _screen_rect(readout, to_pixels),
 		"readout_warning": readout.warning_active}
+
+
+func _rect_points(rect: Rect2, tr: Transform2D) -> Array:
+	return [_point(tr * rect.position), _point(tr * rect.end)]
 
 
 func _screen_rect(control: Control, to_pixels: Transform2D) -> Array:
