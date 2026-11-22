@@ -1,0 +1,62 @@
+name: Verify hero motion on the recovery branch
+on:
+  push:
+    branches: ['codex/storybook-combat-motion']
+    paths:
+      - '.github/workflows/verify-hero-motion.yml'
+      - 'assets/illustrated/motion/**'
+      - 'game/**'
+      - 'ui/**'
+      - 'tests/integration/test_storybook_motion.gd'
+      - 'tools/capture_hero_motion.gd'
+permissions:
+  contents: read
+jobs:
+  verify:
+    if: github.repository == 'QuantumPrediction/DoggyKnight' && github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Check out the exact public revision
+        run: |
+          set -eu
+          git init -q .
+          git fetch -q --depth=1 https://github.com/QuantumPrediction/DoggyKnight.git "$GITHUB_SHA"
+          git checkout -q --detach FETCH_HEAD
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Install the project's official Godot build
+        run: |
+          set -eu
+          stem=Godot_v4.7.2-stable_linux.x86_64
+          release=https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable
+          curl -fsSL --retry 3 "$release/$stem.zip" -o "$RUNNER_TEMP/godot.zip"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP"
+          mv "$RUNNER_TEMP/$stem" "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot"
+          "$RUNNER_TEMP/godot" --version | grep -F '4.7.2.stable.official.ed1daf0bf'
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      - name: Exercise the three roles and the full game
+        env:
+          TEST_TIMEOUT: 900
+        run: |
+          set -euo pipefail
+          bash tools/run_tests.sh storybook_motion
+          bash tools/run_tests.sh
+      - name: Match all 480 physical event rows and both cautious failures
+        run: |
+          set -euo pipefail
+          records="$RUNNER_TEMP/records"
+          mkdir -p "$records"
+          XDG_DATA_HOME="$RUNNER_TEMP/capture-profile" MOTION_CAPTURE_DIR="$records" godot --headless --path . --fixed-fps 60 --max-fps 0 --script res://tools/capture_hero_motion.gd
+          echo "6eceb2822e1e18d6884e6e8e5bb6789d608e402f80e05e4ffaabd853454d408d  $records/events.tsv" | sha256sum --check
+          for route in 0 1; do
+            account="$RUNNER_TEMP/seed19-$route"
+            mkdir -p "$account"
+            status=0
+            XDG_DATA_HOME="$account" godot --headless --path . --fixed-fps 60 --max-fps 0 --disable-render-loop res://tests/integration/archer_entry_capture.tscn -- --speed=1 --chapter=1 --class=archer --route="$route" --build=route --seed=19 --gear=common1 --element=earth --policy=cautious --guard=reactive --max-downs=3 --max-sim-seconds=1200 --report="$RUNNER_TEMP/route-$route.json" || status=$?
+            test "$status" = 1
+            cmp "$RUNNER_TEMP/route-$route.json" "docs/validation/r03a/anchors/archer_route${route}_s19_cautious.json"
+            save=archer_1_4_checkpoint.json
+            if test "$route" = 1; then save=archer_1_4_outrider_checkpoint.json; fi
+            cmp "$account/godot/app_userdata/金毛騎士/archer_1_4_entry.json" "tests/fixtures/$save"
+          done
