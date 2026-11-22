@@ -137,3 +137,7 @@ D 線 M3(2026-11-16):營地新增的金毛像素圖(`game/camp/art/`,由 `game/c
 ## 0.8.0 護陣學習圖示（2026-11-20）
 
 `assets/illustrated/combat/guard_lesson_atlas.png` 由內建 GPT Image 為本專案生成：閃避犬掌、護陣盾牌、反擊短劍。原始 RGBA 圖未修改，以 Godot AtlasTexture 裁框顯示於正式提示 UI。提示詞、三個範圍、尺寸與 SHA-256 記錄於同目錄 `GUARD_LESSON_MANIFEST.json`。無第三方遊戲角色或素材。中文字型加入新提示字元，沿用 Noto OFL。
+
+### 三職業戰鬥動作與工坊物件
+
+騎士、法師、弓手動作、眨眼／歡呼／休息、友方劍光／法術／命中和武器／寶物共六張透明原圖，使用 OpenAI GPT Image 為本專案製作。角色沿用專案原有金毛繪本設定。遊戲使用帶透明邊距與共同腳底位置的圖集。原稿、實際提示、來源指紋與遊戲用檔各自列於[素材紀錄](validation/hero-motion/art.json)。
