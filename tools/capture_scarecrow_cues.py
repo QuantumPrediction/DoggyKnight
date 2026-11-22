@@ -16,6 +16,8 @@ import probe_scarecrow_windows as probe
 
 SCENE = "res://tests/integration/scarecrow_cue_capture.tscn"
 BASE = "d81716df4c7d81fd49d368c6d42262fddc6adf93"
+HUD_BASE = "d9188279e0b4720dd35b7b7532f42a9dbb6f4b8e"
+PRODUCTION = ("assets", "core", "game", "data", "ui", "i18n", "platform", "store", "project.godot")
 ARCHIVE = probe.ROOT / "docs/validation/scarecrow-window"
 PAIRS = {
     "marksman": ((0, "cautious"), "20980.1", 4961, 4990, 4992),
@@ -47,6 +49,22 @@ def source_fingerprint():
     return whole.hexdigest(), per_file
 
 
+def hud_comparison_inputs(files):
+    # Old checkouts can still run the original capture without the newer comparison.
+    base_known = subprocess.run(["git", "cat-file", "-e", HUD_BASE], cwd=probe.ROOT,
+                                stderr=subprocess.DEVNULL).returncode == 0
+    if not base_known:
+        return None
+    changed = git("diff", "--name-only", "-z", HUD_BASE, "--", *PRODUCTION)
+    added = git("ls-files", "--others", "--exclude-standard", "-z", "--", *PRODUCTION)
+    observer = hashlib.sha256()
+    for path, digest in sorted(files.items()):
+        if not path.startswith(tuple(p + "/" for p in PRODUCTION)) and path not in PRODUCTION:
+            observer.update(os.fsencode(path) + b"\0" + digest)
+    return {"base": HUD_BASE, "production_paths_changed": sorted(os.fsdecode(p) for p in
+            set((changed + added).split(b"\0")) if p), "observer_sha256": observer.hexdigest()}
+
+
 def png_size(path):
     with path.open("rb") as file:
         header = file.read(24)
@@ -61,7 +79,7 @@ def engine(argv, log, env):
                               stderr=subprocess.STDOUT, timeout=900).returncode
 
 
-def take(name, out, env, display):
+def take(name, out, env, display, without_selected_ink=False):
     case, target, start, entry, impact = PAIRS[name]
     label = probe.name(case)
     dest = out / name
@@ -82,6 +100,8 @@ def take(name, out, env, display):
     cli[cli.index("--path") + 1] = str(probe.ROOT)
     cli += [f"--capture-dir={dest}", f"--capture-id={target}",
             f"--capture-first={start-2}", f"--capture-last={impact+1}"]
+    if without_selected_ink:
+        cli.append("--without-selected-ink")
     print(f"{name}: starting native replay for {target}, physics ticks {start-2} to {impact+1}", flush=True)
     with tempfile.TemporaryDirectory(prefix="doggy-cue-save-") as save:
         code = engine(cli, dest / "godot.log", dict(env, XDG_DATA_HOME=save))
@@ -137,6 +157,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, required=True, help="new output directory")
     parser.add_argument("--case", choices=("both", *PAIRS), default="both")
+    parser.add_argument("--without-selected-ink", action="store_true",
+                        help="diagnostic draw with only the selected warning canvas item muted")
     opts = parser.parse_args()
     display = "x11" if os.environ.get("DISPLAY") else ("wayland" if os.environ.get("WAYLAND_DISPLAY") else None)
     if display is None:
@@ -158,7 +180,7 @@ def main():
             raise SystemExit("Godot import contained a script error; see import.log")
         result = []
         for name in PAIRS if opts.case == "both" else (opts.case,):
-            row = take(name, out, env, display)
+            row = take(name, out, env, display, opts.without_selected_ink)
             result.append(row)
             after, after_files = source_fingerprint()
             changed = sorted(path for path in before_files.keys() | after_files.keys()
@@ -168,6 +190,8 @@ def main():
                   flush=True)
             probe.write_json(out / "validation.json", {
                 "registered_base": BASE, "checkout_head": head, "engine": version,
+                "without_selected_ink": opts.without_selected_ink,
+                "hud_comparison_inputs": hud_comparison_inputs(after_files),
                 "source_sha256": before, "source_sha256_after": after,
                 "source_fingerprint_schema": "git-index-paths-plus-capture-v1: sorted path + NUL + binary SHA256",
                 "source_file_count": len(before_files), "changed_source_paths": changed,

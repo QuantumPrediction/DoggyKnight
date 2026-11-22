@@ -1,8 +1,20 @@
 # Golden Knight — current project state
 
-Updated: 2026-11-21 (Hong Kong). Version: **0.9.1 development source**.
+Updated: 2026-11-22 (Hong Kong). Version: **0.9.1 development source**.
 
-## Current work — chapter 1-4 guard-success card
+## Current work — readable choices and reliable progress
+
+Continue `codex/guard-hud-contour` and [draft PR #23](https://github.com/QuantumPrediction/DoggyKnight/pull/23), based on merged #22. Source commit `c79919cdb39636c6b3a619f31caf9f909b89634e` has complete source tree `59bde2a97f460c125745ef96eddb3edb3de8e9a5`. Subsequent commits add validation and handoff only. Recheck the live head before continuing; do not merge without owner authorization.
+
+- Story and route cards now keep small icons within their slots, measure titles with the correct CJK font, separate titles from effect descriptions, use dark ink on parchment and wrap numbers sensibly. All eight actual story events, three class routes and three encounters are covered.
+- Save replacement fallback keeps a complete backup before deleting the primary. Failed promotion or restoration can recover the committed checkpoint; uncommitted temporary data is not promoted. Desktop pause focuses Resume on opening/reopening, including an actual accept-input regression. Save schema, event costs and combat balance remain unchanged.
+- Final recovered-source checks and complete output are in [detail-recovery](validation/detail-recovery/README.md). Ten disk-failure tests, one pause-input test and three card-content/contrast tests were added. Recovered-source full regression passed 950/950 with no broken files; the existing nine comparison-tool controls also passed. Existing shutdown warnings remain.
+- Before an unexpected execution reset, native Linux checks observed 19 event layouts, five warning layouts and ten guard/pause layouts passing. The original captures and full local artifacts were lost; the readme labels these as observed history, not retained evidence. Six recovered source/test/showcase blobs exactly match the pre-reset tool hashes. The complete suite was rerun after recovery; use its retained result, not an interrupted earlier run.
+- The single 0.60-alpha HUD candidate failed three of four critical frame gates and was withdrawn. Both HUD production files remain identical to the public baseline. The original two down-limit outcomes, native crash/cleanup issues, human playability, long sessions and actual Windows/mobile/controller/audio validation remain open. No new download or store/payment activation; provisional overall quality remains 6–6.5/10.
+
+Next: observe the first-chapter guard-to-counter decision without coaching, then implement one encounter/readability improvement supported by that observation. Re-capture native evidence when a functioning desktop is available; do not continue adding diagnostics as a substitute for gameplay improvement. [Scope](requests/20261122-INT-detail-recovery.md) · [Validation and recovery limits](validation/detail-recovery/README.md)
+
+## Previous work — chapter 1-4 guard-success card
 
 The change originates on `codex/guard-success-toast` from the verified merge of [PR #21](https://github.com/QuantumPrediction/DoggyKnight/pull/21), `8d21d1bc56f73741e9fa9b003715095395421877`. Recheck the live default and open PRs before continuing. [Registered comparison](requests/20261121-INT-guard-success-toast.md) · [Evidence](validation/guard-success-toast/README.md)
 

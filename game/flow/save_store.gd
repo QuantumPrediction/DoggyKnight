@@ -31,7 +31,8 @@ extends RefCounted
 ##
 ## 防止存檔損毀:先把完整內容寫到「<路徑>.tmp」,關檔之後才改名成正式檔名。
 ## App 在寫入中途被系統強制關閉時,正式存檔仍是上一次的完整版本;
-## 讀檔時會略過(並刪除)殘留的 .tmp。
+## 無法直接覆寫的平台先保留 .bak。讀檔優先正式檔，缺失或 JSON 損毀時用備份。
+## 讀檔時會略過(並刪除)未提交的 .tmp，避免把未完成交易當作已承諾的進度。
 ##
 ## 寫入是同步的(不用 await),所以在 app_backgrounded 裡呼叫可以立即完成。
 
@@ -57,6 +58,16 @@ func _init(save_path: String = DEFAULT_PATH) -> void:
 
 func temp_path() -> String:
 	return path + ".tmp"
+
+
+func backup_path() -> String:
+	return path + ".bak"
+
+
+## Kept separate so storage-failure tests can exercise real files without relying
+## on the host filesystem's overwrite policy.
+func _rename_file(from: String, to: String) -> Error:
+	return DirAccess.rename_absolute(from, to)
 
 
 ## 所有欄位與預設值(沒有存檔、或舊版存檔缺少欄位時用這些)。
@@ -111,14 +122,28 @@ func write_data(data: Dictionary) -> bool:
 	if write_error != OK:
 		push_warning("SaveStore: 寫入暫存檔失敗(%s)" % error_string(write_error))
 		return false
-	var err := DirAccess.rename_absolute(tmp, path)
+	var err := _rename_file(tmp, path)
 	if err != OK and FileAccess.file_exists(path):
-		# 少數平台不允許改名覆蓋既有檔案:先刪舊檔再改名(暫存檔已是完整內容)。
-		DirAccess.remove_absolute(path)
-		err = DirAccess.rename_absolute(tmp, path)
+		# A non-replacing filesystem needs a recovery copy BEFORE removing the
+		# primary. A corrupt primary must never replace an already valid backup.
+		if _read_raw(path) is Dictionary or not _read_raw(backup_path()) is Dictionary:
+			var copied := DirAccess.copy_absolute(path, backup_path())
+			if copied != OK:
+				push_warning("SaveStore: 無法備份存檔，保留原檔(%s)" % error_string(copied))
+				return false
+		var removed := DirAccess.remove_absolute(path)
+		if removed != OK:
+			push_warning("SaveStore: 無法替換存檔，保留原檔(%s)" % error_string(removed))
+			return false
+		err = _rename_file(tmp, path)
+		if err != OK:
+			# If restoration also fails, read() can still use the complete backup.
+			_rename_file(backup_path(), path)
 	if err != OK:
 		push_warning("SaveStore: 無法把暫存檔改名為 %s(%s)" % [path, error_string(err)])
 		return false
+	if FileAccess.file_exists(backup_path()):
+		DirAccess.remove_absolute(backup_path())
 	return true
 
 
@@ -128,13 +153,14 @@ func read() -> Dictionary:
 	if FileAccess.file_exists(temp_path()):
 		# 上一次寫到一半就被中斷;正式檔仍是上一次的完整版本。
 		DirAccess.remove_absolute(temp_path())
-	if not FileAccess.file_exists(path):
-		return {}
-	var text := FileAccess.get_file_as_string(path)
-	var json := JSON.new()
-	var parsed: Variant = json.data if json.parse(text) == OK else null
+	var parsed: Variant = _read_raw(path)
 	if not parsed is Dictionary:
-		push_warning("SaveStore: 存檔內容無效,當作沒有存檔")
+		parsed = _read_raw(backup_path())
+		if parsed is Dictionary:
+			push_warning("SaveStore: 使用上次完整存檔的備份恢復進度")
+	if not parsed is Dictionary:
+		if FileAccess.file_exists(path) or FileAccess.file_exists(backup_path()):
+			push_warning("SaveStore: 存檔內容無效,當作沒有存檔")
 		return {}
 	var raw := parsed as Dictionary
 	var result := sanitize(raw)
@@ -150,12 +176,21 @@ func read() -> Dictionary:
 	return result
 
 
+static func _read_raw(file_path: String) -> Variant:
+	if not FileAccess.file_exists(file_path):
+		return null
+	var json := JSON.new()
+	if json.parse(FileAccess.get_file_as_string(file_path)) != OK:
+		return null
+	return json.data if json.data is Dictionary else null
+
+
 func exists() -> bool:
 	return not read().is_empty()
 
 
 func delete() -> void:
-	for p in [path, temp_path()]:
+	for p in [path, temp_path(), backup_path()]:
 		if FileAccess.file_exists(p):
 			DirAccess.remove_absolute(p)
 

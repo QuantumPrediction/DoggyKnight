@@ -46,6 +46,33 @@ func test_buttons_emit_requests() -> void:
 	assert_eq(quit.count, 1)
 
 
+func test_keyboard_can_resume_immediately_and_reopening_returns_to_resume() -> void:
+	if not OS.has_feature("pc"):
+		return
+	EventBus.game_paused.emit(true)
+	await wait_frames(1)
+	assert_eq(get_viewport().gui_get_focus_owner(), ui.resume_button,
+		"Opening pause must offer a safe immediate keyboard action")
+	var resumed := watch_signal(EventBus.resume_requested)
+	var accept := InputEventAction.new()
+	accept.action = &"ui_accept"
+	accept.pressed = true
+	get_viewport().push_input(accept)
+	accept = InputEventAction.new()
+	accept.action = &"ui_accept"
+	accept.pressed = false
+	get_viewport().push_input(accept)
+	await wait_frames(1)
+	assert_eq(resumed.count, 1, "Enter/accept resumes without a mouse click")
+	ui.title_button.grab_focus()
+	EventBus.game_paused.emit(false)
+	assert_null(get_viewport().gui_get_focus_owner(), "Hidden pause controls release keyboard focus")
+	EventBus.game_paused.emit(true)
+	await wait_frames(1)
+	assert_eq(get_viewport().gui_get_focus_owner(), ui.resume_button,
+		"Reopening must not leave the previous back-to-title action focused")
+
+
 func test_sound_toggle_flips_game_state() -> void:
 	GameState.sound_on = true
 	EventBus.game_paused.emit(true)

@@ -1,0 +1,36 @@
+{
+  "date_hong_kong": "2026-11-22",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "public_source_commit": "c79919cdb39636c6b3a619f31caf9f909b89634e",
+  "public_source_tree": "59bde2a97f460c125745ef96eddb3edb3de8e9a5",
+  "tested_local_commit": "a645bccdbbe4f59ec5101e8528d19e23dca6ef33",
+  "command": "TEST_TIMEOUT=900 tools/run_tests.sh",
+  "exit_code": 0,
+  "tests": 950,
+  "failed": 0,
+  "broken_files": 0,
+  "contour_tool_checks": 9,
+  "native_capture_evidence_retained": false,
+  "raw_log_sha256": "a5b023f29d6ff7288defd314adc08c6deb09bf81cc6fd4c3de0983069aecdedd",
+  "source_sha256": {
+    "game/flow/save_store.gd": "5866a99dcfa3d652c865c43c6f4dfd2d067865b3e6ff6ac4f8bd9b02918d36c7",
+    "ui/event_choice/event_choice.gd": "2b020d8225c834173d3a34ad5a79ce8c16217e8657389d4c985cf1bb515927ba",
+    "ui/pause/pause.gd": "795e01d0849cf66dd15b911a9041c43d749bfb947b067a1f41e2a19ef6c2a356",
+    "tests/line_b/test_save_recovery.gd": "3132ed00311ce81a50a7d60bd3614fed9d687012730ff5d4d2e3ec0219d1d8f0",
+    "tests/line_c/test_event_card_readability.gd": "58158e05a438d48e1ba0cffae65e78b5db5e03cda068b02b619962813d056390",
+    "tests/line_c/test_pause.gd": "0a3a371ea71edf4230e314e73fa248a9bb8e851e0b6ef3e4111fd74d12101a53",
+    "tests/integration/build_routes_showcase.gd": "1dbafeeecea7fc4e48a5a4f0cbcbc3d4bb8e8b21e0ce62ca0e90f87126eea155"
+  },
+  "remaining_warnings": [
+    "3 CanvasItem RIDs",
+    "27 ObjectDB instances",
+    "21 resources",
+    "GodotBody2D and RendererDummy texture RID allocations"
+  ],
+  "limits": [
+    "native screenshots and prior raw artifacts lost in environment reset",
+    "no new human participant sessions",
+    "no Windows/mobile/controller/audio/long-session qualification",
+    "prior native crash unresolved"
+  ]
+}

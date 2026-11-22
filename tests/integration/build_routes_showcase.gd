@@ -19,13 +19,20 @@ func shot(name: String, ui: Control) -> void:
 	var safe := SafeArea.get_safe_rect()
 	var fits := true
 	var text_fits := true
+	var children_fit := true
 	for card: Button in ui.get("cards"):
 		fits = fits and safe.encloses(card.get_global_rect())
 		var desc := card.get_node("Description") as Label
 		text_fits = text_fits and desc.get_line_count() * desc.get_line_height() <= desc.size.y + 1
+		if ui == event_ui:
+			for child_name in ["Tone", "Name", "Description", "Icon", "Portrait"]:
+				var child := card.get_node(child_name) as Control
+				children_fit = children_fit and Rect2(Vector2.ZERO, card.size).encloses(Rect2(child.position, child.size))
+				if child is Label:
+					text_fits = text_fits and child.get_line_count() * child.get_line_height() <= child.size.y + 1
 	get_viewport().get_texture().get_image().save_png(out.path_join(name + ".png"))
-	evidence.append({"capture": name, "cards_fit": fits, "text_fits": text_fits})
-	print("CAPTURE ", name, " ", fits, " ", text_fits)
+	evidence.append({"capture": name, "cards_fit": fits, "text_fits": text_fits, "children_fit": children_fit})
+	print("CAPTURE ", name, " ", fits, " ", text_fits, " ", children_fit)
 
 func world(hero: StringName) -> void:
 	if is_instance_valid(arena):
@@ -67,17 +74,25 @@ func run() -> void:
 		var event := BuildRoutes.encounter_for(level)
 		event_ui.call(&"show_event", event.id, event.offer_options())
 		await shot("encounter_" + String(level), event_ui)
+	for story_event in LevelEventTable.load_default().events:
+		event_ui.call(&"show_event", story_event.id, story_event.offer_options())
+		await shot("story_" + String(story_event.id), event_ui)
 	get_tree().root.size = Vector2i(360, 640)
 	await world(&"knight")
 	var event := BuildRoutes.event_for(&"knight")
 	event_ui.call(&"show_event", event.id, event.offer_options())
 	await shot("small_route", event_ui)
+	var story_event := LevelEventTable.load_default().get_event(&"purple_feather")
+	event_ui.call(&"show_event", story_event.id, story_event.offer_options())
+	await shot("small_story", event_ui)
 	get_tree().root.size = Vector2i(390, 844)
 	SafeArea.simulate_notch = true
 	await world(&"mage")
 	event = BuildRoutes.event_for(&"mage")
 	event_ui.call(&"show_event", event.id, event.offer_options())
 	await shot("notched_route", event_ui)
+	event_ui.call(&"show_event", story_event.id, story_event.offer_options())
+	await shot("notched_story", event_ui)
 	event_ui.hide()
 	await world(&"knight")
 	GameState.run_route = &"bulwark"
@@ -88,4 +103,4 @@ func run() -> void:
 	var file := FileAccess.open(out.path_join("checks.json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify(evidence, "\t") + "\n")
 	file.close()
-	get_tree().quit(0 if evidence.all(func(row: Dictionary) -> bool: return row.cards_fit and row.text_fits) else 1)
+	get_tree().quit(0 if evidence.all(func(row: Dictionary) -> bool: return row.cards_fit and row.text_fits and row.children_fit) else 1)

@@ -1,0 +1,48 @@
+{
+  "record_type": "summary reconstructed from observed tool output; not original raw capture evidence",
+  "raw_files_available": false,
+  "lost_at": "execution environment reset during publication preparation",
+  "native_environment": "Godot 4.7.2 / X11 / OpenGL / llvmpipe LLVM 19.1.7",
+  "event_layouts": {
+    "before_overflow_cases": 13,
+    "cases": 19,
+    "after_pass": 19
+  },
+  "warning_layouts_pass": 5,
+  "guard_pause_layouts_pass": 10,
+  "contour_candidate_accepted": false,
+  "captured_frames": 280,
+  "reference_hashes_matched": 70,
+  "critical_rows": [
+    {
+      "route": "marksman",
+      "tick": 4989,
+      "reference": 0,
+      "candidate": 2,
+      "samples": 27
+    },
+    {
+      "route": "marksman",
+      "tick": 4990,
+      "reference": 0,
+      "candidate": 3,
+      "samples": 27
+    },
+    {
+      "route": "outrider",
+      "tick": 374,
+      "reference": 0,
+      "candidate": 1,
+      "samples": 61
+    },
+    {
+      "route": "outrider",
+      "tick": 375,
+      "reference": 0,
+      "candidate": 0,
+      "samples": 61
+    }
+  ],
+  "cautious_down_limit_outcomes_preserved": 2,
+  "human_participants": 0
+}
