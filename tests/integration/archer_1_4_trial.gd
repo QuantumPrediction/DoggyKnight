@@ -2,14 +2,14 @@ extends Node
 ## Opens the captured level entry through the normal Continue flow, with human input.
 ## Each launch has its own save and play log. DirAccess removes them on normal exit.
 
-const FIXTURE := "res://tests/fixtures/archer_1_4_checkpoint.json"
+@export_file("*.json") var checkpoint_path: String = "res://tests/fixtures/archer_1_4_checkpoint.json"
 
 var flow: FlowMain
 var _profile: DirAccess
 var _previous_log_path: String
 
 func _ready() -> void:
-	var entry := SaveStore.new(FIXTURE).read()
+	var entry := SaveStore.new(checkpoint_path).read()
 	_profile = DirAccess.create_temp("doggyknight-archer-")
 	if entry.is_empty() or _profile == null:
 		push_error("Could not open the archer trial checkpoint or create its temporary profile.")
