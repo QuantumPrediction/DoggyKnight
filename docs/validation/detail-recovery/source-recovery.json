@@ -1,0 +1,42 @@
+{
+  "record_type": "recovery comparison against pre-reset tool outputs",
+  "files": [
+    {
+      "path": "game/flow/save_store.gd",
+      "pre_reset_git_blob": "3b59f069b8788401494be5fe0579b7472a8dc00a",
+      "recovered_git_blob": "3b59f069b8788401494be5fe0579b7472a8dc00a",
+      "identical": true
+    },
+    {
+      "path": "ui/event_choice/event_choice.gd",
+      "pre_reset_git_blob": "d4db005dfca84b1dd2e58667a8cf147f2b7b86cc",
+      "recovered_git_blob": "d4db005dfca84b1dd2e58667a8cf147f2b7b86cc",
+      "identical": true
+    },
+    {
+      "path": "tests/line_b/test_save_recovery.gd",
+      "pre_reset_git_blob": "91fe8616926d40a73e33e5c1e87e5da1d616bc38",
+      "recovered_git_blob": "91fe8616926d40a73e33e5c1e87e5da1d616bc38",
+      "identical": true
+    },
+    {
+      "path": "tests/line_c/test_event_card_readability.gd",
+      "pre_reset_git_blob": "532cb83cafa9238985142a8823459e5efb3b66a8",
+      "recovered_git_blob": "532cb83cafa9238985142a8823459e5efb3b66a8",
+      "identical": true
+    },
+    {
+      "path": "tests/line_c/test_pause.gd",
+      "pre_reset_git_blob": "0f5270fe587563d0a67d352d37f70b90d8509806",
+      "recovered_git_blob": "0f5270fe587563d0a67d352d37f70b90d8509806",
+      "identical": true
+    },
+    {
+      "path": "tests/integration/build_routes_showcase.gd",
+      "pre_reset_git_blob": "02fcf6a0212aec54006b72181e1f098e73cac269",
+      "recovered_git_blob": "02fcf6a0212aec54006b72181e1f098e73cac269",
+      "identical": true
+    }
+  ],
+  "pause_note": "Same behavior restored; the explanatory comment differs. Revalidated by full suite."
+}

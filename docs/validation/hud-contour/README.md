@@ -1,3 +1,11 @@
+# 本輪接續狀態
+
+2026-11-22：曾在原生 Linux 完成四路比較，單一 0.60-alpha 候選三個關鍵畫面未過，已撤回。發布前執行環境重置，原始捕捉檔案遺失；以下「沒有新渲染」描述僅屬最初診斷階段。現況、歷史觀察與保存限制見 [本輪記錄](../detail-recovery/README.md)。正式 HUD 與公開基準相同，既有比較器保留；沒有將遺失的原始圖像視作此 PR 中可覆核的證據。
+
+---
+
+## 初始診斷階段
+
 # 固定戰鬥介面的預警外框量測
 
 已核對預設分支 `claude/sleepy-hawking-8cvkvl` 的 #22 合併提交 `d9188279e0b4720dd35b7b7532f42a9dbb6f4b8e`、tree `13415a50ebb70983e623f42c2aeabc79e3a3eec0`。本包只加驗證工具。神射戰術面板與遊騎護陣按鈕分別與所選外框幾何重合 17.2346% 與 40.3241%。岩石、角色、特效及介面仍可能遮擋；沒有測得玩家的觀看或反應。[固定比較與失敗條件](../../requests/20261122-INT-hud-contour.md) · [原版畫面指紋](../guard-success-toast/frame-hashes.csv) · [舊重播的實際幾何](../scarecrow-render-cues/observations.json)
