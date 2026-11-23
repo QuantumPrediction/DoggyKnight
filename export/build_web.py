@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,6 +27,7 @@ def stage_sources(project):
         shutil.copytree(ROOT / name, project / name, ignore=shutil.ignore_patterns("*.translation"))
     for name in ("project.godot", "export_presets.cfg"):
         shutil.copyfile(ROOT / name, project / name)
+    subprocess.run([sys.executable, ROOT / "tools/rebuild_story_fonts.py", "--web-project", project], check=True)
     (project / "export/web").mkdir(parents=True)
     shutil.copyfile(WEB / "shell.html", project / "export/web/shell.html")
     art = project / "assets/illustrated"
