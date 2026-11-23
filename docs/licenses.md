@@ -149,3 +149,7 @@ D 線 M3(2026-11-16):營地新增的金毛像素圖(`game/camp/art/`,由 `game/c
 ### 普通稻草人兵的揮擊
 
 GPT Image 以專案原有草場稻草人圖稿為角色參考，為同一角色繪製側面、正面和背面三組各四姿勢。圖集使用既有預警及原角色時鐘。[原稿與提示](validation/scarecrow-swing-art/art.json)
+
+### 稻草人弓兵的拉弓與放手
+
+GPT Image 以專案原有的藍兜帽弓兵為參考，繪製追蹤、鎖定、放手及收弓。側面取自第一稿，正、背面取自重畫的第二稿。[原稿、提示及遊戲圖集指紋](validation/archer-draw-motion/art.json)

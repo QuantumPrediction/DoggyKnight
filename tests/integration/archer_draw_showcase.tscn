@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tests/integration/archer_draw_showcase.gd" id="1"]
+
+[node name="ArcherDrawShowcase" type="Node"]
+script = ExtResource("1")

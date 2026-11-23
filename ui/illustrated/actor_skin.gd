@@ -5,6 +5,7 @@ var sprite: AnimatedSprite2D
 var _tex: Texture2D
 var _rect: Rect2
 var _swing_enemy: ScarecrowEnemy
+var _archer: ArcherEnemy
 
 func _ready() -> void:
 	sprite = get_parent() as AnimatedSprite2D
@@ -14,6 +15,10 @@ func _ready() -> void:
 		StoryArt.prepare_combat_paint(HeroClasses.valid_id(GameState.hero_class))
 	elif actor_code == "bulldog":
 		StoryArt.texture("motion/companion_guard")
+	elif actor_code == "scarecrow_archer":
+		_archer = sprite.get_parent() as ArcherEnemy
+		if _archer != null:
+			StoryArt.texture("motion/archer_draw")
 	elif actor_code == "scarecrow":
 		var enemy := sprite.get_parent() as ScarecrowEnemy
 		if enemy != null and not enemy.elite and enemy.data != null and enemy.data.id == &"scarecrow":
@@ -41,6 +46,15 @@ func _update() -> void:
 			texture = StoryArt.scarecrow_swing(_swing_enemy.facing, beat)
 			if texture != null:
 				flip = _swing_enemy.facing.x < -0.05
+	elif _archer != null:
+		var beat := _archer.illustrated_draw_beat()
+		if beat >= 0:
+			var facing := _archer.facing
+			var view := StoryArt.archer_draw_view(facing)
+			texture = StoryArt.cell("motion/archer_draw", beat, view, 4, 3)
+			if texture != null:
+				# Only the side view is mirrored. Vertical tracking keeps its handedness.
+				flip = view == 0 and facing.x < 0.0
 	if texture == null:
 		texture = _drawing(count)
 	var size := original.get_size()

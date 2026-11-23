@@ -54,6 +54,17 @@ func attack_role() -> StringName:
 	return DifficultyScaling.RANGED
 
 
+## Read the displayed lock and release clock without advancing the shot.
+func illustrated_draw_beat() -> int:
+	if state != State.ACTIVE or is_stunned() or sprite == null:
+		return -1
+	if phase == Phase.AIM and sprite.animation == &"aim" and is_instance_valid(_telegraph) and _telegraph.is_visible_damage_warning():
+		return 1 if _telegraph.aim_locked else 0
+	if phase == Phase.RELEASE and sprite.animation == &"attack":
+		return 2 if sprite.frame == 0 else 3
+	return -1
+
+
 func _on_ready() -> void:
 	_strafe_sign = 1.0 if rng.randf() < 0.5 else -1.0
 	_strafe_left = rng.randf_range(strafe_switch_min, strafe_switch_max)
