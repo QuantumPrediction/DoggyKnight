@@ -172,10 +172,20 @@ static func companion_guard_pose(index: int) -> Texture2D:
 
 
 static func scarecrow_swing(facing: Vector2, beat: int) -> Texture2D:
-	var row := 0
+	return cell("motion/scarecrow_swing", beat, _facing_row(facing), 4, 3)
+
+
+static func archer_draw_view(facing: Vector2) -> int:
+	# Normalizing a diagonal between two world positions may round only one axis.
+	if is_equal_approx(absf(facing.x), absf(facing.y)):
+		return 0
+	return _facing_row(facing)
+
+
+static func _facing_row(facing: Vector2) -> int:
 	if absf(facing.y) > absf(facing.x):
-		row = 1 if facing.y > 0.0 else 2
-	return cell("motion/scarecrow_swing", beat, row, 4, 3)
+		return 1 if facing.y > 0.0 else 2
+	return 0
 
 
 static func field_chest(tier: int, animation: StringName, frame: int) -> Texture2D:

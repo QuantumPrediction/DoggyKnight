@@ -1,0 +1,19 @@
+== 匯入資源 ==
+== 執行測試 ==
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/integration/test_archer_draw_art.gd
+  FAIL    test_tracking_direction_and_handedness
+          - expected Rect2(0, 0, 192, 192), got Rect2(0, 192, 192, 192)
+          - expected -1.0, got 1.0
+  ok      test_actual_lock_release_and_empty_bow_through_recovery
+  ok      test_hurt_hidden_cancelled_and_dead_keep_original_drawing
+  ok      test_pause_preserves_lock_and_other_enemy_keeps_its_swing
+
+4 tests, 1 failed, 0 broken files
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 2 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+測試失敗。

@@ -1,0 +1,119 @@
+{
+  "generator": "GPT Image",
+  "reference": {
+    "path": "assets/illustrated/extra_cast.png",
+    "sha256": "6f745985f8f658a90979da1ca026cc78b9f7903094fae18912f64d0b5eba6c34",
+    "crop_xywh": [
+      0,
+      0,
+      1774,
+      443
+    ]
+  },
+  "sources": [
+    {
+      "file": "first-sheet.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "12d30304f8a3270f8f5740759aa0799e9e66b1563a8c879f8137e6344029e9ef",
+      "prompt": "Use case: identity-preserve, production character animation art for the warm storybook mobile RPG DoggyKnight. Repose the provided model sheet into one carefully registered, transparent RGBA archer action sheet. The reference is the fixed model, not the pose layout. One same charming straw archer toy in a worn ink-blue hood and tabard with tiny gold cross-stitching, rust-red scarf, small buttonlike dark oval eyes on a plain cream burlap face, honey-colored straw cuffs, dark ochre boots, pale-fletched arrows in a brown quiver. The simple wooden bow with brass binding belongs to this archer. Hand-painted gouache, economical dark walnut outlines, broad shapes readable at 50 pixels high. No gore. Medium-distant slightly overhead game camera.\nLayout exactly FOUR columns by THREE rows, a landscape 4:3 animation atlas. Twelve separate FULL BODY figures on transparent background. Plenty of transparent padding between figures and all the way around. Feet and head size consistent. Subject stays centered in each cell. All bow tips, strings, arrows, boots and hats fit entirely inside their own cell. No cast shadows, ground, background, labels, text, lines, FX, gradients, frames or numbers. Only the quiver arrows remain in all four poses. In columns 3 and 4 there must be ABSOLUTELY NO ARROW SHAFT, NO ARROWHEAD AND NO PROJECTILE in, in front of or across the bow or hands.\nColumn 1, TRACKING: alert but not yet anchored, knees soft, bow partway up, a single arrow on slack-to-half-drawn string, rear elbow near ribs. Column 2, LOCKED: wide stable stance, full draw, one arrow at cheek level, bow distinct tall crescent, big negative triangular window between taut string and bent bow. Column 3, LOOSE: the instant AFTER the arrow has gone. Clearly EMPTY bow, near straight undrawn string joining both tips. Bow arm is still fully extended; other hand open, snapped back noticeably behind the cheek, streaming scarf and forward weight. No arrow or floating streak in this cell. Column 4, RECOVER: empty bow visibly lowered close beside the body, open drawing hand descending, shoulders settle; no arrow in hand. Keep modest, clear change of weight and consistent feet.\nROW 1 = screen RIGHT profile for ALL four poses, feet, gaze and shot all to right (we mirror it for left). ROW 2 = looking TOWARDS THE CAMERA, chest & belt visible, shooting toward screen bottom in foreshortening. ROW 3 = looking directly AWAY FROM CAMERA, show the BACK of the hood, quiver and scarf knot, absolutely no eyes or face, bow pointing into depth toward screen top. Differentiate all three rows. Limit linework, stay true to the reference's costume and proportions. Genuine transparent background.",
+      "selection": "Side row only. The first front/back drawings showed a misleading sideways arrow."
+    },
+    {
+      "file": "vertical-sheet.png",
+      "size": [
+        1774,
+        887
+      ],
+      "sha256": "499dcca9680361f991a36d0804fb62d69c1446f73bab754c852ab81004569a57",
+      "input": "first-sheet.png",
+      "input_crop_xywh": [
+        0,
+        362,
+        1448,
+        724
+      ],
+      "prompt": "CORRECT THE SHOOTING DIRECTION of this TWO ROW x FOUR COLUMN game sprite sheet. Use the same little blue-hooded patchwork straw archer, quiver, rust red scarf, footwear, head size and original storybook gouache of the supplied reference. A roomy, landscape 2:1 sheet with exactly 8 complete, separately spaced figures. All new poses are VERTICAL shooting directions for an isometric/top-down game. Important correction: the original front/back sprites' horizontal shafts wrongly suggest shooting to the side. Rebuild the shoulder, forearm, gripping hand and bow placement so they aim INTO or OUT OF the picture. NEVER present the bow at the far right or left of a wide figure. In the first three columns the gripping fist and bow are IN FRONT OF THE CENTER OF THE CHEST, the dominant line up and down. Keep chest-on and back-on poses as symmetrical in the horizontal axis as plausible for a tiny game asset.\nTop row is shot DIRECTLY TOWARDS CAMERA: we can see both eyes facing us, chest, feet. On drawn poses the arrow points directly at the viewer, only a tiny frontal diamond arrowhead appears just under the middle of the character's face. Do not draw a long side-on arrow. Drawing hand comes back beside the face, foreshortened bow arm extends into camera. Bottom row is shot DIRECTLY AWAY FROM CAMERA: centered back seam of hood points straight up, both heels, quiver, NO eyes. Bow arm extends directly away; most of the bow and gripped hand are OCCLUDED BY THE ARCHER'S OWN BODY. We see only upper limb rising from behind the character near the centreline, and drawing elbow. The arrow is almost fully occluded. No arrows sticking sideways in ANY cell.\nColumns for EACH row are: (1) find target, partial draw, bow hand near mid-chest with elbows still bent. (2) full draw at the face, firmer planted feet. (3) just released: empty, relaxed bow, fingers open behind cheek, bare string. (4) settle with empty bow lowered beside hip. C3 and C4 have zero arrow in the hands, no separate projectile or streak. Only the quiver contains arrows there. Tip of hood, top of bow, soles and cloth of EACH figure must have clear transparent margin; use uniform smaller figures to accomplish this. No shadows, no grid lines, writing, logos, scenery or floor. Genuinely transparent RGBA. Precise overhead projectile trajectory will be independently drawn by the game: the body silhouette must support the vertical view."
+    }
+  ],
+  "columns": [
+    "tracking",
+    "locked",
+    "loose",
+    "lower"
+  ],
+  "rows": [
+    {
+      "view": "right",
+      "source": 0,
+      "source_y": [
+        0,
+        355
+      ],
+      "scale": 0.53,
+      "boot_x": [
+        183,
+        520,
+        886,
+        1248
+      ],
+      "boot_y": [
+        338,
+        337,
+        337,
+        343
+      ],
+      "pivot_x": 92
+    },
+    {
+      "view": "front",
+      "source": 1,
+      "source_y": [
+        0,
+        415
+      ],
+      "scale": 0.465,
+      "boot_x": [
+        228,
+        658,
+        1095,
+        1533
+      ],
+      "boot_y": [
+        384,
+        386,
+        386,
+        386
+      ],
+      "pivot_x": 96
+    },
+    {
+      "view": "back",
+      "source": 1,
+      "source_y": [
+        415,
+        887
+      ],
+      "scale": 0.435,
+      "boot_x": [
+        227,
+        660,
+        1092,
+        1536
+      ],
+      "boot_y": [
+        850,
+        850,
+        850,
+        850
+      ],
+      "pivot_x": 96
+    }
+  ],
+  "target": "assets/illustrated/motion/archer_draw.png",
+  "target_sha256": "a275fd5ed93df6aca6a8027e64cb35e68e8845bc88554c563bdf6c55a875f2f3",
+  "tile_px": 192,
+  "sole_y": 184
+}
