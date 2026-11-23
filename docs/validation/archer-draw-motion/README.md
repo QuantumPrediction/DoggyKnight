@@ -52,6 +52,8 @@ TEST_TIMEOUT=900 bash tools/run_tests.sh
 
 引擎執行檔 SHA-256 為 `8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e`。首次專項 3/4，失敗發生在正斜向的兩個分量經浮點運算後有細微偏差，導致錯選正面且沒有鏡像。修正繪圖方向後，專項 4/4，涵蓋左右手、鎖定後移動、實際放箭、下一次重新瞄準、暈眩、受傷、死亡與暫停後繼續。全套首次在預設 300 秒內完成 830 項後逾時。已保留該次輸出。[最初方向測試](diagonal-first-test.txt) · [首次全套逾時紀錄](first-timeout.log.gz)
 
-採專案既有的 900 秒上限重跑完整測試，實際通過 **979/979**，0 failed、0 broken files，結束碼 0。退出時引擎仍列出 33 個 ObjectDB 物件、24 個資源及 RID 警告。四次原生截圖執行均正常結束。歷史上的原生崩潰繼續另案追蹤。[最終完整輸出](candidate-tests.log.gz) · [原生崩潰紀錄](../field-chests/README.md)
+採專案既有的 900 秒上限重跑完整測試，實際通過 **979/979**，0 failed、0 broken files，結束碼 0。同機基準 #28 亦通過 **975/975**。兩版退出時各列出 33 個 ObjectDB 物件、24 個資源及相同的 RID 警告。四次原生截圖執行均正常結束。歷史上的原生崩潰繼續另案追蹤。[候選完整輸出](candidate-tests.log.gz) · [同機基準完整輸出](baseline-tests.log.gz) · [原生崩潰紀錄](../field-chests/README.md)
+
+[草稿 #29](https://github.com/QuantumPrediction/DoggyKnight/pull/29) 的受測公開提交為 `8ad38aa95469d922e62873330122e45b1061af9e`，與本地受測提交共用 tree `56a8c456fdfa294e07957f9b88fbfb0e107726b3`。
 
 下一步用真手機以正常速度記錄幀時間，並在既有無提示試玩中記下實際看見敵方弓兵追蹤與鎖線的人數、第一個動作及首次看錯的時點，特別留意背向鏡頭的情況。目標玩家 0 人，手機、Windows、手把、聆聽及留存仍待驗證，整體暫評 6–6.5/10。[無提示試玩入口](../scene-lifetime/archer-trial.md)

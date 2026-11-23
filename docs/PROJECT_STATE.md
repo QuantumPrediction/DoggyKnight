@@ -4,6 +4,8 @@ Updated: 2026-11-23 (Hong Kong). Version: **0.9.1 development source**.
 
 ## Current work — the enemy archer draws, locks and releases
 
+[Draft #29](https://github.com/QuantumPrediction/DoggyKnight/pull/29) contains the tested source at `8ad38aa95469d922e62873330122e45b1061af9e` (tree `56a8c456fdfa294e07957f9b88fbfb0e107726b3`). The local tested commit `c304e2f38cf82392e9f48accf3fe1a82fe2ac0ec` has the same tree. On this host #28 passed 975/975 and produced the same exit warnings as the candidate.
+
 `codex/archer-draw-motion` starts from draft #28 at `f082bb3de6c919dd5ce2f894f7350d7d2bc7b791`. The blue-hooded enemy used to hold its bow down throughout aiming, then showed an arrow nocked after the projectile had already left. Twelve GPT Image drawings now show tracking, full draw at the actual lock, the empty bow on release and recovery in side, front and rear views. The first vertical drawings suggested a sideways shot and were replaced. An initial failing test caught a diagonal facing the wrong way. [Native motion comparison, artwork and reproduction](validation/archer-draw-motion/README.md)
 
 All 600 physics records across six fixed encounters match. Four stationary targets took one hit at tick 75, a target that moved after lock took none, and interrupting the windup produced zero arrows. Of 33 paired native 360×640 samples, four controls were RGB-identical and 29 differed only within the existing sprite drawing bounds. All 30,756 previously visible far-line pixel samples and all 2,112 in the locked end bracket survived. The left-facing full draw still hides 85 near-origin pixels. In rear view, the archer's drawing hand is hard to see behind the hood and the arrow briefly covers the torso as it leaves.
