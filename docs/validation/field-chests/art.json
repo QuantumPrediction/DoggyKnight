@@ -1,0 +1,40 @@
+{
+  "source": {
+    "generator": "GPT Image",
+    "file": "source.png",
+    "size": [
+      1448,
+      1086
+    ],
+    "sha256": "a542f4cc1f67f853c60aaefd7a670ecc175c0ad18405ade836650aeb4e8621ea",
+    "prompt": "Production 2D game asset: a transparent RGBA animation atlas for DoggyKnight, a gentle Arthurian picture-book game about a golden retriever knight. A landscape sheet EXACTLY FOUR equal columns by THREE equal rows, 12 separate isolated treasure chest drawings, no grid marks or captions. Each ROW is a single physical chest seen at one locked front three-quarter angle (front and right side), same width, feet, latch, perspective, light, foreground contrast and base height through the four frames. Each COLUMN is an opening stage: 1 CLOSED flush, 2 lid just cracked 10–15 degrees with only a narrow dark/golden seam, 3 lid halfway raised ~42 degrees with a clear triangular aperture, 4 lid fully back ~80 degrees with a deep dark interior and just one modest warm highlight INSIDE. Never lift the body; only the lid rotates around its rear hinge. All 12 fit within equal cells, large transparent gutters between neighboring drawings; every chest, foot, open lid is fully inside its cell. \nTop row ORDINARY • a small squat honey-oak travelling field box with a truly FLAT low lid, two plain dark leather straps, ONE simple bone-shaped ivory toggle on front. Hardly any gilding. Middle row ELITE • a dark teal brigandine coffer with steeply CHAMFERED shoulders, two bevelled brass corner plates, one large strong downward pointed copper SHIELD-shaped front clasp. Bottom row BOSS • a sumptuous plum-lacquered royal reliquary, high ARCHED silhouette with a bold THREE-POINT GOLD CROWN crest attached to lid, pale gold feet, one large simple amber stone on the front. The unique silhouettes and large clasp shapes must read even at 36 pixels. Big readable masses and restrained texture, thick warm umber painted contour, small deliberate gouache highlights, golden afternoon light from upper left, carved wood and worn brass, warm traditional storybook brushwork. Exact same camera all twelve, horizontal front edge, same scale through each row. No dogs, letters, digits, coins spilling, floor, cast shadow, scenery, halos, stars, floating light particles, extra drawings, headers or backgrounds. Transparency right up to the painted edges."
+  },
+  "atlas": {
+    "path": "assets/illustrated/motion/field_chests.png",
+    "size": [
+      512,
+      384
+    ],
+    "sha256": "676c57e76bdfa7ca6000e0c53db2f3945cc22848cc2246d2ff0817fc75b397fc",
+    "rows": [
+      "ordinary",
+      "elite",
+      "boss"
+    ],
+    "columns": [
+      "closed",
+      "cracked",
+      "half-open",
+      "open"
+    ],
+    "registration": "tools/pack_field_chests.py",
+    "alpha_cutoff_for_measurement": 32
+  },
+  "baseline": "b413b36bd47e8cb614210d3d714ee5154be0d5bf",
+  "headless_trace": {
+    "file": "pickup.tsv",
+    "ticks": 138,
+    "tiers": 3,
+    "sha256": "5081741ba95ed32a3734bc4efb1f2c8ce0d488681cf13c5331f1b57b7bd12c54"
+  }
+}

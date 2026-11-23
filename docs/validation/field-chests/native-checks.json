@@ -1,0 +1,52 @@
+{
+  "field": {
+    "tick": 32,
+    "changed_rgb_pixels": 4165,
+    "outside_chests": 0
+  },
+  "ordinary-0": {
+    "tick": 36,
+    "changed_rgb_pixels": 4383,
+    "outside_chests": 0
+  },
+  "ordinary-1": {
+    "tick": 42,
+    "changed_rgb_pixels": 4505,
+    "outside_chests": 0
+  },
+  "ordinary-2": {
+    "tick": 48,
+    "changed_rgb_pixels": 4516,
+    "outside_chests": 0
+  },
+  "elite-0": {
+    "tick": 62,
+    "changed_rgb_pixels": 4774,
+    "outside_chests": 0
+  },
+  "elite-1": {
+    "tick": 68,
+    "changed_rgb_pixels": 4807,
+    "outside_chests": 0
+  },
+  "elite-2": {
+    "tick": 74,
+    "changed_rgb_pixels": 4822,
+    "outside_chests": 0
+  },
+  "boss-0": {
+    "tick": 88,
+    "changed_rgb_pixels": 3307,
+    "outside_chests": 0
+  },
+  "boss-1": {
+    "tick": 94,
+    "changed_rgb_pixels": 3170,
+    "outside_chests": 0
+  },
+  "boss-2": {
+    "tick": 100,
+    "changed_rgb_pixels": 3343,
+    "outside_chests": 0
+  }
+}
