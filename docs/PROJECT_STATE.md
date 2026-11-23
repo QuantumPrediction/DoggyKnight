@@ -4,7 +4,9 @@ Updated: 2026-11-23 (Hong Kong). Version: **0.9.1 development source**.
 
 ## Current work — field chest silhouettes and hinged lids
 
-`codex/field-chest-art` starts from draft #26 at `b413b36bd47e8cb614210d3d714ee5154be0d5bf`. Ordinary, elite and boss field chests now have individual shells, clasps and three successive opening drawings. The production sprite clock and proximity pickup drive the pictures. At fixed 60 Hz all 414 pickup records match the baseline, including one reward per tier. The art tests check the twelve drawings, foot registration and world bounds. Target-player recognition and real phone frame times remain open. Provisional quality stays at 6–6.5/10. [Animated comparison and verification](validation/field-chests/README.md)
+[Draft #27](https://github.com/QuantumPrediction/DoggyKnight/pull/27), `codex/field-chest-art`, starts from draft #26 at `b413b36bd47e8cb614210d3d714ee5154be0d5bf`. Ordinary, elite and boss field chests now have individual shells, clasps and three successive opening drawings. The production sprite clock and proximity pickup drive the pictures. At fixed 60 Hz all 414 pickup records match the baseline locally and on Ubuntu, including one reward per tier. The candidate passed 972/972 tests. Ten pairs of Linux 360×640 captures differ only inside the chest sprite bounds. The pickup ring and hero still obscure the clasp at first contact, and confetti partly covers the boss crown at tick 94. [Animation, full screenshots and verification](validation/field-chests/README.md)
+
+Next, observe the first tier misidentification and the opening moment on a physical phone. Target-player sessions remain at zero and provisional quality stays at 6–6.5/10. A separate fresh baseline import crashed before the tests began. The retry passed 970/970. Both full suites listed 33 ObjectDB instances and 24 resources at exit on this machine. The raw stack, binary fingerprint and missing ELF build ID are recorded alongside the evidence.
 
 ## Previous work — Bedivere shield motion and permanent native evidence
 
