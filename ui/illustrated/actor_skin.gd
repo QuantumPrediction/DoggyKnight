@@ -11,6 +11,8 @@ func _ready() -> void:
 	use_parent_material = true
 	if actor_code == "goldie":
 		StoryArt.prepare_combat_paint(HeroClasses.valid_id(GameState.hero_class))
+	elif actor_code == "bulldog":
+		StoryArt.texture("motion/companion_guard")
 	_update()
 
 func _process(_delta: float) -> void:
@@ -49,6 +51,12 @@ func _update() -> void:
 func _drawing(count: int) -> Texture2D:
 	if actor_code == "goldie":
 		return StoryArt.hero_motion(HeroClasses.valid_id(GameState.hero_class), sprite, count)
+	if actor_code == "bulldog":
+		var companion := sprite.get_parent()
+		if companion != null and companion.has_method(&"illustrated_guard_pose"):
+			var guard_pose := int(companion.call(&"illustrated_guard_pose"))
+			if guard_pose >= 0:
+				return StoryArt.companion_guard_pose(guard_pose)
 	if actor_code == "camp_goldie":
 		if GameState.hero_class != &"knight":
 			var anim: StringName = &"happy" if sprite.animation == &"happy" else &"rest"

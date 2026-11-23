@@ -71,6 +71,73 @@ func test_each_hero_has_distinct_blink_cheer_and_sleep_drawings() -> void:
 	assert_eq(drawings.size(), 9)
 	sprite.free()
 
+
+func test_bedivere_reads_four_existing_guard_states_without_changing_them() -> void:
+	start_role(&"knight")
+	var dog := arena.call("spawn_companion", &"bulldog") as BulldogCompanion
+	await wait_frames(2)
+	var sprite := dog.get_node("Sprite") as AnimatedSprite2D
+	var before := {
+		"cooldown": dog.rally_cooldown_left,
+		"guard": dog.rally_left,
+		"approach": dog.rally_approach_left,
+		"blocks": dog.blocks,
+		"bumps": dog.bumps,
+	}
+	dog.mode = BulldogCompanion.Mode.GUARD
+	dog.set("_mode_time", 0.0)
+	sprite.play(&"guard")
+	assert_eq(selected(sprite), StoryArt.companion_guard_pose(0), "arrival raises the shield")
+	dog.set("_mode_time", 0.18)
+	assert_eq(selected(sprite), StoryArt.companion_guard_pose(1), "settled guard braces")
+	dog.set("_block_flash_left", dog.block_flash_time)
+	assert_eq(selected(sprite), StoryArt.companion_guard_pose(2), "real block flash selects impact")
+	dog.set("_block_flash_left", 0.0)
+	dog.set("_bump_anim_left", 0.2)
+	sprite.play(&"attack")
+	assert_eq(selected(sprite), StoryArt.companion_guard_pose(3), "existing shield bash selects counter pose")
+	assert_eq({
+		"cooldown": dog.rally_cooldown_left,
+		"guard": dog.rally_left,
+		"approach": dog.rally_approach_left,
+		"blocks": dog.blocks,
+		"bumps": dog.bumps,
+	}, before, "reading the paintings cannot mutate combat state")
+	for pose in 4:
+		var tex := StoryArt.companion_guard_pose(pose) as AtlasTexture
+		assert_eq(tex.atlas.resource_path, "res://assets/illustrated/motion/companion_guard.png")
+		assert_eq(tex.region, Rect2(543.0 * pose, 0.0, 543.0, 544.0))
+
+
+func test_bedivere_guard_cells_are_distinct_unclipped_and_share_a_baseline() -> void:
+	var texture := load("res://assets/illustrated/motion/companion_guard.png") as Texture2D
+	var image := texture.get_image()
+	assert_eq(image.get_size(), Vector2i(2172, 544))
+	var bottoms: Array[int] = []
+	var signatures: Dictionary = {}
+	for pose in 4:
+		var minimum := Vector2i(543, 544)
+		var maximum := Vector2i(-1, -1)
+		var opaque := 0
+		for y in 544:
+			for local_x in 543:
+				if image.get_pixel(pose * 543 + local_x, y).a < 32.0 / 255.0:
+					continue
+				opaque += 1
+				minimum.x = mini(minimum.x, local_x)
+				minimum.y = mini(minimum.y, y)
+				maximum.x = maxi(maximum.x, local_x)
+				maximum.y = maxi(maximum.y, y)
+		assert_true(opaque > 10000, "pose %d has a painted silhouette" % pose)
+		assert_true(minimum.x >= 5, "pose %d keeps a left gutter" % pose)
+		assert_true(maximum.x <= 537, "pose %d keeps a right gutter" % pose)
+		assert_true(minimum.y >= 5, "pose %d keeps a top gutter" % pose)
+		assert_true(maximum.y <= 538, "pose %d keeps a bottom gutter" % pose)
+		bottoms.append(maximum.y)
+		signatures[Rect2i(minimum, maximum - minimum + Vector2i.ONE)] = true
+	assert_eq(signatures.size(), 4, "all four poses have different silhouettes")
+	assert_true(bottoms.max() - bottoms.min() <= 2, "painted feet share a two-pixel baseline")
+
 func test_magic_bolt_cycles_while_in_flight() -> void:
 	var player := start_role(&"mage")
 	await wait_frames(2)

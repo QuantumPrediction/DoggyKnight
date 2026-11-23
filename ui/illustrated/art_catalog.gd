@@ -167,6 +167,10 @@ static func motion_pose(id: StringName, index: int) -> Texture2D:
 	return cell("motion/" + String(id), index % 3, index / 3, 3, 3)
 
 
+static func companion_guard_pose(index: int) -> Texture2D:
+	return cell("motion/companion_guard", clampi(index, 0, 3), 0, 4, 1)
+
+
 static func prepare_combat_paint(id: StringName) -> void:
 	# Load at actor setup so the first impact or pickup doesn't open a new sheet.
 	texture("motion/" + String(id))

@@ -1,4 +1,18 @@
-# 整合進度　三職業美術與動作
+# 整合進度　貝德維爾護盾動作與原生畫面歸檔
+
+2026-11-23（香港）。沿用 [草稿 #26](https://github.com/QuantumPrediction/DoggyKnight/pull/26) 的 `codex/storybook-combat-motion`，沒有建立平行工作包或合併。
+
+| 項目 | 本輪結果 |
+| --- | --- |
+| 動作 | GPT Image 依現有貝德維爾形象製作舉盾、架盾、實際格擋及盾撞四格。只讀正式動畫時鐘與既有閃光，不加計時、碰撞、傷害或訊號 |
+| 圖格 | 四輪廓不同，alpha ≥32/255 均未貼邊，腳底線誤差 2 像素；原稿、遊戲圖及完整提示均保存並有 SHA-256 |
+| 測試 | 第一輪測試因錯用框架沒有的 assertion helper 成為 1 broken，已保留。修正後專項 10/10、全套 970/970；既有護陣、警示、觸控、存檔與長局均通過。三職業 480 筆物理事件仍為 `6eceb282…408d` |
+| 截圖 | 五張最終圖及十張前後原圖在 artifact 到期前取回；兩個整包及逐張 SHA-256 全吻合，現永久放入 `validation/hero-motion` |
+| 限制 | 本機沒有 X11／Wayland／Xvfb，未產生新的 360×640 原生候選圖或手機幀時間。退出仍有 27 ObjectDB、21 資源及 RID 警告。目標玩家 0 人，暫評 6–6.5/10 |
+
+下一步在可用的原生顯示環境固定鏡頭取得四狀態及 360×640 混戰畫面；若新角色輪廓遮住更多敵方預警就撤回。真人無提示試玩、Windows／手機／手把、聆聽、留存及市場仍待驗收。[比較門檻](../requests/20261123-INT-companion-shield-motion.md) · [驗證紀錄](../validation/companion-shield-motion/README.md) · [已永久保存的原生畫面](../validation/hero-motion/native-final/)
+
+## 前輪　三職業美術與動作
 
 2026-11-23（香港）。[草稿 #26](https://github.com/QuantumPrediction/DoggyKnight/pull/26) 的 `codex/storybook-combat-motion` 接續 [#25](https://github.com/QuantumPrediction/DoggyKnight/pull/25)。公開受測來源 `7429b3634c19ff04dea5cbf9c461776d93dc73fb`；移除臨時驗證流程後的遊戲 tree 為 `b0007fe639d0007225c25f127d84542d1404a099`。
 

@@ -4,7 +4,7 @@
 
 騎士用肩帶動長劍，法師停步把法球送出，弓手拉滿弓弦才放箭。三個職業現在各有四個跑姿與四個攻擊姿勢，還有各自的眨眼、歡呼與蜷睡圖。上圖直接取用遊戲圖集，共 19 格、3.01 秒。每格均已解碼並核對像素。
 
-**[查看五張正式遊戲截圖](https://github.com/QuantumPrediction/DoggyKnight/actions/runs/45067182880/artifacts/14772175663)**　[查看武器、寶物及拾取物](../../../assets/illustrated/motion/objects.png)　[查看劍光、法球及命中逐格](../../../assets/illustrated/motion/effects.png)
+**[查看五張正式遊戲截圖](native-final/)**　[查看武器、寶物及拾取物](../../../assets/illustrated/motion/objects.png)　[查看劍光、法球及命中逐格](../../../assets/illustrated/motion/effects.png)
 
 | 騎士 | 法師 | 弓箭手 |
 | --- | --- | --- |
@@ -22,7 +22,7 @@
 | 騎士小螢幕 | 360×640 | 越界 → 通過 |
 | 弓手模擬瀏海畫面 | 390×844 | 越界 → 通過 |
 
-兩版均已套入新角色美術。比較過程只更換翻滾就緒時的一句文字。遊戲內置 StorySans 的中文字集少了「緒」；Ubuntu 改用其他字體補字後，該列從 y=29 延伸到 44，面板內緣止於 40。改為「起步可翻滾」後，五個場景的文字、面板與安全區均通過原有門檻。五張最終 PNG 可由上方截圖連結取得，GitHub 顯示保留至 2027-02-21 04:34（香港）。[十張原始前後對照，至 2026-11-24 04:26（香港）](https://github.com/QuantumPrediction/DoggyKnight/actions/runs/45066383244/artifacts/14771955250) · [逐幅渲染記錄](https://github.com/QuantumPrediction/DoggyKnight/actions/runs/45066383244/job/137343353867) · [全部指紋](checks.json)
+兩版均已套入新角色美術。比較過程只更換翻滾就緒時的一句文字。遊戲內置 StorySans 的中文字集少了「緒」；Ubuntu 改用其他字體補字後，該列從 y=29 延伸到 44，面板內緣止於 40。改為「起步可翻滾」後，五個場景的文字、面板與安全區均通過原有門檻。2026-11-23 已在限期前取回兩個原始 Actions artifact：五張包 SHA-256 `f0ce8d38…c660`，十張前後對照包 `7732df9b…691e2`；解壓後逐張吻合 `checks.json`，現已永久保存於本目錄的 [最終畫面](native-final/) 及 [前後對照](native-paired/)。原 artifact 仍保留作來源鏈：[五張包](https://github.com/QuantumPrediction/DoggyKnight/actions/runs/45067182880/artifacts/14772175663) · [十張包](https://github.com/QuantumPrediction/DoggyKnight/actions/runs/45066383244/artifacts/14771955250) · [逐幅渲染記錄](https://github.com/QuantumPrediction/DoggyKnight/actions/runs/45066383244/job/137343353867) · [全部指紋](checks.json)
 
 ## 動作與戰鬥
 
