@@ -78,6 +78,16 @@
     window.addEventListener('error', event => loadFailed(event.error || event.message));
 
     async function launch() {
+      if (new URLSearchParams(location.search).get('check') === '1') {
+        await window.checkGameFiles(name => {
+          statusLine.textContent = name.endsWith('.wasm') ? '正在核對遊戲引擎…' : '正在核對六章遊戲資料…';
+        });
+        showMessage('檔案檢查通過。引擎已編譯，六章遊戲資料完整。');
+        retry.textContent = '開啟遊戲';
+        retry.onclick = () => location.assign(location.pathname);
+        starting = false;
+        return;
+      }
       const missing = Engine.getMissingFeatures({ threads: false });
       if (missing.length) {
         const features = missing.map(item => item.split(' - ')[0]).join('、');

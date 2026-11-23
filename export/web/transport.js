@@ -41,3 +41,18 @@ function gameFetch(manifest, request, options) {
     headers: { 'Content-Type': asset.type, 'Content-Length': String(asset.size) },
   }));
 }
+
+// Run only when a tester opens the file-check link. Normal launches do not download twice.
+async function checkGameFiles(manifest, onFile) {
+  for (const [name, asset] of Object.entries(manifest)) {
+    onFile(name);
+    const response = await gameFetch(manifest, name);
+    const bytes = await response.arrayBuffer();
+    const hash = new Uint8Array(await crypto.subtle.digest('SHA-256', bytes));
+    const hex = Array.from(hash, value => value.toString(16).padStart(2, '0')).join('');
+    if (bytes.byteLength !== asset.size || hex !== asset.sha256) {
+      throw new Error('檔案內容與此版本不符。 ' + name);
+    }
+    if (asset.type === 'application/wasm') await WebAssembly.compile(bytes);
+  }
+}

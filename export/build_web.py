@@ -60,14 +60,16 @@ def stage_sources(project):
 def write_parts(raw, site, name, mime):
     source = raw / name
     files = []
+    digest = hashlib.sha256()
     with source.open("rb") as stream:
         while block := stream.read(PART_SIZE):
+            digest.update(block)
             compressed = gzip.compress(block, compresslevel=6, mtime=0)
             sha = hashlib.sha256(compressed).hexdigest()
             relative = "payload/" + sha + ".bin"
             (site / relative).write_bytes(compressed)
             files.append(relative)
-    return {"size": source.stat().st_size, "type": mime, "parts": files}
+    return {"size": source.stat().st_size, "type": mime, "sha256": digest.hexdigest(), "parts": files}
 
 
 def package(raw, site):
@@ -83,7 +85,7 @@ def package(raw, site):
     manifest = json.dumps(assets, separators=(",", ":"))
     (site / "index.js").write_text(
         "(function () {\n" + transport + "\nconst payload = " + manifest
-        + ";\n(function (fetch) {\n" + engine
+        + ";\nwindow.checkGameFiles = onFile => checkGameFiles(payload, onFile);\n(function (fetch) {\n" + engine
         + "\n})((request, options) => gameFetch(payload, request, options));\n})();\n")
     for name, asset in assets.items():
         digest = hashlib.sha256()
