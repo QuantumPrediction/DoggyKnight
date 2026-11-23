@@ -2,7 +2,19 @@
 
 Updated: 2026-11-23 (Hong Kong). Version: **0.9.1 development source**.
 
-## Current work — the enemy archer draws, locks and releases
+## Current work — play Golden Knight in a browser
+
+[Draft #30 — browser playtest](https://github.com/QuantumPrediction/DoggyKnight/pull/30)
+
+The browser release uses Godot 4.7.2 and the same gameplay, saves, classes and recent combat art as draft #29. Anyone with the public link can start from the real title. `codex/browser-playtest` is based on `codex/archer-draw-motion` at `5255b03d3fde6cad3aa5aa535141e47fd53099ef`. The tested public source `6e92a9a291ea251b609c4a621a0a6488cd83da0b` and local `87fad8bf8f3c7959bfad8c079fef1da767f1d2f0` share tree `7b612484923336e43db1566bcf1e9fbdec3531c0`. [Play Golden Knight](https://doggy-knight-playtest.quantumprediction.chatgpt.site/) · [Build and controls](../export/WEB.md)
+
+The final website is 64,263,088 bytes. The first unoptimised export needed 114,123,420 bytes for the pack alone. The single-threaded browser build ships six chapters, 36 stages and four companions. On Linux Chromium with software WebGL 2, a fresh archer reached 1-1, moved, attacked automatically, paused and returned to the title. Reloading retained the checkpoint. The browser also accepted keyboard choices for an upgrade and the outrider route. Its route cards initially showed missing-glyph boxes for 狙, 游 and 梭. The browser build now includes all seven previously absent ideographs from the game translations in both story typefaces. [Combat](validation/browser-playtest/archer-combat.jpg) · [Original choice cards](validation/browser-playtest/archer-routes-before.jpg) · [Corrected choice cards](validation/browser-playtest/archer-routes.jpg)
+
+Godot regression passed 980/980, with 33 ObjectDB instances, 24 resources and RID warnings still reported at exit. All three JavaScript transport tests passed, including rejection of a missing chunk and a same-length damaged file. The final pack opened outside the source project with 36 stages, four companions, 28 illustrated textures, six motion atlases and production UI. Public HTTPS loaded the launcher, compiled the delivered WebAssembly and verified both complete files. The managed browser on the public URL had no WebGL 2, and the isolated graphics-capable browser did not trust that host's certificate. Interactive battle and reload were exercised against the local web build. Final decoded SHA-256 values are `fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0` for the engine and `e520a628de36413fe91684e7b5fb8f79671a5f5e813c13f4b006dc4cd5e3284c` for the game data. [Public file check](https://doggy-knight-playtest.quantumprediction.chatgpt.site/?check=1)
+
+Next use a physical iPhone and Android phone to record cold-load time, touch response, and the first confusing moment during a first run. For the existing archer trial, count the actual exposure and keep retries separate. Target players observed remain zero. The provisional 6–6.5/10 assessment carries forward. [Uncoached trial](validation/scene-lifetime/archer-trial.md)
+
+## Previous work — the enemy archer draws, locks and releases
 
 [Draft #29](https://github.com/QuantumPrediction/DoggyKnight/pull/29) contains the tested source at `8ad38aa95469d922e62873330122e45b1061af9e` (tree `56a8c456fdfa294e07957f9b88fbfb0e107726b3`). The local tested commit `c304e2f38cf82392e9f48accf3fe1a82fe2ac0ec` has the same tree. On this host #28 passed 975/975 and produced the same exit warnings as the candidate.
 

@@ -1,4 +1,14 @@
-# 整合進度　稻草人弓兵拉弓與放箭
+# 整合進度　公開網頁試玩
+
+[草稿 PR #30　網頁試玩版](https://github.com/QuantumPrediction/DoggyKnight/pull/30)
+
+`codex/browser-playtest` 接續草稿 #29 的 `5255b03d3fde6cad3aa5aa535141e47fd53099ef`，沿用三職業、六章 36 關與四位同伴。公開受測提交 `6e92a9a291ea251b609c4a621a0a6488cd83da0b` 與本地 `87fad8bf8f3c7959bfad8c079fef1da767f1d2f0` 共用 tree `7b612484923336e43db1566bcf1e9fbdec3531c0`。[直接試玩](https://doggy-knight-playtest.quantumprediction.chatgpt.site/) · [操作與重建](../../export/WEB.md)
+
+瀏覽器能選弓箭手、進入 1-1 戰鬥，鍵盤走位、停步射擊、Esc 暫停。重新整理後，從「繼續冒險」回到弓箭手入關安全點。首段選牌實際發現「狙」「游」「梭」顯示為方框。兩款網頁字體逐一補齊翻譯表缺的七字，重玩同一關後兩條路線及說明可讀，方向鍵和 Enter 可以選游擊。[戰鬥畫面](../validation/browser-playtest/archer-combat.jpg) · [原路線卡](../validation/browser-playtest/archer-routes-before.jpg) · [修正後](../validation/browser-playtest/archer-routes.jpg)
+
+公開站共 64,263,088 bytes。Godot 全套 980/980，另三項傳輸測試通過，含缺件及同長度損壞。引擎編譯和全部資料指紋在公開網址核對；戰鬥實操使用同版 Linux Chromium 軟體 WebGL 2。本機可連公開站的瀏覽器缺少 WebGL 2，另一個可繪圖的瀏覽器對該站顯示憑證錯誤。原有退出警告仍在。下一步記錄真手機的首次載入、觸控反應與首次疑惑。目標玩家仍 0 人，暫評 6–6.5/10。[公開檔案檢查](https://doggy-knight-playtest.quantumprediction.chatgpt.site/?check=1) · [既有無提示試玩](../validation/scene-lifetime/archer-trial.md)
+
+## 前輪　稻草人弓兵拉弓與放箭
 
 [草稿 #29](https://github.com/QuantumPrediction/DoggyKnight/pull/29) 的公開受測提交是 `8ad38aa95469d922e62873330122e45b1061af9e`，與本地受測提交 `c304e2f38cf82392e9f48accf3fe1a82fe2ac0ec` 共用 tree `56a8c456fdfa294e07957f9b88fbfb0e107726b3`。同機基準 #28 完整回歸 975/975，兩版的退出警告數量相同。
 
