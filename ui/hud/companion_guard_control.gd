@@ -72,7 +72,7 @@ func _refresh() -> void:
 	# A running ability is disabled for reactivation, but its emblem stays legible.
 	button.add_theme_color_override("icon_disabled_color", Color.WHITE if state == &"guard" else Color(0.65, 0.7, 0.7, 0.8))
 	match state:
-		&"ready": status_label.text = tr("UI_GUARD_READY_PC" if OS.has_feature("pc") else "UI_GUARD_READY")
+		&"ready": status_label.text = tr("UI_GUARD_READY_PC" if UiKit.uses_keyboard_hints() else "UI_GUARD_READY")
 		&"approach": status_label.text = tr("UI_GUARD_APPROACH")
 		&"guard": status_label.text = tr("UI_GUARD_INSIDE" if _protected else "UI_GUARD_OUTSIDE") % (ceilf(_duration * 10.0) / 10.0)
 		&"dazed": status_label.text = tr("UI_GUARD_DAZED")

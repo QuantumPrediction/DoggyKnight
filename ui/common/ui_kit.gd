@@ -11,6 +11,11 @@ const GAP: float = 6.0
 const BUTTON_SIZE: Vector2 = Vector2(116, 26)
 
 
+## A desktop browser has the web feature even when its primary input is a keyboard.
+static func uses_keyboard_hints() -> bool:
+	return OS.has_feature("pc") or (OS.has_feature("web") and not DisplayServer.is_touchscreen_available())
+
+
 ## 一般按鈕。variation:&"" 金色主要按鈕、&"ButtonAlt" 藍色次要按鈕。
 static func button(text: String, variation: StringName = &"", min_size: Vector2 = BUTTON_SIZE) -> Button:
 	var b := Button.new()
