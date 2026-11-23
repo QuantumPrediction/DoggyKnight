@@ -218,7 +218,7 @@ func _refresh() -> void:
 		return
 	var step := 0
 	var title_key := "UI_COACH_EVADE"
-	var body_key := "UI_COACH_START_PC" if OS.has_feature("pc") else "UI_COACH_START_TOUCH"
+	var body_key := "UI_COACH_START_PC" if UiKit.uses_keyboard_hints() else "UI_COACH_START_TOUCH"
 	if completed:
 		step = 2
 		title_key = "UI_COACH_DONE"

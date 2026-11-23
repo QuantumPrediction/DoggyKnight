@@ -31,7 +31,7 @@ func _ready() -> void:
 	title.add_theme_font_size_override("font_size", 20)
 	title.custom_minimum_size = Vector2(0, 28)
 	box.add_child(title)
-	if OS.has_feature("pc"):
+	if UiKit.uses_keyboard_hints():
 		var controls := UiKit.label(tr("UI_DESKTOP_CONTROLS"), &"LabelSoft")
 		controls.add_theme_font_size_override("font_size", 10)
 		box.add_child(controls)
@@ -78,7 +78,7 @@ func _on_game_paused(paused: bool) -> void:
 		_refresh_sound()
 		_layout()
 		# Desktop accept should resume, including after back-to-title was focused.
-		if OS.has_feature("pc"):
+		if UiKit.uses_keyboard_hints():
 			resume_button.grab_focus()
 		_panel.scale = Vector2(0.85, 0.85)
 		_panel.pivot_offset = _panel.size * 0.5

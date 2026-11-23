@@ -1,14 +1,16 @@
 extends SceneTree
-## Run outside the source project with --main-pack DoggyKnight.exe.
+## Run outside the source project with --main-pack pointing to the exported game.
 ## Validates the delivered pack with the matching Godot engine on the build host.
-## This is not a native Windows execution test or a GPU rendering test.
+## Browser and native rendering are exercised separately.
 
 func _initialize() -> void:
 	_check.call_deferred()
 
 
 func _check() -> void:
-	if ProjectSettings.get_setting("application/config/version") != "0.9.0":
+	var source := ConfigFile.new()
+	var settings_path: String = get_script().resource_path.get_base_dir().get_base_dir().path_join("project.godot")
+	if source.load(settings_path) != OK or ProjectSettings.get_setting("application/config/version") != source.get_value("application", "config/version"):
 		push_error("Unexpected packed game version")
 		quit(1)
 		return
@@ -43,6 +45,11 @@ func _check() -> void:
 			quit(1)
 			return
 		art_count += 1
+	for motion: String in ["knight", "mage", "archer", "companion_guard", "scarecrow_swing", "archer_draw"]:
+		if load("res://assets/illustrated/motion/%s.png" % motion) == null:
+			push_error("Missing motion atlas " + motion)
+			quit(1)
+			return
 	if ResourceLoader.exists("res://tests/framework/test_runner.tscn"):
 		push_error("Test scene incorrectly included in playtest")
 		quit(1)

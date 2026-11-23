@@ -105,3 +105,21 @@ func test_store_builds_exclude_tests() -> void:
 	assert_false(sandbox_exclude.contains("tests/line_d/*"), "沙盒 APK 要包含 D 線的測試場景")
 	assert_eq(_opt("Android Sandbox", "command_line/extra_args"), "res://tests/line_d/camp_sandbox.tscn")
 	assert_ne(_opt("Android Sandbox", "package/unique_name"), PACKAGE, "沙盒用不同的套件名稱,不會蓋掉正式的除錯版")
+
+
+func test_web_uses_the_production_game_without_thread_headers_or_test_scenes() -> void:
+	var section := _section_of("Web")
+	assert_ne(section, "")
+	assert_eq(_cfg.get_value(section, "platform"), "Web")
+	assert_eq(_opt("Web", "variant/thread_support"), false)
+	assert_eq(_opt("Web", "variant/extensions_support"), false)
+	assert_true(FileAccess.file_exists(_opt("Web", "html/custom_html_shell")))
+	var filters := String(_cfg.get_value(section, "exclude_filter")).split(",")
+	assert_true("tests/*" in filters)
+	for file: String in DirAccess.get_files_at("res://assets/music"):
+		if file.get_extension() != "wav":
+			continue
+		var track := "assets/music/" + file
+		for pattern: String in filters:
+			if track.match(pattern.strip_edges()):
+				assert_true(ResourceLoader.exists("res://" + track.get_basename() + ".ogg"), track)

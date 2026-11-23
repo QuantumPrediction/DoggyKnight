@@ -52,7 +52,7 @@ func _ready() -> void:
 	add_child(bubble)
 	finger = UiKit.texture_rect(FINGER)
 	finger.name = "Finger"
-	finger.visible = not OS.has_feature("pc")
+	finger.visible = not UiKit.uses_keyboard_hints()
 	add_child(finger)
 	if not EventBus.enemy_died.is_connected(_on_enemy_died):
 		EventBus.enemy_died.connect(_on_enemy_died)
@@ -64,9 +64,9 @@ func _enter(s: Step) -> void:
 	_step_time = 0.0
 	match s:
 		Step.MOVE:
-			bubble_label.text = tr("UI_TUTORIAL_MOVE_PC" if OS.has_feature("pc") else "UI_TUTORIAL_MOVE")
+			bubble_label.text = tr("UI_TUTORIAL_MOVE_PC" if UiKit.uses_keyboard_hints() else "UI_TUTORIAL_MOVE")
 		Step.ATTACK:
-			bubble_label.text = tr("UI_TUTORIAL_ATTACK_PC" if OS.has_feature("pc") else "UI_TUTORIAL_ATTACK")
+			bubble_label.text = tr("UI_TUTORIAL_ATTACK_PC" if UiKit.uses_keyboard_hints() else "UI_TUTORIAL_ATTACK")
 			if GameState.hero_class != &"knight":
 				bubble_label.text = tr("UI_TUTORIAL_RANGED")
 			UiKit.play_sfx(&"ui_tap")

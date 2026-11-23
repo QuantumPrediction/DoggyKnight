@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#10201d">
+  <meta name="description" content="與金毛騎士並肩出發。用鍵盤或觸控在瀏覽器試玩。">
+  <title>金毛騎士 · DoggyKnight</title>
+  <link rel="icon" href="index.icon.png">
+  <style>
+    * { box-sizing: border-box }
+    html, body { margin: 0; width: 100%; height: 100%; }
+    body { display: grid; place-items: center; overflow: hidden; background: radial-gradient(ellipse at center, #274037, #101d1b 72%); color: #fff6e3; font-family: system-ui, sans-serif; }
+    main { width: 100%; height: 100%; height: 100dvh; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); display: grid; place-items: center; container-type: size; }
+    #stage { position: relative; width: min(100cqw, 56.25cqh); aspect-ratio: 9 / 16; overflow: hidden; background: #15231b; box-shadow: 0 0 70px #08141180; }
+    canvas { display: block; width: 100%; height: 100%; outline: 0; touch-action: none; }
+    #cover { position: absolute; inset: 0; display: grid; align-content: end; padding: 7% 8% 9%; isolation: isolate; background: #1e2b1c url("index.png") center / cover no-repeat; }
+    #cover::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(transparent 37%, #18291d44 62%, #102019ef 100%); }
+    h1 { font: 700 clamp(2rem, 9cqw, 3.5rem)/1.15 "Noto Serif TC", "Songti TC", serif; margin: 0 0 .65rem; letter-spacing: .07em; text-shadow: 0 2px 8px #12221e; }
+    p { font-size: 1rem; line-height: 1.5; margin: 0 0 .7rem; }
+    progress { width: 100%; height: .42rem; border: 0; border-radius: 1rem; overflow: hidden; background: #ffffff44; accent-color: #f1c66c; }
+    progress::-webkit-progress-bar { background: #ffffff33 }
+    progress::-webkit-progress-value { background: #f1c66c }
+    progress::-moz-progress-bar { background: #f1c66c }
+    button { justify-self: start; background: #f1c66c; color: #1d281c; border: 0; border-radius: .35rem; min-height: 44px; padding: .5rem 1.4rem; font: 600 1rem system-ui, sans-serif; cursor: pointer; }
+    [hidden] { display: none !important }
+    noscript { position: fixed; inset: auto 1rem 1rem; text-align:center; background:#15231b; padding:1rem }
+  </style>
+</head>
+<body>
+  <main>
+    <div id="stage">
+      <canvas id="canvas" width="360" height="640" tabindex="0" aria-label="金毛騎士遊戲畫面">此瀏覽器需要支援 WebGL 2 才可遊玩。</canvas>
+      <section id="cover" aria-labelledby="title">
+        <h1 id="title">金毛騎士</h1>
+        <p id="status" role="status">正在載入冒險…</p>
+        <progress id="progress" max="1" aria-label="遊戲載入進度"></progress>
+        <button id="retry" hidden>再開一次</button>
+      </section>
+    </div>
+  </main>
+  <noscript>請開啟 JavaScript 以開始遊戲。</noscript>
+  <script src="$GODOT_URL"></script>
+  <script>
+    const canvas = document.getElementById('canvas');
+    const cover = document.getElementById('cover');
+    const statusLine = document.getElementById('status');
+    const progress = document.getElementById('progress');
+    const retry = document.getElementById('retry');
+    retry.onclick = () => location.reload();
+
+    function fitCanvas() {
+      const stageWidth = document.getElementById('stage').getBoundingClientRect().width;
+      const scale = Math.max(1, Math.min(4, Math.ceil(stageWidth * devicePixelRatio / 180)));
+      if (canvas.width !== 180 * scale || canvas.height !== 320 * scale) {
+        canvas.width = 180 * scale;
+        canvas.height = 320 * scale;
+      }
+    }
+    fitCanvas();
+    new ResizeObserver(fitCanvas).observe(document.getElementById('stage'));
+
+    function showMessage(message) {
+      statusLine.textContent = message;
+      cover.hidden = false;
+      progress.hidden = true;
+      retry.hidden = false;
+    }
+
+    let starting = true;
+    function loadFailed(error) {
+      if (!starting) return;
+      const detail = error && error.message ? error.message : String(error);
+      console.error(detail);
+      showMessage('載入中斷了。請確認連線後重試。 ' + detail);
+    }
+    window.addEventListener('unhandledrejection', event => loadFailed(event.reason));
+    window.addEventListener('error', event => loadFailed(event.error || event.message));
+
+    async function launch() {
+      const missing = Engine.getMissingFeatures({ threads: false });
+      if (missing.length) {
+        const features = missing.map(item => item.split(' - ')[0]).join('、');
+        showMessage('這個瀏覽器缺少 ' + features + '。請用支援 WebGL 2 的新版瀏覽器開啟連結。');
+        console.warn('Missing game features: ' + features);
+        return;
+      }
+      const engine = new Engine($GODOT_CONFIG);
+      await engine.startGame({
+        canvas,
+        locale: 'zh_TW',
+        onProgress(loaded, total) {
+          if (total > 0) {
+            progress.value = loaded / total;
+            if (loaded >= total) statusLine.textContent = '正在打開遊戲…';
+          }
+        },
+        onExit(code) {
+          showMessage(code === 0 ? '已離開遊戲。' : '遊戲中斷了，可以重新開啟。');
+        },
+      });
+      starting = false;
+      cover.hidden = true;
+      canvas.focus({ preventScroll: true });
+    }
+    launch().catch(loadFailed);
+  </script>
+</body>
+</html>
