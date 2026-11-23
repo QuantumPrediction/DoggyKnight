@@ -51,6 +51,11 @@ func _update() -> void:
 func _drawing(count: int) -> Texture2D:
 	if actor_code == "goldie":
 		return StoryArt.hero_motion(HeroClasses.valid_id(GameState.hero_class), sprite, count)
+	if actor_code == "chest" and sprite.get_parent() is TreasureChest:
+		var chest := sprite.get_parent() as TreasureChest
+		var drawing := StoryArt.field_chest(chest.tier, sprite.animation, sprite.frame)
+		if drawing != null:
+			return drawing
 	if actor_code == "bulldog":
 		var companion := sprite.get_parent()
 		if companion != null and companion.has_method(&"illustrated_guard_pose"):

@@ -2,7 +2,11 @@
 
 Updated: 2026-11-23 (Hong Kong). Version: **0.9.1 development source**.
 
-## Current work — Bedivere shield motion and permanent native evidence
+## Current work — field chest silhouettes and hinged lids
+
+`codex/field-chest-art` starts from draft #26 at `b413b36bd47e8cb614210d3d714ee5154be0d5bf`. Ordinary, elite and boss field chests now have individual shells, clasps and three successive opening drawings. The production sprite clock and proximity pickup drive the pictures. At fixed 60 Hz all 414 pickup records match the baseline, including one reward per tier. The art tests check the twelve drawings, foot registration and world bounds. Target-player recognition and real phone frame times remain open. Provisional quality stays at 6–6.5/10. [Animated comparison and verification](validation/field-chests/README.md)
+
+## Previous work — Bedivere shield motion and permanent native evidence
 
 [Draft #26](https://github.com/QuantumPrediction/DoggyKnight/pull/26) on `codex/storybook-combat-motion` remains stacked on #25. This continuation preserves that branch and adds one presentation-only candidate. [Registered comparison](requests/20261123-INT-companion-shield-motion.md) · [Validation](validation/companion-shield-motion/README.md)
 

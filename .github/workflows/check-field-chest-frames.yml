@@ -1,0 +1,57 @@
+name: Photograph the field chest tiers
+on:
+  pull_request:
+    branches: ['codex/storybook-combat-motion']
+    types: [opened, synchronize, reopened]
+    paths: ['.github/workflows/check-field-chest-frames.yml', 'assets/illustrated/motion/field_chests.png', 'ui/illustrated/*.gd', 'tests/integration/field_chest_showcase.*']
+permissions: {}
+jobs:
+  pictures:
+    if: github.repository == 'QuantumPrediction/DoggyKnight' && github.event.repository.private == false && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'codex/field-chest-art'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    env:
+      BASELINE: b413b36bd47e8cb614210d3d714ee5154be0d5bf
+      CANDIDATE: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - name: Fetch the public revisions and verify the engine
+        shell: bash
+        run: |
+          set -euo pipefail
+          git init -q .
+          git fetch -q --depth=1 https://github.com/QuantumPrediction/DoggyKnight.git "$CANDIDATE" "$BASELINE"
+          git checkout -q --detach "$CANDIDATE"
+          git worktree add --detach "$RUNNER_TEMP/before" "$BASELINE"
+          cp tests/integration/field_chest_showcase.{gd,tscn} "$RUNNER_TEMP/before/tests/integration/"
+          engine=Godot_v4.7.2-stable_linux.x86_64
+          curl -fsSL --retry 3 "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/$engine.zip" -o "$RUNNER_TEMP/engine.zip"
+          unzip -q "$RUNNER_TEMP/engine.zip" -d "$RUNNER_TEMP"
+          mv "$RUNNER_TEMP/$engine" "$RUNNER_TEMP/godot"
+          echo "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e  $RUNNER_TEMP/godot" | sha256sum --check
+      - name: Capture both versions at 360 by 640
+        shell: bash
+        run: |
+          set -euo pipefail
+          export LIBGL_ALWAYS_SOFTWARE=1
+          for version in before after; do
+            project="$GITHUB_WORKSPACE"
+            if test "$version" = before; then project="$RUNNER_TEMP/before"; fi
+            export CHEST_CAPTURE_DIR="$RUNNER_TEMP/gallery/$version"
+            export XDG_DATA_HOME="$RUNNER_TEMP/profile-$version"
+            mkdir -p "$CHEST_CAPTURE_DIR"
+            "$RUNNER_TEMP/godot" --headless --path "$project" --import > "$RUNNER_TEMP/import-$version.log" 2>&1
+            xvfb-run -a -s '-screen 0 1024x768x24' "$RUNNER_TEMP/godot" --path "$project" --fixed-fps 60 --resolution 360x640 --display-driver x11 --rendering-method gl_compatibility --audio-driver Dummy res://tests/integration/field_chest_showcase.tscn
+            test "$(find "$CHEST_CAPTURE_DIR" -name '*.png' | wc -l)" = 10
+          done
+          cd "$RUNNER_TEMP/gallery"
+          cmp before/pickup.tsv after/pickup.tsv
+          sha256sum before/* after/* | tee sha256sums.txt
+      - name: Preserve the original frames and traces
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: field-chest-native
+          path: ${{ runner.temp }}/gallery
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0

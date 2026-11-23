@@ -171,6 +171,11 @@ static func companion_guard_pose(index: int) -> Texture2D:
 	return cell("motion/companion_guard", clampi(index, 0, 3), 0, 4, 1)
 
 
+static func field_chest(tier: int, animation: StringName, frame: int) -> Texture2D:
+	var column := 1 + clampi(frame, 0, 2) if animation == &"open" else 0
+	return cell("motion/field_chests", column, clampi(tier, 0, 2), 4, 3)
+
+
 static func prepare_combat_paint(id: StringName) -> void:
 	# Load at actor setup so the first impact or pickup doesn't open a new sheet.
 	texture("motion/" + String(id))
