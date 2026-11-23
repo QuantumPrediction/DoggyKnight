@@ -171,6 +171,13 @@ static func companion_guard_pose(index: int) -> Texture2D:
 	return cell("motion/companion_guard", clampi(index, 0, 3), 0, 4, 1)
 
 
+static func scarecrow_swing(facing: Vector2, beat: int) -> Texture2D:
+	var row := 0
+	if absf(facing.y) > absf(facing.x):
+		row = 1 if facing.y > 0.0 else 2
+	return cell("motion/scarecrow_swing", beat, row, 4, 3)
+
+
 static func field_chest(tier: int, animation: StringName, frame: int) -> Texture2D:
 	var column := 1 + clampi(frame, 0, 2) if animation == &"open" else 0
 	return cell("motion/field_chests", column, clampi(tier, 0, 2), 4, 3)

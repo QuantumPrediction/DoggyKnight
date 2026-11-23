@@ -4,6 +4,7 @@ var actor_code: String = ""
 var sprite: AnimatedSprite2D
 var _tex: Texture2D
 var _rect: Rect2
+var _swing_enemy: ScarecrowEnemy
 
 func _ready() -> void:
 	sprite = get_parent() as AnimatedSprite2D
@@ -13,6 +14,11 @@ func _ready() -> void:
 		StoryArt.prepare_combat_paint(HeroClasses.valid_id(GameState.hero_class))
 	elif actor_code == "bulldog":
 		StoryArt.texture("motion/companion_guard")
+	elif actor_code == "scarecrow":
+		var enemy := sprite.get_parent() as ScarecrowEnemy
+		if enemy != null and not enemy.elite and enemy.data != null and enemy.data.id == &"scarecrow":
+			_swing_enemy = enemy
+			StoryArt.texture("motion/scarecrow_swing")
 	_update()
 
 func _process(_delta: float) -> void:
@@ -27,7 +33,16 @@ func _update() -> void:
 	var original := sprite.sprite_frames.get_frame_texture(sprite.animation, mini(sprite.frame, count - 1))
 	if original == null:
 		return
-	var texture := _drawing(count)
+	var flip := sprite.flip_h
+	var texture: Texture2D
+	if _swing_enemy != null:
+		var beat := _swing_enemy.illustrated_swing_beat()
+		if beat >= 0:
+			texture = StoryArt.scarecrow_swing(_swing_enemy.facing, beat)
+			if texture != null:
+				flip = _swing_enemy.facing.x < -0.05
+	if texture == null:
+		texture = _drawing(count)
 	var size := original.get_size()
 	var at := sprite.offset - (size * 0.5 if sprite.centered else Vector2.ZERO)
 	size.y -= float(sprite.sprite_frames.get_meta(&"foot_lift", 0))
@@ -39,7 +54,7 @@ func _update() -> void:
 	var breath := 1.0
 	if actor_code == "goldie" and sprite.animation in [&"idle", &"sleep"]:
 		breath += 0.012 * sin(TAU * (sprite.frame + sprite.frame_progress) / count)
-	scale = Vector2(-1.0 if sprite.flip_h else 1.0, -breath if sprite.flip_v else breath)
+	scale = Vector2(-1.0 if flip else 1.0, -breath if sprite.flip_v else breath)
 	# Anchor the idle breath at the painted soles rather than bobbing the entire body.
 	position.y = (at.y + size.y * StoryArt.HERO_SOLE_Y / StoryArt.HERO_TILE.y) * (1.0 - breath) * (-1.0 if sprite.flip_v else 1.0)
 	sprite.self_modulate.a = 0.0 if texture != null else 1.0

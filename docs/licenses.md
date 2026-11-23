@@ -145,3 +145,7 @@ D 線 M3(2026-11-16):營地新增的金毛像素圖(`game/camp/art/`,由 `game/c
 ### 戰場寶箱
 
 普通、精英與頭目寶箱的十二幅箱體及開蓋插畫由 GPT Image 為本作繪製。遊戲圖集的母稿、提示與 SHA-256 均隨專案保存。[原稿與製作紀錄](validation/field-chests/art.json)
+
+### 普通稻草人兵的揮擊
+
+GPT Image 以專案原有草場稻草人圖稿為角色參考，為同一角色繪製側面、正面和背面三組各四姿勢。圖集使用既有預警及原角色時鐘。[原稿與提示](validation/scarecrow-swing-art/art.json)

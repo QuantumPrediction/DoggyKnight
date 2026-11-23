@@ -1,0 +1,47 @@
+{
+  "generator": "GPT Image",
+  "reference": {
+    "path": "assets/illustrated/foes_meadow.png",
+    "sha256": "ed13f34020c9187b09febb3e9cdcb3c9cf30c906f36f65b4579e915e3fdb0078",
+    "crop": [
+      0,
+      0,
+      1261,
+      311
+    ],
+    "role": "Original ordinary soldier, costume, face, character proportions, palette"
+  },
+  "source": {
+    "file": "source.png",
+    "sha256": "afcf937e2963c80eb83acc0fa3152597a386fa0bf21f4db914b669f2b4dbdda5",
+    "size": [
+      1448,
+      1086
+    ],
+    "prompt": "Repose the supplied model sheet of DoggyKnight's ordinary straw farmhand into ONE production transparent RGBA sprite atlas. Use the pictured character as the fixed model: short, chunky original autumn scarecrow, cream burlap head with two black button eyes and stitched smiling mouth, crooked floppy indigo hat with terracotta patches, brick scarf, short patched blue smock, straw wrists, worn brown boots, simple wooden three-tined farming fork. Maintain the playful small field enemy and hand-painted ink-and-gouache storybook style, warm outlines, wood grain, soft straw, large shapes clear at 56 px. This is one same character 12 times; keep head/torso/boot size consistent. Orthographic game camera looking slightly down at the character.\nLayout: landscape, exactly 4 equal columns by 3 equal rows, 12 full-body isolated figures on genuine transparent background, generous blank gutters, all hats, boots and fork tips wholly inside each cell. Feet on one consistent baseline in each row. Every row is a four-beat attack animation. COLUMN 1 starts warning: elbows bend, draws fork up close to the body, waist twists and knees lower, fork steep but plainly off idle. COLUMN 2 late warning: gather deeper at the rear leg, fork raised well above and back across the shoulder, strongest compressed silhouette, do NOT extend in front yet. COLUMN 3 release: body leans forward on braced front foot, fork extends in the row's specific facing direction. COLUMN 4 follow-through: shoulders drop and fork tip lowers after the swing, rear heel rises. Body stays in its cell, no exaggerated squash.\nROW 1 ALWAYS faces SCREEN RIGHT in three-quarter profile, with nose and both toes pointing right. In release the fork points right. ROW 2 faces STRAIGHT TOWARDS THE CAMERA, both button eyes looking directly at the viewer, chest and belt buckle visible; fork thrust is foreshortened towards viewer and screen bottom. ROW 3 faces STRAIGHT AWAY FROM CAMERA in back view, show only back of floppy hat, triangular knot of scarf, back seam of tunic, boot heels; absolutely no face or eyes in row 3. The fork extends into depth towards screen top in the release. Think animator's rotation sheet. Distinguish front from back, preserve a usable facing direction even at tiny sizes. Uniform consistent light from upper left. Transparent in all gutters, no surface under feet, no shadows, glowing effects, slash trails, particles, stars, UI, borders, numbering or writing."
+  },
+  "runtime": {
+    "path": "assets/illustrated/motion/scarecrow_swing.png",
+    "size": [
+      768,
+      576
+    ],
+    "sha256": "bda523c89139824647f2b9b230c287fe974781fa1b3c1c721ebac5b9f68b2764",
+    "rows": [
+      "side",
+      "towards_camera",
+      "away_from_camera"
+    ],
+    "columns": [
+      "warning",
+      "warning_hot",
+      "release",
+      "follow_through"
+    ],
+    "tile": [
+      192,
+      192
+    ],
+    "packer": "tools/pack_scarecrow_swing.py"
+  }
+}
