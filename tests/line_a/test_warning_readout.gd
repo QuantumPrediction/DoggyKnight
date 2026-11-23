@@ -172,3 +172,10 @@ func test_warning_readout_contains_every_text_row_above_the_panel_border() -> vo
 	assert_true(readout.action.get_rect().end.y <= readout.detail.position.y)
 	assert_true(readout.detail.get_rect().end.y <= 27.0, "detail must not overlap the focus meter")
 	assert_true(readout.dodge.position.y >= 29.0, "roll text stays below the meter")
+
+
+func test_roll_ready_instruction_uses_glyphs_in_the_bundled_face() -> void:
+	var font := load("res://assets/fonts/StorySans.otf") as FontFile
+	var bundled := font.get_supported_chars()
+	for ch: String in tr("UI_TACTIC_ROLL_READY"):
+		assert_true(bundled.contains(ch), "Roll-ready glyph must ship with the game: " + ch)

@@ -78,6 +78,7 @@ static func spawn(host: Node, fx_name: StringName, at: Vector2, rotation: float 
 	if sprite_frames == null or not host.is_inside_tree():
 		return null
 	var fx := OneShotFx.new()
+	fx.player_ink = host is GoldiePlayer and fx_name in [&"slash", &"hit_spark"]
 	fx.sprite_frames = sprite_frames
 	fx.rotation = rotation
 	fx.scale = scale

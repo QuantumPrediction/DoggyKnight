@@ -527,6 +527,18 @@ func _update_animation() -> void:
 		_play(&"idle")
 
 
+## Presentation only: maps existing combat clocks to the four painted shield poses.
+## It does not start, extend or resolve a guard, block or bash.
+func illustrated_guard_pose() -> int:
+	if _block_flash_left > 0.0:
+		return 2
+	if _bump_anim_left > 0.0 and sprite != null and sprite.animation == &"attack":
+		return 3
+	if mode == Mode.GUARD:
+		return 0 if _mode_time < 0.18 else 1
+	return -1
+
+
 ## 一蹦一跳:跑步時小跳;過關時原地大跳(沒有 victory 動畫時)。
 func _update_bounce(delta: float) -> void:
 	var y := 0.0

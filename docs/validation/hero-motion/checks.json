@@ -1,0 +1,266 @@
+{
+  "published_game": {
+    "branch": "codex/storybook-combat-motion",
+    "pr": 26,
+    "base_pr": 25,
+    "base": "6254f092a6c18931cb884c5f6d16d0aed713d262",
+    "tested_revision": "7429b3634c19ff04dea5cbf9c461776d93dc73fb",
+    "tree_with_one_time_read_only_workflow": "b23779bafc733f56bedc06f0b7e4a82554f76139",
+    "tree_without_workflow": "b0007fe639d0007225c25f127d84542d1404a099"
+  },
+  "original_local": {
+    "source": "09224114b318657d5c1c915676293cb6b1cd3d4e",
+    "tree": "72af5b9a5aeaf37cef644a50a6804a4adc3a43ce",
+    "full_tests": 967,
+    "failed": 0,
+    "broken": 0,
+    "engine": "4.7.2.stable.official.ed1daf0bf",
+    "full_log_sha256": "a91a595010b235f8182922ca32afb12e6f8ec3e02d335c56bb682c1b6c9dd08a",
+    "focused_test_sha256": "562b77854749ab9f3ab14169f6bd20c8f386030c15cece14a8f4489fe5e37744",
+    "focused_25_failed": 7,
+    "focused_candidate_failed": 0,
+    "focused_total": 8,
+    "capture_script_sha256": "2d6848385969b7128e40643ad5733d604a5e1723f34935673b179e768b2a15e0",
+    "original_comparison_gif_sha256": "d50ecbe7c633d8078760c94c8421673244a5c4d51aa1374afa624f53a55e579f",
+    "original_comparison_gif_attached": false,
+    "shutdown_objects": 27,
+    "shutdown_resources": 21,
+    "release_first_hit_damage": {
+      "knight": [
+        8,
+        8,
+        10
+      ],
+      "mage": [
+        16,
+        20,
+        15
+      ],
+      "archer": [
+        10,
+        12,
+        9
+      ]
+    },
+    "report_hashes": [
+      "c49e74cf9fe1b388f0037b3a05838cb126e8e2fd07823e684b2d16f53909f5f9",
+      "5473b13873603a7fd20a4e167ec676a9432154b5fc04ee712a98c2ec965ffb5c"
+    ],
+    "save_hashes": [
+      "7066f2853ad0e9daa51c631feb7f985dbead60f16672f52ef5499ef6884124b5",
+      "c03fdbf9a16a464f7cb75626b32c765658746c0dec225d2aba99828f33f48ebc"
+    ]
+  },
+  "public_art": {
+    "gpt_image_production_sheets": 6,
+    "distinct_alpha_masks_at_32": 57,
+    "clear_edge_min_px": {
+      "knight": 6,
+      "mage": 15,
+      "archer": 14,
+      "reactions": 14,
+      "effects": 7,
+      "objects": 5
+    },
+    "planted_sole_rows_zero_based": [
+      175,
+      177
+    ],
+    "airborne_row": 160,
+    "runtime_png_sha256_source": "art.json",
+    "demo": {
+      "path": "hero-demo.gif",
+      "sha256": "5ba7572644dbecd8e0db01eefb7c4867856002efc5b3146775fc7ca5c241d08f",
+      "dimensions": [
+        588,
+        224
+      ],
+      "frames": 19,
+      "duration_seconds": 3.01,
+      "bytes": 458652,
+      "verification": "all 19 independently decoded LZW indexed pixel buffers matched their composition"
+    }
+  },
+  "public_tests": {
+    "before": {
+      "run": 45065507257,
+      "job": 137340630812,
+      "focused": 8,
+      "focused_failed": 0,
+      "full": 967,
+      "failed": 1,
+      "broken": 0,
+      "missing_font_character": "緒",
+      "roll_row_y": 29,
+      "roll_row_height": 15,
+      "inner_panel_bottom": 40,
+      "log_sha256": "43597daeffbc3bf42b0faa93b6d6a7e01e908139c59c0087aeb20bcf9c9ec942"
+    },
+    "after": {
+      "run": 45066383244,
+      "job": 137343353465,
+      "focused_motion": 8,
+      "focused_warning": 9,
+      "full": 968,
+      "failed": 0,
+      "broken": 0,
+      "log_sha256": "4abcebe977c7c9ae33fcedfd6be6639a2cbecb0c6d5e2cb246ea1842195ae73e",
+      "post_test_archive_check_failed": true
+    },
+    "fixed_fps": 60,
+    "game_event_rows": 480,
+    "identical_event_file_sha256": "6eceb2822e1e18d6884e6e8e5bb6789d608e402f80e05e4ffaabd853454d408d"
+  },
+  "native_screens": {
+    "capture_before_text": "c6dacba728cab1afa404911e82b051aba58d0b89",
+    "capture_after_text": "7429b3634c19ff04dea5cbf9c461776d93dc73fb",
+    "renderer": "Godot X11 GL Compatibility, Mesa 25.2.8 llvmpipe, OpenGL 4.5",
+    "run": 45066383244,
+    "job": 137343353867,
+    "first_failed_render_run": 45065902731,
+    "matched": [
+      {
+        "revision": "before",
+        "scene": "archer_tracking",
+        "safe": true,
+        "text_fits": false,
+        "sha256": "682a9707b8b4c214f296fc4a93787406e924940ebeb76e3eef371133c0456865",
+        "bytes": 769875
+      },
+      {
+        "revision": "before",
+        "scene": "archer_locked_focus_ready",
+        "safe": true,
+        "text_fits": false,
+        "sha256": "8f4b9c565e055ee373c8acbb0aa54137429e6fb7c54044f7f6371e567b5c53d4",
+        "bytes": 769589
+      },
+      {
+        "revision": "before",
+        "scene": "mage_roll_cooldown",
+        "safe": true,
+        "text_fits": true,
+        "sha256": "2790a7cc71be73985745ac2daa1b2673bd83114b660d2a1e0138a97e3ce34376",
+        "bytes": 770864
+      },
+      {
+        "revision": "before",
+        "scene": "knight_small",
+        "safe": true,
+        "text_fits": false,
+        "sha256": "87ce9d9afed12d5d6b7a561a0bc0ceb1fe3f5ee20fb3be18e23d454dff6a5787",
+        "bytes": 401313
+      },
+      {
+        "revision": "before",
+        "scene": "archer_notched",
+        "safe": true,
+        "text_fits": false,
+        "sha256": "61ff8f1792085fe6c8281eff1edf351278d021a62857a8a60375b3ab830a6db8",
+        "bytes": 595580
+      },
+      {
+        "revision": "after",
+        "scene": "archer_tracking",
+        "safe": true,
+        "text_fits": true,
+        "sha256": "70a44a370475f436ff84969f200d82c007765619ddbeb803195d412d704662d7",
+        "bytes": 769609
+      },
+      {
+        "revision": "after",
+        "scene": "archer_locked_focus_ready",
+        "safe": true,
+        "text_fits": true,
+        "sha256": "21dd9ada3480f0713f74091c601c935f7477df70b9cd5bf2af011a7b8536ec81",
+        "bytes": 769231
+      },
+      {
+        "revision": "after",
+        "scene": "mage_roll_cooldown",
+        "safe": true,
+        "text_fits": true,
+        "sha256": "e20944218022c69c7dc728427a84baef998f406c4f5d472abbbc6add6c4c3997",
+        "bytes": 770831
+      },
+      {
+        "revision": "after",
+        "scene": "knight_small",
+        "safe": true,
+        "text_fits": true,
+        "sha256": "52eea68cbc753d1caf8eb08b2607ad4cfc65baeba0bdde8a584db2bd11b4da55",
+        "bytes": 400960
+      },
+      {
+        "revision": "after",
+        "scene": "archer_notched",
+        "safe": true,
+        "text_fits": true,
+        "sha256": "4a61e7ce83cdc1119e44d624b2eae14a6cae09b1152549dd68e44e688f476dba",
+        "bytes": 595379
+      }
+    ],
+    "original_artifact": {
+      "id": 14771955250,
+      "sha256": "7732df9bc847f8ba5380b9455b3960da0a0fdac1b9c000616e8f15d7814691e2",
+      "expires_utc": "2026-11-23T20:26:39Z"
+    },
+    "five_final_views": {
+      "id": 14772175663,
+      "sha256": "f0ce8d38a7c4bf1e506037d4abf09dbc878b2986e37bf5f68fda632ecba2c660",
+      "expires_utc": "2027-02-20T20:34:21Z"
+    }
+  },
+  "replays": {
+    "baseline": "#25",
+    "candidate": "7429b3634c19ff04dea5cbf9c461776d93dc73fb",
+    "seed": 19,
+    "policy": "cautious",
+    "same_runner_pairs": [
+      {
+        "route": 0,
+        "kind": "report",
+        "byte_identical": true,
+        "before_sha256": "def82d4a938d03c6a0f2bf71903b8d1745f8f0191692653334b44a213f625a11",
+        "after_sha256": "def82d4a938d03c6a0f2bf71903b8d1745f8f0191692653334b44a213f625a11"
+      },
+      {
+        "route": 0,
+        "kind": "save",
+        "byte_identical": true,
+        "before_sha256": "7066f2853ad0e9daa51c631feb7f985dbead60f16672f52ef5499ef6884124b5",
+        "after_sha256": "7066f2853ad0e9daa51c631feb7f985dbead60f16672f52ef5499ef6884124b5"
+      },
+      {
+        "route": 1,
+        "kind": "report",
+        "byte_identical": true,
+        "before_sha256": "c469db0a0085e0f4ffdf3112868f9d4233ee7d8543d34f857d2551c10ad0b1b9",
+        "after_sha256": "c469db0a0085e0f4ffdf3112868f9d4233ee7d8543d34f857d2551c10ad0b1b9"
+      },
+      {
+        "route": 1,
+        "kind": "save",
+        "byte_identical": true,
+        "before_sha256": "3c59d1a1d3ff277983184c4195bfd66f09cf292f3735b9a48bcfff97772825f4",
+        "after_sha256": "3c59d1a1d3ff277983184c4195bfd66f09cf292f3735b9a48bcfff97772825f4"
+      }
+    ],
+    "outcomes": [
+      "OBSERVED_ROUTE before 0 down_limit 3 1",
+      "OBSERVED_ROUTE after 0 down_limit 3 1",
+      "OBSERVED_ROUTE before 1 complete 2 0",
+      "OBSERVED_ROUTE after 1 complete 2 0"
+    ],
+    "absolute_historical_expectation_failed": true,
+    "same_runner_verified_job": 137346620683,
+    "checkpoint_reports": [
+      "ubuntu-seed19/marksman-report.json",
+      "ubuntu-seed19/outrider-report.json"
+    ],
+    "historical_reports": [
+      "../r03a/anchors/archer_route0_s19_cautious.json",
+      "../r03a/anchors/archer_route1_s19_cautious.json"
+    ]
+  }
+}

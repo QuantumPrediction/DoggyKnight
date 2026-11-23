@@ -1,0 +1,156 @@
+{
+  "producer": "OpenAI GPT Image (built-in)",
+  "base_commit": "6254f092a6c18931cb884c5f6d16d0aed713d262",
+  "packing_tool": "tools/pack_hero_motion.py",
+  "image_format": "RGBA PNG",
+  "sheets": [
+    {
+      "sheet": "knight",
+      "references": [
+        "assets/illustrated/hero_sheet.png (thumbnail 460x390, preserve aspect)"
+      ],
+      "prompt": "Use case: identity-preserve, production character sprite animation for DoggyKnight. Re-draw the indicated golden retriever from the reference as ONE perfectly regular square 3 columns by 3 rows transparent animation atlas, nine separate full-body silhouettes. Same endearing adult golden retriever throughout, dark nose, soft floppy ears, golden tail, three-quarter biped side view facing SCREEN RIGHT every time. Elegant, finely inked, hand-painted gouache Arthurian children's-book realism. Honey fur, cream muzzle, warm umber contour, soft light from upper left, satin metal and restrained colors. Clear action silhouette at game scale. Exactly nine figures, centered on their individual equal cells; completely transparent gutters wider than the brush edge, all weapons, tails, ears, foot and hem inside the cell. Each standing foot on the same baseline in its cell. Same head size, limb length, boots and weapon ornament in every frame. No panel borders, scenery, labels, letters, UI, drop shadows, floor, effects or bits of loose background. Do not fill the whole cell with the face. Feet are weight-bearing paws, sleeves end in expressive dog paws, never human fingers. Grid positions read left to right: row one: relaxed ready, running contact near foot forward, passing position legs under hip; row two: opposite running contact far foot forward, running lift legs gathered with cape trailing, preparing the class move; row three: precise release, follow-through, recovery to ready. Really pose the limbs and angle torso/changing ears in the motion, keep character identifiable. Leave generous margins for runtime anchoring. The knight reference is the identity and costume guide. Indigo short cape, brushed silver breastplate and ochre brass shoulder fittings, pale simple steel long sword with a small gold crossguard in right paw, dark leather boots. In row two right it draws the sword high behind the head without hiding the face; row three left it lunges and the blade reaches horizontally right; center it carries past the strike low to the right; right it settles back to guard. Blade is visibly one object throughout.",
+      "source": {
+        "path": "docs/validation/hero-motion/source/knight.png",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "bytes": 1617613,
+        "sha256": "97ffbec4d6791a503a864b5922d5fda84b8a09a41e1a5f5c3f115fe41fdfdcda"
+      },
+      "runtime": {
+        "path": "assets/illustrated/motion/knight.png",
+        "dimensions": [
+          768,
+          576
+        ],
+        "bytes": 402341,
+        "sha256": "a547b1d86b026dc83701d03e94024ce22ee1262e0b0f54d09c82719e3b42ccf9"
+      }
+    },
+    {
+      "sheet": "mage",
+      "references": [
+        "assets/illustrated/hero_classes.png (thumbnail 460x490, preserve aspect)"
+      ],
+      "prompt": "Use case: identity-preserve, production character sprite animation for DoggyKnight. Re-draw the indicated golden retriever from the reference as ONE perfectly regular square 3 columns by 3 rows transparent animation atlas, nine separate full-body silhouettes. Same endearing adult golden retriever throughout, dark nose, soft floppy ears, golden tail, three-quarter biped side view facing SCREEN RIGHT every time. Elegant, finely inked, hand-painted gouache Arthurian children's-book realism. Honey fur, cream muzzle, warm umber contour, soft light from upper left, satin metal and restrained colors. Clear action silhouette at game scale. Exactly nine figures, centered on their individual equal cells; completely transparent gutters wider than the brush edge, all weapons, tails, ears, foot and hem inside the cell. Each standing foot on the same baseline in its cell. Same head size, limb length, boots and weapon ornament in every frame. No panel borders, scenery, labels, letters, UI, drop shadows, floor, effects or bits of loose background. Do not fill the whole cell with the face. Feet are weight-bearing paws, sleeves end in expressive dog paws, never human fingers. Grid positions read left to right: row one: relaxed ready, running contact near foot forward, passing position legs under hip; row two: opposite running contact far foot forward, running lift legs gathered with cape trailing, preparing the class move; row three: precise release, follow-through, recovery to ready. Really pose the limbs and angle torso/changing ears in the motion, keep character identifiable. Leave generous margins for runtime anchoring. Use ONLY the teal-robed mage in the UPPER HALF of the reference, exclude its archer. Hood down, floppy ears visible, midnight teal robe and gold embroidered hems, little brass clasp, one warm, gnarled oak staff with an amber seed in an open fork, worn brown boots. Staff is always in its paws. In row two right the mage plants its rear paw and gathers the staff across its chest; row three left it extends the staff RIGHT, far paw opens and robe lifts; in center its sleeves and ears follow a fraction late as the staff tips; at the right it breathes out and lowers the staff back to rest. No spell, particles or halo on the actor sheet; those are rendered separately.",
+      "source": {
+        "path": "docs/validation/hero-motion/source/mage.png",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "bytes": 1731593,
+        "sha256": "59f84f3439b0b30785b6c80fc4b1dc190ae968dc09dd0f71c61236fa6de0f777"
+      },
+      "runtime": {
+        "path": "assets/illustrated/motion/mage.png",
+        "dimensions": [
+          768,
+          576
+        ],
+        "bytes": 381640,
+        "sha256": "af52a6825221fd9312f2822c257dfd8655cda110fb82f5f838985a5d83ff832c"
+      }
+    },
+    {
+      "sheet": "archer",
+      "references": [
+        "assets/illustrated/hero_classes.png (thumbnail 460x490, preserve aspect)"
+      ],
+      "prompt": "Use case: identity-preserve, production character sprite animation for DoggyKnight. Re-draw the indicated golden retriever from the reference as ONE perfectly regular square 3 columns by 3 rows transparent animation atlas, nine separate full-body silhouettes. Same endearing adult golden retriever throughout, dark nose, soft floppy ears, golden tail, three-quarter biped side view facing SCREEN RIGHT every time. Elegant, finely inked, hand-painted gouache Arthurian children's-book realism. Honey fur, cream muzzle, warm umber contour, soft light from upper left, satin metal and restrained colors. Clear action silhouette at game scale. Exactly nine figures, centered on their individual equal cells; completely transparent gutters wider than the brush edge, all weapons, tails, ears, foot and hem inside the cell. Each standing foot on the same baseline in its cell. Same head size, limb length, boots and weapon ornament in every frame. No panel borders, scenery, labels, letters, UI, drop shadows, floor, effects or bits of loose background. Do not fill the whole cell with the face. Feet are weight-bearing paws, sleeves end in expressive dog paws, never human fingers. Grid positions read left to right: row one: relaxed ready, running contact near foot forward, passing position legs under hip; row two: opposite running contact far foot forward, running lift legs gathered with cape trailing, preparing the class move; row three: precise release, follow-through, recovery to ready. Really pose the limbs and angle torso/changing ears in the motion, keep character identifiable. Leave generous margins for runtime anchoring. Use ONLY the olive-green archer in the LOWER HALF of the reference, exclude its teal mage. Forest olive half-cape, cream ochre vest, leather bracers, russet quiver and cream-feathered arrows, one ash recurve bow. No hat, face visible. In row two right the planted archer has bent bow and a nocked arrow held at its cheek aimed RIGHT; row three left the string has just sprung forward, bow still right, drawing paw snaps just behind cheek, NO loose arrow; center lets the bow tip down, ears and quiver settle; right returns to a quiet ready stance. The string must connect the two tips of a single bow. No smoke, arrows in flight or drawn trails on the actor sheet.",
+      "source": {
+        "path": "docs/validation/hero-motion/source/archer.png",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "bytes": 1845181,
+        "sha256": "9aee0b3959b934168585150413630ebdf4c4be24f54a1db7717cfbb9411e456d"
+      },
+      "runtime": {
+        "path": "assets/illustrated/motion/archer.png",
+        "dimensions": [
+          768,
+          576
+        ],
+        "bytes": 418024,
+        "sha256": "a3422f2a6001cefd62d36fb3e035e98ce7b7cf3d1b7290892be6988fc7b2e5d6"
+      }
+    },
+    {
+      "sheet": "effects",
+      "references": [],
+      "prompt": "Use case: stylized-concept. Production transparent in-game painterly special effects atlas for an original gouache and ink fantasy adventure about a golden retriever. A perfectly regular four-column by three-row LANDSCAPE grid; EXACTLY 12 isolated effects, no figures, text, squares, frames or background; transparency between all elements, 12% margins each cell; use rich warm pigment, not 3D or neon. Row 1 reads left to right as one friendly sword swipe: an ivory-brass hooked glint, a narrow rising crescent, a fully extended slender crescent opening toward the LEFT with its strongest edge on the RIGHT, finally two separating gold leaf-like slivers. Leave most of each interior clear, not giant white disks. Row 2 shows FOUR successive in-flight phases of the SAME little mage projectile traveling to the RIGHT: amber luminous seed in a small turquoise ring, pointed nose at right and two airy ribbon tails trailing LEFT. Keep nose, scale, center and travel direction stable; ribbons gently turn from narrow edge to broad face and back. Row 3 shows four evenly centered phases of a tiny cheerful hit spark: compressed brass diamond, compact ivory four-point glint, four short golden petals splaying, last two fading dots. No injury or characters, no red hazard cones or warnings, no gold border, no lettering. All silhouettes isolated and complete. This is game animation stock ready for an atlas.",
+      "source": {
+        "path": "docs/validation/hero-motion/source/effects.png",
+        "dimensions": [
+          1448,
+          1086
+        ],
+        "bytes": 739392,
+        "sha256": "016e987823c4e4ad11944a00e7ce4cfcbc3d3309eda369733abd04f5ed46e183"
+      },
+      "runtime": {
+        "path": "assets/illustrated/motion/effects.png",
+        "dimensions": [
+          512,
+          384
+        ],
+        "bytes": 98439,
+        "sha256": "169623a6ffca2b48037d55a00c28f306696a1cbbe37281226900d91afc3c9be3"
+      }
+    },
+    {
+      "sheet": "objects",
+      "references": [],
+      "prompt": "Use case: stylized-concept. A perfectly regular SQUARE 3x3 atlas with exactly NINE standalone painted inventory and world icons on TRUE TRANSPARENT background for an original Arthurian golden retriever adventure. Delicate dark walnut outlines, honey highlights, muted sage/teal, painterly storybook gouache, strong silhouettes legible at 24 pixels. Each icon alone, centered with clear space on every side, fill about 72% of its own cell, no background plates, cards, shadows, drop glows, letters, numbers or labels. Top row left to right: a silver guard long sword with small warm brass crossguard and brown leather grip diagonal with its tip at upper right; a gnarled oak mage staff with a small amber seed in an open fork; a graceful ash wood recurve bow with taut bowstring, no arrow. Middle row: a small upright brass pack handbell with a deep blue ribbon on its ring; a heart-shaped ruby ember encased in a forged bronze hearth pendant; a round aged-brass woodland compass with a single green leaf-shaped needle and suspension loop. Bottom row: ONE very slim horizontal ash arrow centered tip pointing RIGHT, cream feather fletching at LEFT, absolutely horizontal; one luminous small cut turquoise experience shard; one simple honey bone-shaped dog biscuit with a stamped paw. Keep weapon and relic recognizable as distinct things. Consistent upper left light. No hands, figures, scenes, physical construction details or text.",
+      "source": {
+        "path": "docs/validation/hero-motion/source/objects.png",
+        "dimensions": [
+          1263,
+          1246
+        ],
+        "bytes": 1283782,
+        "sha256": "d95362cdb6d4decb1ed0e6adfe09294750d3b78f3df1cd25f1309591d67b904f"
+      },
+      "runtime": {
+        "path": "assets/illustrated/motion/objects.png",
+        "dimensions": [
+          480,
+          480
+        ],
+        "bytes": 211843,
+        "sha256": "e94f35cbafe0506d43b35b0098658a07d275c4b92bc29f4be67a02d2525f9b69"
+      }
+    },
+    {
+      "sheet": "reactions",
+      "references": [
+        "source/knight.png",
+        "source/mage.png",
+        "source/archer.png"
+      ],
+      "prompt": "Use case: identity-preserve. Edit these three game animation references into one matching REACTION atlas for DoggyKnight. Row identities exactly: TOP row the blue-caped silver-and-brass sword knight from image 1, MIDDLE row the hood-down teal and gold oak-staff mage from image 2, BOTTOM row the olive-caped ash bow archer with quiver from image 3. All the same warm floppy-eared golden retriever hero with the exact faces and lit storybook gouache finish from the references. One perfectly square 3 by 3 grid, nine transparent isolated full body figures, identical camera/scale and generous margins within every cell, all face screen RIGHT. Column 1 for ALL three rows: match the calm standing pose in the top left of that class reference as closely as possible, both eyes gently closed in a quick friendly blink, paws and equipment in the same position. Column 2: joyful post-battle celebration, tail up, laughing, one paw in the air and gear held safely; all three keep their distinctive costume, full boots inside cell. Column 3: dog has curled up for a peaceful little nap beside its own weapon, eyes closed, low compact silhouette, cheek on its paws, tail curled around hindquarters. Same baseline for standing/cheer and the bottom of the resting dog, same head scale; the sleeping pose is deliberately SHORTER in the cell, no enlarging sleepers. All items, bows, tails and clothing inside their cell. No pain, wounds, tears, words, letters, scenery, dust, panels, frames, floor shadows or UI; true empty transparent gutters. This is production game key art, not a character poster.",
+      "source": {
+        "path": "docs/validation/hero-motion/source/reactions.png",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "bytes": 1741938,
+        "sha256": "470bd5fa5033cc9dc26a4cb52538a242367fc9f21db132b986ffff9a456b4c72"
+      },
+      "runtime": {
+        "path": "assets/illustrated/motion/reactions.png",
+        "dimensions": [
+          768,
+          576
+        ],
+        "bytes": 372168,
+        "sha256": "e434dc7610b5e74e7987ada587e58deaa00352a1bb9ea90c3bbfdb1c4d4dc632"
+      }
+    }
+  ]
+}

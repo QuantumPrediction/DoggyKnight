@@ -3,6 +3,14 @@ extends RefCounted
 ## High-resolution presentation resources. Logical combat dimensions remain unchanged.
 
 const ROOT := "res://assets/illustrated/"
+const HERO_TILE := Vector2(256, 192)
+const HERO_HIP_X := 120.0
+const HERO_SOLE_Y := 176.0
+const MOTION_OBJECTS := {
+	"training_sword": 0, "apprentice_staff": 1, "ash_bow": 2,
+	"pack_bell": 3, "hearth_heart": 4, "leaf_compass": 5,
+	"hero_arrow": 6, "fx:exp_orb": 7, "fx:snack": 8,
+}
 const WORLDS: Array = [
 	["sword_stone", "wheat_field", "meadow", "farm_fence", "crow_forest", "bridge"],
 	["castle_town", "castle_courtyard", "royal_library", "castle_wall", "magic_garden", "green_chapel"],
@@ -58,7 +66,8 @@ static func cell(id: String, column: int, row: int, columns: int = 4, rows: int 
 		var tex := AtlasTexture.new()
 		tex.atlas = sheet
 		# Fractional grid dimensions are intentional: generated PNG sizes need not divide evenly.
-		tex.region = Rect2(Vector2(column, row) * dim + Vector2.ONE, dim - Vector2.ONE * 2)
+		var inset := Vector2.ZERO if id.begins_with("motion/") else Vector2.ONE
+		tex.region = Rect2(Vector2(column, row) * dim + inset, dim - inset * 2)
 		if id == "bosses_avalon":
 			# This atlas has uneven authored row gutters. Exclude the next character's plume.
 			var cuts: Array[float] = [0.0, 0.235, 0.47, 0.715, 1.0]
@@ -72,6 +81,8 @@ static func actor(code: String, pose: int = 0) -> Texture2D:
 	if code == "camp_goldie" or code == "scarecrow_archer":
 		return cell("extra_cast", clampi(pose, 0, 3), 1 if code == "camp_goldie" else 0, 4, 2)
 	if code.begins_with("fx:"):
+		if MOTION_OBJECTS.has(code):
+			return object_icon(code)
 		var i: int = FX.get(code.trim_prefix("fx:"), 0)
 		return cell("fx_sheet", i % 4, i / 4)
 	if code == "goldie":
@@ -150,3 +161,55 @@ static func hero(id: StringName, pose_index: int = 0) -> Texture2D:
 		return actor("goldie", pose_index)
 	var row := (0 if id == &"mage" else 2) + pose_index / 4
 	return cell("hero_classes", pose_index % 4, row, 4, 4)
+
+
+static func motion_pose(id: StringName, index: int) -> Texture2D:
+	return cell("motion/" + String(id), index % 3, index / 3, 3, 3)
+
+
+static func companion_guard_pose(index: int) -> Texture2D:
+	return cell("motion/companion_guard", clampi(index, 0, 3), 0, 4, 1)
+
+
+static func prepare_combat_paint(id: StringName) -> void:
+	# Load at actor setup so the first impact or pickup doesn't open a new sheet.
+	texture("motion/" + String(id))
+	texture("motion/reactions")
+	texture("motion/effects")
+	texture("motion/objects")
+
+
+## Rows are prepared as registered drawings with a common baseline in each cell.
+static func hero_motion(id: StringName, sprite: AnimatedSprite2D, frame_count: int) -> Texture2D:
+	var index: int
+	match sprite.animation:
+		&"idle":
+			if sprite.frame == 3:
+				return cell("motion/reactions", 0, HeroClasses.IDS.find(id), 3, 3)
+			index = 0
+		&"run":
+			var cycle := (sprite.frame + sprite.frame_progress) / frame_count
+			index = 1 + mini(3, floori(4.0 * cycle))
+		&"attack":
+			# GoldiePlayer pauses on frame zero during windup and resumes it on the real release.
+			if sprite.frame == 0 and not sprite.is_playing():
+				index = 5
+			else:
+				index = 6 + clampi(sprite.frame - 1, 0, 2)
+		&"hurt", &"victory", &"sleep":
+			var column := [&"hurt", &"victory", &"sleep"].find(sprite.animation)
+			return cell("motion/reactions", column, HeroClasses.IDS.find(id), 3, 3)
+		_:
+			return hero(id, pose("goldie", sprite.animation, sprite.frame))
+	return motion_pose(id, index)
+
+
+static func action_effect(row: int, frame: int) -> Texture2D:
+	return cell("motion/effects", clampi(frame, 0, 3), row, 4, 3)
+
+
+static func object_icon(id: String) -> Texture2D:
+	if not MOTION_OBJECTS.has(id):
+		return null
+	var index: int = MOTION_OBJECTS[id]
+	return cell("motion/objects", index % 3, index / 3, 3, 3)

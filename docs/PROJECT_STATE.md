@@ -2,7 +2,30 @@
 
 Updated: 2026-11-23 (Hong Kong). Version: **0.9.1 development source**.
 
-## Current work — keyboard choices in chapter one
+## Current work — Bedivere shield motion and permanent native evidence
+
+[Draft #26](https://github.com/QuantumPrediction/DoggyKnight/pull/26) on `codex/storybook-combat-motion` remains stacked on #25. This continuation preserves that branch and adds one presentation-only candidate. [Registered comparison](requests/20261123-INT-companion-shield-motion.md) · [Validation](validation/companion-shield-motion/README.md)
+
+- GPT Image produced four registered Bedivere drawings: shield raise, ready brace, real block impact and existing shield bash. The illustrated skin only reads the companion's current animation fields. It does not start or extend any guard, timer, hit, counter, collision or signal. Missing art falls back to the existing party drawing.
+- Four cells have distinct silhouettes, alpha gutters and a common two-pixel baseline. The new focused checks verify all four selections and that reading them leaves cooldown, duration, block and bash counters unchanged. The first test attempt used unsupported assertion helpers and is retained as one broken-file failure; the corrected motion suite passes 10/10.
+- Complete regression passes **970/970**, including the existing guard, warning, touch, save and three-minute tests. The three heroes' 480-row fixed physics record remains byte-identical to #26 at `6eceb282…408d`. Existing shutdown warnings remain: 27 ObjectDB objects, 21 resources and the listed RIDs.
+- Both native-image artifacts were recovered before expiry and verified. Five final images and all ten before/after PNGs are now permanent project files under [hero-motion](validation/hero-motion/README.md), with the original archive and per-image hashes preserved.
+- This host has no X11, Wayland or Xvfb, so there is no new native 360×640 candidate capture or phone frame-time evidence. Physical Windows, phone and controller input, listening, retention and human interpretation remain open. Target-player sessions total zero. Provisional quality stays at 6–6.5/10.
+
+Next, use a matching native display to capture the four formal guard states at the fixed camera and the existing 360×640 composition. Reject any state that hides more of the enemy warning. Then run the existing 6–8-person uncoached trial when real participants are available; do not infer readability from the staged art.
+
+## Previous work — three heroes in motion
+
+[Draft #26](https://github.com/QuantumPrediction/DoggyKnight/pull/26) on `codex/storybook-combat-motion` stacks on [#25](https://github.com/QuantumPrediction/DoggyKnight/pull/25) at `6254f092a6c18931cb884c5f6d16d0aed713d262`. Ubuntu tested `7429b3634c19ff04dea5cbf9c461776d93dc73fb`. The corresponding game tree without the temporary verification workflow is `b0007fe639d0007225c25f127d84542d1404a099`. [Motion demo](validation/hero-motion/hero-demo.gif) · [Five native game screenshots](https://github.com/QuantumPrediction/DoggyKnight/actions/runs/45067182880/artifacts/14772175663) · [Illustrations, tests and source fingerprints](validation/hero-motion/README.md)
+
+- Six GPT Image atlases drive 36 individual character drawings, twelve friendly effect frames, three weapons, three treasures and three in-world objects. Each hero has four running and four ordinary attack poses. The held windup changes to the release drawing at the actual swing or shot. Friendly slashes, flying bolts and hits animate on existing nodes. The equipment workshop uses the named gear illustrations.
+- An Ubuntu run with the public game exposed an overflowing roll label. The bundled font lacked 緒. Changing the message to 起步可翻滾 kept all five native screenshot cases inside their existing panel and safe area, up from one of five. The complete Ubuntu test suite passed 968/968, with motion 8/8 and warnings 9/9. Three roles produce 480 byte-identical combat event rows. Initial failures and shutdown warnings are preserved.
+- Cautious seed 19 differs across hosts. On the original workstation both archers went down three times. When #25 and #26 run on the same Ubuntu host, both Marksmen go down three times and both Outriders clear the chapter after two downs. Both pairs of reports and both entry saves match byte for byte on that host. Historical parity failed; its cause is unresolved.
+- Physical Windows, phone and controller input, device frame times, listening, retention and human interpretation remain open. Target-player sessions total zero. Provisional quality stays at 6–6.5/10.
+
+The inspected native PNGs have now been archived directly in the project by the continuation above. Keep the workflow read-only. The companion candidate still needs a fixed native render and real-phone crowd observation. [Uncoached trial entry](validation/scene-lifetime/archer-trial.md)
+
+## Previous work — keyboard choices in chapter one
 
 [Draft #25](https://github.com/QuantumPrediction/DoggyKnight/pull/25) on `codex/keyboard-choice-cards` stacks on [draft #24](https://github.com/QuantumPrediction/DoggyKnight/pull/24) at `8859306a2c29769b02c36101d2b6104f4e91358c`. [Public implementation](https://github.com/QuantumPrediction/DoggyKnight/commit/9b9e02e37e795fd8e8839e303484e8f604643307) and the tested local commit `b255592dff62e0c787417dcd9334a3921f9bc482` share tree `71cd5438cc9ba363a1d99cf50ad696689fe045a2`.
 

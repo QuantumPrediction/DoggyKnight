@@ -1,0 +1,137 @@
+[
+	{
+		"capture": "archer_tracking",
+		"lane_locked": false,
+		"safe": true,
+		"status": {
+			"attack_left": 0.0,
+			"attack_total": 0.39,
+			"focus": 0.5,
+			"focus_bonus": 1.35,
+			"focus_seconds": 0.7,
+			"hero": "archer",
+			"locked_warning_count": 0,
+			"phase": "ready",
+			"roll": "ready",
+			"roll_active_left": 0.0,
+			"roll_duration": 0.3,
+			"roll_left": 0.0,
+			"roll_total": 3.0,
+			"warning_count": 1
+		},
+		"text_fits": false,
+		"text_row_bounds": [
+			"[P: (5.0, 2.0), S: (56.0, 12.0)]",
+			"[P: (5.0, 14.0), S: (68.0, 12.0)]",
+			"[P: (5.0, 29.0), S: (68.0, 15.0)]"
+		]
+	},
+	{
+		"capture": "archer_locked_focus_ready",
+		"lane_locked": true,
+		"safe": true,
+		"status": {
+			"attack_left": 0.0,
+			"attack_total": 0.39,
+			"focus": 1.0,
+			"focus_bonus": 1.35,
+			"focus_seconds": 0.7,
+			"hero": "archer",
+			"locked_warning_count": 1,
+			"phase": "ready",
+			"roll": "ready",
+			"roll_active_left": 0.0,
+			"roll_duration": 0.3,
+			"roll_left": 0.0,
+			"roll_total": 3.0,
+			"warning_count": 1
+		},
+		"text_fits": false,
+		"text_row_bounds": [
+			"[P: (5.0, 2.0), S: (56.0, 12.0)]",
+			"[P: (5.0, 14.0), S: (68.0, 12.0)]",
+			"[P: (5.0, 29.0), S: (68.0, 15.0)]"
+		]
+	},
+	{
+		"capture": "mage_roll_cooldown",
+		"lane_locked": false,
+		"safe": true,
+		"status": {
+			"attack_left": 0.0,
+			"attack_total": 0.64,
+			"focus": 0.0,
+			"focus_bonus": 1.0,
+			"focus_seconds": 0.0,
+			"hero": "mage",
+			"locked_warning_count": 0,
+			"phase": "moving",
+			"roll": "cooldown",
+			"roll_active_left": 0.0,
+			"roll_duration": 0.3,
+			"roll_left": 2.4,
+			"roll_total": 3.0,
+			"warning_count": 1
+		},
+		"text_fits": true,
+		"text_row_bounds": [
+			"[P: (5.0, 2.0), S: (56.0, 12.0)]",
+			"[P: (5.0, 14.0), S: (68.0, 12.0)]",
+			"[P: (5.0, 29.0), S: (68.0, 11.0)]"
+		]
+	},
+	{
+		"capture": "knight_small",
+		"lane_locked": false,
+		"safe": true,
+		"status": {
+			"attack_left": 0.0,
+			"attack_total": 0.38,
+			"focus": 0.0,
+			"focus_bonus": 1.0,
+			"focus_seconds": 0.0,
+			"hero": "knight",
+			"locked_warning_count": 0,
+			"phase": "out_of_range",
+			"roll": "ready",
+			"roll_active_left": 0.0,
+			"roll_duration": 0.3,
+			"roll_left": 0.0,
+			"roll_total": 3.0,
+			"warning_count": 1
+		},
+		"text_fits": false,
+		"text_row_bounds": [
+			"[P: (5.0, 2.0), S: (56.0, 12.0)]",
+			"[P: (5.0, 14.0), S: (68.0, 12.0)]",
+			"[P: (5.0, 29.0), S: (68.0, 15.0)]"
+		]
+	},
+	{
+		"capture": "archer_notched",
+		"lane_locked": true,
+		"safe": true,
+		"status": {
+			"attack_left": 0.0,
+			"attack_total": 0.39,
+			"focus": 1.0,
+			"focus_bonus": 1.35,
+			"focus_seconds": 0.7,
+			"hero": "archer",
+			"locked_warning_count": 1,
+			"phase": "ready",
+			"roll": "ready",
+			"roll_active_left": 0.0,
+			"roll_duration": 0.3,
+			"roll_left": 0.0,
+			"roll_total": 3.0,
+			"warning_count": 1
+		},
+		"text_fits": false,
+		"text_row_bounds": [
+			"[P: (5.0, 2.0), S: (56.0, 12.0)]",
+			"[P: (5.0, 14.0), S: (68.0, 12.0)]",
+			"[P: (5.0, 29.0), S: (68.0, 15.0)]"
+		]
+	}
+]

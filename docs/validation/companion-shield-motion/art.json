@@ -1,0 +1,14 @@
+{
+  "date_hkt": "2026-11-23",
+  "generator": "GPT Image",
+  "reference": "assets/illustrated/party_sheet.png",
+  "source": "docs/validation/companion-shield-motion/source/companion_guard_master.png",
+  "source_sha256": "25ede98e1c53077bfc5754cd649d374c16016c3db8efb2bcdb287a5ecbee3295",
+  "source_size": [2172, 724],
+  "output": "assets/illustrated/motion/companion_guard.png",
+  "output_sha256": "53178517247e315b6de445fc543517946dfd1dce75c38126ae046161e671ba32",
+  "output_size": [2172, 544],
+  "packing": "crop the full strip to 2172x544+0+80; preserve all four equal cells and the common baseline",
+  "grid": [4, 1],
+  "prompt": "Create a production-ready transparent sprite animation strip for the existing companion character shown in the reference: Bedivere, an anthropomorphic English bulldog knight in polished silver plate armor over a royal-blue tabard with gold fleur-de-lis, carrying the same oval blue-and-gold shield. Preserve his exact face, body proportions, armor, palette, storybook gouache rendering, warm inked edges, and readable silhouette. Output exactly four separate full-body poses arranged left-to-right in one horizontal row on a fully transparent background, with equal cell spacing and a shared ground baseline: (1) shield-raise arrival — planting his feet and lifting the shield into position; (2) ready brace — crouched behind the shield, alert and stable; (3) projectile block impact — shield turned toward screen-right, body compressed from a bright cyan-white impact spark on the shield rim, no projectile and no damage; (4) shield-bash counter — a short controlled step toward screen-right with the shield leading and the other fist tucked, clear follow-through. Keep every figure and effect wholly inside its cell with generous transparent margins. Screen-right facing in all poses. One bulldog, one shield, correct four limbs, no extra weapons, no text, no labels, no grid, no border, no scenery, no floor, no shadow, no blood, no injury. This is a clean game asset, not a concept sheet."
+}

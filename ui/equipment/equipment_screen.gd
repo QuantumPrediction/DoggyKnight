@@ -181,6 +181,9 @@ func _picture(texture: Texture2D, minimum: Vector2) -> TextureRect:
 	return picture
 
 func icon(entry: Dictionary) -> Texture2D:
+	var painted := StoryArt.object_icon(String(entry.get("id", "")))
+	if painted != null:
+		return painted
 	var atlas := AtlasTexture.new()
 	atlas.atlas = _atlas
 	var cell := Vector2(_atlas.get_width() / 6.0, _atlas.get_height() / 3.0)

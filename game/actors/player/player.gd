@@ -1046,7 +1046,7 @@ func _update_visuals(delta: float) -> void:
 		elif running:
 			# 跑步時上下彈。
 			_run_time += delta
-			offset = Vector2(0, -roundf(absf(sin(_run_time * 12.0)) * feel.run_bob))
+			offset = Vector2(0, -absf(sin(_run_time * 12.0)) * feel.run_bob)
 		if _hop_left > 0.0 or running:
 			sprite.position = offset
 		else:
