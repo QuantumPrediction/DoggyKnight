@@ -1,0 +1,236 @@
+{
+  "back-follow": {
+    "tick": 42,
+    "different": 1881,
+    "outside_sprite": 0,
+    "control": false,
+    "passed": true
+  },
+  "back-hot": {
+    "tick": 28,
+    "different": 1824,
+    "outside_sprite": 0,
+    "control": false,
+    "arc_old": 166,
+    "arc_new": 166,
+    "arc_lost": 0,
+    "arc_gained": 0,
+    "ink_lost": 83,
+    "ink_gained": 121,
+    "passed": true
+  },
+  "back-raise": {
+    "tick": 3,
+    "different": 1857,
+    "outside_sprite": 0,
+    "control": false,
+    "arc_old": 166,
+    "arc_new": 166,
+    "arc_lost": 0,
+    "arc_gained": 0,
+    "ink_lost": 86,
+    "ink_gained": 119,
+    "passed": true
+  },
+  "back-release": {
+    "tick": 34,
+    "different": 1959,
+    "outside_sprite": 0,
+    "control": false,
+    "passed": true
+  },
+  "cancel-interrupted": {
+    "tick": 15,
+    "different": 0,
+    "outside_sprite": 0,
+    "control": true,
+    "passed": true
+  },
+  "cancel-raise": {
+    "tick": 3,
+    "different": 1759,
+    "outside_sprite": 0,
+    "control": false,
+    "arc_old": 148,
+    "arc_new": 148,
+    "arc_lost": 0,
+    "arc_gained": 0,
+    "ink_lost": 34,
+    "ink_gained": 47,
+    "passed": true
+  },
+  "elite-follow": {
+    "tick": 42,
+    "different": 0,
+    "outside_sprite": 0,
+    "control": true,
+    "passed": true
+  },
+  "elite-hot": {
+    "tick": 28,
+    "different": 0,
+    "outside_sprite": 0,
+    "control": true,
+    "arc_old": 246,
+    "arc_new": 246,
+    "arc_lost": 0,
+    "arc_gained": 0,
+    "ink_lost": 0,
+    "ink_gained": 0,
+    "passed": true
+  },
+  "elite-raise": {
+    "tick": 3,
+    "different": 0,
+    "outside_sprite": 0,
+    "control": true,
+    "arc_old": 246,
+    "arc_new": 246,
+    "arc_lost": 0,
+    "arc_gained": 0,
+    "ink_lost": 0,
+    "ink_gained": 0,
+    "passed": true
+  },
+  "elite-release": {
+    "tick": 34,
+    "different": 0,
+    "outside_sprite": 0,
+    "control": true,
+    "passed": true
+  },
+  "front-follow": {
+    "tick": 42,
+    "different": 1783,
+    "outside_sprite": 0,
+    "control": false,
+    "passed": true
+  },
+  "front-hot": {
+    "tick": 28,
+    "different": 1885,
+    "outside_sprite": 0,
+    "control": false,
+    "arc_old": 192,
+    "arc_new": 192,
+    "arc_lost": 0,
+    "arc_gained": 0,
+    "ink_lost": 104,
+    "ink_gained": 110,
+    "passed": true
+  },
+  "front-raise": {
+    "tick": 3,
+    "different": 1863,
+    "outside_sprite": 0,
+    "control": false,
+    "arc_old": 193,
+    "arc_new": 193,
+    "arc_lost": 0,
+    "arc_gained": 0,
+    "ink_lost": 116,
+    "ink_gained": 120,
+    "passed": true
+  },
+  "front-release": {
+    "tick": 34,
+    "different": 1851,
+    "outside_sprite": 0,
+    "control": false,
+    "passed": true
+  },
+  "left-follow": {
+    "tick": 42,
+    "different": 1843,
+    "outside_sprite": 0,
+    "control": false,
+    "passed": true
+  },
+  "left-hot": {
+    "tick": 28,
+    "different": 1862,
+    "outside_sprite": 0,
+    "control": false,
+    "arc_old": 137,
+    "arc_new": 137,
+    "arc_lost": 0,
+    "arc_gained": 0,
+    "ink_lost": 0,
+    "ink_gained": 26,
+    "passed": true
+  },
+  "left-raise": {
+    "tick": 3,
+    "different": 1770,
+    "outside_sprite": 0,
+    "control": false,
+    "arc_old": 137,
+    "arc_new": 137,
+    "arc_lost": 0,
+    "arc_gained": 0,
+    "ink_lost": 34,
+    "ink_gained": 45,
+    "passed": true
+  },
+  "left-release": {
+    "tick": 34,
+    "different": 1879,
+    "outside_sprite": 0,
+    "control": false,
+    "passed": true
+  },
+  "right-follow": {
+    "tick": 42,
+    "different": 1820,
+    "outside_sprite": 0,
+    "control": false,
+    "passed": true
+  },
+  "right-hot": {
+    "tick": 28,
+    "different": 1874,
+    "outside_sprite": 0,
+    "control": false,
+    "arc_old": 148,
+    "arc_new": 148,
+    "arc_lost": 0,
+    "arc_gained": 0,
+    "ink_lost": 0,
+    "ink_gained": 39,
+    "passed": true
+  },
+  "right-idle": {
+    "tick": 1,
+    "different": 0,
+    "outside_sprite": 0,
+    "control": true,
+    "passed": true
+  },
+  "right-raise": {
+    "tick": 3,
+    "different": 1759,
+    "outside_sprite": 0,
+    "control": false,
+    "arc_old": 148,
+    "arc_new": 148,
+    "arc_lost": 0,
+    "arc_gained": 0,
+    "ink_lost": 34,
+    "ink_gained": 47,
+    "passed": true
+  },
+  "right-release": {
+    "tick": 34,
+    "different": 1875,
+    "outside_sprite": 0,
+    "control": false,
+    "passed": true
+  },
+  "right-rest": {
+    "tick": 44,
+    "different": 0,
+    "outside_sprite": 0,
+    "control": true,
+    "passed": true
+  }
+}

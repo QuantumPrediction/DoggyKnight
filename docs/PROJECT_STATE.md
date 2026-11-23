@@ -2,7 +2,15 @@
 
 Updated: 2026-11-23 (Hong Kong). Version: **0.9.1 development source**.
 
-## Current work — field chest silhouettes and hinged lids
+## Current work — ordinary scarecrow swing drawings
+
+Draft #28 contains the tested source at `8861967f615ded8d46348742d0606dab138d882e` (tree `a02bb497f20822fba88e826a10b360c93b9ede56`). [Draft pull request](https://github.com/QuantumPrediction/DoggyKnight/pull/28)
+
+`codex/scarecrow-swing-art` starts from draft #27 at `334fd00d8cfcfa4c68ff04d2bcac4f2899216511`. Twelve GPT Image drawings show the ordinary soldier raising, loading, releasing and lowering the farm fork in side, front and rear views. The existing ground warning and sprite clock select the pictures. Six staged encounters matched all 330 baseline physics records, including a cancelled swing and an elite control. The full regression passed 975/975, including three new integration tests.
+
+In 24 paired Linux X11 captures at 360×640, all seven controls matched pixel for pixel. Across the eleven live warnings, all 1,927 previously visible far-arc pixel samples remained visible. The front-view windup still covers 116 previously visible inner warning pixels and reveals 120 others. The orange slash partly covers the fork tip at release. Next, record the first misread at normal speed on a physical phone during the existing uncoached trial. Target-player count is zero and the provisional rating remains 6–6.5/10. [Native comparison, drawings and measurements](validation/scarecrow-swing-art/README.md)
+
+## Previous work — field chest silhouettes and hinged lids
 
 [Draft #27](https://github.com/QuantumPrediction/DoggyKnight/pull/27), `codex/field-chest-art`, starts from draft #26 at `b413b36bd47e8cb614210d3d714ee5154be0d5bf`. Ordinary, elite and boss field chests now have individual shells, clasps and three successive opening drawings. The production sprite clock and proximity pickup drive the pictures. At fixed 60 Hz all 414 pickup records match the baseline locally and on Ubuntu, including one reward per tier. The candidate passed 972/972 tests. Ten pairs of Linux 360×640 captures differ only inside the chest sprite bounds. The pickup ring and hero still obscure the clasp at first contact, and confetti partly covers the boss crown at tick 94. [Animation, full screenshots and verification](validation/field-chests/README.md)
 

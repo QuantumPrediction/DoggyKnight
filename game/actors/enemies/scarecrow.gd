@@ -55,6 +55,17 @@ func attack_role() -> StringName:
 	return DifficultyScaling.MELEE
 
 
+## The illustrated costume samples the same warning and release as the hit test.
+func illustrated_swing_beat() -> int:
+	if state != State.ACTIVE or is_stunned() or sprite == null or sprite.animation == &"hurt":
+		return -1
+	if phase == Phase.TELEGRAPH and is_instance_valid(_telegraph) and _telegraph.is_visible_damage_warning():
+		return 1 if _telegraph.is_hot() else 0
+	if phase == Phase.SWING and sprite.animation == &"attack":
+		return 2 if sprite.frame == 0 else 3
+	return -1
+
+
 func _on_ready() -> void:
 	_flank = rng.randf_range(-flank_angle_max, flank_angle_max)
 	_circle_sign = 1.0 if rng.randf() < 0.5 else -1.0
