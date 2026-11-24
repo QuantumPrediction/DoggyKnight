@@ -56,7 +56,8 @@ func _check() -> void:
 			return
 		art_count += 1
 	for motion: String in ["knight", "mage", "archer", "companion_guard", "scarecrow_swing", "archer_draw",
-			"stride_knight", "stride_mage", "stride_archer", "vertical_knight", "vertical_mage", "vertical_archer"]:
+			"stride_knight", "stride_mage", "stride_archer", "vertical_knight", "vertical_mage", "vertical_archer",
+			"settle_knight", "settle_mage", "settle_archer"]:
 		if load("res://assets/illustrated/motion/%s.png" % motion) == null:
 			push_error("Missing motion atlas " + motion)
 			quit(1)

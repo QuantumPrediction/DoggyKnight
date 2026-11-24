@@ -1,0 +1,872 @@
+{
+  "physics_sha256": "d5ad41729ccf3549305c67f6e5782f5732494128b6d57d69390831796427afa9",
+  "physics_ticks": 1656,
+  "paint_sha256": [
+    "39d33b6bf95600a2f133086c894da00197e1bbd5e3f82593764b01bbabe2d310",
+    "0f9b5ca77cbbc14a4b0fafea77795754b90a61ddefe5a78434bd1788b99d998e"
+  ],
+  "roles": {
+    "knight": {
+      "before": {
+        "wrong_heading_ticks": [
+          46,
+          47,
+          48,
+          284,
+          285,
+          286
+        ],
+        "equal_time": [
+          {
+            "ticks": [
+              12,
+              41
+            ],
+            "distance": 34.9999,
+            "paint_changes": 9
+          },
+          {
+            "ticks": [
+              96,
+              125
+            ],
+            "distance": 17.5001,
+            "paint_changes": 9
+          }
+        ],
+        "equal_distance": [
+          {
+            "ticks": [
+              12,
+              35
+            ],
+            "distance": 27.9999,
+            "paint_changes": 7
+          },
+          {
+            "ticks": [
+              96,
+              143
+            ],
+            "distance": 28.0001,
+            "paint_changes": 15
+          }
+        ],
+        "wall": {
+          "ticks": [
+            202,
+            255
+          ],
+          "distance": 0.0,
+          "paint_changes": 17,
+          "sole_y_range": 0.983979
+        },
+        "front_stop": {
+          "ticks": [
+            314,
+            329
+          ],
+          "facing_retained": 0,
+          "first_standing": null
+        },
+        "rear_stop": {
+          "ticks": [
+            466,
+            509
+          ],
+          "facing_retained": 0,
+          "first_standing": null
+        }
+      },
+      "after": {
+        "wrong_heading_ticks": [],
+        "equal_time": [
+          {
+            "ticks": [
+              12,
+              41
+            ],
+            "distance": 34.9999,
+            "paint_changes": 9
+          },
+          {
+            "ticks": [
+              96,
+              125
+            ],
+            "distance": 17.5001,
+            "paint_changes": 4
+          }
+        ],
+        "equal_distance": [
+          {
+            "ticks": [
+              12,
+              35
+            ],
+            "distance": 27.9999,
+            "paint_changes": 7
+          },
+          {
+            "ticks": [
+              96,
+              143
+            ],
+            "distance": 28.0001,
+            "paint_changes": 7
+          }
+        ],
+        "wall": {
+          "ticks": [
+            202,
+            255
+          ],
+          "distance": 0.0,
+          "paint_changes": 0,
+          "sole_y_range": 0.0
+        },
+        "front_stop": {
+          "ticks": [
+            314,
+            329
+          ],
+          "facing_retained": 16,
+          "first_standing": 321
+        },
+        "rear_stop": {
+          "ticks": [
+            466,
+            509
+          ],
+          "facing_retained": 44,
+          "first_standing": 473
+        }
+      },
+      "attack_pose_ticks": 48,
+      "roll_pose_and_transform_ticks": 18,
+      "swings": 2
+    },
+    "mage": {
+      "before": {
+        "wrong_heading_ticks": [
+          46,
+          47,
+          48,
+          284,
+          285,
+          286
+        ],
+        "equal_time": [
+          {
+            "ticks": [
+              12,
+              41
+            ],
+            "distance": 33.9999,
+            "paint_changes": 9
+          },
+          {
+            "ticks": [
+              96,
+              125
+            ],
+            "distance": 17.0,
+            "paint_changes": 9
+          }
+        ],
+        "equal_distance": [
+          {
+            "ticks": [
+              12,
+              35
+            ],
+            "distance": 27.1999,
+            "paint_changes": 7
+          },
+          {
+            "ticks": [
+              96,
+              143
+            ],
+            "distance": 27.2,
+            "paint_changes": 15
+          }
+        ],
+        "wall": {
+          "ticks": [
+            202,
+            255
+          ],
+          "distance": 0.0,
+          "paint_changes": 17,
+          "sole_y_range": 0.983979
+        },
+        "front_stop": {
+          "ticks": [
+            314,
+            329
+          ],
+          "facing_retained": 0,
+          "first_standing": null
+        },
+        "rear_stop": {
+          "ticks": [
+            466,
+            509
+          ],
+          "facing_retained": 0,
+          "first_standing": null
+        }
+      },
+      "after": {
+        "wrong_heading_ticks": [],
+        "equal_time": [
+          {
+            "ticks": [
+              12,
+              41
+            ],
+            "distance": 33.9999,
+            "paint_changes": 9
+          },
+          {
+            "ticks": [
+              96,
+              125
+            ],
+            "distance": 17.0,
+            "paint_changes": 4
+          }
+        ],
+        "equal_distance": [
+          {
+            "ticks": [
+              12,
+              35
+            ],
+            "distance": 27.1999,
+            "paint_changes": 7
+          },
+          {
+            "ticks": [
+              96,
+              143
+            ],
+            "distance": 27.2,
+            "paint_changes": 7
+          }
+        ],
+        "wall": {
+          "ticks": [
+            202,
+            255
+          ],
+          "distance": 0.0,
+          "paint_changes": 0,
+          "sole_y_range": 0.0
+        },
+        "front_stop": {
+          "ticks": [
+            314,
+            329
+          ],
+          "facing_retained": 16,
+          "first_standing": 321
+        },
+        "rear_stop": {
+          "ticks": [
+            466,
+            509
+          ],
+          "facing_retained": 44,
+          "first_standing": 473
+        }
+      },
+      "attack_pose_ticks": 39,
+      "roll_pose_and_transform_ticks": 18,
+      "swings": 1
+    },
+    "archer": {
+      "before": {
+        "wrong_heading_ticks": [
+          46,
+          47,
+          48,
+          284,
+          285,
+          286
+        ],
+        "equal_time": [
+          {
+            "ticks": [
+              12,
+              41
+            ],
+            "distance": 39.0001,
+            "paint_changes": 9
+          },
+          {
+            "ticks": [
+              96,
+              125
+            ],
+            "distance": 19.5001,
+            "paint_changes": 9
+          }
+        ],
+        "equal_distance": [
+          {
+            "ticks": [
+              12,
+              35
+            ],
+            "distance": 31.2001,
+            "paint_changes": 7
+          },
+          {
+            "ticks": [
+              96,
+              143
+            ],
+            "distance": 31.2001,
+            "paint_changes": 15
+          }
+        ],
+        "wall": {
+          "ticks": [
+            202,
+            255
+          ],
+          "distance": 0.0,
+          "paint_changes": 17,
+          "sole_y_range": 0.983979
+        },
+        "front_stop": {
+          "ticks": [
+            314,
+            329
+          ],
+          "facing_retained": 0,
+          "first_standing": null
+        },
+        "rear_stop": {
+          "ticks": [
+            466,
+            509
+          ],
+          "facing_retained": 0,
+          "first_standing": null
+        }
+      },
+      "after": {
+        "wrong_heading_ticks": [],
+        "equal_time": [
+          {
+            "ticks": [
+              12,
+              41
+            ],
+            "distance": 39.0001,
+            "paint_changes": 9
+          },
+          {
+            "ticks": [
+              96,
+              125
+            ],
+            "distance": 19.5001,
+            "paint_changes": 4
+          }
+        ],
+        "equal_distance": [
+          {
+            "ticks": [
+              12,
+              35
+            ],
+            "distance": 31.2001,
+            "paint_changes": 7
+          },
+          {
+            "ticks": [
+              96,
+              143
+            ],
+            "distance": 31.2001,
+            "paint_changes": 7
+          }
+        ],
+        "wall": {
+          "ticks": [
+            202,
+            255
+          ],
+          "distance": 0.0,
+          "paint_changes": 0,
+          "sole_y_range": 0.0
+        },
+        "front_stop": {
+          "ticks": [
+            314,
+            329
+          ],
+          "facing_retained": 16,
+          "first_standing": 321
+        },
+        "rear_stop": {
+          "ticks": [
+            466,
+            509
+          ],
+          "facing_retained": 44,
+          "first_standing": 473
+        }
+      },
+      "attack_pose_ticks": 44,
+      "roll_pose_and_transform_ticks": 18,
+      "swings": 2
+    }
+  },
+  "base_commit": "9b7ed6c449087ae8a89daea997fcecde707b085e",
+  "candidate_source_sha256": {
+    "game/actors/player/player.gd": "7bd545bf1605744e981a0e318bc9201b395ebc7ebd8cf5999f9b90e9b04510d8",
+    "ui/illustrated/actor_skin.gd": "b4b2ca24ac9739da1cf5e6a68ff7c62e532b536a1506a4f84915ac3afb0bbab5",
+    "ui/illustrated/art_catalog.gd": "0e1444cbc170430950cecd64d52992be01246c5e54e25ce47da78ed791829779",
+    "tools/capture_locomotion.gd": "c4bc770b22e3427c8f14a8cb633c20ee7020afef4e43770b6f6fd9b05c142d3c"
+  },
+  "wall_pixels": {
+    "knight": {
+      "ticks": [
+        216,
+        254
+      ],
+      "interval_ticks": 2,
+      "distinct_patches": [
+        20,
+        1
+      ]
+    },
+    "mage": {
+      "ticks": [
+        216,
+        254
+      ],
+      "interval_ticks": 2,
+      "distinct_patches": [
+        20,
+        1
+      ]
+    },
+    "archer": {
+      "ticks": [
+        216,
+        254
+      ],
+      "interval_ticks": 2,
+      "distinct_patches": [
+        20,
+        1
+      ]
+    }
+  },
+  "pairs": [
+    {
+      "role": "knight",
+      "tick": 46,
+      "png_sha256": [
+        "aebe00373f28982aca9111a3e1a95f905823c6ebf56b666dd32a53d6d96baa65",
+        "2c3c24504b5a810afc59dcdb867e8712410fe108a0cf6651db528f97b9815e5c"
+      ],
+      "rgb_sha256": [
+        "c0429e62b2a046bf134a6fc2e0db1209f790c24842889814406533b0122af14d",
+        "702764b5d006086006e8aae42ad80267a21f9d2822efceb4e0fb7a77da567658"
+      ],
+      "different_pixels": 1961,
+      "actor_box": [
+        159,
+        264,
+        255,
+        376
+      ],
+      "outside_actor_box": 0,
+      "outside_bbox": null
+    },
+    {
+      "role": "knight",
+      "tick": 238,
+      "png_sha256": [
+        "c4b3e40392bdb1cd7379bff12b84a9829476e29945d46600eed324b18c7e0cd1",
+        "e5a8710bd25768b039027db4c1780383cc436f77a0bedcef9ddb50cba3c1ba86"
+      ],
+      "rgb_sha256": [
+        "7d51b5faaaa2deb906b85d334064bcf4d89523009611844db844e55b82d232c1",
+        "0d1b6f9dd63fa26c5f1c22a8c729cca60b5e0f4b40f716d225d32b322c3d01d9"
+      ],
+      "different_pixels": 1824,
+      "actor_box": [
+        280,
+        264,
+        360,
+        376
+      ],
+      "outside_actor_box": 1,
+      "outside_bbox": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "role": "knight",
+      "tick": 284,
+      "png_sha256": [
+        "a8a200139a32a1c6edd2fd2ac58517e1d6197f23e37cfff1971b762d14f467ac",
+        "6975d0b93c94ef7bc8813b227e6ed98a9da7b76903c1ed9cf70676b16370d775"
+      ],
+      "rgb_sha256": [
+        "c9ed2c2db3e4d255a6a402389926617d59a153fdf2095280458fe8d087d241b4",
+        "0d0e89c50f5b715031c68dada4727325ba05d162b05c0c0d62059124ffa530cc"
+      ],
+      "different_pixels": 1651,
+      "actor_box": [
+        280,
+        202,
+        360,
+        314
+      ],
+      "outside_actor_box": 0,
+      "outside_bbox": null
+    },
+    {
+      "role": "knight",
+      "tick": 318,
+      "png_sha256": [
+        "330dc55ff89af3b942cbdbe31d639818beeae4fe8a5a9caa3efface0d8c3753e",
+        "d50d82981ed0494c8cde7cfb8db926c5e8f30b6b9a0e84f4264f62ff78125242"
+      ],
+      "rgb_sha256": [
+        "e0afcc68c5af8e7679f107fa03dc22c33e1faf0b8a1bf3f1b60848d5b48c8b02",
+        "116767fdd54aacd231c9c9f4dd0265882aa1b50a6336ae26365de50b242a8cf2"
+      ],
+      "different_pixels": 1659,
+      "actor_box": [
+        280,
+        256,
+        360,
+        368
+      ],
+      "outside_actor_box": 0,
+      "outside_bbox": null
+    },
+    {
+      "role": "knight",
+      "tick": 375,
+      "png_sha256": [
+        "02a93259dc29a0ce88672943ac3b6414109ccdc35c4bbd31ad719c7fde22e957",
+        "847991779c0abb79eaaaed0fd432eb5829ad691511af3e16c5bb220686129bc3"
+      ],
+      "rgb_sha256": [
+        "b36709d88b09f2d49482d4c352f0d60023eecf119e4ed10b37a8d6790028259e",
+        "3fd22511629b7bb4b4561b9536f7a94cef7d67e020420f7876656ff976b15274"
+      ],
+      "different_pixels": 41,
+      "actor_box": [
+        188,
+        256,
+        284,
+        368
+      ],
+      "outside_actor_box": 0,
+      "outside_bbox": null
+    },
+    {
+      "role": "knight",
+      "tick": 482,
+      "png_sha256": [
+        "2e09e4315a0a8b886c55770186e440e49d75252713bc1430e45865298b72cc2d",
+        "71b7177100b3baf3121fd2990afff0f242abd9d342eea0b2b2aad8419c920cf4"
+      ],
+      "rgb_sha256": [
+        "2aff8282d52f03fe43817441aec87c92a1bd622039158b2a5c587bb51b9b647f",
+        "c439447e8d5df387f6b666ed336de53f85620c23b8e034678978fc84d032bbb2"
+      ],
+      "different_pixels": 1661,
+      "actor_box": [
+        188,
+        192,
+        284,
+        304
+      ],
+      "outside_actor_box": 0,
+      "outside_bbox": null
+    },
+    {
+      "role": "mage",
+      "tick": 46,
+      "png_sha256": [
+        "09cd6e4de56a5fc225267a6841ab1b9e1a868ee80e4b54756b5f6447aa346403",
+        "3fe75ddc4fbd2ac4240908c135c1f5025dededd1ce17c3e9b9f11fde9fe0ad01"
+      ],
+      "rgb_sha256": [
+        "dc8d3ac847879123bc24cca7b093719afe35cd91df2fac8af7cea2bde65c4c81",
+        "5db8fd365600039376affde40d4d4c5868c216e1bf8dbcd670b7e07675065686"
+      ],
+      "different_pixels": 2013,
+      "actor_box": [
+        157,
+        264,
+        253,
+        376
+      ],
+      "outside_actor_box": 0,
+      "outside_bbox": null
+    },
+    {
+      "role": "mage",
+      "tick": 238,
+      "png_sha256": [
+        "06ed6809d3a28ec6d362021e83791b50f70ce8bd01ef06c7bfc76ee91bb3389c",
+        "a09f3405d1b1347e09840d3140e444f589eb06092648976dab45ffbf5b10a53f"
+      ],
+      "rgb_sha256": [
+        "81f19cce91a3399fa35eebcacf6d061afdb53bda1cc1665a89e055933202a840",
+        "dfbaefa87ddd425d48b659b56d4b87fdfbc15d108dcbf4f29e58dd7399382be7"
+      ],
+      "different_pixels": 1893,
+      "actor_box": [
+        280,
+        264,
+        360,
+        376
+      ],
+      "outside_actor_box": 2,
+      "outside_bbox": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    {
+      "role": "mage",
+      "tick": 284,
+      "png_sha256": [
+        "70ec16b4865692c6da5e3eb88a66f723c0625a27feea955b89e0fd63267ed9ef",
+        "2bc841e1531639971c5d8e4f36884503d35741c4080134fca7e2ba45c9a55a23"
+      ],
+      "rgb_sha256": [
+        "be1d0aa9009e5c075f4562f94077e3b3ca0e5982c29418a28dfe88d1ae2bc286",
+        "637d05992b6972db4db10453e58038cef67869ddfa0888235869a5b423cc32b8"
+      ],
+      "different_pixels": 1501,
+      "actor_box": [
+        280,
+        204,
+        360,
+        316
+      ],
+      "outside_actor_box": 0,
+      "outside_bbox": null
+    },
+    {
+      "role": "mage",
+      "tick": 318,
+      "png_sha256": [
+        "833328dd02510c622773bd55f4bbd0ffa9f29e89594754a2fa65469378a75554",
+        "3370c7accf119ca8ecbfd30a464374eb42a6ce221dba120b2386c946a08ed68f"
+      ],
+      "rgb_sha256": [
+        "5694626d178d40109ca24aab2fa1ae5bbe21ea79c30e62d86c19c211bdc35299",
+        "a6d9e80f4a14e3e6bbd16deda0d1bfda6d60dc2e6842f84b8f09cec684fd158e"
+      ],
+      "different_pixels": 1612,
+      "actor_box": [
+        280,
+        256,
+        360,
+        368
+      ],
+      "outside_actor_box": 2,
+      "outside_bbox": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    {
+      "role": "mage",
+      "tick": 375,
+      "png_sha256": [
+        "24a0e9e94f36df8b67c6e39f585fe44a7525fa28a15f590e0f761d296ff37056",
+        "1067ce22da5a64797d88152ce6aaf8eeb564009019a00d0683d39b537d8275b3"
+      ],
+      "rgb_sha256": [
+        "2022c1a48ce4d39e44607723f5d90b3f8a4b90326d4ca94f220feb60144b653f",
+        "3631832cde1a39c42bd24c6104863787671ffc271fd303b9c23870f1b2f0573b"
+      ],
+      "different_pixels": 22,
+      "actor_box": [
+        191,
+        256,
+        287,
+        368
+      ],
+      "outside_actor_box": 0,
+      "outside_bbox": null
+    },
+    {
+      "role": "mage",
+      "tick": 482,
+      "png_sha256": [
+        "4fb2c7441853c8ddcd5c1dbba7bf4a2b78f469724d5cd99a2f8cbae3967bede1",
+        "62061ccab08dd4dffca90304dbd8d83f86e33be67d24bffb568a066aa12450e0"
+      ],
+      "rgb_sha256": [
+        "44a8bee3abe3c00ce93bbd74813b01a39a6618b5e93db450aa3a4a731d407031",
+        "01f81156fadc45f6ca5d569244178165afd6af165d625531290a00bb014f57df"
+      ],
+      "different_pixels": 1604,
+      "actor_box": [
+        191,
+        194,
+        287,
+        306
+      ],
+      "outside_actor_box": 0,
+      "outside_bbox": null
+    },
+    {
+      "role": "archer",
+      "tick": 46,
+      "png_sha256": [
+        "c496b1f803ae1e115fda74a852300aae5b6ae900deacec8da1e328a385f189e8",
+        "7261962f35d0cad4ae944ebcf4ac90f4bd6755ddd8a2c607219d0fbb2384b691"
+      ],
+      "rgb_sha256": [
+        "cb6dc91a0ba01cab55f715456a5461ac9d47dd9a91b7691ece6798682dad140d",
+        "cebff29d90f5d49b0ba2731a8ee9dd19a7673a6f3206f2f44f7783809cf13ec9"
+      ],
+      "different_pixels": 1909,
+      "actor_box": [
+        169,
+        264,
+        265,
+        376
+      ],
+      "outside_actor_box": 0,
+      "outside_bbox": null
+    },
+    {
+      "role": "archer",
+      "tick": 238,
+      "png_sha256": [
+        "2b699b14db9f20997220c1d248843afd78e53d064c11ed7102a10627d128d288",
+        "dc105a8f5205fab3d95ad25dbfb512f0ddffcb939aef34fb29eec2c6e4ffe778"
+      ],
+      "rgb_sha256": [
+        "16f1e5f7271f9898633e158e823b089c3316880b711b0a2d4374b8caf30a12a9",
+        "53b5ab3948fe97fcd4a5ecb084cfe648d61e658b275ecb4e81f9dc00d3b0b67b"
+      ],
+      "different_pixels": 1855,
+      "actor_box": [
+        280,
+        264,
+        360,
+        376
+      ],
+      "outside_actor_box": 0,
+      "outside_bbox": null
+    },
+    {
+      "role": "archer",
+      "tick": 284,
+      "png_sha256": [
+        "d71cdd63ab82605f8e148101bb703b67689fa82b9e52241a6d7c2098604eca07",
+        "6915b2348f9aef93b64657129aa9e0d9cafa19cb2277b607dd9032d37abbaa9a"
+      ],
+      "rgb_sha256": [
+        "504f4f06dd832429d6af5956702e44cbc4588af4f68d0640d6c0400c60ba5c65",
+        "87bc2d5f5988dcded04997c95c7f254125821fdb4921459b0640b542ce8d3209"
+      ],
+      "different_pixels": 1618,
+      "actor_box": [
+        280,
+        195,
+        360,
+        307
+      ],
+      "outside_actor_box": 0,
+      "outside_bbox": null
+    },
+    {
+      "role": "archer",
+      "tick": 318,
+      "png_sha256": [
+        "aa7e3bc3f7dd63024fb5eb6e46e38d41c8e9977af5f349aca261706cccdbf946",
+        "2497d088ad94c705967c88d42255e66f955d62f8b06b504171601d79ed72d496"
+      ],
+      "rgb_sha256": [
+        "76805ee88d5947e453cc2b1e5dea390afd76c3382e1bcc4c5772294c99a2330b",
+        "bdedaf5f6a7d732dff5ddb27d132f0b1434e9a69174075d9a199a0f70172ef62"
+      ],
+      "different_pixels": 1498,
+      "actor_box": [
+        280,
+        255,
+        360,
+        367
+      ],
+      "outside_actor_box": 3,
+      "outside_bbox": [
+        1,
+        0,
+        4,
+        1
+      ]
+    },
+    {
+      "role": "archer",
+      "tick": 375,
+      "png_sha256": [
+        "9d3b9e94d43fbec518028edab790bad47f1e30984cbe8a93aa34b06fb22feb50",
+        "62bb87d6f1bf0e9fc02fe687863815edeecc8feb88ba81b082dae98b1afa9d08"
+      ],
+      "rgb_sha256": [
+        "395fff120a99cddf9a51ce0bb4d70e0d21950b4f3e4b3d5fa42efccc1a0bb89a",
+        "fe2a7ff33391da941b0a62d7afbeb7ccfb1f6b1447eac161b5850866fec7732f"
+      ],
+      "different_pixels": 26,
+      "actor_box": [
+        178,
+        255,
+        274,
+        367
+      ],
+      "outside_actor_box": 0,
+      "outside_bbox": null
+    },
+    {
+      "role": "archer",
+      "tick": 482,
+      "png_sha256": [
+        "07dfa8c1560b1fb47fa223f11a1534f95e7b474586f3dffb3cb4576c263b216b",
+        "189e33c3a4a71a8604a4a445e994896b81c68f773e366ce61f6671d563bcad85"
+      ],
+      "rgb_sha256": [
+        "5d39363302bf43fea2a3940bbd375f5cc4961f64442f8205531018a0ccab2f23",
+        "f43411ca821509f1abcb9679602a73d854e7bd84e4c6301a9acc82a1a64bd2fb"
+      ],
+      "different_pixels": 1488,
+      "actor_box": [
+        178,
+        184,
+        274,
+        296
+      ],
+      "outside_actor_box": 0,
+      "outside_bbox": null
+    }
+  ]
+}

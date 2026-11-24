@@ -153,3 +153,7 @@ GPT Image 以專案原有草場稻草人圖稿為角色參考，為同一角色�
 ### 稻草人弓兵的拉弓與放手
 
 GPT Image 以專案原有的藍兜帽弓兵為參考，繪製追蹤、鎖定、放手及收弓。側面取自第一稿，正、背面取自重畫的第二稿。[原稿、提示及遊戲圖集指紋](validation/archer-draw-motion/art.json)
+
+### 三職業的正面與背面收步
+
+GPT Image 參照本作三套角色原畫，為各職業繪製正面與背面落腳、站穩的十二幅姿勢。[原稿、提示及遊戲圖集指紋](validation/natural-motion/art/paintings.json)

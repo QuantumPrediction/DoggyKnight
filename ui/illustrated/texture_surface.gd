@@ -122,23 +122,21 @@ func _draw_wordmark(rect: Rect2) -> void:
 	draw_set_transform(rect.position, 0.0, rect.size / Vector2(106, 29))
 	var ink := Color("213b35")
 	var foil := Color("ffe9a6")
-	var title := "金毛騎士"
+	var title := tr("GAME_TITLE")
 	var title_width := TITLE_FONT.get_string_size(title, HORIZONTAL_ALIGNMENT_LEFT, -1, 23).x
 	var baseline := Vector2(0.5 * (106.0 - title_width), 18.2)
 	draw_string_outline(TITLE_FONT, baseline + Vector2(0, 0.8), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 23, 2, ink)
 	draw_string(TITLE_FONT, baseline + Vector2(0, 0.7), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 23, Color("b77a39"))
 	draw_string(TITLE_FONT, baseline, title, HORIZONTAL_ALIGNMENT_LEFT, -1, 23, foil)
 
-	var ribbon := PackedVector2Array([Vector2(12, 21), Vector2(94, 21), Vector2(90, 25),
-			Vector2(94, 29), Vector2(12, 29), Vector2(16, 25)])
+	var ribbon := PackedVector2Array([Vector2(5, 20), Vector2(101, 20), Vector2(97, 24.5),
+			Vector2(101, 29), Vector2(5, 29), Vector2(9, 24.5)])
 	draw_colored_polygon(ribbon, ink)
-	draw_line(Vector2(18, 21.4), Vector2(88, 21.4), Color("bfa06d"), 0.65, true)
-	var caption := "GOLDEN KNIGHT"
-	var width := CAPTION_FONT.get_string_size(caption, HORIZONTAL_ALIGNMENT_LEFT, -1, 7).x
-	var position_x := 0.5 * (106.0 - width - (caption.length() - 1) * 0.7)
-	for letter: String in caption:
-		draw_string(CAPTION_FONT, Vector2(position_x, 27.5), letter, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color("fff2ca"))
-		position_x += CAPTION_FONT.get_string_size(letter, HORIZONTAL_ALIGNMENT_LEFT, -1, 7).x + 0.7
+	draw_line(Vector2(10, 24.5), Vector2(13, 24.5), Color("bfa06d"), 0.65, true)
+	draw_line(Vector2(93, 24.5), Vector2(96, 24.5), Color("bfa06d"), 0.65, true)
+	draw_string(CAPTION_FONT, Vector2(0, 26.8), tr("UI_GAME_TITLE_EN"),
+			HORIZONTAL_ALIGNMENT_CENTER, 106, 8, Color("fff2ca"))
+
 
 static func _box(fill: Color, border: Color) -> StyleBoxFlat:
 	var b := StyleBoxFlat.new()

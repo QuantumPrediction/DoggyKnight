@@ -20,6 +20,7 @@ func _ready() -> void:
 		StoryArt.prepare_combat_paint(role)
 		if _player != null:
 			StoryArt.texture("motion/vertical_" + String(role))
+			StoryArt.texture("motion/settle_" + String(role))
 	elif actor_code == "bulldog":
 		StoryArt.texture("motion/companion_guard")
 	elif actor_code == "scarecrow_archer":
@@ -48,9 +49,28 @@ func _update() -> void:
 	var flip := sprite.flip_h
 	var texture: Texture2D
 	if _player != null:
-		_run_view = _vertical_run_view(_player.facing) if sprite.animation == &"run" else RunView.SIDE
-		if _run_view != RunView.SIDE:
-			var role := HeroClasses.valid_id(GameState.hero_class)
+		var role := HeroClasses.valid_id(GameState.hero_class)
+		if _player.stride_direction != Vector2.ZERO and sprite.animation in [&"run", &"idle"]:
+			var heading := _player.stride_direction
+			_run_view = _vertical_run_view(heading)
+			if _player.stride_moving:
+				if _run_view == RunView.SIDE:
+					texture = StoryArt.hero_stride(role, floori(_player.stride_cycle * 8.0))
+				else:
+					texture = StoryArt.cell("motion/vertical_" + String(role), floori(_player.stride_cycle * 4.0), _run_view - 1, 4, 2)
+			elif _run_view != RunView.SIDE:
+				var settled := int(_player.stride_settle_left <= 0.0)
+				texture = StoryArt.cell("motion/settle_" + String(role), settled, _run_view - 1, 2, 2)
+			elif _player.stride_settle_left > 0.0:
+				var foot := floori(_player.stride_cycle * 2.0 + 0.5) % 2
+				texture = StoryArt.hero_stride(role, 4 * foot)
+			elif sprite.animation == &"run":
+				texture = StoryArt.motion_pose(role, 0)
+			flip = _run_view == RunView.SIDE and heading.x < 0.0
+		else:
+			# A staged animation or a combat action owns its original playback clock.
+			_run_view = _vertical_run_view(_player.facing) if sprite.animation == &"run" else RunView.SIDE
+		if texture == null and _run_view != RunView.SIDE:
 			var phase := StoryArt.stride_phase(sprite, count, 4)
 			texture = StoryArt.cell("motion/vertical_" + String(role), phase, _run_view - 1, 4, 2)
 			if texture != null:

@@ -33,12 +33,18 @@ func test_android_package_and_versions() -> void:
 	for preset_name in ["Android", "Android AAB"]:
 		assert_eq(_cfg.get_value(_section_of(preset_name), "platform"), "Android")
 		assert_eq(_opt(preset_name, "package/unique_name"), PACKAGE, "%s 套件名稱" % preset_name)
-		assert_eq(_opt(preset_name, "package/name"), "金毛騎士")
+		assert_eq(_opt(preset_name, "package/name"), tr("GAME_TITLE"))
 		assert_eq(_opt(preset_name, "version/name"), "0.1.0")
 		assert_true(int(_opt(preset_name, "version/code")) >= 1)
 		assert_eq(_opt(preset_name, "architectures/arm64-v8a"), true, "Google Play 要求 64 位元")
 		assert_eq(_opt(preset_name, "screen/immersive_mode"), true, "全螢幕")
 		assert_eq(_opt(preset_name, "user_data_backup/allow"), false)
+
+
+func test_windows_file_properties_and_sandbox_display_name() -> void:
+	assert_eq(_opt("Windows Desktop", "application/product_name"), tr("UI_GAME_TITLE_EN"))
+	assert_eq(_opt("Windows Desktop", "application/file_description"), tr("UI_GAME_TITLE_EN"))
+	assert_eq(_opt("Android Sandbox", "package/name"), "%s(D線測試)" % tr("GAME_TITLE"))
 
 
 func test_aab_uses_gradle_with_store_sdk_levels() -> void:

@@ -4,7 +4,7 @@ Master: a 32x32 pixel portrait of Goldie (ICON_HALF is the left half; it is mirr
 over a sky background with sun rays. Everything is scaled by whole numbers, nearest
 neighbour, never smoothed.
 
-The logo glyphs below are the four characters 金毛騎士 as rendered by the Cubic 11 font
+The logo glyphs below are the four characters 黃金騎士 as rendered by the Cubic 11 font
 at its native 12 px size (SIL OFL 1.1, see docs/licenses.md); they are stored here as
 pixel data so the generator needs no font library.
 """
@@ -18,6 +18,19 @@ from pixel import Canvas, res_path
 
 LOGO_GLYPHS = [
     [
+        "...#...#...",
+        ".#########.",
+        "...#...#...",
+        "...#####...",
+        "...........",
+        "###########",
+        "..#..#..#..",
+        "..#######..",
+        "..#..#..#..",
+        "..#######..",
+        "##.......##",
+    ],
+    [
         ".....###...",
         "....#...#..",
         "...#.....#.",
@@ -29,19 +42,6 @@ LOGO_GLYPHS = [
         "..#...#...#",
         "...#..#..#.",
         ".##########",
-    ],
-    [
-        ".......###.",
-        "..#####....",
-        ".....#...##",
-        ".....####..",
-        "..####.....",
-        ".....#....#",
-        ".....#####.",
-        ".#####.....",
-        ".....#.....",
-        ".....#.....",
-        "......#####",
     ],
     [
         ".####...#..",
@@ -78,7 +78,7 @@ def _fix_glyphs() -> list[list[str]]:
 
 
 def logo(scale: int = 2) -> Canvas:
-    """金毛騎士 in chunky gold letters with a dark outline and a soft shadow."""
+    """黃金騎士 in chunky gold letters with a dark outline and a soft shadow."""
     glyphs = _fix_glyphs()
     gw = 11 * scale
     gap = 2 * scale

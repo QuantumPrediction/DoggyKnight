@@ -1,5 +1,6 @@
 keys,zh_TW
-GAME_TITLE,金毛騎士
+GAME_TITLE,黃金騎士
+UI_GAME_TITLE_EN,The Golden Knight
 CHAPTER_1,第一章 石中劍
 LEVEL_1_1,1-1 石中劍之丘
 LEVEL_1_2,1-2 麥田小徑
@@ -92,7 +93,7 @@ UI_NEXT_CAMP,下一站:營地
 UI_NONE,(沒有)
 UI_LICENSES,授權聲明
 UI_CREDITS_TEAM,製作
-UI_CREDITS_GAME,企劃與製作:金毛騎士原型小組
+UI_CREDITS_GAME,企劃與製作：黃金騎士原型小組
 UI_CREDITS_ART,像素圖、介面、音效與音樂:以程式生成(本專案原創)
 UI_CREDITS_ENGINE,遊戲引擎:Godot Engine
 UI_CREDITS_FONT,字型:俐方體11號(Cubic 11)

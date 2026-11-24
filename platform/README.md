@@ -61,6 +61,8 @@ ads.show_rewarded(&"continue")
 - 超過 512 KB 時,舊記錄改名為 `playlog.old.jsonl`,只留一份舊檔。
 - 需要整合工作階段把它註冊為 Autoload「PlayLog」:`docs/requests/20261115-D-playlog-autoload.md`。
 
+《黃金騎士》沿用原名「金毛騎士」的桌面資料夾，舊的存檔與遊玩記錄可在下列路徑找到。
+
 擁有人怎樣拿到記錄:
 
 | 情況 | 方法 | 已驗證? |

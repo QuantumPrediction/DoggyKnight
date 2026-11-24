@@ -1,4 +1,13 @@
-# 整合進度　首章動作、字樣與援軍
+# 整合進度　黃金騎士的轉身與收步
+
+《黃金騎士》（The Golden Knight）沿用原公開試玩網址。工作分支 `codex/golden-knight-movement` 接續 #31 的 `9b7ed6c449087ae8a89daea997fcecde707b085e`。Linux 以 #31 的舊存檔點「繼續冒險」，可帶原弓手與援軍選項回到 1-1，三項設定與進度指紋相同。[試玩](https://doggy-knight-playtest.quantumprediction.chatgpt.site/) · [雙語封面與續玩](../validation/natural-motion/identity/README.md)
+
+- 三職業新繪十二幅正、背面落腳與站姿。反向時逆著行進方向繪畫的 18 幀降至 0。每職業頂牆 54 幀，跑姿切換 17→0 次。半速和全速走同一段距離，姿勢切換原為 15、7 次，現在均為 7 次。[動圖與逐幀對照](../validation/natural-motion/README.md)
+- 1,656 筆物理幀逐位元組相同。131 幀攻擊畫格、54 幀翻滾的畫格與變形核對相同。已保留翻滾傾斜誤差、生成點在界外產生錯向、封面英文溢出及原生取景截頂的初稿。完整回歸由基準 995/995 至候選 1,001/1,001，兩版退出均列出 27 個物件、21 個資源及 RID 警告。歷史原生崩潰維持獨立追蹤。
+- 首章 24 組、54 次戰鬥結算的遊戲欄位與原檔一致。一般模式謹慎弓手 seed43、援軍模式謹慎弓手 seed7 仍各三倒。各次執行的退出警告照錄。[一般模式](../validation/natural-motion/combat/normal-31-43.json) · [援軍模式](../validation/natural-motion/combat/reinforced-7-19.json)
+- 下一輪先觀察初玩者在第一波的第一次停步和反向，再記下敵方起手或同伴格擋首次看不清的時點；手機量首次載入及首個多人同場波次幀時間。實際目標玩家仍 0 人，手機、Windows、手把、聆聽、長局及留存待驗。暫評 6–6.5/10。[既有無提示入口](../validation/scene-lifetime/archer-trial.md)
+
+## 前輪　首章動作、字樣與援軍
 
 [草稿 #31](https://github.com/QuantumPrediction/DoggyKnight/pull/31) 的公開實作是 `47800ef8dea959dda41715269ec86e72a9372a60`。
 

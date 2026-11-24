@@ -1,4 +1,4 @@
-# 金毛騎士網頁試玩
+# 黃金騎士 · The Golden Knight 網頁試玩
 
 [直接開始冒險](https://doggy-knight-playtest.quantumprediction.chatgpt.site/)
 
@@ -10,12 +10,12 @@
 
 ```sh
 python3 export/build_web.py
-node --test tests/web/transport.test.cjs
+node --test tests/web/*.test.cjs
 ```
 
 把 `export/build/web/` 完整放到靜態 HTTPS 網站，入口為 `index.html`。此建置在暫存目錄重匯入美術和字體，使用遊戲原有的場景、AI、六章資料和存檔流程。大型繪本圖與庫存圖集使用 0.84 品質，近期動作圖、攻擊提示、特效及介面圖示保留無損。音樂優先沿用已有的 Ogg 版本，保留三首只有 WAV 的音軌。
 
-引擎與遊戲資料拆成 17 個 gzip 檔，以內容指紋作檔名。在本版，全部靜態檔案合計 65,561,349 bytes，當中引擎壓縮後 10,115,449 bytes、遊戲資料 54,322,514 bytes。一般開局會直接載入標題。若要診斷公開站，可另外執行[檔案檢查](https://doggy-knight-playtest.quantumprediction.chatgpt.site/?check=1)，它會讀回全套資料、比對 SHA-256 並在該瀏覽器編譯引擎。需要支援 WebGL 2 的瀏覽器才可遊玩。
+引擎與遊戲資料拆成 17 個 gzip 檔，以內容指紋作檔名。在本版，全部靜態檔案合計 65,877,538 bytes，當中引擎壓縮後 10,115,449 bytes、遊戲資料 54,637,574 bytes。一般開局會直接載入標題。若要診斷公開站，可另外執行[檔案檢查](https://doggy-knight-playtest.quantumprediction.chatgpt.site/?check=1)，它會讀回全套資料、比對 SHA-256 並在該瀏覽器編譯引擎。需要支援 WebGL 2 的瀏覽器才可遊玩。
 
 ## 試玩觀察
 

@@ -69,7 +69,7 @@ godot --headless --path . --export-debug "iOS" export/build/ios/DoggyKnight.ipa
 4. 開發者網站 →「Certificates, Identifiers & Profiles → Identifiers」→ 新增 App ID,
    Bundle ID 選「Explicit」,填入**已定案的**識別碼(目前佔位值 `com.doggyknight.prototype`)。
 5. App Store Connect(https://appstoreconnect.apple.com)→「我的 App → + → 新增 App」:
-   平台 iOS、名稱「金毛騎士」(名稱不可與其他 App 重複)、主要語言「繁體中文」、選剛才的 Bundle ID、SKU 隨意(例如 `doggyknight`)。
+   平台 iOS、名稱「黃金騎士」(名稱不可與其他 App 重複)、主要語言「繁體中文」、選剛才的 Bundle ID、SKU 隨意(例如 `doggyknight`)。
 
 ### 4.2 每次建置
 
@@ -87,7 +87,7 @@ godot --headless --path . --export-debug "iOS" export/build/ios/DoggyKnight.ipa
 
 ### 4.3 TestFlight 邀請測試者
 
-1. App Store Connect →「金毛騎士 → TestFlight」。
+1. App Store Connect →「黃金騎士 → TestFlight」。
 2. **內部測試**:你帳號團隊內的成員(最多 100 人),建置處理完就可以測,不用審核。
 3. **外部測試**:任何人(用電郵或公開連結邀請),第一個建置要先通過 Beta App Review(通常一天內)。需要填寫測試資訊與聯絡電郵。
 4. 測試者在 iPhone 安裝「TestFlight」App,接受邀請後安裝遊戲。

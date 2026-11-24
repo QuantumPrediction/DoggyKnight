@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 《金毛騎士》Android 建置腳本(D6)。給雲端工作階段與 Linux / macOS 電腦用;Windows 請照 export/README.md 用編輯器匯出。
+# 《黃金騎士》Android 建置腳本(D6)。給雲端工作階段與 Linux / macOS 電腦用;Windows 請照 export/README.md 用編輯器匯出。
 #
 # 用法(在專案根目錄):
 #   export/build_android.sh debug      除錯版 APK  → export/build/doggyknight-debug.apk

@@ -1,0 +1,213 @@
+{
+  "baseline": "9b7ed6c449087ae8a89daea997fcecde707b085e",
+  "generator": "GPT Image (built-in)",
+  "layout": [
+    "front braking",
+    "front standing guard",
+    "rear braking",
+    "rear standing guard"
+  ],
+  "registration": {
+    "cell": [
+      256,
+      192
+    ],
+    "hip_x": 120,
+    "sole_y": 176,
+    "coordinates": "crop is [left, top, right exclusive, bottom exclusive]; spine_x, top_y and sole_y use the full-resolution original. height is the registered crown-to-sole height in atlas pixels."
+  },
+  "brief": "Create a single transparent hand-painted production animation sprite sheet for the playable hero of 黃金騎士 / The Golden Knight. The supplied existing running atlas is an EXACT identity and scale reference, not the pose or layout to copy. Match the same endearing young golden retriever's broad muzzle, small expressive brown eyes, ear shape, proportions (large head, short body), boot style, cloth materials, brown ink outlines and warm woodland illustrated storybook colors. Draw exactly FOUR separate full-body paintings, a precise two-columns, two-rows grid, isolated in equal spacious cells. Top-left: coming to a complete STOP after jogging TOWARDS the viewer: two feet on ground with one boot slightly in front, knees flexed, pelvis lowered by a small amount, shoulders compress and arms absorb momentum; just enough deformation to read at 38px. Top-right: SAME dog facing TOWARDS camera, balanced upright settled guard stance after the stop, both feet on floor and separated, weight centered and ears relaxed; this is not another running stride. Bottom-left: BACK VIEW of the stopped braking pose facing AWAY, back of head, no muzzle or eyes, heels grounded, cloth sways slightly. Bottom-right: BACK VIEW of balanced standing guard, heels down, quiet neatly draping cloth and fluffy tail visible. Feet flat across a common horizontal baseline, mild shift in stance between brake and relaxed rather than exaggerated arcing. Each near straight-on vertical projection, no three-quarter side view. Consistent head size and proportions across all 4; all paws/ears and every weapon entirely inside its cell. Scaled like the reference. Use transparent RGBA with clean antialiased edges, empty border and central gutters, zero contact shadows rendered onto ground, no scenery, no letters, no charts, no border, no artificial glow. This is an in-game asset, not a concept page.",
+  "role_briefs": {
+    "knight": "The exact knight wears silver-blue breastplate with gold sun emblem, gold rimmed pauldrons, brown leather gloves and boots, short dark indigo blue cape at back with gold rim. A single short silver sword pointing safely down in anatomical RIGHT hand, on picture LEFT in both front poses, picture RIGHT in both back poses. No shield, helmet, extra equipment or floating sword. Do not exaggerate armour weight.",
+    "mage": "The exact mage wears deep teal forest-green robes with finely embroidered gold trim and a short capelet, brown leather boots. A small chest clasp. Holds the same SINGLE SHORT amber-orb wand (not a long staff) in anatomical RIGHT paw: on picture LEFT in both forward poses and picture RIGHT in both rear poses. Wand can tilt forward with the stopping weight and return to neutral. No hat, no hood over head, no armour, no aura.",
+    "archer": "The exact archer wears olive moss-green capelet with embellished gold border, honey-tan quilted tunic, brown bracers and leather boots. Keeps a small curved wooden bow in anatomical LEFT paw, on picture RIGHT in both front poses, picture LEFT in both back poses. Same diagonally worn short leather quiver across back, arrow fletches over anatomical RIGHT shoulder, picture LEFT in front and RIGHT at rear. Arrow tips never visible outside quiver, no arrow nocked. Sanity check bow/string and quiver agree in both views. No hood over ears, no headgear."
+  },
+  "sheets": {
+    "knight": {
+      "reference": "assets/illustrated/motion/vertical_knight.png",
+      "reference_sha256": "5b10fde3da195c77b81514f8f144fe6cb27b6b9b877b70318c7f2f2f309bf769",
+      "original_png_sha256": "1d98f9db997f96e07226fcb625a0920109a4edba2cb42e52c9fc448e2a5e4452",
+      "original_size": [
+        1261,
+        1247
+      ],
+      "source": "source/knight.webp",
+      "webp_sha256": "34d506e12b99134d05d71e4190220484c7a50515cb600e0a322bc05a3ec533d9",
+      "rgba_sha256": "74e8090ea2737869a15e029d46ef252218d9128ae40f384cb6a077bd120cf43e",
+      "frames": [
+        {
+          "crop": [
+            141,
+            106,
+            481,
+            534
+          ],
+          "spine_x": 352,
+          "top_y": 113,
+          "sole_y": 526,
+          "height": 143
+        },
+        {
+          "crop": [
+            736,
+            68,
+            1057,
+            534
+          ],
+          "spine_x": 928,
+          "top_y": 75,
+          "sole_y": 526,
+          "height": 151
+        },
+        {
+          "crop": [
+            177,
+            728,
+            494,
+            1159
+          ],
+          "spine_x": 337,
+          "top_y": 735,
+          "sole_y": 1151,
+          "height": 143
+        },
+        {
+          "crop": [
+            767,
+            691,
+            1068,
+            1162
+          ],
+          "spine_x": 909,
+          "top_y": 698,
+          "sole_y": 1154,
+          "height": 151
+        }
+      ]
+    },
+    "mage": {
+      "reference": "assets/illustrated/motion/vertical_mage.png",
+      "reference_sha256": "6a8d372e1be009321ba3ef8719478f56ae0e2aff124eeb24086d1b1ad450d48e",
+      "original_png_sha256": "5e7f436a0d12a2ed3c8c945ca33d725b050652c36207378a690e3e6811535fc8",
+      "original_size": [
+        1263,
+        1246
+      ],
+      "source": "source/mage.webp",
+      "webp_sha256": "029d1736974e9c75b5d7163d9bc91293940d3c54667384a47e7c39d4f6c03f37",
+      "rgba_sha256": "7e45ea7e9730bed355ce4a1e7452ae89683e2411b2aec27132d483805d4f678c",
+      "frames": [
+        {
+          "crop": [
+            184,
+            116,
+            522,
+            547
+          ],
+          "spine_x": 372,
+          "top_y": 123,
+          "sole_y": 539,
+          "height": 143
+        },
+        {
+          "crop": [
+            753,
+            73,
+            1065,
+            546
+          ],
+          "spine_x": 917,
+          "top_y": 80,
+          "sole_y": 538,
+          "height": 151
+        },
+        {
+          "crop": [
+            204,
+            722,
+            499,
+            1162
+          ],
+          "spine_x": 353,
+          "top_y": 729,
+          "sole_y": 1154,
+          "height": 143
+        },
+        {
+          "crop": [
+            767,
+            677,
+            1058,
+            1162
+          ],
+          "spine_x": 911,
+          "top_y": 684,
+          "sole_y": 1154,
+          "height": 151
+        }
+      ]
+    },
+    "archer": {
+      "reference": "assets/illustrated/motion/vertical_archer.png",
+      "reference_sha256": "ca8a1f7f59baed7cd300ea920cae45b7f0ea6519bedba7e5333c777ef75a02bf",
+      "original_png_sha256": "3b30617f1f434d7ffb3cec23acd6727d306375a75dd72cfb1e8d4a71096c599c",
+      "original_size": [
+        1262,
+        1246
+      ],
+      "source": "source/archer.webp",
+      "webp_sha256": "d7a23ef3bb1588bae00af5dfaedfceb02743589714adc04adb9287e0505a4f04",
+      "rgba_sha256": "2121b20a264dbdc787cda898ad87826c7b064c67553893699b566a787517f22e",
+      "frames": [
+        {
+          "crop": [
+            152,
+            95,
+            493,
+            558
+          ],
+          "spine_x": 353,
+          "top_y": 102,
+          "sole_y": 550,
+          "height": 143
+        },
+        {
+          "crop": [
+            734,
+            54,
+            1068,
+            553
+          ],
+          "spine_x": 917,
+          "top_y": 61,
+          "sole_y": 545,
+          "height": 151
+        },
+        {
+          "crop": [
+            200,
+            673,
+            526,
+            1149
+          ],
+          "spine_x": 352,
+          "top_y": 680,
+          "sole_y": 1141,
+          "height": 143
+        },
+        {
+          "crop": [
+            760,
+            637,
+            1057,
+            1148
+          ],
+          "spine_x": 902,
+          "top_y": 644,
+          "sole_y": 1140,
+          "height": 151
+        }
+      ]
+    }
+  }
+}

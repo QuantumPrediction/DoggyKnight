@@ -103,6 +103,7 @@ var _next_sparkle: float = 2.0
 
 
 func _ready() -> void:
+	get_window().title = "%s · %s" % [tr("GAME_TITLE"), tr("UI_GAME_TITLE_EN")]
 	UiKit.setup_root(self)
 	backdrop_chapter = unlocked_chapters()
 	selected_chapter = backdrop_chapter
@@ -124,6 +125,7 @@ func _ready() -> void:
 	add_child(_petals)
 	_logo = UiKit.texture_rect(preload("res://assets/ui/logo_2x.png"))
 	_logo.name = "Logo"
+	_logo.accessibility_name = tr("GAME_TITLE")
 	add_child(_logo)
 	_caption_bg = Panel.new()
 	_caption_bg.name = "CaptionBacking"

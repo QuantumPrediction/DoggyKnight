@@ -31,7 +31,7 @@ func _ready() -> void:
 	StubUI.prepare_root(self)
 	StubUI.add_background(self)
 	var column := StubUI.add_column(self)
-	StubUI.add_label(column, "GOLDEN KNIGHT", StubUI.ACCENT, 16)
+	StubUI.add_label(column, tr("UI_GAME_TITLE_EN"), StubUI.ACCENT, 16)
 	StubUI.add_label(column, "(stand-in title)", Color(1, 1, 1, 0.6))
 	_chapter_row = HBoxContainer.new()
 	_chapter_row.alignment = BoxContainer.ALIGNMENT_CENTER

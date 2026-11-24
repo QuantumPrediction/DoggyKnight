@@ -1,0 +1,132 @@
+{
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "godot_linux_sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+  "control_source": "9b7ed6c449087ae8a89daea997fcecde707b085e",
+  "full_suite": [
+    {
+      "stage": "control",
+      "log_sha256": "f3ccc588c6d1ce1d938edd7a44689b72cb545c9c1af8fa65a96420f99155e0fe",
+      "result": "995 tests, 0 failed, 0 broken files",
+      "exit_lines": [
+        "WARNING: 27 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 21 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    {
+      "stage": "rejected-wall",
+      "log_sha256": "5dd50d4ec1b51bb85a40bf31276a91cd65c43ce4f47f5f6f068b03d3b8486ff3",
+      "result": "1001 tests, 1 failed, 0 broken files",
+      "exit_lines": [
+        "WARNING: 33 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 24 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    {
+      "stage": "final",
+      "log_sha256": "7976c58934951a7ae6dd748afd0fc2a25a192bf414713f5aee6f9a7007c5aa75",
+      "result": "1001 tests, 0 failed, 0 broken files",
+      "exit_lines": [
+        "WARNING: 27 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 21 resources still in use at exit (run with --verbose for details)."
+      ]
+    }
+  ],
+  "web_tests": 7,
+  "transport_and_startup_log_sha256": "a4ee598cd5d729f5ee7f958a3c3a4a7fb3ad9acdc94bb55429c91fe58fcc03f5",
+  "browser": "Linux Chromium, local managed preview, software WebGL 2; not a mobile or target-player test",
+  "before": {
+    "fresh_processes": 2,
+    "first_launch_fetch_errors": 2,
+    "manual_reload_then_play_observed": 1
+  },
+  "after": [
+    {
+      "fresh_profile": "a",
+      "user_retry_clicks": 0,
+      "source_console": [
+        {
+          "line": 168,
+          "message": "Live reload enabled."
+        },
+        {
+          "line": 78,
+          "message": "TypeError: Failed to fetch"
+        },
+        {
+          "line": 23,
+          "message": "Uncaught (in promise) TypeError: Failed to fetch"
+        },
+        {
+          "line": 23,
+          "message": "Uncaught (in promise) TypeError: Failed to fetch"
+        },
+        {
+          "line": 168,
+          "message": "Live reload enabled."
+        },
+        {
+          "line": 515,
+          "message": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+        },
+        {
+          "line": 515,
+          "message": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL"
+        }
+      ]
+    },
+    {
+      "fresh_profile": "b",
+      "user_retry_clicks": 0,
+      "source_console": [
+        {
+          "line": 168,
+          "message": "Live reload enabled."
+        },
+        {
+          "line": 78,
+          "message": "TypeError: Failed to fetch"
+        },
+        {
+          "line": 23,
+          "message": "Uncaught (in promise) TypeError: Failed to fetch"
+        },
+        {
+          "line": 23,
+          "message": "Uncaught (in promise) TypeError: Failed to fetch"
+        },
+        {
+          "line": 168,
+          "message": "Live reload enabled."
+        },
+        {
+          "line": 515,
+          "message": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+        },
+        {
+          "line": 515,
+          "message": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL"
+        }
+      ]
+    }
+  ],
+  "site_bytes": 65877538,
+  "wasm_and_pck": {
+    "index.wasm": {
+      "size": 39514754,
+      "sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0",
+      "parts": 7
+    },
+    "index.pck": {
+      "size": 59261764,
+      "sha256": "f72741f1b8f91caab6e1c2df30d1065d8a0489f3f5a04e9af0e7a19221d2874d",
+      "parts": 10
+    }
+  },
+  "production_source_sha256": {
+    "game/actors/player/player.gd": "7bd545bf1605744e981a0e318bc9201b395ebc7ebd8cf5999f9b90e9b04510d8",
+    "ui/illustrated/actor_skin.gd": "b4b2ca24ac9739da1cf5e6a68ff7c62e532b536a1506a4f84915ac3afb0bbab5",
+    "ui/illustrated/texture_surface.gd": "e8a308edee8767420cf6faaf07af64f60f526dc448e65e151393f59d91c787ae",
+    "export/web/shell.html": "1911a00bd960e8a18734e982ec4a9d6e8f35492c3760282420e5c0d8273c9464",
+    "project.godot": "4b5bf4338cc68dc3a094398e3ee156392bec7a4a59652261d5957a95cd2489b5"
+  }
+}

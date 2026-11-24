@@ -1,8 +1,18 @@
-# Golden Knight — current project state
+# The Golden Knight — current project state
 
 Updated: 2026-11-24 (Hong Kong). Version: **0.9.1 development source**.
 
-## Current work — directional running, combat lettering and opening reinforcements
+## Current work — 黃金騎士 · The Golden Knight
+
+The playable browser edition and three heroes share the new title. On the illustrated cover the English caption now fits its ribbon. A Linux save created on draft #31 reopened through Continue with the archer, reinforcements and settings intact. The new work branches from #31 at `9b7ed6c449087ae8a89daea997fcecde707b085e`. [Play](https://doggy-knight-playtest.quantumprediction.chatgpt.site/) · [Cover and save comparison](validation/natural-motion/identity/README.md)
+
+Footfalls follow the distance the body actually travels between the start of a physics step and the arena boundary. All three classes keep their heading while braking, plant their feet at a wall and use new front and rear stopping drawings. GPT Image supplied twelve drawings. At equal ground distance each class made seven pose changes at both speeds. The old runner made seven at full speed and fifteen at half speed. Across the two reversals per class, the eighteen frames painted against the direction of travel fell to zero. All 1,656 measured physics rows matched byte for byte. The 131 attack frames retained their drawing and the 54 rolling frames also retained their transform. [Paired native pictures, data and failed candidates](validation/natural-motion/README.md)
+
+Same-machine Godot regression was 995/995 on #31 and 1,001/1,001 here. The new test first caught an actor placed outside the arena drawing the wrong heading after the boundary correction. The final suite and its control both reported 27 ObjectDB instances and 21 resources on exit. All 54 battle records across 24 opening cases matched the archived gameplay fields. Both cautious archer losses remain in the comparison. [Usual departure](validation/natural-motion/combat/normal-31-43.json) · [Reinforcements](validation/natural-motion/combat/reinforced-7-19.json)
+
+**Next acceptance work.** Let first-time players try starting, reversing and stopping in the opening fight and record the first confusing instant. Check whether they see the ordinary scarecrow's warning during overlapping hits and whether they can name what a companion did to help. On actual phones measure cold entry time and frame times through the first crowded wave. The existing first-chapter trial covers six to eight participants. Target-player observations currently number zero. Windows, physical phone and controller play, listening, retention and independent quality review still have open gates. The overall estimate remains 6–6.5/10. [Unprompted trial](validation/scene-lifetime/archer-trial.md) · [Twenty-four quality criteria](QUALITY_9_ROADMAP_ZH.md)
+
+## Previous round — directional running, combat lettering and opening reinforcements
 
 [Draft #31](https://github.com/QuantumPrediction/DoggyKnight/pull/31) · [Public tested implementation](https://github.com/QuantumPrediction/DoggyKnight/commit/47800ef8dea959dda41715269ec86e72a9372a60)
 
