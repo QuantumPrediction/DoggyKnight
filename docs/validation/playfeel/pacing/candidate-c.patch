@@ -1,0 +1,96 @@
+diff --git a/data/levels/level_1_1.tres b/data/levels/level_1_1.tres
+index cc915f7..b1c5fb4 100644
+--- a/data/levels/level_1_1.tres
++++ b/data/levels/level_1_1.tres
+@@ -30,0 +31,7 @@ pattern = &"edges"
++[sub_resource type="Resource" id="wave1_spawn4"]
++script = ExtResource("3_spawn")
++enemy_id = &"scarecrow"
++count = 2
++delay = 15.0
++pattern = &"reserve_line"
++
+@@ -33 +40 @@ script = ExtResource("2_wave")
+-spawns = Array[ExtResource("3_spawn")]([SubResource("wave1_spawn1"), SubResource("wave1_spawn2"), SubResource("wave1_spawn3")])
++spawns = Array[ExtResource("3_spawn")]([SubResource("wave1_spawn1"), SubResource("wave1_spawn2"), SubResource("wave1_spawn3"), SubResource("wave1_spawn4")])
+@@ -55,0 +63,7 @@ pattern = &"edges"
++[sub_resource type="Resource" id="wave2_spawn4"]
++script = ExtResource("3_spawn")
++enemy_id = &"scarecrow"
++count = 2
++delay = 20.0
++pattern = &"reserve_line"
++
+@@ -58 +72 @@ script = ExtResource("2_wave")
+-spawns = Array[ExtResource("3_spawn")]([SubResource("wave2_spawn1"), SubResource("wave2_spawn2"), SubResource("wave2_spawn3")])
++spawns = Array[ExtResource("3_spawn")]([SubResource("wave2_spawn1"), SubResource("wave2_spawn2"), SubResource("wave2_spawn3"), SubResource("wave2_spawn4")])
+diff --git a/data/levels/level_1_2.tres b/data/levels/level_1_2.tres
+index cc2473b..21dedaa 100644
+--- a/data/levels/level_1_2.tres
++++ b/data/levels/level_1_2.tres
+@@ -23,0 +24,7 @@ pattern = &"line_top"
++[sub_resource type="Resource" id="wave1_spawn3"]
++script = ExtResource("3_spawn")
++enemy_id = &"scarecrow"
++count = 2
++delay = 11.0
++pattern = &"reserve_line"
++
+@@ -26 +33 @@ script = ExtResource("2_wave")
+-spawns = Array[ExtResource("3_spawn")]([SubResource("wave1_spawn1"), SubResource("wave1_spawn2")])
++spawns = Array[ExtResource("3_spawn")]([SubResource("wave1_spawn1"), SubResource("wave1_spawn2"), SubResource("wave1_spawn3")])
+@@ -80,0 +88,7 @@ pattern = &"corners"
++[sub_resource type="Resource" id="wave3_spawn5"]
++script = ExtResource("3_spawn")
++enemy_id = &"scarecrow"
++count = 2
++delay = 18.0
++pattern = &"reserve_line"
++
+@@ -83 +97 @@ script = ExtResource("2_wave")
+-spawns = Array[ExtResource("3_spawn")]([SubResource("wave3_spawn1"), SubResource("wave3_spawn2"), SubResource("wave3_spawn3"), SubResource("wave3_spawn4")])
++spawns = Array[ExtResource("3_spawn")]([SubResource("wave3_spawn1"), SubResource("wave3_spawn2"), SubResource("wave3_spawn3"), SubResource("wave3_spawn4"), SubResource("wave3_spawn5")])
+diff --git a/game/flow/wave_spawner.gd b/game/flow/wave_spawner.gd
+index cf8d7bd..ae6263a 100644
+--- a/game/flow/wave_spawner.gd
++++ b/game/flow/wave_spawner.gd
+@@ -15,0 +16 @@ extends Node
++##     reserve_line  在主角活力充裕且場上有空位時從遠端增援。清空或滿場就略過。
+@@ -45 +46,2 @@ const CORNERS: StringName = &"corners"
+-const PATTERNS: Array[StringName] = [EDGES, SURROUND, LINE_TOP, CORNERS]
++const RESERVE_LINE: StringName = &"reserve_line"
++const PATTERNS: Array[StringName] = [EDGES, SURROUND, LINE_TOP, CORNERS, RESERVE_LINE]
+@@ -62,0 +65 @@ var _pending: Array[Dictionary] = []
++var _required_pending: int = 0
+@@ -177 +180 @@ func step(delta: float) -> void:
+-			if _pending.is_empty() and enemies_remaining() == 0:
++			if _required_pending == 0 and enemies_remaining() == 0:
+@@ -229,0 +233,2 @@ func _schedule(entry: SpawnEntry) -> void:
++	if pattern != RESERVE_LINE:
++		_required_pending += count
+@@ -241 +246 @@ func _schedule(entry: SpawnEntry) -> void:
+-			LINE_TOP:
++			LINE_TOP, RESERVE_LINE:
+@@ -269,0 +275,8 @@ func _spawn_due() -> void:
++		if _groups[item["group"]]["pattern"] == RESERVE_LINE:
++			var live := enemies_remaining()
++			if live == 0 or live >= difficulty.reserve_field_limit:
++				continue
++			if GameState.vigor < ceili(GameState.player_stats.max_vigor * difficulty.reserve_min_vigor):
++				continue
++		else:
++			_required_pending -= 1
+@@ -282 +295 @@ func _position_for(item: Dictionary) -> Vector2:
+-		LINE_TOP:
++		LINE_TOP, RESERVE_LINE:
+@@ -323,0 +337 @@ func _clear_wave_state() -> void:
++	_required_pending = 0
+diff --git a/game/progression/difficulty_data.gd b/game/progression/difficulty_data.gd
+index 8a7c866..2ff9451 100644
+--- a/game/progression/difficulty_data.gd
++++ b/game/progression/difficulty_data.gd
+@@ -76,0 +77,4 @@ extends Resource
++## reserve_line can fill gaps in a live fight up to this field size.
++@export_range(1, 32, 1) var reserve_field_limit: int = 4
++## A struggling player keeps the regular encounter.
++@export_range(0.0, 1.0, 0.05) var reserve_min_vigor: float = 0.8

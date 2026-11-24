@@ -33,6 +33,7 @@ const INFO_ROW_H: float = 12.0
 var level_badge: TextureRect
 var level_label: Label
 var vigor_bar: PixelBar
+var vigor_loss: Label
 var exp_bar: PixelBar
 var loyalty_bar: PixelBar
 var pause_button: Button
@@ -76,6 +77,7 @@ var _celebration_tween: Tween
 var _celebrating: bool = false
 var _snacks: int = -1
 var _snack_tween: Tween
+var _vigor_loss_tween: Tween
 var _endless_record_shown: bool = false
 
 
@@ -151,6 +153,21 @@ func _build() -> void:
 			preload("res://assets/ui/icon_heart.png"), 7)
 	vigor_bar.low_ratio = CONFIG.low_vigor_ratio
 	vigor_bar.segments = 5
+	vigor_loss = UiKit.label("", &"LabelLight", HORIZONTAL_ALIGNMENT_RIGHT)
+	vigor_loss.name = "VigorLoss"
+	vigor_loss.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	vigor_loss.add_theme_font_override(&"font", preload("res://assets/fonts/QuillFigures.ttf"))
+	vigor_loss.add_theme_font_size_override(&"font_size", 8)
+	vigor_loss.add_theme_color_override(&"font_color", Color("fff0d6"))
+	vigor_loss.add_theme_color_override(&"font_outline_color", Color("482832"))
+	vigor_loss.add_theme_constant_override(&"outline_size", 1)
+	vigor_loss.clip_text = true
+	vigor_loss.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	vigor_bar.add_child(vigor_loss)
+	vigor_loss.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	vigor_loss.offset_top = -1
+	vigor_loss.offset_right = -2
+	vigor_loss.hide()
 	exp_bar = _make_bar("ExpBar", PaletteColors.SKY, PaletteColors.SKY_L, PaletteColors.WATER,
 			preload("res://assets/ui/icon_exp.png"), 5)
 	loyalty_bar = _make_bar("LoyaltyBar", PaletteColors.GOLD, PaletteColors.GOLD_L, PaletteColors.GOLD_D,
@@ -486,7 +503,19 @@ func _on_pause_pressed() -> void:
 	AppLifecycle.simulate_back()      # 按鍵音與輕震由 UiKit.button 處理
 
 
-func _on_player_damaged(_amount: int) -> void:
+func _on_player_damaged(amount: int) -> void:
+	if amount <= 0:
+		return
+	# The bar receives final damage after armour and guarding. One label shows the latest hit.
+	if _vigor_loss_tween != null:
+		_vigor_loss_tween.kill()
+	vigor_loss.text = "−%d" % amount
+	vigor_loss.modulate.a = 1.0
+	vigor_loss.show()
+	_vigor_loss_tween = create_tween()
+	_vigor_loss_tween.tween_interval(0.40)
+	_vigor_loss_tween.tween_property(vigor_loss, "modulate:a", 0.0, 0.18)
+	_vigor_loss_tween.tween_callback(vigor_loss.hide)
 	var heart := _bar_icons[0]
 	var base := Vector2(heart.position.x, heart.position.y)
 	var t := create_tween()
@@ -531,6 +560,9 @@ func _on_combo_changed(count: int) -> void:
 
 
 func _on_level_started(level_id: StringName) -> void:
+	if _vigor_loss_tween != null:
+		_vigor_loss_tween.kill()
+	vigor_loss.hide()
 	boss_tactic.hide()
 	_refresh_resonance()
 	_banner_queue.clear()

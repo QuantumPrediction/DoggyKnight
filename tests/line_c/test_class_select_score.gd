@@ -91,3 +91,19 @@ func test_pressure_rises_with_crowd_and_danger_and_mute_stops_both_layers() -> v
 	Music.refresh()
 	for player in Music._players + Music._rhythm:
 		assert_false(player.playing)
+
+func test_reinforced_departure_is_available_on_a_fresh_first_chapter() -> void:
+	GameState.chapter_cleared = false
+	var title: Node = load("res://ui/screens/title.tscn").instantiate()
+	add_child(title)
+	title.new_game_button.pressed.emit()
+	var picker: HeroClassSelect = title.get_class_select()
+	assert_not_null(picker.reinforced_button)
+	await wait_frames(2)
+	assert_true(UiKit.safe_rect().encloses(picker.reinforced_button.get_global_rect()))
+	assert_false(picker.reinforced_button.get_global_rect().intersects(picker.confirm_button.get_global_rect()))
+	picker.select(&"mage")
+	picker.reinforced_button.pressed.emit()
+	assert_eq(GameState.difficulty, FlowMain.REINFORCED)
+	assert_eq(GameState.hero_class, &"mage")
+	GameState.difficulty = FlowMain.NORMAL

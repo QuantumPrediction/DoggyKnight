@@ -167,6 +167,16 @@ static func motion_pose(id: StringName, index: int) -> Texture2D:
 	return cell("motion/" + String(id), index % 3, index / 3, 3, 3)
 
 
+static func stride_phase(sprite: AnimatedSprite2D, frame_count: int, poses: int) -> int:
+	# The existing movement clock also owns slow motion, hit-stop and pause.
+	var cycle := (sprite.frame + sprite.frame_progress) / frame_count
+	return clampi(floori(poses * cycle), 0, poses - 1)
+
+
+static func hero_stride(id: StringName, phase: int) -> Texture2D:
+	return cell("motion/stride_" + String(id), phase % 4, phase / 4, 4, 2)
+
+
 static func companion_guard_pose(index: int) -> Texture2D:
 	return cell("motion/companion_guard", clampi(index, 0, 3), 0, 4, 1)
 
@@ -196,6 +206,7 @@ static func field_chest(tier: int, animation: StringName, frame: int) -> Texture
 static func prepare_combat_paint(id: StringName) -> void:
 	# Load at actor setup so the first impact or pickup doesn't open a new sheet.
 	texture("motion/" + String(id))
+	texture("motion/stride_" + String(id))
 	texture("motion/reactions")
 	texture("motion/effects")
 	texture("motion/objects")
@@ -210,8 +221,7 @@ static func hero_motion(id: StringName, sprite: AnimatedSprite2D, frame_count: i
 				return cell("motion/reactions", 0, HeroClasses.IDS.find(id), 3, 3)
 			index = 0
 		&"run":
-			var cycle := (sprite.frame + sprite.frame_progress) / frame_count
-			index = 1 + mini(3, floori(4.0 * cycle))
+			return hero_stride(id, stride_phase(sprite, frame_count, 8))
 		&"attack":
 			# GoldiePlayer pauses on frame zero during windup and resumes it on the real release.
 			if sprite.frame == 0 and not sprite.is_playing():

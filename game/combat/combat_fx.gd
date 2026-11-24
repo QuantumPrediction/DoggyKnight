@@ -199,7 +199,7 @@ static func damage_number(host: Node, value: int, at: Vector2, style: DamageNumb
 	number.style = style
 	number.feel = tuning
 	layer_for(host).add_child(number)
-	number.global_position = at
+	number.place_at(at)
 	_numbers.append(number)
 	return number
 

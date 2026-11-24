@@ -43,7 +43,7 @@ const VERSION: int = 11
 const MAX_META_LEVEL: int = 99
 const DEFAULT_PATH: String = "user://save.json"
 const MAX_STARS: int = 3
-const DIFFICULTIES: Array[String] = ["normal", "hard"]
+const DIFFICULTIES: Array[String] = ["normal", "hard", "reinforced"]
 ## 第 5 版存檔(v2.6)的章數。
 const V5_CHAPTER_COUNT: int = 3
 
@@ -247,7 +247,7 @@ static func _bool_field(raw: Dictionary, key: String, fallback: bool) -> bool:
 	return value if value is bool else fallback
 
 
-## "normal" 或 "hard";其他值 → "normal"。
+## 儲存一般、困難及自選增援，舊檔與未知模式回到一般。
 static func _difficulty_field(value: Variant) -> String:
 	if (value is String or value is StringName) and DIFFICULTIES.has(String(value)):
 		return String(value)

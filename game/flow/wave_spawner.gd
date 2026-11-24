@@ -184,7 +184,7 @@ func _start_wave(number: int) -> void:
 	_phase = Phase.IN_WAVE
 	_clear_wave_state()
 	var wave: WaveData = level.waves[number - 1]
-	for entry in wave.spawns:
+	for entry in wave.entries_for(difficulty_mode == FlowMain.REINFORCED):
 		if entry == null or entry.count <= 0:
 			continue
 		_schedule(entry)
@@ -206,7 +206,7 @@ func _start_wave(number: int) -> void:
 func has_boss_music(wave: WaveData) -> bool:
 	if wave == null or difficulty == null:
 		return false
-	for entry in wave.spawns:
+	for entry in wave.entries_for(difficulty_mode == FlowMain.REINFORCED):
 		if entry != null and entry.count > 0 and difficulty.boss_music_enemies.has(entry.enemy_id):
 			return true
 	return false

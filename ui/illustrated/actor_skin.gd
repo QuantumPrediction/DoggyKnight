@@ -6,13 +6,20 @@ var _tex: Texture2D
 var _rect: Rect2
 var _swing_enemy: ScarecrowEnemy
 var _archer: ArcherEnemy
+var _player: GoldiePlayer
+enum RunView { SIDE, FRONT, REAR }
+var _run_view := RunView.SIDE
 
 func _ready() -> void:
 	sprite = get_parent() as AnimatedSprite2D
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	use_parent_material = true
 	if actor_code == "goldie":
-		StoryArt.prepare_combat_paint(HeroClasses.valid_id(GameState.hero_class))
+		_player = sprite.get_parent() as GoldiePlayer
+		var role := HeroClasses.valid_id(GameState.hero_class)
+		StoryArt.prepare_combat_paint(role)
+		if _player != null:
+			StoryArt.texture("motion/vertical_" + String(role))
 	elif actor_code == "bulldog":
 		StoryArt.texture("motion/companion_guard")
 	elif actor_code == "scarecrow_archer":
@@ -40,7 +47,15 @@ func _update() -> void:
 		return
 	var flip := sprite.flip_h
 	var texture: Texture2D
-	if _swing_enemy != null:
+	if _player != null:
+		_run_view = _vertical_run_view(_player.facing) if sprite.animation == &"run" else RunView.SIDE
+		if _run_view != RunView.SIDE:
+			var role := HeroClasses.valid_id(GameState.hero_class)
+			var phase := StoryArt.stride_phase(sprite, count, 4)
+			texture = StoryArt.cell("motion/vertical_" + String(role), phase, _run_view - 1, 4, 2)
+			if texture != null:
+				flip = false
+	elif _swing_enemy != null:
 		var beat := _swing_enemy.illustrated_swing_beat()
 		if beat >= 0:
 			texture = StoryArt.scarecrow_swing(_swing_enemy.facing, beat)
@@ -76,6 +91,15 @@ func _update() -> void:
 		_tex = texture
 		_rect = rect
 		queue_redraw()
+
+func _vertical_run_view(facing: Vector2) -> RunView:
+	# The stick can hover near the cut between paintings. Keep a small angular
+	# margin between entering and leaving a vertical view. Diagonals stay side-on.
+	var view := RunView.FRONT if facing.y > 0.0 else RunView.REAR
+	var slope := 1.2 if _run_view == view else 1.6
+	if absf(facing.y) > slope * absf(facing.x):
+		return view
+	return RunView.SIDE
 
 func _drawing(count: int) -> Texture2D:
 	if actor_code == "goldie":

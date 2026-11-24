@@ -1,0 +1,15 @@
+== 匯入資源 ==
+== 執行測試 ==
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+res://tests/integration/test_vertical_run.gd
+  ok      test_knight_front_rear_and_diagonal
+  ok      test_mage_front_rear_and_diagonal
+  ok      test_archer_front_rear_and_diagonal
+  ok      test_turn_margin_and_animation_transition
+  ok      test_normal_input_moves_the_actor_in_the_painted_direction
+  ok      test_all_painted_feet_and_weapons_fit_the_registered_gutters
+
+6 tests, 0 failed, 0 broken files
+全部測試通過。

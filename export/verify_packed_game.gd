@@ -31,6 +31,16 @@ func _check() -> void:
 				push_error("Missing level or background %d-%d" % [chapter, level])
 				quit(1)
 				return
+			if chapter == 1 and level <= 2:
+				var reserve_count := 0
+				for wave in resource.get("waves"):
+					for entry in wave.reinforcements:
+						if entry.pattern == &"line_top":
+							reserve_count += int(entry.count)
+				if reserve_count != 4:
+					push_error("Missing opening reinforcement groups")
+					quit(1)
+					return
 			checked += 1
 	for companion: String in ["bulldog", "lancelot", "tristan", "gawain"]:
 		var resource: Resource = load("res://data/companions/%s.tres" % companion)
@@ -45,9 +55,20 @@ func _check() -> void:
 			quit(1)
 			return
 		art_count += 1
-	for motion: String in ["knight", "mage", "archer", "companion_guard", "scarecrow_swing", "archer_draw"]:
+	for motion: String in ["knight", "mage", "archer", "companion_guard", "scarecrow_swing", "archer_draw",
+			"stride_knight", "stride_mage", "stride_archer", "vertical_knight", "vertical_mage", "vertical_archer"]:
 		if load("res://assets/illustrated/motion/%s.png" % motion) == null:
 			push_error("Missing motion atlas " + motion)
+			quit(1)
+			return
+	var figures := load("res://assets/fonts/QuillFigures.ttf") as Font
+	if figures == null or load("res://assets/fonts/StoryDisplay.tres") == null:
+		push_error("Missing combat figures or display typeface")
+		quit(1)
+		return
+	for glyph in "0123456789":
+		if not figures.has_char(glyph.unicode_at(0)):
+			push_error("Missing damage digit " + glyph)
 			quit(1)
 			return
 	if ResourceLoader.exists("res://tests/framework/test_runner.tscn"):

@@ -1,10 +1,11 @@
 extends SceneTree
-## A contact sheet of the actual selected actor drawings. Uses source pixels so it
-## also works with a headless display. This is not a framebuffer capture.
+## Selected actor drawings and physics events also work headless. A graphical run
+## can additionally save one 60 Hz running cycle from its actual window.
 const TICKS := 160
 const SAMPLE_EVERY := 4
 const SCALE := 4.0
 var output := OS.get_environment("MOTION_CAPTURE_DIR")
+var viewport_output := OS.get_environment("MOTION_VIEWPORT_DIR")
 var sheets := {}
 
 func _initialize() -> void:
@@ -40,6 +41,13 @@ func run() -> void:
 		quit(2)
 		return
 	DirAccess.make_dir_recursive_absolute(output)
+	if not viewport_output.is_empty():
+		if DisplayServer.get_name() == "headless":
+			printerr("MOTION_VIEWPORT_DIR needs a rendered window")
+			quit(2)
+			return
+		root.size = Vector2i(360, 640)
+		DirAccess.make_dir_recursive_absolute(viewport_output)
 	var track := FileAccess.open(output.path_join("events.tsv"), FileAccess.WRITE)
 	track.store_line("hero\ttick\tswings\thp\tshots")
 	var state := root.get_node("GameState")
@@ -73,6 +81,14 @@ func run() -> void:
 			if tick % SAMPLE_EVERY == 0:
 				var sprite: AnimatedSprite2D = player.get_node("Sprite")
 				paint(sprite.get_node("IllustratedActor"), sprite, output.path_join("%s-%02d.png" % [id, tick / SAMPLE_EVERY]))
+			if not viewport_output.is_empty() and tick >= 25 and tick < 51:
+				await RenderingServer.frame_post_draw
+				var capture := root.get_texture().get_image()
+				var path := viewport_output.path_join("%s-%02d.png" % [id, tick])
+				if capture == null or capture.get_size() != Vector2i(360, 640) or capture.save_png(path) != OK:
+					printerr("Could not retain 360x640 game frame " + path)
+					quit(1)
+					return
 		arena.free()
 		await process_frame
 		await process_frame

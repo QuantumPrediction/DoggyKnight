@@ -34,10 +34,23 @@ func check_poses(role: StringName) -> void:
 	var sprite: AnimatedSprite2D = player.get_node("Sprite")
 	var total := sprite.sprite_frames.get_frame_count(&"run")
 	sprite.play(&"run")
-	for phase in 4:
-		var progress := float(phase * total) / 4.0
+	var regions: Dictionary = {}
+	for phase in 8:
+		var progress := float(phase * total) / 8.0
 		sprite.set_frame_and_progress(floori(progress), fmod(progress, 1.0))
-		assert_eq(selected(sprite), StoryArt.motion_pose(role, phase + 1), "running phase %d" % phase)
+		var painted := selected(sprite)
+		assert_eq(painted.atlas.resource_path, "res://assets/illustrated/motion/stride_%s.png" % role)
+		assert_eq(painted.region, Rect2(256 * (phase % 4), 192 * (phase / 4), 256, 192))
+		regions[painted.region] = true
+	assert_eq(regions.size(), 8, "both footfalls have four individually drawn positions")
+	sprite.set_frame_and_progress(0, 0.0)
+	assert_eq(selected(sprite), StoryArt.hero_stride(role, 0), "cycle returns to its first footfall")
+	player.set_physics_process(false)
+	sprite.set_frame_and_progress(0, 0.9)
+	sprite.pause()
+	var held_pose := selected(sprite)
+	await wait_frames(2)
+	assert_eq(selected(sprite), held_pose, "held playback repeats the same painting")
 	sprite.play(&"attack")
 	sprite.set_frame_and_progress(0, 0.0)
 	sprite.pause()
@@ -56,6 +69,25 @@ func test_mage_running_and_cast() -> void:
 
 func test_archer_running_and_release() -> void:
 	await check_poses(&"archer")
+
+
+func test_stride_drawings_keep_both_contacts_and_two_airborne_poses_inside_each_tile() -> void:
+	for role: StringName in ROLES:
+		var sheet := StoryArt.texture("motion/stride_" + String(role)).get_image()
+		assert_eq(sheet.get_size(), Vector2i(1024, 384))
+		var silhouettes: Dictionary = {}
+		for i in 8:
+			var tile := sheet.get_region(Rect2i((i % 4) * 256, (i / 4) * 192, 256, 192))
+			var bounds := tile.get_used_rect()
+			assert_true(bounds.position.x >= 5 and bounds.position.y >= 5)
+			assert_true(bounds.end.x <= 251 and bounds.end.y <= 187)
+			assert_true(bounds.size.y >= 120, "full-size running character")
+			if i % 4 == 3:
+				assert_true(bounds.end.y >= 157 and bounds.end.y <= 172, "airborne sole")
+			else:
+				assert_true(bounds.end.y >= 175 and bounds.end.y <= 181, "registered ground contact")
+			silhouettes[bounds] = true
+		assert_eq(silhouettes.size(), 8, "each painting has its own silhouette bounds")
 
 func test_each_hero_has_distinct_blink_cheer_and_sleep_drawings() -> void:
 	var sprite := AnimatedSprite2D.new()
