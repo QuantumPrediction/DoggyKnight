@@ -128,5 +128,18 @@
     "ui/illustrated/texture_surface.gd": "e8a308edee8767420cf6faaf07af64f60f526dc448e65e151393f59d91c787ae",
     "export/web/shell.html": "1911a00bd960e8a18734e982ec4a9d6e8f35492c3760282420e5c0d8273c9464",
     "project.godot": "4b5bf4338cc68dc3a094398e3ee156392bec7a4a59652261d5957a95cd2489b5"
+  },
+  "publication": {
+    "draft_pr": "https://github.com/QuantumPrediction/DoggyKnight/pull/32",
+    "public_tested_commit": "19f2f7ba6441cb273e88fba38311335393e5f517",
+    "local_tested_commit": "dddfb1a329152253d948a227862d9f4665f1a8d6",
+    "shared_tested_tree": "a4a564f494ee133366704d774aeee9110c12f420",
+    "public_site": "https://doggy-knight-playtest.quantumprediction.chatgpt.site/",
+    "version": 6,
+    "site_source": "36a0a0c6076273f045d76c1e9727a9772077c85d",
+    "audience": "public",
+    "public_https_check": "Engine compiled and six chapters verified on the deployed site. Cloud browser reported WebGL 2 missing.",
+    "compatible_browser": "The native Chromium on this machine reported ERR_CERT_AUTHORITY_INVALID on public HTTPS. Local managed preview of the same exported files reached 1-1 with knight and reinforced archer.",
+    "known_limits": "No physical phone, target-player review, or frame pacing measurement. Two fresh profile network errors at initial startup remain unexplained."
   }
 }
