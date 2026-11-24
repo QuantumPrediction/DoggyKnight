@@ -1,8 +1,20 @@
 # Golden Knight — current project state
 
-Updated: 2026-11-23 (Hong Kong). Version: **0.9.1 development source**.
+Updated: 2026-11-24 (Hong Kong). Version: **0.9.1 development source**.
 
-## Current work — play Golden Knight in a browser
+## Current work — directional running, combat lettering and opening reinforcements
+
+[Draft #31](https://github.com/QuantumPrediction/DoggyKnight/pull/31) · [Public tested implementation](https://github.com/QuantumPrediction/DoggyKnight/commit/47800ef8dea959dda41715269ec86e72a9372a60)
+
+The browser playtest now offers **迎戰援軍** on the first chapter’s class screen. On this path the knight, mage and archer meet 20 enemies on Sword-in-the-Stone Hill and 28 in the wheat field, four more in each room. The usual departure still has 16 and 24. A checkpoint retains the choice. Candidate branch `codex/first-chapter-playfeel` extends draft #30 at `d2e9b2b3443cbe1ff1ca3d45f597fe3cdcd5ff98`. The tested implementation has Git tree `ab2cd9ad601ef96a0aac7964820a3cb81ff13af6`. [Play the game](https://doggy-knight-playtest.quantumprediction.chatgpt.site/) · [Running, damage text and enemy screenshots](validation/playfeel/README.md)
+
+GPT Image supplied 48 running poses for the three classes. Each has eight side-running drawings and four each facing toward and away from the camera. A fixed native 360×640 comparison measured four to eight distinct side-running images over the same 429 ms cycle. All 480 side-running/attack event records and all 540 directional movement records matched their paired controls byte for byte. Chapter titles and class headings use a heavier storybook typeface. New hand-drawn figures distinguish ordinary hits, criticals and ultimates; the vigor bar shows the amount actually lost. In one fixed 42-frame ordinary swing, the damage number covered the warning outline in 32 baseline frames, 37 in the rejected first lettering pass and one in the final build. [Movement and source drawings](validation/playfeel/stride.md) · [Lettering](validation/playfeel/lettering/README.md)
+
+Across the same 24 bot runs per mode, each normal result and active-enemy histogram matched #30, including its defeat. Reinforcements increased the first-attempt share of combat with at least three targetable enemies in 20/24 room-one and 18/24 room-two cases. The original opening finished both rooms in 23/24 cases with six downs, the opt-in fight in 22/24 with nine. Cautious archers 7 and 31 failed in the latter, and the existing 43 failure remains in the original mode. Three attempts at making density mandatory were rejected. An interim data layout also broke two normal-mode contract tests. Optional formations now live separately on each wave. [Conditions, failures and reproduction](validation/playfeel/pacing/README.md)
+
+The unmodified #30 full regression passed 980/980. The first integration run passed 993/995. After separating the formations, the two affected suites passed 28/28, the final full regression passed 995/995, and all three JavaScript transport tests passed. Both baseline and final full runs still report 33 ObjectDB instances, 24 resources and RID warnings on exit. The final six-chapter site is 65,561,349 bytes with decoded game pack SHA-256 `57e2d07e0539966356a6454f2490d9054ddff5ab9ea27e67b0fda3a8e8efa604`. The public release is site version 5, built from site source `2978dd9a56af1815fc26c9120cf792eff4b8c8b1`. The public HTTPS file check verified both complete assets and compiled the engine. The managed browser lacks WebGL 2. A graphical Linux Chromium trial on the local release selected the mage’s reinforcements, entered 1-1, chose a roll upgrade and a route, paused, and resumed the saved class after reloading. The first local cold launch reported a fetch interruption; the file check and retry succeeded. Next record phone frame times and ask first-time target players when they lost track of a direction, a number or a safe exit. Target-player count remains zero and the provisional overall rating stays 6–6.5/10. [Existing player trial](validation/scene-lifetime/archer-trial.md)
+
+## Previous work — play Golden Knight in a browser
 
 [Draft #30 — browser playtest](https://github.com/QuantumPrediction/DoggyKnight/pull/30)
 
