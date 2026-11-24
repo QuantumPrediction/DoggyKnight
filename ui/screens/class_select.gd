@@ -1,11 +1,14 @@
 class_name HeroClassSelect
 extends Control
 signal confirmed(id: StringName)
+signal reinforced_confirmed(id: StringName)
 signal cancelled()
 
 var selected: StringName = &"knight"
 var confirm_button: Button
 var cancel_button: Button
+var offer_reinforcements: bool = false
+var reinforced_button: Button
 var choices: Array[Button] = []
 var _panel: PanelContainer
 var _portrait: TextureRect
@@ -73,7 +76,22 @@ func _ready() -> void:
 	column.add_child(_ultimate)
 	confirm_button = UiKit.button(tr("UI_CLASS_DEPART"), &"", Vector2(0, 28))
 	confirm_button.pressed.connect(func() -> void: confirmed.emit(selected))
-	column.add_child(confirm_button)
+	if offer_reinforcements:
+		var departures := HBoxContainer.new()
+		departures.add_theme_constant_override(&"separation", 3)
+		column.add_child(departures)
+		confirm_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		confirm_button.add_theme_font_size_override(&"font_size", 10)
+		departures.add_child(confirm_button)
+		reinforced_button = UiKit.button(tr("UI_REINFORCED_DEPART"), &"ButtonAlt", Vector2(0, 28))
+		reinforced_button.name = "ReinforcedButton"
+		reinforced_button.tooltip_text = tr("UI_REINFORCED_HINT")
+		reinforced_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		reinforced_button.add_theme_font_size_override(&"font_size", 10)
+		reinforced_button.pressed.connect(func() -> void: reinforced_confirmed.emit(selected))
+		departures.add_child(reinforced_button)
+	else:
+		column.add_child(confirm_button)
 	cancel_button = UiKit.button(tr("UI_BACK"), &"ButtonAlt", Vector2(0, 24))
 	cancel_button.pressed.connect(func() -> void: cancelled.emit())
 	column.add_child(cancel_button)

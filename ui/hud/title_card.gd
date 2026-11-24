@@ -18,10 +18,14 @@ func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	chapter_label = UiKit.label("", &"LabelLight")
 	chapter_label.name = "Chapter"
-	chapter_label.add_theme_color_override(&"font_color", PaletteColors.GOLD_L)
+	chapter_label.add_theme_color_override(&"font_color", Color("e8d2aa"))
+	chapter_label.add_theme_font_size_override(&"font_size", 9)
 	add_child(chapter_label)
 	name_label = UiKit.label("", &"LabelTitle")
 	name_label.name = "LevelName"
+	name_label.add_theme_color_override(&"font_color", Color("ffe9a6"))
+	name_label.add_theme_color_override(&"font_outline_color", Color("16312e"))
+	name_label.add_theme_constant_override(&"outline_size", 1)
 	add_child(name_label)
 	visible = false
 
@@ -35,7 +39,6 @@ func play(chapter_text: String, level_text: String, total: float) -> void:
 		level_text = parts[1]
 	chapter_label.text = chapter_text
 	name_label.text = level_text
-	name_label.theme_type_variation = &"LabelTitle"
 	visible = true
 	_layout()
 	var rest_c := chapter_label.position
@@ -87,13 +90,14 @@ func _layout() -> void:
 	var safe := SafeArea.get_safe_rect()
 	var cy := floorf(safe.position.y + safe.size.y * 0.34)
 	chapter_label.size = chapter_label.get_minimum_size()
+	var font := name_label.get_theme_font(&"font")
+	var width := font.get_string_size(name_label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, 22).x
+	var available := safe.size.x - MARGIN_X * 2.0 - 2.0
+	var fitted_size := clampi(floori(22.0 * available / maxf(width, 1.0)), 8, 22)
+	name_label.add_theme_font_size_override(&"font_size", fitted_size)
 	name_label.size = name_label.get_minimum_size()
-	if name_label.size.x > safe.size.x - MARGIN_X * 2.0:
-		# 保險:名字仍然太長時改用小字,絕不超出畫面。
-		name_label.theme_type_variation = &"LabelLight"
-		name_label.size = name_label.get_minimum_size()
 	var cx := safe.get_center().x
-	chapter_label.position = Vector2(floorf(cx - chapter_label.size.x * 0.5), cy - 22)
+	chapter_label.position = Vector2(floorf(cx - chapter_label.size.x * 0.5), cy - 23)
 	name_label.position = Vector2(floorf(cx - name_label.size.x * 0.5), cy - 9)
 
 
@@ -103,17 +107,18 @@ func _draw() -> void:
 	var r := _band_rect()
 	if r.size.y < 2:
 		return
-	draw_rect(r, Color(0.06, 0.14, 0.13, 0.88))
-	# gold trim: a bright line and a darker one, top and bottom
-	draw_rect(Rect2(r.position.x, r.position.y, r.size.x, 1), PaletteColors.GOLD_D)
-	draw_rect(Rect2(r.position.x, r.position.y + 2, r.size.x, 1), PaletteColors.YELLOW)
-	draw_rect(Rect2(r.position.x, r.end.y - 1, r.size.x, 1), PaletteColors.GOLD_D)
-	draw_rect(Rect2(r.position.x, r.end.y - 3, r.size.x, 1), PaletteColors.YELLOW)
-	# small diamonds beside the title
+	draw_rect(r, Color(0.06, 0.18, 0.16, 0.88))
+	var brass := Color("c8a062")
+	for edge: float in [r.position.y + 0.5, r.end.y - 0.5]:
+		draw_line(Vector2(r.position.x, edge), Vector2(r.end.x, edge), brass, 1.0)
+	if r.size.y < 7:
+		return
+	for edge: float in [r.position.y + 2.5, r.end.y - 2.5]:
+		draw_line(Vector2(r.position.x + 8, edge), Vector2(r.end.x - 8, edge), Color("8e7955"), 0.55, true)
 	var cy := r.get_center().y + 4
 	var safe := SafeArea.get_safe_rect()
 	if name_label.size.x > safe.size.x - 40.0:
 		return    # 名字很長時不畫菱形,免得貼著文字
 	for x: float in [safe.position.x + 8, safe.end.x - 13]:
 		var d := PackedVector2Array([Vector2(x + 2.5, cy - 3), Vector2(x + 5, cy), Vector2(x + 2.5, cy + 3), Vector2(x, cy)])
-		draw_colored_polygon(d, PaletteColors.GOLD_L)
+		draw_colored_polygon(d, brass)

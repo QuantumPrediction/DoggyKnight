@@ -21,6 +21,10 @@ func _ready() -> void:
 	burst.modulate.a = 0.0
 	add_child(burst)
 	number_label = UiKit.label("0", &"LabelTitle", HORIZONTAL_ALIGNMENT_RIGHT)
+	number_label.add_theme_font_override(&"font", preload("res://assets/fonts/QuillFigures.ttf"))
+	number_label.add_theme_font_size_override(&"font_size", 20)
+	number_label.add_theme_color_override(&"font_outline_color", Color("392a25"))
+	number_label.add_theme_constant_override(&"outline_size", 1)
 	number_label.name = "Number"
 	add_child(number_label)
 	word_label = UiKit.label(tr("UI_COMBO"), &"LabelLight", HORIZONTAL_ALIGNMENT_RIGHT)
@@ -52,7 +56,7 @@ func set_count(c: int) -> void:
 	if _tween != null and _tween.is_valid():
 		_tween.kill()
 	_tween = create_tween().set_ignore_time_scale(true)
-	var peak := 1.6 if milestone else 1.3
+	var peak := 1.28 if milestone else 1.12
 	scale = Vector2(peak, peak)
 	_tween.tween_property(self, "scale", Vector2.ONE, 0.22 if milestone else 0.14).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	if milestone:

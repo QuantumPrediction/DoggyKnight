@@ -1,5 +1,6 @@
 extends Control
-const TITLE_FONT: Font = preload("res://assets/fonts/StorySerif.otf")
+const TITLE_FONT: Font = preload("res://assets/fonts/StoryDisplay.tres")
+const CAPTION_FONT: Font = preload("res://assets/fonts/StorySerif.otf")
 ## Re-skins existing controls without changing their layout, signals or hit targets.
 var _source: Control
 var _path: String = ""
@@ -113,16 +114,31 @@ func _draw() -> void:
 				line.a = 0.6
 				draw_rect(rect.grow(-2.5), line, false, 0.4)
 		"logo":
-			var font := TITLE_FONT
-			var title := "金毛騎士"
-			var fs := mini(26, int(_last_size.x / 4.5))
-			var width := font.get_string_size(title, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
-			var pos := Vector2((_last_size.x - width) * 0.5, _last_size.y * 0.62)
-			draw_string_outline(font, pos, title, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, 1, Color(0.97, 0.92, 0.78, 0.6))
-			draw_string(font, pos, title, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, Color("233b36"))
-			var caption := "Golden Knight"
-			var sw := font.get_string_size(caption, HORIZONTAL_ALIGNMENT_LEFT, -1, 7).x
-			draw_string(font, Vector2((_last_size.x - sw) * 0.5, _last_size.y - 1), caption, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color("314b42"))
+			_draw_wordmark(rect)
+
+
+func _draw_wordmark(rect: Rect2) -> void:
+	# Both logo resources use this cover imprint. Work in the larger logo's coordinates.
+	draw_set_transform(rect.position, 0.0, rect.size / Vector2(106, 29))
+	var ink := Color("213b35")
+	var foil := Color("ffe9a6")
+	var title := "金毛騎士"
+	var title_width := TITLE_FONT.get_string_size(title, HORIZONTAL_ALIGNMENT_LEFT, -1, 23).x
+	var baseline := Vector2(0.5 * (106.0 - title_width), 18.2)
+	draw_string_outline(TITLE_FONT, baseline + Vector2(0, 0.8), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 23, 2, ink)
+	draw_string(TITLE_FONT, baseline + Vector2(0, 0.7), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 23, Color("b77a39"))
+	draw_string(TITLE_FONT, baseline, title, HORIZONTAL_ALIGNMENT_LEFT, -1, 23, foil)
+
+	var ribbon := PackedVector2Array([Vector2(12, 21), Vector2(94, 21), Vector2(90, 25),
+			Vector2(94, 29), Vector2(12, 29), Vector2(16, 25)])
+	draw_colored_polygon(ribbon, ink)
+	draw_line(Vector2(18, 21.4), Vector2(88, 21.4), Color("bfa06d"), 0.65, true)
+	var caption := "GOLDEN KNIGHT"
+	var width := CAPTION_FONT.get_string_size(caption, HORIZONTAL_ALIGNMENT_LEFT, -1, 7).x
+	var position_x := 0.5 * (106.0 - width - (caption.length() - 1) * 0.7)
+	for letter: String in caption:
+		draw_string(CAPTION_FONT, Vector2(position_x, 27.5), letter, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color("fff2ca"))
+		position_x += CAPTION_FONT.get_string_size(letter, HORIZONTAL_ALIGNMENT_LEFT, -1, 7).x + 0.7
 
 static func _box(fill: Color, border: Color) -> StyleBoxFlat:
 	var b := StyleBoxFlat.new()

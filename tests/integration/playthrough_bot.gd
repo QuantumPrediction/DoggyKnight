@@ -12,7 +12,7 @@ extends Node
 ##   xvfb-run -a godot --path . --rendering-driver opengl3 --audio-driver Dummy \
 ##     res://tests/integration/playthrough_bot.tscn -- --shots=/tmp/playthrough_shots
 ## 其他參數:--speed=4(倍速,預設 4)、--seed=7、--chapter=2(v2.6:玩第幾章,預設 1;會先把前面的章當作已通關)、
-##   --hard(困難模式)
+##   --hard(困難模式)、--reinforced(首兩關迎戰援軍)
 
 const SAVE_PATH: String = "user://playthrough_bot_save.json"
 const TIMEOUT_MS: int = 600000
@@ -136,6 +136,8 @@ func _run() -> void:
 				EquipmentInventory.transact(GameState.equipment, "attune", id, String(hero_class), equipment_element)
 	_starting_equipment = EquipmentInventory.loadout(GameState.equipment, String(hero_class))
 	GameState.difficulty = &"hard" if hard else &"normal"
+	if not hard and OS.get_cmdline_user_args().has("--reinforced"):
+		GameState.difficulty = &"reinforced"
 	print("== 第 %d 章%s / %s ==" % [chapter, "(困難)" if hard else "", hero_class])
 	flow.get_screen().emit_signal(&"new_game_pressed")
 	Engine.time_scale = speed

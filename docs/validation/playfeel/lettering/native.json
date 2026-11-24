@@ -1,0 +1,780 @@
+{
+  "base": {
+    "controls": {
+      "class_cancel": [
+        16.0,
+        257.0,
+        148.0,
+        25.0
+      ],
+      "class_confirm": [
+        16.0,
+        225.0,
+        148.0,
+        28.0
+      ],
+      "guard": [
+        96.0,
+        258.0,
+        34.0,
+        34.0
+      ],
+      "logo": [
+        37.0,
+        45.0,
+        106.0,
+        29.0
+      ],
+      "new_game": [
+        25.0,
+        238.0,
+        130.0,
+        26.0
+      ],
+      "pause": [
+        150.0,
+        4.0,
+        26.0,
+        26.0
+      ],
+      "ultimate": [
+        140.0,
+        258.0,
+        32.0,
+        32.0
+      ]
+    },
+    "hits": [
+      {
+        "amount": 12,
+        "anchor": [
+          52.0,
+          117.400001525879
+        ],
+        "hp_lost": 12,
+        "lifetime": 0.7,
+        "popup_value": 12,
+        "style": 0,
+        "text": "12"
+      },
+      {
+        "amount": 24,
+        "anchor": [
+          128.0,
+          117.400001525879
+        ],
+        "hp_lost": 24,
+        "lifetime": 0.8,
+        "popup_value": 24,
+        "style": 1,
+        "text": "24!"
+      },
+      {
+        "amount": 108,
+        "anchor": [
+          52.0,
+          195.399993896484
+        ],
+        "hp_lost": 108,
+        "lifetime": 0.8,
+        "popup_value": 108,
+        "style": 2,
+        "text": "108"
+      },
+      {
+        "amount": 7,
+        "anchor": [
+          128.0,
+          195.399993896484
+        ],
+        "hp_lost": 7,
+        "lifetime": 0.7,
+        "popup_value": 7,
+        "style": 3,
+        "text": "7"
+      }
+    ],
+    "player_hit": {
+      "attempt": 17,
+      "event": [
+        17
+      ],
+      "hp_lost": 17,
+      "readout": "",
+      "vigor_bar": [
+        39.0,
+        6.0,
+        96.0,
+        7.0
+      ]
+    },
+    "renderer": "X11",
+    "stage_font_size": 24,
+    "stage_name": "石中劍之丘",
+    "warning": [
+      52.0,
+      132.0,
+      24.0,
+      1.0471975511966
+    ],
+    "warning_pixels": 2555,
+    "perimeter_band_pixels": 600,
+    "ink_on_warning_per_frame": [
+      149,
+      149,
+      150,
+      154,
+      158,
+      149,
+      143,
+      146,
+      141,
+      128,
+      107,
+      94,
+      90,
+      95,
+      86,
+      82,
+      79,
+      75,
+      80,
+      76,
+      79,
+      75,
+      77,
+      90,
+      87,
+      87,
+      93,
+      103,
+      123,
+      132,
+      137,
+      149,
+      149,
+      154,
+      159,
+      150,
+      147,
+      149,
+      153,
+      157,
+      145,
+      141
+    ],
+    "ink_on_perimeter_band_per_frame": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      5,
+      15,
+      39,
+      39,
+      33,
+      25,
+      21,
+      22,
+      22,
+      28,
+      25,
+      26,
+      32,
+      33,
+      37,
+      28,
+      27,
+      29,
+      27,
+      30,
+      22,
+      23,
+      24,
+      32,
+      36,
+      39,
+      27,
+      21,
+      6,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      17
+    ],
+    "trace_png_sha256_chain": "dcd516534b499a7e44dbd99066a42830bf3f84acb7759466ab85507790a63fb0",
+    "png_sha256": {
+      "title": "9a600f139411c4848e747f8e9e6bd944221f79f89132483f6e38a76ea670323b",
+      "selection": "b78be15d5c169d8b941ea959e49bc4a6bb169557896b1f938ee4d5efde4dc52d",
+      "stage": "315144d08ec439a2d7fb609857bb176afd48bc1590dec01c6686673649503487",
+      "without-numbers": "310d5afe45790e6321b92206a8c1f702fed962100221893d70ac38ff16e88b5b",
+      "without-warning-or-numbers": "8a27c8eff701a62293b36f67ab1f594054e30fae429dba69cb5764df10240725",
+      "impact": "0e43feeb2e231ac19cce971cf097c55658075df97338eb109927fb79ed84cb8b",
+      "impact-frame8": "2a962f6a610470cdded33363bcfe5b3f6fe729744d6ce48837a43ba533869eb6",
+      "player-hit": "664fa3436b920f61d3deed10503225da33dfb00e17e777956e2edca8e7beb8b0"
+    },
+    "ink_bounds_width_height_px": {
+      "impact": [
+        [
+          17,
+          14
+        ],
+        [
+          36,
+          22
+        ],
+        [
+          42,
+          21
+        ],
+        [
+          10,
+          14
+        ]
+      ],
+      "impact-frame8": [
+        [
+          19,
+          14
+        ],
+        [
+          31,
+          19
+        ],
+        [
+          36,
+          18
+        ],
+        [
+          9,
+          14
+        ]
+      ]
+    }
+  },
+  "candidate": {
+    "controls": {
+      "class_cancel": [
+        16.0,
+        257.0,
+        148.0,
+        25.0
+      ],
+      "class_confirm": [
+        16.0,
+        225.0,
+        72.0,
+        28.0
+      ],
+      "guard": [
+        96.0,
+        258.0,
+        34.0,
+        34.0
+      ],
+      "logo": [
+        37.0,
+        45.0,
+        106.0,
+        29.0
+      ],
+      "new_game": [
+        25.0,
+        238.0,
+        130.0,
+        26.0
+      ],
+      "pause": [
+        150.0,
+        4.0,
+        26.0,
+        26.0
+      ],
+      "ultimate": [
+        140.0,
+        258.0,
+        32.0,
+        32.0
+      ]
+    },
+    "hits": [
+      {
+        "amount": 12,
+        "anchor": [
+          52.0,
+          117.400001525879
+        ],
+        "hp_lost": 12,
+        "initial_ink_lift": 16.0,
+        "lifetime": 0.7,
+        "popup_value": 12,
+        "style": 0,
+        "text": "12"
+      },
+      {
+        "amount": 24,
+        "anchor": [
+          128.0,
+          117.400001525879
+        ],
+        "hp_lost": 24,
+        "initial_ink_lift": 0.0,
+        "lifetime": 0.8,
+        "popup_value": 24,
+        "style": 1,
+        "text": "24!"
+      },
+      {
+        "amount": 108,
+        "anchor": [
+          52.0,
+          195.399993896484
+        ],
+        "hp_lost": 108,
+        "initial_ink_lift": 0.0,
+        "lifetime": 0.8,
+        "popup_value": 108,
+        "style": 2,
+        "text": "108✦"
+      },
+      {
+        "amount": 7,
+        "anchor": [
+          128.0,
+          195.399993896484
+        ],
+        "hp_lost": 7,
+        "initial_ink_lift": 0.0,
+        "lifetime": 0.7,
+        "popup_value": 7,
+        "style": 3,
+        "text": "7"
+      }
+    ],
+    "player_hit": {
+      "attempt": 17,
+      "event": [
+        17
+      ],
+      "hp_lost": 17,
+      "readout": "−17",
+      "vigor_bar": [
+        39.0,
+        6.0,
+        96.0,
+        7.0
+      ]
+    },
+    "renderer": "X11",
+    "stage_font_size": 22,
+    "stage_name": "石中劍之丘",
+    "warning": [
+      52.0,
+      132.0,
+      24.0,
+      1.0471975511966
+    ],
+    "warning_pixels": 2555,
+    "perimeter_band_pixels": 600,
+    "ink_on_warning_per_frame": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      13
+    ],
+    "ink_on_perimeter_band_per_frame": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      13
+    ],
+    "trace_png_sha256_chain": "fc6b675fe0f3e146c6ccf6dcc836edea5c909aa3a812c718b3b435848a65a637",
+    "png_sha256": {
+      "title": "4808426563f797a5a0e6d99a4d0f7ab4afb2c6d1deb90972efa3a744d0dec757",
+      "selection": "33a58ae066a814aa1d11e58a63e7602c0035efd636b2ad216cb521ef175c4554",
+      "stage": "982fe361cd804fb4319fd2b7af72b9fec995f00f635d88971a3be7549483208f",
+      "without-numbers": "310d5afe45790e6321b92206a8c1f702fed962100221893d70ac38ff16e88b5b",
+      "without-warning-or-numbers": "8a27c8eff701a62293b36f67ab1f594054e30fae429dba69cb5764df10240725",
+      "impact": "b5f5719c51aa6b99da1c1e7c5dd8b8542f24a554aa97ff8e55039618327dd31f",
+      "impact-frame8": "dd2002142e9f6e2f86dbc433e4c9ff60e90170e02ab8992e427d897f38cf09c3",
+      "player-hit": "1fb0accbc221b8397482144547b9529e789a7b7b6a03ef424acb006b94d20f79"
+    },
+    "ink_bounds_width_height_px": {
+      "impact": [
+        [
+          20,
+          17
+        ],
+        [
+          38,
+          23
+        ],
+        [
+          50,
+          23
+        ],
+        [
+          11,
+          17
+        ]
+      ],
+      "impact-frame8": [
+        [
+          19,
+          17
+        ],
+        [
+          35,
+          20
+        ],
+        [
+          46,
+          20
+        ],
+        [
+          12,
+          17
+        ]
+      ]
+    }
+  },
+  "rejected": {
+    "controls": {
+      "class_cancel": [
+        16.0,
+        257.0,
+        148.0,
+        25.0
+      ],
+      "class_confirm": [
+        16.0,
+        225.0,
+        148.0,
+        28.0
+      ],
+      "guard": [
+        96.0,
+        258.0,
+        34.0,
+        34.0
+      ],
+      "logo": [
+        37.0,
+        45.0,
+        106.0,
+        29.0
+      ],
+      "new_game": [
+        25.0,
+        238.0,
+        130.0,
+        26.0
+      ],
+      "pause": [
+        150.0,
+        4.0,
+        26.0,
+        26.0
+      ],
+      "ultimate": [
+        140.0,
+        258.0,
+        32.0,
+        32.0
+      ]
+    },
+    "hits": [
+      {
+        "amount": 12,
+        "anchor": [
+          52.0,
+          117.400001525879
+        ],
+        "hp_lost": 12,
+        "lifetime": 0.7,
+        "popup_value": 12,
+        "style": 0,
+        "text": "12"
+      },
+      {
+        "amount": 24,
+        "anchor": [
+          128.0,
+          117.400001525879
+        ],
+        "hp_lost": 24,
+        "lifetime": 0.8,
+        "popup_value": 24,
+        "style": 1,
+        "text": "24!"
+      },
+      {
+        "amount": 108,
+        "anchor": [
+          52.0,
+          195.399993896484
+        ],
+        "hp_lost": 108,
+        "lifetime": 0.8,
+        "popup_value": 108,
+        "style": 2,
+        "text": "108✦"
+      },
+      {
+        "amount": 7,
+        "anchor": [
+          128.0,
+          195.399993896484
+        ],
+        "hp_lost": 7,
+        "lifetime": 0.7,
+        "popup_value": 7,
+        "style": 3,
+        "text": "7"
+      }
+    ],
+    "player_hit": {
+      "attempt": 17,
+      "event": [
+        17
+      ],
+      "hp_lost": 17,
+      "readout": "−17",
+      "vigor_bar": [
+        39.0,
+        6.0,
+        96.0,
+        7.0
+      ]
+    },
+    "renderer": "X11",
+    "stage_font_size": 22,
+    "stage_name": "石中劍之丘",
+    "warning": [
+      52.0,
+      132.0,
+      24.0,
+      1.0471975511966
+    ],
+    "warning_pixels": 2555,
+    "perimeter_band_pixels": 600,
+    "ink_on_warning_per_frame": [
+      249,
+      248,
+      247,
+      248,
+      234,
+      220,
+      204,
+      171,
+      155,
+      143,
+      133,
+      121,
+      107,
+      106,
+      92,
+      91,
+      90,
+      74,
+      72,
+      72,
+      87,
+      85,
+      85,
+      96,
+      96,
+      108,
+      118,
+      131,
+      139,
+      151,
+      164,
+      188,
+      203,
+      224,
+      232,
+      244,
+      244,
+      243,
+      246,
+      243,
+      238,
+      238
+    ],
+    "ink_on_perimeter_band_per_frame": [
+      0,
+      0,
+      7,
+      33,
+      52,
+      55,
+      53,
+      41,
+      36,
+      38,
+      43,
+      47,
+      50,
+      51,
+      55,
+      55,
+      55,
+      55,
+      55,
+      55,
+      56,
+      56,
+      56,
+      54,
+      54,
+      52,
+      49,
+      47,
+      43,
+      41,
+      44,
+      45,
+      48,
+      45,
+      39,
+      26,
+      13,
+      1,
+      0,
+      0,
+      0,
+      10
+    ],
+    "trace_png_sha256_chain": "47c6a2ae0b4bd96d748989c4633707c3bd14b1f690dc69e7fe3d183c82c11655",
+    "png_sha256": {
+      "title": "4808426563f797a5a0e6d99a4d0f7ab4afb2c6d1deb90972efa3a744d0dec757",
+      "selection": "756bbd09c36d0b7ec780260864bc0939015e93d5e89c5bd14939c633931ed401",
+      "stage": "982fe361cd804fb4319fd2b7af72b9fec995f00f635d88971a3be7549483208f",
+      "without-numbers": "310d5afe45790e6321b92206a8c1f702fed962100221893d70ac38ff16e88b5b",
+      "without-warning-or-numbers": "8a27c8eff701a62293b36f67ab1f594054e30fae429dba69cb5764df10240725",
+      "impact": "f94f89ad3ebf5a9786ef688b767ef16a51437cc85b39146a379377aa28e4b3c7",
+      "impact-frame8": "7fc48461fab07d9dc24b1758b3f02629f9b3d345dcd74fbba86acddf9a273e06",
+      "player-hit": "1fb0accbc221b8397482144547b9529e789a7b7b6a03ef424acb006b94d20f79"
+    },
+    "ink_bounds_width_height_px": {
+      "impact": [
+        [
+          20,
+          17
+        ],
+        [
+          38,
+          23
+        ],
+        [
+          50,
+          23
+        ],
+        [
+          11,
+          17
+        ]
+      ],
+      "impact-frame8": [
+        [
+          19,
+          17
+        ],
+        [
+          35,
+          20
+        ],
+        [
+          46,
+          20
+        ],
+        [
+          12,
+          17
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,636 @@
+{
+  "base_commit": "d2e9b2b3443cbe1ff1ca3d45f597fe3cdcd5ff98",
+  "native_size": [
+    360,
+    640
+  ],
+  "trace_sha256": "9c2a6637ab7154336f6cb8cd959e5adbf9f480ba2ee867f3d395b3fe63d07c54",
+  "ticks": 540,
+  "native_pairs": 24,
+  "archive_sha256": "7cc78cc333ef055efd86e4f5f0fa23a41cc947e1183f4f47b066e7e419cd5883",
+  "crop_loop_sha256": "156655483b88fa55b12ec51ebbb3c525e400135055c7cee8d34dd39a52f6619c",
+  "pairs": [
+    {
+      "frame": "knight-front-0.png",
+      "physics_leg_tick": 0,
+      "screen_crop": [
+        138,
+        287,
+        222,
+        375
+      ],
+      "base": {
+        "webp_frame": 0,
+        "png_sha256": "53e207ecbde08c018be179826b7e4dfbe8c29f0e4ccb4b011a3d5efa1e373767",
+        "rgb_sha256": "421da547e6b61da0f05766c720e5c77258e8930ac54538a4860243b9f9615313"
+      },
+      "candidate": {
+        "webp_frame": 1,
+        "png_sha256": "948dbbc61a6261306e1c30e6b037b858cbb6f6cfba3b43ffac45c2c98e794765",
+        "rgb_sha256": "b5ff8555ab0b751859799fb2e195d5be8855becccc8483d3ce4a204103695c21"
+      },
+      "different_pixels": 1771,
+      "outside_crop": 0,
+      "outside_crop_bbox": null
+    },
+    {
+      "frame": "knight-back-0.png",
+      "physics_leg_tick": 16,
+      "screen_crop": [
+        138,
+        342,
+        222,
+        430
+      ],
+      "base": {
+        "webp_frame": 2,
+        "png_sha256": "0c743d6efc4011112bbd0758f5c2f0fb5a72541cf46a22d5655375da4be50c2c",
+        "rgb_sha256": "ce99591d91d6b6c25037fa0b2f722684f0a1aac077cfbcdd0ee7a7b974c8101a"
+      },
+      "candidate": {
+        "webp_frame": 3,
+        "png_sha256": "23194192d1c4781013d486c57b59c694be54b3a55e16fa4e3acaf8a7a2bc0413",
+        "rgb_sha256": "115f129a9291779506a31cee4ea07d61092d20e1dbba9430dcde8b93d52d0650"
+      },
+      "different_pixels": 1731,
+      "outside_crop": 0,
+      "outside_crop_bbox": null
+    },
+    {
+      "frame": "mage-front-0.png",
+      "physics_leg_tick": 0,
+      "screen_crop": [
+        138,
+        287,
+        222,
+        375
+      ],
+      "base": {
+        "webp_frame": 4,
+        "png_sha256": "f2103b4f581897a441b0dcc720c5d518e902ebfa094e71b6c8e7c20203b2ae9c",
+        "rgb_sha256": "252f551df5d6a9536bc0e3d9a0e463ce92d4cb53240d5061140eee77227984ad"
+      },
+      "candidate": {
+        "webp_frame": 5,
+        "png_sha256": "799d3e43429361616efead11521f2fa2a4e7b6404cf468259a32a4fc4259be43",
+        "rgb_sha256": "d3e5796f472d84d79ec595caeb5541eb336caec52af4cfe2cdc2b4d29b21d04e"
+      },
+      "different_pixels": 1764,
+      "outside_crop": 1,
+      "outside_crop_bbox": [
+        1,
+        0,
+        2,
+        1
+      ]
+    },
+    {
+      "frame": "mage-back-0.png",
+      "physics_leg_tick": 16,
+      "screen_crop": [
+        138,
+        340,
+        222,
+        428
+      ],
+      "base": {
+        "webp_frame": 6,
+        "png_sha256": "360bc8154a198c0cc779ffa947437ddfce10d3023650d99fea677f6cd9975938",
+        "rgb_sha256": "276a4e9dc569c36e39d305529177284d63f8d65ce84dca499f67954f583c41fb"
+      },
+      "candidate": {
+        "webp_frame": 7,
+        "png_sha256": "4a2215d46b8b6d07019634608f183b6419f142cf2cf3b91887596efe24bb48ad",
+        "rgb_sha256": "38d757ec5d813491bbdb6858874db2713e0193edd5abd76b3c31f099511f334f"
+      },
+      "different_pixels": 1638,
+      "outside_crop": 3,
+      "outside_crop_bbox": [
+        0,
+        0,
+        3,
+        1
+      ]
+    },
+    {
+      "frame": "archer-front-0.png",
+      "physics_leg_tick": 0,
+      "screen_crop": [
+        138,
+        287,
+        222,
+        375
+      ],
+      "base": {
+        "webp_frame": 8,
+        "png_sha256": "9ef0d55fc0f1817615e82ac28927c2b45047fc5baf74ffe3accc83abcee1a3a9",
+        "rgb_sha256": "c04818f30fd9a912ceb18754a5c1d0c59c44edbb607c0c4cb337c2842aa8fe28"
+      },
+      "candidate": {
+        "webp_frame": 9,
+        "png_sha256": "c2b4bba8591c33ba4e0333b3af5a36a263f6c1a5e1f77460354c619ecf9d5dbd",
+        "rgb_sha256": "c0118a45c5872ed807a6f063d82a973ebeab98d397d8fd92be6fc1ccec0f5928"
+      },
+      "different_pixels": 1790,
+      "outside_crop": 1,
+      "outside_crop_bbox": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": "archer-back-0.png",
+      "physics_leg_tick": 16,
+      "screen_crop": [
+        138,
+        348,
+        222,
+        436
+      ],
+      "base": {
+        "webp_frame": 10,
+        "png_sha256": "d368fb6d9b34047c1d14f49b7495d7491e316a56522bdff858abf72223d3f8b3",
+        "rgb_sha256": "0f809bbd83468ca6fbe0a8bbaae4b70f51832a5d6477c36eb42f1d2ef7f3de7e"
+      },
+      "candidate": {
+        "webp_frame": 11,
+        "png_sha256": "f4d0cc759d6af9d5d4ba5141bc295f293699f2f50059da508f60a638a2cc35c9",
+        "rgb_sha256": "699966f5d33b0adaf8743d4be48e55a4dbe9f363bc1d2e4fa3904acb44d07a0f"
+      },
+      "different_pixels": 1744,
+      "outside_crop": 0,
+      "outside_crop_bbox": null
+    },
+    {
+      "frame": "knight-front-1.png",
+      "physics_leg_tick": 7,
+      "screen_crop": [
+        138,
+        302,
+        222,
+        390
+      ],
+      "base": {
+        "webp_frame": 12,
+        "png_sha256": "3375e0de9487ab7e0b8ebc26e57410671924dfcddf1bb4a8e8e155dc47806acf",
+        "rgb_sha256": "a4a24c2c97e51f33af58886f0cada57ea983dba894834bd9a1fdb9cc6e782f2d"
+      },
+      "candidate": {
+        "webp_frame": 13,
+        "png_sha256": "249b9836a81a291ef1d6444197148a8649ddd739a84a8831c4fa1946dbc71efa",
+        "rgb_sha256": "facacfe4d3e32a0b0685e765361b70308ac7274e4d553c07bb590bf2679937eb"
+      },
+      "different_pixels": 1642,
+      "outside_crop": 3,
+      "outside_crop_bbox": [
+        0,
+        0,
+        3,
+        1
+      ]
+    },
+    {
+      "frame": "knight-back-1.png",
+      "physics_leg_tick": 0,
+      "screen_crop": [
+        138,
+        369,
+        222,
+        457
+      ],
+      "base": {
+        "webp_frame": 14,
+        "png_sha256": "6876cce065635e09da99f8b90e26b920314306ba557371baf96975c86f202bd1",
+        "rgb_sha256": "268fe19d8de8afed6ef4aa11dc09d268fe044289e84de4b0a52c00ec78c26ae9"
+      },
+      "candidate": {
+        "webp_frame": 15,
+        "png_sha256": "f7590ad6689eb4f10b74411d0c587ef77df494c428d8ff933f69ce8d4ee787ce",
+        "rgb_sha256": "e77d7b1b3b2686fb088c43a4cb478d7fdce85c27dad0613223b2f0e9da25a28f"
+      },
+      "different_pixels": 1560,
+      "outside_crop": 3,
+      "outside_crop_bbox": [
+        0,
+        0,
+        3,
+        1
+      ]
+    },
+    {
+      "frame": "mage-front-1.png",
+      "physics_leg_tick": 7,
+      "screen_crop": [
+        138,
+        301,
+        222,
+        389
+      ],
+      "base": {
+        "webp_frame": 16,
+        "png_sha256": "85bba10fc2a7e381ae605413893b631439e05f14525dac50b1000c5dd8bfba4f",
+        "rgb_sha256": "ebdf39c6d2a7789bfae332ffe6cb16738f8644edebfe8c232697eb16d90e09a8"
+      },
+      "candidate": {
+        "webp_frame": 17,
+        "png_sha256": "ddef64f6cf24380190111c43009cbfd71dfc912293b0b6d9e87fa3ecbcb254b9",
+        "rgb_sha256": "d90dbdfeb2c45472c29f8084b151740d03e8abf0f4ee825753b919a04e2b9eb9"
+      },
+      "different_pixels": 1567,
+      "outside_crop": 0,
+      "outside_crop_bbox": null
+    },
+    {
+      "frame": "mage-back-1.png",
+      "physics_leg_tick": 0,
+      "screen_crop": [
+        138,
+        366,
+        222,
+        454
+      ],
+      "base": {
+        "webp_frame": 18,
+        "png_sha256": "b225ee18f1e9e6756a54e85746ab599b754e00835dab2ba03f2bc5cb0cadef57",
+        "rgb_sha256": "47687743533f0022eaf942c4f569de04aae6fca3f9c38114211f23642fdcd18e"
+      },
+      "candidate": {
+        "webp_frame": 19,
+        "png_sha256": "b16abea40fd9892398102e57a369dac47ff9fab39b27744b45fb534d9fe0219d",
+        "rgb_sha256": "ecc423c7e053faba7f3d2c49ed7e487aaa43bf9783ac7338d140e50f7ae3f718"
+      },
+      "different_pixels": 1543,
+      "outside_crop": 0,
+      "outside_crop_bbox": null
+    },
+    {
+      "frame": "archer-front-1.png",
+      "physics_leg_tick": 7,
+      "screen_crop": [
+        138,
+        303,
+        222,
+        391
+      ],
+      "base": {
+        "webp_frame": 20,
+        "png_sha256": "c55414ed4de81b7e4f1acd9ac5bc96459e5f0615ef2c84c4e06c594f55138a47",
+        "rgb_sha256": "e7e8ef0ad43b53d989a90767b5d0d089966ce346ff68e3c229c6c85f743c4476"
+      },
+      "candidate": {
+        "webp_frame": 21,
+        "png_sha256": "677abcf16c5a9d957d753c9a7fad15268602deb7f54d093801c2ae674d78d640",
+        "rgb_sha256": "1938047c9e05a23f56da0a21043fd90854a9b8e713c94b0aef41f7aebabf95b3"
+      },
+      "different_pixels": 1511,
+      "outside_crop": 0,
+      "outside_crop_bbox": null
+    },
+    {
+      "frame": "archer-back-1.png",
+      "physics_leg_tick": 0,
+      "screen_crop": [
+        138,
+        378,
+        222,
+        466
+      ],
+      "base": {
+        "webp_frame": 22,
+        "png_sha256": "c0d57e4a8ae1a8cf477c955c685f2663ef2a8f140b043c5c489f4ee5aab0017e",
+        "rgb_sha256": "021b151d925473c7a9da0c84cf6afb15ae1811b29681e0b49f9f12858d0bdd17"
+      },
+      "candidate": {
+        "webp_frame": 23,
+        "png_sha256": "cb5593ad85069c778744d42dc39ef4795c9e1ae270089b28b152bf70ec7bdd7f",
+        "rgb_sha256": "61a68a575d35f4e46c7e233368d71bc7e505c86c7f959941e6959de6344aa504"
+      },
+      "different_pixels": 1445,
+      "outside_crop": 1,
+      "outside_crop_bbox": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": "knight-front-2.png",
+      "physics_leg_tick": 13,
+      "screen_crop": [
+        138,
+        316,
+        222,
+        404
+      ],
+      "base": {
+        "webp_frame": 24,
+        "png_sha256": "b1903560881c64f71871744fe5f10fc2edb99859300eb07c035e332d9f1811ab",
+        "rgb_sha256": "88306de785f60dddab7ee1bf08556788ea552ea7a807faeceb0d7b17717a60f8"
+      },
+      "candidate": {
+        "webp_frame": 25,
+        "png_sha256": "63b4359cd61b97a0e952647e978eeb5659b123503d4590664f937d745351f83e",
+        "rgb_sha256": "55f980a2ce69a6723a41597642171359521990fd5fdf3bff53f285840eee6ffa"
+      },
+      "different_pixels": 1976,
+      "outside_crop": 3,
+      "outside_crop_bbox": [
+        0,
+        0,
+        3,
+        1
+      ]
+    },
+    {
+      "frame": "knight-back-2.png",
+      "physics_leg_tick": 3,
+      "screen_crop": [
+        138,
+        370,
+        222,
+        458
+      ],
+      "base": {
+        "webp_frame": 26,
+        "png_sha256": "3cd6b80a592ce4dd3539d3121cb9d25875917144c133d94b04e6a99220ebd7a1",
+        "rgb_sha256": "7ef19eca858b1310a09423c0ab45750a8c230f44a768363da581a8e848e50fcb"
+      },
+      "candidate": {
+        "webp_frame": 27,
+        "png_sha256": "762bcd60df07ec62ddb710d0c74ec573bba26c4817a09d9ee5ea90caf3ca167a",
+        "rgb_sha256": "b3448abf37304b338da7bb3846b71f2493c2ebb9e8d3d8b6e663c608345f085a"
+      },
+      "different_pixels": 1913,
+      "outside_crop": 3,
+      "outside_crop_bbox": [
+        0,
+        0,
+        3,
+        1
+      ]
+    },
+    {
+      "frame": "mage-front-2.png",
+      "physics_leg_tick": 13,
+      "screen_crop": [
+        138,
+        315,
+        222,
+        403
+      ],
+      "base": {
+        "webp_frame": 28,
+        "png_sha256": "e8888fa215119fd3efbe948d89a04b91242740588c39dfa480ce051950b419b6",
+        "rgb_sha256": "2308e2e0816a63738dacec6a05bf23e823b0cc19f0cea06b56ef98f453016b7c"
+      },
+      "candidate": {
+        "webp_frame": 29,
+        "png_sha256": "5bfed324b42844577d36613601428dd7ba8a5b6d5cfee96c70218efc033fc9c7",
+        "rgb_sha256": "0e84cb20645bd389bd66a4a941d4cdc43d6eefb5ede4ac310b6d344584974ed2"
+      },
+      "different_pixels": 1783,
+      "outside_crop": 0,
+      "outside_crop_bbox": null
+    },
+    {
+      "frame": "mage-back-2.png",
+      "physics_leg_tick": 3,
+      "screen_crop": [
+        138,
+        367,
+        222,
+        455
+      ],
+      "base": {
+        "webp_frame": 30,
+        "png_sha256": "eadbae54a57e21d4b5e0010e3f2e39784ff286a79dbc17f52c1cab600d4b4d2d",
+        "rgb_sha256": "cd0bc2a983ef294fefe42bc76e2629b87407654ae05e62355a76e9d96e3c9d71"
+      },
+      "candidate": {
+        "webp_frame": 31,
+        "png_sha256": "69f92a173b28d75c64faa1d604f6b38f9abe46015f59ec16d8cb82b8fd87447e",
+        "rgb_sha256": "2cf5433df3a104e4e9448fa8166085e3f9f8d103d08ae6e90f54dbef85d9039d"
+      },
+      "different_pixels": 1704,
+      "outside_crop": 0,
+      "outside_crop_bbox": null
+    },
+    {
+      "frame": "archer-front-2.png",
+      "physics_leg_tick": 13,
+      "screen_crop": [
+        138,
+        319,
+        222,
+        407
+      ],
+      "base": {
+        "webp_frame": 32,
+        "png_sha256": "a12a9fa906170b7aecf998feee211b644d2ca7ca23b5674143cd421297dd8352",
+        "rgb_sha256": "7169a3b8876615ff36cc5937f0a4399abb2265e3c84428423bf15916bc4e660a"
+      },
+      "candidate": {
+        "webp_frame": 33,
+        "png_sha256": "0db1e5c67b2d3cc061ed90c7b4b675f32845acaae35dc1e06de2a97366977853",
+        "rgb_sha256": "b3a134c0eed302c1c6587b8ed4fa17a2d54e36e4aa74d242d8a6a57601a1f2d7"
+      },
+      "different_pixels": 1675,
+      "outside_crop": 0,
+      "outside_crop_bbox": null
+    },
+    {
+      "frame": "archer-back-2.png",
+      "physics_leg_tick": 3,
+      "screen_crop": [
+        138,
+        379,
+        222,
+        467
+      ],
+      "base": {
+        "webp_frame": 34,
+        "png_sha256": "dd31964929e5afa24c51f40919ed9c01e29e08fe87fcb3e68dcb20ece19f5c05",
+        "rgb_sha256": "c2a4b4bd64ea15fb0289061d2d659da41b2103135072f02eacf71758c2f1d626"
+      },
+      "candidate": {
+        "webp_frame": 35,
+        "png_sha256": "1a942ba71f7612aada6c0033e6a62acae93777793c0b86015482c49ec18cc0f7",
+        "rgb_sha256": "da4bc523caec6a32879d4489ce4e8f4bd7df385ad024848d745dd9cee8ed5560"
+      },
+      "different_pixels": 1569,
+      "outside_crop": 1,
+      "outside_crop_bbox": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": "knight-front-3.png",
+      "physics_leg_tick": 20,
+      "screen_crop": [
+        138,
+        332,
+        222,
+        420
+      ],
+      "base": {
+        "webp_frame": 36,
+        "png_sha256": "9dc8b5e669bac7fe9698f8a2edf262a1ec774150182c5bb86777a8f2776b47b2",
+        "rgb_sha256": "9503bba6577a37f934618195e2e36f03747545f6aca88eb26ce3e82940d81cf8"
+      },
+      "candidate": {
+        "webp_frame": 37,
+        "png_sha256": "1b5dfe930c7d66039fffa56734ab3fb73eb63925fa8f9e93f3c133a189b79b7d",
+        "rgb_sha256": "bc12fc3c7e6dfba55e135887872f07885f0d8c344d5c05fab312b7535ef3e697"
+      },
+      "different_pixels": 1663,
+      "outside_crop": 2,
+      "outside_crop_bbox": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    {
+      "frame": "knight-back-3.png",
+      "physics_leg_tick": 9,
+      "screen_crop": [
+        138,
+        358,
+        222,
+        446
+      ],
+      "base": {
+        "webp_frame": 38,
+        "png_sha256": "48db17b2e5589d9c6ccc07df9e50d217ed7b9bf661bdfca1c9a8f7ad1cda6ebe",
+        "rgb_sha256": "36c4e4690a8a13606638b3036f2c10df7bf946af97d52e916328a034948488aa"
+      },
+      "candidate": {
+        "webp_frame": 39,
+        "png_sha256": "9ce2e387ae43dcd2341765c08cd25230df37d01379bb7ab5548f5d96075576ea",
+        "rgb_sha256": "fc5d8647653ce4de43641660e032e1e5fa5b407ce2c72645a2015719e5aed0d7"
+      },
+      "different_pixels": 1680,
+      "outside_crop": 4,
+      "outside_crop_bbox": [
+        0,
+        0,
+        4,
+        1
+      ]
+    },
+    {
+      "frame": "mage-front-3.png",
+      "physics_leg_tick": 20,
+      "screen_crop": [
+        138,
+        331,
+        222,
+        419
+      ],
+      "base": {
+        "webp_frame": 40,
+        "png_sha256": "c2762167c3d642dbfaf297f8e9592c93d970468f2c50d60412581d6f5a286ffb",
+        "rgb_sha256": "71f701a7aed23815ed5ab3487730e0d3572597dec6fc001e5fb2e33f72feeff0"
+      },
+      "candidate": {
+        "webp_frame": 41,
+        "png_sha256": "d1221ab43fb583efc8a3941f95813a2a8308b1c87768b623638676c20bf06b51",
+        "rgb_sha256": "d22a5f88b882ce27cdeb6a3c275a06c8d3329fb3720f118506aefef9bdb7f2f0"
+      },
+      "different_pixels": 1609,
+      "outside_crop": 0,
+      "outside_crop_bbox": null
+    },
+    {
+      "frame": "mage-back-3.png",
+      "physics_leg_tick": 9,
+      "screen_crop": [
+        138,
+        356,
+        222,
+        444
+      ],
+      "base": {
+        "webp_frame": 42,
+        "png_sha256": "6302b94836fe0810b0bb09926a0ab84e5a486608caebfe21ebbb2810b82b4039",
+        "rgb_sha256": "93bb1eb2ef229e0f340a9e12323cfad1c351e834ea20ee061ce94bcaf5e4aebd"
+      },
+      "candidate": {
+        "webp_frame": 43,
+        "png_sha256": "a1d20ce2c34f4601154d877e72f334a8c6a649b5eec9659d522d287334a014fc",
+        "rgb_sha256": "3750002e6fab9f5fac6dfe4fbd8441abc93be498a96eb5750f4cec211b4b0fbc"
+      },
+      "different_pixels": 1589,
+      "outside_crop": 1,
+      "outside_crop_bbox": [
+        1,
+        0,
+        2,
+        1
+      ]
+    },
+    {
+      "frame": "archer-front-3.png",
+      "physics_leg_tick": 20,
+      "screen_crop": [
+        138,
+        337,
+        222,
+        425
+      ],
+      "base": {
+        "webp_frame": 44,
+        "png_sha256": "2846ecdbcd28e88a41bd34e9388965c615fc0a374fa5721de04957ce913486c4",
+        "rgb_sha256": "616670f2081dfcf4f78686be6d50955eebe4b35c8ccc5b2323c93f4e77180b2a"
+      },
+      "candidate": {
+        "webp_frame": 45,
+        "png_sha256": "230e5ff76f3f855797aed1b4ecc0659a5f201ca4868dd32fdb81443563e7ca9f",
+        "rgb_sha256": "01879ff3d23f6370cf539cc25ca4da0a61e1beafbacdd1dd1c1e3e1a7c640f3a"
+      },
+      "different_pixels": 1577,
+      "outside_crop": 2,
+      "outside_crop_bbox": [
+        1,
+        0,
+        3,
+        1
+      ]
+    },
+    {
+      "frame": "archer-back-3.png",
+      "physics_leg_tick": 9,
+      "screen_crop": [
+        138,
+        366,
+        222,
+        454
+      ],
+      "base": {
+        "webp_frame": 46,
+        "png_sha256": "8077853d851bbe2fffebb37b99855bbebc08515b132fba9005f29e000f09c976",
+        "rgb_sha256": "27147c8df758859260bf641b96ea23509a241e4b1bf1feefc4ceda723fa28b2c"
+      },
+      "candidate": {
+        "webp_frame": 47,
+        "png_sha256": "e75b3b841602bc63880a0c1f299cb313aa49e3ca12107d510fe4ae68cccbaa5f",
+        "rgb_sha256": "78d16d87a577f2d2045a00adc335a421e10f7e66b13ebe309c21cd9ea009e803"
+      },
+      "different_pixels": 1596,
+      "outside_crop": 2,
+      "outside_crop_bbox": [
+        0,
+        0,
+        1,
+        2
+      ]
+    }
+  ]
+}

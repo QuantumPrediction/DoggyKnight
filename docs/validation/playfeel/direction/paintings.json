@@ -1,0 +1,698 @@
+{
+  "layout": "Top row front, lower row back; contact, passing, opposite contact, opposite passing.",
+  "sources": {
+    "generated-knight": {
+      "png_sha256": "9068d01a6b6681d373654da5d2b3a2a8d32dafabf30c45fd65fa12aa1c1f52d9",
+      "width": 1774,
+      "height": 887
+    },
+    "generated-mage": {
+      "png_sha256": "352776e6fb084bbf1d2e492699c8303c3cc253b971ef87eadb7075109418ccd7",
+      "width": 1774,
+      "height": 887
+    },
+    "generated-archer": {
+      "png_sha256": "4f17aeaee59bed6f009719c8f3c35a6d5ce6a784e68ee291917db13183a44c19",
+      "width": 1774,
+      "height": 887
+    },
+    "second-knight": {
+      "png_sha256": "f323402aaf17e46437d679d5ee344115c81960b4d775b16fd164b33df12932e1",
+      "width": 1254,
+      "height": 1254
+    },
+    "second-mage": {
+      "png_sha256": "e7d75a25c28b06acaf6b90f8212568eaa3f704c6584adb9ae8bd8970e03253b2",
+      "width": 1254,
+      "height": 1254
+    },
+    "second-archer": {
+      "png_sha256": "863dcfe8813b92d68fabbb3a428ccc0dec4c3f2db506e52df33978dc51af73f8",
+      "width": 1254,
+      "height": 1254
+    },
+    "rear": {
+      "png_sha256": "27e06bb36c9cd41cc1692e534999081a92ece8f4fe9266d92039ac14ca745839",
+      "width": 1774,
+      "height": 887
+    },
+    "passing": {
+      "png_sha256": "eb480241f0ab826d5fc4b0a9f1e53d43f12e8fe747607c1b19be538d6b62a630",
+      "width": 1774,
+      "height": 887
+    }
+  },
+  "sheets": [
+    {
+      "role": "knight",
+      "source": "source/knight.webp",
+      "source_sha256": "ccd3c53799f8299768a3c799ab2e34cc6a946aa0025959d3e701c0b244511b08",
+      "frames": [
+        {
+          "drawing": "generated-knight",
+          "input_cell": 0,
+          "png_crop": [
+            52,
+            11,
+            346,
+            426
+          ],
+          "spine_x": 181,
+          "top_y": 5,
+          "sole_y": 410,
+          "height": 150,
+          "master_rect": [
+            0,
+            0,
+            294,
+            415
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            54,
+            27,
+            160,
+            176
+          ]
+        },
+        {
+          "drawing": "second-knight",
+          "input_cell": 1,
+          "png_crop": [
+            714,
+            17,
+            1114,
+            563
+          ],
+          "spine_x": 270,
+          "top_y": 5,
+          "sole_y": 540,
+          "height": 143,
+          "master_rect": [
+            565,
+            0,
+            965,
+            546
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            49,
+            33,
+            153,
+            176
+          ]
+        },
+        {
+          "drawing": "second-knight",
+          "input_cell": 0,
+          "png_crop": [
+            83,
+            34,
+            524,
+            608
+          ],
+          "spine_x": 306,
+          "top_y": 5,
+          "sole_y": 569,
+          "height": 150,
+          "master_rect": [
+            1130,
+            0,
+            1571,
+            574
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            40,
+            26,
+            154,
+            175
+          ]
+        },
+        {
+          "drawing": "generated-knight",
+          "input_cell": 1,
+          "png_crop": [
+            497,
+            23,
+            794,
+            422
+          ],
+          "spine_x": 178,
+          "top_y": 5,
+          "sole_y": 393,
+          "height": 143,
+          "master_rect": [
+            1695,
+            0,
+            1992,
+            399
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            56,
+            33,
+            162,
+            177
+          ]
+        },
+        {
+          "drawing": "generated-knight",
+          "input_cell": 4,
+          "png_crop": [
+            88,
+            450,
+            381,
+            875
+          ],
+          "spine_x": 141,
+          "top_y": 5,
+          "sole_y": 419,
+          "height": 150,
+          "master_rect": [
+            0,
+            819,
+            293,
+            1244
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            70,
+            26,
+            173,
+            177
+          ]
+        },
+        {
+          "drawing": "passing",
+          "input_cell": 0,
+          "png_crop": [
+            192,
+            29,
+            757,
+            848
+          ],
+          "spine_x": 260,
+          "top_y": 4,
+          "sole_y": 814,
+          "height": 143,
+          "master_rect": [
+            565,
+            819,
+            1130,
+            1638
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            74,
+            32,
+            173,
+            175
+          ]
+        },
+        {
+          "drawing": "second-knight",
+          "input_cell": 2,
+          "png_crop": [
+            154,
+            647,
+            543,
+            1232
+          ],
+          "spine_x": 168,
+          "top_y": 5,
+          "sole_y": 580,
+          "height": 150,
+          "master_rect": [
+            1130,
+            819,
+            1519,
+            1404
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            77,
+            26,
+            175,
+            175
+          ]
+        },
+        {
+          "drawing": "second-knight",
+          "input_cell": 3,
+          "png_crop": [
+            762,
+            646,
+            1148,
+            1201
+          ],
+          "spine_x": 166,
+          "top_y": 4,
+          "sole_y": 549,
+          "height": 143,
+          "master_rect": [
+            1695,
+            819,
+            2081,
+            1374
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            78,
+            33,
+            176,
+            175
+          ]
+        }
+      ],
+      "runtime_bytes": 247170,
+      "runtime_sha256": "5b10fde3da195c77b81514f8f144fe6cb27b6b9b877b70318c7f2f2f309bf769"
+    },
+    {
+      "role": "mage",
+      "source": "source/mage.webp",
+      "source_sha256": "ad4fb3eb1d2d58aaf7892eb23cb98b660825cafdea40193ebfd1ab4ac6e80247",
+      "frames": [
+        {
+          "drawing": "generated-mage",
+          "input_cell": 0,
+          "png_crop": [
+            73,
+            11,
+            366,
+            425
+          ],
+          "spine_x": 156,
+          "top_y": 5,
+          "sole_y": 408,
+          "height": 150,
+          "master_rect": [
+            0,
+            0,
+            293,
+            414
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            63,
+            26,
+            169,
+            177
+          ]
+        },
+        {
+          "drawing": "second-mage",
+          "input_cell": 1,
+          "png_crop": [
+            716,
+            48,
+            1115,
+            554
+          ],
+          "spine_x": 194,
+          "top_y": 5,
+          "sole_y": 500,
+          "height": 143,
+          "master_rect": [
+            514,
+            0,
+            913,
+            506
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            65,
+            33,
+            177,
+            176
+          ]
+        },
+        {
+          "drawing": "second-mage",
+          "input_cell": 0,
+          "png_crop": [
+            117,
+            29,
+            514,
+            607
+          ],
+          "spine_x": 242,
+          "top_y": 5,
+          "sole_y": 573,
+          "height": 150,
+          "master_rect": [
+            1028,
+            0,
+            1425,
+            578
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            57,
+            26,
+            159,
+            175
+          ]
+        },
+        {
+          "drawing": "generated-mage",
+          "input_cell": 1,
+          "png_crop": [
+            519,
+            29,
+            809,
+            417
+          ],
+          "spine_x": 148,
+          "top_y": 5,
+          "sole_y": 382,
+          "height": 143,
+          "master_rect": [
+            1542,
+            0,
+            1832,
+            388
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            65,
+            33,
+            172,
+            175
+          ]
+        },
+        {
+          "drawing": "rear",
+          "input_cell": 0,
+          "png_crop": [
+            194,
+            39,
+            708,
+            844
+          ],
+          "spine_x": 267,
+          "top_y": 5,
+          "sole_y": 800,
+          "height": 150,
+          "master_rect": [
+            0,
+            805,
+            514,
+            1610
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            70,
+            26,
+            166,
+            176
+          ]
+        },
+        {
+          "drawing": "generated-mage",
+          "input_cell": 5,
+          "png_crop": [
+            526,
+            466,
+            806,
+            868
+          ],
+          "spine_x": 143,
+          "top_y": 6,
+          "sole_y": 397,
+          "height": 143,
+          "master_rect": [
+            514,
+            805,
+            794,
+            1207
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            70,
+            33,
+            168,
+            176
+          ]
+        },
+        {
+          "drawing": "second-mage",
+          "input_cell": 2,
+          "png_crop": [
+            130,
+            641,
+            529,
+            1230
+          ],
+          "spine_x": 200,
+          "top_y": 5,
+          "sole_y": 583,
+          "height": 150,
+          "master_rect": [
+            1028,
+            805,
+            1427,
+            1394
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            69,
+            26,
+            169,
+            176
+          ]
+        },
+        {
+          "drawing": "second-mage",
+          "input_cell": 3,
+          "png_crop": [
+            729,
+            652,
+            1129,
+            1206
+          ],
+          "spine_x": 196,
+          "top_y": 5,
+          "sole_y": 548,
+          "height": 143,
+          "master_rect": [
+            1542,
+            805,
+            1942,
+            1359
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            69,
+            33,
+            171,
+            176
+          ]
+        }
+      ],
+      "runtime_bytes": 248571,
+      "runtime_sha256": "6a8d372e1be009321ba3ef8719478f56ae0e2aff124eeb24086d1b1ad450d48e"
+    },
+    {
+      "role": "archer",
+      "source": "source/archer.webp",
+      "source_sha256": "38f359b4f245c52a5a270123223e67dc79bf96b93497e3172ce4bd4375ba2336",
+      "frames": [
+        {
+          "drawing": "generated-archer",
+          "input_cell": 0,
+          "png_crop": [
+            66,
+            13,
+            364,
+            430
+          ],
+          "spine_x": 164,
+          "top_y": 4,
+          "sole_y": 411,
+          "height": 150,
+          "master_rect": [
+            0,
+            0,
+            298,
+            417
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            61,
+            26,
+            168,
+            175
+          ]
+        },
+        {
+          "drawing": "second-archer",
+          "input_cell": 1,
+          "png_crop": [
+            698,
+            6,
+            1116,
+            582
+          ],
+          "spine_x": 230,
+          "top_y": 4,
+          "sole_y": 571,
+          "height": 143,
+          "master_rect": [
+            556,
+            0,
+            974,
+            576
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            63,
+            33,
+            165,
+            175
+          ]
+        },
+        {
+          "drawing": "second-archer",
+          "input_cell": 0,
+          "png_crop": [
+            98,
+            13,
+            520,
+            618
+          ],
+          "spine_x": 276,
+          "top_y": 5,
+          "sole_y": 600,
+          "height": 150,
+          "master_rect": [
+            1112,
+            0,
+            1534,
+            605
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            52,
+            26,
+            155,
+            175
+          ]
+        },
+        {
+          "drawing": "generated-archer",
+          "input_cell": 1,
+          "png_crop": [
+            506,
+            22,
+            794,
+            421
+          ],
+          "spine_x": 166,
+          "top_y": 5,
+          "sole_y": 394,
+          "height": 143,
+          "master_rect": [
+            1668,
+            0,
+            1956,
+            399
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            60,
+            33,
+            163,
+            176
+          ]
+        },
+        {
+          "drawing": "rear",
+          "input_cell": 1,
+          "png_crop": [
+            1058,
+            39,
+            1577,
+            852
+          ],
+          "spine_x": 242,
+          "top_y": 5,
+          "sole_y": 807,
+          "height": 150,
+          "master_rect": [
+            0,
+            823,
+            519,
+            1636
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            75,
+            26,
+            171,
+            176
+          ]
+        },
+        {
+          "drawing": "passing",
+          "input_cell": 1,
+          "png_crop": [
+            1056,
+            29,
+            1612,
+            852
+          ],
+          "spine_x": 246,
+          "top_y": 5,
+          "sole_y": 818,
+          "height": 143,
+          "master_rect": [
+            556,
+            823,
+            1112,
+            1646
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            77,
+            33,
+            174,
+            176
+          ]
+        },
+        {
+          "drawing": "second-archer",
+          "input_cell": 2,
+          "png_crop": [
+            148,
+            627,
+            546,
+            1234
+          ],
+          "spine_x": 191,
+          "top_y": 3,
+          "sole_y": 601,
+          "height": 150,
+          "master_rect": [
+            1112,
+            823,
+            1510,
+            1430
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            73,
+            25,
+            170,
+            175
+          ]
+        },
+        {
+          "drawing": "second-archer",
+          "input_cell": 3,
+          "png_crop": [
+            745,
+            627,
+            1147,
+            1212
+          ],
+          "spine_x": 164,
+          "top_y": 0,
+          "sole_y": 579,
+          "height": 143,
+          "master_rect": [
+            1668,
+            823,
+            2070,
+            1408
+          ],
+          "runtime_bounds_inclusive_alpha32": [
+            81,
+            33,
+            177,
+            175
+          ]
+        }
+      ],
+      "runtime_bytes": 239938,
+      "runtime_sha256": "ca8a1f7f59baed7cd300ea920cae45b7f0ea6519bedba7e5333c777ef75a02bf"
+    }
+  ]
+}

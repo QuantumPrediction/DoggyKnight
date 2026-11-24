@@ -47,8 +47,8 @@ static func install() -> void:
 
 		for constant in [&"outline_size", &"shadow_offset_x", &"shadow_offset_y"]:
 			theme.set_constant(constant, type, 0)
-	# Literary headings, readable sans body and figures. Two bundled CJK families.
-	var serif := load("res://assets/fonts/StorySerif.otf") as Font
+	# Stronger brush terminals keep display headings distinct from the reading face.
+	var serif := preload("res://assets/fonts/StoryDisplay.tres")
 	for type in [&"LabelTitle", &"LabelBig", &"LabelHeading"]:
 		theme.set_type_variation(type, &"Label")
 		theme.set_font(&"font", type, serif)

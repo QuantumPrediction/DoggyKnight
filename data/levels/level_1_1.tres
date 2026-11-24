@@ -28,9 +28,17 @@ count = 3
 delay = 12.0
 pattern = &"edges"
 
+[sub_resource type="Resource" id="wave1_spawn4"]
+script = ExtResource("3_spawn")
+enemy_id = &"scarecrow"
+count = 2
+delay = 15.0
+pattern = &"line_top"
+
 [sub_resource type="Resource" id="wave1"]
 script = ExtResource("2_wave")
 spawns = Array[ExtResource("3_spawn")]([SubResource("wave1_spawn1"), SubResource("wave1_spawn2"), SubResource("wave1_spawn3")])
+reinforcements = Array[ExtResource("3_spawn")]([SubResource("wave1_spawn4")])
 
 [sub_resource type="Resource" id="wave2_spawn1"]
 script = ExtResource("3_spawn")
@@ -53,9 +61,17 @@ count = 2
 delay = 16.0
 pattern = &"edges"
 
+[sub_resource type="Resource" id="wave2_spawn4"]
+script = ExtResource("3_spawn")
+enemy_id = &"scarecrow"
+count = 2
+delay = 20.0
+pattern = &"line_top"
+
 [sub_resource type="Resource" id="wave2"]
 script = ExtResource("2_wave")
 spawns = Array[ExtResource("3_spawn")]([SubResource("wave2_spawn1"), SubResource("wave2_spawn2"), SubResource("wave2_spawn3")])
+reinforcements = Array[ExtResource("3_spawn")]([SubResource("wave2_spawn4")])
 
 [resource]
 script = ExtResource("1_level")

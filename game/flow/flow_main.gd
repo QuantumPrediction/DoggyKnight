@@ -98,6 +98,7 @@ enum State { BOOT, TITLE, LEVEL, RESULTS, FAILURE, CAMP, SWITCHING, STORY }
 
 const NORMAL: StringName = &"normal"
 const HARD: StringName = &"hard"
+const REINFORCED: StringName = &"reinforced"
 const STORY_MUSIC: StringName = &"story"
 
 const DEFAULT_CHAPTER: String = "res://data/levels/chapter_1.tres"
@@ -547,7 +548,7 @@ func _load_save() -> void:
 	GameState.tutorial_done = data["tutorial_done"]
 	GameState.best_stars = (data["best_stars"] as Dictionary).duplicate()
 	GameState.chapter_cleared = data["chapter_cleared"]
-	_run_difficulty = HARD if data["difficulty"] == "hard" else NORMAL
+	_run_difficulty = StringName(data["difficulty"])  # SaveStore 已驗證舊檔與可用模式
 	GameState.difficulty = _run_difficulty      # 標題的難度選擇預設 = 上一輪的難度
 	var seen := {}
 	for id: String in (data["story_seen"] as Dictionary):
@@ -582,7 +583,7 @@ func show_title() -> void:
 
 
 ## 新遊戲:重設這一輪(數值、把戲、等級、活力、下一關加成),播開場繪本,從第 1 關開始。
-## 難度用標題畫面設定的 GameState.difficulty(還沒打完第一章時一律 normal)。
+## 難度用標題畫面設定的 GameState.difficulty(第一章可自選援軍；困難仍須通關解鎖)。
 ## v2.6:章用標題畫面設定的 GameState.chapter(只能選已解鎖的章,否則用最高可選的章)。
 ## 舊的進度立即作廢(開場繪本播到一半 App 被關掉,也不會「繼續」舊的那一輪)。
 func start_new_game() -> void:
@@ -593,7 +594,8 @@ func start_new_game() -> void:
 	GameState.reset_run()
 	progression.reset_run()
 	_prepare_run()
-	if GameState.difficulty != HARD or not GameState.chapter_cleared:
+	var allow_reinforcements := GameState.difficulty == REINFORCED and _run_chapter == 1
+	if not allow_reinforcements and (GameState.difficulty != HARD or not GameState.chapter_cleared):
 		GameState.difficulty = NORMAL
 	_run_difficulty = GameState.difficulty
 	_camp_pending = false

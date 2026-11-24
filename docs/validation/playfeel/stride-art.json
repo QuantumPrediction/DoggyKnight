@@ -1,0 +1,252 @@
+{
+  "base_commit": "d2e9b2b3443cbe1ff1ca3d45f597fe3cdcd5ff98",
+  "generator": "GPT Image (built-in image generation, transparent output, individual generation per class)",
+  "prompts": {
+    "brief": "Use case: illustration-story. Make an original production-ready transparent 2D game animation sprite sheet of the SAME endearing bipedal GOLDEN RETRIEVER from the attached illustrated game reference. Warm hand-painted storybook gouache/colored pencil, brown fine ink edges, short rounded black nose, small dark eyes, golden floppy ears and tail, same head-to-body proportions/equipment/material/colors as the standing reference. The supplied atlas is identity/style only. Produce exactly EIGHT individually drawn poses of ONE uninterrupted running cycle. Landscape image, evenly spaced 4 columns x 2 rows, read across first row then across second. Every cell same size; full body in each cell with ample clear gutters on ALL sides. All face RIGHT in exactly the same slightly-three-quarter-side camera, fixed scale, hip over the exact horizontal center and soles on same baseline. Frame 1 near boot reaches forward heel contact/far boot still back. 2 compress/drop, near knee flexes as foot plants under front shoulder. 3 push off, near leg trails rearward, far bent knee passes forward, heels visibly apart. 4 brief flight, far boot reaches forward, near heel tucked behind. Frame 5 opposite foot contacts ahead, near boot back; show near and far boots clearly through overlapping order and a muted far boot. 6 compress/drop as far leg loads, near leg swings. 7 far leg extends rearward to push, near bent knee passes under torso. 8 short opposing flight as near foot extends to meet frame 1. Hands and shoulders counter-swing subtly; head volume and equipment proportions stay consistent; cape, ears, tail have delayed overlapping drag. Credible continuous articulated motion with weight, do NOT repeat the same running stamp in all eight cells. No reference standing or attacking poses in this sheet. Transparent blank background with true alpha, no baseline or cast ground shadows, no labels, no numbers, no borders, no sparks, no motion streaks. Feet must be distinct and cape and weapon entirely inside each silent cell. Use 1536×1024 or similar landscape.",
+    "by_class": {
+      "knight": "Goldie knight: rounded steel cuirass with dull gold rims and rivets, deep navy short cape, leather riding boots, short pale steel sword with golden crossguard carried low in right hand, steady and pointing forward down a little. Compact, strong, weighty trot with a braced shoulder; never raise the sword to attack.",
+      "mage": "Goldie mage: deep petrol-blue travelling cloak with gold embroidery, ochre long split tunic, leather boots, short gnarled wooden wand with a small amber gem. Carry it in one hand at waist on a steady forearm. A lighter, buoyant skip with a swinging hem and ear lag; no glow or casting.",
+      "archer": "Goldie ranger: olive hood worn DOWN, dark green gold-trimmed short mantle, tan leather vest, dark small boots, quiver of arrows on back and plain bent wooden shortbow upright in front with string relaxed. Low nimble bounding stride; quiver and arrow fletching follow the shoulders. No shooting."
+    }
+  },
+  "stored_source": "Lossless WebP with the full original alpha plane and exact color of every pixel with alpha > 0. RGB hidden under complete transparency can differ from the original PNG.",
+  "reference_recipe": "magick assets/illustrated/motion/ROLE.png -background #d8c8a4 -alpha remove -alpha off -resize 640x480 reference.jpg",
+  "authored_grid": [
+    4,
+    2
+  ],
+  "source_cell": [
+    384,
+    512
+  ],
+  "packed_cell": [
+    256,
+    192
+  ],
+  "native_run_animation": {
+    "frames": 6,
+    "frames_per_second": 14,
+    "cycle_ms": 428.57142857142856,
+    "baseline_drawings": 4,
+    "candidate_drawings": 8,
+    "candidate_drawing_interval_ms": 53.57142857142857
+  },
+  "classes": {
+    "knight": {
+      "reference_game_asset": "assets/illustrated/motion/knight.png",
+      "reference_original_sha256": "a547b1d86b026dc83701d03e94024ce22ee1262e0b0f54d09c82719e3b42ccf9",
+      "rendered_reference_sha256": "fe0c74c354645964a41b81ad6bec872265973347a122b135710f1ad1fd27a718",
+      "generated_png_sha256": "db393e13721dee30f5013e52cf68fedc69718fa5c013f1c93bc67a980cf4f3cf",
+      "stored_source_sha256": "692e155021128cccb7ea290ac54bbc96f65a2d9a47273f77834ea48c6f78ffb0",
+      "runtime_sha256": "fa1a93e164986fb56875e2a7343bc3fc304e798838152f5c2f189a426005be5b",
+      "bounds_at_alpha_32": [
+        [
+          51,
+          30,
+          178,
+          177
+        ],
+        [
+          50,
+          32,
+          184,
+          177
+        ],
+        [
+          51,
+          32,
+          186,
+          177
+        ],
+        [
+          52,
+          28,
+          186,
+          163
+        ],
+        [
+          49,
+          33,
+          182,
+          177
+        ],
+        [
+          51,
+          33,
+          182,
+          177
+        ],
+        [
+          51,
+          29,
+          185,
+          177
+        ],
+        [
+          52,
+          25,
+          177,
+          169
+        ]
+      ],
+      "distinct_alpha_32_silhouettes": 8,
+      "changed_silhouette_pixels_vs_next_frame": [
+        3085,
+        2853,
+        4252,
+        3904,
+        3254,
+        2634,
+        3834,
+        4068
+      ]
+    },
+    "mage": {
+      "reference_game_asset": "assets/illustrated/motion/mage.png",
+      "reference_original_sha256": "af52a6825221fd9312f2822c257dfd8655cda110fb82f5f838985a5d83ff832c",
+      "rendered_reference_sha256": "6bdab3d991f482cfe183b5f184711dc95cc261484952dd4bff68910f0a95087f",
+      "generated_png_sha256": "e2632d56f329ac61de0a12068eabdaa7862ef9cac248fbcce1a11da661f5eb94",
+      "stored_source_sha256": "c12f70170b5f3dd523ed6faf80cf3556fb40f1d4cebe44a6b844bb7bd2e0135c",
+      "runtime_sha256": "6ff49968ef265ac7e10ddc1d1525942d76b36e48a9ff22d19748b131e849bf4f",
+      "bounds_at_alpha_32": [
+        [
+          63,
+          32,
+          198,
+          176
+        ],
+        [
+          64,
+          35,
+          195,
+          177
+        ],
+        [
+          61,
+          33,
+          196,
+          177
+        ],
+        [
+          59,
+          27,
+          194,
+          164
+        ],
+        [
+          59,
+          38,
+          194,
+          177
+        ],
+        [
+          63,
+          38,
+          194,
+          177
+        ],
+        [
+          59,
+          37,
+          196,
+          177
+        ],
+        [
+          56,
+          27,
+          197,
+          167
+        ]
+      ],
+      "distinct_alpha_32_silhouettes": 8,
+      "changed_silhouette_pixels_vs_next_frame": [
+        2750,
+        3037,
+        4565,
+        5269,
+        3550,
+        3251,
+        4763,
+        4609
+      ]
+    },
+    "archer": {
+      "reference_game_asset": "assets/illustrated/motion/archer.png",
+      "reference_original_sha256": "a3422f2a6001cefd62d36fb3e035e98ce7b7cf3d1b7290892be6988fc7b2e5d6",
+      "rendered_reference_sha256": "47d6daae1c3d6fe5ac6d579a72ebf86918d6800e801285fdef2b99818468d293",
+      "generated_png_sha256": "ac08756f9a2fcf89f621b18f2108e9d62f002669f23c519b1a04edc55dbbfa5f",
+      "stored_source_sha256": "e57f112d2db6c2efc722b47c4d1b19a73612fccc5b6a1eaab3a60a04960cccfb",
+      "runtime_sha256": "622a5a6ba95833cf41afba947350bf5eb997da221a9240bd932036a5b67f1edc",
+      "bounds_at_alpha_32": [
+        [
+          60,
+          31,
+          186,
+          177
+        ],
+        [
+          67,
+          33,
+          187,
+          178
+        ],
+        [
+          70,
+          32,
+          188,
+          177
+        ],
+        [
+          68,
+          33,
+          191,
+          162
+        ],
+        [
+          64,
+          29,
+          187,
+          177
+        ],
+        [
+          64,
+          31,
+          188,
+          177
+        ],
+        [
+          64,
+          28,
+          190,
+          177
+        ],
+        [
+          62,
+          31,
+          188,
+          162
+        ]
+      ],
+      "distinct_alpha_32_silhouettes": 8,
+      "changed_silhouette_pixels_vs_next_frame": [
+        3904,
+        3563,
+        2274,
+        3223,
+        3538,
+        3478,
+        3238,
+        2976
+      ]
+    }
+  },
+  "focused_tests": {
+    "storybook_motion": {
+      "passes": 11,
+      "failures": 0,
+      "broken": 0
+    },
+    "baseline_and_candidate_physics_rows": 480,
+    "both_match_archived_events_sha256": "6eceb2822e1e18d6884e6e8e5bb6789d608e402f80e05e4ffaabd853454d408d"
+  }
+}

@@ -1,0 +1,880 @@
+{
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "fixed": [
+    "--speed=1",
+    "--chapter=1",
+    "--route=0",
+    "--build=route",
+    "--gear=none",
+    "--guard=off",
+    "--max-downs=3",
+    "--max-sim-seconds=360"
+  ],
+  "physics_fps": 60,
+  "sha256": {
+    "project.godot": "bd0852556aeb90bf5085db67590f80610fa7273452b280d820f303eef93de1a4",
+    "tests/integration/escape_policy.gd": "5db4a0145baa7bb8dfa0c2598a4c167de6e9fd822ac41e4774538b4b6ad6d7c7",
+    "tests/integration/equipment_profiles.gd": "b7bfc308dfc907ad2328a688be6ecf9e15c58678e980f4837fd4d70ff64d8427",
+    "tests/integration/playthrough_bot.gd": "319c0d4d66f4ce4507cf15a675b6ef9852805dfc79681da1eb41cea3a809e004",
+    "tests/integration/opening_pace_probe.gd": "3af1db01cba8baa61668503aefa721d1a4048a7a42c19b20e40fc5f2799ecbe4",
+    "tests/integration/opening_pace_probe.tscn": "a60a8cbaa2bf961fd7b942965a860e1d3d360affe1b9d6924afc5f0e5066127e",
+    "data/levels/level_1_1.tres": "2ab678cbef2591051c3cfa072b954346e23cf0ac1148e899d4ad48a2e529e124",
+    "data/levels/level_1_2.tres": "ecefc2d28f71c44a12ee3474cce7c4624c64596826ff28581a13a1986e28572b"
+  },
+  "cases": [
+    {
+      "hero": "knight",
+      "seed": 31,
+      "policy": "cautious",
+      "exit_code": 0,
+      "messages": [],
+      "outcome": "opening_complete",
+      "downs": 0,
+      "route": "bulwark",
+      "attempts": [
+        {
+          "level_id": "1-1",
+          "victory": true,
+          "kills": 20,
+          "damage_taken": 0,
+          "time_sec": 50.8499999999984,
+          "stars": 3,
+          "hero_level": 3,
+          "snacks_earned": 28,
+          "remaining_vigor": 100,
+          "build_tricks": [
+            "bark",
+            "bark",
+            "bark"
+          ],
+          "active_enemy_histogram": [
+            305,
+            486,
+            974,
+            695,
+            453,
+            40
+          ]
+        },
+        {
+          "level_id": "1-2",
+          "victory": true,
+          "kills": 28,
+          "damage_taken": 5,
+          "time_sec": 65.3666666666642,
+          "stars": 3,
+          "hero_level": 5,
+          "snacks_earned": 27,
+          "remaining_vigor": 95,
+          "build_tricks": [
+            "lion_roar"
+          ],
+          "active_enemy_histogram": [
+            720,
+            597,
+            727,
+            940,
+            350,
+            435,
+            0,
+            20,
+            35
+          ]
+        }
+      ]
+    },
+    {
+      "hero": "knight",
+      "seed": 31,
+      "policy": "escape",
+      "exit_code": 0,
+      "messages": [
+        "WARNING: 28 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 13 resources still in use at exit (run with --verbose for details)."
+      ],
+      "outcome": "opening_complete",
+      "downs": 0,
+      "route": "bulwark",
+      "attempts": [
+        {
+          "level_id": "1-1",
+          "victory": true,
+          "kills": 20,
+          "damage_taken": 7,
+          "time_sec": 55.9833333333314,
+          "stars": 3,
+          "hero_level": 3,
+          "snacks_earned": 28,
+          "remaining_vigor": 93,
+          "build_tricks": [
+            "bark",
+            "bark",
+            "bark"
+          ],
+          "active_enemy_histogram": [
+            305,
+            209,
+            657,
+            616,
+            807,
+            439,
+            222,
+            6
+          ]
+        },
+        {
+          "level_id": "1-2",
+          "victory": true,
+          "kills": 28,
+          "damage_taken": 10,
+          "time_sec": 70.8999999999973,
+          "stars": 3,
+          "hero_level": 5,
+          "snacks_earned": 27,
+          "remaining_vigor": 90,
+          "build_tricks": [
+            "lion_roar"
+          ],
+          "active_enemy_histogram": [
+            614,
+            825,
+            1007,
+            563,
+            335,
+            0,
+            311,
+            190,
+            38,
+            155,
+            96,
+            22
+          ]
+        }
+      ]
+    },
+    {
+      "hero": "knight",
+      "seed": 43,
+      "policy": "cautious",
+      "exit_code": 0,
+      "messages": [
+        "WARNING: 30 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 13 resources still in use at exit (run with --verbose for details)."
+      ],
+      "outcome": "opening_complete",
+      "downs": 0,
+      "route": "bulwark",
+      "attempts": [
+        {
+          "level_id": "1-1",
+          "victory": true,
+          "kills": 20,
+          "damage_taken": 0,
+          "time_sec": 52.6499999999983,
+          "stars": 3,
+          "hero_level": 3,
+          "snacks_earned": 24,
+          "remaining_vigor": 100,
+          "build_tricks": [
+            "bark",
+            "sit",
+            "sit"
+          ],
+          "active_enemy_histogram": [
+            355,
+            386,
+            1060,
+            628,
+            591,
+            41
+          ]
+        },
+        {
+          "level_id": "1-2",
+          "victory": true,
+          "kills": 28,
+          "damage_taken": 11,
+          "time_sec": 67.9333333333308,
+          "stars": 3,
+          "hero_level": 5,
+          "snacks_earned": 34,
+          "remaining_vigor": 100,
+          "build_tricks": [
+            "lion_roar"
+          ],
+          "active_enemy_histogram": [
+            711,
+            598,
+            980,
+            593,
+            837,
+            182,
+            77
+          ]
+        }
+      ]
+    },
+    {
+      "hero": "knight",
+      "seed": 43,
+      "policy": "escape",
+      "exit_code": 0,
+      "messages": [
+        "WARNING: 25 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 12 resources still in use at exit (run with --verbose for details)."
+      ],
+      "outcome": "opening_complete",
+      "downs": 0,
+      "route": "bulwark",
+      "attempts": [
+        {
+          "level_id": "1-1",
+          "victory": true,
+          "kills": 20,
+          "damage_taken": 7,
+          "time_sec": 54.5833333333315,
+          "stars": 3,
+          "hero_level": 3,
+          "snacks_earned": 26,
+          "remaining_vigor": 97,
+          "build_tricks": [
+            "dig",
+            "bark",
+            "sit"
+          ],
+          "active_enemy_histogram": [
+            354,
+            171,
+            845,
+            566,
+            688,
+            419,
+            134
+          ]
+        },
+        {
+          "level_id": "1-2",
+          "victory": true,
+          "kills": 28,
+          "damage_taken": 15,
+          "time_sec": 72.5833333333305,
+          "stars": 3,
+          "hero_level": 5,
+          "snacks_earned": 34,
+          "remaining_vigor": 99,
+          "build_tricks": [
+            "dig",
+            "bark",
+            "sit",
+            "sit",
+            "bark"
+          ],
+          "active_enemy_histogram": [
+            661,
+            714,
+            987,
+            929,
+            333,
+            13,
+            303,
+            150,
+            106,
+            35,
+            26
+          ]
+        }
+      ]
+    },
+    {
+      "hero": "mage",
+      "seed": 31,
+      "policy": "cautious",
+      "exit_code": 0,
+      "messages": [
+        "WARNING: 26 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 11 resources still in use at exit (run with --verbose for details)."
+      ],
+      "outcome": "opening_complete",
+      "downs": 1,
+      "route": "spellweaver",
+      "attempts": [
+        {
+          "level_id": "1-1",
+          "victory": false,
+          "kills": 17,
+          "damage_taken": 80,
+          "time_sec": 59.1166666666646,
+          "stars": 0,
+          "hero_level": 3,
+          "snacks_earned": 9,
+          "remaining_vigor": 0,
+          "build_tricks": [
+            "sniff",
+            "shake",
+            "shake"
+          ],
+          "active_enemy_histogram": [
+            484,
+            650,
+            518,
+            1400,
+            378,
+            19
+          ]
+        },
+        {
+          "level_id": "1-1",
+          "victory": true,
+          "kills": 20,
+          "damage_taken": 32,
+          "time_sec": 51.266666666665,
+          "stars": 2,
+          "hero_level": 3,
+          "snacks_earned": 21,
+          "remaining_vigor": 43,
+          "build_tricks": [
+            "sniff",
+            "shake",
+            "shake"
+          ],
+          "active_enemy_histogram": [
+            613,
+            954,
+            697,
+            338,
+            377
+          ]
+        },
+        {
+          "level_id": "1-2",
+          "victory": true,
+          "kills": 28,
+          "damage_taken": 50,
+          "time_sec": 69.7499999999973,
+          "stars": 2,
+          "hero_level": 5,
+          "snacks_earned": 22,
+          "remaining_vigor": 25,
+          "build_tricks": [
+            "sniff",
+            "shake",
+            "shake",
+            "fetch",
+            "shake"
+          ],
+          "active_enemy_histogram": [
+            688,
+            852,
+            894,
+            528,
+            422,
+            414,
+            128,
+            30,
+            131
+          ]
+        }
+      ]
+    },
+    {
+      "hero": "mage",
+      "seed": 31,
+      "policy": "escape",
+      "exit_code": 0,
+      "messages": [
+        "WARNING: 14 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 5 resources still in use at exit (run with --verbose for details)."
+      ],
+      "outcome": "opening_complete",
+      "downs": 0,
+      "route": "spellweaver",
+      "attempts": [
+        {
+          "level_id": "1-1",
+          "victory": true,
+          "kills": 20,
+          "damage_taken": 0,
+          "time_sec": 49.7499999999985,
+          "stars": 3,
+          "hero_level": 3,
+          "snacks_earned": 28,
+          "remaining_vigor": 75,
+          "build_tricks": [
+            "sniff",
+            "shake",
+            "shake"
+          ],
+          "active_enemy_histogram": [
+            937,
+            734,
+            705,
+            299,
+            212
+          ]
+        },
+        {
+          "level_id": "1-2",
+          "victory": true,
+          "kills": 28,
+          "damage_taken": 0,
+          "time_sec": 62.5166666666644,
+          "stars": 3,
+          "hero_level": 5,
+          "snacks_earned": 27,
+          "remaining_vigor": 75,
+          "build_tricks": [
+            "sniff",
+            "shake",
+            "shake",
+            "fetch",
+            "shake"
+          ],
+          "active_enemy_histogram": [
+            877,
+            669,
+            992,
+            894,
+            204,
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "hero": "mage",
+      "seed": 43,
+      "policy": "cautious",
+      "exit_code": 0,
+      "messages": [
+        "WARNING: 29 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 13 resources still in use at exit (run with --verbose for details)."
+      ],
+      "outcome": "opening_complete",
+      "downs": 0,
+      "route": "spellweaver",
+      "attempts": [
+        {
+          "level_id": "1-1",
+          "victory": true,
+          "kills": 20,
+          "damage_taken": 40,
+          "time_sec": 52.5833333333316,
+          "stars": 2,
+          "hero_level": 3,
+          "snacks_earned": 20,
+          "remaining_vigor": 35,
+          "build_tricks": [
+            "zoomies",
+            "shake",
+            "shake"
+          ],
+          "active_enemy_histogram": [
+            416,
+            1054,
+            764,
+            398,
+            333,
+            92
+          ]
+        },
+        {
+          "level_id": "1-2",
+          "victory": true,
+          "kills": 28,
+          "damage_taken": 66,
+          "time_sec": 75.1833333333304,
+          "stars": 1,
+          "hero_level": 5,
+          "snacks_earned": 26,
+          "remaining_vigor": 26,
+          "build_tricks": [
+            "zoomies",
+            "shake",
+            "shake",
+            "shake",
+            "fetch"
+          ],
+          "active_enemy_histogram": [
+            1008,
+            657,
+            1160,
+            520,
+            653,
+            8,
+            407
+          ]
+        }
+      ]
+    },
+    {
+      "hero": "mage",
+      "seed": 43,
+      "policy": "escape",
+      "exit_code": 0,
+      "messages": [
+        "WARNING: 22 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 10 resources still in use at exit (run with --verbose for details)."
+      ],
+      "outcome": "opening_complete",
+      "downs": 0,
+      "route": "spellweaver",
+      "attempts": [
+        {
+          "level_id": "1-1",
+          "victory": true,
+          "kills": 20,
+          "damage_taken": 0,
+          "time_sec": 48.1833333333319,
+          "stars": 3,
+          "hero_level": 3,
+          "snacks_earned": 24,
+          "remaining_vigor": 75,
+          "build_tricks": [
+            "zoomies",
+            "shake",
+            "shake"
+          ],
+          "active_enemy_histogram": [
+            1017,
+            742,
+            602,
+            219,
+            213
+          ]
+        },
+        {
+          "level_id": "1-2",
+          "victory": true,
+          "kills": 28,
+          "damage_taken": 0,
+          "time_sec": 60.9666666666645,
+          "stars": 3,
+          "hero_level": 5,
+          "snacks_earned": 40,
+          "remaining_vigor": 75,
+          "build_tricks": [
+            "zoomies",
+            "shake",
+            "shake",
+            "shake",
+            "fetch"
+          ],
+          "active_enemy_histogram": [
+            996,
+            653,
+            728,
+            831,
+            325,
+            27
+          ]
+        }
+      ]
+    },
+    {
+      "hero": "archer",
+      "seed": 31,
+      "policy": "cautious",
+      "exit_code": 1,
+      "messages": [
+        "WARNING: 22 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 10 resources still in use at exit (run with --verbose for details)."
+      ],
+      "outcome": "down_limit",
+      "downs": 3,
+      "route": "marksman",
+      "attempts": [
+        {
+          "level_id": "1-1",
+          "victory": false,
+          "kills": 13,
+          "damage_taken": 88,
+          "time_sec": 55.3666666666648,
+          "stars": 0,
+          "hero_level": 2,
+          "snacks_earned": 6,
+          "remaining_vigor": 0,
+          "build_tricks": [
+            "sniff",
+            "sniff"
+          ],
+          "active_enemy_histogram": [
+            595,
+            327,
+            775,
+            607,
+            236,
+            423,
+            8,
+            253
+          ]
+        },
+        {
+          "level_id": "1-1",
+          "victory": false,
+          "kills": 14,
+          "damage_taken": 88,
+          "time_sec": 54.3333333333315,
+          "stars": 0,
+          "hero_level": 2,
+          "snacks_earned": 8,
+          "remaining_vigor": 0,
+          "build_tricks": [
+            "sniff",
+            "sniff"
+          ],
+          "active_enemy_histogram": [
+            590,
+            423,
+            471,
+            725,
+            602,
+            352
+          ]
+        },
+        {
+          "level_id": "1-1",
+          "victory": true,
+          "kills": 20,
+          "damage_taken": 24,
+          "time_sec": 55.2833333333315,
+          "stars": 2,
+          "hero_level": 3,
+          "snacks_earned": 19,
+          "remaining_vigor": 61,
+          "build_tricks": [
+            "sniff",
+            "sniff",
+            "shake"
+          ],
+          "active_enemy_histogram": [
+            771,
+            736,
+            891,
+            299,
+            523
+          ]
+        },
+        {
+          "level_id": "1-2",
+          "victory": false,
+          "kills": 4,
+          "damage_taken": 63,
+          "time_sec": 21.2833333333334,
+          "stars": 0,
+          "hero_level": 3,
+          "snacks_earned": 1,
+          "remaining_vigor": 0,
+          "build_tricks": [
+            "sniff",
+            "sniff",
+            "shake"
+          ],
+          "active_enemy_histogram": [
+            31,
+            31,
+            284,
+            113,
+            174,
+            472,
+            45,
+            30
+          ]
+        }
+      ]
+    },
+    {
+      "hero": "archer",
+      "seed": 31,
+      "policy": "escape",
+      "exit_code": 0,
+      "messages": [
+        "WARNING: 23 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 11 resources still in use at exit (run with --verbose for details)."
+      ],
+      "outcome": "opening_complete",
+      "downs": 0,
+      "route": "marksman",
+      "attempts": [
+        {
+          "level_id": "1-1",
+          "victory": true,
+          "kills": 20,
+          "damage_taken": 0,
+          "time_sec": 47.5499999999986,
+          "stars": 3,
+          "hero_level": 3,
+          "snacks_earned": 28,
+          "remaining_vigor": 85,
+          "build_tricks": [
+            "sniff",
+            "sniff",
+            "shake"
+          ],
+          "active_enemy_histogram": [
+            881,
+            673,
+            785,
+            267,
+            149
+          ]
+        },
+        {
+          "level_id": "1-2",
+          "victory": true,
+          "kills": 28,
+          "damage_taken": 0,
+          "time_sec": 60.8333333333312,
+          "stars": 3,
+          "hero_level": 5,
+          "snacks_earned": 27,
+          "remaining_vigor": 85,
+          "build_tricks": [
+            "sniff",
+            "sniff",
+            "shake",
+            "sniff",
+            "shake"
+          ],
+          "active_enemy_histogram": [
+            816,
+            834,
+            1081,
+            493,
+            240,
+            88
+          ]
+        }
+      ]
+    },
+    {
+      "hero": "archer",
+      "seed": 43,
+      "policy": "cautious",
+      "exit_code": 0,
+      "messages": [
+        "WARNING: 28 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 13 resources still in use at exit (run with --verbose for details)."
+      ],
+      "outcome": "opening_complete",
+      "downs": 0,
+      "route": "marksman",
+      "attempts": [
+        {
+          "level_id": "1-1",
+          "victory": true,
+          "kills": 20,
+          "damage_taken": 24,
+          "time_sec": 53.8833333333316,
+          "stars": 2,
+          "hero_level": 3,
+          "snacks_earned": 20,
+          "remaining_vigor": 61,
+          "build_tricks": [
+            "zoomies",
+            "sniff",
+            "sniff"
+          ],
+          "active_enemy_histogram": [
+            800,
+            815,
+            800,
+            594,
+            126
+          ]
+        },
+        {
+          "level_id": "1-2",
+          "victory": true,
+          "kills": 28,
+          "damage_taken": 81,
+          "time_sec": 76.4999999999969,
+          "stars": 1,
+          "hero_level": 5,
+          "snacks_earned": 26,
+          "remaining_vigor": 39,
+          "build_tricks": [
+            "zoomies",
+            "sniff",
+            "sniff",
+            "sniff",
+            "shake"
+          ],
+          "active_enemy_histogram": [
+            965,
+            759,
+            792,
+            535,
+            744,
+            145,
+            165,
+            348,
+            39
+          ]
+        }
+      ]
+    },
+    {
+      "hero": "archer",
+      "seed": 43,
+      "policy": "escape",
+      "exit_code": 0,
+      "messages": [
+        "WARNING: 31 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 15 resources still in use at exit (run with --verbose for details)."
+      ],
+      "outcome": "opening_complete",
+      "downs": 0,
+      "route": "marksman",
+      "attempts": [
+        {
+          "level_id": "1-1",
+          "victory": true,
+          "kills": 20,
+          "damage_taken": 0,
+          "time_sec": 49.0333333333318,
+          "stars": 3,
+          "hero_level": 3,
+          "snacks_earned": 24,
+          "remaining_vigor": 85,
+          "build_tricks": [
+            "sniff",
+            "shake",
+            "shake"
+          ],
+          "active_enemy_histogram": [
+            886,
+            667,
+            790,
+            356,
+            145
+          ]
+        },
+        {
+          "level_id": "1-2",
+          "victory": true,
+          "kills": 28,
+          "damage_taken": 0,
+          "time_sec": 61.8166666666644,
+          "stars": 3,
+          "hero_level": 5,
+          "snacks_earned": 40,
+          "remaining_vigor": 85,
+          "build_tricks": [
+            "sniff",
+            "shake",
+            "shake",
+            "sniff",
+            "shake"
+          ],
+          "active_enemy_histogram": [
+            968,
+            1073,
+            941,
+            453,
+            176
+          ]
+        }
+      ]
+    }
+  ]
+}

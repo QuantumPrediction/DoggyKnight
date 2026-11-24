@@ -183,3 +183,38 @@ func test_story_seen_and_chapter_cleared_load_into_game_state() -> void:
 	assert_true(GameState.story_seen.has(&"prologue"), "讀檔:看過的段落(StringName 鍵,與對白框一致)")
 	assert_true(GameState.story_seen.has(&"l1_before"))
 	assert_eq(GameState.story_seen.size(), 2)
+
+
+func test_first_run_can_choose_reinforcements_and_resume_them() -> void:
+	GameState.chapter_cleared = false
+	make_flow()
+	await wait_frames(1)
+	assert_true(await _new_game(FlowMain.REINFORCED))
+	assert_eq(flow.get_session().spawner.difficulty_mode, FlowMain.REINFORCED)
+	assert_eq(read_save()["difficulty"], "reinforced")
+	remove_child(flow)
+	flow.queue_free()
+	flow = null
+	make_flow(true)
+	await wait_frames(1)
+	flow.get_screen().emit_signal(&"continue_pressed")
+	assert_true(await wait_until(in_level))
+	assert_eq(flow.get_run_difficulty(), FlowMain.REINFORCED)
+	assert_eq(SaveStore.sanitize({})["difficulty"], "normal")
+
+
+func test_only_the_chosen_opening_adds_two_distant_pairs_per_room() -> void:
+	var s := WaveSpawner.new()
+	for mode in [FlowMain.NORMAL, FlowMain.HARD, FlowMain.REINFORCED]:
+		s.difficulty_mode = mode
+		var totals := []
+		for number in [1, 2, 3]:
+			var level: LevelData = load("res://data/levels/level_1_%d.tres" % number)
+			var reserves := 0
+			for wave in level.waves:
+				for entry in wave.entries_for(mode == FlowMain.REINFORCED):
+					if wave.reinforcements.has(entry):
+						reserves += s.spawn_count(entry)
+			totals.append(reserves)
+		assert_eq(totals, [4, 4, 0] if mode == FlowMain.REINFORCED else [0, 0, 0])
+	s.free()

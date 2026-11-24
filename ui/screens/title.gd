@@ -590,12 +590,14 @@ func _open_class_select(endless: bool) -> void:
 	_class_endless = endless
 	_class_select = HeroClassSelect.new()
 	_class_select.name = "ClassSelect"
+	_class_select.offer_reinforcements = not endless and chosen_chapter() == 1
+	_class_select.reinforced_confirmed.connect(_confirm_class.bind(true))
 	_class_select.confirmed.connect(_confirm_class)
 	_class_select.cancelled.connect(close_class_select)
 	add_child(_class_select)
 
 
-func _confirm_class(id: StringName) -> void:
+func _confirm_class(id: StringName, reinforced: bool = false) -> void:
 	if not is_instance_valid(_class_select):
 		return
 	GameState.hero_class = HeroClasses.valid_id(id)
@@ -603,6 +605,8 @@ func _confirm_class(id: StringName) -> void:
 	if _class_endless:
 		GameState.mode = &"endless"
 		endless_pressed.emit()
+	elif reinforced and chosen_chapter() == 1:
+		_start(FlowMain.REINFORCED)
 	else:
 		_after_class_selected()
 
