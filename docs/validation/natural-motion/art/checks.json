@@ -1,0 +1,230 @@
+{
+  "knight": {
+    "atlas": "assets/illustrated/motion/settle_knight.png",
+    "bytes": 138267,
+    "png_sha256": "a7444b9aa3e2c139a8700f90defa01c84557d2ebc04f86b5301aad9004d66b1c",
+    "rgba_sha256": "348ac6c64bffc2294ae780f70109b18694a047b3a98843a0b7d91493837039b4",
+    "frames": [
+      {
+        "pose": "front braking",
+        "alpha32_bbox": [
+          49,
+          33,
+          162,
+          177
+        ],
+        "proof_85x64_alpha32_bbox": [
+          16,
+          11,
+          54,
+          59
+        ],
+        "painted_pixels_at_alpha32": 10863,
+        "cell_rgba_sha256": "a6e5030404f70207b361db4ff40fab9b91bb6ba27ac97e7b2ffaa041461a47ad"
+      },
+      {
+        "pose": "front standing guard",
+        "alpha32_bbox": [
+          58,
+          25,
+          161,
+          177
+        ],
+        "proof_85x64_alpha32_bbox": [
+          19,
+          8,
+          54,
+          59
+        ],
+        "painted_pixels_at_alpha32": 10485,
+        "cell_rgba_sha256": "523367be28cc037b324cd0ecef58f37b5a827d1d0fc020fec2b5eb26f8f75845"
+      },
+      {
+        "pose": "rear braking",
+        "alpha32_bbox": [
+          67,
+          33,
+          172,
+          177
+        ],
+        "proof_85x64_alpha32_bbox": [
+          22,
+          11,
+          57,
+          59
+        ],
+        "painted_pixels_at_alpha32": 10355,
+        "cell_rgba_sha256": "ab41c4e8471cb6cfdfc8d368482ffbd8601349848cdeb4f264c31869bb4bcb5e"
+      },
+      {
+        "pose": "rear standing guard",
+        "alpha32_bbox": [
+          75,
+          25,
+          170,
+          177
+        ],
+        "proof_85x64_alpha32_bbox": [
+          25,
+          8,
+          57,
+          59
+        ],
+        "painted_pixels_at_alpha32": 10140,
+        "cell_rgba_sha256": "7ddf1430322e54721008a6f38cce7c1a4a03ec19ff44d20d2c1816d35384fdce"
+      }
+    ]
+  },
+  "mage": {
+    "atlas": "assets/illustrated/motion/settle_mage.png",
+    "bytes": 131241,
+    "png_sha256": "89f1a45eea654fa3a97a8b03588c334c591b528772f076a751ef3a58ec5bfd65",
+    "rgba_sha256": "e0b7e777432bc14041ffc29c965c819e2af7de2f48e091cf2313023d7074ca07",
+    "frames": [
+      {
+        "pose": "front braking",
+        "alpha32_bbox": [
+          58,
+          33,
+          170,
+          177
+        ],
+        "proof_85x64_alpha32_bbox": [
+          19,
+          11,
+          57,
+          59
+        ],
+        "painted_pixels_at_alpha32": 10723,
+        "cell_rgba_sha256": "f71230e6955ca1c808f3d5c22f0e57bf56649fc237e0479b759b9fa828096c49"
+      },
+      {
+        "pose": "front standing guard",
+        "alpha32_bbox": [
+          68,
+          25,
+          167,
+          177
+        ],
+        "proof_85x64_alpha32_bbox": [
+          22,
+          8,
+          56,
+          59
+        ],
+        "painted_pixels_at_alpha32": 10407,
+        "cell_rgba_sha256": "320c868823f75d20cb871c474bb6637caf3445b5f74920d211a834e7d8fc0bc9"
+      },
+      {
+        "pose": "rear braking",
+        "alpha32_bbox": [
+          72,
+          33,
+          167,
+          177
+        ],
+        "proof_85x64_alpha32_bbox": [
+          24,
+          11,
+          56,
+          59
+        ],
+        "painted_pixels_at_alpha32": 9640,
+        "cell_rgba_sha256": "bc3e8388f28f1be2c8d467a6df1beffd0f88212ebc45239e0349d4eab8ed6a36"
+      },
+      {
+        "pose": "rear standing guard",
+        "alpha32_bbox": [
+          76,
+          25,
+          165,
+          176
+        ],
+        "proof_85x64_alpha32_bbox": [
+          25,
+          8,
+          55,
+          59
+        ],
+        "painted_pixels_at_alpha32": 9591,
+        "cell_rgba_sha256": "718323d500c3e0a06edf49386dd9cfe3bc83176d1aa8ea4ad6c8f9f1adf080df"
+      }
+    ]
+  },
+  "archer": {
+    "atlas": "assets/illustrated/motion/settle_archer.png",
+    "bytes": 129311,
+    "png_sha256": "8ab6f5c349a151dc4dd92671d63a49022e5a66ab48d3c17d71b71f4a85e78ed7",
+    "rgba_sha256": "c22c13d62f157660915a509cd3ca84a6210e99ff8a3688f9e342acd449e43179",
+    "frames": [
+      {
+        "pose": "front braking",
+        "alpha32_bbox": [
+          58,
+          33,
+          163,
+          176
+        ],
+        "proof_85x64_alpha32_bbox": [
+          19,
+          11,
+          54,
+          59
+        ],
+        "painted_pixels_at_alpha32": 10029,
+        "cell_rgba_sha256": "d9616feae221944c9465f8e0abd6fa7e06594edcdbb51b92dc6f1009f1f8b9b2"
+      },
+      {
+        "pose": "front standing guard",
+        "alpha32_bbox": [
+          65,
+          25,
+          165,
+          176
+        ],
+        "proof_85x64_alpha32_bbox": [
+          21,
+          8,
+          55,
+          59
+        ],
+        "painted_pixels_at_alpha32": 9978,
+        "cell_rgba_sha256": "fe3b8b0da9404267466935d590d0bf63b70199eb654924e9aa0bb324347206f3"
+      },
+      {
+        "pose": "rear braking",
+        "alpha32_bbox": [
+          75,
+          33,
+          172,
+          176
+        ],
+        "proof_85x64_alpha32_bbox": [
+          25,
+          11,
+          57,
+          59
+        ],
+        "painted_pixels_at_alpha32": 9390,
+        "cell_rgba_sha256": "74cc6d0fef7d5ca43576faed59ccd241e200fe134e3dd61af2629ac336602a63"
+      },
+      {
+        "pose": "rear standing guard",
+        "alpha32_bbox": [
+          79,
+          25,
+          165,
+          176
+        ],
+        "proof_85x64_alpha32_bbox": [
+          26,
+          8,
+          55,
+          59
+        ],
+        "painted_pixels_at_alpha32": 9289,
+        "cell_rgba_sha256": "cfdd9d646e0320bca4c69408585253966a7ae1f4981905d052a251f4d7ae4f5e"
+      }
+    ]
+  }
+}

@@ -44,8 +44,18 @@ func test_autoloads() -> void:
 
 func test_traditional_chinese_strings() -> void:
 	assert_eq(TranslationServer.get_locale(), "zh_TW")
-	assert_eq(tr("GAME_TITLE"), "金毛騎士", "i18n/strings.csv 已載入")
+	assert_eq(tr("GAME_TITLE"), "黃金騎士")
+	assert_eq(tr("UI_GAME_TITLE_EN"), "The Golden Knight")
+	assert_eq(_setting("application/config/name"), tr("GAME_TITLE"))
+	assert_eq(_setting("application/config/name_localized").get("en"), tr("UI_GAME_TITLE_EN"))
 	assert_eq(tr("UI_WAVE") % [1, 3], "第 1/3 波", "格式字串")
+
+
+func test_desktop_profiles_keep_the_existing_save_directory() -> void:
+	if OS.has_feature("pc"):
+		var engine_dir := "Godot" if OS.get_name() in ["Windows", "macOS"] else "godot"
+		var expected := OS.get_data_dir().path_join(engine_dir).path_join("app_userdata/金毛騎士")
+		assert_eq(OS.get_user_data_dir().simplify_path(), expected.simplify_path())
 
 
 func test_layout_constants() -> void:

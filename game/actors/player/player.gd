@@ -86,7 +86,13 @@ var _ult_left: float = -1.0
 var _ult_overlay: ScreenTint
 var _cheer_left: float = 0.0
 var _cheer_count: int = 0
-var _run_time: float = 0.0
+## Painted footfalls use ground distance. Combat continues to use the original SpriteFrames clock.
+var stride_direction := Vector2.ZERO
+var stride_cycle := 0.0
+var stride_moving := false
+var stride_settle_left := 0.0
+var _stride_length := 1.0
+var _run_time := 0.0  ## The existing spin uses this clock independently of the painted feet.
 var _last_pickup_haptic: float = -10.0
 var _spin_total: float = SPIN_VISUAL_TIME
 var _was_moving: bool = false
@@ -108,6 +114,8 @@ var revive_count: int = 0
 func _ready() -> void:
 	loadout = HeroClasses.get_data(GameState.hero_class)
 	sprite = $Sprite as AnimatedSprite2D
+	var frames := sprite.sprite_frames
+	_stride_length = loadout.stats.move_speed * frames.get_frame_count(&"run") / frames.get_animation_speed(&"run")
 	joystick = get_node_or_null(^"JoystickLayer/Joystick") as TouchJoystick
 	if feel == null:
 		feel = CombatFx.feel()
@@ -186,6 +194,9 @@ func _physics_process(delta: float) -> void:
 	var rate := speed / maxf(ramp_time, 0.001)
 	velocity = velocity.move_toward(target_velocity, rate * delta)
 	var real_velocity := velocity
+	# Spawning outside the arena can snap the body inwards on its first tick.
+	# Only the part of the step inside the playable bounds belongs to a footfall.
+	var step_start := CombatMath.clamp_to_bounds(global_position, _arena_margin)
 	velocity *= ts
 	move_and_slide()
 	velocity = real_velocity
@@ -194,7 +205,7 @@ func _physics_process(delta: float) -> void:
 		facing = input
 	_update_attack(delta, moving)
 	abilities.update(delta)
-	_update_visuals(delta)
+	_update_visuals(delta, global_position - step_start)
 	_publish_tactics()
 	if abilities.is_zooming() or abilities.roll.is_rolling():
 		queue_redraw()
@@ -504,6 +515,7 @@ func use_ultimate() -> bool:
 		return false
 	loyalty = 0.0
 	ultimate_count += 1
+	_clear_stride()
 	_cancel_windup()
 	_hitstop_left = 0.0
 	velocity = Vector2.ZERO
@@ -740,6 +752,7 @@ func _try_pounce() -> bool:
 
 
 func _begin_pounce(target: Node2D, ability: PounceAbility) -> void:
+	_clear_stride()
 	_pounce_ability = ability
 	_pounce_target = target
 	_pounce_from = global_position
@@ -813,6 +826,7 @@ func _begin_roll(direction: Vector2) -> void:
 
 ## 裝死(play_dead):這一下本來會睡著,改為剩 1 活力。先倒下裝死一下,再跳起來(無敵、震開敵人)。
 func _save_by_playing_dead() -> void:
+	_clear_stride()
 	var taken := maxi(0, GameState.vigor - 1)
 	GameState.vigor = 1
 	play_dead_count += 1
@@ -1030,31 +1044,73 @@ func _tick_feedback(delta: float) -> void:
 		sprite.visible = true
 
 
-func _update_visuals(delta: float) -> void:
+func _clear_stride() -> void:
+	stride_direction = Vector2.ZERO
+	stride_cycle = 0.0
+	stride_moving = false
+	stride_settle_left = 0.0
+
+
+func _update_stride(step: Vector2, delta: float, running: bool, action: bool) -> void:
+	if action:
+		_clear_stride()
+		return
+	var distance := step.length()
+	if distance > 0.0001:
+		var direction := step / distance
+		# Land on the nearest contact before changing the leading foot in a reversal.
+		if not stride_moving or direction.dot(stride_direction) < -0.5:
+			stride_cycle = roundf(stride_cycle * 2.0) * 0.5
+		stride_cycle = fposmod(stride_cycle + distance / _stride_length, 1.0)
+		stride_direction = direction
+		stride_moving = true
+		stride_settle_left = 0.0
+	else:
+		if stride_moving:
+			# About one quarter of a normal stride to transfer weight to both feet.
+			stride_settle_left = _stride_length / loadout.stats.move_speed * 0.25
+		else:
+			stride_settle_left = maxf(0.0, stride_settle_left - delta)
+		stride_moving = false
+		if running and stride_direction == Vector2.ZERO:
+			# An actor spawned against a wall can meet the boundary on its very first step.
+			stride_direction = facing
+
+
+func _update_visuals(delta: float, ground_step: Vector2) -> void:
 	_hurt_anim_left = maxf(0.0, _hurt_anim_left - delta)
 	_attack_anim_left = maxf(0.0, _attack_anim_left - delta)
 	if absf(facing.x) > 0.05:
 		sprite.flip_h = facing.x < 0.0
 	var running := velocity.length() > 4.0 and _hurt_anim_left <= 0.0 and _windup_left < 0.0 and _attack_anim_left <= 0.0
+	var spinning := _spin_left > 0.0
+	var action := _hurt_anim_left > 0.0 or _windup_left >= 0.0 or _attack_anim_left > 0.0 or spinning or celebrating
+	_update_stride(ground_step, delta, running, action)
 	# 蓄力時維持壓扁的姿勢,其他時候慢慢回復原狀。
 	if _windup_left < 0.0:
 		sprite.scale = sprite.scale.move_toward(Vector2.ONE, delta * 2.5)
 		var offset := Vector2.ZERO
+		if running and _hop_left <= 0.0:
+			_run_time += delta
 		if _hop_left > 0.0:
 			_hop_left = maxf(0.0, _hop_left - delta)
 			offset = Vector2(0, -3.0 * sin(PI * _hop_left / HOP_TIME))
-		elif running:
-			# 跑步時上下彈。
-			_run_time += delta
-			offset = Vector2(0, -absf(sin(_run_time * 12.0)) * feel.run_bob)
-		if _hop_left > 0.0 or running:
+		elif spinning and running:
+			offset.y = -absf(sin(_run_time * 12.0)) * feel.run_bob
+		elif stride_moving:
+			# The painted airborne poses already provide lift. Ease the body through the two contacts.
+			offset.y = -0.5 * feel.run_bob * pow(sin(TAU * stride_cycle), 2)
+		if _hop_left > 0.0 or stride_moving or (spinning and running):
 			sprite.position = offset
 		else:
 			sprite.position = sprite.position.move_toward(offset, delta * 30.0)
 	# 跑步時身體往前傾(斜切,像素圖不會變糊)。
 	var lean := 0.0
-	if running:
+	if spinning and running:
 		lean = -feel.run_lean * signf(facing.x) if absf(facing.x) > 0.05 else 0.0
+	elif stride_moving:
+		# Partial input leans less. A reversal keeps its weight in the direction still being travelled.
+		lean = -feel.run_lean * clampf(ground_step.x / maxf(loadout.stats.move_speed * delta, 0.0001), -1.0, 1.0)
 	sprite.skew = move_toward(sprite.skew, lean, delta * 3.0)
 	if _spin_left > 0.0:
 		_spin_left = maxf(0.0, _spin_left - delta)
@@ -1071,7 +1127,8 @@ func _update_visuals(delta: float) -> void:
 		_footstep_timer -= delta * (2.0 if abilities.is_zooming() else 1.0)
 		if _footstep_timer <= 0.0:
 			_footstep_timer = tuning.footstep_interval
-			CombatFx.particles(self, &"footstep_dust", global_position + Vector2(-facing.x * 3.0, _frame_size.y * 0.4), true)
+			if stride_moving or _spin_left > 0.0:
+				CombatFx.particles(self, &"footstep_dust", global_position + Vector2(-facing.x * 3.0, _frame_size.y * 0.4), true)
 	elif celebrating:
 		_cheer(delta)
 	else:
@@ -1098,6 +1155,7 @@ func _cheer(delta: float) -> void:
 
 
 func _go_down() -> void:
+	_clear_stride()
 	_downed = true
 	_resolve_companion_counter(&"cancelled")
 	_publish_combat_readiness()

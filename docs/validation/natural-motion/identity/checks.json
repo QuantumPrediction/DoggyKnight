@@ -1,0 +1,181 @@
+{
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "baseline": "9b7ed6c449087ae8a89daea997fcecde707b085e",
+  "baseline_tree": "b96449695d84afda1e34e9ac154381635bdc5fa3",
+  "source_sha256": {
+    "project.godot": "4b5bf4338cc68dc3a094398e3ee156392bec7a4a59652261d5957a95cd2489b5",
+    "ui/illustrated/texture_surface.gd": "e8a308edee8767420cf6faaf07af64f60f526dc448e65e151393f59d91c787ae",
+    "ui/screens/title.gd": "b03e0f806548b7e6076ef74afb0bde8039a5ed92c1ceb0b3a3eefae6ac29195c",
+    "i18n/strings.csv": "569dcc17702292cd021a4da6b49f64bd4823b38db008397163f851a12ddfe5e5",
+    "i18n/story.csv": "22fd5bcf7198309e3e0740978bc8d42d806ef2263acd771c26acaaac265130f7",
+    "export/web/shell.html": "81522bb47de61c32f20086c1ef757ae9c8cf2645941bfe36eaa3b2b539a50f82",
+    "tools/pixel/art_brand.py": "6ce672734d0cb4286fac2550d7a2c5257ca139dac3db4c78f931031cf2d12f5c",
+    "tools/check_title_save.gd": "d9d2895d421b3f665f981f6846838c7f2fca39c037ed020895a7e3d233213f17"
+  },
+  "native_title": {
+    "runtime": "Linux X11 / Mesa llvmpipe / GL Compatibility",
+    "size": [
+      360,
+      640
+    ],
+    "fixed_fps": 60,
+    "title_process_frames": 75,
+    "full_png_sha256": {
+      "baseline": "4808426563f797a5a0e6d99a4d0f7ab4afb2c6d1deb90972efa3a744d0dec757",
+      "rejected": "dc844d13cff42cfee37ddf725ab53b1849f7269dc10b6f33e9b6e76736919b63",
+      "final": "2e7b795c2419aced85cf0ddeda2dda9501c7580ed91a51c0cfb2617682ab2e02"
+    },
+    "difference": {
+      "baseline_to_rejected": {
+        "changed_pixels": 4567,
+        "bounds_xyxy": [
+          87,
+          85,
+          270,
+          149
+        ]
+      },
+      "rejected_to_final": {
+        "changed_pixels": 2459,
+        "bounds_xyxy": [
+          84,
+          130,
+          276,
+          149
+        ]
+      },
+      "baseline_to_final": {
+        "changed_pixels": 5467,
+        "bounds_xyxy": [
+          84,
+          85,
+          276,
+          148
+        ]
+      }
+    },
+    "ribbons_crop_xyxy": [
+      72,
+      79,
+      288,
+      151
+    ],
+    "geometry_units": {
+      "logo_xywh": [
+        37,
+        45,
+        106,
+        29
+      ],
+      "rejected_text_width": 83.2,
+      "rejected_notch_to_notch": 74,
+      "final_text_width": 74,
+      "final_notch_to_notch": 88
+    },
+    "final_webp_lossless_decoded_equal_to_png": true,
+    "seed": 19
+  },
+  "pixel_art": {
+    "assets/ui/logo.png": {
+      "baseline": "7312dff15adeb3570b905574fa3aa1896333fa85ef6849921c9edf0589c4dfea",
+      "final": "da3cb337f47267f4f46b7a9d8028f206d5aede2c4dfe5efe3d4b637fcb727910",
+      "changed_bounds_xyxy": [
+        1,
+        1,
+        28,
+        17
+      ]
+    },
+    "assets/ui/logo_2x.png": {
+      "baseline": "4cc7ae5664d65927eed2f74cbc18c6b3724c360e365592907c4aab06107dc481",
+      "final": "6a5a56bcd0225728b4c4496b7206677492397c1096469ef00f35e40d8946c6a3",
+      "changed_bounds_xyxy": [
+        1,
+        1,
+        53,
+        28
+      ]
+    },
+    "assets/app_icon/splash.png": {
+      "baseline": "b691e761d47f1f55437f5c6f4b534cfc408e1826888676ab4a376ae21c7603d2",
+      "final": "0a575d2f64b93dd4c9f8b1b45d04a85992bde8e64a6a0a68f45bc3a9c689aa4d",
+      "changed_bounds_xyxy": [
+        152,
+        404,
+        360,
+        512
+      ]
+    },
+    "assets/app_icon/feature_graphic_1024x500.png": {
+      "baseline": "f5ed03e0ba8e91eb72c211438f88b6c3a707ef36667bbcb8c718e6358177a572",
+      "final": "649d32543c03252d9ae8f0951b55290ac8f956791aa6867c28b784dcd4a3d9c1",
+      "changed_bounds_xyxy": [
+        44,
+        76,
+        348,
+        228
+      ]
+    }
+  },
+  "linux_save": {
+    "entry_bytes": 1487,
+    "records": {
+      "prior-write": {
+        "action": "write",
+        "checkpoint_sha256": "b3fdcf1fb142d9688c9ffce6b3f7fede67dadfe69ec64c3a32116c3fff09d0a1",
+        "departure": "reinforced",
+        "game": "金毛騎士",
+        "haptics": false,
+        "hero": "archer",
+        "level": "1-1",
+        "music": false,
+        "path": "godot/app_userdata/金毛騎士/save.json",
+        "save_sha256": "358723af4eeb6a076d7832f6646a814a1e1045872248c570d0fc5652958b378d",
+        "sound": false,
+        "v": 11
+      },
+      "prior-read": {
+        "action": "read",
+        "checkpoint_sha256": "b3fdcf1fb142d9688c9ffce6b3f7fede67dadfe69ec64c3a32116c3fff09d0a1",
+        "departure": "reinforced",
+        "game": "黃金騎士",
+        "haptics": false,
+        "hero": "archer",
+        "level": "1-1",
+        "music": false,
+        "path": "godot/app_userdata/金毛騎士/save.json",
+        "save_sha256": "358723af4eeb6a076d7832f6646a814a1e1045872248c570d0fc5652958b378d",
+        "sound": false,
+        "v": 11
+      },
+      "new-write": {
+        "action": "write",
+        "checkpoint_sha256": "b3fdcf1fb142d9688c9ffce6b3f7fede67dadfe69ec64c3a32116c3fff09d0a1",
+        "departure": "reinforced",
+        "game": "黃金騎士",
+        "haptics": false,
+        "hero": "archer",
+        "level": "1-1",
+        "music": false,
+        "path": "godot/app_userdata/金毛騎士/save.json",
+        "save_sha256": "358723af4eeb6a076d7832f6646a814a1e1045872248c570d0fc5652958b378d",
+        "sound": false,
+        "v": 11
+      },
+      "new-read": {
+        "action": "read",
+        "checkpoint_sha256": "b3fdcf1fb142d9688c9ffce6b3f7fede67dadfe69ec64c3a32116c3fff09d0a1",
+        "departure": "reinforced",
+        "game": "黃金騎士",
+        "haptics": false,
+        "hero": "archer",
+        "level": "1-1",
+        "music": false,
+        "path": "godot/app_userdata/金毛騎士/save.json",
+        "save_sha256": "358723af4eeb6a076d7832f6646a814a1e1045872248c570d0fc5652958b378d",
+        "sound": false,
+        "v": 11
+      }
+    }
+  }
+}

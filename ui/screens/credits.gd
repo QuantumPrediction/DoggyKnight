@@ -150,6 +150,7 @@ func _fill(width: float) -> void:
 		content.remove_child(c)
 		c.queue_free()
 	var logo := UiKit.texture_rect(preload("res://assets/ui/logo_2x.png"))
+	logo.accessibility_name = tr("GAME_TITLE")
 	var logo_row := CenterContainer.new()
 	logo_row.add_child(logo)
 	content.add_child(logo_row)

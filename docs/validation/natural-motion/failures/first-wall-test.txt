@@ -1,0 +1,6 @@
+res://tests/integration/test_ground_stride.gd
+  ok      test_reversal_paints_the_travelled_direction_through_braking
+  FAIL    test_held_boundary_plants_and_freezes_the_stride
+          - expected Rect2(256, 192, 256, 192), got Rect2(256, 0, 256, 192)
+  ok      test_equal_ground_distances_advance_equal_cycles_at_different_speeds
+  ok      test_ultimate_takes_over_immediately_after_northward_travel

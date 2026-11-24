@@ -46,6 +46,8 @@ func test_every_screen_has_the_contract_interface() -> void:
 
 func test_title_continue_only_with_a_save() -> void:
 	var title := _open("res://ui/screens/title.tscn")
+	assert_eq(title.get_window().title, "黃金騎士 · The Golden Knight")
+	assert_eq((title.get_node("Logo") as Control).accessibility_name, tr("GAME_TITLE"))
 	title.call("setup", false)
 	assert_false((title.get("continue_button") as Button).visible, "沒有存檔就不顯示「繼續冒險」")
 	title.call("setup", true)
