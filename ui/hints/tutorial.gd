@@ -3,25 +3,15 @@ extends Control
 ##
 ## B 線在 1-1 且 GameState.tutorial_done == false 時把它加到第 20 層 CanvasLayer;
 ## 完成時發 finished,B 線設 tutorial_done = true 並存檔。
-## 它只「看」觸控(_input,不呼叫 set_input_as_handled),根節點與所有子節點都是
-## MOUSE_FILTER_IGNORE,所以 A 線的搖桿完全照常運作。
-##
-## 步驟:
-## 1. 「按住畫面拖曳,金毛就會走」:手指圖示按下、往右拖、放開,一直重複,直到玩家拖曳約 20 像素。
-## 2. 「放手!金毛會自動揮劍」:手指往上抬起、冒出閃光;玩家在敵人附近放手、打倒任何敵人,
-##    或過了 4 秒,就算完成。
-## 3. 「做得好!」彈一下,淡出,發 finished。
+## 提示觀察角色實際走位與普通出招。介面忽略輸入，浮動搖桿與按鈕照常運作。
+## 等候出招逾時就淡出。finished 表示看過提示，只有角色確實出手才播放鼓勵。
 
 signal finished
 
-enum Step { MOVE, ATTACK, DONE }
+enum Step { MOVE, ATTACK, DONE, EXPIRED }
 
-## 拖曳多遠(邏輯像素)算學會移動。
-const DRAG_DISTANCE: float = 20.0
-## 第二步最多等幾秒。
+const MOVE_DISTANCE: float = 1.0
 const ATTACK_TIMEOUT: float = 4.0
-## 放手時,金毛與最近的敵人距離在這之內算「在敵人附近」。
-const NEAR_ENEMY: float = 44.0
 const FINGER: Texture2D = preload("res://assets/ui/finger.png")
 const FINGER_PRESSED: Texture2D = preload("res://assets/ui/finger_pressed.png")
 const SPARKLE: PackedScene = preload("res://assets/fx/particles/sparkle.tscn")
@@ -31,14 +21,17 @@ var finger: TextureRect
 var bubble: PanelContainer
 var bubble_label: Label
 
-var _press_at: Vector2 = Vector2.ZERO
-var _pressing: bool = false
+var _player: GoldiePlayer
+var _last_position: Vector2
+var _travelled: float = 0.0
+var _starting_swings: int = 0
 var _time: float = 0.0
 var _step_time: float = 0.0
 var _trail: Array[Vector2] = []
 
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_PAUSABLE
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	theme = UiKit.THEME
@@ -54,8 +47,6 @@ func _ready() -> void:
 	finger.name = "Finger"
 	finger.visible = not UiKit.uses_keyboard_hints()
 	add_child(finger)
-	if not EventBus.enemy_died.is_connected(_on_enemy_died):
-		EventBus.enemy_died.connect(_on_enemy_died)
 	_enter(Step.MOVE)
 
 
@@ -66,11 +57,19 @@ func _enter(s: Step) -> void:
 		Step.MOVE:
 			bubble_label.text = tr("UI_TUTORIAL_MOVE_PC" if UiKit.uses_keyboard_hints() else "UI_TUTORIAL_MOVE")
 		Step.ATTACK:
+			_starting_swings = _player.swing_count
 			bubble_label.text = tr("UI_TUTORIAL_ATTACK_PC" if UiKit.uses_keyboard_hints() else "UI_TUTORIAL_ATTACK")
 			if GameState.hero_class != &"knight":
 				bubble_label.text = tr("UI_TUTORIAL_RANGED")
 			UiKit.play_sfx(&"ui_tap")
+		Step.EXPIRED:
+			finger.visible = false
+			_trail.clear()
+			set_physics_process(false)
+			_finish_after(0.0)
+			return
 		Step.DONE:
+			set_physics_process(false)
 			bubble_label.text = tr("UI_TUTORIAL_DONE")
 			finger.visible = false
 			_trail.clear()
@@ -100,80 +99,31 @@ func _burst() -> void:
 	add_child(fx)
 
 
-func _input(event: InputEvent) -> void:
-	# 只看,不吃掉觸控(不呼叫 set_input_as_handled)。
-	if event is InputEventKey:
-		for action: StringName in [&"move_left", &"move_right", &"move_up", &"move_down"]:
-			if step == Step.MOVE and event.is_action_pressed(action) and not event.is_echo():
+func _physics_process(delta: float) -> void:
+	if not is_instance_valid(_player):
+		_player = get_tree().get_first_node_in_group(&"player") as GoldiePlayer
+		if _player != null:
+			_last_position = _player.global_position
+			_starting_swings = _player.swing_count
+		return
+	var position_now := _player.global_position
+	if step == Step.MOVE:
+		# 按住介面、撞牆或只點一下都沒有完成走位。
+		if _player.get_move_input() != Vector2.ZERO and not _player.is_downed():
+			_travelled += _last_position.distance_to(position_now)
+			if _travelled >= MOVE_DISTANCE:
 				_enter(Step.ATTACK)
-			elif step == Step.ATTACK and event.is_action_released(action) and _released_near_enemy():
-				_enter(Step.DONE)
-		return
-	var pos := Vector2.ZERO
-	var pressed := false
-	var released := false
-	var moved := false
-	if event is InputEventScreenTouch:
-		var e := event as InputEventScreenTouch
-		if e.index != 0:
-			return
-		pos = e.position
-		pressed = e.pressed
-		released = not e.pressed
-	elif event is InputEventScreenDrag:
-		var d := event as InputEventScreenDrag
-		if d.index != 0:
-			return
-		pos = d.position
-		moved = true
-	else:
-		return
-	if pressed:
-		_pressing = true
-		_press_at = pos
-	elif moved and _pressing:
-		if step == Step.MOVE and pos.distance_to(_press_at) >= DRAG_DISTANCE:
-			_enter(Step.ATTACK)
-	elif released:
-		_pressing = false
-		if step == Step.ATTACK and _released_near_enemy():
+	elif step == Step.ATTACK:
+		_step_time += delta
+		if _player.swing_count > _starting_swings:
 			_enter(Step.DONE)
-
-
-## 測試與沙盒用:模擬玩家的動作。
-func simulate_drag(distance: float) -> void:
-	_pressing = true
-	_press_at = Vector2(90, 200)
-	if step == Step.MOVE and distance >= DRAG_DISTANCE:
-		_enter(Step.ATTACK)
-
-
-func simulate_release(near_enemy: bool) -> void:
-	_pressing = false
-	if step == Step.ATTACK and near_enemy:
-		_enter(Step.DONE)
-
-
-func _released_near_enemy() -> bool:
-	var player := get_tree().get_first_node_in_group(&"player") as Node2D
-	if player == null:
-		return false
-	for e in get_tree().get_nodes_in_group(&"enemy"):
-		if e is Node2D and (e as Node2D).global_position.distance_to(player.global_position) <= NEAR_ENEMY:
-			return true
-	return false
-
-
-func _on_enemy_died(_id: StringName, _pos: Vector2, _exp: int) -> void:
-	if step == Step.ATTACK or step == Step.MOVE:
-		_enter(Step.DONE)
+		elif _step_time >= ATTACK_TIMEOUT:
+			_enter(Step.EXPIRED)
+	_last_position = position_now
 
 
 func _process(delta: float) -> void:
 	_time += delta
-	_step_time += delta
-	if step == Step.ATTACK and _step_time >= ATTACK_TIMEOUT:
-		_enter(Step.DONE)
 	_layout()
 	_animate_finger()
 	queue_redraw()

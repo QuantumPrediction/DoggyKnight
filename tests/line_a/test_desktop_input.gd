@@ -97,8 +97,10 @@ func test_keyboard_tutorial_progresses_without_touch() -> void:
 	add_child(tutorial)
 	assert_eq(tutorial.step, 0)
 	key(KEY_W, true)
+	await wait_physics(6)
 	assert_eq(tutorial.step, 1)
 	key(KEY_W, false)
-	tutorial._step_time = tutorial.ATTACK_TIMEOUT
-	await wait_frames(2)
-	assert_eq(tutorial.step, 2)
+	var enemy := spawn(&"scarecrow", player.global_position + Vector2(0, -16))
+	enemy.set_physics_process(false)
+	assert_true(await wait_until(func() -> bool: return tutorial.step == tutorial.Step.DONE, 30))
+	assert_true(player.swing_count > 0)

@@ -174,6 +174,7 @@ func _physics_process(delta: float) -> void:
 	var stats := GameState.player_stats
 	var input := get_move_input()
 	var moving := input != Vector2.ZERO
+	var direction := input if input.is_normalized() else input.normalized()
 	equipment_combat.tick(delta, moving)
 	_publish_combat_readiness()
 	if _pounce_left >= 0.0:
@@ -186,7 +187,7 @@ func _physics_process(delta: float) -> void:
 				sprite.flip_h = facing.x < 0.0
 			return
 	if moving and not _was_moving and abilities.roll.try_roll():
-		_begin_roll(input)
+		_begin_roll(direction)
 	_was_moving = moving
 	var speed := stats.move_speed * abilities.speed_mult()
 	var target_velocity := input * speed
@@ -202,7 +203,7 @@ func _physics_process(delta: float) -> void:
 	velocity = real_velocity
 	global_position = CombatMath.clamp_to_bounds(global_position, _arena_margin)
 	if moving:
-		facing = input
+		facing = direction
 	_update_attack(delta, moving)
 	abilities.update(delta)
 	_update_visuals(delta, global_position - step_start)
@@ -301,7 +302,7 @@ func revive() -> void:
 
 # --- 移動輸入 ------------------------------------------------------------------
 
-## 目前的移動方向(長度 0 或 1)。
+## 向量的角度是移動方向，長度是要求的速度比例。
 func get_move_input() -> Vector2:
 	if _override_active:
 		return _override_vector

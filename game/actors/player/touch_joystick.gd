@@ -16,6 +16,7 @@ const KNOB_COLOR := Color(1, 1, 1, 0.7)
 
 var radius: float = 18.0
 var deadzone: float = 2.5
+var full_speed_ratio: float = 0.85
 var follow: bool = true
 var enabled: bool = true:
 	set(value):
@@ -31,17 +32,23 @@ var _current: Vector2 = Vector2.ZERO
 func configure(tuning: PlayerTuning) -> void:
 	radius = tuning.joystick_radius
 	deadzone = tuning.joystick_deadzone
+	full_speed_ratio = tuning.joystick_full_speed_ratio
 	follow = tuning.joystick_follow
 
 
-## 移動方向:長度 0(不動)或 1(全速)。全速讓手感俐落;方向是 360 度。
+## 拖距決定移速。外圈提前到達全速，拇指不用一直壓在底座最外緣。
 func get_vector() -> Vector2:
 	if _index < 0:
 		return Vector2.ZERO
 	var drag := _current - _origin
-	if drag.length() <= deadzone:
+	var distance := drag.length()
+	if distance <= deadzone:
 		return Vector2.ZERO
-	return drag.normalized()
+	var full_speed_distance := radius * full_speed_ratio
+	if distance >= full_speed_distance:
+		return drag.normalized()
+	var strength := inverse_lerp(deadzone, full_speed_distance, distance)
+	return drag.normalized() * strength
 
 
 func is_active() -> bool:

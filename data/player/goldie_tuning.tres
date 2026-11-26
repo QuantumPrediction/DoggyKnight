@@ -9,6 +9,7 @@ decel_time = 0.04
 body_radius = 6.0
 joystick_radius = 18.0
 joystick_deadzone = 2.5
+joystick_full_speed_ratio = 0.85
 joystick_follow = true
 attack_windup = 0.12
 attack_arc_degrees = 150.0
