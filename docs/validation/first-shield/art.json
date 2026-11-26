@@ -1,0 +1,25 @@
+{
+  "asset": "assets/illustrated/combat/shield_echo.png",
+  "use": "Optional route-menu control, shown at 22 logical pixels; regular in-combat guard artwork stays in use.",
+  "generator": "GPT Image built-in, transparent background",
+  "prompt": "One production game inventory illustration to be the 22px button emblem for 'Borrow the shield echo', an optional trial in the original storybook action game The Golden Knight. Isolated compact heraldic buckler, body wide with a short pointed base; worn honey brass rim and a broad dark peacock-teal enamel face, a single large ivory dog paw in the middle. A simple, readable pale mint wisp curls closely around the top right, like a fragment of remembered magic. Straight on, broad dark umber ink outlines, old hand painted gouache and medieval children's book woodcut, restrained shading, no typography, no letters, no frames or square color tile, no scenery, no weaponry, no characters, NO miniature emblems inside the paw. One centered object occupying 82 percent of a square transparent canvas, large quiet colored shapes for a very small interface element. This is the actual button illustration, not a mockup or sprite sheet.",
+  "original": {
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "bytes": 1839534,
+    "sha256": "16496771141d79ce6c42751861caf441780564f36b3187f165916ea7976ba6d6"
+  },
+  "game_icon": {
+    "size": [
+      48,
+      48
+    ],
+    "mode": "RGBA",
+    "bytes": 4635,
+    "sha256": "2a76bab0b00d045b5d471ec193da6bd7294a3958ef9a2cfd3baec6ca35ecad81"
+  },
+  "conversion": "Use the RGBA bounding box, contain inside 46x46 with Lanczos, center on a 48x48 transparent tile."
+}

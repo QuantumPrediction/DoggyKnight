@@ -10,6 +10,7 @@ extends Node
 ## 效果裡的「立即學把戲」會在事件關閉前排好把戲選擇,所以遊戲一直維持暫停,直到把戲也選完。
 
 signal event_opened()
+signal choice_applied(event_id: StringName)
 signal event_closed()
 
 var progression: RunProgression
@@ -90,6 +91,7 @@ func choose(index: int) -> bool:
 	_serial += 1
 	last_choice = {"id": event.id, "option": index, "tone": option.tone}
 	apply(option)
+	choice_applied.emit(event.id)
 	event_closed.emit()
 	return true
 

@@ -256,6 +256,7 @@ func _ready() -> void:
 	add_child(level_events)
 	level_events.setup(progression, rewards)
 	level_events.event_opened.connect(_on_event_opened)
+	level_events.choice_applied.connect(_on_event_choice_applied)
 	level_events.event_closed.connect(_on_event_closed)
 
 	transition = FlowTransition.new()
@@ -1330,8 +1331,18 @@ func _on_choice_closed() -> void:
 
 
 func _on_event_opened() -> void:
+	var offer_shield := events != null and events.resource_path == LevelEventTable.DEFAULT_PATH \
+			and BuildRoutes.is_route_event(level_events.get_open_id()) and _session != null and _session.can_borrow_shield()
+	if _event_ui != null and _event_ui.has_method(&"set_shield_echo_available"):
+		_event_ui.call(&"set_shield_echo_available", offer_shield)
 	_event_open = true
 	_apply_pause()
+
+
+func _on_event_choice_applied(id: StringName) -> void:
+	if BuildRoutes.is_route_event(id) and _session != null and _session.can_borrow_shield() \
+			and _event_ui != null and _event_ui.has_method(&"wants_shield_echo"):
+		_session.spawner.borrow_shield = _event_ui.call(&"wants_shield_echo")
 
 
 func _on_event_closed() -> void:

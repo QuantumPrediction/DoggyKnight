@@ -1,0 +1,187 @@
+{
+  "control_commit": "53b07837d21c4cd7f0178992f73779092e49389c",
+  "control_tree": "b917602421b94ad3dae35f5fea8673d0748b0261",
+  "physics_hz": 60,
+  "game_speed": 1,
+  "renderer": "X11 OpenGL 4.5 compatibility, Mesa 25.0.7 llvmpipe LLVM 19.1.7; actual game viewport 360x640",
+  "engine": {
+    "revision": "ed1daf0bf001b61586d9930840f2f1394092c079",
+    "linux_amd64_sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+    "elf_gnu_build_id": null
+  },
+  "input": {
+    "normal_route_index": 0,
+    "seeds": [
+      7,
+      19
+    ],
+    "response_policies": [
+      "skip",
+      "call",
+      "follow"
+    ],
+    "room_limit": "1-3",
+    "down_limit": 3,
+    "simulation_tick_limit": 18000
+  },
+  "frozen_file_sha256": {
+    "control": {
+      "data/levels/level_1_1.tres": "fc5f83422ced8788eba8573ff5b7b1dc7c752039b5ea83ffb2f7622c80042a81",
+      "core/data/spawn_entry.gd": "d98ffc9ee9d87f9110e7e21b90e563ef7d692afa9ad9672ff26f5b137f65a181",
+      "core/data/wave_data.gd": "46aafe164c125389da7e04d919c32af53f69c40908edc0364ab790a4ba13d1a6",
+      "game/flow/wave_spawner.gd": "62575f969a7eff13d830bb01b25f0b418d3ab431b3767a2166b153b6c8657c51",
+      "game/flow/level_session.gd": "5f189eba630e86c548b057cac9ed4931951de4fd91d091ab4b83b1852eda56ec",
+      "game/flow/flow_main.gd": "26367b3cab71fa65dcdeb9640cab38767027756bf846d11c893e728200f90f18",
+      "ui/event_choice/event_choice.gd": "74c4b2735a337c45effae48f95369c08386bc94684d8f293e8dfcf31cf0b011a",
+      "ui/common/choice_card_menu.gd": "179d8a494b64a6106d904cbfa3eddc55064e849674c3082afa7ec7f40783fb72",
+      "i18n/strings.csv": "6e76aa42edf9cfc1f6868d9180f0df2afcbb21969bfecb5481d9349a7eb5faa1",
+      "game/actors/companions/bulldog.gd": "3a01feeb6315f2656e194333675e48f29153017509255af92b4330f86789291f",
+      "game/actors/enemies/scarecrow_archer.gd": "445fce805b0f87689f5913decaf51f11c76c690d86c4298c72fe3586f337713d",
+      "game/actors/player/player.gd": "e98bc19c8cf87a95a4e90bc242a38a6b82e791099014547329aea7904993d49c",
+      "game/combat/enemy_projectile.gd": "ce1994abc27a17a5609c5e5321ba258a43210fa4676e405a13bed7099d295eb6",
+      "tests/integration/first_shield_probe.gd": "adbefd6f5ebeb6692121e1ef1767825b34a4c1dddfbd0ef30088ed9536d44a9f",
+      "tests/integration/first_shield_probe.tscn": "dee7d95396d03df9405c87e3b40ae17633ae8f7c4e89d99b8e2356b2890172d7"
+    },
+    "first": {
+      "data/levels/level_1_1.tres": "6a42b877a7fdb3e6a6e5312d04873ae6802018e6457fbe9061b6868c1a8bd016",
+      "core/data/spawn_entry.gd": "d98ffc9ee9d87f9110e7e21b90e563ef7d692afa9ad9672ff26f5b137f65a181",
+      "core/data/wave_data.gd": "981c5b14fb9c4bef9fa80213268c5e98a4cbe37eb452fe120a261357ebd1acd9",
+      "game/flow/wave_spawner.gd": "902014588688cfc403321400eb2ea9db3a2e48793e9c5ca8f4e066885041ea77",
+      "game/flow/level_session.gd": "64a65ff416c8529d3f12178db377d05b49a2592280c12d282daa9764db762ed3",
+      "game/flow/flow_main.gd": "f0c44a742635153f974f245f024ddddcb4f5661b535db03ec3dde2c08fbee991",
+      "ui/event_choice/event_choice.gd": "c19d72f5234a59bafc77f947f9fcc833d7cacb7bbc222eeddee83d5cbe5f8083",
+      "ui/common/choice_card_menu.gd": "af2403c32bcafe3129b2b229defb75884e36502dcec0fc85c580ac178e6801be",
+      "i18n/strings.csv": "3d9098b1b278e460191d693d14548831c73d0ef42a9eda2eaccd3b85e14e4517",
+      "game/actors/companions/bulldog.gd": "3a01feeb6315f2656e194333675e48f29153017509255af92b4330f86789291f",
+      "game/actors/enemies/scarecrow_archer.gd": "445fce805b0f87689f5913decaf51f11c76c690d86c4298c72fe3586f337713d",
+      "game/actors/player/player.gd": "e98bc19c8cf87a95a4e90bc242a38a6b82e791099014547329aea7904993d49c",
+      "game/combat/enemy_projectile.gd": "ce1994abc27a17a5609c5e5321ba258a43210fa4676e405a13bed7099d295eb6",
+      "tests/integration/first_shield_probe.gd": "adbefd6f5ebeb6692121e1ef1767825b34a4c1dddfbd0ef30088ed9536d44a9f",
+      "tests/integration/first_shield_probe.tscn": "dee7d95396d03df9405c87e3b40ae17633ae8f7c4e89d99b8e2356b2890172d7",
+      "game/actors/companions/shield_echo.tscn": "1fe483509b40d294988b2f4272fedb0f29d9c7611709f45c5f78519b0a9660c2"
+    },
+    "stagger": {
+      "data/levels/level_1_1.tres": "0af35d022edc4f03867ad93bb0dff31c9755c1d1055d3a1f11a5de2e74be5ede",
+      "core/data/spawn_entry.gd": "d98ffc9ee9d87f9110e7e21b90e563ef7d692afa9ad9672ff26f5b137f65a181",
+      "core/data/wave_data.gd": "981c5b14fb9c4bef9fa80213268c5e98a4cbe37eb452fe120a261357ebd1acd9",
+      "game/flow/wave_spawner.gd": "902014588688cfc403321400eb2ea9db3a2e48793e9c5ca8f4e066885041ea77",
+      "game/flow/level_session.gd": "64a65ff416c8529d3f12178db377d05b49a2592280c12d282daa9764db762ed3",
+      "game/flow/flow_main.gd": "f0c44a742635153f974f245f024ddddcb4f5661b535db03ec3dde2c08fbee991",
+      "ui/event_choice/event_choice.gd": "c19d72f5234a59bafc77f947f9fcc833d7cacb7bbc222eeddee83d5cbe5f8083",
+      "ui/common/choice_card_menu.gd": "af2403c32bcafe3129b2b229defb75884e36502dcec0fc85c580ac178e6801be",
+      "i18n/strings.csv": "3d9098b1b278e460191d693d14548831c73d0ef42a9eda2eaccd3b85e14e4517",
+      "game/actors/companions/bulldog.gd": "3a01feeb6315f2656e194333675e48f29153017509255af92b4330f86789291f",
+      "game/actors/enemies/scarecrow_archer.gd": "445fce805b0f87689f5913decaf51f11c76c690d86c4298c72fe3586f337713d",
+      "game/actors/player/player.gd": "e98bc19c8cf87a95a4e90bc242a38a6b82e791099014547329aea7904993d49c",
+      "game/combat/enemy_projectile.gd": "ce1994abc27a17a5609c5e5321ba258a43210fa4676e405a13bed7099d295eb6",
+      "tests/integration/first_shield_probe.gd": "adbefd6f5ebeb6692121e1ef1767825b34a4c1dddfbd0ef30088ed9536d44a9f",
+      "tests/integration/first_shield_probe.tscn": "dee7d95396d03df9405c87e3b40ae17633ae8f7c4e89d99b8e2356b2890172d7",
+      "game/actors/companions/shield_echo.tscn": "1fe483509b40d294988b2f4272fedb0f29d9c7611709f45c5f78519b0a9660c2"
+    },
+    "formation": {
+      "data/levels/level_1_1.tres": "e6b847cd73b90233e3a4b56f84f091832d935f89a511845220ebf25ba0f2f7b8",
+      "core/data/spawn_entry.gd": "3056e1667c07842fc5c51b8b4459ef552f1f5abddc88a19e89855190b67dfd07",
+      "core/data/wave_data.gd": "981c5b14fb9c4bef9fa80213268c5e98a4cbe37eb452fe120a261357ebd1acd9",
+      "game/flow/wave_spawner.gd": "65c216f29d0a2e3bab3c9788fb1cfdbfe0943525fe75899cab34f0069e81b690",
+      "game/flow/level_session.gd": "64a65ff416c8529d3f12178db377d05b49a2592280c12d282daa9764db762ed3",
+      "game/flow/flow_main.gd": "f0c44a742635153f974f245f024ddddcb4f5661b535db03ec3dde2c08fbee991",
+      "ui/event_choice/event_choice.gd": "c19d72f5234a59bafc77f947f9fcc833d7cacb7bbc222eeddee83d5cbe5f8083",
+      "ui/common/choice_card_menu.gd": "af2403c32bcafe3129b2b229defb75884e36502dcec0fc85c580ac178e6801be",
+      "i18n/strings.csv": "3d9098b1b278e460191d693d14548831c73d0ef42a9eda2eaccd3b85e14e4517",
+      "game/actors/companions/bulldog.gd": "3a01feeb6315f2656e194333675e48f29153017509255af92b4330f86789291f",
+      "game/actors/enemies/scarecrow_archer.gd": "445fce805b0f87689f5913decaf51f11c76c690d86c4298c72fe3586f337713d",
+      "game/actors/player/player.gd": "e98bc19c8cf87a95a4e90bc242a38a6b82e791099014547329aea7904993d49c",
+      "game/combat/enemy_projectile.gd": "ce1994abc27a17a5609c5e5321ba258a43210fa4676e405a13bed7099d295eb6",
+      "tests/integration/first_shield_probe.gd": "adbefd6f5ebeb6692121e1ef1767825b34a4c1dddfbd0ef30088ed9536d44a9f",
+      "tests/integration/first_shield_probe.tscn": "dee7d95396d03df9405c87e3b40ae17633ae8f7c4e89d99b8e2356b2890172d7",
+      "game/actors/companions/shield_echo.tscn": "1fe483509b40d294988b2f4272fedb0f29d9c7611709f45c5f78519b0a9660c2"
+    }
+  },
+  "runner_sha256": "ea4b29a3783020404ea11900f9da765c65cd2c30abee94d1f96456591fe01a23",
+  "tables": {
+    "normal-trials.tsv": {
+      "rows": 96,
+      "sha256": "e67132a08f987370a5848216b50413fb6a79a95005b6c2d41a1d36a498a9aed4"
+    },
+    "contacts.tsv": {
+      "rows": 1271,
+      "sha256": "84b17d105a6004880a579c70737973a4a829dfb9546aa46b42a60ae386c82615"
+    },
+    "rooms.tsv": {
+      "rows": 288,
+      "sha256": "f95ab70416067c7cd34dca50ea796b95e071616e87249423538f54747a7d4f2c"
+    },
+    "archers.tsv": {
+      "rows": 60,
+      "sha256": "9ab9fc1ed3482785bd1a78ec42d77359761b6ce307a61cbd81bc664fee2b4520"
+    }
+  },
+  "runs": {
+    "control": {
+      "completed_observations": 18,
+      "room_1_3_wins": 18,
+      "downs": 0,
+      "resource_exit_warning_count": 15
+    },
+    "first": {
+      "completed_observations": 18,
+      "room_1_3_wins": 18,
+      "downs": 0,
+      "resource_exit_warning_count": 16
+    },
+    "stagger": {
+      "completed_observations": 18,
+      "room_1_3_wins": 18,
+      "downs": 0,
+      "resource_exit_warning_count": 11
+    },
+    "formation": {
+      "completed_observations": 18,
+      "room_1_3_wins": 18,
+      "downs": 0,
+      "resource_exit_warning_count": 15
+    },
+    "default": {
+      "completed_observations": 18,
+      "room_1_3_wins": 18,
+      "downs": 0,
+      "resource_exit_warning_count": 13
+    },
+    "first-alt-route": {
+      "completed_observations": 6,
+      "room_1_3_wins": 6,
+      "downs": 0,
+      "resource_exit_warning_count": 4
+    }
+  },
+  "default_vs_control": {
+    "identical_reports_ignoring_only_borrow_offered_event_and_count": 18
+  },
+  "native_renders": {
+    "archer_7_call": {
+      "normal_report_sha256": "e472d47633c0269857b2a58abd7a00bf07a63315753e1c7563f4098a70c3ad2d",
+      "equal_to_headless_full_report": true,
+      "png_count": 7
+    },
+    "archer_7_follow": {
+      "normal_report_sha256": "ddecd7721cf7919afa50796aa3c9c074722226a4ebabecea0b5e9463a87bc582",
+      "equal_to_headless_full_report": true,
+      "png_count": 7
+    },
+    "mage_7_follow": {
+      "normal_report_sha256": "d7d3aa7bd3f2016174c24b3872a0ca2eccab10e335ae473c6898bec516458761",
+      "equal_to_headless_full_report": true,
+      "png_count": 7
+    },
+    "knight_7_call": {
+      "normal_report_sha256": "64b3e14a2526eb063723e3a000625b8446cf4bef3e685f1dbb5e71c1f0603c7c",
+      "equal_to_headless_full_report": true,
+      "png_count": 7
+    }
+  },
+  "native_raw_crashes_with_no_report": {
+    "archer-7-default-follow.txt": "ac4d22aac7655ecc43b77580220578a5cb453b949c598602a87d7eeb0fb4aadc",
+    "mage-7-borrow-skip.txt": "c248648f100c0502df88f3990776da055242231d00234b1eac30b52b8338b865"
+  },
+  "saved_frames_table_sha256": "338dc26ec9e8cf3e65779539b2118f6c661ba550a3cb0456bae8297d1f301670"
+}

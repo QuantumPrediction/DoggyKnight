@@ -1,0 +1,13 @@
+formation	difficulty	route	hero	seed	guard_source	first_grant_room	first_grant_tick	first_used_room	first_used_tick	room_outcomes	source_sha256
+staggered	normal	outrider	archer	31	projectile	1-3	8300	1-3	8335	1-1 W,1-2 W,1-3 W	fcfa376c50bb592c119740f95345f6edd353d0ae2c7853a89646e0ece9896f7f
+staggered	normal	vanguard	knight	31	protected_damage	1-1	1871	1-1	1883	1-1 W,1-2 W,1-3 W	804a10020a4ca8f8da506fc73a5d6019a4db0755d3ce009357bf716a1a251d7e
+staggered	normal	mistwalker	mage	31	projectile	1-3	8488	1-3	8489	1-1 W,1-2 W,1-3 W	cc97699ab279e44e480e4a9b7d2569d7ba10199906c10ea7711aaa06bdb0d7c1
+staggered	normal	outrider	archer	31	projectile	1-3	8300	1-3	8335	1-1 W,1-2 W,1-3 W	fcfa376c50bb592c119740f95345f6edd353d0ae2c7853a89646e0ece9896f7f
+staggered	normal	vanguard	knight	31	protected_damage	1-1	1871	1-1	1883	1-1 W,1-2 W,1-3 W	804a10020a4ca8f8da506fc73a5d6019a4db0755d3ce009357bf716a1a251d7e
+staggered	normal	mistwalker	mage	31	projectile	1-3	8488	1-3	8489	1-1 W,1-2 W,1-3 W	cc97699ab279e44e480e4a9b7d2569d7ba10199906c10ea7711aaa06bdb0d7c1
+front_and_rear	normal	outrider	archer	31	projectile	1-1	1721	1-1	1845	1-1 W,1-2 W,1-3 W	7b7765333e6691b929eed5bd29041fe669e4844072b52db03fbc645edc013974
+front_and_rear	normal	vanguard	knight	31	protected_damage	1-1	1845	1-1	1920	1-1 W,1-2 W,1-3 W	0f9050ee74dcf1c249adff42b96dc043531645a32a7f50dcbc7b8e3b05b05170
+front_and_rear	normal	mistwalker	mage	31	projectile	1-1	1762	1-1	1764	1-1 W,1-2 W,1-3 W	53ef34ceda5ecba3ea2a462b1ad382ccc94f40ceff0e849c68bfccf37663f662
+front_and_rear	reinforced	outrider	archer	31	projectile	1-1	1886	1-1	1906	1-1 W,1-2 W,1-3 W	f01479c2d0b7a359fbbd83004133e51c514c6de8f73931d442d397f5f39ca92c
+front_and_rear	reinforced	vanguard	knight	31	protected_damage	1-1	2128	1-1	2144	1-1 W,1-2 W,1-3 W	3aba55ab6ed4377ea150dad1b8d22749ec9c7a69dfdbc6e13561b130c9ed6a21
+front_and_rear	reinforced	mistwalker	mage	31	projectile	1-1	2008	1-1	2050	1-1 W,1-2 W,1-3 W	aebc51800b58da3c5365f9a61ba73a61a856cb6fb68843b1907812e2d02c6ae1

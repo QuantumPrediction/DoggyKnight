@@ -1,0 +1,5 @@
+file	event	room	tick	width	height	sha256
+01-choose-shield.png	borrow_checked	1-1	1324	360	640	ce17c36790fd0a39b6ac38704df2618274c16ea455264fd8baf86ccfb2f0dbd6
+02-arrow-warning.png	opportunity	1-1	1622	360	640	aac9d00f43717ba80068b450069ed8d3f2bffed272be1766578ee3020b035cd9
+03-block-arrow.png	projectile_block	1-1	1701	360	640	4fd6e157661bf64f034c2deae16c1259420faaedfdb76e3dac6405388f3edee8
+04-counter-hit.png	resolved_used	1-1	1834	360	640	f825039be41f00a0bb91eea472834da9457333539ea6b36ee0327a9e9c955f1e

@@ -2,16 +2,20 @@ extends Control
 ## Shared input for mandatory, single-column offers. Each menu owns its choices.
 
 var cards: Array[Button] = []
+var _focus_order: Array[Button] = []
 var _accept_at: float = 0.0
 
 
-func _open_card_input(delay: float) -> void:
+func _open_card_input(delay: float, extra: Button = null) -> void:
+	_focus_order.assign(cards)
+	if extra != null:
+		_focus_order.append(extra)
 	_accept_at = Time.get_ticks_msec() / 1000.0 + delay
-	for i in cards.size():
-		var card := cards[i]
+	for i in _focus_order.size():
+		var card := _focus_order[i]
 		# Follow data order even while the entrance tween moves the cards.
-		var previous := card.get_path_to(cards[posmod(i - 1, cards.size())])
-		var next := card.get_path_to(cards[(i + 1) % cards.size()])
+		var previous := card.get_path_to(_focus_order[posmod(i - 1, _focus_order.size())])
+		var next := card.get_path_to(_focus_order[(i + 1) % _focus_order.size()])
 		card.focus_previous = previous
 		card.focus_next = next
 		card.focus_neighbor_top = previous
@@ -29,7 +33,7 @@ func _input(event: InputEvent) -> void:
 	# south button locally so the focused card uses the same native press/release.
 	if event is InputEventJoypadButton and event.button_index == JOY_BUTTON_A and not event.is_action(&"ui_accept"):
 		var viewport := get_viewport()
-		if cards.has(viewport.gui_get_focus_owner()):
+		if _focus_order.has(viewport.gui_get_focus_owner()):
 			var accept := InputEventAction.new()
 			accept.action = &"ui_accept"
 			accept.pressed = event.pressed

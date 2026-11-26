@@ -494,3 +494,9 @@ UI_TACTIC_WARNING_LOCKED,預警內，先移開
 UI_TACTIC_WARNING_OVERLAP,預警重疊，移開
 UI_REINFORCED_DEPART,迎戰援軍
 UI_REINFORCED_HINT,前兩關各多四隻稻草人，由場地遠端增援。
+COMPANION_SHIELD_ECHO,石中劍的盾影
+UI_SHIELD_ECHO_OFF,"借盾試箭（可選）
+下波盾犬同行，迎戰一名弓手"
+UI_SHIELD_ECHO_ON,"已借盾影　選路線出發
+面向弓手，見箭線就按護陣"
+UI_SHIELD_ECHO_COUNTER_HINT,擋下後靠近敵人，再停步反擊

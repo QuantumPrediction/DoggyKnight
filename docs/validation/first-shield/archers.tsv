@@ -1,0 +1,61 @@
+build	hero	seed	route	borrow	response	spawn_tick	removed_tick	dead	aims	shots	aim_ticks_and_target	projectile_ticks_and_final_blocked_and_hits
+first	knight	7	bulwark	1	skip	1842	2013	1	1	1	1922:hero	1968:1:0
+first	knight	7	bulwark	1	call	1842	2078	1	1	1	1922:hero	1964:1:0
+first	knight	7	bulwark	1	follow	1842	2044	1	1	1	1922:hero	1964:1:0
+first	knight	19	bulwark	1	skip	1746	1970	1	1	1	1871:hero	1917:1:0
+first	knight	19	bulwark	1	call	1746	1990	1	1	1	1871:hero	1913:1:0
+first	knight	19	bulwark	1	follow	1746	1936	1	1	1	1871:hero	1917:1:0
+first	mage	7	spellweaver	1	skip	1570	1705	1	1	0	1658:hero	
+first	mage	7	spellweaver	1	call	1570	1722	1	1	1	1658:hero	1700:1:0
+first	mage	7	spellweaver	1	follow	1570	1703	1	1	0	1650:hero	
+first	mage	19	spellweaver	1	skip	1541	1709	1	1	0	1674:hero	
+first	mage	19	spellweaver	1	call	1541	1709	1	1	0	1674:hero	
+first	mage	19	spellweaver	1	follow	1541	1719	1	1	0	1666:hero	
+first	archer	7	marksman	1	skip	1533	1652	1	1	0	1621:hero	
+first	archer	7	marksman	1	call	1533	1652	1	1	0	1621:hero	
+first	archer	7	marksman	1	follow	1533	1689	1	1	1	1613:hero	1655:1:0
+first	archer	19	marksman	1	skip	1514	1633	1	0	0		
+first	archer	19	marksman	1	call	1514	1633	1	0	0		
+first	archer	19	marksman	1	follow	1514	1715	1	1	1	1639:hero	1681:1:0
+stagger	knight	7	bulwark	1	skip	1950	2165	1	1	1	2042:hero	2084:1:0
+stagger	knight	7	bulwark	1	call	1950	2165	1	1	1	2042:hero	2084:0:1
+stagger	knight	7	bulwark	1	follow	1950	2165	1	1	1	2042:hero	2084:0:1
+stagger	knight	19	bulwark	1	skip	1854	2053	1	0	0		
+stagger	knight	19	bulwark	1	call	1854	2053	1	0	0		
+stagger	knight	19	bulwark	1	follow	1854	2194	1	1	1	2098:hero	2140:1:0
+stagger	mage	7	spellweaver	1	skip	1678	1878	1	1	1	1778:hero	1820:0:1
+stagger	mage	7	spellweaver	1	call	1678	1850	1	1	1	1778:hero	1820:1:0
+stagger	mage	7	spellweaver	1	follow	1678	1870	1	1	1	1770:hero	1812:1:0
+stagger	mage	19	spellweaver	1	skip	1649	1764	1	0	0		
+stagger	mage	19	spellweaver	1	call	1649	1764	1	0	0		
+stagger	mage	19	spellweaver	1	follow	1649	1795	1	1	0	1768:hero	
+stagger	archer	7	marksman	1	skip	1641	1774	1	0	0		
+stagger	archer	7	marksman	1	call	1641	1774	1	0	0		
+stagger	archer	7	marksman	1	follow	1641	1802	1	1	0	1733:hero	
+stagger	archer	19	marksman	1	skip	1622	1756	1	0	0		
+stagger	archer	19	marksman	1	call	1622	1756	1	0	0		
+stagger	archer	19	marksman	1	follow	1622	1788	1	1	0	1741:hero	
+formation	knight	7	bulwark	1	skip	1842	2238	1	1	1	1930:hero	1972:0:0
+formation	knight	7	bulwark	1	call	1842	2130	1	1	1	1930:hero	1972:1:0
+formation	knight	7	bulwark	1	follow	1842	2157	1	1	1	1930:hero	2005:0:0
+formation	knight	19	bulwark	1	skip	1746	2282	1	2	1	1845:hero,2236:other	1887:0:0
+formation	knight	19	bulwark	1	call	1746	2085	1	1	1	1845:hero	1887:0:0
+formation	knight	19	bulwark	1	follow	1746	2045	1	1	1	1878:hero	1920:1:0
+formation	mage	7	spellweaver	1	skip	1570	1967	1	2	1	1658:hero,1921:hero	1700:1:0
+formation	mage	7	spellweaver	1	call	1570	1834	1	1	1	1658:hero	1700:1:0
+formation	mage	7	spellweaver	1	follow	1570	1897	1	1	1	1658:hero	1700:1:0
+formation	mage	19	spellweaver	1	skip	1541	1802	1	1	1	1640:hero	1682:0:1
+formation	mage	19	spellweaver	1	call	1541	1811	1	1	1	1640:hero	1682:1:0
+formation	mage	19	spellweaver	1	follow	1541	1764	1	1	1	1640:hero	1682:1:0
+formation	archer	7	marksman	1	skip	1533	1754	1	1	1	1621:hero	1663:0:1
+formation	archer	7	marksman	1	call	1533	1757	1	1	1	1621:hero	1663:1:0
+formation	archer	7	marksman	1	follow	1533	1776	1	1	1	1621:hero	1663:1:0
+formation	archer	19	marksman	1	skip	1514	1833	1	1	1	1613:hero	1655:0:0
+formation	archer	19	marksman	1	call	1514	1738	1	1	1	1613:hero	1655:1:0
+formation	archer	19	marksman	1	follow	1514	1771	1	1	1	1613:hero	1655:1:0
+first-alt-route	knight	7	vanguard	1	skip	1842	2029	1	1	1	1922:hero	1964:1:0
+first-alt-route	knight	7	vanguard	1	follow	1842	1989	1	1	1	1922:hero	1968:1:0
+first-alt-route	mage	7	mistwalker	1	skip	1570	1705	1	1	0	1658:hero	
+first-alt-route	mage	7	mistwalker	1	follow	1570	1703	1	1	0	1650:hero	
+first-alt-route	archer	7	outrider	1	skip	1533	1649	1	1	0	1621:hero	
+first-alt-route	archer	7	outrider	1	follow	1533	1668	1	1	0	1613:hero	
