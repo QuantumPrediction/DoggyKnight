@@ -4,6 +4,8 @@ Updated: 2026-11-24 (Hong Kong). Version: **0.9.1 development source**.
 
 ## Current work — first-fight touch precision and learning
 
+[Draft #33](https://github.com/QuantumPrediction/DoggyKnight/pull/33) targets the unmerged #32 branch. Public implementation `2a30dba1952b3dbf798e05ab0f8df18adabdf223` and local implementation `f101cd5e38829b495ebdb5deb10a72057195dc3a` share tree `2db511a28953e33e8e39d417d38793cb49ef8169`. Both are based on #32 head `5ac568a2f118deb07730f50fd68a0c2fd7a1f3a9`.
+
 The floating stick now lets a player ease back before stopping to attack. On all three base classes a 9-unit drag requests 50.78% speed. Full travel starts at 15.3 of the 18-unit radius, and the first 2.5 units allow the thumb to rest. A learned roll still grants protection immediately on starting to move. A short drag covers less ground during that protection.
 
 The first room now teaches walking after one unit of actual travel and celebrates the hero's own first basic swing, cast or shot after that walk. Four seconds without a strike dismisses the hint quietly. Pausing freezes the lesson. In the 360×640 Linux build an archer could already hurt enemies while the initial movement hint was still visible. After the player moved, the stop-to-attack hint covered part of the tactical readout. Those two first-room observations are open for the uncoached trial.
