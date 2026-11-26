@@ -68,10 +68,34 @@ count = 2
 delay = 20.0
 pattern = &"line_top"
 
+[sub_resource type="Resource" id="echo_lead"]
+script = ExtResource("3_spawn")
+enemy_id = &"scarecrow"
+count = 2
+delay = 1.5
+pattern = &"shield_line"
+formation_distance = 54.0
+
+[sub_resource type="Resource" id="echo_archer"]
+script = ExtResource("3_spawn")
+enemy_id = &"scarecrow_archer"
+count = 1
+delay = 1.5
+pattern = &"shield_line"
+formation_distance = 144.0
+
+[sub_resource type="Resource" id="echo_melee"]
+script = ExtResource("3_spawn")
+enemy_id = &"scarecrow"
+count = 1
+delay = 5.5
+pattern = &"line_top"
+
 [sub_resource type="Resource" id="wave2"]
 script = ExtResource("2_wave")
 spawns = Array[ExtResource("3_spawn")]([SubResource("wave2_spawn1"), SubResource("wave2_spawn2"), SubResource("wave2_spawn3")])
 reinforcements = Array[ExtResource("3_spawn")]([SubResource("wave2_spawn4")])
+shield_echo_spawns = Array[ExtResource("3_spawn")]([SubResource("echo_lead"), SubResource("echo_archer"), SubResource("echo_melee"), SubResource("wave2_spawn2"), SubResource("wave2_spawn3")])
 
 [resource]
 script = ExtResource("1_level")

@@ -8,7 +8,12 @@ extends Resource
 @export var reinforcements: Array[SpawnEntry] = []
 
 
-func entries_for(reinforced: bool) -> Array[SpawnEntry]:
+## Presented only when the opening route choice offers the shield echo.
+@export var shield_echo_spawns: Array[SpawnEntry] = []
+
+
+func entries_for(reinforced: bool, borrow_shield: bool = false) -> Array[SpawnEntry]:
+	var group := shield_echo_spawns if borrow_shield and not shield_echo_spawns.is_empty() else spawns
 	if reinforced and not reinforcements.is_empty():
-		return spawns + reinforcements
-	return spawns
+		return group + reinforcements
+	return group

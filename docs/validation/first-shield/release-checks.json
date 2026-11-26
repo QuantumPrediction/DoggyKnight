@@ -1,0 +1,105 @@
+{
+  "control_commit": "53b07837d21c4cd7f0178992f73779092e49389c",
+  "control_tree": "b917602421b94ad3dae35f5fea8673d0748b0261",
+  "runtime": "Godot 4.7.2 stable official ed1daf0bf",
+  "complete_regression": {
+    "control": [
+      1004,
+      1004
+    ],
+    "first_candidate": [
+      1006,
+      1008
+    ],
+    "failures": [
+      "Simulated notch: the original footer ended at 313, beyond safe bottom 310.",
+      "A spawner-less boss-intro fixture hit a missing reference before its event fired. The optional branch now only runs on wave two of a present spawner."
+    ],
+    "corrected_before_formation": [
+      1008,
+      1008
+    ],
+    "final": [
+      1009,
+      1009
+    ],
+    "final_broken_files": 0,
+    "control_and_final_exit": {
+      "objects": 27,
+      "resources": 21,
+      "rid_warnings": true
+    }
+  },
+  "web_tests_passed": 7,
+  "web_pack": {
+    "source": "ad841f5f04885880d59a9ef66ab48af94c71b9ca",
+    "levels": 36,
+    "campaign_companions": 4,
+    "temporary_guards": 1,
+    "illustrated_textures_checked": 29,
+    "contains_test_scenes": false,
+    "files": {
+      "index.wasm": {
+        "size": 39514754,
+        "sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0",
+        "parts": 7
+      },
+      "index.pck": {
+        "size": 59273772,
+        "sha256": "1f0082655bf89a16142d8e8ee129f63de8e4a5acf6a6415c2f5f6337c5c1e1bd",
+        "parts": 10
+      }
+    },
+    "preview": "Browser compiled the engine and checked the six-chapter pack. Standard cloud testing browser reports WebGL2 unavailable.",
+    "version": 8,
+    "public_validation": "The public HTTPS ?check=1 finished WebAssembly compilation and verified all game data. A WebGL2 playthrough was not available in the cloud browser."
+  },
+  "controls": [
+    {
+      "reference": "normal-31-43.json",
+      "measured": "normal-31-43.json",
+      "mode": "normal",
+      "cases": 12,
+      "exact_gameplay_cases": 12,
+      "different_cases": [],
+      "attempts": 26,
+      "incorrect_result_modes": 0,
+      "identical_exit_messages": 3
+    },
+    {
+      "reference": "reinforced-7-19.json",
+      "measured": "reinforced-7-19.json",
+      "mode": "reinforced",
+      "cases": 12,
+      "exact_gameplay_cases": 12,
+      "different_cases": [],
+      "attempts": 28,
+      "incorrect_result_modes": 0,
+      "identical_exit_messages": 1
+    }
+  ],
+  "production_and_probe_sha256": {
+    "core/data/spawn_entry.gd": "3056e1667c07842fc5c51b8b4459ef552f1f5abddc88a19e89855190b67dfd07",
+    "core/data/wave_data.gd": "981c5b14fb9c4bef9fa80213268c5e98a4cbe37eb452fe120a261357ebd1acd9",
+    "data/levels/level_1_1.tres": "e6b847cd73b90233e3a4b56f84f091832d935f89a511845220ebf25ba0f2f7b8",
+    "data/companions/shield_echo.tres": "695e626fce9c000c2b2079871cbd4a7d2faa89f5dafa8079d2d5d3067575f4a1",
+    "game/actors/companions/shield_echo.tscn": "1fe483509b40d294988b2f4272fedb0f29d9c7611709f45c5f78519b0a9660c2",
+    "game/flow/level_events.gd": "e1b670586d64628d3c856686dd25783766719f1ed573425d8a83c46740b7770d",
+    "game/flow/flow_main.gd": "f0c44a742635153f974f245f024ddddcb4f5661b535db03ec3dde2c08fbee991",
+    "game/flow/level_session.gd": "64a65ff416c8529d3f12178db377d05b49a2592280c12d282daa9764db762ed3",
+    "game/flow/wave_spawner.gd": "65c216f29d0a2e3bab3c9788fb1cfdbfe0943525fe75899cab34f0069e81b690",
+    "ui/common/choice_card_menu.gd": "af2403c32bcafe3129b2b229defb75884e36502dcec0fc85c580ac178e6801be",
+    "ui/event_choice/event_choice.gd": "c19d72f5234a59bafc77f947f9fcc833d7cacb7bbc222eeddee83d5cbe5f8083",
+    "i18n/strings.csv": "3d9098b1b278e460191d693d14548831c73d0ef42a9eda2eaccd3b85e14e4517",
+    "assets/illustrated/combat/shield_echo.png": "2a76bab0b00d045b5d471ec193da6bd7294a3958ef9a2cfd3baec6ca35ecad81",
+    "export/verify_packed_game.gd": "dc181ba0e31ff49e0d708979bb8f5cd4101d33221ea848c2078c75a95597072c",
+    "tests/integration/test_choice_card_input.gd": "da5bfdac3328acea6bd97d5d94b85fc6ceb76ee0d4d3ab8b71b1beab839a0f45",
+    "tests/routes/test_shield_echo.gd": "b53c7e7c8b04dcc23c0c6895fec48bc52463fff2f7a02e2756cd61ae72baa492",
+    "tests/integration/first_shield_probe.gd": "adbefd6f5ebeb6692121e1ef1767825b34a4c1dddfbd0ef30088ed9536d44a9f",
+    "tools/first_shield_trials.py": "ea4b29a3783020404ea11900f9da765c65cd2c30abee94d1f96456591fe01a23"
+  },
+  "evidence_sha256": {
+    "combat/normal-31-43.json": "8064fa28928d065322a7529564cf305096debd70846d1fc27eac6fd1e4732c25",
+    "combat/reinforced-7-19.json": "afd658d105ff9112b753578aa71afcc2aa555112eb2a213c329a90085ba81b25"
+  }
+}

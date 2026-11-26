@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://game/actors/companions/bulldog.tscn" id="1_guard"]
+
+[node name="ShieldEcho" instance=ExtResource("1_guard")]
+modulate = Color(0.72, 0.94, 1, 0.94)

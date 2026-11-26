@@ -218,3 +218,64 @@ func test_first_chapter_route_and_upgrade_resume_the_real_flow() -> void:
 	assert_eq(ultimate.count, 0, "confirming the card with Space must not trigger a combat ultimate")
 	assert_false(flow.is_trick_choice_open())
 	assert_false(get_tree().paused)
+
+
+func test_shield_echo_toggles_independently_and_resets_for_each_offer() -> void:
+	_open(EVENT)
+	screen.call(&"set_shield_echo_available", true)
+	_route()
+	await _settle()
+	var toggle := screen.find_child("ShieldEcho", true, false) as Button
+	var cards: Array = screen.get("cards")
+	var chosen := watch_signal(EventBus.event_chosen)
+	assert_true(toggle.is_visible_in_tree())
+	assert_false(toggle.button_pressed)
+	_tap(KEY_UP)
+	assert_true(toggle.has_focus(), "the trial is reachable from the first route")
+	_tap(KEY_ENTER)
+	assert_true(toggle.button_pressed)
+	assert_eq(chosen.count, 0)
+	assert_true(screen.visible)
+	var selected_text := toggle.text
+	_tap(KEY_ENTER)
+	assert_false(toggle.button_pressed, "the player can change their mind")
+	assert_ne(toggle.text, selected_text)
+	_tap(KEY_ENTER)
+	_tap(KEY_DOWN)
+	assert_true(cards[0].has_focus())
+	_tap(KEY_ENTER)
+	assert_eq(chosen.calls, [[&"route_archer", 0]])
+	assert_true(screen.call(&"wants_shield_echo"), "the accepted offer has both independent choices")
+	_route()
+	assert_false(toggle.button_pressed)
+	screen.call(&"set_shield_echo_available", false)
+	_route()
+	assert_false(toggle.visible)
+	assert_false(screen.call(&"wants_shield_echo"))
+	_tap(KEY_UP)
+	assert_true(screen.get("cards")[1].has_focus(), "other menus retain their two-card focus order")
+
+
+func test_shield_echo_card_and_both_routes_fit_the_notched_safe_area() -> void:
+	SafeArea.simulate_notch = true
+	_open(EVENT)
+	screen.call(&"set_shield_echo_available", true)
+	_route()
+	await _settle()
+	var toggle := screen.find_child("ShieldEcho", true, false) as Button
+	var hint := screen.find_child("Hint", true, false) as Label
+	var safe := SafeArea.get_safe_rect()
+	var title := screen.find_child("Title", true, false) as PanelContainer
+	assert_true(safe.encloses(title.get_global_rect()), "title %s in %s" % [title.get_global_rect(), safe])
+	for card: Button in screen.get("cards"):
+		assert_true(safe.encloses(card.get_global_rect()), "route %s in %s" % [card.get_global_rect(), safe])
+		assert_false(card.get_global_rect().intersects(toggle.get_global_rect()))
+	for pressed: bool in [false, true]:
+		toggle.button_pressed = pressed
+		assert_true(safe.encloses(toggle.get_global_rect()), "trial %s in %s" % [toggle.get_global_rect(), safe])
+		assert_true(toggle.size.y >= UiKit.MIN_TOUCH)
+		assert_true(toggle.size.x >= toggle.get_combined_minimum_size().x, "trial width %s vs minimum %s" % [toggle.size, toggle.get_combined_minimum_size()])
+		assert_eq(toggle.text.split("\n").size(), 2, "the explanation survives CSV import")
+	assert_true(safe.encloses(hint.get_global_rect()), "hint %s in %s" % [hint.get_global_rect(), safe])
+	assert_false(hint.get_global_rect().intersects(toggle.get_global_rect()))
+	SafeArea.simulate_notch = false

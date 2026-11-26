@@ -29,6 +29,9 @@ var _title: PanelContainer
 var _hint: Label
 var _box: Control
 var _time: float = 0.0
+var _shield_echo: Button
+var _shield_echo_available: bool = false
+var _hint_backing := StyleBoxFlat.new()
 
 
 func _ready() -> void:
@@ -47,19 +50,53 @@ func _ready() -> void:
 	_hint = UiKit.wrapped_label(tr("UI_EVENT_HINT"), 164, &"LabelLight")
 	_hint.add_theme_font_size_override(&"font_size", 8)
 	_hint.name = "Hint"
+	_hint_backing.bg_color = Color("1b292a")
+	_hint_backing.set_corner_radius_all(2)
+	_hint_backing.set_expand_margin_all(1)
 	_box.add_child(_hint)
+	_shield_echo = UiKit.button("", &"ButtonAlt", Vector2(CARD_SIZE.x, 30))
+	_shield_echo.name = "ShieldEcho"
+	_shield_echo.toggle_mode = true
+	_shield_echo.icon = preload("res://assets/illustrated/combat/shield_echo.png")
+	_shield_echo.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	_shield_echo.add_theme_constant_override(&"icon_max_width", 22)
+	_shield_echo.add_theme_font_size_override(&"font_size", 9)
+	_shield_echo.toggled.connect(_on_shield_echo_toggled)
+	_box.add_child(_shield_echo)
+	_shield_echo.hide()
 	visible = false
 	EventBus.event_offered.connect(show_event)
 	get_viewport().size_changed.connect(_layout)
 
 
 ## 顯示一個抉擇事件(通常由 EventBus.event_offered 呼叫)。
+func set_shield_echo_available(available: bool) -> void:
+	_shield_echo_available = available
+
+
+func wants_shield_echo() -> bool:
+	return _shield_echo.visible and _shield_echo.button_pressed
+
+
+func _on_shield_echo_toggled(pressed: bool) -> void:
+	_shield_echo.text = tr("UI_SHIELD_ECHO_ON" if pressed else "UI_SHIELD_ECHO_OFF")
+	if _shield_echo.visible:
+		_hint.text = tr("UI_SHIELD_ECHO_COUNTER_HINT" if pressed else "UI_ROUTE_HINT")
+
+
 func show_event(id: StringName, options: Array) -> void:
 	for c in cards:
 		c.queue_free()
 	cards.clear()
 	_tones.clear()
 	event_id = id
+	_shield_echo.visible = _shield_echo_available and BuildRoutes.is_route_event(id)
+	if _shield_echo.visible:
+		_hint.add_theme_stylebox_override(&"normal", _hint_backing)
+	else:
+		_hint.remove_theme_stylebox_override(&"normal")
+	_shield_echo.set_pressed_no_signal(false)
+	_on_shield_echo_toggled(false)
 	(_title.get_child(0) as Label).text = tr(BuildRoutes.event_title(id))
 	_hint.text = tr("UI_ROUTE_HINT" if BuildRoutes.is_route_event(id) else "UI_EVENT_HINT")
 	for i in options.size():
@@ -69,7 +106,7 @@ func show_event(id: StringName, options: Array) -> void:
 		cards.append(card)
 		_tones.append(StringName(String(opt.get("tone", ""))))
 	visible = true
-	_open_card_input(INPUT_DELAY)
+	_open_card_input(INPUT_DELAY, _shield_echo if _shield_echo.visible else null)
 	_layout()
 	UiKit.play_sfx(&"event")
 	_title.pivot_offset = _title.size * 0.5
@@ -229,15 +266,25 @@ func _layout() -> void:
 	var safe := SafeArea.get_safe_rect()
 	_title.size = _title.get_minimum_size()
 	_hint.size = _hint.get_minimum_size()
-	var total_h := _title.size.y + 8.0 + cards.size() * CARD_SIZE.y + maxf(0, cards.size() - 1) * CARD_GAP \
-			+ 6.0 + _hint.size.y
+	var header_gap := 4.0 if _shield_echo.visible else 8.0
+	var row_gap := 4.0 if _shield_echo.visible else CARD_GAP
+	var foot_gap := 4.0 if _shield_echo.visible else UiKit.GAP
+	var total_h := _title.size.y + header_gap + cards.size() * CARD_SIZE.y + maxf(0, cards.size() - 1) * row_gap \
+			+ foot_gap + _hint.size.y
+	if _shield_echo.visible:
+		total_h += _shield_echo.get_combined_minimum_size().y + foot_gap
 	var top := floorf(safe.position.y + (safe.size.y - total_h) * 0.45)
 	var cx := safe.get_center().x
 	_title.position = Vector2(floorf(cx - _title.size.x * 0.5), top)
-	var y := top + _title.size.y + 8.0
+	var y := top + _title.size.y + header_gap
 	for card in cards:
 		card.size = CARD_SIZE
 		card.pivot_offset = (CARD_SIZE * 0.5).floor()
 		card.position = Vector2(floorf(cx - CARD_SIZE.x * 0.5), y)
-		y += CARD_SIZE.y + CARD_GAP
-	_hint.position = Vector2(floorf(cx - _hint.size.x * 0.5), y - CARD_GAP + 6.0)
+		y += CARD_SIZE.y + row_gap
+	y += foot_gap - row_gap
+	if _shield_echo.visible:
+		_shield_echo.size = _shield_echo.get_combined_minimum_size()
+		_shield_echo.position = Vector2(floorf(cx - _shield_echo.size.x * 0.5), y)
+		y += _shield_echo.size.y + foot_gap
+	_hint.position = Vector2(floorf(cx - _hint.size.x * 0.5), y)

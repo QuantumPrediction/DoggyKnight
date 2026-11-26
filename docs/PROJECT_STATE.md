@@ -1,8 +1,20 @@
 # The Golden Knight — current project state
 
-Updated: 2026-11-24 (Hong Kong). Version: **0.9.1 development source**.
+Updated: 2026-11-26 (Hong Kong). Version: **0.9.1 development source**.
 
-## Current work — first-fight touch precision and learning
+## Current work — borrow the shield in the opening meadow
+
+[Draft #34](https://github.com/QuantumPrediction/DoggyKnight/pull/34) builds on #33 head `53b07837d21c4cd7f0178992f73779092e49389c`. Public implementation `217083ae126e9e401f69535a41e77910a801c4e0` and the local verified snapshot `25bffa55e6338078e85908fd09acba40534ebf7f` share full tree `820d2df679c3d2029242f7f5d9da00ce571aa97e`.
+
+The existing 1-1 route choice now offers an optional shield echo for the second wave. Both build paths remain available. Players can face the archer and call the shield, approach a target and stop to counter, or fight their way through. Two scarecrows take the front rank and a real archer takes the rear. It replaces one scarecrow and carries one additional point of base XP. The temporary guard leaves with the room. Bedivere still meets the party in 1-3. The painted paw-shield button is new GPT Image art.
+
+With fresh saves, all three classes and seeds 7 and 19, each of the six original response runs landed a real first-room counter at 29.87–34.27 seconds from Start. The same policies on #33 first landed one in 1-3 at 131.62–148.52 seconds. Five charges in the final group came from intercepting a projectile, one from actually reducing damage. None of the six no-command runs earned a counter. The 18 bypass runs matched the baseline battle observations. The other build path also produced a first-room counter for each class in both normal and reinforced play for seed 31. The clocks include accelerated menu reading. They describe action opportunities under recorded inputs. [Results, discarded formations and four real frames](validation/first-shield/README.md) · [Other route outcomes](validation/first-shield/other-routes.tsv)
+
+The baseline full suite passed 1,004/1,004. The final suite passed 1,009/1,009 plus seven web checks. All 54 archived battle results matched for the 24 bypass cases, including both three-down samples. Two interrupted Linux trial processes are preserved with their original unsymbolized stacks. Serial repeats completed. Both full suites still showed 27 objects and 21 resources in use on exit. [Crash records and binary fingerprint](validation/first-shield/engine/README.md) · [Build and regression checks](validation/first-shield/release-checks.json)
+
+Public web playtest version 8 uses source `ad841f5f04885880d59a9ef66ab48af94c71b9ca`. The deployed HTTPS diagnostic compiled the engine and verified the six-chapter pack. Production combat was rendered at 360×640 on Linux. The standard cloud browser lacked WebGL 2. The archer's ultimate banner crossed the centre of the recorded arrow-block frame. Observe whether an uncoached first-time player can notice the shield choice, distinguish a block from a dodge, and follow through on the charge. Target-player sessions remain at zero. Phone frame times, Windows, controller, listening, retention and independent ratings are open. The assessment stays at 6–6.5/10. [Play the game](https://doggy-knight-playtest.quantumprediction.chatgpt.site/) · [Uncoached follow-up](validation/first-shield/README.md)
+
+## Previous work — first-fight touch precision and learning
 
 [Draft #33](https://github.com/QuantumPrediction/DoggyKnight/pull/33) targets the unmerged #32 branch. Public implementation `2a30dba1952b3dbf798e05ab0f8df18adabdf223` and local implementation `f101cd5e38829b495ebdb5deb10a72057195dc3a` share tree `2db511a28953e33e8e39d417d38793cb49ef8169`. Both are based on #32 head `5ac568a2f118deb07730f50fd68a0c2fd7a1f3a9`.
 

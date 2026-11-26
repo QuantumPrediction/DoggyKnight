@@ -42,7 +42,8 @@ const EDGES: StringName = &"edges"
 const SURROUND: StringName = &"surround"
 const LINE_TOP: StringName = &"line_top"
 const CORNERS: StringName = &"corners"
-const PATTERNS: Array[StringName] = [EDGES, SURROUND, LINE_TOP, CORNERS]
+const SHIELD_LINE: StringName = &"shield_line"
+const PATTERNS: Array[StringName] = [EDGES, SURROUND, LINE_TOP, CORNERS, SHIELD_LINE]
 const ARENA_FALLBACK_POINT: Vector2 = Vector2(90, 84)
 
 var level: LevelData
@@ -55,6 +56,7 @@ var difficulty_mode: StringName = &"normal"
 var endless: bool = false
 
 var _phase: Phase = Phase.IDLE
+var borrow_shield: bool = false
 var _wave: int = 0                       # 目前的波次(1 起算;0 = 還沒開始)
 var _timer: float = 0.0                  # WAITING:倒數;IN_WAVE:本波已過的秒數
 ## 本波還沒放出的敵人,依 time 排序:
@@ -184,7 +186,7 @@ func _start_wave(number: int) -> void:
 	_phase = Phase.IN_WAVE
 	_clear_wave_state()
 	var wave: WaveData = level.waves[number - 1]
-	for entry in wave.entries_for(difficulty_mode == FlowMain.REINFORCED):
+	for entry in wave.entries_for(difficulty_mode == FlowMain.REINFORCED, borrow_shield):
 		if entry == null or entry.count <= 0:
 			continue
 		_schedule(entry)
@@ -206,7 +208,7 @@ func _start_wave(number: int) -> void:
 func has_boss_music(wave: WaveData) -> bool:
 	if wave == null or difficulty == null:
 		return false
-	for entry in wave.entries_for(difficulty_mode == FlowMain.REINFORCED):
+	for entry in wave.entries_for(difficulty_mode == FlowMain.REINFORCED, borrow_shield):
 		if entry != null and entry.count > 0 and difficulty.boss_music_enemies.has(entry.enemy_id):
 			return true
 	return false
@@ -232,12 +234,14 @@ func _schedule(entry: SpawnEntry) -> void:
 	if pattern == SURROUND:
 		telegraph_at = entry.delay
 	_groups.append({"pattern": pattern, "count": count, "telegraph_at": telegraph_at,
-			"positions": [] as Array[Vector2], "markers": []})
+			"formation_distance": entry.formation_distance, "positions": [] as Array[Vector2], "markers": []})
 	for i in count:
 		var time := entry.delay
 		match pattern:
 			SURROUND:
 				time = entry.delay + difficulty.surround_telegraph
+			SHIELD_LINE:
+				time = entry.delay
 			LINE_TOP:
 				time = entry.delay + i * difficulty.line_spacing
 			CORNERS:
@@ -282,6 +286,10 @@ func _position_for(item: Dictionary) -> Vector2:
 		LINE_TOP:
 			if (group["positions"] as Array).is_empty():
 				group["positions"] = line_positions(group["count"], _player_position_or_start())
+			return group["positions"][slot]
+		SHIELD_LINE:
+			if (group["positions"] as Array).is_empty():
+				group["positions"] = shield_line_positions(group["count"], _player_position_or_start(), group["formation_distance"])
 			return group["positions"][slot]
 		CORNERS:
 			return _corner_position()
@@ -375,6 +383,19 @@ func line_positions(count: int, player_pos: Vector2) -> Array[Vector2]:
 		var x := lerpf(rect.position.x, rect.end.x, (float(i) + 0.5) / float(count))
 		result.append(Vector2(x, y).round())
 	return result
+
+
+## Each rank shares a bearing. A farther archer can draw while the nearer guards take the front.
+func shield_line_positions(count: int, player_pos: Vector2, distance: float) -> Array[Vector2]:
+	var rect := pattern_rect()
+	var far := _farthest_corner(player_pos, rect)
+	var center := player_pos.move_toward(far, maxf(0.0, distance))
+	var across := player_pos.direction_to(far).orthogonal()
+	var positions: Array[Vector2] = []
+	for i in count:
+		var offset := (float(i) - float(count - 1) * 0.5) * 16.0
+		positions.append(_clamp_to(center + across * offset, rect))
+	return positions
 
 
 ## corners:四個角落輪流;離金毛 min_spawn_distance 以內的角落這次跳過。

@@ -225,7 +225,16 @@ func _process(delta: float) -> void:
 				finished.emit(false)
 
 
+func can_borrow_shield() -> bool:
+	return state == State.PLAYING and level != null and spawner != null and not endless \
+			and difficulty_mode in [FlowMain.NORMAL, FlowMain.REINFORCED] \
+			and level.id == &"1-1" and waves_cleared == 1 and spawner.current_wave() == 1 \
+			and level.waves.size() > 1 and not level.waves[1].shield_echo_spawns.is_empty()
+
+
 func _on_wave_began(index: int) -> void:
+	if index == 2 and spawner != null and spawner.borrow_shield:
+		FlowParts.call_if_present(arena, &"spawn_companion", [&"shield_echo"])
 	if index == 1 and not _intro_done:
 		_intro_done = true
 		intro_finished.emit()

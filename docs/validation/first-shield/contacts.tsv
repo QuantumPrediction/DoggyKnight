@@ -1,0 +1,1272 @@
+build	hero	seed	route	borrow	response	room	tick	event	detail
+control	knight	7	bulwark	0	skip	1-3	8661	companion_entered_tree	bulldog
+control	knight	7	bulwark	0	skip	1-3	9230	projectile_block	passive
+control	knight	7	bulwark	0	skip	1-3	11109	projectile_block	passive
+control	knight	7	bulwark	0	skip	1-3	12363	projectile_block	passive
+control	knight	7	bulwark	0	call	1-3	8661	companion_entered_tree	bulldog
+control	knight	7	bulwark	0	call	1-3	8867	command_accepted	
+control	knight	7	bulwark	0	call	1-3	8899	granted	protected_damage
+control	knight	7	bulwark	0	call	1-3	8899	protected_damage	prevented_total=3
+control	knight	7	bulwark	0	call	1-3	8911	resolved_used	protected_damage
+control	knight	7	bulwark	0	call	1-3	9181	projectile_block	passive
+control	knight	7	bulwark	0	call	1-3	9358	projectile_block	passive
+control	knight	7	bulwark	0	call	1-3	9522	command_accepted	
+control	knight	7	bulwark	0	call	1-3	9554	granted	protected_damage
+control	knight	7	bulwark	0	call	1-3	9554	protected_damage	prevented_total=5
+control	knight	7	bulwark	0	call	1-3	9576	resolved_used	protected_damage
+control	knight	7	bulwark	0	call	1-3	10366	command_accepted	
+control	knight	7	bulwark	0	call	1-3	10969	command_accepted	
+control	knight	7	bulwark	0	call	1-3	11008	projectile_block	commanded
+control	knight	7	bulwark	0	call	1-3	11008	granted	projectile
+control	knight	7	bulwark	0	call	1-3	11189	resolved_expired	projectile
+control	knight	7	bulwark	0	call	1-3	11256	projectile_block	passive
+control	knight	7	bulwark	0	call	1-3	11670	command_accepted	
+control	knight	7	bulwark	0	call	1-3	11702	granted	protected_damage
+control	knight	7	bulwark	0	call	1-3	11702	protected_damage	prevented_total=7
+control	knight	7	bulwark	0	call	1-3	11752	resolved_used	protected_damage
+control	knight	7	bulwark	0	call	1-3	12165	projectile_block	passive
+control	knight	7	bulwark	0	call	1-3	12313	command_accepted	
+control	knight	7	bulwark	0	call	1-3	12345	granted	protected_damage
+control	knight	7	bulwark	0	call	1-3	12345	protected_damage	prevented_total=8
+control	knight	7	bulwark	0	call	1-3	12361	resolved_used	protected_damage
+control	knight	7	bulwark	0	call	1-3	12456	protected_damage	prevented_total=9
+control	knight	7	bulwark	0	follow	1-3	8661	companion_entered_tree	bulldog
+control	knight	7	bulwark	0	follow	1-3	8867	command_accepted	
+control	knight	7	bulwark	0	follow	1-3	8899	granted	protected_damage
+control	knight	7	bulwark	0	follow	1-3	8899	protected_damage	prevented_total=3
+control	knight	7	bulwark	0	follow	1-3	8911	resolved_used	protected_damage
+control	knight	7	bulwark	0	follow	1-3	9154	projectile_block	passive
+control	knight	7	bulwark	0	follow	1-3	9593	command_accepted	
+control	knight	7	bulwark	0	follow	1-3	9625	granted	protected_damage
+control	knight	7	bulwark	0	follow	1-3	9625	protected_damage	prevented_total=6
+control	knight	7	bulwark	0	follow	1-3	9637	resolved_used	protected_damage
+control	knight	7	bulwark	0	follow	1-3	10376	command_accepted	
+control	knight	7	bulwark	0	follow	1-3	10408	granted	protected_damage
+control	knight	7	bulwark	0	follow	1-3	10408	protected_damage	prevented_total=8
+control	knight	7	bulwark	0	follow	1-3	10420	resolved_used	protected_damage
+control	knight	7	bulwark	0	follow	1-3	11533	command_accepted	
+control	knight	7	bulwark	0	follow	1-3	11565	granted	protected_damage
+control	knight	7	bulwark	0	follow	1-3	11565	protected_damage	prevented_total=10
+control	knight	7	bulwark	0	follow	1-3	11577	resolved_used	protected_damage
+control	knight	7	bulwark	0	follow	1-3	11850	projectile_block	passive
+control	knight	7	bulwark	0	follow	1-3	12090	projectile_block	passive
+control	knight	7	bulwark	0	follow	1-3	12252	command_accepted	
+control	knight	19	bulwark	0	skip	1-3	8156	companion_entered_tree	bulldog
+control	knight	19	bulwark	0	skip	1-3	8682	projectile_block	passive
+control	knight	19	bulwark	0	skip	1-3	10224	projectile_block	passive
+control	knight	19	bulwark	0	skip	1-3	11689	projectile_block	passive
+control	knight	19	bulwark	0	call	1-3	8156	companion_entered_tree	bulldog
+control	knight	19	bulwark	0	call	1-3	8317	command_accepted	
+control	knight	19	bulwark	0	call	1-3	8349	granted	protected_damage
+control	knight	19	bulwark	0	call	1-3	8349	protected_damage	prevented_total=2
+control	knight	19	bulwark	0	call	1-3	8365	resolved_used	protected_damage
+control	knight	19	bulwark	0	call	1-3	8710	projectile_block	passive
+control	knight	19	bulwark	0	call	1-3	9003	command_accepted	
+control	knight	19	bulwark	0	call	1-3	9035	granted	protected_damage
+control	knight	19	bulwark	0	call	1-3	9035	protected_damage	prevented_total=4
+control	knight	19	bulwark	0	call	1-3	9093	resolved_used	protected_damage
+control	knight	19	bulwark	0	call	1-3	10025	command_accepted	
+control	knight	19	bulwark	0	call	1-3	10669	command_accepted	
+control	knight	19	bulwark	0	call	1-3	10723	projectile_block	commanded
+control	knight	19	bulwark	0	call	1-3	10723	granted	projectile
+control	knight	19	bulwark	0	call	1-3	10759	resolved_used	projectile
+control	knight	19	bulwark	0	call	1-3	11286	command_accepted	
+control	knight	19	bulwark	0	call	1-3	11318	granted	protected_damage
+control	knight	19	bulwark	0	call	1-3	11318	protected_damage	prevented_total=5
+control	knight	19	bulwark	0	call	1-3	11408	resolved_used	protected_damage
+control	knight	19	bulwark	0	call	1-3	11466	projectile_block	commanded
+control	knight	19	bulwark	0	call	1-3	11481	projectile_block	passive
+control	knight	19	bulwark	0	call	1-3	11890	command_accepted	
+control	knight	19	bulwark	0	call	1-3	11924	projectile_block	commanded
+control	knight	19	bulwark	0	call	1-3	11924	granted	projectile
+control	knight	19	bulwark	0	call	1-3	11944	resolved_used	projectile
+control	knight	19	bulwark	0	follow	1-3	8156	companion_entered_tree	bulldog
+control	knight	19	bulwark	0	follow	1-3	8317	command_accepted	
+control	knight	19	bulwark	0	follow	1-3	8349	granted	protected_damage
+control	knight	19	bulwark	0	follow	1-3	8349	protected_damage	prevented_total=2
+control	knight	19	bulwark	0	follow	1-3	8361	resolved_used	protected_damage
+control	knight	19	bulwark	0	follow	1-3	8920	command_accepted	
+control	knight	19	bulwark	0	follow	1-3	8940	projectile_block	commanded
+control	knight	19	bulwark	0	follow	1-3	8940	granted	projectile
+control	knight	19	bulwark	0	follow	1-3	8958	resolved_used	projectile
+control	knight	19	bulwark	0	follow	1-3	9199	projectile_block	passive
+control	knight	19	bulwark	0	follow	1-3	10095	command_accepted	
+control	knight	19	bulwark	0	follow	1-3	10127	granted	protected_damage
+control	knight	19	bulwark	0	follow	1-3	10127	protected_damage	prevented_total=3
+control	knight	19	bulwark	0	follow	1-3	10139	resolved_used	protected_damage
+control	knight	19	bulwark	0	follow	1-3	10773	command_accepted	
+control	knight	19	bulwark	0	follow	1-3	11376	command_accepted	
+control	knight	19	bulwark	0	follow	1-3	11408	granted	protected_damage
+control	knight	19	bulwark	0	follow	1-3	11408	protected_damage	prevented_total=4
+control	knight	19	bulwark	0	follow	1-3	11429	resolved_used	protected_damage
+control	knight	19	bulwark	0	follow	1-3	12071	command_accepted	
+control	mage	7	spellweaver	0	skip	1-3	7535	companion_entered_tree	bulldog
+control	mage	7	spellweaver	0	call	1-3	7535	companion_entered_tree	bulldog
+control	mage	7	spellweaver	0	call	1-3	7966	command_accepted	
+control	mage	7	spellweaver	0	call	1-3	8040	projectile_block	commanded
+control	mage	7	spellweaver	0	call	1-3	8040	granted	projectile
+control	mage	7	spellweaver	0	call	1-3	8083	projectile_block	commanded
+control	mage	7	spellweaver	0	call	1-3	8096	resolved_used	projectile
+control	mage	7	spellweaver	0	call	1-3	9472	command_accepted	
+control	mage	7	spellweaver	0	call	1-3	9546	projectile_block	commanded
+control	mage	7	spellweaver	0	call	1-3	9546	granted	projectile
+control	mage	7	spellweaver	0	call	1-3	9591	resolved_used	projectile
+control	mage	7	spellweaver	0	call	1-3	10617	command_accepted	
+control	mage	7	spellweaver	0	call	1-3	10696	projectile_block	commanded
+control	mage	7	spellweaver	0	call	1-3	10696	granted	projectile
+control	mage	7	spellweaver	0	call	1-3	10755	resolved_used	projectile
+control	mage	7	spellweaver	0	follow	1-3	7535	companion_entered_tree	bulldog
+control	mage	7	spellweaver	0	follow	1-3	7944	command_accepted	
+control	mage	7	spellweaver	0	follow	1-3	7972	granted	protected_damage
+control	mage	7	spellweaver	0	follow	1-3	7972	protected_damage	prevented_total=3
+control	mage	7	spellweaver	0	follow	1-3	8020	resolved_used	protected_damage
+control	mage	7	spellweaver	0	follow	1-3	8040	projectile_block	commanded
+control	mage	7	spellweaver	0	follow	1-3	8083	projectile_block	commanded
+control	mage	7	spellweaver	0	follow	1-3	9403	command_accepted	
+control	mage	7	spellweaver	0	follow	1-3	9453	projectile_block	commanded
+control	mage	7	spellweaver	0	follow	1-3	9453	granted	projectile
+control	mage	7	spellweaver	0	follow	1-3	9489	resolved_used	projectile
+control	mage	7	spellweaver	0	follow	1-3	9505	projectile_block	commanded
+control	mage	7	spellweaver	0	follow	1-3	10515	command_accepted	
+control	mage	7	spellweaver	0	follow	1-3	10669	granted	protected_damage
+control	mage	7	spellweaver	0	follow	1-3	10669	protected_damage	prevented_total=5
+control	mage	7	spellweaver	0	follow	1-3	10697	resolved_used	protected_damage
+control	mage	19	spellweaver	0	skip	1-3	7621	companion_entered_tree	bulldog
+control	mage	19	spellweaver	0	call	1-3	7621	companion_entered_tree	bulldog
+control	mage	19	spellweaver	0	call	1-3	8062	command_accepted	
+control	mage	19	spellweaver	0	call	1-3	8134	projectile_block	commanded
+control	mage	19	spellweaver	0	call	1-3	8134	granted	projectile
+control	mage	19	spellweaver	0	call	1-3	8166	resolved_used	projectile
+control	mage	19	spellweaver	0	call	1-3	8180	projectile_block	commanded
+control	mage	19	spellweaver	0	call	1-3	9466	command_accepted	
+control	mage	19	spellweaver	0	call	1-3	9537	projectile_block	commanded
+control	mage	19	spellweaver	0	call	1-3	9537	granted	projectile
+control	mage	19	spellweaver	0	call	1-3	9594	projectile_block	commanded
+control	mage	19	spellweaver	0	call	1-3	9718	resolved_expired	projectile
+control	mage	19	spellweaver	0	call	1-3	10351	command_accepted	
+control	mage	19	spellweaver	0	call	1-3	10970	command_accepted	
+control	mage	19	spellweaver	0	follow	1-3	7621	companion_entered_tree	bulldog
+control	mage	19	spellweaver	0	follow	1-3	8040	command_accepted	
+control	mage	19	spellweaver	0	follow	1-3	8131	granted	protected_damage
+control	mage	19	spellweaver	0	follow	1-3	8131	protected_damage	prevented_total=3
+control	mage	19	spellweaver	0	follow	1-3	8131	resolved_used	protected_damage
+control	mage	19	spellweaver	0	follow	1-3	8184	projectile_block	commanded
+control	mage	19	spellweaver	0	follow	1-3	9534	command_accepted	
+control	mage	19	spellweaver	0	follow	1-3	9586	projectile_block	commanded
+control	mage	19	spellweaver	0	follow	1-3	9586	granted	projectile
+control	mage	19	spellweaver	0	follow	1-3	9625	resolved_used	projectile
+control	mage	19	spellweaver	0	follow	1-3	10732	command_accepted	
+control	mage	19	spellweaver	0	follow	1-3	10921	projectile_block	commanded
+control	archer	7	marksman	0	skip	1-3	7568	companion_entered_tree	bulldog
+control	archer	7	marksman	0	skip	1-3	9550	projectile_block	passive
+control	archer	7	marksman	0	call	1-3	7568	companion_entered_tree	bulldog
+control	archer	7	marksman	0	call	1-3	8000	command_accepted	
+control	archer	7	marksman	0	call	1-3	8090	projectile_block	commanded
+control	archer	7	marksman	0	call	1-3	8090	granted	projectile
+control	archer	7	marksman	0	call	1-3	8111	resolved_used	projectile
+control	archer	7	marksman	0	call	1-3	9491	command_accepted	
+control	archer	7	marksman	0	call	1-3	10351	command_accepted	
+control	archer	7	marksman	0	call	1-3	10451	granted	protected_damage
+control	archer	7	marksman	0	call	1-3	10451	protected_damage	prevented_total=3
+control	archer	7	marksman	0	call	1-3	10618	resolved_used	protected_damage
+control	archer	7	marksman	0	follow	1-3	7568	companion_entered_tree	bulldog
+control	archer	7	marksman	0	follow	1-3	8000	command_accepted	
+control	archer	7	marksman	0	follow	1-3	8056	projectile_block	commanded
+control	archer	7	marksman	0	follow	1-3	8056	granted	projectile
+control	archer	7	marksman	0	follow	1-3	8060	resolved_used	projectile
+control	archer	7	marksman	0	follow	1-3	8113	projectile_block	commanded
+control	archer	7	marksman	0	follow	1-3	9460	command_accepted	
+control	archer	7	marksman	0	follow	1-3	9505	projectile_block	commanded
+control	archer	7	marksman	0	follow	1-3	9505	granted	projectile
+control	archer	7	marksman	0	follow	1-3	9515	resolved_used	projectile
+control	archer	7	marksman	0	follow	1-3	9585	projectile_block	commanded
+control	archer	7	marksman	0	follow	1-3	10454	command_accepted	
+control	archer	7	marksman	0	follow	1-3	10608	projectile_block	commanded
+control	archer	7	marksman	0	follow	1-3	10608	granted	projectile
+control	archer	7	marksman	0	follow	1-3	10750	resolved_used	projectile
+control	archer	7	marksman	0	follow	1-3	11058	command_accepted	
+control	archer	7	marksman	0	follow	1-3	11087	projectile_block	commanded
+control	archer	7	marksman	0	follow	1-3	11087	granted	projectile
+control	archer	7	marksman	0	follow	1-3	11114	resolved_used	projectile
+control	archer	19	marksman	0	skip	1-3	7363	companion_entered_tree	bulldog
+control	archer	19	marksman	0	call	1-3	7363	companion_entered_tree	bulldog
+control	archer	19	marksman	0	call	1-3	7804	command_accepted	
+control	archer	19	marksman	0	call	1-3	7891	projectile_block	commanded
+control	archer	19	marksman	0	call	1-3	7891	granted	projectile
+control	archer	19	marksman	0	call	1-3	7897	resolved_used	projectile
+control	archer	19	marksman	0	call	1-3	7929	projectile_block	commanded
+control	archer	19	marksman	0	call	1-3	9220	command_accepted	
+control	archer	19	marksman	0	call	1-3	10159	command_accepted	
+control	archer	19	marksman	0	follow	1-3	7363	companion_entered_tree	bulldog
+control	archer	19	marksman	0	follow	1-3	7804	command_accepted	
+control	archer	19	marksman	0	follow	1-3	7855	projectile_block	commanded
+control	archer	19	marksman	0	follow	1-3	7855	granted	projectile
+control	archer	19	marksman	0	follow	1-3	7862	resolved_used	projectile
+control	archer	19	marksman	0	follow	1-3	7916	projectile_block	commanded
+control	archer	19	marksman	0	follow	1-3	9242	command_accepted	
+control	archer	19	marksman	0	follow	1-3	9297	projectile_block	commanded
+control	archer	19	marksman	0	follow	1-3	9297	granted	projectile
+control	archer	19	marksman	0	follow	1-3	9302	resolved_used	projectile
+control	archer	19	marksman	0	follow	1-3	9395	protected_damage	prevented_total=3
+control	archer	19	marksman	0	follow	1-3	10150	command_accepted	
+first	knight	7	bulwark	1	skip	1-1	1751	companion_entered_tree	shield_echo
+first	knight	7	bulwark	1	skip	1-1	1969	projectile_block	passive
+first	knight	7	bulwark	1	skip	1-3	9205	companion_entered_tree	bulldog
+first	knight	7	bulwark	1	skip	1-3	9764	projectile_block	passive
+first	knight	7	bulwark	1	skip	1-3	10632	projectile_block	passive
+first	knight	7	bulwark	1	skip	1-3	12867	projectile_block	passive
+first	knight	7	bulwark	1	call	1-1	1751	companion_entered_tree	shield_echo
+first	knight	7	bulwark	1	call	1-1	1925	command_accepted	
+first	knight	7	bulwark	1	call	1-1	1974	projectile_block	commanded
+first	knight	7	bulwark	1	call	1-1	1974	granted	projectile
+first	knight	7	bulwark	1	call	1-1	2024	resolved_used	projectile
+first	knight	7	bulwark	1	call	1-1	2566	command_accepted	
+first	knight	7	bulwark	1	call	1-1	2598	granted	protected_damage
+first	knight	7	bulwark	1	call	1-1	2598	protected_damage	prevented_total=2
+first	knight	7	bulwark	1	call	1-1	2610	resolved_used	protected_damage
+first	knight	7	bulwark	1	call	1-3	8225	companion_entered_tree	bulldog
+first	knight	7	bulwark	1	call	1-3	8425	command_accepted	
+first	knight	7	bulwark	1	call	1-3	8457	granted	protected_damage
+first	knight	7	bulwark	1	call	1-3	8457	protected_damage	prevented_total=3
+first	knight	7	bulwark	1	call	1-3	8469	resolved_used	protected_damage
+first	knight	7	bulwark	1	call	1-3	8924	projectile_block	passive
+first	knight	7	bulwark	1	call	1-3	9080	command_accepted	
+first	knight	7	bulwark	1	call	1-3	9112	granted	protected_damage
+first	knight	7	bulwark	1	call	1-3	9112	protected_damage	prevented_total=5
+first	knight	7	bulwark	1	call	1-3	9124	resolved_used	protected_damage
+first	knight	7	bulwark	1	call	1-3	10124	command_accepted	
+first	knight	7	bulwark	1	call	1-3	10155	granted	protected_damage
+first	knight	7	bulwark	1	call	1-3	10155	protected_damage	prevented_total=7
+first	knight	7	bulwark	1	call	1-3	10172	resolved_used	protected_damage
+first	knight	7	bulwark	1	call	1-3	11245	command_accepted	
+first	knight	7	bulwark	1	call	1-3	11277	granted	protected_damage
+first	knight	7	bulwark	1	call	1-3	11277	protected_damage	prevented_total=8
+first	knight	7	bulwark	1	call	1-3	11293	resolved_used	protected_damage
+first	knight	7	bulwark	1	call	1-3	11885	command_accepted	
+first	knight	7	bulwark	1	follow	1-1	1751	companion_entered_tree	shield_echo
+first	knight	7	bulwark	1	follow	1-1	1925	command_accepted	
+first	knight	7	bulwark	1	follow	1-1	1971	projectile_block	commanded
+first	knight	7	bulwark	1	follow	1-1	1971	granted	projectile
+first	knight	7	bulwark	1	follow	1-1	1990	resolved_used	projectile
+first	knight	7	bulwark	1	follow	1-1	2546	command_accepted	
+first	knight	7	bulwark	1	follow	1-1	2578	granted	protected_damage
+first	knight	7	bulwark	1	follow	1-1	2578	protected_damage	prevented_total=2
+first	knight	7	bulwark	1	follow	1-1	2590	resolved_used	protected_damage
+first	knight	7	bulwark	1	follow	1-3	8336	companion_entered_tree	bulldog
+first	knight	7	bulwark	1	follow	1-3	8564	command_accepted	
+first	knight	7	bulwark	1	follow	1-3	8596	granted	protected_damage
+first	knight	7	bulwark	1	follow	1-3	8596	protected_damage	prevented_total=3
+first	knight	7	bulwark	1	follow	1-3	8608	resolved_used	protected_damage
+first	knight	7	bulwark	1	follow	1-3	8886	projectile_block	passive
+first	knight	7	bulwark	1	follow	1-3	9040	projectile_block	passive
+first	knight	7	bulwark	1	follow	1-3	9207	command_accepted	
+first	knight	7	bulwark	1	follow	1-3	9239	granted	protected_damage
+first	knight	7	bulwark	1	follow	1-3	9239	protected_damage	prevented_total=5
+first	knight	7	bulwark	1	follow	1-3	9254	resolved_used	protected_damage
+first	knight	7	bulwark	1	follow	1-3	10385	command_accepted	
+first	knight	7	bulwark	1	follow	1-3	10431	projectile_block	commanded
+first	knight	7	bulwark	1	follow	1-3	10431	granted	projectile
+first	knight	7	bulwark	1	follow	1-3	10527	resolved_used	projectile
+first	knight	7	bulwark	1	follow	1-3	11233	command_accepted	
+first	knight	7	bulwark	1	follow	1-3	11265	granted	protected_damage
+first	knight	7	bulwark	1	follow	1-3	11265	protected_damage	prevented_total=6
+first	knight	7	bulwark	1	follow	1-3	11277	resolved_used	protected_damage
+first	knight	7	bulwark	1	follow	1-3	11836	command_accepted	
+first	knight	19	bulwark	1	skip	1-1	1655	companion_entered_tree	shield_echo
+first	knight	19	bulwark	1	skip	1-1	1919	projectile_block	passive
+first	knight	19	bulwark	1	skip	1-3	8339	companion_entered_tree	bulldog
+first	knight	19	bulwark	1	skip	1-3	8865	projectile_block	passive
+first	knight	19	bulwark	1	skip	1-3	10407	projectile_block	passive
+first	knight	19	bulwark	1	call	1-1	1655	companion_entered_tree	shield_echo
+first	knight	19	bulwark	1	call	1-1	1874	command_accepted	
+first	knight	19	bulwark	1	call	1-1	1919	projectile_block	commanded
+first	knight	19	bulwark	1	call	1-1	1919	granted	projectile
+first	knight	19	bulwark	1	call	1-1	1936	resolved_used	projectile
+first	knight	19	bulwark	1	call	1-1	2554	command_accepted	
+first	knight	19	bulwark	1	call	1-1	2586	granted	protected_damage
+first	knight	19	bulwark	1	call	1-1	2586	protected_damage	prevented_total=2
+first	knight	19	bulwark	1	call	1-1	2600	resolved_used	protected_damage
+first	knight	19	bulwark	1	call	1-3	8201	companion_entered_tree	bulldog
+first	knight	19	bulwark	1	call	1-3	8416	command_accepted	
+first	knight	19	bulwark	1	call	1-3	8448	granted	protected_damage
+first	knight	19	bulwark	1	call	1-3	8448	protected_damage	prevented_total=2
+first	knight	19	bulwark	1	call	1-3	8460	resolved_used	protected_damage
+first	knight	19	bulwark	1	call	1-3	9171	command_accepted	
+first	knight	19	bulwark	1	call	1-3	9203	granted	protected_damage
+first	knight	19	bulwark	1	call	1-3	9203	protected_damage	prevented_total=4
+first	knight	19	bulwark	1	call	1-3	9218	resolved_used	protected_damage
+first	knight	19	bulwark	1	call	1-3	9906	command_accepted	
+first	knight	19	bulwark	1	call	1-3	10305	projectile_block	passive
+first	knight	19	bulwark	1	call	1-3	11152	command_accepted	
+first	knight	19	bulwark	1	call	1-3	11184	granted	protected_damage
+first	knight	19	bulwark	1	call	1-3	11184	protected_damage	prevented_total=5
+first	knight	19	bulwark	1	call	1-3	11197	resolved_used	protected_damage
+first	knight	19	bulwark	1	call	1-3	11815	command_accepted	
+first	knight	19	bulwark	1	call	1-3	11847	granted	protected_damage
+first	knight	19	bulwark	1	call	1-3	11847	protected_damage	prevented_total=6
+first	knight	19	bulwark	1	call	1-3	11861	resolved_used	protected_damage
+first	knight	19	bulwark	1	follow	1-1	1655	companion_entered_tree	shield_echo
+first	knight	19	bulwark	1	follow	1-1	1874	command_accepted	
+first	knight	19	bulwark	1	follow	1-1	1920	projectile_block	commanded
+first	knight	19	bulwark	1	follow	1-1	1920	granted	projectile
+first	knight	19	bulwark	1	follow	1-1	2103	resolved_expired	projectile
+first	knight	19	bulwark	1	follow	1-1	2524	command_accepted	
+first	knight	19	bulwark	1	follow	1-3	8262	companion_entered_tree	bulldog
+first	knight	19	bulwark	1	follow	1-3	8476	command_accepted	
+first	knight	19	bulwark	1	follow	1-3	8508	granted	protected_damage
+first	knight	19	bulwark	1	follow	1-3	8508	protected_damage	prevented_total=2
+first	knight	19	bulwark	1	follow	1-3	8520	resolved_used	protected_damage
+first	knight	19	bulwark	1	follow	1-3	9116	command_accepted	
+first	knight	19	bulwark	1	follow	1-3	9148	granted	protected_damage
+first	knight	19	bulwark	1	follow	1-3	9148	protected_damage	prevented_total=3
+first	knight	19	bulwark	1	follow	1-3	9160	resolved_used	protected_damage
+first	knight	19	bulwark	1	follow	1-3	9966	command_accepted	
+first	knight	19	bulwark	1	follow	1-3	9998	granted	protected_damage
+first	knight	19	bulwark	1	follow	1-3	9998	protected_damage	prevented_total=4
+first	knight	19	bulwark	1	follow	1-3	10010	resolved_used	protected_damage
+first	knight	19	bulwark	1	follow	1-3	11249	command_accepted	
+first	knight	19	bulwark	1	follow	1-3	11281	granted	protected_damage
+first	knight	19	bulwark	1	follow	1-3	11281	protected_damage	prevented_total=5
+first	knight	19	bulwark	1	follow	1-3	11293	resolved_used	protected_damage
+first	knight	19	bulwark	1	follow	1-3	11906	command_accepted	
+first	knight	19	bulwark	1	follow	1-3	11938	granted	protected_damage
+first	knight	19	bulwark	1	follow	1-3	11938	protected_damage	prevented_total=6
+first	knight	19	bulwark	1	follow	1-3	11950	resolved_used	protected_damage
+first	mage	7	spellweaver	1	skip	1-1	1479	companion_entered_tree	shield_echo
+first	mage	7	spellweaver	1	skip	1-3	7482	companion_entered_tree	bulldog
+first	mage	7	spellweaver	1	call	1-1	1479	companion_entered_tree	shield_echo
+first	mage	7	spellweaver	1	call	1-1	1661	command_accepted	
+first	mage	7	spellweaver	1	call	1-1	1719	projectile_block	commanded
+first	mage	7	spellweaver	1	call	1-1	1719	granted	projectile
+first	mage	7	spellweaver	1	call	1-1	1900	resolved_expired	projectile
+first	mage	7	spellweaver	1	call	1-3	7552	companion_entered_tree	bulldog
+first	mage	7	spellweaver	1	call	1-3	7983	command_accepted	
+first	mage	7	spellweaver	1	call	1-3	8057	projectile_block	commanded
+first	mage	7	spellweaver	1	call	1-3	8057	granted	projectile
+first	mage	7	spellweaver	1	call	1-3	8100	projectile_block	commanded
+first	mage	7	spellweaver	1	call	1-3	8113	resolved_used	projectile
+first	mage	7	spellweaver	1	call	1-3	9489	command_accepted	
+first	mage	7	spellweaver	1	call	1-3	9563	projectile_block	commanded
+first	mage	7	spellweaver	1	call	1-3	9563	granted	projectile
+first	mage	7	spellweaver	1	call	1-3	9608	resolved_used	projectile
+first	mage	7	spellweaver	1	call	1-3	10634	command_accepted	
+first	mage	7	spellweaver	1	call	1-3	10713	projectile_block	commanded
+first	mage	7	spellweaver	1	call	1-3	10713	granted	projectile
+first	mage	7	spellweaver	1	call	1-3	10772	resolved_used	projectile
+first	mage	7	spellweaver	1	follow	1-1	1479	companion_entered_tree	shield_echo
+first	mage	7	spellweaver	1	follow	1-1	1653	command_accepted	
+first	mage	7	spellweaver	1	follow	1-3	7622	companion_entered_tree	bulldog
+first	mage	7	spellweaver	1	follow	1-3	8031	command_accepted	
+first	mage	7	spellweaver	1	follow	1-3	8059	granted	protected_damage
+first	mage	7	spellweaver	1	follow	1-3	8059	protected_damage	prevented_total=3
+first	mage	7	spellweaver	1	follow	1-3	8107	resolved_used	protected_damage
+first	mage	7	spellweaver	1	follow	1-3	8127	projectile_block	commanded
+first	mage	7	spellweaver	1	follow	1-3	8170	projectile_block	commanded
+first	mage	7	spellweaver	1	follow	1-3	9490	command_accepted	
+first	mage	7	spellweaver	1	follow	1-3	9540	projectile_block	commanded
+first	mage	7	spellweaver	1	follow	1-3	9540	granted	projectile
+first	mage	7	spellweaver	1	follow	1-3	9576	resolved_used	projectile
+first	mage	7	spellweaver	1	follow	1-3	9592	projectile_block	commanded
+first	mage	7	spellweaver	1	follow	1-3	10641	command_accepted	
+first	mage	7	spellweaver	1	follow	1-3	10741	projectile_block	commanded
+first	mage	7	spellweaver	1	follow	1-3	10741	granted	projectile
+first	mage	7	spellweaver	1	follow	1-3	10743	resolved_used	projectile
+first	mage	19	spellweaver	1	skip	1-1	1450	companion_entered_tree	shield_echo
+first	mage	19	spellweaver	1	skip	1-3	7436	companion_entered_tree	bulldog
+first	mage	19	spellweaver	1	call	1-1	1450	companion_entered_tree	shield_echo
+first	mage	19	spellweaver	1	call	1-1	1677	command_accepted	
+first	mage	19	spellweaver	1	call	1-3	7438	companion_entered_tree	bulldog
+first	mage	19	spellweaver	1	call	1-3	7777	command_accepted	
+first	mage	19	spellweaver	1	call	1-3	9349	command_accepted	
+first	mage	19	spellweaver	1	call	1-3	10338	command_accepted	
+first	mage	19	spellweaver	1	follow	1-1	1450	companion_entered_tree	shield_echo
+first	mage	19	spellweaver	1	follow	1-1	1669	command_accepted	
+first	mage	19	spellweaver	1	follow	1-3	7640	companion_entered_tree	bulldog
+first	mage	19	spellweaver	1	follow	1-3	8033	command_accepted	
+first	mage	19	spellweaver	1	follow	1-3	8062	granted	protected_damage
+first	mage	19	spellweaver	1	follow	1-3	8062	protected_damage	prevented_total=3
+first	mage	19	spellweaver	1	follow	1-3	8066	resolved_used	protected_damage
+first	mage	19	spellweaver	1	follow	1-3	9514	command_accepted	
+first	mage	19	spellweaver	1	follow	1-3	9570	projectile_block	commanded
+first	mage	19	spellweaver	1	follow	1-3	9570	granted	projectile
+first	mage	19	spellweaver	1	follow	1-3	9609	resolved_used	projectile
+first	mage	19	spellweaver	1	follow	1-3	10695	command_accepted	
+first	mage	19	spellweaver	1	follow	1-3	10721	granted	protected_damage
+first	mage	19	spellweaver	1	follow	1-3	10721	protected_damage	prevented_total=6
+first	mage	19	spellweaver	1	follow	1-3	10727	projectile_block	commanded
+first	mage	19	spellweaver	1	follow	1-3	10903	resolved_expired	protected_damage
+first	mage	19	spellweaver	1	follow	1-3	10999	projectile_block	passive
+first	archer	7	marksman	1	skip	1-1	1442	companion_entered_tree	shield_echo
+first	archer	7	marksman	1	skip	1-3	7569	companion_entered_tree	bulldog
+first	archer	7	marksman	1	skip	1-3	9521	projectile_block	passive
+first	archer	7	marksman	1	skip	1-3	9545	projectile_block	passive
+first	archer	7	marksman	1	call	1-1	1442	companion_entered_tree	shield_echo
+first	archer	7	marksman	1	call	1-1	1624	command_accepted	
+first	archer	7	marksman	1	call	1-3	7449	companion_entered_tree	bulldog
+first	archer	7	marksman	1	call	1-3	7881	command_accepted	
+first	archer	7	marksman	1	call	1-3	7966	projectile_block	commanded
+first	archer	7	marksman	1	call	1-3	7966	granted	projectile
+first	archer	7	marksman	1	call	1-3	7988	resolved_used	projectile
+first	archer	7	marksman	1	call	1-3	9387	command_accepted	
+first	archer	7	marksman	1	call	1-3	9502	granted	protected_damage
+first	archer	7	marksman	1	call	1-3	9502	protected_damage	prevented_total=3
+first	archer	7	marksman	1	call	1-3	9532	resolved_used	protected_damage
+first	archer	7	marksman	1	call	1-3	10366	command_accepted	
+first	archer	7	marksman	1	call	1-3	10406	projectile_block	commanded
+first	archer	7	marksman	1	call	1-3	10406	granted	projectile
+first	archer	7	marksman	1	call	1-3	10420	resolved_used	projectile
+first	archer	7	marksman	1	call	1-3	10444	projectile_block	commanded
+first	archer	7	marksman	1	follow	1-1	1442	companion_entered_tree	shield_echo
+first	archer	7	marksman	1	follow	1-1	1616	command_accepted	
+first	archer	7	marksman	1	follow	1-1	1656	projectile_block	commanded
+first	archer	7	marksman	1	follow	1-1	1656	granted	projectile
+first	archer	7	marksman	1	follow	1-1	1670	resolved_used	projectile
+first	archer	7	marksman	1	follow	1-3	7563	companion_entered_tree	bulldog
+first	archer	7	marksman	1	follow	1-3	7995	command_accepted	
+first	archer	7	marksman	1	follow	1-3	8051	projectile_block	commanded
+first	archer	7	marksman	1	follow	1-3	8051	granted	projectile
+first	archer	7	marksman	1	follow	1-3	8055	resolved_used	projectile
+first	archer	7	marksman	1	follow	1-3	8108	projectile_block	commanded
+first	archer	7	marksman	1	follow	1-3	9455	command_accepted	
+first	archer	7	marksman	1	follow	1-3	9500	projectile_block	commanded
+first	archer	7	marksman	1	follow	1-3	9500	granted	projectile
+first	archer	7	marksman	1	follow	1-3	9510	resolved_used	projectile
+first	archer	7	marksman	1	follow	1-3	9580	projectile_block	commanded
+first	archer	7	marksman	1	follow	1-3	10449	command_accepted	
+first	archer	7	marksman	1	follow	1-3	10604	projectile_block	commanded
+first	archer	7	marksman	1	follow	1-3	10604	granted	projectile
+first	archer	7	marksman	1	follow	1-3	10746	resolved_used	projectile
+first	archer	7	marksman	1	follow	1-3	11053	command_accepted	
+first	archer	7	marksman	1	follow	1-3	11081	projectile_block	commanded
+first	archer	7	marksman	1	follow	1-3	11081	granted	projectile
+first	archer	7	marksman	1	follow	1-3	11109	resolved_used	projectile
+first	archer	19	marksman	1	skip	1-1	1423	companion_entered_tree	shield_echo
+first	archer	19	marksman	1	skip	1-3	7363	companion_entered_tree	bulldog
+first	archer	19	marksman	1	call	1-1	1423	companion_entered_tree	shield_echo
+first	archer	19	marksman	1	call	1-3	7363	companion_entered_tree	bulldog
+first	archer	19	marksman	1	call	1-3	7804	command_accepted	
+first	archer	19	marksman	1	call	1-3	7891	projectile_block	commanded
+first	archer	19	marksman	1	call	1-3	7891	granted	projectile
+first	archer	19	marksman	1	call	1-3	7897	resolved_used	projectile
+first	archer	19	marksman	1	call	1-3	7929	projectile_block	commanded
+first	archer	19	marksman	1	call	1-3	9220	command_accepted	
+first	archer	19	marksman	1	call	1-3	10159	command_accepted	
+first	archer	19	marksman	1	follow	1-1	1423	companion_entered_tree	shield_echo
+first	archer	19	marksman	1	follow	1-1	1642	command_accepted	
+first	archer	19	marksman	1	follow	1-1	1684	projectile_block	commanded
+first	archer	19	marksman	1	follow	1-1	1684	granted	projectile
+first	archer	19	marksman	1	follow	1-1	1696	resolved_used	projectile
+first	archer	19	marksman	1	follow	1-3	7366	companion_entered_tree	bulldog
+first	archer	19	marksman	1	follow	1-3	7807	command_accepted	
+first	archer	19	marksman	1	follow	1-3	7903	projectile_block	commanded
+first	archer	19	marksman	1	follow	1-3	7903	granted	projectile
+first	archer	19	marksman	1	follow	1-3	7909	resolved_used	projectile
+first	archer	19	marksman	1	follow	1-3	9266	command_accepted	
+first	archer	19	marksman	1	follow	1-3	9418	granted	protected_damage
+first	archer	19	marksman	1	follow	1-3	9418	protected_damage	prevented_total=3
+first	archer	19	marksman	1	follow	1-3	9459	resolved_used	protected_damage
+first	archer	19	marksman	1	follow	1-3	10157	command_accepted	
+first	archer	19	marksman	1	follow	1-3	10299	projectile_block	commanded
+first	archer	19	marksman	1	follow	1-3	10330	projectile_block	commanded
+stagger	knight	7	bulwark	1	skip	1-1	1751	companion_entered_tree	shield_echo
+stagger	knight	7	bulwark	1	skip	1-1	2086	projectile_block	passive
+stagger	knight	7	bulwark	1	skip	1-3	8512	companion_entered_tree	bulldog
+stagger	knight	7	bulwark	1	skip	1-3	9438	projectile_block	passive
+stagger	knight	7	bulwark	1	call	1-1	1751	companion_entered_tree	shield_echo
+stagger	knight	7	bulwark	1	call	1-1	1927	command_accepted	
+stagger	knight	7	bulwark	1	call	1-1	1959	granted	protected_damage
+stagger	knight	7	bulwark	1	call	1-1	1959	protected_damage	prevented_total=2
+stagger	knight	7	bulwark	1	call	1-1	1971	resolved_used	protected_damage
+stagger	knight	7	bulwark	1	call	1-1	2574	command_accepted	
+stagger	knight	7	bulwark	1	call	1-3	8802	companion_entered_tree	bulldog
+stagger	knight	7	bulwark	1	call	1-3	9002	command_accepted	
+stagger	knight	7	bulwark	1	call	1-3	9034	granted	protected_damage
+stagger	knight	7	bulwark	1	call	1-3	9034	protected_damage	prevented_total=3
+stagger	knight	7	bulwark	1	call	1-3	9046	resolved_used	protected_damage
+stagger	knight	7	bulwark	1	call	1-3	9501	projectile_block	passive
+stagger	knight	7	bulwark	1	call	1-3	9657	command_accepted	
+stagger	knight	7	bulwark	1	call	1-3	9689	granted	protected_damage
+stagger	knight	7	bulwark	1	call	1-3	9689	protected_damage	prevented_total=5
+stagger	knight	7	bulwark	1	call	1-3	9701	resolved_used	protected_damage
+stagger	knight	7	bulwark	1	call	1-3	10701	command_accepted	
+stagger	knight	7	bulwark	1	call	1-3	10732	granted	protected_damage
+stagger	knight	7	bulwark	1	call	1-3	10732	protected_damage	prevented_total=7
+stagger	knight	7	bulwark	1	call	1-3	10749	resolved_used	protected_damage
+stagger	knight	7	bulwark	1	call	1-3	11822	command_accepted	
+stagger	knight	7	bulwark	1	call	1-3	11854	granted	protected_damage
+stagger	knight	7	bulwark	1	call	1-3	11854	protected_damage	prevented_total=8
+stagger	knight	7	bulwark	1	call	1-3	11870	resolved_used	protected_damage
+stagger	knight	7	bulwark	1	call	1-3	12462	command_accepted	
+stagger	knight	7	bulwark	1	follow	1-1	1751	companion_entered_tree	shield_echo
+stagger	knight	7	bulwark	1	follow	1-1	1927	command_accepted	
+stagger	knight	7	bulwark	1	follow	1-1	1959	granted	protected_damage
+stagger	knight	7	bulwark	1	follow	1-1	1959	protected_damage	prevented_total=2
+stagger	knight	7	bulwark	1	follow	1-1	1971	resolved_used	protected_damage
+stagger	knight	7	bulwark	1	follow	1-1	2574	command_accepted	
+stagger	knight	7	bulwark	1	follow	1-3	8802	companion_entered_tree	bulldog
+stagger	knight	7	bulwark	1	follow	1-3	9002	command_accepted	
+stagger	knight	7	bulwark	1	follow	1-3	9034	granted	protected_damage
+stagger	knight	7	bulwark	1	follow	1-3	9034	protected_damage	prevented_total=3
+stagger	knight	7	bulwark	1	follow	1-3	9046	resolved_used	protected_damage
+stagger	knight	7	bulwark	1	follow	1-3	9501	projectile_block	passive
+stagger	knight	7	bulwark	1	follow	1-3	9653	command_accepted	
+stagger	knight	7	bulwark	1	follow	1-3	9685	granted	protected_damage
+stagger	knight	7	bulwark	1	follow	1-3	9685	protected_damage	prevented_total=5
+stagger	knight	7	bulwark	1	follow	1-3	9702	resolved_used	protected_damage
+stagger	knight	7	bulwark	1	follow	1-3	10464	command_accepted	
+stagger	knight	7	bulwark	1	follow	1-3	10496	granted	protected_damage
+stagger	knight	7	bulwark	1	follow	1-3	10496	protected_damage	prevented_total=7
+stagger	knight	7	bulwark	1	follow	1-3	10508	resolved_used	protected_damage
+stagger	knight	7	bulwark	1	follow	1-3	10883	projectile_block	passive
+stagger	knight	7	bulwark	1	follow	1-3	11558	command_accepted	
+stagger	knight	7	bulwark	1	follow	1-3	11590	granted	protected_damage
+stagger	knight	7	bulwark	1	follow	1-3	11590	protected_damage	prevented_total=8
+stagger	knight	7	bulwark	1	follow	1-3	11602	resolved_used	protected_damage
+stagger	knight	7	bulwark	1	follow	1-3	12217	command_accepted	
+stagger	knight	7	bulwark	1	follow	1-3	12249	granted	protected_damage
+stagger	knight	7	bulwark	1	follow	1-3	12249	protected_damage	prevented_total=9
+stagger	knight	7	bulwark	1	follow	1-3	12261	resolved_used	protected_damage
+stagger	knight	19	bulwark	1	skip	1-1	1655	companion_entered_tree	shield_echo
+stagger	knight	19	bulwark	1	skip	1-3	8479	companion_entered_tree	bulldog
+stagger	knight	19	bulwark	1	skip	1-3	9005	projectile_block	passive
+stagger	knight	19	bulwark	1	skip	1-3	9249	projectile_block	passive
+stagger	knight	19	bulwark	1	skip	1-3	9419	projectile_block	passive
+stagger	knight	19	bulwark	1	call	1-1	1655	companion_entered_tree	shield_echo
+stagger	knight	19	bulwark	1	call	1-1	1857	command_accepted	
+stagger	knight	19	bulwark	1	call	1-1	1889	granted	protected_damage
+stagger	knight	19	bulwark	1	call	1-1	1889	protected_damage	prevented_total=2
+stagger	knight	19	bulwark	1	call	1-1	1904	resolved_used	protected_damage
+stagger	knight	19	bulwark	1	call	1-1	2489	command_accepted	
+stagger	knight	19	bulwark	1	call	1-1	2521	granted	protected_damage
+stagger	knight	19	bulwark	1	call	1-1	2521	protected_damage	prevented_total=4
+stagger	knight	19	bulwark	1	call	1-1	2536	resolved_used	protected_damage
+stagger	knight	19	bulwark	1	call	1-3	8269	companion_entered_tree	bulldog
+stagger	knight	19	bulwark	1	call	1-3	8492	command_accepted	
+stagger	knight	19	bulwark	1	call	1-3	8524	granted	protected_damage
+stagger	knight	19	bulwark	1	call	1-3	8524	protected_damage	prevented_total=2
+stagger	knight	19	bulwark	1	call	1-3	8558	resolved_used	protected_damage
+stagger	knight	19	bulwark	1	call	1-3	9175	command_accepted	
+stagger	knight	19	bulwark	1	call	1-3	9207	granted	protected_damage
+stagger	knight	19	bulwark	1	call	1-3	9207	protected_damage	prevented_total=3
+stagger	knight	19	bulwark	1	call	1-3	9223	resolved_used	protected_damage
+stagger	knight	19	bulwark	1	call	1-3	10092	command_accepted	
+stagger	knight	19	bulwark	1	call	1-3	11133	command_accepted	
+stagger	knight	19	bulwark	1	call	1-3	11165	granted	protected_damage
+stagger	knight	19	bulwark	1	call	1-3	11165	protected_damage	prevented_total=4
+stagger	knight	19	bulwark	1	call	1-3	11201	resolved_used	protected_damage
+stagger	knight	19	bulwark	1	call	1-3	11431	projectile_block	passive
+stagger	knight	19	bulwark	1	call	1-3	11736	command_accepted	
+stagger	knight	19	bulwark	1	call	1-3	11781	projectile_block	commanded
+stagger	knight	19	bulwark	1	call	1-3	11781	granted	projectile
+stagger	knight	19	bulwark	1	call	1-3	11825	resolved_used	projectile
+stagger	knight	19	bulwark	1	follow	1-1	1655	companion_entered_tree	shield_echo
+stagger	knight	19	bulwark	1	follow	1-1	1857	command_accepted	
+stagger	knight	19	bulwark	1	follow	1-1	1889	granted	protected_damage
+stagger	knight	19	bulwark	1	follow	1-1	1889	protected_damage	prevented_total=2
+stagger	knight	19	bulwark	1	follow	1-1	1901	resolved_used	protected_damage
+stagger	knight	19	bulwark	1	follow	1-1	2141	projectile_block	passive
+stagger	knight	19	bulwark	1	follow	1-1	2463	command_accepted	
+stagger	knight	19	bulwark	1	follow	1-1	2495	granted	protected_damage
+stagger	knight	19	bulwark	1	follow	1-1	2495	protected_damage	prevented_total=4
+stagger	knight	19	bulwark	1	follow	1-1	2507	resolved_used	protected_damage
+stagger	knight	19	bulwark	1	follow	1-3	8799	companion_entered_tree	bulldog
+stagger	knight	19	bulwark	1	follow	1-3	8973	command_accepted	
+stagger	knight	19	bulwark	1	follow	1-3	9005	granted	protected_damage
+stagger	knight	19	bulwark	1	follow	1-3	9005	protected_damage	prevented_total=2
+stagger	knight	19	bulwark	1	follow	1-3	9017	resolved_used	protected_damage
+stagger	knight	19	bulwark	1	follow	1-3	9729	command_accepted	
+stagger	knight	19	bulwark	1	follow	1-3	9761	granted	protected_damage
+stagger	knight	19	bulwark	1	follow	1-3	9761	protected_damage	prevented_total=4
+stagger	knight	19	bulwark	1	follow	1-3	9773	resolved_used	protected_damage
+stagger	knight	19	bulwark	1	follow	1-3	10490	command_accepted	
+stagger	knight	19	bulwark	1	follow	1-3	10522	granted	protected_damage
+stagger	knight	19	bulwark	1	follow	1-3	10522	protected_damage	prevented_total=5
+stagger	knight	19	bulwark	1	follow	1-3	10534	resolved_used	protected_damage
+stagger	knight	19	bulwark	1	follow	1-3	11544	command_accepted	
+stagger	knight	19	bulwark	1	follow	1-3	11576	granted	protected_damage
+stagger	knight	19	bulwark	1	follow	1-3	11576	protected_damage	prevented_total=6
+stagger	knight	19	bulwark	1	follow	1-3	11588	resolved_used	protected_damage
+stagger	knight	19	bulwark	1	follow	1-3	12147	command_accepted	
+stagger	knight	19	bulwark	1	follow	1-3	12194	projectile_block	commanded
+stagger	knight	19	bulwark	1	follow	1-3	12194	granted	projectile
+stagger	knight	19	bulwark	1	follow	1-3	12196	resolved_used	projectile
+stagger	mage	7	spellweaver	1	skip	1-1	1479	companion_entered_tree	shield_echo
+stagger	mage	7	spellweaver	1	skip	1-3	7561	companion_entered_tree	bulldog
+stagger	mage	7	spellweaver	1	call	1-1	1479	companion_entered_tree	shield_echo
+stagger	mage	7	spellweaver	1	call	1-1	1781	command_accepted	
+stagger	mage	7	spellweaver	1	call	1-1	1852	projectile_block	commanded
+stagger	mage	7	spellweaver	1	call	1-1	1852	granted	projectile
+stagger	mage	7	spellweaver	1	call	1-1	1927	resolved_used	projectile
+stagger	mage	7	spellweaver	1	call	1-3	7477	companion_entered_tree	bulldog
+stagger	mage	7	spellweaver	1	call	1-3	7818	command_accepted	
+stagger	mage	7	spellweaver	1	call	1-3	7846	granted	protected_damage
+stagger	mage	7	spellweaver	1	call	1-3	7846	protected_damage	prevented_total=3
+stagger	mage	7	spellweaver	1	call	1-3	7895	resolved_used	protected_damage
+stagger	mage	7	spellweaver	1	call	1-3	9376	command_accepted	
+stagger	mage	7	spellweaver	1	call	1-3	10131	command_accepted	
+stagger	mage	7	spellweaver	1	call	1-3	10218	projectile_block	commanded
+stagger	mage	7	spellweaver	1	call	1-3	10218	granted	projectile
+stagger	mage	7	spellweaver	1	call	1-3	10289	resolved_used	projectile
+stagger	mage	7	spellweaver	1	follow	1-1	1479	companion_entered_tree	shield_echo
+stagger	mage	7	spellweaver	1	follow	1-1	1773	command_accepted	
+stagger	mage	7	spellweaver	1	follow	1-1	1818	projectile_block	commanded
+stagger	mage	7	spellweaver	1	follow	1-1	1818	granted	projectile
+stagger	mage	7	spellweaver	1	follow	1-1	1851	resolved_used	projectile
+stagger	mage	7	spellweaver	1	follow	1-1	2627	command_accepted	
+stagger	mage	7	spellweaver	1	follow	1-3	7561	companion_entered_tree	bulldog
+stagger	mage	7	spellweaver	1	follow	1-3	7992	command_accepted	
+stagger	mage	7	spellweaver	1	follow	1-3	8046	projectile_block	commanded
+stagger	mage	7	spellweaver	1	follow	1-3	8046	granted	projectile
+stagger	mage	7	spellweaver	1	follow	1-3	8088	resolved_used	projectile
+stagger	mage	7	spellweaver	1	follow	1-3	8103	projectile_block	commanded
+stagger	mage	7	spellweaver	1	follow	1-3	9528	command_accepted	
+stagger	mage	7	spellweaver	1	follow	1-3	9561	projectile_block	commanded
+stagger	mage	7	spellweaver	1	follow	1-3	9561	granted	projectile
+stagger	mage	7	spellweaver	1	follow	1-3	9604	resolved_used	projectile
+stagger	mage	7	spellweaver	1	follow	1-3	9634	projectile_block	commanded
+stagger	mage	7	spellweaver	1	follow	1-3	10495	command_accepted	
+stagger	mage	7	spellweaver	1	follow	1-3	10541	projectile_block	commanded
+stagger	mage	7	spellweaver	1	follow	1-3	10541	granted	projectile
+stagger	mage	7	spellweaver	1	follow	1-3	10574	resolved_used	projectile
+stagger	mage	19	spellweaver	1	skip	1-1	1450	companion_entered_tree	shield_echo
+stagger	mage	19	spellweaver	1	skip	1-3	7458	companion_entered_tree	bulldog
+stagger	mage	19	spellweaver	1	call	1-1	1450	companion_entered_tree	shield_echo
+stagger	mage	19	spellweaver	1	call	1-3	7458	companion_entered_tree	bulldog
+stagger	mage	19	spellweaver	1	call	1-3	7797	command_accepted	
+stagger	mage	19	spellweaver	1	call	1-3	9369	command_accepted	
+stagger	mage	19	spellweaver	1	call	1-3	10358	command_accepted	
+stagger	mage	19	spellweaver	1	follow	1-1	1450	companion_entered_tree	shield_echo
+stagger	mage	19	spellweaver	1	follow	1-1	1771	command_accepted	
+stagger	mage	19	spellweaver	1	follow	1-3	7609	companion_entered_tree	bulldog
+stagger	mage	19	spellweaver	1	follow	1-3	8022	command_accepted	
+stagger	mage	19	spellweaver	1	follow	1-3	8050	granted	protected_damage
+stagger	mage	19	spellweaver	1	follow	1-3	8050	protected_damage	prevented_total=3
+stagger	mage	19	spellweaver	1	follow	1-3	8108	protected_damage	prevented_total=6
+stagger	mage	19	spellweaver	1	follow	1-3	8112	resolved_used	protected_damage
+stagger	mage	19	spellweaver	1	follow	1-3	9486	command_accepted	
+stagger	mage	19	spellweaver	1	follow	1-3	9618	granted	protected_damage
+stagger	mage	19	spellweaver	1	follow	1-3	9618	protected_damage	prevented_total=9
+stagger	mage	19	spellweaver	1	follow	1-3	9743	resolved_used	protected_damage
+stagger	mage	19	spellweaver	1	follow	1-3	10518	command_accepted	
+stagger	mage	19	spellweaver	1	follow	1-3	10559	projectile_block	commanded
+stagger	mage	19	spellweaver	1	follow	1-3	10559	granted	projectile
+stagger	mage	19	spellweaver	1	follow	1-3	10641	resolved_used	projectile
+stagger	mage	19	spellweaver	1	follow	1-3	10714	projectile_block	commanded
+stagger	archer	7	marksman	1	skip	1-1	1442	companion_entered_tree	shield_echo
+stagger	archer	7	marksman	1	skip	1-3	7451	companion_entered_tree	bulldog
+stagger	archer	7	marksman	1	call	1-1	1442	companion_entered_tree	shield_echo
+stagger	archer	7	marksman	1	call	1-3	7451	companion_entered_tree	bulldog
+stagger	archer	7	marksman	1	call	1-3	7883	command_accepted	
+stagger	archer	7	marksman	1	call	1-3	7968	projectile_block	commanded
+stagger	archer	7	marksman	1	call	1-3	7968	granted	projectile
+stagger	archer	7	marksman	1	call	1-3	7990	resolved_used	projectile
+stagger	archer	7	marksman	1	call	1-3	9389	command_accepted	
+stagger	archer	7	marksman	1	call	1-3	9504	granted	protected_damage
+stagger	archer	7	marksman	1	call	1-3	9504	protected_damage	prevented_total=3
+stagger	archer	7	marksman	1	call	1-3	9534	resolved_used	protected_damage
+stagger	archer	7	marksman	1	call	1-3	10368	command_accepted	
+stagger	archer	7	marksman	1	call	1-3	10408	projectile_block	commanded
+stagger	archer	7	marksman	1	call	1-3	10408	granted	projectile
+stagger	archer	7	marksman	1	call	1-3	10422	resolved_used	projectile
+stagger	archer	7	marksman	1	call	1-3	10446	projectile_block	commanded
+stagger	archer	7	marksman	1	follow	1-1	1442	companion_entered_tree	shield_echo
+stagger	archer	7	marksman	1	follow	1-1	1736	command_accepted	
+stagger	archer	7	marksman	1	follow	1-3	7532	companion_entered_tree	bulldog
+stagger	archer	7	marksman	1	follow	1-3	7964	command_accepted	
+stagger	archer	7	marksman	1	follow	1-3	8020	projectile_block	commanded
+stagger	archer	7	marksman	1	follow	1-3	8020	granted	projectile
+stagger	archer	7	marksman	1	follow	1-3	8024	resolved_used	projectile
+stagger	archer	7	marksman	1	follow	1-3	8077	projectile_block	commanded
+stagger	archer	7	marksman	1	follow	1-3	8576	command_accepted	
+stagger	archer	7	marksman	1	follow	1-3	9456	command_accepted	
+stagger	archer	7	marksman	1	follow	1-3	9497	projectile_block	commanded
+stagger	archer	7	marksman	1	follow	1-3	9497	granted	projectile
+stagger	archer	7	marksman	1	follow	1-3	9510	resolved_used	projectile
+stagger	archer	7	marksman	1	follow	1-3	10869	command_accepted	
+stagger	archer	7	marksman	1	follow	1-3	10897	granted	protected_damage
+stagger	archer	7	marksman	1	follow	1-3	10897	protected_damage	prevented_total=3
+stagger	archer	7	marksman	1	follow	1-3	10960	resolved_used	protected_damage
+stagger	archer	19	marksman	1	skip	1-1	1423	companion_entered_tree	shield_echo
+stagger	archer	19	marksman	1	skip	1-3	7363	companion_entered_tree	bulldog
+stagger	archer	19	marksman	1	call	1-1	1423	companion_entered_tree	shield_echo
+stagger	archer	19	marksman	1	call	1-3	7363	companion_entered_tree	bulldog
+stagger	archer	19	marksman	1	call	1-3	7804	command_accepted	
+stagger	archer	19	marksman	1	call	1-3	7891	projectile_block	commanded
+stagger	archer	19	marksman	1	call	1-3	7891	granted	projectile
+stagger	archer	19	marksman	1	call	1-3	7897	resolved_used	projectile
+stagger	archer	19	marksman	1	call	1-3	7929	projectile_block	commanded
+stagger	archer	19	marksman	1	call	1-3	9220	command_accepted	
+stagger	archer	19	marksman	1	call	1-3	10159	command_accepted	
+stagger	archer	19	marksman	1	follow	1-1	1423	companion_entered_tree	shield_echo
+stagger	archer	19	marksman	1	follow	1-1	1744	command_accepted	
+stagger	archer	19	marksman	1	follow	1-3	7726	companion_entered_tree	bulldog
+stagger	archer	19	marksman	1	follow	1-3	8058	command_accepted	
+stagger	archer	19	marksman	1	follow	1-3	9605	command_accepted	
+stagger	archer	19	marksman	1	follow	1-3	9651	projectile_block	commanded
+stagger	archer	19	marksman	1	follow	1-3	9651	granted	projectile
+stagger	archer	19	marksman	1	follow	1-3	9660	resolved_used	projectile
+stagger	archer	19	marksman	1	follow	1-3	10479	command_accepted	
+formation	knight	7	bulwark	1	skip	1-1	1751	companion_entered_tree	shield_echo
+formation	knight	7	bulwark	1	skip	1-3	8386	companion_entered_tree	bulldog
+formation	knight	7	bulwark	1	call	1-1	1751	companion_entered_tree	shield_echo
+formation	knight	7	bulwark	1	call	1-1	1933	command_accepted	
+formation	knight	7	bulwark	1	call	1-1	2007	projectile_block	commanded
+formation	knight	7	bulwark	1	call	1-1	2007	granted	projectile
+formation	knight	7	bulwark	1	call	1-1	2056	resolved_used	projectile
+formation	knight	7	bulwark	1	call	1-1	2561	command_accepted	
+formation	knight	7	bulwark	1	call	1-1	2593	granted	protected_damage
+formation	knight	7	bulwark	1	call	1-1	2593	protected_damage	prevented_total=2
+formation	knight	7	bulwark	1	call	1-1	2640	resolved_used	protected_damage
+formation	knight	7	bulwark	1	call	1-3	8594	companion_entered_tree	bulldog
+formation	knight	7	bulwark	1	call	1-3	8801	command_accepted	
+formation	knight	7	bulwark	1	call	1-3	8833	granted	protected_damage
+formation	knight	7	bulwark	1	call	1-3	8833	protected_damage	prevented_total=3
+formation	knight	7	bulwark	1	call	1-3	8845	resolved_used	protected_damage
+formation	knight	7	bulwark	1	call	1-3	9290	projectile_block	passive
+formation	knight	7	bulwark	1	call	1-3	9477	command_accepted	
+formation	knight	7	bulwark	1	call	1-3	10638	command_accepted	
+formation	knight	7	bulwark	1	call	1-3	10685	projectile_block	commanded
+formation	knight	7	bulwark	1	call	1-3	10685	granted	projectile
+formation	knight	7	bulwark	1	call	1-3	10797	resolved_used	projectile
+formation	knight	7	bulwark	1	call	1-3	11398	command_accepted	
+formation	knight	7	bulwark	1	call	1-3	11430	granted	protected_damage
+formation	knight	7	bulwark	1	call	1-3	11430	protected_damage	prevented_total=4
+formation	knight	7	bulwark	1	call	1-3	11470	resolved_used	protected_damage
+formation	knight	7	bulwark	1	call	1-3	11786	projectile_block	passive
+formation	knight	7	bulwark	1	call	1-3	12134	command_accepted	
+formation	knight	7	bulwark	1	follow	1-1	1751	companion_entered_tree	shield_echo
+formation	knight	7	bulwark	1	follow	1-1	1893	command_accepted	
+formation	knight	7	bulwark	1	follow	1-1	1925	granted	protected_damage
+formation	knight	7	bulwark	1	follow	1-1	1925	protected_damage	prevented_total=2
+formation	knight	7	bulwark	1	follow	1-1	1937	resolved_used	protected_damage
+formation	knight	7	bulwark	1	follow	1-1	2496	command_accepted	
+formation	knight	7	bulwark	1	follow	1-3	8515	companion_entered_tree	bulldog
+formation	knight	7	bulwark	1	follow	1-3	8679	command_accepted	
+formation	knight	7	bulwark	1	follow	1-3	8711	granted	protected_damage
+formation	knight	7	bulwark	1	follow	1-3	8711	protected_damage	prevented_total=3
+formation	knight	7	bulwark	1	follow	1-3	8723	resolved_used	protected_damage
+formation	knight	7	bulwark	1	follow	1-3	9398	command_accepted	
+formation	knight	7	bulwark	1	follow	1-3	10414	command_accepted	
+formation	knight	7	bulwark	1	follow	1-3	10717	projectile_block	passive
+formation	knight	7	bulwark	1	follow	1-3	11519	command_accepted	
+formation	knight	7	bulwark	1	follow	1-3	11551	granted	protected_damage
+formation	knight	7	bulwark	1	follow	1-3	11551	protected_damage	prevented_total=4
+formation	knight	7	bulwark	1	follow	1-3	11563	resolved_used	protected_damage
+formation	knight	7	bulwark	1	follow	1-3	12221	command_accepted	
+formation	knight	19	bulwark	1	skip	1-1	1655	companion_entered_tree	shield_echo
+formation	knight	19	bulwark	1	skip	1-3	8352	companion_entered_tree	bulldog
+formation	knight	19	bulwark	1	skip	1-3	8878	projectile_block	passive
+formation	knight	19	bulwark	1	skip	1-3	10420	projectile_block	passive
+formation	knight	19	bulwark	1	call	1-1	1655	companion_entered_tree	shield_echo
+formation	knight	19	bulwark	1	call	1-1	1806	command_accepted	
+formation	knight	19	bulwark	1	call	1-1	1838	granted	protected_damage
+formation	knight	19	bulwark	1	call	1-1	1838	protected_damage	prevented_total=2
+formation	knight	19	bulwark	1	call	1-1	1888	resolved_used	protected_damage
+formation	knight	19	bulwark	1	call	1-1	2544	command_accepted	
+formation	knight	19	bulwark	1	call	1-1	2576	granted	protected_damage
+formation	knight	19	bulwark	1	call	1-1	2576	protected_damage	prevented_total=4
+formation	knight	19	bulwark	1	call	1-1	2592	resolved_used	protected_damage
+formation	knight	19	bulwark	1	call	1-3	8791	companion_entered_tree	bulldog
+formation	knight	19	bulwark	1	call	1-3	9006	command_accepted	
+formation	knight	19	bulwark	1	call	1-3	9038	granted	protected_damage
+formation	knight	19	bulwark	1	call	1-3	9038	protected_damage	prevented_total=2
+formation	knight	19	bulwark	1	call	1-3	9050	resolved_used	protected_damage
+formation	knight	19	bulwark	1	call	1-3	9514	projectile_block	passive
+formation	knight	19	bulwark	1	call	1-3	9760	command_accepted	
+formation	knight	19	bulwark	1	call	1-3	9792	granted	protected_damage
+formation	knight	19	bulwark	1	call	1-3	9792	protected_damage	prevented_total=3
+formation	knight	19	bulwark	1	call	1-3	9804	resolved_used	protected_damage
+formation	knight	19	bulwark	1	call	1-3	10495	command_accepted	
+formation	knight	19	bulwark	1	call	1-3	10527	granted	protected_damage
+formation	knight	19	bulwark	1	call	1-3	10527	protected_damage	prevented_total=4
+formation	knight	19	bulwark	1	call	1-3	10539	resolved_used	protected_damage
+formation	knight	19	bulwark	1	call	1-3	10908	projectile_block	passive
+formation	knight	19	bulwark	1	call	1-3	11553	command_accepted	
+formation	knight	19	bulwark	1	call	1-3	12156	command_accepted	
+formation	knight	19	bulwark	1	call	1-3	12184	granted	protected_damage
+formation	knight	19	bulwark	1	call	1-3	12184	protected_damage	prevented_total=5
+formation	knight	19	bulwark	1	call	1-3	12203	resolved_used	protected_damage
+formation	knight	19	bulwark	1	follow	1-1	1655	companion_entered_tree	shield_echo
+formation	knight	19	bulwark	1	follow	1-1	1799	command_accepted	
+formation	knight	19	bulwark	1	follow	1-1	1831	granted	protected_damage
+formation	knight	19	bulwark	1	follow	1-1	1831	protected_damage	prevented_total=2
+formation	knight	19	bulwark	1	follow	1-1	1843	resolved_used	protected_damage
+formation	knight	19	bulwark	1	follow	1-1	1959	projectile_block	commanded
+formation	knight	19	bulwark	1	follow	1-1	2465	command_accepted	
+formation	knight	19	bulwark	1	follow	1-1	2497	granted	protected_damage
+formation	knight	19	bulwark	1	follow	1-1	2497	protected_damage	prevented_total=4
+formation	knight	19	bulwark	1	follow	1-1	2509	resolved_used	protected_damage
+formation	knight	19	bulwark	1	follow	1-3	8805	companion_entered_tree	bulldog
+formation	knight	19	bulwark	1	follow	1-3	9020	command_accepted	
+formation	knight	19	bulwark	1	follow	1-3	9052	granted	protected_damage
+formation	knight	19	bulwark	1	follow	1-3	9052	protected_damage	prevented_total=2
+formation	knight	19	bulwark	1	follow	1-3	9064	resolved_used	protected_damage
+formation	knight	19	bulwark	1	follow	1-3	9318	projectile_block	passive
+formation	knight	19	bulwark	1	follow	1-3	9369	projectile_block	passive
+formation	knight	19	bulwark	1	follow	1-3	9635	command_accepted	
+formation	knight	19	bulwark	1	follow	1-3	9668	granted	protected_damage
+formation	knight	19	bulwark	1	follow	1-3	9668	protected_damage	prevented_total=3
+formation	knight	19	bulwark	1	follow	1-3	9680	resolved_used	protected_damage
+formation	knight	19	bulwark	1	follow	1-3	10565	command_accepted	
+formation	knight	19	bulwark	1	follow	1-3	10595	granted	protected_damage
+formation	knight	19	bulwark	1	follow	1-3	10595	protected_damage	prevented_total=4
+formation	knight	19	bulwark	1	follow	1-3	10609	resolved_used	protected_damage
+formation	knight	19	bulwark	1	follow	1-3	11683	command_accepted	
+formation	knight	19	bulwark	1	follow	1-3	11715	granted	protected_damage
+formation	knight	19	bulwark	1	follow	1-3	11715	protected_damage	prevented_total=5
+formation	knight	19	bulwark	1	follow	1-3	11727	resolved_used	protected_damage
+formation	knight	19	bulwark	1	follow	1-3	12286	command_accepted	
+formation	knight	19	bulwark	1	follow	1-3	12338	projectile_block	commanded
+formation	knight	19	bulwark	1	follow	1-3	12338	granted	projectile
+formation	knight	19	bulwark	1	follow	1-3	12384	resolved_used	projectile
+formation	mage	7	spellweaver	1	skip	1-1	1479	companion_entered_tree	shield_echo
+formation	mage	7	spellweaver	1	skip	1-1	1739	projectile_block	passive
+formation	mage	7	spellweaver	1	skip	1-3	7930	companion_entered_tree	bulldog
+formation	mage	7	spellweaver	1	call	1-1	1479	companion_entered_tree	shield_echo
+formation	mage	7	spellweaver	1	call	1-1	1661	command_accepted	
+formation	mage	7	spellweaver	1	call	1-1	1746	projectile_block	commanded
+formation	mage	7	spellweaver	1	call	1-1	1746	granted	projectile
+formation	mage	7	spellweaver	1	call	1-1	1815	resolved_used	projectile
+formation	mage	7	spellweaver	1	call	1-3	7879	companion_entered_tree	bulldog
+formation	mage	7	spellweaver	1	call	1-3	8310	command_accepted	
+formation	mage	7	spellweaver	1	call	1-3	8381	projectile_block	commanded
+formation	mage	7	spellweaver	1	call	1-3	8381	granted	projectile
+formation	mage	7	spellweaver	1	call	1-3	8390	resolved_used	projectile
+formation	mage	7	spellweaver	1	call	1-3	9749	command_accepted	
+formation	mage	7	spellweaver	1	call	1-3	9820	projectile_block	commanded
+formation	mage	7	spellweaver	1	call	1-3	9820	granted	projectile
+formation	mage	7	spellweaver	1	call	1-3	9856	resolved_used	projectile
+formation	mage	7	spellweaver	1	call	1-3	10740	command_accepted	
+formation	mage	7	spellweaver	1	call	1-3	10778	projectile_block	commanded
+formation	mage	7	spellweaver	1	call	1-3	10778	granted	projectile
+formation	mage	7	spellweaver	1	call	1-3	10821	projectile_block	commanded
+formation	mage	7	spellweaver	1	call	1-3	10853	resolved_used	projectile
+formation	mage	7	spellweaver	1	follow	1-1	1479	companion_entered_tree	shield_echo
+formation	mage	7	spellweaver	1	follow	1-1	1623	command_accepted	
+formation	mage	7	spellweaver	1	follow	1-1	1651	granted	protected_damage
+formation	mage	7	spellweaver	1	follow	1-1	1651	protected_damage	prevented_total=2
+formation	mage	7	spellweaver	1	follow	1-1	1695	resolved_used	protected_damage
+formation	mage	7	spellweaver	1	follow	1-1	1739	projectile_block	commanded
+formation	mage	7	spellweaver	1	follow	1-3	7505	companion_entered_tree	bulldog
+formation	mage	7	spellweaver	1	follow	1-3	7846	command_accepted	
+formation	mage	7	spellweaver	1	follow	1-3	7874	granted	protected_damage
+formation	mage	7	spellweaver	1	follow	1-3	7874	protected_damage	prevented_total=3
+formation	mage	7	spellweaver	1	follow	1-3	7920	resolved_used	protected_damage
+formation	mage	7	spellweaver	1	follow	1-3	9342	command_accepted	
+formation	mage	7	spellweaver	1	follow	1-3	9464	granted	protected_damage
+formation	mage	7	spellweaver	1	follow	1-3	9464	protected_damage	prevented_total=5
+formation	mage	7	spellweaver	1	follow	1-3	9469	resolved_used	protected_damage
+formation	mage	7	spellweaver	1	follow	1-3	10225	command_accepted	
+formation	mage	7	spellweaver	1	follow	1-3	10300	projectile_block	commanded
+formation	mage	7	spellweaver	1	follow	1-3	10300	granted	projectile
+formation	mage	7	spellweaver	1	follow	1-3	10481	resolved_expired	projectile
+formation	mage	19	spellweaver	1	skip	1-1	1450	companion_entered_tree	shield_echo
+formation	mage	19	spellweaver	1	skip	1-3	7510	companion_entered_tree	bulldog
+formation	mage	19	spellweaver	1	skip	1-3	8053	projectile_block	passive
+formation	mage	19	spellweaver	1	call	1-1	1450	companion_entered_tree	shield_echo
+formation	mage	19	spellweaver	1	call	1-1	1643	command_accepted	
+formation	mage	19	spellweaver	1	call	1-1	1726	projectile_block	commanded
+formation	mage	19	spellweaver	1	call	1-1	1726	granted	projectile
+formation	mage	19	spellweaver	1	call	1-1	1792	resolved_used	projectile
+formation	mage	19	spellweaver	1	call	1-3	7511	companion_entered_tree	bulldog
+formation	mage	19	spellweaver	1	call	1-3	7952	command_accepted	
+formation	mage	19	spellweaver	1	call	1-3	8031	projectile_block	commanded
+formation	mage	19	spellweaver	1	call	1-3	8031	granted	projectile
+formation	mage	19	spellweaver	1	call	1-3	8034	resolved_used	projectile
+formation	mage	19	spellweaver	1	call	1-3	8068	projectile_block	commanded
+formation	mage	19	spellweaver	1	call	1-3	9384	command_accepted	
+formation	mage	19	spellweaver	1	call	1-3	10385	command_accepted	
+formation	mage	19	spellweaver	1	call	1-3	10452	projectile_block	commanded
+formation	mage	19	spellweaver	1	call	1-3	10452	granted	projectile
+formation	mage	19	spellweaver	1	call	1-3	10527	projectile_block	commanded
+formation	mage	19	spellweaver	1	call	1-3	10541	resolved_used	projectile
+formation	mage	19	spellweaver	1	follow	1-1	1450	companion_entered_tree	shield_echo
+formation	mage	19	spellweaver	1	follow	1-1	1594	command_accepted	
+formation	mage	19	spellweaver	1	follow	1-1	1622	granted	protected_damage
+formation	mage	19	spellweaver	1	follow	1-1	1622	protected_damage	prevented_total=3
+formation	mage	19	spellweaver	1	follow	1-1	1667	resolved_used	protected_damage
+formation	mage	19	spellweaver	1	follow	1-1	1719	projectile_block	commanded
+formation	mage	19	spellweaver	1	follow	1-3	7677	companion_entered_tree	bulldog
+formation	mage	19	spellweaver	1	follow	1-3	8070	command_accepted	
+formation	mage	19	spellweaver	1	follow	1-3	8098	granted	protected_damage
+formation	mage	19	spellweaver	1	follow	1-3	8098	protected_damage	prevented_total=3
+formation	mage	19	spellweaver	1	follow	1-3	8102	resolved_used	protected_damage
+formation	mage	19	spellweaver	1	follow	1-3	9551	command_accepted	
+formation	mage	19	spellweaver	1	follow	1-3	9607	projectile_block	commanded
+formation	mage	19	spellweaver	1	follow	1-3	9607	granted	projectile
+formation	mage	19	spellweaver	1	follow	1-3	9646	resolved_used	projectile
+formation	mage	19	spellweaver	1	follow	1-3	10732	command_accepted	
+formation	mage	19	spellweaver	1	follow	1-3	10758	granted	protected_damage
+formation	mage	19	spellweaver	1	follow	1-3	10758	protected_damage	prevented_total=6
+formation	mage	19	spellweaver	1	follow	1-3	10764	projectile_block	commanded
+formation	mage	19	spellweaver	1	follow	1-3	10911	resolved_used	protected_damage
+formation	archer	7	marksman	1	skip	1-1	1442	companion_entered_tree	shield_echo
+formation	archer	7	marksman	1	skip	1-3	7602	companion_entered_tree	bulldog
+formation	archer	7	marksman	1	skip	1-3	9584	projectile_block	passive
+formation	archer	7	marksman	1	call	1-1	1442	companion_entered_tree	shield_echo
+formation	archer	7	marksman	1	call	1-1	1624	command_accepted	
+formation	archer	7	marksman	1	call	1-1	1701	projectile_block	commanded
+formation	archer	7	marksman	1	call	1-1	1701	granted	projectile
+formation	archer	7	marksman	1	call	1-1	1834	resolved_used	projectile
+formation	archer	7	marksman	1	call	1-1	2308	command_accepted	
+formation	archer	7	marksman	1	call	1-3	7645	companion_entered_tree	bulldog
+formation	archer	7	marksman	1	call	1-3	8077	command_accepted	
+formation	archer	7	marksman	1	call	1-3	8155	projectile_block	commanded
+formation	archer	7	marksman	1	call	1-3	8155	granted	projectile
+formation	archer	7	marksman	1	call	1-3	8156	resolved_used	projectile
+formation	archer	7	marksman	1	call	1-3	9550	command_accepted	
+formation	archer	7	marksman	1	call	1-3	9660	projectile_block	commanded
+formation	archer	7	marksman	1	call	1-3	9660	granted	projectile
+formation	archer	7	marksman	1	call	1-3	9688	resolved_used	projectile
+formation	archer	7	marksman	1	call	1-3	10359	command_accepted	
+formation	archer	7	marksman	1	call	1-3	10387	granted	protected_damage
+formation	archer	7	marksman	1	call	1-3	10387	protected_damage	prevented_total=3
+formation	archer	7	marksman	1	call	1-3	10409	resolved_used	protected_damage
+formation	archer	7	marksman	1	call	1-3	10523	projectile_block	commanded
+formation	archer	7	marksman	1	follow	1-1	1442	companion_entered_tree	shield_echo
+formation	archer	7	marksman	1	follow	1-1	1583	command_accepted	
+formation	archer	7	marksman	1	follow	1-1	1611	granted	protected_damage
+formation	archer	7	marksman	1	follow	1-1	1611	protected_damage	prevented_total=3
+formation	archer	7	marksman	1	follow	1-1	1635	resolved_used	protected_damage
+formation	archer	7	marksman	1	follow	1-1	1695	projectile_block	commanded
+formation	archer	7	marksman	1	follow	1-3	7453	companion_entered_tree	bulldog
+formation	archer	7	marksman	1	follow	1-3	7885	command_accepted	
+formation	archer	7	marksman	1	follow	1-3	7937	projectile_block	commanded
+formation	archer	7	marksman	1	follow	1-3	7937	granted	projectile
+formation	archer	7	marksman	1	follow	1-3	7944	resolved_used	projectile
+formation	archer	7	marksman	1	follow	1-3	7997	projectile_block	commanded
+formation	archer	7	marksman	1	follow	1-3	9388	command_accepted	
+formation	archer	7	marksman	1	follow	1-3	9429	projectile_block	commanded
+formation	archer	7	marksman	1	follow	1-3	9429	granted	projectile
+formation	archer	7	marksman	1	follow	1-3	9442	resolved_used	projectile
+formation	archer	7	marksman	1	follow	1-3	10240	command_accepted	
+formation	archer	19	marksman	1	skip	1-1	1423	companion_entered_tree	shield_echo
+formation	archer	19	marksman	1	skip	1-3	7382	companion_entered_tree	bulldog
+formation	archer	19	marksman	1	call	1-1	1423	companion_entered_tree	shield_echo
+formation	archer	19	marksman	1	call	1-1	1616	command_accepted	
+formation	archer	19	marksman	1	call	1-1	1697	projectile_block	commanded
+formation	archer	19	marksman	1	call	1-1	1697	granted	projectile
+formation	archer	19	marksman	1	call	1-1	1818	resolved_used	projectile
+formation	archer	19	marksman	1	call	1-3	7363	companion_entered_tree	bulldog
+formation	archer	19	marksman	1	call	1-3	7804	command_accepted	
+formation	archer	19	marksman	1	call	1-3	7891	projectile_block	commanded
+formation	archer	19	marksman	1	call	1-3	7891	granted	projectile
+formation	archer	19	marksman	1	call	1-3	7897	resolved_used	projectile
+formation	archer	19	marksman	1	call	1-3	7929	projectile_block	commanded
+formation	archer	19	marksman	1	call	1-3	9220	command_accepted	
+formation	archer	19	marksman	1	call	1-3	10159	command_accepted	
+formation	archer	19	marksman	1	follow	1-1	1423	companion_entered_tree	shield_echo
+formation	archer	19	marksman	1	follow	1-1	1565	command_accepted	
+formation	archer	19	marksman	1	follow	1-1	1593	granted	protected_damage
+formation	archer	19	marksman	1	follow	1-1	1593	protected_damage	prevented_total=3
+formation	archer	19	marksman	1	follow	1-1	1617	resolved_used	protected_damage
+formation	archer	19	marksman	1	follow	1-1	1689	projectile_block	commanded
+formation	archer	19	marksman	1	follow	1-3	7645	companion_entered_tree	bulldog
+formation	archer	19	marksman	1	follow	1-3	8086	command_accepted	
+formation	archer	19	marksman	1	follow	1-3	8136	projectile_block	commanded
+formation	archer	19	marksman	1	follow	1-3	8136	granted	projectile
+formation	archer	19	marksman	1	follow	1-3	8144	resolved_used	projectile
+formation	archer	19	marksman	1	follow	1-3	8199	projectile_block	commanded
+formation	archer	19	marksman	1	follow	1-3	9486	command_accepted	
+formation	archer	19	marksman	1	follow	1-3	10379	command_accepted	
+formation	archer	19	marksman	1	follow	1-3	10458	projectile_block	commanded
+formation	archer	19	marksman	1	follow	1-3	10458	granted	projectile
+formation	archer	19	marksman	1	follow	1-3	10491	resolved_used	projectile
+default	knight	7	bulwark	0	skip	1-3	8661	companion_entered_tree	bulldog
+default	knight	7	bulwark	0	skip	1-3	9230	projectile_block	passive
+default	knight	7	bulwark	0	skip	1-3	11109	projectile_block	passive
+default	knight	7	bulwark	0	skip	1-3	12363	projectile_block	passive
+default	knight	7	bulwark	0	call	1-3	8661	companion_entered_tree	bulldog
+default	knight	7	bulwark	0	call	1-3	8867	command_accepted	
+default	knight	7	bulwark	0	call	1-3	8899	granted	protected_damage
+default	knight	7	bulwark	0	call	1-3	8899	protected_damage	prevented_total=3
+default	knight	7	bulwark	0	call	1-3	8911	resolved_used	protected_damage
+default	knight	7	bulwark	0	call	1-3	9181	projectile_block	passive
+default	knight	7	bulwark	0	call	1-3	9358	projectile_block	passive
+default	knight	7	bulwark	0	call	1-3	9522	command_accepted	
+default	knight	7	bulwark	0	call	1-3	9554	granted	protected_damage
+default	knight	7	bulwark	0	call	1-3	9554	protected_damage	prevented_total=5
+default	knight	7	bulwark	0	call	1-3	9576	resolved_used	protected_damage
+default	knight	7	bulwark	0	call	1-3	10366	command_accepted	
+default	knight	7	bulwark	0	call	1-3	10969	command_accepted	
+default	knight	7	bulwark	0	call	1-3	11008	projectile_block	commanded
+default	knight	7	bulwark	0	call	1-3	11008	granted	projectile
+default	knight	7	bulwark	0	call	1-3	11189	resolved_expired	projectile
+default	knight	7	bulwark	0	call	1-3	11256	projectile_block	passive
+default	knight	7	bulwark	0	call	1-3	11670	command_accepted	
+default	knight	7	bulwark	0	call	1-3	11702	granted	protected_damage
+default	knight	7	bulwark	0	call	1-3	11702	protected_damage	prevented_total=7
+default	knight	7	bulwark	0	call	1-3	11752	resolved_used	protected_damage
+default	knight	7	bulwark	0	call	1-3	12165	projectile_block	passive
+default	knight	7	bulwark	0	call	1-3	12313	command_accepted	
+default	knight	7	bulwark	0	call	1-3	12345	granted	protected_damage
+default	knight	7	bulwark	0	call	1-3	12345	protected_damage	prevented_total=8
+default	knight	7	bulwark	0	call	1-3	12361	resolved_used	protected_damage
+default	knight	7	bulwark	0	call	1-3	12456	protected_damage	prevented_total=9
+default	knight	7	bulwark	0	follow	1-3	8661	companion_entered_tree	bulldog
+default	knight	7	bulwark	0	follow	1-3	8867	command_accepted	
+default	knight	7	bulwark	0	follow	1-3	8899	granted	protected_damage
+default	knight	7	bulwark	0	follow	1-3	8899	protected_damage	prevented_total=3
+default	knight	7	bulwark	0	follow	1-3	8911	resolved_used	protected_damage
+default	knight	7	bulwark	0	follow	1-3	9154	projectile_block	passive
+default	knight	7	bulwark	0	follow	1-3	9593	command_accepted	
+default	knight	7	bulwark	0	follow	1-3	9625	granted	protected_damage
+default	knight	7	bulwark	0	follow	1-3	9625	protected_damage	prevented_total=6
+default	knight	7	bulwark	0	follow	1-3	9637	resolved_used	protected_damage
+default	knight	7	bulwark	0	follow	1-3	10376	command_accepted	
+default	knight	7	bulwark	0	follow	1-3	10408	granted	protected_damage
+default	knight	7	bulwark	0	follow	1-3	10408	protected_damage	prevented_total=8
+default	knight	7	bulwark	0	follow	1-3	10420	resolved_used	protected_damage
+default	knight	7	bulwark	0	follow	1-3	11533	command_accepted	
+default	knight	7	bulwark	0	follow	1-3	11565	granted	protected_damage
+default	knight	7	bulwark	0	follow	1-3	11565	protected_damage	prevented_total=10
+default	knight	7	bulwark	0	follow	1-3	11577	resolved_used	protected_damage
+default	knight	7	bulwark	0	follow	1-3	11850	projectile_block	passive
+default	knight	7	bulwark	0	follow	1-3	12090	projectile_block	passive
+default	knight	7	bulwark	0	follow	1-3	12252	command_accepted	
+default	knight	19	bulwark	0	skip	1-3	8156	companion_entered_tree	bulldog
+default	knight	19	bulwark	0	skip	1-3	8682	projectile_block	passive
+default	knight	19	bulwark	0	skip	1-3	10224	projectile_block	passive
+default	knight	19	bulwark	0	skip	1-3	11689	projectile_block	passive
+default	knight	19	bulwark	0	call	1-3	8156	companion_entered_tree	bulldog
+default	knight	19	bulwark	0	call	1-3	8317	command_accepted	
+default	knight	19	bulwark	0	call	1-3	8349	granted	protected_damage
+default	knight	19	bulwark	0	call	1-3	8349	protected_damage	prevented_total=2
+default	knight	19	bulwark	0	call	1-3	8365	resolved_used	protected_damage
+default	knight	19	bulwark	0	call	1-3	8710	projectile_block	passive
+default	knight	19	bulwark	0	call	1-3	9003	command_accepted	
+default	knight	19	bulwark	0	call	1-3	9035	granted	protected_damage
+default	knight	19	bulwark	0	call	1-3	9035	protected_damage	prevented_total=4
+default	knight	19	bulwark	0	call	1-3	9093	resolved_used	protected_damage
+default	knight	19	bulwark	0	call	1-3	10025	command_accepted	
+default	knight	19	bulwark	0	call	1-3	10669	command_accepted	
+default	knight	19	bulwark	0	call	1-3	10723	projectile_block	commanded
+default	knight	19	bulwark	0	call	1-3	10723	granted	projectile
+default	knight	19	bulwark	0	call	1-3	10759	resolved_used	projectile
+default	knight	19	bulwark	0	call	1-3	11286	command_accepted	
+default	knight	19	bulwark	0	call	1-3	11318	granted	protected_damage
+default	knight	19	bulwark	0	call	1-3	11318	protected_damage	prevented_total=5
+default	knight	19	bulwark	0	call	1-3	11408	resolved_used	protected_damage
+default	knight	19	bulwark	0	call	1-3	11466	projectile_block	commanded
+default	knight	19	bulwark	0	call	1-3	11481	projectile_block	passive
+default	knight	19	bulwark	0	call	1-3	11890	command_accepted	
+default	knight	19	bulwark	0	call	1-3	11924	projectile_block	commanded
+default	knight	19	bulwark	0	call	1-3	11924	granted	projectile
+default	knight	19	bulwark	0	call	1-3	11944	resolved_used	projectile
+default	knight	19	bulwark	0	follow	1-3	8156	companion_entered_tree	bulldog
+default	knight	19	bulwark	0	follow	1-3	8317	command_accepted	
+default	knight	19	bulwark	0	follow	1-3	8349	granted	protected_damage
+default	knight	19	bulwark	0	follow	1-3	8349	protected_damage	prevented_total=2
+default	knight	19	bulwark	0	follow	1-3	8361	resolved_used	protected_damage
+default	knight	19	bulwark	0	follow	1-3	8920	command_accepted	
+default	knight	19	bulwark	0	follow	1-3	8940	projectile_block	commanded
+default	knight	19	bulwark	0	follow	1-3	8940	granted	projectile
+default	knight	19	bulwark	0	follow	1-3	8958	resolved_used	projectile
+default	knight	19	bulwark	0	follow	1-3	9199	projectile_block	passive
+default	knight	19	bulwark	0	follow	1-3	10095	command_accepted	
+default	knight	19	bulwark	0	follow	1-3	10127	granted	protected_damage
+default	knight	19	bulwark	0	follow	1-3	10127	protected_damage	prevented_total=3
+default	knight	19	bulwark	0	follow	1-3	10139	resolved_used	protected_damage
+default	knight	19	bulwark	0	follow	1-3	10773	command_accepted	
+default	knight	19	bulwark	0	follow	1-3	11376	command_accepted	
+default	knight	19	bulwark	0	follow	1-3	11408	granted	protected_damage
+default	knight	19	bulwark	0	follow	1-3	11408	protected_damage	prevented_total=4
+default	knight	19	bulwark	0	follow	1-3	11429	resolved_used	protected_damage
+default	knight	19	bulwark	0	follow	1-3	12071	command_accepted	
+default	mage	7	spellweaver	0	skip	1-3	7535	companion_entered_tree	bulldog
+default	mage	7	spellweaver	0	call	1-3	7535	companion_entered_tree	bulldog
+default	mage	7	spellweaver	0	call	1-3	7966	command_accepted	
+default	mage	7	spellweaver	0	call	1-3	8040	projectile_block	commanded
+default	mage	7	spellweaver	0	call	1-3	8040	granted	projectile
+default	mage	7	spellweaver	0	call	1-3	8083	projectile_block	commanded
+default	mage	7	spellweaver	0	call	1-3	8096	resolved_used	projectile
+default	mage	7	spellweaver	0	call	1-3	9472	command_accepted	
+default	mage	7	spellweaver	0	call	1-3	9546	projectile_block	commanded
+default	mage	7	spellweaver	0	call	1-3	9546	granted	projectile
+default	mage	7	spellweaver	0	call	1-3	9591	resolved_used	projectile
+default	mage	7	spellweaver	0	call	1-3	10617	command_accepted	
+default	mage	7	spellweaver	0	call	1-3	10696	projectile_block	commanded
+default	mage	7	spellweaver	0	call	1-3	10696	granted	projectile
+default	mage	7	spellweaver	0	call	1-3	10755	resolved_used	projectile
+default	mage	7	spellweaver	0	follow	1-3	7535	companion_entered_tree	bulldog
+default	mage	7	spellweaver	0	follow	1-3	7944	command_accepted	
+default	mage	7	spellweaver	0	follow	1-3	7972	granted	protected_damage
+default	mage	7	spellweaver	0	follow	1-3	7972	protected_damage	prevented_total=3
+default	mage	7	spellweaver	0	follow	1-3	8020	resolved_used	protected_damage
+default	mage	7	spellweaver	0	follow	1-3	8040	projectile_block	commanded
+default	mage	7	spellweaver	0	follow	1-3	8083	projectile_block	commanded
+default	mage	7	spellweaver	0	follow	1-3	9403	command_accepted	
+default	mage	7	spellweaver	0	follow	1-3	9453	projectile_block	commanded
+default	mage	7	spellweaver	0	follow	1-3	9453	granted	projectile
+default	mage	7	spellweaver	0	follow	1-3	9489	resolved_used	projectile
+default	mage	7	spellweaver	0	follow	1-3	9505	projectile_block	commanded
+default	mage	7	spellweaver	0	follow	1-3	10515	command_accepted	
+default	mage	7	spellweaver	0	follow	1-3	10669	granted	protected_damage
+default	mage	7	spellweaver	0	follow	1-3	10669	protected_damage	prevented_total=5
+default	mage	7	spellweaver	0	follow	1-3	10697	resolved_used	protected_damage
+default	mage	19	spellweaver	0	skip	1-3	7621	companion_entered_tree	bulldog
+default	mage	19	spellweaver	0	call	1-3	7621	companion_entered_tree	bulldog
+default	mage	19	spellweaver	0	call	1-3	8062	command_accepted	
+default	mage	19	spellweaver	0	call	1-3	8134	projectile_block	commanded
+default	mage	19	spellweaver	0	call	1-3	8134	granted	projectile
+default	mage	19	spellweaver	0	call	1-3	8166	resolved_used	projectile
+default	mage	19	spellweaver	0	call	1-3	8180	projectile_block	commanded
+default	mage	19	spellweaver	0	call	1-3	9466	command_accepted	
+default	mage	19	spellweaver	0	call	1-3	9537	projectile_block	commanded
+default	mage	19	spellweaver	0	call	1-3	9537	granted	projectile
+default	mage	19	spellweaver	0	call	1-3	9594	projectile_block	commanded
+default	mage	19	spellweaver	0	call	1-3	9718	resolved_expired	projectile
+default	mage	19	spellweaver	0	call	1-3	10351	command_accepted	
+default	mage	19	spellweaver	0	call	1-3	10970	command_accepted	
+default	mage	19	spellweaver	0	follow	1-3	7621	companion_entered_tree	bulldog
+default	mage	19	spellweaver	0	follow	1-3	8040	command_accepted	
+default	mage	19	spellweaver	0	follow	1-3	8131	granted	protected_damage
+default	mage	19	spellweaver	0	follow	1-3	8131	protected_damage	prevented_total=3
+default	mage	19	spellweaver	0	follow	1-3	8131	resolved_used	protected_damage
+default	mage	19	spellweaver	0	follow	1-3	8184	projectile_block	commanded
+default	mage	19	spellweaver	0	follow	1-3	9534	command_accepted	
+default	mage	19	spellweaver	0	follow	1-3	9586	projectile_block	commanded
+default	mage	19	spellweaver	0	follow	1-3	9586	granted	projectile
+default	mage	19	spellweaver	0	follow	1-3	9625	resolved_used	projectile
+default	mage	19	spellweaver	0	follow	1-3	10732	command_accepted	
+default	mage	19	spellweaver	0	follow	1-3	10921	projectile_block	commanded
+default	archer	7	marksman	0	skip	1-3	7568	companion_entered_tree	bulldog
+default	archer	7	marksman	0	skip	1-3	9550	projectile_block	passive
+default	archer	7	marksman	0	call	1-3	7568	companion_entered_tree	bulldog
+default	archer	7	marksman	0	call	1-3	8000	command_accepted	
+default	archer	7	marksman	0	call	1-3	8090	projectile_block	commanded
+default	archer	7	marksman	0	call	1-3	8090	granted	projectile
+default	archer	7	marksman	0	call	1-3	8111	resolved_used	projectile
+default	archer	7	marksman	0	call	1-3	9491	command_accepted	
+default	archer	7	marksman	0	call	1-3	10351	command_accepted	
+default	archer	7	marksman	0	call	1-3	10451	granted	protected_damage
+default	archer	7	marksman	0	call	1-3	10451	protected_damage	prevented_total=3
+default	archer	7	marksman	0	call	1-3	10618	resolved_used	protected_damage
+default	archer	7	marksman	0	follow	1-3	7568	companion_entered_tree	bulldog
+default	archer	7	marksman	0	follow	1-3	8000	command_accepted	
+default	archer	7	marksman	0	follow	1-3	8056	projectile_block	commanded
+default	archer	7	marksman	0	follow	1-3	8056	granted	projectile
+default	archer	7	marksman	0	follow	1-3	8060	resolved_used	projectile
+default	archer	7	marksman	0	follow	1-3	8113	projectile_block	commanded
+default	archer	7	marksman	0	follow	1-3	9460	command_accepted	
+default	archer	7	marksman	0	follow	1-3	9505	projectile_block	commanded
+default	archer	7	marksman	0	follow	1-3	9505	granted	projectile
+default	archer	7	marksman	0	follow	1-3	9515	resolved_used	projectile
+default	archer	7	marksman	0	follow	1-3	9585	projectile_block	commanded
+default	archer	7	marksman	0	follow	1-3	10454	command_accepted	
+default	archer	7	marksman	0	follow	1-3	10608	projectile_block	commanded
+default	archer	7	marksman	0	follow	1-3	10608	granted	projectile
+default	archer	7	marksman	0	follow	1-3	10750	resolved_used	projectile
+default	archer	7	marksman	0	follow	1-3	11058	command_accepted	
+default	archer	7	marksman	0	follow	1-3	11087	projectile_block	commanded
+default	archer	7	marksman	0	follow	1-3	11087	granted	projectile
+default	archer	7	marksman	0	follow	1-3	11114	resolved_used	projectile
+default	archer	19	marksman	0	skip	1-3	7363	companion_entered_tree	bulldog
+default	archer	19	marksman	0	call	1-3	7363	companion_entered_tree	bulldog
+default	archer	19	marksman	0	call	1-3	7804	command_accepted	
+default	archer	19	marksman	0	call	1-3	7891	projectile_block	commanded
+default	archer	19	marksman	0	call	1-3	7891	granted	projectile
+default	archer	19	marksman	0	call	1-3	7897	resolved_used	projectile
+default	archer	19	marksman	0	call	1-3	7929	projectile_block	commanded
+default	archer	19	marksman	0	call	1-3	9220	command_accepted	
+default	archer	19	marksman	0	call	1-3	10159	command_accepted	
+default	archer	19	marksman	0	follow	1-3	7363	companion_entered_tree	bulldog
+default	archer	19	marksman	0	follow	1-3	7804	command_accepted	
+default	archer	19	marksman	0	follow	1-3	7855	projectile_block	commanded
+default	archer	19	marksman	0	follow	1-3	7855	granted	projectile
+default	archer	19	marksman	0	follow	1-3	7862	resolved_used	projectile
+default	archer	19	marksman	0	follow	1-3	7916	projectile_block	commanded
+default	archer	19	marksman	0	follow	1-3	9242	command_accepted	
+default	archer	19	marksman	0	follow	1-3	9297	projectile_block	commanded
+default	archer	19	marksman	0	follow	1-3	9297	granted	projectile
+default	archer	19	marksman	0	follow	1-3	9302	resolved_used	projectile
+default	archer	19	marksman	0	follow	1-3	9395	protected_damage	prevented_total=3
+default	archer	19	marksman	0	follow	1-3	10150	command_accepted	
+first-alt-route	knight	7	vanguard	1	skip	1-1	1751	companion_entered_tree	shield_echo
+first-alt-route	knight	7	vanguard	1	skip	1-1	1966	projectile_block	passive
+first-alt-route	knight	7	vanguard	1	skip	1-3	9207	companion_entered_tree	bulldog
+first-alt-route	knight	7	vanguard	1	skip	1-3	9992	projectile_block	passive
+first-alt-route	knight	7	vanguard	1	skip	1-3	10519	projectile_block	passive
+first-alt-route	knight	7	vanguard	1	skip	1-3	11561	projectile_block	passive
+first-alt-route	knight	7	vanguard	1	skip	1-3	12690	projectile_block	passive
+first-alt-route	knight	7	vanguard	1	skip	1-3	12865	projectile_block	passive
+first-alt-route	knight	7	vanguard	1	skip	1-3	13078	projectile_block	passive
+first-alt-route	knight	7	vanguard	1	follow	1-1	1751	companion_entered_tree	shield_echo
+first-alt-route	knight	7	vanguard	1	follow	1-1	1925	command_accepted	
+first-alt-route	knight	7	vanguard	1	follow	1-1	1971	projectile_block	commanded
+first-alt-route	knight	7	vanguard	1	follow	1-1	1971	granted	projectile
+first-alt-route	knight	7	vanguard	1	follow	1-1	2156	resolved_expired	projectile
+first-alt-route	knight	7	vanguard	1	follow	1-1	2531	command_accepted	
+first-alt-route	knight	7	vanguard	1	follow	1-1	2563	granted	protected_damage
+first-alt-route	knight	7	vanguard	1	follow	1-1	2563	protected_damage	prevented_total=3
+first-alt-route	knight	7	vanguard	1	follow	1-1	2577	resolved_used	protected_damage
+first-alt-route	knight	7	vanguard	1	follow	1-3	8490	companion_entered_tree	bulldog
+first-alt-route	knight	7	vanguard	1	follow	1-3	8691	command_accepted	
+first-alt-route	knight	7	vanguard	1	follow	1-3	8723	granted	protected_damage
+first-alt-route	knight	7	vanguard	1	follow	1-3	8723	protected_damage	prevented_total=4
+first-alt-route	knight	7	vanguard	1	follow	1-3	8735	resolved_used	protected_damage
+first-alt-route	knight	7	vanguard	1	follow	1-3	9021	projectile_block	passive
+first-alt-route	knight	7	vanguard	1	follow	1-3	9185	projectile_block	passive
+first-alt-route	knight	7	vanguard	1	follow	1-3	9355	command_accepted	
+first-alt-route	knight	7	vanguard	1	follow	1-3	9387	granted	protected_damage
+first-alt-route	knight	7	vanguard	1	follow	1-3	9387	protected_damage	prevented_total=8
+first-alt-route	knight	7	vanguard	1	follow	1-3	9399	resolved_used	protected_damage
+first-alt-route	knight	7	vanguard	1	follow	1-3	10307	command_accepted	
+first-alt-route	knight	7	vanguard	1	follow	1-3	10641	projectile_block	passive
+first-alt-route	knight	7	vanguard	1	follow	1-3	10922	command_accepted	
+first-alt-route	knight	7	vanguard	1	follow	1-3	11526	command_accepted	
+first-alt-route	knight	7	vanguard	1	follow	1-3	11546	granted	protected_damage
+first-alt-route	knight	7	vanguard	1	follow	1-3	11546	protected_damage	prevented_total=12
+first-alt-route	knight	7	vanguard	1	follow	1-3	11570	resolved_used	protected_damage
+first-alt-route	knight	7	vanguard	1	follow	1-3	12083	projectile_block	passive
+first-alt-route	knight	7	vanguard	1	follow	1-3	12138	projectile_block	passive
+first-alt-route	knight	7	vanguard	1	follow	1-3	12203	command_accepted	
+first-alt-route	knight	7	vanguard	1	follow	1-3	12235	granted	protected_damage
+first-alt-route	knight	7	vanguard	1	follow	1-3	12235	protected_damage	prevented_total=16
+first-alt-route	knight	7	vanguard	1	follow	1-3	12261	resolved_used	protected_damage
+first-alt-route	knight	7	vanguard	1	follow	1-3	12315	projectile_block	commanded
+first-alt-route	mage	7	mistwalker	1	skip	1-1	1479	companion_entered_tree	shield_echo
+first-alt-route	mage	7	mistwalker	1	skip	1-3	8025	companion_entered_tree	bulldog
+first-alt-route	mage	7	mistwalker	1	skip	1-3	8559	projectile_block	passive
+first-alt-route	mage	7	mistwalker	1	follow	1-1	1479	companion_entered_tree	shield_echo
+first-alt-route	mage	7	mistwalker	1	follow	1-1	1653	command_accepted	
+first-alt-route	mage	7	mistwalker	1	follow	1-1	2285	command_accepted	
+first-alt-route	mage	7	mistwalker	1	follow	1-1	2313	granted	protected_damage
+first-alt-route	mage	7	mistwalker	1	follow	1-1	2313	protected_damage	prevented_total=2
+first-alt-route	mage	7	mistwalker	1	follow	1-1	2364	resolved_used	protected_damage
+first-alt-route	mage	7	mistwalker	1	follow	1-3	7842	companion_entered_tree	bulldog
+first-alt-route	mage	7	mistwalker	1	follow	1-3	8190	command_accepted	
+first-alt-route	mage	7	mistwalker	1	follow	1-3	8218	granted	protected_damage
+first-alt-route	mage	7	mistwalker	1	follow	1-3	8218	protected_damage	prevented_total=2
+first-alt-route	mage	7	mistwalker	1	follow	1-3	8247	resolved_used	protected_damage
+first-alt-route	mage	7	mistwalker	1	follow	1-3	8352	projectile_block	commanded
+first-alt-route	mage	7	mistwalker	1	follow	1-3	9740	command_accepted	
+first-alt-route	mage	7	mistwalker	1	follow	1-3	9832	projectile_block	commanded
+first-alt-route	mage	7	mistwalker	1	follow	1-3	9832	granted	projectile
+first-alt-route	mage	7	mistwalker	1	follow	1-3	9874	protected_damage	prevented_total=3
+first-alt-route	mage	7	mistwalker	1	follow	1-3	9890	projectile_block	commanded
+first-alt-route	mage	7	mistwalker	1	follow	1-3	9897	resolved_used	projectile
+first-alt-route	mage	7	mistwalker	1	follow	1-3	10902	command_accepted	
+first-alt-route	mage	7	mistwalker	1	follow	1-3	10930	granted	protected_damage
+first-alt-route	mage	7	mistwalker	1	follow	1-3	10930	protected_damage	prevented_total=4
+first-alt-route	mage	7	mistwalker	1	follow	1-3	10934	resolved_used	protected_damage
+first-alt-route	mage	7	mistwalker	1	follow	1-3	11067	projectile_block	commanded
+first-alt-route	mage	7	mistwalker	1	follow	1-3	11302	projectile_block	passive
+first-alt-route	mage	7	mistwalker	1	follow	1-3	11672	command_accepted	
+first-alt-route	mage	7	mistwalker	1	follow	1-3	11700	granted	protected_damage
+first-alt-route	mage	7	mistwalker	1	follow	1-3	11700	protected_damage	prevented_total=5
+first-alt-route	mage	7	mistwalker	1	follow	1-3	11756	resolved_used	protected_damage
+first-alt-route	archer	7	outrider	1	skip	1-1	1442	companion_entered_tree	shield_echo
+first-alt-route	archer	7	outrider	1	skip	1-3	7784	companion_entered_tree	bulldog
+first-alt-route	archer	7	outrider	1	skip	1-3	9996	projectile_block	passive
+first-alt-route	archer	7	outrider	1	follow	1-1	1442	companion_entered_tree	shield_echo
+first-alt-route	archer	7	outrider	1	follow	1-1	1616	command_accepted	
+first-alt-route	archer	7	outrider	1	follow	1-3	7783	companion_entered_tree	bulldog
+first-alt-route	archer	7	outrider	1	follow	1-3	8104	command_accepted	
+first-alt-route	archer	7	outrider	1	follow	1-3	8132	granted	protected_damage
+first-alt-route	archer	7	outrider	1	follow	1-3	8132	protected_damage	prevented_total=3
+first-alt-route	archer	7	outrider	1	follow	1-3	8162	resolved_used	protected_damage
+first-alt-route	archer	7	outrider	1	follow	1-3	9725	command_accepted	
+first-alt-route	archer	7	outrider	1	follow	1-3	9885	projectile_block	commanded
+first-alt-route	archer	7	outrider	1	follow	1-3	9885	granted	projectile
+first-alt-route	archer	7	outrider	1	follow	1-3	9902	resolved_used	projectile
