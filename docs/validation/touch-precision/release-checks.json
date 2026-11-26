@@ -1,0 +1,100 @@
+{
+  "source_base": "5ac568a2f118deb07730f50fd68a0c2fd7a1f3a9",
+  "sha256": {
+    "game/actors/player/player.gd": "e98bc19c8cf87a95a4e90bc242a38a6b82e791099014547329aea7904993d49c",
+    "game/actors/player/touch_joystick.gd": "a0765f88cab0008415ccfcc28f92d9c55e756dafabd973192d8d9eaf6f08da1d",
+    "game/actors/player/player_tuning.gd": "4a96975b95532dc9b8b98151b2583ffc31268a0011f80ab3b581e29af6d81a5a",
+    "data/player/goldie_tuning.tres": "edd6f5de9a5568487ef34294437f8c52683365d0093f39e2520946e27a226c38",
+    "ui/hints/tutorial.gd": "46567b27879eebd41a5e9c3066f8cf5af10562fc21a0f63f6cf5e9271dc1e0f8",
+    "i18n/strings.csv": "6e76aa42edf9cfc1f6868d9180f0df2afcbb21969bfecb5481d9349a7eb5faa1"
+  },
+  "godot_tests": {
+    "base": [
+      1001,
+      0,
+      0
+    ],
+    "first_candidate": [
+      1003,
+      1,
+      0
+    ],
+    "final": [
+      1004,
+      0,
+      0
+    ],
+    "order": [
+      "tests",
+      "failures",
+      "broken_files"
+    ],
+    "base_and_final_exit": {
+      "objectdb": 33,
+      "resources": 24,
+      "body2d_rids": 1,
+      "dummy_texture_rids": 1
+    }
+  },
+  "tutorial_tests": 9,
+  "guard_tests": 21,
+  "web_transport_tests": 7,
+  "site_files_total_bytes": 65876003,
+  "payload": {
+    "index.wasm": {
+      "size": 39514754,
+      "sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0"
+    },
+    "index.pck": {
+      "size": 59261044,
+      "sha256": "273c956735722166e8c646f8fc8830dce4a984003631a1239891396316329bd8"
+    }
+  },
+  "pck_check": {
+    "levels": 36,
+    "companions": 4,
+    "textures": 28,
+    "production_ui": true,
+    "test_scenes": false
+  },
+  "archived_opening_comparisons": [
+    {
+      "reference": "normal-31-43.json",
+      "measured": "normal-31-43.json",
+      "mode": "normal",
+      "cases": 12,
+      "exact_gameplay_cases": 12,
+      "different_cases": [],
+      "attempts": 26,
+      "incorrect_result_modes": 0,
+      "identical_exit_messages": 3
+    },
+    {
+      "reference": "reinforced-7-19.json",
+      "measured": "reinforced-7-19.json",
+      "mode": "reinforced",
+      "cases": 12,
+      "exact_gameplay_cases": 12,
+      "different_cases": [],
+      "attempts": 28,
+      "incorrect_result_modes": 0,
+      "identical_exit_messages": 0
+    }
+  ],
+  "public_web": {
+    "version": 7,
+    "site_source": "c3913b71e6db3174372d2ff9dd3e6caeeccaec5b",
+    "audience": "public",
+    "public_https_wasm_compile_and_game_sha256": "pass",
+    "standard_cloud_browser_webgl2": "unavailable",
+    "rendered_first_fight": "native Linux X11 OpenGL Compatibility at 360x640"
+  },
+  "log_sha256": {
+    "baseline-full.log": "e12d49f18b73ef9e916096eccbd1469e886944ab0fe50d1cfb6aa3137f3011da",
+    "candidate-full.log": "15e2722f821ac564a340cea95f4ae9b0fae7ca1bf23c090682f2eb11743f5b80",
+    "final-full.log": "6bf6d3090836c44bc24ca737eb09a852877c996dc743ecba59d0cf2b0344d48c",
+    "webtests.log": "c764f3dd46edd8ad61f24e306be0f5f5428910b081d12ed667abd48a1f4800a2",
+    "hint-final.log": "7b4100baeb0bb4d3545ae5e42bb24ab1b1fc149563ef8fa450cf64ea8cf131b0",
+    "guard-test.log": "d518756230da5fc93fec02fce51495579b47a9c790035bf309888531e5de8e35"
+  }
+}

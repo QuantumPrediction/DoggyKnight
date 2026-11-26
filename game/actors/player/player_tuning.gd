@@ -14,6 +14,7 @@ extends Resource
 @export_group("搖桿")
 @export var joystick_radius: float = 18.0       ## 搖桿底座半徑(邏輯像素)
 @export var joystick_deadzone: float = 2.5      ## 拖曳少於這個距離不移動
+@export_range(0.5, 1.0, 0.01) var joystick_full_speed_ratio: float = 0.85
 @export var joystick_follow: bool = true        ## 手指拉出底座時,底座跟著手指走
 
 @export_group("攻擊")

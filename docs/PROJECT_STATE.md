@@ -2,7 +2,21 @@
 
 Updated: 2026-11-24 (Hong Kong). Version: **0.9.1 development source**.
 
-## Current work — 黃金騎士 · The Golden Knight
+## Current work — first-fight touch precision and learning
+
+[Draft #33](https://github.com/QuantumPrediction/DoggyKnight/pull/33) targets the unmerged #32 branch. Public implementation `2a30dba1952b3dbf798e05ab0f8df18adabdf223` and local implementation `f101cd5e38829b495ebdb5deb10a72057195dc3a` share tree `2db511a28953e33e8e39d417d38793cb49ef8169`. Both are based on #32 head `5ac568a2f118deb07730f50fd68a0c2fd7a1f3a9`.
+
+The floating stick now lets a player ease back before stopping to attack. On all three base classes a 9-unit drag requests 50.78% speed. Full travel starts at 15.3 of the 18-unit radius, and the first 2.5 units allow the thumb to rest. A learned roll still grants protection immediately on starting to move. A short drag covers less ground during that protection.
+
+The first room now teaches walking after one unit of actual travel and celebrates the hero's own first basic swing, cast or shot after that walk. Four seconds without a strike dismisses the hint quietly. Pausing freezes the lesson. In the 360×640 Linux build an archer could already hurt enemies while the initial movement hint was still visible. After the player moved, the stop-to-attack hint covered part of the tactical readout. Those two first-room observations are open for the uncoached trial.
+
+Fresh #32 control 1,001/1,001, final Godot regression 1,004/1,004, web transport 7/7. A fixed retreat followed by a strike went from zero to three successful classes. Every field in 1,665 locked control frames matched, with 3,291 physics frames collected per build. Across 24 full-input opening combinations all 54 recorded attempts matched #32's gameplay fields. Both cautious archer failures and the engine's exit warnings remain in the evidence. The first candidate run had one failing check: it expected a nine-unit drag to mean full speed during the guard-success card. The final check pins the intended speed and verifies the original touch, heading and button positions survive the card expiring. [Per-trial results, source fingerprints and input trade-offs](validation/touch-precision/README.md)
+
+The public web playtest reached v7, source `c3913b71e6db3174372d2ff9dd3e6caeeccaec5b`, with 65,876,003 bytes in the published site directory. Public HTTPS compiled the engine and verified the six-chapter data. The standard cloud browser lacked WebGL 2; the 360×640 first-room observation above used native Linux. The public evidence includes plain-text trial summaries, inputs, rebuild instructions and fingerprints. The two compressed full-frame traces stay local. [Play Golden Knight](https://doggy-knight-playtest.quantumprediction.chatgpt.site/) · [Build checks](validation/touch-precision/release-checks.json)
+
+**Next.** In ordinary mode Bedivere first joins in room 1-3. In the 11 completed normal-mode controls the first two rooms already used 95–111 seconds of combat. Another control failed to reach 1-3. Time a fresh start through the first naturally blockable attack, then observe whether players choose to use guard and explain what it did. Target-player count remains zero. Ratings, mobile frame times, long sessions, retention and commercial demand still require independent evidence. [Competitive comparison, priorities and acceptance criteria](QUALITY_9_ROADMAP_ZH.md)
+
+## Previous round — 黃金騎士 · The Golden Knight
 
 [Draft #32](https://github.com/QuantumPrediction/DoggyKnight/pull/32) targets #31. Public implementation `19f2f7ba6441cb273e88fba38311335393e5f517` and local test commit `dddfb1a329152253d948a227862d9f4665f1a8d6` share tree `a4a564f494ee133366704d774aeee9110c12f420`. Public site v6 uses source `36a0a0c6076273f045d76c1e9727a9772077c85d` and serves 65,877,538 bytes. Two fresh Linux Chromium profiles independently recovered from the startup fetch failure without a retry click. The published HTTPS check compiled the engine and verified all six chapters. The compatible Linux browser exercised the locally served build; its HTTPS connection to the public site encountered a certificate authority error. The cloud browser verified the public payload and lacked WebGL 2 for gameplay. All seven browser tests passed. [Release checks](validation/natural-motion/release-checks.json)
 

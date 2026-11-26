@@ -1,0 +1,120 @@
+{
+  "after": {
+    "raw": {
+      "repeat_1": {
+        "ticks_tsv_sha256": "57d6116c8bfade70aac7dfd3b0bb1522a51e1cdd0187617946b20369718173a1",
+        "trials_tsv_sha256": "a7e18da70c0ba787f978aade8fe45ecd8f037e96727259b3b4fa81e79a604705"
+      },
+      "repeat_2": {
+        "ticks_tsv_sha256": "57d6116c8bfade70aac7dfd3b0bb1522a51e1cdd0187617946b20369718173a1",
+        "trials_tsv_sha256": "a7e18da70c0ba787f978aade8fe45ecd8f037e96727259b3b4fa81e79a604705"
+      }
+    },
+    "warnings": {
+      "repeat_1": [
+        "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 2 resources still in use at exit (run with --verbose for details)."
+      ],
+      "repeat_2": [
+        "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 2 resources still in use at exit (run with --verbose for details)."
+      ]
+    }
+  },
+  "base_commit": "5ac568a2f118deb07730f50fd68a0c2fd7a1f3a9",
+  "base_tree": "6571f5f06f9dcf25050fb7b423a7e8895fc2548f",
+  "before": {
+    "raw": {
+      "repeat_1": {
+        "ticks_tsv_sha256": "189e5b99f82310d76ca6bf1c9f9f51360613d4ffe29db8fd9086d679d9169be8",
+        "trials_tsv_sha256": "98fbaa2b2ccf9e0b0ea40e824afd99c3d4dc3e1b581cb61ab73c3d995ca50619"
+      },
+      "repeat_2": {
+        "ticks_tsv_sha256": "189e5b99f82310d76ca6bf1c9f9f51360613d4ffe29db8fd9086d679d9169be8",
+        "trials_tsv_sha256": "98fbaa2b2ccf9e0b0ea40e824afd99c3d4dc3e1b581cb61ab73c3d995ca50619"
+      }
+    },
+    "warnings": {
+      "repeat_1": [
+        "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 2 resources still in use at exit (run with --verbose for details)."
+      ],
+      "repeat_2": [
+        "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 2 resources still in use at exit (run with --verbose for details)."
+      ]
+    }
+  },
+  "checks": [
+    "3291 physics samples per build. 1665 control samples match in every saved column.",
+    "knight: 17.986191 -> 9.317215 units, first damage tick -1 -> 24",
+    "mage: 17.472198 -> 9.050858 units, first damage tick -1 -> 66",
+    "archer: 20.041702 -> 10.381943 units, first damage tick -1 -> 54"
+  ],
+  "fixed_fps": 60,
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "godot_executable_sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+  "physics_hz": 60,
+  "renderer": "headless",
+  "rng_seed": 19,
+  "runtime_fingerprint": {
+    "after": {
+      "files": 2115,
+      "sha256": "2cc33f72e4610f4cbbfcd1b5e468b1a34979ec6e43ba8a929cffa984cc50cd53"
+    },
+    "before": {
+      "files": 2115,
+      "sha256": "edcbaa3a89c193807e27f2d31888d6ead0cd46b33ae58e22ed6a7b39a3a9d9d4"
+    },
+    "changed_files": {
+      "data/player/goldie_tuning.tres": {
+        "after": "edd6f5de9a5568487ef34294437f8c52683365d0093f39e2520946e27a226c38",
+        "before": "340f1d05429d41ec18827ffb029d7d140640b0591767f2695002f5d8e274bebb"
+      },
+      "game/actors/player/player.gd": {
+        "after": "e98bc19c8cf87a95a4e90bc242a38a6b82e791099014547329aea7904993d49c",
+        "before": "7bd545bf1605744e981a0e318bc9201b395ebc7ebd8cf5999f9b90e9b04510d8"
+      },
+      "game/actors/player/player_tuning.gd": {
+        "after": "4a96975b95532dc9b8b98151b2583ffc31268a0011f80ab3b581e29af6d81a5a",
+        "before": "3b920ab8117eda08e91c3b3b2227c71b48b33517c2f96a9cce8914745b3fa9f7"
+      },
+      "game/actors/player/touch_joystick.gd": {
+        "after": "a0765f88cab0008415ccfcc28f92d9c55e756dafabd973192d8d9eaf6f08da1d",
+        "before": "206cca5562d1460c2c673316a3731c7d17336752ccf46f3adecb96d52cec83d6"
+      },
+      "i18n/strings.csv": {
+        "after": "6e76aa42edf9cfc1f6868d9180f0df2afcbb21969bfecb5481d9349a7eb5faa1",
+        "before": "569dcc17702292cd021a4da6b49f64bd4823b38db008397163f851a12ddfe5e5"
+      },
+      "ui/hints/tutorial.gd": {
+        "after": "12f9973dd135759923e87ed855b946b84477acb05a64ed14ab55ff2acfa1bddd",
+        "before": "7466e4f7a667b69fff705b9467585fe2727eb71dd0f5c41ca6424fcdd054f523"
+      }
+    },
+    "input": "Sorted git-tracked UTF-8 path, NUL, raw file SHA256 (32 bytes), and LF for each listed path.",
+    "paths": [
+      "project.godot",
+      "core",
+      "data",
+      "game",
+      "assets",
+      "ui",
+      "i18n"
+    ]
+  },
+  "system": "Linux x86_64",
+  "tools_sha256": {
+    "compare_touch_precision.py": "337a12e0724dc75eb09c296fe6b22618b0245fe65637fef59c7cb237ece383dd",
+    "measure_touch_precision.gd": "c0e4095fe0271790fdcd032f7f4f0815a1f8fe44aab0d5149bc84585fbcdc718"
+  },
+  "utc": "2026-11-26T06:39:10+00:00",
+  "window": [
+    360,
+    640
+  ],
+  "world_viewport": [
+    180,
+    320
+  ]
+}
