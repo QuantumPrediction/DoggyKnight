@@ -1,0 +1,20 @@
+{
+  "delivered_bytes": 68838107,
+  "binaries": {
+    "index.wasm": {
+      "size": 39514754,
+      "sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0",
+      "parts": 7
+    },
+    "index.pck": {
+      "size": 62245456,
+      "sha256": "4452d8d6b3a4654241975e44d6ef9646dd2e53f6444315151286a6f40b7a3b2a",
+      "parts": 10
+    }
+  },
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "packed_levels": 36,
+  "check": "WASM compilation, all payload hashes, shipped pair marks and recap translation",
+  "cloud_chromium": "normal entry reports no WebGL 2",
+  "scene_renderer": "Linux X11 GL Compatibility / Mesa llvmpipe"
+}

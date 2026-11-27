@@ -36,6 +36,7 @@ var time_value: Label
 var kills_value: Label
 var level_value: Label
 var tricks_row: HFlowContainer
+var pairs_box: VBoxContainer
 var footer_label: Label
 var stars_row: HBoxContainer
 var star_rects: Array[TextureRect] = []
@@ -95,6 +96,7 @@ func _ready() -> void:
 	hero_row.add_child(_goldie)
 	stars_row = HBoxContainer.new()
 	stars_row.name = "Stars"
+	stars_row.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	stars_row.add_theme_constant_override(&"separation", 3)
 	stars_row.alignment = BoxContainer.ALIGNMENT_CENTER
 	hero_row.add_child(stars_row)
@@ -109,6 +111,11 @@ func _ready() -> void:
 	goals_box.name = "Goals"
 	goals_box.add_theme_constant_override(&"separation", 0)
 	box.add_child(goals_box)
+
+	pairs_box = VBoxContainer.new()
+	pairs_box.name = "LandedPairs"
+	pairs_box.add_theme_constant_override(&"separation", 0)
+	box.add_child(pairs_box)
 
 	var grid := GridContainer.new()
 	grid.columns = 2
@@ -247,7 +254,9 @@ func _apply() -> void:
 	time_value.text = UiKit.format_time(float(_result.get("time_sec", 0.0)))
 	kills_value.text = str(int(_result.get("kills", 0)))
 	level_value.text = "%s %d" % [tr("UI_LEVEL_SHORT"), int(_result.get("hero_level", GameState.hero_level))]
+	_show_landed_pairs(_result.get("landed_pairs", {}))
 	for c in tricks_row.get_children():
+		tricks_row.remove_child(c)
 		c.queue_free()
 	var tricks: Array = _result.get("tricks", [])
 	if tricks.is_empty():
@@ -398,12 +407,50 @@ func _final_confetti() -> void:
 		add_child(fx)
 
 
+func _show_landed_pairs(counts: Dictionary) -> void:
+	for child in pairs_box.get_children():
+		pairs_box.remove_child(child)
+		child.queue_free()
+	pairs_box.hide()
+	for id in AttackTechniques.PAIR_IDS:
+		var count := int(counts.get(id, 0))
+		if count <= 0:
+			continue
+		if not pairs_box.visible:
+			pairs_box.show()
+			pairs_box.add_child(UiKit.label(tr("UI_LANDED_PAIRS"), &"LabelSoft", HORIZONTAL_ALIGNMENT_LEFT))
+		var row := HBoxContainer.new()
+		row.name = id
+		row.add_theme_constant_override(&"separation", 3)
+		var mark := AtlasTexture.new()
+		mark.atlas = AttackTechniques.MARKS
+		mark.region = AttackTechniques.mark_region(id)
+		row.add_child(_report_icon(mark, 18))
+		var title := UiKit.label(tr("PAIR_%s" % String(id).to_upper()), &"", HORIZONTAL_ALIGNMENT_LEFT)
+		title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		row.add_child(title)
+		row.add_child(UiKit.label(tr("UI_PAIR_COUNT") % count, &"", HORIZONTAL_ALIGNMENT_RIGHT))
+		pairs_box.add_child(row)
+
+
+func _report_icon(texture: Texture2D, side: int) -> TextureRect:
+	var icon := UiKit.texture_rect(null)
+	icon.texture = texture
+	icon.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	icon.custom_minimum_size = Vector2(side, side)
+	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	return icon
+
+
 func _trick_chip(id: StringName) -> Control:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override(&"separation", 1)
-	var path := "res://assets/icons/tricks/%s.png" % id
-	if ResourceLoader.exists(path):
-		row.add_child(UiKit.texture_rect(load(path) as Texture2D))
+	var card := TrickDeck.load_trick(id)
+	if card != null and card.icon != null:
+		if AttackTechniques.IDS.has(id):
+			row.add_child(_report_icon(card.icon, 16))
+		else:
+			row.add_child(UiKit.texture_rect(card.icon))
 	var key := "TRICK_%s_NAME" % String(id).to_upper()
 	row.add_child(UiKit.label(tr(key) if tr(key) != key else String(id), &"", HORIZONTAL_ALIGNMENT_LEFT))
 	return row

@@ -1,0 +1,153 @@
+{
+  "mage": {
+    "control_sha256": "fc85693c823f267e4de3e1e76f1e66b85ec87f9ad8533ca21d7bbafdeaed102f",
+    "candidate_sha256": "0281ddaf5f7973e75c49c67ee1bed23faabf22ffd1bd681239157ac132ad7cbc",
+    "events": 294,
+    "attempts": 36,
+    "clears": 36,
+    "downs": 0,
+    "rooms_with_confirmed_pairs": 29,
+    "confirmed_per_pair": {
+      "arc_star": 81,
+      "arc_gale": 54,
+      "gale_star": 17
+    },
+    "confirmed_total": 152,
+    "volleys_by_loadout": {
+      "001": 3,
+      "010": 7,
+      "011": 5,
+      "012": 4,
+      "031": 3,
+      "100": 2,
+      "101": 12,
+      "110": 6,
+      "111": 10,
+      "112": 10,
+      "120": 6,
+      "121": 9,
+      "122": 17,
+      "123": 21,
+      "131": 5,
+      "132": 43,
+      "133": 7,
+      "200": 3,
+      "210": 3,
+      "211": 7,
+      "221": 6,
+      "222": 6,
+      "223": 17,
+      "232": 51,
+      "233": 14,
+      "323": 6,
+      "332": 35,
+      "333": 212
+    },
+    "all_changed_legacy_fields": [
+      {
+        "event": "credits",
+        "room": null,
+        "fields": {
+          "tick": [
+            166539,
+            166758
+          ]
+        }
+      },
+      {
+        "event": "end",
+        "room": null,
+        "fields": {
+          "tick": [
+            166679,
+            166898
+          ]
+        }
+      }
+    ],
+    "safe_results_actions": 36,
+    "safe_chapter_secondary_actions": 6,
+    "restart": {
+      "after_sha256": "4b1ef699c89b3ce92a352c8f8575f14beb63cebf456be6fde2e784723de9f5a7",
+      "before_sha256": "4b1ef699c89b3ce92a352c8f8575f14beb63cebf456be6fde2e784723de9f5a7",
+      "chapter": 6,
+      "chapter_6_locked": false,
+      "chapters_cleared": 6,
+      "class": "mage",
+      "continue_visible": false,
+      "credits_open": false,
+      "departure": 0,
+      "passed": true,
+      "selected": 6
+    }
+  },
+  "archer": {
+    "control_sha256": "68494e12edd05f62b34897cdf03f04745d9609076e87488023386642726bdce1",
+    "candidate_sha256": "36db8b68f87ccb094040b2f25760426fd081d0cd9a2d22ae538d3e938690945c",
+    "events": 294,
+    "attempts": 36,
+    "clears": 36,
+    "downs": 0,
+    "rooms_with_confirmed_pairs": 11,
+    "confirmed_per_pair": {
+      "arc_gale": 17,
+      "arc_star": 24,
+      "gale_star": 7
+    },
+    "confirmed_total": 48,
+    "volleys_by_loadout": {
+      "002": 6,
+      "003": 10,
+      "010": 65,
+      "020": 27,
+      "030": 186,
+      "103": 130,
+      "110": 11,
+      "111": 19,
+      "112": 6,
+      "113": 28,
+      "121": 8,
+      "123": 16,
+      "131": 39,
+      "132": 31,
+      "223": 62
+    },
+    "all_changed_legacy_fields": [
+      {
+        "event": "credits",
+        "room": null,
+        "fields": {
+          "tick": [
+            164370,
+            164356
+          ]
+        }
+      },
+      {
+        "event": "end",
+        "room": null,
+        "fields": {
+          "tick": [
+            164510,
+            164496
+          ]
+        }
+      }
+    ],
+    "safe_results_actions": 36,
+    "safe_chapter_secondary_actions": 6,
+    "restart": {
+      "after_sha256": "f427931839904b1f1cd48b55c71e93ce4d57d139a5bccd46485a32ca33022eeb",
+      "before_sha256": "f427931839904b1f1cd48b55c71e93ce4d57d139a5bccd46485a32ca33022eeb",
+      "chapter": 6,
+      "chapter_6_locked": false,
+      "chapters_cleared": 6,
+      "class": "archer",
+      "continue_visible": false,
+      "credits_open": false,
+      "departure": 0,
+      "passed": true,
+      "selected": 6
+    }
+  }
+}

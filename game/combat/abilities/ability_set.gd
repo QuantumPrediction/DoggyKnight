@@ -32,6 +32,8 @@ var lion_roar: LionRoarAbility
 var high_five: HighFiveAbility
 var meteor: MeteorPounceAbility
 var techniques: Array[TrickAbility] = []
+## Per arena player. A revive reuses this instance, a full retry creates a new one.
+var landed_pairs: Dictionary[StringName, int] = {}
 var _technique_hits := 0
 var _all: Array[TrickAbility] = []
 

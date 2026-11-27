@@ -1,0 +1,16 @@
+{
+  "artist": "GPT Image",
+  "original_pixels": [2172, 724],
+  "original_sha256": "4cef1bda982a7aa7e4c91ec29777f34ef226134dbd20274575cee5f76a979ac3",
+  "atlas": "combination_marks.webp",
+  "atlas_pixels": [288, 96],
+  "cell_pixels": [96, 96],
+  "atlas_sha256": "2fa919dfedb2dc055786a28ca8510bcd5a487d98b216bdb7f1be521d7e3146d2",
+  "left_to_right": ["arc_gale", "arc_star", "gale_star"],
+  "crop_xyxy_exclusive": {
+    "arc_gale": [163, 139, 599, 627],
+    "arc_star": [808, 77, 1342, 635],
+    "gale_star": [1556, 143, 2039, 597]
+  },
+  "processing": "Set source alpha below 8 to zero, apply the listed crop, scale proportionally to fit 88 × 88 with Lanczos, and center in each transparent cell."
+}

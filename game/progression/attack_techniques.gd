@@ -2,11 +2,17 @@ class_name AttackTechniques
 extends RefCounted
 
 const IDS: Array[StringName] = [&"arc_rune", &"starfall", &"gale_disc"]
+const MARKS := preload("res://assets/illustrated/techniques/combination_marks.webp")
+const PAIR_IDS: Array[StringName] = [&"arc_gale", &"arc_star", &"gale_star"]
 const PAIRS := [
 	[&"arc_rune", &"gale_disc", "TECH_ARC_GALE"],
 	[&"arc_rune", &"starfall", "TECH_ARC_STAR"],
 	[&"gale_disc", &"starfall", "TECH_GALE_STAR"],
 ]
+
+
+static func mark_region(id: StringName) -> Rect2:
+	return Rect2(PAIR_IDS.find(id) * 96, 0, 96, 96)
 
 
 static func pair_hints(candidate: StringName, owned: Array) -> PackedStringArray:
