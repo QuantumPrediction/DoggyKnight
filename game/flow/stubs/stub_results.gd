@@ -4,7 +4,8 @@ extends Control
 ##   (替身也顯示星級與三個目標,方便在沙盒裡檢查)。
 ##   v2.7:game_complete(打完第六章)時標題是「THE END」(正式畫面是「全劇終」UI_GAME_END)。
 
-signal continue_pressed()
+signal continue_pressed
+signal rest_pressed()
 
 const StubUI := preload("res://game/flow/stubs/stub_ui.gd")
 ## 替身用英文顯示星級目標(預設字型沒有中文字)。
@@ -55,4 +56,6 @@ func setup(data: Dictionary) -> void:
 	StubUI.add_label(_column, "New tricks: %s" % (", ".join(tricks.map(func(t: Variant) -> String: return str(t))) if not tricks.is_empty() else "-"))
 	if data.get("next_is_camp", false):
 		StubUI.add_label(_column, "Next: camp", Color(1, 1, 1, 0.6))
-	StubUI.add_button(_column, "Title" if final else "Next", continue_pressed.emit)
+	StubUI.add_button(_column, "Epilogue" if data.get("game_complete", false) else "Next", continue_pressed.emit)
+	if final:
+		StubUI.add_button(_column, "Save and rest", rest_pressed.emit)

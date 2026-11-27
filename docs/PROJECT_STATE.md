@@ -1,8 +1,16 @@
 # The Golden Knight — current project state
 
-Updated: 2026-11-26 (Hong Kong). Version: **0.9.1 development source**.
+Updated: 2026-11-27 (Hong Kong). Version: **0.9.1 development source**.
 
-## Current work — borrow the shield in the opening meadow
+## Six playable episodes through the final credits
+
+The six chapters and their 36 levels now form one continuous campaign. Each of the first five boss results offers travel to the next chapter or a saved return to the title. The knight, mage or archer keeps their class and permanent rewards, with a fresh build per episode. Beating Mordred leads through the illustrated homecoming to the credits. Returning after a boss, during the next prologue or during credits retains the earned handoff without paying twice.
+
+At #34 a long result panel stopped the matched archer at 2-6 and the mage at 4-6. Results now scroll above the controls. Chapters 4–6 have three scene-specific choices. Two new-profile 360×640 Godot combat runs (mage seed 7, archer seed 19) each cleared six bosses' encounters with seven individual boss deaths, 36 levels, 12 camps and five direct chapter handoffs. Both read the two ending lines, closed credits and verified their finished save after a process restart. Every one of the 72 primary actions and 12 additional chapter-end controls fitted the safe area. The complete regression passed 1,014/1,014 after four earlier assertions failed. Eleven actual native frames, the six chapter openings and the playable browser build are available. [Play](https://doggy-knight-playtest.quantumprediction.chatgpt.site/) · [Campaign evidence and screenshots](validation/six-episode-campaign/README.md)
+
+Base `codex/first-shield-encounter` / #34 at `de04fd387e36f946f28f0f1f6bc6bc6e60710564`. Next validation is unprompted target-player testing of first departure, readability during the longer campaign and the ending. Target players remain 0. Native exit warnings, real mobile, Windows, gamepad, WebGL2-device play, listening, retention and independent review remain open. Overall provisional score remains 6–6.5/10.
+
+## Previous work — borrow the shield in the opening meadow
 
 [Draft #34](https://github.com/QuantumPrediction/DoggyKnight/pull/34) builds on #33 head `53b07837d21c4cd7f0178992f73779092e49389c`. Public implementation `217083ae126e9e401f69535a41e77910a801c4e0` and the local verified snapshot `25bffa55e6338078e85908fd09acba40534ebf7f` share full tree `820d2df679c3d2029242f7f5d9da00ce571aa97e`.
 

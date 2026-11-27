@@ -24,7 +24,7 @@ func test_only_known_fields_are_saved() -> void:
 	var raw: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(SAVE_PATH))
 	var keys := raw.keys()
 	keys.sort()
-	assert_eq(keys, ["best_stars", "camp_pending", "chapter", "chapter_cleared", "chapters_cleared", "checkpoint", "difficulty",
+	assert_eq(keys, ["best_stars", "camp_pending", "chapter", "chapter_cleared", "chapter_departure", "chapters_cleared", "checkpoint", "difficulty",
 			"endless_best", "equipment", "guard_lesson_done", "haptics_on", "hero_class", "level_index", "meta_upgrades", "music_on", "snacks", "sound_on", "story_seen",
 			"tutorial_done", "version"], "只存遊戲進度與設定,沒有任何個人資料")
 	assert_eq(raw["version"], float(SaveStore.VERSION))

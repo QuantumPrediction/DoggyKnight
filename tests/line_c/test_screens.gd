@@ -81,7 +81,7 @@ func test_results_shows_data_and_final_message() -> void:
 	assert_true((res.get("footer_label") as Label).text == tr("UI_NEXT_CAMP"), "下一站是營地")
 	await wait_frames(1)
 	var icons := 0
-	for chip in (res.get("tricks_row") as HBoxContainer).get_children():
+	for chip in (res.get("tricks_row") as HFlowContainer).get_children():
 		if chip.is_queued_for_deletion():
 			continue
 		for c in chip.get_children():
@@ -93,7 +93,12 @@ func test_results_shows_data_and_final_message() -> void:
 	final["next_is_camp"] = false
 	res.call("setup", final)
 	assert_eq((res.get("title_label") as Label).text, tr("UI_THE_END"))
-	assert_eq((res.get("footer_label") as Label).text, tr("UI_THANKS"))
+	assert_eq((res.get("footer_label") as Label).text, tr("CHAPTER_2"))
+	assert_eq((res.get("continue_button") as Button).text, tr("UI_CAMPAIGN_DEPART") % tr("UI_CHAPTER_SHORT_2"))
+	final["chapter"] = 6
+	res.call("setup", final)
+	assert_eq((res.get("footer_label") as Label).text, tr("UI_CAMPAIGN_HOMECOMING"))
+	assert_eq((res.get("continue_button") as Button).text, tr("UI_CAMPAIGN_EPILOGUE"))
 	var w := watch_signal(Signal(res, "continue_pressed"))
 	(res.get("continue_button") as Button).pressed.emit()
 	assert_eq(w.count, 1)
@@ -115,6 +120,19 @@ func test_credits_lists_licenses_and_closes() -> void:
 	var credits := _open("res://ui/screens/credits.tscn")
 	await wait_frames(1)
 	var text: String = credits.call("get_all_text")
+	assert_true(text.contains("OpenAI GPT Image"), "列出繪本插畫製作方式")
+	for font in ["Noto Sans CJK TC", "Noto Serif CJK TC", "Golden Knight Quill"]:
+		assert_true(text.contains(font), "列出遊戲使用的 %s" % font)
+	var credit_lines := [tr("UI_CREDITS_GAME"), tr("UI_CREDITS_ART"), tr("UI_CREDITS_ENGINE"), tr("UI_CREDITS_FONT")]
+	var scroll := credits.get("scroll") as ScrollContainer
+	var right_edge := scroll.get_v_scroll_bar().get_global_rect().position.x
+	var visible_credits := 0
+	for row in (credits.get("content") as VBoxContainer).get_children():
+		if row is Label and credit_lines.has(row.text):
+			visible_credits += 1
+			assert_true(row.get_global_rect().end.x <= right_edge + 1, "署名行留在捲動欄內")
+			assert_true(row.get_line_count() * row.get_line_height() <= row.size.y + 1, "署名可完整換行")
+	assert_eq(visible_credits, credit_lines.size())
 	assert_true(text.contains("Cubic 11"), "列出字型")
 	assert_true(text.contains("SIL OPEN FONT LICENSE"), "附上 OFL 全文")
 	assert_true(text.contains("Godot Engine"), "列出 Godot")

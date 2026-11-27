@@ -186,7 +186,7 @@ func _show_line(first: bool) -> void:
 	if _illustration != null and previous_picture != null and previous_picture != _illustration and not first:
 		_turn_page(_illustration)
 	else:
-		_picture.texture = _illustration
+		_show_illustration(_illustration)
 		if _illustration != null and (first or previous_picture == null):
 			_settle(_book, 4.0)
 	if first:
@@ -224,6 +224,11 @@ func _react(expression: StringName, popped: bool) -> void:
 			t.tween_property(_portrait_box, "position:y", base.y, 0.1)
 
 
+func _show_illustration(texture: Texture2D) -> void:
+	_picture.texture = texture
+	_picture.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR if texture != null and texture.get_width() > _picture.size.x else CanvasItem.TEXTURE_FILTER_NEAREST
+
+
 func _turn_page(to: Texture2D) -> void:
 	UiKit.play_sfx(&"page_turn")
 	if _page_tween != null and _page_tween.is_valid():
@@ -233,7 +238,7 @@ func _turn_page(to: Texture2D) -> void:
 	_page_tween = create_tween()
 	_page_tween.tween_property(_book, "scale:x", 0.0, half).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	_page_tween.parallel().tween_property(_book, "modulate", Color(0.7, 0.7, 0.8), half)
-	_page_tween.tween_callback(func() -> void: _picture.texture = to)
+	_page_tween.tween_callback(_show_illustration.bind(to))
 	_page_tween.tween_property(_book, "scale:x", 1.0, half).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	_page_tween.parallel().tween_property(_book, "modulate", Color.WHITE, half)
 

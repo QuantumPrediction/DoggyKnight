@@ -1,0 +1,78 @@
+{
+  "capture": "Godot 4.7.2 / Linux X11 / OpenGL compatibility / Mesa llvmpipe",
+  "size": [
+    360,
+    640
+  ],
+  "save_sha256": "db070d0bf98d80398f07b7f5c821be22903653c8dff7f8d3e1bf84c1abf1a989",
+  "frames": {
+    "chapter-1": {
+      "png_sha256": "9a973876d963f8a8f4e5d9001fec9395aa74e76c5476af2706844dad0a1fe4d0",
+      "webp_sha256": "bd01c43de7d8840bb1ee00cf561a4769041923af16e38828f0e3290b4808c510",
+      "rgb_sha256": "cd532f5d28e87105a3d017a88902ff6d7e1bf9d57130adf773fc46d802f07cb0"
+    },
+    "chapter-2": {
+      "png_sha256": "324882d09bfdacda090071874ebc71022cd9af2ff92ee3b48c7f6a6a7521a369",
+      "webp_sha256": "ff09aa6aeb3d15481eafbc6392475faa5f8be703aa243fcaea59b8887d135464",
+      "rgb_sha256": "8d4df570b7a578f4eb4ee05c75b4318ba050428339e5a2844b8ac735acb90f70"
+    },
+    "chapter-3": {
+      "png_sha256": "8fbc30d7533a3cc3aa3157caccda37e2b7f934711f9b4a7ba6aa1f8bf1185642",
+      "webp_sha256": "db06588eb84995d541893ff0b6acf33a75f91d60ade9bb7c7a6fee9d0883deae",
+      "rgb_sha256": "67757787cceefebd3c8e99598220428e0f5e3ae664cc0471830d7799a2823845"
+    },
+    "chapter-4": {
+      "png_sha256": "a3850499b79d30ed8e1541bcec3b595c0df42ebe555fcf1c956c2819cdce5d8a",
+      "webp_sha256": "95bbbd1039365b54bf421d8f5be0acfb5cd7ea62df61774af6a9b054d09f4aa5",
+      "rgb_sha256": "6447e383feed85b7f0dd8af88a17281ef5f997ff75f7bda1a6ba39bf70ef6dd8"
+    },
+    "chapter-5": {
+      "png_sha256": "547dd8c998917a0ebd0e7719d4e9620d2b7419c5c91e24be1a15fd9129fa66d1",
+      "webp_sha256": "0edfaef72c48cf9523a2a88c9a98ad94255dd047c898e1c9b6ae19c7609533f1",
+      "rgb_sha256": "c19c248ac0d12e3268ef838d3ac94f12396afd8674af4f18d103b180f657f2d1"
+    },
+    "chapter-6": {
+      "png_sha256": "a7accc411d91be2425cf6c058bba5134ca73a352be76a9930ae703f328bb439b",
+      "webp_sha256": "204ddd56b84bd8cda61dcf94f791fc24aa0286099a5ee574fac4f37d62c0629b",
+      "rgb_sha256": "93762288fc534188e3384422a394a807cbd44bc3a381723fbdf5873de11cfca3"
+    },
+    "credits": {
+      "png_sha256": "3640ebf1ac7b4b25ce1a66bb6359fab5e37eb198bef8f69e6bf1fa7c150faac1",
+      "webp_sha256": "d9217524bb740fb9dbd9ceee7ab367ccd2900a8a6fe518f6aa1b1e6e12f851fb",
+      "rgb_sha256": "24de34a632932db8fe3b4ba91cda6257dbf5c89c9791ce86c190db744f8fa3d6"
+    },
+    "homecoming": {
+      "png_sha256": "a07771c1cec234405e5246b982a82930c8c6f387351a75807596c1799e0eced5",
+      "webp_sha256": "7765b1993d4b777df266051bf680d4ba8050143a12d052ffb89c27e2f23e83ce",
+      "rgb_sha256": "002b82a9cc4db30c019a281e191bbd0d8e99826d503ee49569c507b9bafe7513"
+    },
+    "mordred": {
+      "png_sha256": "656efc231b1d5f239b1eec135bfe9a427330797b6b41869df55c3e3335cccf07",
+      "webp_sha256": "a0b409157b6df397bf5685eb8e817c97267ea6492d8a7617fc709652342e3501",
+      "rgb_sha256": "5a5fdcd660f0571d711d84932dbf68d0640dc868107dc5074c2d77133ea58f23"
+    },
+    "sixth-victory": {
+      "png_sha256": "a3d6628f5136e47b85113cf02ff143e690ceb65f9ea8e5b4d5359fbdd37dd7a1",
+      "webp_sha256": "bdd2fe65c0bf94101adaaeda8da6e5ac62d8b95ec1eaf1b81623bd58fafc98f8",
+      "rgb_sha256": "be3c53646c359409a591760b955d56bdb18d1fe5193cfae9e92b01a8db9a6f00"
+    },
+    "the-end": {
+      "png_sha256": "6d476d0e3f3ab702227a8d2c35430db2a0333a7e334a2c09b705e61efae4cdf0",
+      "webp_sha256": "24a0049a128c1ecf62345c762dbe285e499d76a79bcf2469a6aa07d5e7c506b9",
+      "rgb_sha256": "2e2a372614b2ba38a3a86ece71a0089564d40d4b1df239a044a902ce63e3afca"
+    }
+  },
+  "epilogue_art": {
+    "method": "OpenAI GPT Image, using the project’s c6_ending_4 and title_art as references",
+    "original_size": [
+      1448,
+      1086
+    ],
+    "original_sha256": "5d325607fc80438d954a5167c9b1c000d746cf5853ab6e44699c7c35534298f2",
+    "game_size": [
+      640,
+      480
+    ],
+    "game_sha256": "74cfa07ea0830f367125f83b1d2365a1d066f772438a37dbd726ff18bdb3d282"
+  }
+}

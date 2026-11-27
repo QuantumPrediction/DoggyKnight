@@ -1,6 +1,6 @@
 extends "res://tests/line_b/flow_test_base.gd"
 ## 從新遊戲一路玩到打敗黑騎士(headless):用替身場地打倒敵人、經 EventBus 選把戲、
-## 經 EventBus 離開營地,直到最後的結算(is_final)回到標題。六關、兩次營地。
+## 經 EventBus 離開營地,直到最後的結算(is_final)並進入第二章。六關、兩次營地。
 
 
 func test_new_game_to_final_results() -> void:
@@ -24,6 +24,8 @@ func test_new_game_to_final_results() -> void:
 				var result := flow.get_last_result()
 				if results.is_empty() or results.back()["level_id"] != result["level_id"]:
 					results.append(result)
+					if result["is_final"]:
+						return true
 					flow.get_screen().emit_signal(&"continue_pressed")
 			FlowMain.State.CAMP:
 				if not in_camp_after.has(flow.get_level_index()):
@@ -49,6 +51,9 @@ func test_new_game_to_final_results() -> void:
 	assert_eq(leveled.count, offered.count, "每升一級都有一次把戲選擇")
 	assert_eq(GameState.active_tricks.size(), leveled.count, "每次選擇都記進 active_tricks")
 	assert_true(leveled.count >= 6 and leveled.count <= 12, "整章升 %d 級(一關 1 至 2 級)" % leveled.count)
-	assert_eq(flow.state, FlowMain.State.TITLE, "打敗黑騎士後回到標題")
-	assert_false(flow.has_save(), "整章完成:沒有要繼續的關卡")
+	flow.get_screen().emit_signal(&"continue_pressed")
+	assert_true(await wait_until(func() -> bool: return flow.get_run_chapter() == 2 and flow.is_level_running()))
+	assert_eq(started.last_args(), [&"2-1"])
+	assert_true(flow.has_save(), "第二章第一關有檢查點")
+	assert_eq(GameState.hero_level, 1, "每章重新成長")
 	assert_false(get_tree().paused)

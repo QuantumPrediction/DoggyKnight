@@ -157,6 +157,9 @@ var _camp_pending: bool = false
 var _level_index: int = 0
 var _snapshot: Dictionary = {}
 var _checkpoint: Dictionary = {}
+## Source chapter whose boss reward is banked, until the next playable checkpoint or the credits close.
+var _chapter_departure: int = 0
+var _campaign_credits: bool = false
 var _equipment_rng := RandomNumberGenerator.new()
 var _equipment_screen: Control
 var _restoring_checkpoint: bool = false
@@ -314,7 +317,7 @@ func _notification(what: int) -> void:
 # --- 給測試與沙盒讀取的狀態 ---
 
 func has_save() -> bool:
-	return _reached_level > 0 or not _checkpoint.is_empty()
+	return _chapter_departure > 0 or _reached_level > 0 or not _checkpoint.is_empty()
 
 
 func get_reached_level() -> int:
@@ -520,7 +523,8 @@ func save_now() -> bool:
 		# 無盡試煉進行中:存檔先記下這一輪清了幾波(App 被關掉也不遺失);GameState.endless_best
 		# 等倒下(或離開)才更新,HUD 才能比較「新紀錄!」。
 		"endless_best": maxi(GameState.endless_best, _endless_run_waves()),
-		"chapter": _run_chapter,
+		"chapter": _chapter_departure if _chapter_departure > 0 else _run_chapter,
+		"chapter_departure": _chapter_departure,
 		"chapters_cleared": GameState.chapters_cleared,
 	})
 
@@ -530,6 +534,7 @@ func _load_save() -> void:
 	GameState.guard_lesson_done = bool(data.get("guard_lesson_done", false))
 	GameState.equipment = EquipmentInventory.sanitize(data.get("equipment", {}))
 	_checkpoint = AdventureCheckpoint.sanitize(data.get("checkpoint", {}))
+	_chapter_departure = int(data.get("chapter_departure", 0))
 	if data.is_empty():
 		_reached_level = 0
 		_camp_pending = false
@@ -588,10 +593,15 @@ func show_title() -> void:
 ## v2.6:章用標題畫面設定的 GameState.chapter(只能選已解鎖的章,否則用最高可選的章)。
 ## 舊的進度立即作廢(開場繪本播到一半 App 被關掉,也不會「繼續」舊的那一輪)。
 func start_new_game() -> void:
+	_chapter_departure = 0
+	_start_chapter_run(GameState.chapter)
+
+
+func _start_chapter_run(number: int) -> void:
 	_checkpoint = {}
 	_run_hero_class = HeroClasses.valid_id(GameState.hero_class)
 	_end_endless_mode()
-	_use_chapter(mini(GameState.chapter, max_selectable_chapter()))
+	_use_chapter(mini(number, max_selectable_chapter()))
 	GameState.reset_run()
 	progression.reset_run()
 	_prepare_run()
@@ -615,6 +625,14 @@ func continue_game() -> void:
 	var index := _reached_level
 	_end_endless_mode()
 	_use_chapter(_run_chapter)                  # 存檔那一輪的章(不理標題上選了哪一章)
+	if _chapter_departure > 0:
+		GameState.difficulty = _run_difficulty
+		var aftermath := chapter.get_level(chapter.level_count() - 1).story_after
+		if can_play_story(aftermath) and not GameState.story_seen.has(aftermath.id):
+			_show_page_story(aftermath, _go.bind(_finish_chapter.bind(true)))
+		else:
+			_finish_chapter(true)
+		return
 	GameState.reset_run()
 	progression.reset_run()
 	_prepare_run()
@@ -673,6 +691,7 @@ func _start_level(index: int, with_story: bool = true) -> void:
 	_camp_pending = false
 	_clear_record = {}
 	_capture_checkpoint()
+	_chapter_departure = 0
 	save_now()
 	_open_session(level, index, _arriving_companions(index))
 	_story_before_pending = with_story
@@ -781,6 +800,7 @@ func _on_level_cleared() -> void:
 	level_events.cancel()
 	_clear_record["equipment_reward"] = EquipmentInventory.reward_clear(GameState.equipment, _run_chapter, level.is_boss, _run_difficulty == HARD, _equipment_rng)
 	if chapter.is_last(_level_index):
+		_chapter_departure = _run_chapter
 		_checkpoint = {}
 	else:
 		_capture_checkpoint()
@@ -837,6 +857,7 @@ func _on_level_finished(victory: bool) -> void:
 		_screen = _add_ui(FlowParts.RESULTS, _screen_layer)
 		FlowParts.call_if_present(_screen, &"setup", [_last_result.duplicate(true)])
 		FlowParts.connect_if_present(_screen, &"continue_pressed", _on_results_continue)
+		FlowParts.connect_if_present(_screen, &"rest_pressed", _on_results_rest)
 	else:
 		_music(&"play", [&"fail"])
 		_set_state(State.FAILURE)
@@ -975,18 +996,26 @@ func _enter_camp() -> void:
 	_camp_holder.add_child(_camp)
 
 
-## 結算(一章完)之後:這一章的預告 → 回標題。chapter_cleared、chapters_cleared 已在打敗頭目時設定;
-## 這裡再存一次。v2.6:標題預設選剛解鎖的下一章(最後一章打完就留在最後一章;第六章的預告是全破之後的訊息)。
-func _finish_chapter() -> void:
-	GameState.chapter_cleared = true
-	GameState.chapters_cleared = maxi(GameState.chapters_cleared, _run_chapter)
+## Chapter rewards were saved when the boss fell. The handoff lasts across both story pages.
+func _finish_chapter(resuming: bool = false) -> void:
 	var teaser := chapter.teaser
-	_use_chapter(mini(_run_chapter + 1, max_selectable_chapter()))
-	save_now()
-	if can_play_story(teaser):
-		_show_page_story(teaser, _go.bind(show_title))
+	var destination := _open_campaign_credits if is_final_chapter(_run_chapter) else _depart_for_next_chapter
+	if can_play_story(teaser) and (not resuming or not GameState.story_seen.has(teaser.id)):
+		_show_page_story(teaser, _go.bind(destination))
 	else:
-		show_title()
+		destination.call()
+
+
+func _depart_for_next_chapter() -> void:
+	GameState.hero_class = _run_hero_class
+	GameState.difficulty = _run_difficulty
+	_start_chapter_run(_chapter_departure + 1)
+
+
+func _open_campaign_credits() -> void:
+	_leave_current()
+	_campaign_credits = true
+	_open_credits()
 
 
 # --- 章(v2.6) ---
@@ -1047,6 +1076,7 @@ func _leave_current() -> void:
 	_tutorial = null
 	_screen = null
 	_credits = null
+	_campaign_credits = false
 	_quit_dialog = null
 	_camp = null
 	# 用 set_deferred:與 _on_level_finished 的 set_deferred 依先後次序生效。
@@ -1643,6 +1673,11 @@ func _close_credits() -> void:
 
 
 func _remove_credits() -> void:
+	if _campaign_credits:
+		_chapter_departure = 0
+		save_now()
+		show_title()
+		return
 	_set_state(State.TITLE)
 	_free_node(_credits)
 	_credits = null
@@ -1675,6 +1710,11 @@ func _on_results_continue() -> void:
 		_go(_enter_camp)
 	else:
 		_go(_start_level.bind(_level_index + 1))
+
+
+func _on_results_rest() -> void:
+	if state == State.RESULTS and _chapter_departure > 0:
+		_go(show_title)
 
 
 func _on_failure_retry() -> void:

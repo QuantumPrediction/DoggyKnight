@@ -183,7 +183,7 @@
 | STORY_L6_AFTER_06 | merlin | proud | |
 | STORY_L6_AFTER_07 | goldie | happy | |
 
-### `teaser`:第二章預告(結局之後、回標題之前)
+### `teaser`:第二章預告（第一章結算之後）
 
 | 鍵 | speaker | 表情 | 插畫 |
 | --- | --- | --- | --- |
@@ -203,7 +203,7 @@
 - 每關:場地出現(轉場露出)→ `story_before`(若有)→ 標題卡 → 波次;過關慶祝 → `story_after`(若有)→ 結算。
 - **重試同一關時不再播放** `story_before`。從存檔「繼續冒險」時播放該關的 `story_before`。
 - 營地:第一次進入營地播 `camp1`,第二次播 `camp2`(每次營地只播一次)。
-- 1-6 過關:慶祝 → `l6_after`(結局,含插畫)→ 結算(第一章完)→ `teaser` → 回標題。
+- 1-6 過關:慶祝 → `l6_after`(結局,含插畫)→ 結算(第一章完)→ `teaser` → 第二章序幕。章末可選「回標題」，下次從「繼續冒險」接上。
 - 每段對白都可以點「略過」;已看過的段落記在 `GameState.story_seen`(存檔),但再玩一次時仍然播放(玩家可以略過)。
 
 ---
@@ -541,7 +541,7 @@
 ## 13. 第二、三章的失敗提示與播放規則
 
 - 失敗提示增加 `STORY_TIP_09` 至 `STORY_TIP_14`(新敵人與頭目)。失敗畫面可以只抽目前這一章用得上的提示,也可以全部隨機。
-- 播放規則同第 8 節,段落 id 換成這一章的:第 N 章新遊戲 → `cN_prologue`(第一章是 `prologue`)→ N-1 場地 → `cNl1_before` → ……;營地第一次 `cN_camp1`、第二次 `cN_camp2`;最後一關過關 → `cNl6_after` → 結算 → `cN_teaser` → 回標題。
+- 播放規則同第 8 節,段落 id 換成這一章的:第 N 章新遊戲 → `cN_prologue`(第一章是 `prologue`)→ N-1 場地 → `cNl1_before` → ……;營地第一次 `cN_camp1`、第二次 `cN_camp2`;最後一關過關 → `cNl6_after` → 結算 → `cN_teaser` → 下章序幕。第六章改接製作名單。
 - 營地與故事裡的梅林:第三章 3-5 過關之前梅林不在隊伍裡(被抓走了),營地改由湖中仙女站在梅林的位置;第三章營地點她會說 `CAMP_LADY_01` 至 `CAMP_LADY_04`(D 線撰寫)。
 
 ---
@@ -1022,14 +1022,15 @@
 | STORY_C6L6_AFTER_13 | narrator |  | c6_ending_4 |
 | STORY_C6L6_AFTER_14 | narrator |  | c6_ending_4 |
 
-### `c6_teaser`:全破之後(結算之後、回標題之前)
+### `c6_teaser`:終幕（第六章結算之後、製作名單之前）
 
 | 鍵 | speaker | 表情 | 插畫 |
 | --- | --- | --- | --- |
-| STORY_C6_TEASER_01 | narrator |  | c6_ending_4 |
+| STORY_C6_TEASER_01 | narrator |  | round_table_homecoming.webp |
+| STORY_C6_TEASER_02 | narrator |  |  |
 
 ## 18. 第四至六章的失敗提示與播放規則
 
 - 失敗提示增加 `STORY_TIP_15` 至 `STORY_TIP_20`。
-- 播放規則同第 13 節(`cN_prologue`、`cNlM_before/after`、`cN_camp1/2`、`cN_teaser`)。第六章的 `c6_teaser` 是全破之後的訊息。
+- 播放規則同第 13 節(`cN_prologue`、`cNlM_before/after`、`cN_camp1/2`、`cN_teaser`)。第六章的 `c6_teaser` 是湖邊繪本的最後一頁，接上製作名單。
 - 營地人物:第四章有崔斯坦(第一次營地起);第五章貝德維爾留在卡美洛,營地是蘭斯洛特、高文、梅林;第六章全員(第二次營地加上湖中仙女與摩根娜)。點崔斯坦說 `CAMP_TRISTAN_01` 至 `04`,點高文說 `CAMP_GAWAIN_01` 至 `04`(D 線撰寫)。

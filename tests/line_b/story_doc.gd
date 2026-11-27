@@ -49,6 +49,11 @@ static func parse(path: String = STORY_DOC) -> Dictionary:
 		var picture := values[3] if values.size() >= 4 else ""
 		if not picture.is_empty():
 			last_picture = picture
+		var picture_path := ""
+		if not last_picture.is_empty():
+			picture_path = ILLUSTRATION_DIR + last_picture
+			if last_picture.get_extension().is_empty():
+				picture_path += ".png"
 		if not result.has(current):
 			result[current] = []
 		(result[current] as Array).append({
@@ -56,6 +61,6 @@ static func parse(path: String = STORY_DOC) -> Dictionary:
 			"speaker": values[1],
 			"expression": values[2],
 			"illustration": picture,
-			"illustration_path": (ILLUSTRATION_DIR + last_picture + ".png") if not last_picture.is_empty() else "",
+			"illustration_path": picture_path,
 		})
 	return result

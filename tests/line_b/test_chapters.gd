@@ -3,7 +3,7 @@ extends "res://tests/line_b/flow_test_base.gd"
 ## 所以 A 線的新敵人還沒合併也能跑。
 ## v2.7 BW3 至 BW7(DEV_PLAN 4.14、第 20 節):章數改用 GameState.CHAPTER_COUNT(六章);第六章結算「全劇終」
 ## (game_complete);存檔第 6 版;每章同伴(最多四位);第四至六章的音樂與無盡試煉。
-## - 每一章各自可以從第 1 關玩到結局、預告、回標題;打完第 N 章 chapters_cleared = N。
+## - 每一章各自可以從第 1 關玩到結局、預告、下一章／片尾;打完第 N 章 chapters_cleared = N。
 ## - 只能選已解鎖的章;存檔記住章;「繼續冒險」回到存檔的章與關;舊存檔轉換。
 ## - 每章的音樂(field_2 / boss_2 …),音樂檔不存在時退回 field / boss。
 ## - 無盡試煉依 chapters_cleared 加入第二、三章的敵人、頭目與背景。
@@ -33,16 +33,17 @@ func after_each() -> void:
 func _play_whole_chapter(timeout_sec: float = 60.0) -> Array[Dictionary]:
 	var results: Array[Dictionary] = []
 	var camps: Array[int] = []
-	var left_title := [false]
+	var origin := flow.get_run_chapter()
 	flow.get_screen().emit_signal(&"new_game_pressed")
 	var finished := await wait_until(func() -> bool:
 		if flow.is_switching():
 			return false
 		match flow.state:
 			FlowMain.State.STORY:
+				if flow.get_run_chapter() > origin and flow.is_story_playing():
+					return true
 				skip_dialogue()
 			FlowMain.State.LEVEL:
-				left_title[0] = true
 				_auto_step()
 			FlowMain.State.RESULTS:
 				var result := flow.get_last_result()
@@ -55,7 +56,7 @@ func _play_whole_chapter(timeout_sec: float = 60.0) -> Array[Dictionary]:
 					assert_eq(GameState.chapter, flow.get_run_chapter(), "營地期間 GameState.chapter 是這一章")
 					EventBus.camp_left.emit()
 			FlowMain.State.TITLE:
-				return left_title[0]
+				return flow.get_credits() != null
 		return false, timeout_sec)
 	assert_true(finished, "在時限內玩完一章")
 	assert_eq(camps, [1, 3] as Array[int], "兩次營地")
@@ -89,7 +90,10 @@ func test_each_chapter_plays_from_level_1_to_the_ending() -> void:
 			want.append(StringName("%d-%d" % [n, m]))
 		assert_eq(ids, want, "第 %d 章的六關" % n)
 		assert_eq(started.count, 6)
-		assert_eq(_stories, _expected_stories(n), "第 %d 章的對白次序(開場繪本 → 每關前後 → 結局 → 預告)" % n)
+		var expected := _expected_stories(n)
+		if n < last:
+			expected.append("c%d_prologue" % (n + 1))
+		assert_eq(_stories, expected, "第 %d 章的對白次序(開場繪本 → 每關前後 → 結局 → 預告)" % n)
 		for i in results.size():
 			assert_eq(results[i]["chapter"], n)
 			assert_eq(results[i]["chapter_name"], "CHAPTER_%d" % n)
@@ -104,9 +108,13 @@ func test_each_chapter_plays_from_level_1_to_the_ending() -> void:
 		var saved := read_save()
 		assert_eq(saved["chapters_cleared"], n, "存檔記下 chapters_cleared")
 		assert_eq(GameState.chapter, mini(n + 1, last), "標題預設選剛解鎖的章(全破之後留在最後一章)")
-		assert_eq(saved["chapter"], mini(n + 1, last))
-		assert_false(flow.has_save(), "一章完成:沒有要繼續的關卡")
-		assert_eq(flow.state, FlowMain.State.TITLE)
+		assert_eq(saved["chapter_departure"], n, "新章序幕與片尾可關閉重開")
+		assert_eq(saved["chapter"], n)
+		assert_true(flow.has_save())
+		if n < last:
+			assert_eq(flow.state, FlowMain.State.STORY)
+		else:
+			assert_true(flow.get_credits() != null)
 		flow.queue_free()
 		flow = null
 		await wait_frames(2)
@@ -621,7 +629,10 @@ func test_clearing_chapter_6_is_the_end_of_the_story() -> void:
 	assert_true(await wait_until(func() -> bool: return flow.is_story_playing() and flow.get_story_id() == &"c6_teaser"),
 			"結算之後:全破之後的訊息")
 	skip_dialogue()
-	assert_true(await wait_until(func() -> bool: return flow.state == FlowMain.State.TITLE))
+	assert_true(await wait_until(func() -> bool: return flow.get_credits() != null and not flow.is_switching()))
+	assert_true(flow.has_save(), "片尾完結前仍可接續")
+	flow.get_credits().emit_signal(&"closed")
+	assert_true(await wait_until(func() -> bool: return flow.state == FlowMain.State.TITLE and flow.get_credits() == null))
 	assert_eq(GameState.chapter, GameState.CHAPTER_COUNT, "標題停在第六章")
 	assert_eq(read_save()["chapters_cleared"], GameState.CHAPTER_COUNT)
 	assert_false(flow.has_save())
@@ -645,3 +656,115 @@ func _screen_has_text(node: Node, text: String) -> bool:
 		if _screen_has_text(child, text):
 			return true
 	return false
+
+
+func _reopen_campaign() -> void:
+	flow.queue_free()
+	flow = null
+	await wait_frames(2)
+	reset_settings()
+	make_flow(true, 91, true)
+	await wait_frames(1)
+
+
+func _at_page(id: StringName) -> bool:
+	return flow.is_story_playing() and flow.get_story_id() == id and not flow.is_switching()
+
+
+func test_boss_rest_reload_and_destination_checkpoint_are_one_paid_handoff() -> void:
+	SaveStore.new(SAVE_PATH).write_data({"chapter": 2, "chapters_cleared": 1, "level_index": 5,
+			"hero_class": "mage", "difficulty": "hard", "snacks": 53, "meta_upgrades": {"strength": 1}})
+	make_flow(true, 91, true)
+	await wait_frames(1)
+	flow.get_screen().emit_signal(&"continue_pressed")
+	assert_true(await wait_until(func() -> bool:
+		if _at_page(&"c2l6_before"):
+			skip_dialogue()
+		elif flow.is_level_running():
+			_auto_step()
+		return _at_page(&"c2l6_after"), 10.0))
+	var bank := read_save()
+	assert_eq(bank.chapter_departure, 2)
+	assert_eq(bank.chapters_cleared, 2)
+	assert_true(bank.snacks > 53)
+	await _reopen_campaign()
+	assert_true(flow.has_save())
+	flow.get_screen().emit_signal(&"continue_pressed")
+	assert_true(await wait_until(func() -> bool: return _at_page(&"c2l6_after")))
+	skip_dialogue()
+	assert_true(await wait_until(func() -> bool: return _at_page(&"c2_teaser")))
+	skip_dialogue()
+	assert_true(await wait_until(func() -> bool: return _at_page(&"c3_prologue")))
+	assert_eq(read_save().chapter_departure, 2)
+	assert_eq(read_save().chapter, 2, "序幕中斷也記得已完的章")
+	await _reopen_campaign()
+	flow.get_screen().emit_signal(&"continue_pressed")
+	assert_true(await wait_until(func() -> bool: return _at_page(&"c3_prologue")))
+	skip_dialogue()
+	assert_true(await wait_until(func() -> bool: return _at_page(&"c3l1_before")))
+	skip_dialogue()
+	assert_true(await wait_until(flow.is_level_running))
+	var landed := read_save()
+	assert_eq(landed.chapter_departure, 0)
+	assert_eq(landed.chapter, 3)
+	assert_eq(landed.level_index, 0)
+	assert_false(landed.checkpoint.is_empty())
+	assert_eq(landed.snacks, bank.snacks)
+	assert_eq(landed.equipment, bank.equipment)
+	assert_eq(landed.best_stars, bank.best_stars)
+	assert_eq(landed.meta_upgrades, bank.meta_upgrades)
+	assert_eq(landed.hero_class, "mage")
+	assert_eq(landed.difficulty, "hard")
+	assert_eq(GameState.hero_level, 1)
+	assert_eq(GameState.active_tricks.size(), 0)
+
+
+func test_rest_and_manual_credits_keep_the_banked_chapter() -> void:
+	SaveStore.new(SAVE_PATH).write_data({"chapter": 1, "level_index": 5, "difficulty": "reinforced"})
+	make_flow(true)
+	await wait_frames(1)
+	flow.get_screen().emit_signal(&"continue_pressed")
+	assert_true(await wait_until(in_level))
+	assert_true(await play_until_level_ends())
+	var result := flow.get_screen()
+	result.emit_signal(&"rest_pressed")
+	result.emit_signal(&"continue_pressed")
+	assert_true(await wait_until(func() -> bool: return flow.state == FlowMain.State.TITLE and not flow.is_switching()))
+	assert_eq(read_save().chapter_departure, 1)
+	flow.get_screen().emit_signal(&"credits_pressed")
+	assert_true(await wait_until(func() -> bool: return flow.get_credits() != null and not flow.is_switching()))
+	flow.get_credits().emit_signal(&"closed")
+	assert_true(await wait_until(func() -> bool: return flow.get_credits() == null and not flow.is_switching()))
+	assert_eq(read_save().chapter_departure, 1, "從標題自行看片尾不會消耗章末存檔")
+	flow.get_screen().emit_signal(&"continue_pressed")
+	assert_true(await wait_until(in_level))
+	assert_eq(flow.get_run_chapter(), 2)
+	assert_eq(GameState.difficulty, &"normal", "第一章援軍結束後回到普通故事模式")
+
+
+func test_final_credits_survive_relaunch_and_finish_once() -> void:
+	SaveStore.new(SAVE_PATH).write_data({"chapter": 6, "chapters_cleared": 6, "chapter_departure": 6,
+			"snacks": 107, "story_seen": {"c6l6_after": true, "c6_teaser": true}})
+	make_flow(true, 91, true)
+	await wait_frames(1)
+	for launch in 2:
+		flow.get_screen().emit_signal(&"continue_pressed")
+		assert_true(await wait_until(func() -> bool: return flow.get_credits() != null and not flow.is_switching()))
+		assert_eq(read_save().chapter_departure, 6)
+		if launch == 0:
+			await _reopen_campaign()
+	flow.get_credits().emit_signal(&"closed")
+	EventBus.back_requested.emit()
+	assert_true(await wait_until(func() -> bool: return flow.state == FlowMain.State.TITLE and flow.get_credits() == null))
+	assert_false(flow.has_save())
+	assert_eq(read_save().snacks, 107)
+	assert_eq(read_save().chapters_cleared, 6)
+	assert_eq(read_save().chapter_departure, 0)
+
+
+func test_only_valid_banked_boss_boundaries_resume() -> void:
+	for raw: Dictionary in [{}, {"chapter": 3, "chapters_cleared": 3},
+			{"chapter": 6, "chapters_cleared": 2, "chapter_departure": 6},
+			{"chapter": 4, "chapters_cleared": 4, "chapter_departure": 3},
+			{"chapter": 1, "chapters_cleared": 1, "chapter_departure": 1, "level_index": 2}]:
+		assert_eq(SaveStore.sanitize(raw).chapter_departure, 0)

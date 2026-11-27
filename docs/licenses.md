@@ -157,3 +157,7 @@ GPT Image 以專案原有的藍兜帽弓兵為參考，繪製追蹤、鎖定、�
 ### 三職業的正面與背面收步
 
 GPT Image 參照本作三套角色原畫，為各職業繪製正面與背面落腳、站穩的十二幅姿勢。[原稿、提示及遊戲圖集指紋](validation/natural-motion/art/paintings.json)
+
+### 湖畔圓桌終幕
+
+`assets/story/round_table_homecoming.webp` 是本作以 GPT Image 製作的終幕插畫。構圖參考本作既有的第六章夕陽繪本和標題美術。第六章使用 640×480 的遊戲版本，原稿與交付圖的指紋見 [六章驗證](validation/six-episode-campaign/README.md)。

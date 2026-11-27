@@ -17,6 +17,7 @@ extends Control
 ## (打完最後一章才是 true);舊資料沒有這個鍵時,打完第 CHAPTER_COUNT 章才算全劇終。
 
 signal continue_pressed
+signal rest_pressed
 
 const PANEL_WIDTH: float = 164.0
 const STAR_BURST: PackedScene = preload("res://assets/fx/particles/star_burst.tscn")
@@ -34,7 +35,7 @@ var level_label: Label
 var time_value: Label
 var kills_value: Label
 var level_value: Label
-var tricks_row: HBoxContainer
+var tricks_row: HFlowContainer
 var footer_label: Label
 var stars_row: HBoxContainer
 var star_rects: Array[TextureRect] = []
@@ -46,6 +47,10 @@ var hard_badge: NinePatchRect
 
 var _result: Dictionary = {}
 var _panel: PanelContainer
+var _report: VBoxContainer
+var _scroll: ScrollContainer
+var _actions: HBoxContainer
+var _rest_button: Button
 var _ribbon: PanelContainer
 var _goldie: Control
 var _anim_tween: Tween
@@ -59,9 +64,19 @@ func _ready() -> void:
 	_panel = PanelContainer.new()
 	_panel.custom_minimum_size = Vector2(PANEL_WIDTH, 0)
 	add_child(_panel)
+	var page := VBoxContainer.new()
+	page.add_theme_constant_override(&"separation", 2)
+	_panel.add_child(page)
+	_scroll = ScrollContainer.new()
+	_scroll.name = "ReportScroll"
+	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_scroll.follow_focus = true
+	page.add_child(_scroll)
 	var box := VBoxContainer.new()
+	_report = box
+	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	box.add_theme_constant_override(&"separation", 2)
-	_panel.add_child(box)
+	_scroll.add_child(box)
 	var spacer := Control.new()
 	spacer.custom_minimum_size = Vector2(0, 6)
 	box.add_child(spacer)
@@ -105,8 +120,9 @@ func _ready() -> void:
 	level_value = _stat_row(grid, tr("UI_LEVEL"))
 
 	box.add_child(UiKit.label(tr("UI_TRICKS"), &"LabelSoft", HORIZONTAL_ALIGNMENT_LEFT))
-	tricks_row = HBoxContainer.new()
-	tricks_row.add_theme_constant_override(&"separation", 4)
+	tricks_row = HFlowContainer.new()
+	tricks_row.add_theme_constant_override(&"h_separation", 4)
+	tricks_row.add_theme_constant_override(&"v_separation", 1)
 	tricks_row.custom_minimum_size = Vector2(0, 16)
 	box.add_child(tricks_row)
 
@@ -116,15 +132,21 @@ func _ready() -> void:
 	progress.name = "Progress"
 	box.add_child(progress)
 
-	footer_label = UiKit.wrapped_label("", PANEL_WIDTH - 16, &"", HORIZONTAL_ALIGNMENT_CENTER)
+	footer_label = UiKit.wrapped_label("", 0, &"", HORIZONTAL_ALIGNMENT_CENTER)
 	box.add_child(footer_label)
 
 	continue_button = UiKit.button(tr("UI_NEXT"))
 	continue_button.name = "ContinueButton"
 	continue_button.pressed.connect(func() -> void: continue_pressed.emit())
-	var button_row := CenterContainer.new()
-	button_row.add_child(continue_button)
-	box.add_child(button_row)
+	_actions = HBoxContainer.new()
+	_actions.alignment = BoxContainer.ALIGNMENT_CENTER
+	_actions.add_theme_constant_override(&"separation", 4)
+	_actions.add_child(continue_button)
+	_rest_button = UiKit.button(tr("UI_CAMPAIGN_REST"), &"ButtonAlt", Vector2(46, 26))
+	_rest_button.name = "RestButton"
+	_rest_button.pressed.connect(func() -> void: rest_pressed.emit())
+	_actions.add_child(_rest_button)
+	page.add_child(_actions)
 
 	_ribbon = PanelContainer.new()
 	_ribbon.theme_type_variation = &"Ribbon"
@@ -232,8 +254,16 @@ func _apply() -> void:
 		tricks_row.add_child(UiKit.label(tr("UI_NONE"), &"LabelSoft", HORIZONTAL_ALIGNMENT_LEFT))
 	for id: Variant in tricks:
 		tricks_row.add_child(_trick_chip(StringName(str(id))))
-	if is_final:
-		footer_label.text = tr("UI_THANKS")
+	_rest_button.visible = is_final
+	continue_button.custom_minimum_size = Vector2(74, 26) if is_final else UiKit.BUTTON_SIZE
+	continue_button.text = tr("UI_NEXT")
+	if is_final and is_game_complete(_result):
+		continue_button.text = tr("UI_CAMPAIGN_EPILOGUE")
+		footer_label.text = tr("UI_CAMPAIGN_HOMECOMING")
+	elif is_final:
+		var next_chapter := chapter_of(_result) + 1
+		continue_button.text = tr("UI_CAMPAIGN_DEPART") % chapter_short(next_chapter)
+		footer_label.text = tr("CHAPTER_%d" % next_chapter)
 	elif _result.get("next_is_camp", false):
 		footer_label.text = tr("UI_NEXT_CAMP")
 	else:
@@ -387,8 +417,13 @@ func _layout() -> void:
 	if not is_inside_tree():
 		return
 	var safe := SafeArea.get_safe_rect()
-	_panel.size = _panel.get_minimum_size()
 	_ribbon.size = _ribbon.get_minimum_size()
+	# Keep both actions on screen, even when long trick lists and equipment drops need scrolling.
+	var border := _panel.get_theme_stylebox(&"panel").get_minimum_size().y
+	var reserved := ceilf(_ribbon.size.y * 0.5) + border + _actions.get_combined_minimum_size().y + 6.0
+	var report_height := minf(_report.get_combined_minimum_size().y, maxf(1, safe.size.y - reserved))
+	_scroll.custom_minimum_size.y = report_height
+	_panel.size = _panel.get_combined_minimum_size()
 	var total := Vector2(_panel.size.x, _panel.size.y + _ribbon.size.y * 0.5)
 	var pos := UiKit.center_in(safe, total)
 	_ribbon.position = Vector2(floorf(safe.get_center().x - _ribbon.size.x * 0.5), pos.y)

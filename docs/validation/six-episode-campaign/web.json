@@ -1,0 +1,43 @@
+{
+  "site_version": 9,
+  "site_source": "e96ba5d0c75ad2fc55b70dae6d88bfb24e580fc0",
+  "public_url": "https://doggy-knight-playtest.quantumprediction.chatgpt.site/",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "official_web_nothreads_release_zip_sha256": "d3ee2f08cef0cf3cf6678a6355a92a8db48ccdd35cbd2e8bfd5f0e8a0b4032a0",
+  "static_bytes": 66413086,
+  "files": {
+    "index.wasm": {
+      "bytes": 39514754,
+      "sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0",
+      "parts": 7
+    },
+    "index.pck": {
+      "bytes": 59805184,
+      "sha256": "43f55c1579ce8e6c0d8e63628c35f7509180a64b134f10ebbf72a681a80c3b8e",
+      "parts": 10
+    }
+  },
+  "web_checks": [
+    "36 real levels and backgrounds plus pre/post dialogue loaded in the exported PCK.",
+    "All six chapter resources, both final pages, final translated thank-you and chapter-end rest label loaded in the exported PCK.",
+    "Managed browser compiled WASM and verified all game bytes in the preview. Normal play displayed the expected missing-WebGL2 message in this browser."
+  ],
+  "native_capture": "11 original 360x640 frames from Linux X11 GL Compatibility",
+  "regression_history": [
+    {
+      "tests": 1014,
+      "failed": 4,
+      "broken": 0,
+      "causes": [
+        "Two tests still expected a title return and the earlier saved-field allowlist.",
+        "Story authoring table and the cached native translation had not caught up with the second epilogue page."
+      ]
+    },
+    {
+      "tests": 1014,
+      "failed": 0,
+      "broken": 0,
+      "engine_exit": "Runner passed; existing RID/ObjectDB/resource shutdown diagnostics persisted."
+    }
+  ]
+}
