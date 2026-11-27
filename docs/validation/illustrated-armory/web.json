@@ -19,5 +19,7 @@
   "template_sha256": "d3ee2f08cef0cf3cf6678a6355a92a8db48ccdd35cbd2e8bfd5f0e8a0b4032a0",
   "published_version": 10,
   "url": "https://doggy-knight-playtest.quantumprediction.chatgpt.site",
-  "browser_file_check": "engine compiled and all six chapters validated"
+  "browser_file_check": "engine compiled and all six chapters validated",
+  "published_file_check_url": "https://doggy-knight-playtest.quantumprediction.chatgpt.site/?check=1",
+  "published_file_check": "檔案檢查通過。引擎已編譯，六章遊戲資料完整。"
 }
