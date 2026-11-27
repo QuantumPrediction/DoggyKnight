@@ -180,9 +180,75 @@ id = &"moon_pool"
 title = "EVENT_MOON_POOL_TITLE"
 options = Array[ExtResource("3_option")]([SubResource("moon_pool_merlin"), SubResource("moon_pool_morgana")])
 
+[sub_resource type="Resource" id="pirate_deck_merlin"]
+script = ExtResource("3_option")
+title = "EVENT_PIRATE_DECK_MERLIN"
+desc = "EVENT_PIRATE_DECK_MERLIN_DESC"
+icon = "res://assets/portraits/merlin/proud.png"
+tone = "merlin"
+effects = {"bonus_trick_levels": 1}
+
+[sub_resource type="Resource" id="pirate_deck_morgana"]
+script = ExtResource("3_option")
+title = "EVENT_PIRATE_DECK_MORGANA"
+desc = "EVENT_PIRATE_DECK_MORGANA_DESC"
+icon = "res://assets/portraits/morgana/smirk.png"
+tone = "morgana"
+effects = {"snacks": 25, "vigor_keep_ratio": 0.5}
+
+[sub_resource type="Resource" id="pirate_deck"]
+script = ExtResource("2_event")
+id = &"pirate_deck"
+title = "EVENT_PIRATE_DECK_TITLE"
+options = Array[ExtResource("3_option")]([SubResource("pirate_deck_merlin"), SubResource("pirate_deck_morgana")])
+
+[sub_resource type="Resource" id="crater_supplies_merlin"]
+script = ExtResource("3_option")
+title = "EVENT_CRATER_SUPPLIES_MERLIN"
+desc = "EVENT_CRATER_SUPPLIES_MERLIN_DESC"
+icon = "res://assets/portraits/merlin/proud.png"
+tone = "merlin"
+effects = {"bonus_trick_levels": 1}
+
+[sub_resource type="Resource" id="crater_supplies_morgana"]
+script = ExtResource("3_option")
+title = "EVENT_CRATER_SUPPLIES_MORGANA"
+desc = "EVENT_CRATER_SUPPLIES_MORGANA_DESC"
+icon = "res://assets/portraits/morgana/smirk.png"
+tone = "morgana"
+effects = {"snacks": 25, "vigor_keep_ratio": 0.5}
+
+[sub_resource type="Resource" id="crater_supplies"]
+script = ExtResource("2_event")
+id = &"crater_supplies"
+title = "EVENT_CRATER_SUPPLIES_TITLE"
+options = Array[ExtResource("3_option")]([SubResource("crater_supplies_merlin"), SubResource("crater_supplies_morgana")])
+
+[sub_resource type="Resource" id="wisp_lantern_merlin"]
+script = ExtResource("3_option")
+title = "EVENT_WISP_LANTERN_MERLIN"
+desc = "EVENT_WISP_LANTERN_MERLIN_DESC"
+icon = "res://assets/portraits/merlin/proud.png"
+tone = "merlin"
+effects = {"heal_ratio": 0.4, "snacks": 10}
+
+[sub_resource type="Resource" id="wisp_lantern_morgana"]
+script = ExtResource("3_option")
+title = "EVENT_WISP_LANTERN_MORGANA"
+desc = "EVENT_WISP_LANTERN_MORGANA_DESC"
+icon = "res://assets/portraits/morgana/smirk.png"
+tone = "morgana"
+effects = {"stats": {"attack_damage": 0.4, "damage_taken_mult": 0.3}}
+
+[sub_resource type="Resource" id="wisp_lantern"]
+script = ExtResource("2_event")
+id = &"wisp_lantern"
+title = "EVENT_WISP_LANTERN_TITLE"
+options = Array[ExtResource("3_option")]([SubResource("wisp_lantern_merlin"), SubResource("wisp_lantern_morgana")])
+
 [resource]
 script = ExtResource("1_table")
-events = Array[ExtResource("2_event")]([SubResource("sword_glow"), SubResource("wheat_cart"), SubResource("sausage"), SubResource("purple_feather"), SubResource("crow_whisper"), SubResource("bridge_mist"), SubResource("star_shower"), SubResource("moon_pool")])
-level_events = {&"1-1": &"sword_glow", &"1-2": &"wheat_cart", &"1-3": &"sausage", &"1-4": &"purple_feather", &"1-5": &"crow_whisper", &"1-6": &"bridge_mist", &"2-1": &"wheat_cart", &"2-2": &"sausage", &"2-3": &"crow_whisper", &"2-4": &"purple_feather", &"2-5": &"moon_pool", &"2-6": &"star_shower", &"3-1": &"bridge_mist", &"3-2": &"crow_whisper", &"3-3": &"star_shower", &"3-4": &"purple_feather", &"3-5": &"moon_pool", &"3-6": &"sword_glow", &"4-1": &"sausage", &"4-2": &"crow_whisper", &"4-3": &"wheat_cart", &"4-4": &"purple_feather", &"4-5": &"moon_pool", &"4-6": &"bridge_mist", &"5-1": &"star_shower", &"5-2": &"crow_whisper", &"5-3": &"moon_pool", &"5-4": &"purple_feather", &"5-5": &"wheat_cart", &"5-6": &"sword_glow", &"6-1": &"sausage", &"6-2": &"bridge_mist", &"6-3": &"wheat_cart", &"6-4": &"purple_feather", &"6-5": &"star_shower", &"6-6": &"sword_glow"}
+events = Array[ExtResource("2_event")]([SubResource("sword_glow"), SubResource("wheat_cart"), SubResource("sausage"), SubResource("purple_feather"), SubResource("crow_whisper"), SubResource("bridge_mist"), SubResource("star_shower"), SubResource("moon_pool"), SubResource("pirate_deck"), SubResource("crater_supplies"), SubResource("wisp_lantern")])
+level_events = {&"1-1": &"sword_glow", &"1-2": &"wheat_cart", &"1-3": &"sausage", &"1-4": &"purple_feather", &"1-5": &"crow_whisper", &"1-6": &"bridge_mist", &"2-1": &"wheat_cart", &"2-2": &"sausage", &"2-3": &"crow_whisper", &"2-4": &"purple_feather", &"2-5": &"moon_pool", &"2-6": &"star_shower", &"3-1": &"bridge_mist", &"3-2": &"crow_whisper", &"3-3": &"star_shower", &"3-4": &"purple_feather", &"3-5": &"moon_pool", &"3-6": &"sword_glow", &"4-1": &"sausage", &"4-2": &"crow_whisper", &"4-3": &"pirate_deck", &"4-4": &"purple_feather", &"4-5": &"moon_pool", &"4-6": &"bridge_mist", &"5-1": &"star_shower", &"5-2": &"crow_whisper", &"5-3": &"moon_pool", &"5-4": &"purple_feather", &"5-5": &"crater_supplies", &"5-6": &"sword_glow", &"6-1": &"sausage", &"6-2": &"wisp_lantern", &"6-3": &"wheat_cart", &"6-4": &"purple_feather", &"6-5": &"star_shower", &"6-6": &"sword_glow"}
 after_wave = {}
 endless_pool = Array[StringName]([&"sword_glow", &"wheat_cart", &"sausage", &"purple_feather", &"crow_whisper", &"bridge_mist", &"star_shower", &"moon_pool"])

@@ -24,6 +24,7 @@ extends RefCounted
 ## 第 7 版:hero_class 記錄故事存檔職業(knight / mage / archer)。
 ## 向下相容:第 1 至 6 版存檔都可以讀,缺的欄位用預設值;
 ## 但第 1 版存檔已經到達第 2 關以後,表示玩家玩過第一關,tutorial_done 視為 true;
+## chapter_departure 是已領完獎、等待進下一章或看完片尾的來源章。舊檔缺此可選欄位預設為 0。
 ## 第 4 版以前沒有 chapters_cleared:chapter_cleared 為 true 時視為 chapters_cleared = 1(DEV_PLAN 4.13)。
 ## chapters_cleared ≥ 1 時 chapter_cleared 一定是 true(第一章通關仍是困難模式與無盡試煉的條件)。
 ## 第 5 版(三章)打完第三章的存檔:那時候沒有第四章,所以 chapter 停在 3;讀檔時(沒有進行中的關卡)
@@ -92,6 +93,7 @@ static func defaults() -> Dictionary:
 		"endless_best": 0,
 		"chapter": 1,
 		"chapters_cleared": 0,
+		"chapter_departure": 0,
 	}
 
 
@@ -199,11 +201,17 @@ func delete() -> void:
 static func sanitize(raw: Dictionary) -> Dictionary:
 	var d := defaults()
 	var cleared := clampi(_int_field(raw, "chapters_cleared", d["chapters_cleared"]), 0, GameState.CHAPTER_COUNT)
+	var saved_chapter := clampi(_int_field(raw, "chapter", d["chapter"]), 1, GameState.CHAPTER_COUNT)
+	var checkpoint := AdventureCheckpoint.sanitize(raw.get("checkpoint", {}))
+	var level_index := _int_field(raw, "level_index", d["level_index"])
+	var departure := _int_field(raw, "chapter_departure", 0)
+	if departure != saved_chapter or departure > cleared or level_index != 0 or not checkpoint.is_empty():
+		departure = 0
 	return {
 		"equipment": EquipmentInventory.sanitize(raw.get("equipment", {})),
-		"checkpoint": AdventureCheckpoint.sanitize(raw.get("checkpoint", {})),
+		"checkpoint": checkpoint,
 		"hero_class": String(HeroClasses.valid_id(raw.get("hero_class", "knight"))),
-		"level_index": _int_field(raw, "level_index", d["level_index"]),
+		"level_index": level_index,
 		"snacks": _int_field(raw, "snacks", d["snacks"]),
 		"sound_on": _bool_field(raw, "sound_on", d["sound_on"]),
 		"music_on": _bool_field(raw, "music_on", d["music_on"]),
@@ -217,7 +225,8 @@ static func sanitize(raw: Dictionary) -> Dictionary:
 		"story_seen": _seen_field(raw.get("story_seen", {})),
 		"meta_upgrades": _meta_field(raw.get("meta_upgrades", {})),
 		"endless_best": _int_field(raw, "endless_best", d["endless_best"]),
-		"chapter": clampi(_int_field(raw, "chapter", d["chapter"]), 1, GameState.CHAPTER_COUNT),
+		"chapter": saved_chapter,
+		"chapter_departure": departure,
 		"chapters_cleared": cleared,
 	}
 

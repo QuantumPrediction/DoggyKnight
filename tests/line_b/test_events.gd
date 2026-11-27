@@ -50,7 +50,34 @@ func test_every_level_has_a_different_event_with_merlin_and_morgana() -> void:
 				assert_true(EventOption.KEYS.has(String(key)), "認識的效果 %s" % key)
 			var offer := option.to_offer()
 			assert_eq(offer.keys(), ["title", "desc", "icon", "tone"], "event_offered 的格式(DEV_PLAN 4.12)")
-	assert_eq(table.endless_pool.size(), table.events.size(), "無盡試煉可以抽到所有事件")
+	assert_eq(table.endless_pool, [&"sword_glow", &"wheat_cart", &"sausage", &"purple_feather",
+			&"crow_whisper", &"bridge_mist", &"star_shower", &"moon_pool"], "保留原無盡事件與抽取順序")
+	for id in table.endless_pool:
+		assert_not_null(table.get_event(id), "無盡可抽到 %s" % id)
+
+
+func test_late_chapter_choices_keep_their_wave_and_both_rewards() -> void:
+	var table := LevelEventTable.load_default()
+	var stages := {
+		&"4-3": [&"pirate_deck", &"wheat_cart", 1],
+		&"5-5": [&"crater_supplies", &"wheat_cart", 2],
+		&"6-2": [&"wisp_lantern", &"bridge_mist", 1],
+	}
+	assert_eq(table.events.size(), table.endless_pool.size() + stages.size())
+	for id: StringName in stages:
+		var expected: Array = stages[id]
+		var level := load("res://data/levels/level_%s.tres" % String(id).replace("-", "_")) as LevelData
+		var event := table.event_for_level(id)
+		assert_not_null(event, "%s 有專屬事件" % id)
+		if event == null:
+			continue
+		assert_eq(event.id, expected[0])
+		assert_eq(table.level_events.values().count(event.id), 1, "只在本關出現")
+		assert_eq(table.trigger_wave(level), expected[2])
+		assert_false(table.endless_pool.has(event.id))
+		var original := table.get_event(expected[1])
+		for i in 2:
+			assert_eq(event.options[i].effects, original.options[i].effects, "%s 選項 %d 的得失" % [id, i])
 
 
 func test_event_appears_between_waves_and_pauses_until_chosen() -> void:

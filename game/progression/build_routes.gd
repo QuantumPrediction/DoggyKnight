@@ -43,6 +43,8 @@ static func event_title(id: StringName) -> String:
 		return "UI_ROUTE_TITLE"
 	var table := load("res://data/routes/first_chapter_events.tres") as LevelEventTable
 	var event := table.get_event(id)
+	if event == null:
+		event = LevelEventTable.load_default().get_event(id)
 	return event.title if event != null else "UI_EVENT_TITLE"
 
 ## One route-related option alongside normal draws. Evolution slots win first.

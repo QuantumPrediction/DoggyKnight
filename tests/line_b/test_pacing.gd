@@ -231,5 +231,5 @@ func test_boss_and_chapter_clear_music() -> void:
 	assert_eq(music_log.tracks(), PackedStringArray(["boss", "chapter_clear"]), "打完第一章")
 	assert_true(flow.get_last_result()["is_final"])
 	flow.get_screen().emit_signal(&"continue_pressed")
-	assert_true(await wait_until(func() -> bool: return flow.state == FlowMain.State.TITLE))
-	assert_eq(music_log.tracks(), PackedStringArray(["boss", "chapter_clear", "title"]))
+	assert_true(await wait_until(func() -> bool: return flow.get_run_chapter() == 2 and flow.is_level_running()))
+	assert_eq(music_log.tracks(), PackedStringArray(["boss", "chapter_clear", "field_2"]))

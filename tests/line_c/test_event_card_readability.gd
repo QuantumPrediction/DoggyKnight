@@ -29,6 +29,8 @@ func test_all_story_event_content_fits_after_illustrated_art_attaches() -> void:
 	for event in LevelEventTable.load_default().events:
 		ui.show_event(event.id, event.offer_options())
 		await wait_frames(4)
+		var title := ui.find_child("Title", true, false) as PanelContainer
+		assert_eq((title.get_child(0) as Label).text, tr(event.title), "顯示所在關卡的事件名")
 		for card: Button in ui.cards:
 			check_card(card, "%s/%s" % [event.id, card.name])
 

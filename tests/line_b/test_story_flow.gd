@@ -1,7 +1,7 @@
 extends "res://tests/line_b/flow_test_base.gd"
 ## BS2、BS3、BS7:對白的播放次序(docs/STORY.md 第 8 節)。用替身對白框(stub_dialogue_box)。
 ## 開場繪本 → 1-1 場地 → l1_before → 標題卡(level_started)→ 第一波;過關慶祝 → story_after → 結算;
-## 重試不重播;繼續冒險播該關的 story_before;結局 → 結算 → 預告 → 標題;對白期間場地停住。
+## 重試不重播;繼續冒險播該關的 story_before;結局 → 結算 → 預告 → 下章序幕;對白期間場地停住。
 
 const FULL_ORDER: Array[StringName] = [&"prologue", &"l1_before", &"l1_after", &"l2_before", &"l2_after",
 		&"l3_before", &"l3_after", &"l4_before", &"l4_after", &"l5_before", &"l5_after", &"l6_before",
@@ -214,16 +214,16 @@ func test_ending_order_and_chapter_cleared() -> void:
 	assert_true(flow.get_screen() is StoryBackdrop)
 	assert_null(flow.get_arena(), "預告時場地已移除")
 	skip_dialogue()
-	assert_true(await wait_until(func() -> bool: return flow.state == FlowMain.State.TITLE))
+	assert_true(await _wait_story(&"c2_prologue"))
 	var order: PackedStringArray = []
 	for entry in _log:
 		if entry.begins_with("story:") or entry.begins_with("clear:") or entry.begins_with("state:"):
 			order.append(entry)
 	assert_eq(order, PackedStringArray(["story:l6_before", "clear:1-6", "story:l6_after", "state:RESULTS",
-			"story:teaser", "state:TITLE"]), "結局次序")
-	assert_eq(music_log.tracks(), PackedStringArray(["boss", "chapter_clear", "story", "story", "title"]))
+			"story:teaser", "story:c2_prologue"]), "結局次序")
+	assert_eq(music_log.tracks(), PackedStringArray(["boss", "chapter_clear", "story", "story", "story"]))
 	assert_true(read_save()["chapter_cleared"])
-	assert_false(flow.has_save(), "整章完成:沒有要繼續的關卡")
+	assert_true(flow.has_save(), "序幕期間可接續已完成的章")
 
 
 func test_whole_chapter_plays_every_level_story_in_order() -> void:
@@ -237,6 +237,8 @@ func test_whole_chapter_plays_every_level_story_in_order() -> void:
 	var finished := await wait_until(func() -> bool:
 		if flow.is_switching():
 			return false
+		if flow.is_story_playing() and flow.get_story_id() == &"c2_prologue":
+			return true
 		match flow.state:
 			FlowMain.State.STORY:
 				skip_dialogue()
@@ -257,7 +259,7 @@ func test_whole_chapter_plays_every_level_story_in_order() -> void:
 	assert_true(finished, "在時限內玩完")
 	assert_eq(started.count, 6)
 	assert_eq(camps.count, 2)
-	assert_eq(_box().get(&"played"), FULL_ORDER, "每段對白依 docs/STORY.md 第 8 節的次序各播一次")
+	assert_eq(_box().get(&"played"), FULL_ORDER + ([&"c2_prologue"] as Array[StringName]), "每段對白依 docs/STORY.md 第 8 節的次序各播一次")
 	for id in FULL_ORDER:
 		assert_true(GameState.story_seen.has(id), "story_seen 有 %s" % id)
 	assert_true(GameState.chapter_cleared)

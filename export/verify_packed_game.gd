@@ -25,9 +25,14 @@ func _check() -> void:
 		return
 	var checked: int = 0
 	for chapter: int in range(1, 7):
+		var episode: Resource = load("res://data/levels/chapter_%d.tres" % chapter)
+		if episode == null or episode.level_count() != 6 or episode.prologue == null or episode.teaser == null:
+			push_error("Incomplete story chapter %d" % chapter)
+			quit(1)
+			return
 		for level: int in range(1, 7):
 			var resource: Resource = load("res://data/levels/level_%d_%d.tres" % [chapter, level])
-			if resource == null or resource.get("background") == null:
+			if resource == null or resource.get("background") == null or resource.story_before == null or resource.story_after == null or episode.get_level(level - 1) != resource:
 				push_error("Missing level or background %d-%d" % [chapter, level])
 				quit(1)
 				return
@@ -48,6 +53,17 @@ func _check() -> void:
 			push_error("Missing companion " + companion)
 			quit(1)
 			return
+	var ending: Resource = load("res://data/story/c6_teaser.tres")
+	var painting: Texture2D = load("res://assets/story/round_table_homecoming.webp")
+	TranslationServer.set_locale("zh_TW")
+	if tr("STORY_C6_TEASER_02") != "《黃金騎士》全劇終。謝謝你和金毛一起走到這裡。" or tr("UI_CAMPAIGN_REST") != "回標題":
+		push_error("Missing final campaign translations")
+		quit(1)
+		return
+	if painting == null or ending.lines.size() != 2 or ending.lines[0].illustration != painting or ending.lines[1].illustration != painting:
+		push_error("Missing final illustrated homecoming")
+		quit(1)
+		return
 	var art_count := 0
 	for name: String in ["app_icon", "bosses_avalon", "bosses_royal", "camp_sheet", "chapter_1", "chapter_2", "chapter_3", "chapter_4", "chapter_5", "chapter_6", "extra_cast", "foes_elements", "foes_magic", "foes_meadow", "fx_sheet", "hero_sheet", "minigame_worlds", "party_sheet", "story_1", "story_2", "story_3", "story_4", "story_5", "story_6", "story_cast", "title_art", "trick_icons", "ui_icons", "combat/shield_echo"]:
 		if load("res://assets/illustrated/%s.png" % name) == null:
@@ -86,7 +102,7 @@ func _check() -> void:
 		push_error("Desktop pause menu exceeds the base game viewport")
 		quit(1)
 		return
-	print("PACK_OK: %d levels, 4 companions and shield echo, %d illustrated textures, production UI; tests excluded" % [checked, art_count])
+	print("PACK_OK: 6 chapters, %d levels with opening and aftermath, illustrated epilogue, 4 companions and shield echo, %d illustrated textures, production UI; tests excluded" % [checked, art_count])
 	pause.queue_free()
 	await process_frame
 	quit(0)
