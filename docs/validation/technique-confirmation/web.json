@@ -16,5 +16,9 @@
   "packed_levels": 36,
   "check": "WASM compilation, all payload hashes, shipped pair marks and recap translation",
   "cloud_chromium": "normal entry reports no WebGL 2",
-  "scene_renderer": "Linux X11 GL Compatibility / Mesa llvmpipe"
+  "scene_renderer": "Linux X11 GL Compatibility / Mesa llvmpipe",
+  "public_version": 11,
+  "site_source_sha": "e92559ac4c63c120749438ce1d2ffc2f606fc651",
+  "public_check": "passed after reloading the deployed version",
+  "public_url": "https://doggy-knight-playtest.quantumprediction.chatgpt.site/"
 }
