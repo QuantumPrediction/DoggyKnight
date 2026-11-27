@@ -290,6 +290,8 @@ func _offer_next() -> void:
 		return
 	_current_offer = _deck.draw(difficulty.trick_offer_count, rng, GameState.active_tricks)
 	_current_offer = BuildRoutes.guide_offer(_current_offer, _deck, GameState.active_tricks, GameState.run_route)
+	_current_offer = AttackTechniques.guide_offer(_current_offer, _deck, GameState.active_tricks,
+			GameState.hero_class, GameState.hero_level, GameState.run_route)
 	if _current_offer.is_empty():
 		push_warning("RunProgression: 沒有可抽的把戲,略過這次選擇")
 		cancel_choices()

@@ -1,0 +1,51 @@
+{
+  "generator": "OpenAI GPT Image, built-in image generation, 2026-11-27",
+  "project": "黃金騎士 / The Golden Knight",
+  "assets": [
+    {
+      "asset": "atelier_cabinets.webp",
+      "source": {
+        "sha256": "01d72bbd2e2d16629d9770ff11e6ddbe5240f548e56d9e42c86718dced85566b",
+        "pixels": [
+          1254,
+          1254
+        ],
+        "bytes": 2763678
+      },
+      "shipped": {
+        "sha256": "6a688271ee2dfe5052da3460a9e7e7834752072d5768dbb4bea676bd6e970c6f",
+        "pixels": [
+          600,
+          600
+        ],
+        "bytes": 104290
+      },
+      "reference": "assets/illustrated/equipment/armory_forge.png",
+      "reference_sha256": "22a4eb5006f651c79e31b716467c14b6aa0b7cad0d8f52d67dd11c183792df4e",
+      "prompt_summary": "One original 3-row, edge-to-edge storybook gouache display case atlas. Common roadside oak and green felt, royal sapphire and gilt, and walnut fitting room with mirror. In each case, an empty lit pedestal sits at 26% width. The right half is quiet for live caption text. No people, displayed items or lettering. Warm canine heraldry matches the forge banner.",
+      "processing": "Uniformly downsampled with Lanczos to 600×600, WebP quality 89. Three 600×200 cells."
+    },
+    {
+      "asset": "atelier_emblems.webp",
+      "source": {
+        "sha256": "8630fdd8815ca969691ff805f364e7de163855bf352a5ea2c6eadb89acb4f10d",
+        "pixels": [
+          1536,
+          1024
+        ],
+        "bytes": 2283212
+      },
+      "shipped": {
+        "sha256": "1d66d4548328ad1f7d01d5d0e1a8a814d1e1b47a21df4a9a9985ba63773daaee",
+        "pixels": [
+          288,
+          192
+        ],
+        "bytes": 27820
+      },
+      "prompt_summary": "Transparent 3×2 grid of six readable hand-painted canine guild emblems. A paw-stamped gold coin, cut sapphire, star-iron pieces, antiqued copper sword, breastplate and open chest. Bold silhouettes, tiny-game-UI contrasts, no text or complex backdrop.",
+      "processing": "Three equal-width columns, row split at y=480 in the clear gutter. Each sprite cropped to its alpha ≥70 bounds; fit proportionally in 88×88, centered on a 96×96 transparent cell. WebP with alpha at quality 92."
+    }
+  ],
+  "integration": "Live selected item, worn figure, inventory state, rank and prices are rendered by the game on top of these empty cases."
+}

@@ -441,12 +441,19 @@ func _swing() -> void:
 		Sfx.play(&"hit")
 	var style := DamageNumber.Style.CRIT if power else DamageNumber.Style.NORMAL
 	var stop := tuning.hitstop_time * (1.6 if power else 1.0)
+	var primary: Node2D = hits[0]
+	for enemy in hits:
+		if global_position.distance_squared_to(enemy.global_position) < global_position.distance_squared_to(primary.global_position):
+			primary = enemy
+	var contact := primary.global_position
+	var primary_id := primary.get_instance_id()
 	var bursts := 0
 	for enemy in hits:
 		_strike(enemy, damage, tuning.knockback_speed, style, bursts < feel.hit_bursts_per_swing)
 		bursts += 1
 		if enemy.has_method(&"apply_hitstop"):
 			enemy.call(&"apply_hitstop", stop)
+	abilities.primary_impact(self, contact, primary_id, facing)
 	add_loyalty(tuning.loyalty_per_hit * hits.size())
 	_hitstop_left = stop
 	sprite.speed_scale = 0.0

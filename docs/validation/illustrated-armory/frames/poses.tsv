@@ -1,0 +1,37 @@
+role	loadout	pose	origin	sheet	region	mirror	shoulder_and_weapon	chapter_level
+knight	common1	standing	(90.0, 162.0)	knight.png	[P: (0.0, 0.0), S: (256.0, 192.0)]	1.0	[118, 83, 123, 126, 116, 180, 157]	1
+knight	common1	side_left	(90.0, 162.0)	stride_knight.png	[P: (512.0, 0.0), S: (256.0, 192.0)]	-1.0	[123, 86, 131, 119, 111, 184, 140]	1
+knight	common1	front	(90.0, 162.0)	vertical_knight.png	[P: (256.0, 0.0), S: (256.0, 192.0)]	1.0	[89, 89, 73, 116, 218, 50, 149]	1
+knight	common1	rear	(90.0, 162.0)	vertical_knight.png	[P: (256.0, 192.0), S: (256.0, 192.0)]	1.0	[131, 77, 157, 114, 154, 170, 139]	1
+knight	common1	windup	(90.0, 162.0)	knight.png	[P: (512.0, 192.0), S: (256.0, 192.0)]	1.0	[120, 80, 89, 46, 52, 133, 14]	1
+knight	common1	release	(90.0, 162.0)	knight.png	[P: (256.0, 384.0), S: (256.0, 192.0)]	1.0	[129, 88, 167, 120, 121, 215, 149]	1
+knight	epic9	standing	(90.0, 162.0)	knight.png	[P: (0.0, 0.0), S: (256.0, 192.0)]	1.0	[118, 83, 123, 126, 116, 180, 157]	1
+knight	epic9	side_left	(90.0, 162.0)	stride_knight.png	[P: (512.0, 0.0), S: (256.0, 192.0)]	-1.0	[123, 86, 131, 119, 111, 184, 140]	1
+knight	epic9	front	(90.0, 162.0)	vertical_knight.png	[P: (256.0, 0.0), S: (256.0, 192.0)]	1.0	[89, 89, 73, 116, 218, 50, 149]	1
+knight	epic9	rear	(90.0, 162.0)	vertical_knight.png	[P: (256.0, 192.0), S: (256.0, 192.0)]	1.0	[131, 77, 157, 114, 154, 170, 139]	1
+knight	epic9	windup	(90.0, 162.0)	knight.png	[P: (512.0, 192.0), S: (256.0, 192.0)]	1.0	[120, 80, 89, 46, 52, 133, 14]	1
+knight	epic9	release	(90.0, 162.0)	knight.png	[P: (256.0, 384.0), S: (256.0, 192.0)]	1.0	[129, 88, 167, 120, 121, 215, 149]	1
+mage	common1	standing	(90.0, 162.0)	mage.png	[P: (0.0, 0.0), S: (256.0, 192.0)]	1.0	[109, 92, 182, 142, 123]	1
+mage	common1	side_left	(90.0, 162.0)	stride_mage.png	[P: (512.0, 0.0), S: (256.0, 192.0)]	-1.0	[126, 86, 184, 99, 75]	1
+mage	common1	front	(90.0, 162.0)	vertical_mage.png	[P: (256.0, 0.0), S: (256.0, 192.0)]	1.0	[95, 90, 88, 71, -37]	1
+mage	common1	rear	(90.0, 162.0)	vertical_mage.png	[P: (256.0, 192.0), S: (256.0, 192.0)]	1.0	[130, 85, 160, 78, 15]	1
+mage	common1	windup	(90.0, 162.0)	mage.png	[P: (512.0, 192.0), S: (256.0, 192.0)]	1.0	[102, 88, 173, 79, 74]	1
+mage	common1	release	(90.0, 162.0)	mage.png	[P: (256.0, 384.0), S: (256.0, 192.0)]	1.0	[129, 86, 206, 91, 78]	1
+mage	epic9	standing	(90.0, 162.0)	mage.png	[P: (0.0, 0.0), S: (256.0, 192.0)]	1.0	[109, 92, 182, 142, 123]	1
+mage	epic9	side_left	(90.0, 162.0)	stride_mage.png	[P: (512.0, 0.0), S: (256.0, 192.0)]	-1.0	[126, 86, 184, 99, 75]	1
+mage	epic9	front	(90.0, 162.0)	vertical_mage.png	[P: (256.0, 0.0), S: (256.0, 192.0)]	1.0	[95, 90, 88, 71, -37]	1
+mage	epic9	rear	(90.0, 162.0)	vertical_mage.png	[P: (256.0, 192.0), S: (256.0, 192.0)]	1.0	[130, 85, 160, 78, 15]	1
+mage	epic9	windup	(90.0, 162.0)	mage.png	[P: (512.0, 192.0), S: (256.0, 192.0)]	1.0	[102, 88, 173, 79, 74]	1
+mage	epic9	release	(90.0, 162.0)	mage.png	[P: (256.0, 384.0), S: (256.0, 192.0)]	1.0	[129, 86, 206, 91, 78]	1
+archer	common1	standing	(90.0, 162.0)	archer.png	[P: (0.0, 0.0), S: (256.0, 192.0)]	1.0	[112, 87, 168, 73, 16]	1
+archer	common1	side_left	(90.0, 162.0)	stride_archer.png	[P: (512.0, 0.0), S: (256.0, 192.0)]	-1.0	[132, 81, 183, 60, 6]	1
+archer	common1	front	(90.0, 162.0)	vertical_archer.png	[P: (256.0, 0.0), S: (256.0, 192.0)]	1.0	[100, 95, 162, 78, 18]	1
+archer	common1	rear	(90.0, 162.0)	vertical_archer.png	[P: (256.0, 192.0), S: (256.0, 192.0)]	1.0	[130, 86, 84, 61, -22, 88, 126]	1
+archer	common1	windup	(90.0, 162.0)	archer.png	[P: (512.0, 192.0), S: (256.0, 192.0)]	1.0	[104, 78, 163, 28, -12, 174, 139]	1
+archer	common1	release	(90.0, 162.0)	archer.png	[P: (256.0, 384.0), S: (256.0, 192.0)]	1.0	[112, 83, 173, 47, -5, 159, 147]	1
+archer	epic9	standing	(90.0, 162.0)	archer.png	[P: (0.0, 0.0), S: (256.0, 192.0)]	1.0	[112, 87, 168, 73, 16]	1
+archer	epic9	side_left	(90.0, 162.0)	stride_archer.png	[P: (512.0, 0.0), S: (256.0, 192.0)]	-1.0	[132, 81, 183, 60, 6]	1
+archer	epic9	front	(90.0, 162.0)	vertical_archer.png	[P: (256.0, 0.0), S: (256.0, 192.0)]	1.0	[100, 95, 162, 78, 18]	1
+archer	epic9	rear	(90.0, 162.0)	vertical_archer.png	[P: (256.0, 192.0), S: (256.0, 192.0)]	1.0	[130, 86, 84, 61, -22, 88, 126]	1
+archer	epic9	windup	(90.0, 162.0)	archer.png	[P: (512.0, 192.0), S: (256.0, 192.0)]	1.0	[104, 78, 163, 28, -12, 174, 139]	1
+archer	epic9	release	(90.0, 162.0)	archer.png	[P: (256.0, 384.0), S: (256.0, 192.0)]	1.0	[112, 83, 173, 47, -5, 159, 147]	1

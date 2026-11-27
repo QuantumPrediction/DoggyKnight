@@ -1,0 +1,25 @@
+{
+  "base_commit": "b5887097e9e193e8198a814d739ff5a3a8fc2b68",
+  "public_site_source": "6151bdac83d9a8815daf68ca63e1c33cc7c7c4c0",
+  "delivered_bytes": 68801890,
+  "binaries": {
+    "index.wasm": {
+      "bytes": 39514754,
+      "sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0",
+      "parts": 7
+    },
+    "index.pck": {
+      "bytes": 62206348,
+      "sha256": "80406340a592665de59eb5f35903070c575b416a617d4c809d21ef56e65a4c54",
+      "parts": 10
+    }
+  },
+  "chained_rooms": 36,
+  "browser_gameplay": "preview browser lacks WebGL2; independent Linux X11 gameplay",
+  "template_sha256": "d3ee2f08cef0cf3cf6678a6355a92a8db48ccdd35cbd2e8bfd5f0e8a0b4032a0",
+  "published_version": 10,
+  "url": "https://doggy-knight-playtest.quantumprediction.chatgpt.site",
+  "browser_file_check": "engine compiled and all six chapters validated",
+  "published_file_check_url": "https://doggy-knight-playtest.quantumprediction.chatgpt.site/?check=1",
+  "published_file_check": "檔案檢查通過。引擎已編譯，六章遊戲資料完整。"
+}

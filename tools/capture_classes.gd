@@ -11,6 +11,10 @@ func shot(label: String) -> void:
 	print("CAPTURE ", label)
 func run() -> void:
 	DirAccess.make_dir_recursive_absolute(out)
+	if "--selection-only" in OS.get_cmdline_user_args():
+		await capture_class_picker()
+		quit()
+		return
 	root.size = Vector2i(540, 960)
 	await frames(3)
 	var state := root.get_node("GameState")
@@ -64,3 +68,26 @@ func run() -> void:
 	picker.queue_free()
 	await frames(3)
 	quit()
+
+## Open the normal title menu so the first-chapter challenge and focus state are real.
+func capture_class_picker() -> void:
+	root.size = Vector2i(360, 640)
+	await frames(4)
+	var title: Node = load("res://ui/screens/title.tscn").instantiate()
+	root.add_child(title)
+	await frames(15)
+	title.new_game_button.pressed.emit()
+	var picker: Control = title.get_class_select()
+	for button in picker.choices:
+		button.grab_focus()
+		button.pressed.emit()
+		await frames(6)
+		await shot("class_" + String(picker.selected))
+	var safe = load("res://core/safe_area.gd")
+	safe.simulate_notch = true
+	picker._layout()
+	await frames(6)
+	await shot("class_archer_notched")
+	safe.simulate_notch = false
+	title.queue_free()
+	await frames(3)

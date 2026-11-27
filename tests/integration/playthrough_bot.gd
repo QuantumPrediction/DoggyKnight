@@ -83,8 +83,8 @@ func _ready() -> void:
 			guard_policy = arg.trim_prefix("--guard=")
 		elif arg.begins_with("--route="):
 			route_choice = clampi(int(arg.trim_prefix("--route=")), 0, 1)
-		elif arg == "--build=route":
-			build_policy = "route"
+		elif arg in ["--build=route", "--build=techniques"]:
+			build_policy = arg.trim_prefix("--build=")
 		elif arg.begins_with("--report="):
 			report_path = arg.trim_prefix("--report=")
 		elif arg.begins_with("--max-downs="):
@@ -231,7 +231,7 @@ func _write_report(finished: bool) -> bool:
 		"finished": finished, "outcome": _outcome, "downs": _downs, "ultimates": _ultimates,
 		"simulation_seconds": _sim_seconds, "attempts": _attempts,
 		"seed_scope": "Global, flow, enemy spawn order, player crit, loot, equipment drops and minigames; cosmetic camp dialogue RNG is not seeded.",
-		"limits": "Staged gear, class-specific bot; first offered trick unless build_policy=route (eligible evolution, then route preference, then first). Automatic dialogue skip and camp bot. Engineering evidence, not human balance or retention."}, "\t") + "\n")
+		"limits": "Staged gear, class-specific bot; first offered trick unless build_policy=route (eligible evolution, then route preference, then first), or techniques (fewest owned technique stacks, then route). Automatic dialogue skip and camp bot. Engineering evidence, not human balance or retention."}, "\t") + "\n")
 	file.close()
 	return true
 
@@ -258,7 +258,18 @@ func _play_level() -> void:
 func _build_choice_index() -> int:
 	if flow.is_event_open():
 		return route_choice if BuildRoutes.is_route_event(flow.level_events.get_open_id()) else 0
-	if build_policy != "route":
+	if build_policy == "techniques":
+		var available := flow.progression.get_current_offer()
+		var best := -1
+		var best_count := 4
+		for i in available.size():
+			var count := TrickDeck.count_in(GameState.active_tricks, available[i].id)
+			if AttackTechniques.IDS.has(available[i].id) and count < best_count:
+				best = i
+				best_count = count
+		if best >= 0:
+			return best
+	if build_policy == "first":
 		return 0
 	var route := BuildRoutes.get_route(GameState.run_route)
 	var offer := flow.progression.get_current_offer()

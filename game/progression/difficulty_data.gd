@@ -17,7 +17,7 @@ extends Resource
 @export var trick_offer_count: int = 3
 ## 可以抽到的基本把戲(id,對應 data/tricks/<id>.tres)。進化把戲不放這裡(由 evolves_into 找到)。
 @export var trick_pool: Array[StringName] = [&"sit", &"wag", &"fetch", &"shake", &"spin", &"bark",
-		&"pounce", &"roll", &"dig", &"sniff", &"play_dead", &"zoomies"]
+		&"pounce", &"roll", &"dig", &"sniff", &"play_dead", &"zoomies", &"arc_rune", &"starfall", &"gale_disc"]
 ## 「坐下」疊很多次時,受到的傷害倍率最低只會降到這個值(避免完全無敵)。
 @export var min_damage_taken_mult: float = 0.2
 ## v2.4:已經學過、還沒到上限的把戲,在三選一中出現的機會是其他把戲的這麼多倍

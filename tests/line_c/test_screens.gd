@@ -63,8 +63,8 @@ func test_title_continue_only_with_a_save() -> void:
 func test_title_buttons_emit() -> void:
 	var title := _open("res://ui/screens/title.tscn")
 	title.call("setup", true)
-	for pair: Array in [["new_game_button", "new_game_pressed"], ["continue_button", "continue_pressed"],
-			["credits_button", "credits_pressed"]]:
+	assert_true(title.find_child("CreditsButton", true, false) == null)
+	for pair: Array in [["new_game_button", "new_game_pressed"], ["continue_button", "continue_pressed"]]:
 		var w := watch_signal(Signal(title, pair[1]))
 		(title.get(pair[0]) as Button).pressed.emit()
 		if pair[0] == "new_game_button":

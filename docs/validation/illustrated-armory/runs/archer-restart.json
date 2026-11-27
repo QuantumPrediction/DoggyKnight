@@ -1,0 +1,13 @@
+{
+  "after_sha256": "f427931839904b1f1cd48b55c71e93ce4d57d139a5bccd46485a32ca33022eeb",
+  "before_sha256": "f427931839904b1f1cd48b55c71e93ce4d57d139a5bccd46485a32ca33022eeb",
+  "chapter": 6,
+  "chapter_6_locked": false,
+  "chapters_cleared": 6,
+  "class": "archer",
+  "continue_visible": false,
+  "credits_open": false,
+  "departure": 0,
+  "passed": true,
+  "selected": 6
+}

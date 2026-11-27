@@ -1,4 +1,13 @@
-# 整合進度　六章冒險
+# 整合進度　選角、穿戴與攻擊連攜
+
+[草稿 #36](https://github.com/QuantumPrediction/DoggyKnight/pull/36)。正式實作 `ef073bec982e5f064994ac6c0ee170ea9cbba0a7`、本地受測提交 `3b31f548ca8b811212cc22820e8da7f88ba7e041` 共用 tree `fa91807a082da3812be811ec70190633812a9715`。
+
+2026-11-27 香港。以 #35 的 `b5887097e9e193e8198a814d739ff5a3a8fc2b68` 開出 `codex/illustrated-armory-combinations`。首章兩個額外敵波已標明為敵人；三職各有打法插畫。商店可預覽自身、試穿與最高級外觀，戰場根據真正穿戴的武器與護甲獨立作畫。Lv4 與 Lv8 另添本章佩章。擁有人已確認移除標題「製作名單」，六章終幕及片尾保留。
+
+三種戰技三級可疊，三對有不同實際命中行為。全套 1,039/1,039、裝備 56/56、戰技 9/9、選角 10/10 通過。法師與弓箭手空存檔各通 36 關、零倒下，重啟完成存檔相符。已保存 108 張穿戴畫面的指紋、實際截圖和初版失敗；兩店首屏均能點三件商品。公開網頁試玩 v10 已上線。雲端瀏覽器通過引擎與遊戲資料檢查，缺少 WebGL 2；真正戰鬥取自 Linux 原生。下一項驗收是由目標玩家在手機小畫面辨認穿戴及主動選出第一組連攜，記錄首次看不清的時點。真人仍零、暫評 6–6.5/10。[畫面與重跑](../validation/illustrated-armory/README.md) · [公開試玩](https://doggy-knight-playtest.quantumprediction.chatgpt.site/)
+
+## 先前的六章冒險
+
 
 [草稿 #35](https://github.com/QuantumPrediction/DoggyKnight/pull/35) · 網頁 v9 已公開上線。公開實作 `ed50d7dff44b9a414d3e88c0abe03e3d7f4919c8` 與本地受測提交共用 tree `f8a0c2b883a8eea7539913803c3933759e133498`。
 

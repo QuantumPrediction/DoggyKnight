@@ -1,0 +1,360 @@
+{
+  "renderer": "Godot 4.7.2, X11 OpenGL Compatibility, Mesa llvmpipe",
+  "paired_battle_poses": {
+    "1": {
+      "archer-common1-front.png": "91084ca0a8f03fe7920a2be361216c7942f6200a34c0c1cfe980e9c39cb9c8f0",
+      "archer-common1-rear.png": "7c6bfe0670c03336e6e0500f1cece8849d8d774720d00f3c7bc5373efc730943",
+      "archer-common1-release.png": "e5fd50143e5be2b32c8b139f05e34be1f06a31de42e8407fec9652d971d93e6b",
+      "archer-common1-side_left.png": "7f0d61e52d5ff48ebcc58fcdf3e27c51d039d014df664938d7a637b267a550c2",
+      "archer-common1-standing.png": "30712c06f3bb867d7ebe7b252071471543d44e43cd6c22c47832b7c1b5256800",
+      "archer-common1-windup.png": "db3deb03b18d3501fe2b255458cb06a15fac41aecef8b3f5558d07d8085def3f",
+      "archer-epic9-front.png": "2ae53be9f5db089be8fd083c85520488fbcd3c3b2a69b051ddf2955c5be7887a",
+      "archer-epic9-rear.png": "956c664d6060fb03bf542995f5760c88669b6b786fc12542be92c2ba91236564",
+      "archer-epic9-release.png": "ff930a42bba63959ae9f0bda33947f61c2c388c41412369daaae5e74f5eeac53",
+      "archer-epic9-side_left.png": "86c8bc7488d588188b63d9453c910c46eb4f04e78b08bdb1792ca94061c556d2",
+      "archer-epic9-standing.png": "2b1a54e1d2765444f7f5fde0b7c5e516f89d2df5b87c41c8532337db93c22cfd",
+      "archer-epic9-windup.png": "25fa6e78a4530662100d68544bec9d6045f9c625720fadccd1b428596442cdf9",
+      "knight-common1-front.png": "52cb8a61beef6685093428abb595c6e59f06d4d785863d6bf2fdd73b667674c5",
+      "knight-common1-rear.png": "aa3254aabf6d166893d0949c8d735c428da4402c81d4d4d151fc03a28bc2e2f7",
+      "knight-common1-release.png": "91a3b805ed7d032b3166c0d42ea98043611f602e78380d9728edf6a3712c3822",
+      "knight-common1-side_left.png": "c6ce5abe0ba792f8a15d67d4614bb018169f18ef148df151b2f9f94875e21ae3",
+      "knight-common1-standing.png": "4b7ebd5bbe3cab9a9e6b67d869c5dcfde40a1b4cc8c7871aafc582a45892d895",
+      "knight-common1-windup.png": "5558c4dc02f4ca67607091129cd43d6e863a67f4bcac28d214fa779607fe3d1c",
+      "knight-epic9-front.png": "7820fbc4c1672f5bb1fe0facc21e7b8c22ba7e9ba098b20fec17221dbfd2acb1",
+      "knight-epic9-rear.png": "c1f7f10bba7a757283b051bfd72e650c666cdbfc67c9b9008e2d809c18b198cd",
+      "knight-epic9-release.png": "200a0b957ea47c23e3d50eb69c88e36def922ce79ca6568e4c12a77f8392bde1",
+      "knight-epic9-side_left.png": "688260bf56b0f8958328932dbf55bf0dae8dd1b73f5dce466fe91711cbb589e9",
+      "knight-epic9-standing.png": "a529c37c4a6123a7582d2960724ea74d4c29bf77ccc02a6d580d0e36821b81a8",
+      "knight-epic9-windup.png": "21a64fb0fa6fc3199723d38c999ae162288f4fc787a847c9e1244e9dadc8b899",
+      "mage-common1-front.png": "b66d52029913836dbe49f9afc033038612b993dd2d2d33d74d9f394529e746f9",
+      "mage-common1-rear.png": "2582a7cb72b73fc6f66fa4818c5f2d16ae120e9274badc2656c3cf1de5e04ccc",
+      "mage-common1-release.png": "82ab9636eb562c1c6e73724b40856bb2e1fd952d04646b7e24d7e7735d1d0f36",
+      "mage-common1-side_left.png": "6c05287e288c1ca2a24d7e9c8265526639f237adbcf6ff4c228483663b18642f",
+      "mage-common1-standing.png": "206348954eb9a9ad0b78a2d809874f5b605e17ae38ea46fd1c6c2769b4ea1826",
+      "mage-common1-windup.png": "f3e7bf44b1b7f469cf1fd3bb23107641a972a90380c4d984e866492b56b3fd6a",
+      "mage-epic9-front.png": "2169c85a2a786dd1ec0aaa5e411af7b2c363f16af63c79c5a0ba27fb2e5e6d82",
+      "mage-epic9-rear.png": "a7f0fa82997df232c918542a99147676b77223f84862bf07ab4fd6a4f09219fe",
+      "mage-epic9-release.png": "71ff7fffac97dd2c77725c8b294fe731fed385c772333cd89cfad0f95b892800",
+      "mage-epic9-side_left.png": "ba98d5c4a6f56a8c0a7d220285f715443372ad945f4d3e4510170011016c1c22",
+      "mage-epic9-standing.png": "61de1c2cd2e3dab24ce76c7551e2f44c32385b630213cf60e03ef7970b0ac42d",
+      "mage-epic9-windup.png": "2916989c6899f44ba3aab88cf7e5df7332d561e07abc1ab169e36957a15c9fdb"
+    },
+    "4": {
+      "archer-common1-front.png": "faa1d2d584e0f9a5231098e75df42171e65ffbbeff963f9b70072e7a354e76d4",
+      "archer-common1-rear.png": "82129f76a4f4d886cb0b2aeff45f705f431572ddc90cfa9ab456568b9a2bea28",
+      "archer-common1-release.png": "82e07b9f6a42640b90e809405729452a3920ff960cf12aafbcd9af70eb7a19e5",
+      "archer-common1-side_left.png": "d37d8d2ff626d06dd38ab3827220b8d336e1915ae3cc3563c73b758be23a642f",
+      "archer-common1-standing.png": "2198b7cf86d394ebb5ad893f2e71761a5bd52a57667182d2a9fa0b4fe46c9ca7",
+      "archer-common1-windup.png": "ce39a7b22680ce22659243467e0bcd6156a2305df756fe7b43f7174a83844e21",
+      "archer-epic9-front.png": "53d77364b4e54d61546eeed77724f9c1b517ad2926b57f9b2f74dbfa4b14751c",
+      "archer-epic9-rear.png": "d4b27c567834d17a0452cedc1073da17fe8fa061dfadd33d9cfb5da675bfd1e2",
+      "archer-epic9-release.png": "2f5b56457907ab35c5a9b2589258441dff69ce5759fc0b892a2a26c5aa5e5b06",
+      "archer-epic9-side_left.png": "79383fa14667823c41cdb45b596caecdd033c80ae6c6f780c36101ca67c5fe57",
+      "archer-epic9-standing.png": "90ddfbfb7c6c865f65d0d3e76a1e6be5e58c093192fe59f16bc5bc3fa3e8e953",
+      "archer-epic9-windup.png": "2da45a1029b5619a729b721bf95543c07b3f334a6c7d7b81e9ce7083bf52c487",
+      "knight-common1-front.png": "4567ba7ec6d822ea8c541710c7e9dd965869089f6c33738bfb9dd7df807076ad",
+      "knight-common1-rear.png": "c85e4dfbe9be6ad1baae54c74ad2a20dac18c1476a063214126b7ba2833ce4f5",
+      "knight-common1-release.png": "3bc217222ab76497dbce5143ec6085f19f1e76bdc4ff51cfaee382d2619798fd",
+      "knight-common1-side_left.png": "3ae810e77c0b262fe7df98240208ebdee8ff0c4fbec547c6271889fdbd1fa8fb",
+      "knight-common1-standing.png": "8c309100aa73da4a09e329b8b85f765413035437c95d595d4282e3ec63247c41",
+      "knight-common1-windup.png": "6b3cbd557457f1f385ae3f2e7c1e641d9e5926e20a867012a69521f6548b55a3",
+      "knight-epic9-front.png": "230cdc3807f943e120a2d9a64dae91805485e3699c50931d11321634ca97c0e2",
+      "knight-epic9-rear.png": "dec67a52ae73eac59b7ac5fc77b8b9bc4521a072255a3f12da7714982c02479b",
+      "knight-epic9-release.png": "8d7e407cd5f5bf004d6929a37bf92ba6574ad277130c4b9dcd73663b3f39f444",
+      "knight-epic9-side_left.png": "59e1a65af23f7f9857de0a78496bd3399584d9671d833175cf79d17babb797a7",
+      "knight-epic9-standing.png": "43dff280ffbafa8a1c1e0a3320fa5a9086378beb78d3c539a48dc765132fdc33",
+      "knight-epic9-windup.png": "5785d28439541c40770d6eb771caf926a871b87a54d2ca4f649993e907add25b",
+      "mage-common1-front.png": "33e755df2bbe9adf4534f425374cd0fb4eb0a682dd85b179852ea479ab0b44ae",
+      "mage-common1-rear.png": "cfa713b854b5ba1b353831f794f26823ce2cd0409853a58414b5fdcd3c575da6",
+      "mage-common1-release.png": "f01db539bd36c89bf41fbbb58f5e65b86b91cd581385e8d5b4f9bcf39e10ec74",
+      "mage-common1-side_left.png": "a4fd477b3824717ae450b13143c3c0aaf36fb0a04d93979bd73969b1e4316e47",
+      "mage-common1-standing.png": "d800204a720825e5a0a37e5a4bb48592e22c79ea4dced96efb78d434e1b0e43e",
+      "mage-common1-windup.png": "1388057b5ed4e28f33f18eb39cbbe73ceedd0b997b48bf804547a615201db488",
+      "mage-epic9-front.png": "af9bf40cafad8c4f4c98dc114e6ff81b1f10bc862cf32dec14cdcbb8ad3c234c",
+      "mage-epic9-rear.png": "7a4ebeb07361d4760e60d95fdc7bf352c7540313aa03b986df0e8d28993710bc",
+      "mage-epic9-release.png": "8325b2740b740a11fc67ebbb4685a4a16c0ab0716bad6574b8d072f01d702f01",
+      "mage-epic9-side_left.png": "c71454593bdd9273504527e889a0ad9ca1db652dce69910047963224e57ca09b",
+      "mage-epic9-standing.png": "da14acb392284d6a17219934cb7ca005ae8b962bf97f09d53fbc00073176fe69",
+      "mage-epic9-windup.png": "7655e1280f656e60bb1b7a3ee17a9c401fd7a8b125da6d3ccdc33a75aee6aa73"
+    },
+    "8": {
+      "archer-common1-front.png": "5d8069bf66ff4c1a89df5a939d5411c23999959eb2d776f7fef18d998bab521f",
+      "archer-common1-rear.png": "2d92d794ee0ee281a1cdb873343e7a67402e205f233a44a96e2ca120111f5b82",
+      "archer-common1-release.png": "ba52e2ab9aa6674df16ce898bbf6714abce980589cb6bdbaf4e00c952fde34b5",
+      "archer-common1-side_left.png": "0c8807332ea086ecd210e3ebf8708c51db969e74cde09ebe88cb7219d7009b98",
+      "archer-common1-standing.png": "80d17e13ea4a33067616efe03b20d24b9cf74251bc3891035c79f2440bc41f85",
+      "archer-common1-windup.png": "109c81dbe92a454f3161a904c9ae93bc4f6638dfdccdad65b92d9ad07621ad5c",
+      "archer-epic9-front.png": "d408d53db8e59c0300755b7ccefc05475061ca54cfefb3a452c26c653417ec34",
+      "archer-epic9-rear.png": "ed8358b7e82e94c4c4cea35a4c192bcab376f9c745dd2f4f37bff88e51713072",
+      "archer-epic9-release.png": "788035b507d1bedd40897274a1aeef9ac0956a5f6c8f04a8e78abd82f1b0448e",
+      "archer-epic9-side_left.png": "9969fa84697651fec1ed30c7a90129992cd4cab9f73e53415babf5c596bd506a",
+      "archer-epic9-standing.png": "d660bfcf566f7d4c8add0974a8442e32538c18dfa35bd3100d1a4471928cc1c9",
+      "archer-epic9-windup.png": "59cb33cfc27ae1bffbd54225e413e6e51379a107d300cdccb92e2d40391ea529",
+      "knight-common1-front.png": "2a38a60105ed78b9b26fde9afcff1274c13fb69c1e0704a0015d6c2479acf80e",
+      "knight-common1-rear.png": "e59f395f6cee432fbfab01fadca5b5c4ef0cf2989263b3c3df68265e54d5f751",
+      "knight-common1-release.png": "c8b17ff5a61a00883f8f864d76362443167b550416673e7fdf69cffaa4960aea",
+      "knight-common1-side_left.png": "1798d338fcf0435f37668c4727b89d6a8cfd245f96707564d2fa4d46428bc3d0",
+      "knight-common1-standing.png": "2fb72169c2489a2a95365d3dfea6f57fa841b0a23cf379cde1d38ffd22a85360",
+      "knight-common1-windup.png": "0e83c6e4cc8d1f49998373b5d810174bda42c3a1f2472f3ceb0d296be74b95a6",
+      "knight-epic9-front.png": "1274363e8882b866f87f46139d846ae0aa58cefe854a27b3bf3fc0729b7e34e8",
+      "knight-epic9-rear.png": "9cfa5e8a75e41d3a25ee7ac4ad5a1c233d17fbe06d3d61ec6ff4b01ed6de8752",
+      "knight-epic9-release.png": "b74bd197a3207aa1a32bcd5853734c6d02b026139a4032bc46715600fd977de8",
+      "knight-epic9-side_left.png": "ced9190dc045a75f0e25a0f3a540af9acc7e8d449f6c2c80bf7579a67b7c404e",
+      "knight-epic9-standing.png": "a824ee8297aabb24c2b4059c27877fdee41606f529b0e80274ffbe8b0ba0574e",
+      "knight-epic9-windup.png": "b9b8022b0a282219f17ddf8ee3c33bfb37bab9037525673dfcfb4c33c0b24999",
+      "mage-common1-front.png": "c28e9710f7d0aea0cbc15587097131d13f0bb263205ad65de6b0d7caa410c211",
+      "mage-common1-rear.png": "6dc23f58b6802c87522a53498017b39afe382c9d37e0c35a1282df880d1717b9",
+      "mage-common1-release.png": "875ddaf031de0b1c70ea65bccad220440326810a79042d8c77791b610ba7224b",
+      "mage-common1-side_left.png": "a667f2be24deb78b5846d766a4b98e479144f3af76d5b7824e3e14caeb24b570",
+      "mage-common1-standing.png": "53d992ee78cd81bfeee8d0afc9b55f86e73cc1a1d3f5e909911b7d777abc68be",
+      "mage-common1-windup.png": "610be12a80afe34544b0d11ce4b8c29678be2e93258da8a35778e8b1cd89e817",
+      "mage-epic9-front.png": "7b06d908f54d6879224d040bbcbf9e8168bb807b1a03b2d06c052e41e25487a1",
+      "mage-epic9-rear.png": "0fb57785bb0a7cc626f18b6a58a650a43a9494aad5bf1d88f01f155b937cf3de",
+      "mage-epic9-release.png": "5c3312aaeff333eba8d005982a7ab18cecaa709692ebf5916c80c45e73e6fe36",
+      "mage-epic9-side_left.png": "10fb1850a4a32e2429499e8e84c0dff5c7b2368f90b8916620378af7113424c1",
+      "mage-epic9-standing.png": "f18ba30b0b1a0730060932c47ccadd3303223b193cbdfec305f25d271c746ba2",
+      "mage-epic9-windup.png": "a5038fccd042dc789f55420ef1582acb327d953cb72c1f649dcce4efb08e5889"
+    }
+  },
+  "stored": {
+    "class_knight.webp": {
+      "source": "class_knight.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "3c75d89395618dc35b99cacf846b03c92889e0c4cfef0c38dbeab4f315c411e9",
+      "rgb_sha256": "515b62523afdff054c15049f81777979f0cdbca1d0098b1d83ab42ddd59e5fa4",
+      "webp_sha256": "95aa5eb145cb052d849d89bcd80e9d2630be09d2f52fbbdae0af63a38dedcab8"
+    },
+    "class_mage.webp": {
+      "source": "class_mage.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "f65bef6132ec32cdb6ab09984213e65fb285d50ae7a813a0f32873ccefd338cc",
+      "rgb_sha256": "9a3e209d08cab7759c5227a4d3588ce1635e11de3894a0c6dc926c06c8ae573f",
+      "webp_sha256": "74f3ed7d161e8b77170933db2c47c1b890c8ed745a08d68f175c23eafbc83c79"
+    },
+    "class_archer.webp": {
+      "source": "class_archer.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "b4120318a74829b87534a0d19b5431dbc522daeee9fab3e9b5228d0010fa8020",
+      "rgb_sha256": "e4ed0e1ee5d8da553829c5ba2bd3815c23a4452825555c6dcd64c265e010667e",
+      "webp_sha256": "eae6682a92d53664fd60e16a1b1e9d409bb14599275529a4ec5f211826319489"
+    },
+    "class_archer_notched.webp": {
+      "source": "class_archer_notched.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "c20ed77c2d5ae247c41bc26679702844f7956c8c85bd1b45396697aac9f51c85",
+      "rgb_sha256": "50e348e11940d69094c0a1f6a940889355aa5cea1595374befc7da16eba66597",
+      "webp_sha256": "9bb1ea24f3e497c393810c6d1dfec2b08e0bf105adbe852f6927bf4f7ff53a76"
+    },
+    "shop_01_common.webp": {
+      "source": "shop_01_common.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "e79cdae25d26c3fab7dbe3e07545eb102d26d1316f1c8a4333cfc370382f9c09",
+      "rgb_sha256": "f2a3ef01ad87e51c37dc80e7d31c77d20fd9b5f51b849a28066e5cacfad131fb",
+      "webp_sha256": "4edb10b39e70db5757ac48c228ec4d728f1c53218d23f4ebf8c867f597ecef9d"
+    },
+    "shop_02_try_lv1.webp": {
+      "source": "shop_02_try_lv1.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "db6a26fd46f15947237c89f4c9aa7540a905cc33d2b0bd466d442440ec98d1d5",
+      "rgb_sha256": "946e906a409cf240cb44d3fc933eae1168976eb1ef7c1055ada10780779d1bcf",
+      "webp_sha256": "47ca644cdd67b2c6617f47ccc0b7d6ba49f9416caf04d7f38c0644655a91e460"
+    },
+    "shop_04_common_max.webp": {
+      "source": "shop_04_common_max.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "409eaba4436207024c7c3067ae6266874927e677a9d945264f8dbdab75c59c03",
+      "rgb_sha256": "e667e75fd1dc22508f170b157923461871b015a1391302ad6b147940143c8546",
+      "webp_sha256": "3c90bab059820950bc44b6be8869bbdfe68088b8f9095c12f3c492cfbd8cf805"
+    },
+    "shop_05_epic.webp": {
+      "source": "shop_05_epic.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "b0407ee80bdc70feb9d6da1084a3242c53a20be13e26b5a78ef7238f061e4be5",
+      "rgb_sha256": "805c58e88a2467e71db5fe05be9174c67cd2a20d355606929720a9032c295d22",
+      "webp_sha256": "3fb9db608a494447e438082ea23c451e76dda73a2a4df07649e3aa22c988d98a"
+    },
+    "shop_06_epic_max.webp": {
+      "source": "shop_06_epic_max.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "02901aada79b15a77481c92ec3a9d48172cb52dbf292b7a3ab9d404ee2a4dccf",
+      "rgb_sha256": "133302478b0f85bc5f025d870e261b6fcc94293d7a9e73f650675c4519e855c3",
+      "webp_sha256": "1cc59343517bb0ae4214f48c74afc5609f409425c8da0e9a55402e34b4e98168"
+    },
+    "shop_08_notched.webp": {
+      "source": "shop_08_notched.png",
+      "size": [
+        390,
+        844
+      ],
+      "png_sha256": "6f3ddedce75f9891e52c9c9c29913343d1c7505b1e40defdbcc167adbe0d19d2",
+      "rgb_sha256": "0756fa36ae6789af6d0139284066ab90970e449207913e5f908713ba436bd290",
+      "webp_sha256": "6e80767356d796520d0f3707f03091a4f6aad5484e152b8493f10b7cc23d3a2c"
+    },
+    "skill-card.webp": {
+      "source": "skill-card.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "479bb3ee0815766352ba0ed6fed256fad1e334ca24c4d35c0f651a3b5fb19ce6",
+      "rgb_sha256": "765237d77382199c659ad0a396db3f9ef4dc6c703779a0dccc0060e66822144f",
+      "webp_sha256": "c417e82f67bca31f093f0f3e9dc306dfe25587c96b8a1a51493eb905bedd01ea"
+    },
+    "skill-lightning.webp": {
+      "source": "skill-lightning.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "fd228703730f4c2ef96ad80c826afdbfddbb9fecb8c96f281b733b11b4b16cae",
+      "rgb_sha256": "92a6d0c0e25f31d1310ce46a03952c474813282080a5295f291a7708a63801b9",
+      "webp_sha256": "51eb3ad6c976f46589678d711127cc073f0c4e18662ad5de6cb082e50d1e999c"
+    },
+    "skill-wind-star.webp": {
+      "source": "skill-wind-star.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "70f18700166ebd60974b4c63f425e74f0fc03cc3e7042d67c183505e0761ae20",
+      "rgb_sha256": "2e3ec9d8c6915ddb712301c648bdb75468f03e4b89833ec0308c8e982759f84e",
+      "webp_sha256": "5c296ffbd1589365603e855c0d18d934bff3ceffe17be7e8fffb22a3f149b901"
+    },
+    "failed-skill-card.webp": {
+      "source": "skill-card.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "eed7cd363dbd36c5f6f7bce8120f45dd751cdae0bba325208cd53a60a055ef89",
+      "rgb_sha256": "07043331592bb645318f0cc614cedf35f0c678bd5688ff62072396bbdbe27325",
+      "webp_sha256": "da4994e023ae5019625bcb6e6202a273773160650e1182cb3ef17855f17c7db0"
+    },
+    "failed-cabinet-caption.webp": {
+      "source": "shop_01_common.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "b11bb3d799fdac2ca4afae9cd065c9d453b8ba7fe12650f8124f2b7044b38b2f",
+      "rgb_sha256": "5e15b1adb2501da5c5869174fe5b78b7292d6cad28192153d1107568d650a2e9",
+      "webp_sha256": "eb6567baa7eb6bd186a141c9937bcd9fda2ecfcbc455e5df19ece059bf2ab429"
+    },
+    "failed-shop-safe-area.webp": {
+      "source": "shop_06_epic_max.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "72986935c866e8871d1f1a624c2c1e15423ab79ff12cd18d82a7987345c3598c",
+      "rgb_sha256": "b04a7c4b339db14db9817b5fd7e614687c31b9f5c6e4e5abbfd2c841f84657b7",
+      "webp_sha256": "fe55ff7754d564304d85b4962572036a9cdbba3a7d018ff0e24788afa59107f2"
+    },
+    "knight-common1-standing.webp": {
+      "source": "knight-common1-standing.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "4b7ebd5bbe3cab9a9e6b67d869c5dcfde40a1b4cc8c7871aafc582a45892d895",
+      "rgb_sha256": "e8de2c82caaacb949d461061934033a672e920cb0bd53bec4156706ebaea3022",
+      "webp_sha256": "0c93af1ff250a504ad35b3603ff53064acd9d064d48f51bf2b574e0ad0c53830"
+    },
+    "knight-epic9-standing.webp": {
+      "source": "knight-epic9-standing.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "a529c37c4a6123a7582d2960724ea74d4c29bf77ccc02a6d580d0e36821b81a8",
+      "rgb_sha256": "be54aaba7048e900e4d85c48febc7865aa4cee8fbe5dc1833518972324a4225b",
+      "webp_sha256": "c0bdf1db9515feb29d07e197f3131efa52fb863922de840c6b2c564861ed2dc4"
+    },
+    "mage-common1-standing.webp": {
+      "source": "mage-common1-standing.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "206348954eb9a9ad0b78a2d809874f5b605e17ae38ea46fd1c6c2769b4ea1826",
+      "rgb_sha256": "4cfa4d5e43621a59b54a625e8b892fd4398ab5c1fa02547ce38887e2a085ae14",
+      "webp_sha256": "4793fdc8487e6aadecc2426d854e24a9178be7ec703eb8e4a5cf70fdebe39e07"
+    },
+    "mage-epic9-standing.webp": {
+      "source": "mage-epic9-standing.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "61de1c2cd2e3dab24ce76c7551e2f44c32385b630213cf60e03ef7970b0ac42d",
+      "rgb_sha256": "69e35c44a38c26737f61f2dda99379a5493e3f2b51b2bc2f1b8f1beb9acf5ffd",
+      "webp_sha256": "a735a94190e3c684fa0bac44e8aee3927616f7c429351d067cf76c7012eefe3e"
+    },
+    "archer-common1-standing.webp": {
+      "source": "archer-common1-standing.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "30712c06f3bb867d7ebe7b252071471543d44e43cd6c22c47832b7c1b5256800",
+      "rgb_sha256": "3d254d27e769a894dd869b3a1010ccbd4e789d5c82d17ccc2d72ce00207d1db8",
+      "webp_sha256": "5d672d5ff8e340e6e8220489fce85aa85c903c5bbebc734ecfea8570f0483cfa"
+    },
+    "archer-epic9-standing.webp": {
+      "source": "archer-epic9-standing.png",
+      "size": [
+        360,
+        640
+      ],
+      "png_sha256": "2b1a54e1d2765444f7f5fde0b7c5e516f89d2df5b87c41c8532337db93c22cfd",
+      "rgb_sha256": "07ce7d2142ed5a478975dd71f7209338d4a6c74ca12cfb274405bf76c72d6323",
+      "webp_sha256": "d50fd5c99afdabd30e835b2440658126df851f4d66f59c95a8727b0649bc78bc"
+    }
+  },
+  "shop_checkpoints": 8,
+  "worn_comparison": {
+    "role_order": [
+      "knight",
+      "mage",
+      "archer"
+    ],
+    "top": "common1",
+    "bottom": "epic9",
+    "hero_level": 1,
+    "crop_in_each_original": [
+      122,
+      262,
+      238,
+      366
+    ],
+    "scale": 2,
+    "sha256": "0c913ba86101acc78de4b1f5ab6250da2402e0b019d773a34d234271cdc69f25"
+  }
+}
