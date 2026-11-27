@@ -389,7 +389,7 @@ func test_title_buttons_fit_small_screen_with_notch() -> void:
 	var t := _title()
 	await wait_frames(2)
 	var safe := SafeArea.get_safe_rect()
-	for name in ["continue_button", "new_game_button", "endless_button", "training_button", "credits_button"]:
+	for name in ["continue_button", "new_game_button", "endless_button", "training_button", "_equipment_button"]:
 		var b: Button = t.get(name)
 		var r := Rect2(b.global_position, b.size)
 		assert_true(b.size.x >= 24 and b.size.y >= 24, name)

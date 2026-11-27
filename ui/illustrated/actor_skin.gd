@@ -7,6 +7,7 @@ var _rect: Rect2
 var _swing_enemy: ScarecrowEnemy
 var _archer: ArcherEnemy
 var _player: GoldiePlayer
+var _worn: WornGear
 enum RunView { SIDE, FRONT, REAR }
 var _run_view := RunView.SIDE
 
@@ -19,6 +20,11 @@ func _ready() -> void:
 		var role := HeroClasses.valid_id(GameState.hero_class)
 		StoryArt.prepare_combat_paint(role)
 		if _player != null:
+			_worn = WornGear.new()
+			_worn.configure(role, GameState.run_equipment, GameState.hero_level)
+			if _worn.rank > 0 or _worn.armor_grade > 0 or _worn.weapon_grade > 0:
+				texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+			EventBus.leveled_up.connect(_hero_leveled_up)
 			StoryArt.texture("motion/vertical_" + String(role))
 			StoryArt.texture("motion/settle_" + String(role))
 	elif actor_code == "bulldog":
@@ -36,6 +42,11 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	_update()
+
+func _hero_leveled_up(level: int) -> void:
+	if _worn.set_hero_level(level):
+		texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+		queue_redraw()
 
 func _update() -> void:
 	if sprite == null or sprite.sprite_frames == null:
@@ -147,4 +158,7 @@ func _drawing(count: int) -> Texture2D:
 
 func _draw() -> void:
 	if _tex != null:
-		draw_texture_rect(_tex, _rect, false)
+		if _worn != null:
+			_worn.draw_hero(self, _tex, _rect)
+		else:
+			draw_texture_rect(_tex, _rect, false)

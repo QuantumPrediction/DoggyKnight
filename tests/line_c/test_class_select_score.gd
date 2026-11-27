@@ -107,3 +107,91 @@ func test_reinforced_departure_is_available_on_a_fresh_first_chapter() -> void:
 	assert_eq(GameState.difficulty, FlowMain.REINFORCED)
 	assert_eq(GameState.hero_class, &"mage")
 	GameState.difficulty = FlowMain.NORMAL
+
+func test_each_portrait_opens_its_own_combat_illustration_and_stable_departures() -> void:
+	var picker := HeroClassSelect.new()
+	picker.offer_reinforcements = true
+	add_child(picker)
+	var previous_notch := SafeArea.simulate_notch
+	var illustrations: Array[Texture2D] = []
+	var notes := picker.find_child("FieldNotes", true, false) as ScrollContainer
+	var hint := picker.find_child("ReinforcementRule", true, false) as Label
+	assert_not_null(hint)
+	assert_eq(hint.text, tr("UI_REINFORCED_HINT"))
+	var font := load("res://assets/fonts/StorySans.otf") as Font
+	for glyph in hint.text + picker.reinforced_button.text:
+		assert_true(font.has_char(glyph.unicode_at(0)), glyph)
+	for notched in [false, true]:
+		SafeArea.simulate_notch = notched
+		picker._layout()
+		await wait_frames(4)
+		var depart := picker.reinforced_button.get_global_rect()
+		for i in HeroClasses.IDS.size():
+			var id := HeroClasses.IDS[i]
+			var tab := picker.choices[i]
+			var icon := (tab.get_node("Portrait") as TextureRect).texture as AtlasTexture
+			assert_not_null(icon)
+			assert_eq(tab.accessibility_name, tr(HeroClasses.get_data(id).display_name))
+			assert_true(tab.size.x >= UiKit.MIN_TOUCH and tab.size.y >= UiKit.MIN_TOUCH)
+			assert_true(UiKit.safe_rect().encloses(tab.get_global_rect()))
+			tab.pressed.emit()
+			await wait_frames(2)
+			assert_eq(picker.selected, id)
+			assert_true(tab.button_pressed)
+			assert_eq(picker._portrait.texture, icon.atlas)
+			assert_true(Rect2(Vector2.ZERO, icon.atlas.get_size()).encloses(icon.region))
+			var data := HeroClasses.get_data(id)
+			assert_eq(picker._description.text, tr(data.description))
+			assert_eq(picker._vigor.text, str(data.stats.max_vigor))
+			assert_eq(picker._range.text, str(int(data.stats.attack_range)))
+			assert_eq(picker._ultimate.text, tr(data.ultimate_name))
+			if not notched:
+				assert_false(illustrations.has(picker._portrait.texture))
+				illustrations.append(picker._portrait.texture)
+			assert_true(UiKit.safe_rect().encloses(picker._portrait.get_global_rect()))
+			assert_false(notes.get_v_scroll_bar().visible, "%s 的首屏可讀完職業說明" % id)
+			assert_true(notes.get_global_rect().encloses(picker._ultimate.get_global_rect()))
+			assert_true(UiKit.safe_rect().encloses(hint.get_global_rect()))
+			assert_true(hint.get_global_rect().end.y <= depart.position.y)
+			assert_eq(picker.reinforced_button.get_global_rect(), depart)
+			assert_true(UiKit.safe_rect().encloses(picker.cancel_button.get_global_rect()))
+	SafeArea.simulate_notch = previous_notch
+
+func test_ordinary_picker_shows_no_first_chapter_challenge_rule() -> void:
+	var picker := HeroClassSelect.new()
+	add_child(picker)
+	assert_null(picker.reinforced_button)
+	assert_null(picker.find_child("ReinforcementRule", true, false))
+
+func test_class_art_accepts_pointer_touch_and_keyboard_selection() -> void:
+	var picker := HeroClassSelect.new()
+	add_child(picker)
+	await wait_frames(4)
+	var portrait := picker.choices[1].get_node("Portrait") as Control
+	var point := portrait.get_global_transform_with_canvas() * (portrait.size / 2.0)
+	for pressed in [true, false]:
+		var click := InputEventMouseButton.new()
+		click.button_index = MOUSE_BUTTON_LEFT
+		click.position = point
+		click.global_position = point
+		click.pressed = pressed
+		get_viewport().push_input(click, true)
+	assert_eq(picker.selected, &"mage", "按法師縮圖便能選職")
+	var caption := picker.choices[2].get_node("Caption") as Control
+	point = caption.get_screen_transform() * (caption.size / 2.0)
+	for pressed in [true, false]:
+		var touch := InputEventScreenTouch.new()
+		touch.index = 0
+		touch.position = point
+		touch.pressed = pressed
+		Input.parse_input_event(touch)
+		Input.flush_buffered_events()
+		await wait_frames(1)
+	assert_eq(picker.selected, &"archer", "點弓箭手圖下的職名也能選職")
+	picker.choices[0].grab_focus()
+	for pressed in [true, false]:
+		var key := InputEventAction.new()
+		key.action = &"ui_accept"
+		key.pressed = pressed
+		get_viewport().push_input(key)
+	assert_eq(picker.selected, &"knight", "聚焦後確認能選職")

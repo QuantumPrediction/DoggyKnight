@@ -65,7 +65,14 @@ func test_every_story_page_and_trick_icon_is_replaced() -> void:
 			assert_not_null(StoryArt.story(file.get_basename()), file)
 	for file: String in DirAccess.get_files_at("res://data/tricks"):
 		if file.ends_with(".tres"):
-			assert_true(StoryArt.TRICKS.has(file.get_basename()), file)
+			var id := StringName(file.get_basename())
+			if AttackTechniques.IDS.has(id):
+				var icon := TrickDeck.load_trick(id).icon
+				assert_not_null(icon, file)
+				assert_eq(icon.resource_path, "res://assets/illustrated/techniques/%s.webp" % id)
+				assert_eq(icon.get_size(), Vector2(128, 128))
+			else:
+				assert_true(StoryArt.TRICKS.has(file.get_basename()), file)
 
 func test_gallery_does_not_unlock_chapters_or_change_progress() -> void:
 	var before := [GameState.chapter, GameState.level_index, GameState.chapters_cleared,

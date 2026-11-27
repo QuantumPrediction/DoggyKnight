@@ -22,7 +22,10 @@ var _confirm: Dictionary = {}
 var _class_buttons: Dictionary = {}
 var _tab_buttons: Dictionary = {}
 var _preview_slot: String = "weapon"
+var _fitting_mode := "try"
 var _atlas: Texture2D = preload("res://assets/illustrated/equipment/equipment_cutout.png")
+const AtelierArt := preload("res://ui/equipment/atelier_art.gd")
+const FittingFigure := preload("res://ui/illustrated/worn_gear_preview.gd")
 const BANNER: Texture2D = preload("res://assets/illustrated/equipment/armory_forge.png")
 const BODY_FONT: Font = preload("res://assets/fonts/StorySans.otf")
 const TITLE_FONT: Font = preload("res://assets/fonts/StorySerif.otf")
@@ -44,6 +47,9 @@ func _ready() -> void:
 	theme = theme.duplicate()
 	theme.default_font = BODY_FONT
 	hero = String(GameState.hero_class)
+	if not GameState.equipment.owned.keys().any(func(id: String) -> bool:
+		return EquipmentInventory.item(id).get("hero", "") in [hero, "all"] and int(GameState.equipment.owned[id]) > 0):
+		tab = "common"
 	var bg := ColorRect.new()
 	bg.color = INK
 	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -52,7 +58,7 @@ func _ready() -> void:
 	_root.add_theme_constant_override("separation", 4)
 	add_child(_root)
 	var banner := Control.new()
-	banner.custom_minimum_size.y = 43
+	banner.custom_minimum_size.y = 34
 	_root.add_child(banner)
 	var painting := _picture(BANNER, Vector2.ZERO)
 	painting.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
@@ -60,13 +66,9 @@ func _ready() -> void:
 	banner.add_child(painting)
 	var title := _label("軍械工坊", 17, GOLD)
 	title.add_theme_font_override("font", TITLE_FONT)
-	title.position = Vector2(5, 7)
+	title.position = Vector2(5, 5)
 	title.size = Vector2(94, 23)
 	banner.add_child(title)
-	var subtitle := _label("為下一場冒險，選一份底氣。", 7, CREAM)
-	subtitle.position = Vector2(6, 31)
-	subtitle.size.x = 115
-	banner.add_child(subtitle)
 	_wallet = HBoxContainer.new()
 	_wallet.add_theme_constant_override("separation", 4)
 	_root.add_child(_wallet)
@@ -217,49 +219,156 @@ func _choose_tab(id: String) -> void:
 func refresh() -> void:
 	var profile := GameState.equipment
 	_clear(_wallet)
+	var wide_balance := maxi(int(profile.coins), maxi(int(profile.gems), int(profile.shards))) >= 10000
 	for key in ["coins", "gems", "shards"]:
 		var box := PanelContainer.new()
 		box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		box.add_theme_stylebox_override("panel", _style(Color("1a3335"), Color("42554d"), 2))
 		_wallet.add_child(box)
-		var label := _label("%s  %d" % [{"coins": "金幣", "gems": "寶石", "shards": "星鐵"}[key], profile[key]], 8, GOLD if key == "coins" else CREAM)
+		var row := HBoxContainer.new()
+		row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.alignment = BoxContainer.ALIGNMENT_CENTER
+		row.add_theme_constant_override("separation", 2)
+		box.add_child(row)
+		row.add_child(_picture(AtelierArt.emblem(key), Vector2(11, 11)))
+		var currency: String = {"coins": "金幣", "gems": "寶石", "shards": "星鐵"}[key]
+		var text := "%s\n%d" if wide_balance else "%s %d"
+		var label := _label(text % [currency, profile[key]], 7, GOLD if key == "coins" else CREAM)
+		label.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		box.add_child(label)
+		label.autowrap_mode = TextServer.AUTOWRAP_OFF
+		row.add_child(label)
 	for id in _class_buttons:
 		_skin(_class_buttons[id], id == hero)
 	for id in _tab_buttons:
 		_skin(_tab_buttons[id], id == tab)
 	_clear(_list)
-	if tab == "owned":
-		_loadout_strip(profile)
-		_resonance_summary(_list, profile)
-		var stats := EquipmentPreview.stats(profile, hero)
-		_list.add_child(_label("攻擊 %d  ·  活力 %d  ·  間隔 %.3f 秒" % [stats.attack_damage, stats.max_vigor, stats.attack_interval], 8, GOLD))
-		_list.add_child(_label("含永久訓練；未計當局把戲及觸發效果。", 7, MUTED))
-	else:
-		_list.add_child(_label("普通裝備 · 上限 Lv.5" if tab == "common" else "史詩收藏 · 上限 Lv.9", 10, GOLD))
-	var grid := GridContainer.new()
-	grid.columns = 2
-	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	grid.add_theme_constant_override("h_separation", 5)
-	grid.add_theme_constant_override("v_separation", 5)
-	_list.add_child(grid)
-	var shown := 0
+	var entries: Array[Dictionary] = []
+	var featured: Dictionary = {}
 	for entry in EquipmentInventory.RULES.items:
 		if entry.hero != "all" and entry.hero != hero:
 			continue
-		var level := int(profile.owned.get(entry.id, 0))
-		if (tab == "owned" and level == 0) or (tab != "owned" and entry.quality != tab):
+		if tab == "owned":
+			if int(profile.owned.get(entry.id, 0)) == 0:
+				continue
+		elif entry.quality != tab:
 			continue
-		shown += 1
-		grid.add_child(_item_card(entry, profile))
-	if shown == 0:
-		_list.add_child(_label("行囊還是空的。\n250 金幣，足夠帶走一把武器和一件護甲。", 9))
-		_list.add_child(_button("挑選第一套裝備", func() -> void: _choose_tab("common")))
+		entries.append(entry)
+		if featured.is_empty() or selected == entry.id:
+			featured = entry
+	if tab == "owned":
+		_loadout_display(profile)
+		_loadout_strip(profile)
+		_resonance_summary(_list, profile)
+		if entries.is_empty():
+			_list.add_child(_label("行囊還是空的。普通商店有武器和護甲，史詩商場另有寶物。", 8, MUTED))
+	elif not featured.is_empty():
+		_list.add_child(_featured_item(featured, profile))
+		entries.erase(featured)
+	if not entries.is_empty():
+		var grid := GridContainer.new()
+		grid.columns = 2
+		grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		grid.add_theme_constant_override("h_separation", 4)
+		grid.add_theme_constant_override("v_separation", 4)
+		_list.add_child(grid)
+		for entry in entries:
+			grid.add_child(_item_card(entry, profile))
 	_list.visible = not _showing_details
 	_details.visible = _showing_details
 	_details_refresh()
 	_layout.call_deferred()
+
+func _piece_type(entry: Dictionary) -> String:
+	return {"weapon": "武器", "armor": "護甲", "treasure": "寶物"}[entry.slot]
+
+func _price(entry: Dictionary) -> String:
+	if entry.quality == "epic":
+		return "%d 金幣 或 %d 寶石" % [int(entry.coins), int(entry.gems)]
+	return "%d 金幣" % int(entry.coins)
+
+func _availability(entry: Dictionary, profile: Dictionary) -> String:
+	var level := int(profile.owned.get(entry.id, 0))
+	if level == 0:
+		if int(entry.chapter) > mini(GameState.chapters_cleared + 1, GameState.CHAPTER_COUNT):
+			return "第 %d 章開放" % int(entry.chapter)
+		return "尚未收藏"
+	if level >= EquipmentInventory.cap(entry):
+		return "鍛造已達上限"
+	var cost := EquipmentInventory.upgrade_cost(entry, level)
+	var needs_coins := int(profile.coins) < int(cost.coins)
+	var needs_shards := int(profile.shards) < int(cost.shards)
+	if needs_coins and needs_shards:
+		return "缺金幣及星鐵"
+	if needs_coins or needs_shards:
+		return "鍛造缺金幣" if needs_coins else "鍛造缺星鐵"
+	return "可鍛造"
+
+func _owned_rank(entry: Dictionary, profile: Dictionary) -> String:
+	var equipped: bool = profile.loadouts.get(hero, {}).values().has(entry.id)
+	return "%s Lv.%d/%d" % ["已裝備" if equipped else "已收藏", int(profile.owned[entry.id]), EquipmentInventory.cap(entry)]
+
+func _case_text(copy: VBoxContainer, text: String, size_px: int, color: Color, title: bool = false) -> Label:
+	var label := _label(text, size_px, color)
+	if title:
+		label.add_theme_font_override("font", TITLE_FONT)
+	label.add_theme_color_override("font_outline_color", Color("1a211f"))
+	label.add_theme_constant_override("outline_size", 2)
+	label.add_theme_constant_override("line_spacing", 0)
+	copy.add_child(label)
+	return label
+
+func _featured_item(entry: Dictionary, profile: Dictionary) -> Button:
+	var button := _button("", func() -> void: show_item(entry.id))
+	button.name = "Item_" + entry.id
+	button.tooltip_text = entry.name + " · 查看裝備"
+	button.accessibility_name = _accessible_item_name(entry, profile)
+	button.custom_minimum_size.y = 65
+	_skin(button, true)
+	var display := AtelierArt.case_art(entry.quality)
+	button.add_child(display)
+	display.offset_left = 1
+	display.offset_right = -1
+	display.offset_top = 1
+	display.offset_bottom = -1
+	_display_item(display, entry, profile)
+	return button
+
+func _accessible_item_name(entry: Dictionary, profile: Dictionary) -> String:
+	var status := _owned_rank(entry, profile) if int(profile.owned.get(entry.id, 0)) > 0 else _price(entry)
+	return "%s · %s · %s · %s" % [entry.name, _piece_type(entry), status, _availability(entry, profile)]
+
+func _display_item(display: TextureRect, entry: Dictionary, profile: Dictionary) -> void:
+	var specimen := _picture(icon(entry), Vector2.ZERO)
+	specimen.name = "Specimen"
+	AtelierArt.place_exhibit(display, specimen)
+	var copy := AtelierArt.caption(display)
+	_case_text(copy, "%s%s · 最高 Lv.%d" % ["普通" if entry.quality == "common" else "史詩", _piece_type(entry), EquipmentInventory.cap(entry)], 7, GOLD)
+	_case_text(copy, entry.name, 11, CREAM, true)
+	if int(profile.owned.get(entry.id, 0)) > 0:
+		_case_text(copy, _owned_rank(entry, profile), 7, GREEN)
+	else:
+		_case_text(copy, _price(entry), 8, GOLD)
+	_case_text(copy, _availability(entry, profile), 7, MUTED)
+
+func _loadout_display(profile: Dictionary) -> void:
+	var display := _dressing_case(_list)
+	(display.get_node("Hero") as WornGearPreview).set_appearance(StringName(hero), profile)
+	var copy := AtelierArt.caption(display)
+	var stats := EquipmentPreview.stats(profile, hero)
+	_case_text(copy, HERO_NAMES[hero] + " · 目前配裝", 10, CREAM, true)
+	_case_text(copy, "攻擊 %d  ·  活力 %d" % [stats.attack_damage, stats.max_vigor], 8, GOLD)
+	_case_text(copy, "攻擊間隔 %.3f 秒" % stats.attack_interval, 7, MUTED)
+
+func _dressing_case(parent: VBoxContainer) -> TextureRect:
+	var display := AtelierArt.case_art("owned")
+	display.name = "FittingRoom"
+	display.custom_minimum_size.y = 58
+	parent.add_child(display)
+	var figure := FittingFigure.new()
+	figure.name = "Hero"
+	AtelierArt.place_exhibit(display, figure)
+	return display
 
 func _loadout_strip(profile: Dictionary) -> void:
 	var row := HBoxContainer.new()
@@ -284,12 +393,12 @@ func _loadout_strip(profile: Dictionary) -> void:
 		box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		button.add_child(box)
 		if id != "":
+			button.accessibility_name = SLOT_NAMES[slot] + " · " + str(EquipmentInventory.item(id).name)
 			box.add_child(_picture(icon(EquipmentInventory.item(id)), Vector2(24, 24)))
 		else:
-			var empty := _label("＋", 16, MUTED)
-			empty.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-			empty.custom_minimum_size.y = 24
-			box.add_child(empty)
+			button.tooltip_text = SLOT_NAMES[slot] + " · 尚未裝備"
+			button.accessibility_name = button.tooltip_text
+			box.add_child(_picture(AtelierArt.emblem(slot), Vector2(24, 24)))
 		var label := _label(SLOT_NAMES[slot], 7, MUTED if id == "" else GOLD)
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		box.add_child(label)
@@ -297,46 +406,91 @@ func _loadout_strip(profile: Dictionary) -> void:
 func _item_card(entry: Dictionary, profile: Dictionary) -> Button:
 	var level := int(profile.owned.get(entry.id, 0))
 	var equipped: bool = profile.loadouts.get(hero, {}).values().has(entry.id)
-	var locked: bool = int(entry.chapter) > mini(GameState.chapters_cleared + 1, GameState.CHAPTER_COUNT) and level == 0
 	var button := _button("", func() -> void: show_item(entry.id))
 	button.name = "Item_" + entry.id
-	button.custom_minimum_size = Vector2(74, 91)
-	button.tooltip_text = entry.name
+	button.custom_minimum_size = Vector2(65, 71)
+	button.tooltip_text = entry.name + " · " + _availability(entry, profile)
+	button.accessibility_name = _accessible_item_name(entry, profile)
 	_skin(button, equipped)
 	var box := VBoxContainer.new()
 	box.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	box.offset_left = 5
-	box.offset_right = -5
-	box.offset_top = 4
-	box.offset_bottom = -4
-	box.add_theme_constant_override("separation", 2)
+	box.offset_left = 3
+	box.offset_right = -3
+	box.offset_top = 2
+	box.offset_bottom = -2
+	box.add_theme_constant_override("separation", 0)
 	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	button.add_child(box)
-	var badge := _label("已裝備" if equipped else ("第 %d 章開放" % entry.chapter if locked else ("史詩" if entry.quality == "epic" else "普通")), 7, GOLD if equipped else MUTED)
-	box.add_child(badge)
+	var shelf := AtelierArt.shelf(entry.quality)
+	shelf.custom_minimum_size.y = 28
+	box.add_child(shelf)
+	var exhibit := _picture(icon(entry), Vector2.ZERO)
+	shelf.add_child(exhibit)
+	exhibit.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	exhibit.offset_top = 1
+	exhibit.offset_bottom = -1
 	var element := EquipmentInventory.element_of(profile, entry.id)
 	if element != "":
-		badge.text += " · " + EquipmentInventory.element_name(element)
-		badge.add_theme_color_override("font_color", ElementArt.color(element))
-	box.add_child(_picture(icon(entry), Vector2(40, 36)))
-	if element != "":
-		var rune := _picture(ElementArt.icon(element), Vector2(16, 16))
-		rune.position = Vector2(54, 24)
+		var rune := _picture(ElementArt.icon(element), Vector2(11, 11))
 		button.add_child(rune)
+		rune.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+		rune.offset_left = -15
+		rune.offset_right = -3
+		rune.offset_top = 3
+		rune.offset_bottom = 15
 	var name_label := _label(entry.name, 9)
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(name_label)
-	var price: String
-	if level > 0:
-		price = "Lv.%d / %d" % [level, EquipmentInventory.cap(entry)]
-	else:
-		price = "%d 金幣" % int(entry.coins)
-		if entry.quality == "epic":
-			price += " / %d 寶石" % int(entry.gems)
-	var label := _label(price, 7, GOLD)
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	box.add_child(label)
+	var status := _label(_owned_rank(entry, profile) if level > 0 else _price(entry), 7, GREEN if level > 0 else GOLD)
+	status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(status)
+	var availability := _availability(entry, profile)
+	var info := _piece_type(entry)
+	if element != "":
+		info += " · " + EquipmentInventory.element_name(element)
+	if availability != "尚未收藏":
+		info = availability
+	var type_label := _label(info, 7, MUTED)
+	type_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(type_label)
 	return button
+
+func _fitting_room(entry: Dictionary, profile: Dictionary) -> void:
+	var owned := maxi(1, int(profile.owned.get(entry.id, 0)))
+	var maximum := EquipmentInventory.cap(entry)
+	if owned == maximum and _fitting_mode == "max":
+		_fitting_mode = "try"
+	var display := _dressing_case(_details)
+	var copy := AtelierArt.caption(display)
+	_case_text(copy, "%s%s · %s" % ["普通" if entry.quality == "common" else "史詩", _piece_type(entry), SET_NAMES[entry.group]], 7, GOLD)
+	_case_text(copy, entry.name, 11, CREAM, true)
+	_case_text(copy, "", 7, CREAM).name = "ViewLabel"
+	var row := HBoxContainer.new()
+	row.name = "FittingOptions"
+	row.add_theme_constant_override("separation", 2)
+	_details.add_child(row)
+	var modes := {"current": "目前配裝", "try": "試穿 Lv.%d" % owned}
+	if owned < maximum:
+		modes["max"] = "滿級 Lv.%d" % maximum
+	for mode: String in modes:
+		var button := _button(modes[mode], _choose_fitting.bind(mode))
+		button.name = StringName(mode)
+		row.add_child(button)
+	_choose_fitting(_fitting_mode)
+
+func _choose_fitting(mode: String) -> void:
+	_fitting_mode = mode
+	var room := _details.get_node("FittingRoom")
+	var profile := GameState.equipment
+	var max_level := EquipmentInventory.cap(EquipmentInventory.item(selected))
+	var level := max_level if mode == "max" else maxi(1, int(profile.owned.get(selected, 0)))
+	var projected := profile if mode == "current" else EquipmentPreview.candidate(profile, hero, selected, _preview_slot, level)
+	(room.get_node("Hero") as WornGearPreview).set_appearance(StringName(hero), projected)
+	var view_label := room.find_child("ViewLabel", true, false) as Label
+	var state := "目前配裝" if mode == "current" else "試穿 Lv.%d / %d" % [level, max_level]
+	view_label.text = HERO_NAMES[hero] + " · " + state
+	for button: Button in _details.get_node("FittingOptions").get_children():
+		_skin(button, button.name == mode)
 
 func _details_refresh() -> void:
 	_clear(_details)
@@ -354,19 +508,17 @@ func _details_refresh() -> void:
 	if _choosing_element:
 		_elements_refresh(entry, profile)
 		return
-	var summary := HBoxContainer.new()
-	summary.add_theme_constant_override("separation", 7)
-	_details.add_child(summary)
-	summary.add_child(_picture(icon(entry), Vector2(48, 48)))
-	var copy := VBoxContainer.new()
-	copy.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	summary.add_child(copy)
-	copy.add_child(_label("%s · %s" % ["普通" if entry.quality == "common" else "史詩", SET_NAMES[entry.group]], 8, GOLD))
-	copy.add_child(_label(entry.name, 12))
-	copy.add_child(_label("Lv.%d / %d" % [maxi(1, level), EquipmentInventory.cap(entry)] if level > 0 else "尚未收藏", 8, MUTED))
+	if entry.slot == "treasure":
+		var case_art := AtelierArt.case_art(entry.quality)
+		case_art.name = "TreasureDisplay"
+		case_art.custom_minimum_size.y = 65
+		_details.add_child(case_art)
+		_display_item(case_art, entry, profile)
+	else:
+		_fitting_room(entry, profile)
 	var element := EquipmentInventory.element_of(profile, selected)
 	if element != "":
-		copy.add_child(_element_badge(element))
+		_details.add_child(_element_badge(element))
 		_details.add_child(_label(str(EquipmentInventory.RULES.elements[element][entry.slot + "_text"]), 8, ElementArt.color(element)))
 	if entry.slot == "treasure":
 		var slots := HBoxContainer.new()
@@ -411,9 +563,7 @@ func _details_refresh() -> void:
 			var button := _button("%d %s" % [price, "金幣" if currency == "coins" else "寶石"], _ask.bind("buy", "", currency))
 			button.disabled = not unlocked or not affordable
 			buy.add_child(button)
-		var note := "第 %d 章開放" % int(entry.chapter) if not unlocked else "指定購買此物品"
-		if unlocked and int(profile.coins) < int(entry.coins):
-			note += " · 金幣還差 %d" % (int(entry.coins) - int(profile.coins))
+		var note := _purchase_note(entry, profile) if unlocked else "第 %d 章開放" % int(entry.chapter)
 		_actions.add_child(_label(note, 7, MUTED))
 	else:
 		if can_forge:
@@ -428,6 +578,17 @@ func _details_refresh() -> void:
 		_actions.add_child(_button(("卸下" if equipped else "裝備至") + SLOT_NAMES[_preview_slot], _execute.bind("unequip" if equipped else "equip", _preview_slot, "coins")))
 		if element != "":
 			_actions.add_child(_button("元素刻印 · 免費改配", _open_elements))
+
+func _purchase_note(entry: Dictionary, profile: Dictionary) -> String:
+	var coins := maxi(0, int(entry.coins) - int(profile.coins))
+	if entry.quality == "common":
+		return "金幣還差 %d" % coins if coins > 0 else "使用金幣購買"
+	var gems := maxi(0, int(entry.gems) - int(profile.gems))
+	if coins > 0 and gems > 0:
+		return "還差 %d 金幣或 %d 寶石" % [coins, gems]
+	if coins == 0 and gems == 0:
+		return "可選金幣或寶石購買"
+	return "可用金幣購買" if coins == 0 else "可用寶石購買"
 
 func _element_badge(element: String) -> HBoxContainer:
 	var row := HBoxContainer.new()
@@ -633,6 +794,7 @@ func show_item(id: String) -> void:
 		return
 	selected = id
 	_choosing_element = false
+	_fitting_mode = "try"
 	_preview_slot = entry.slot if entry.slot != "treasure" else "treasure_a"
 	for slot: String in EquipmentInventory.SLOTS:
 		if GameState.equipment.loadouts.get(hero, {}).get(slot, "") == id:

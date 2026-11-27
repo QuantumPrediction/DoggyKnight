@@ -1,0 +1,37 @@
+{
+  "artist": "GPT Image",
+  "original_pixels": [
+    2172,
+    724
+  ],
+  "original_sha256": "55be23b4bb3de28a310f7db0cdc1662e4cf839e332d442f20758baa08f7e27a5",
+  "runtime": {
+    "arc_rune": {
+      "crop": [
+        30,
+        136,
+        692,
+        556
+      ],
+      "sha256": "e12c2c349b07132d1b783af83b8eff7657d1756f35a6d3b87294bbe3a46f2f8c"
+    },
+    "starfall": {
+      "crop": [
+        746,
+        41,
+        1404,
+        677
+      ],
+      "sha256": "385a682065db204531c8b2a8c79fd534ddc1176c9702edab56dfc55bc67ba4ad"
+    },
+    "gale_disc": {
+      "crop": [
+        1495,
+        89,
+        2140,
+        653
+      ],
+      "sha256": "39a7d98cf4207e8cdb15fb5f0604fefcde200391b9271a51085794b94f047d41"
+    }
+  }
+}

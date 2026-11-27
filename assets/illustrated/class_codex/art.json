@@ -1,0 +1,73 @@
+{
+  "source": "Original training-yard paintings generated with GPT Image for The Golden Knight on 2026-11-27.",
+  "source_size_px": [
+    1254,
+    1254
+  ],
+  "source_sha256": "20e3ed8a04e74302d3b2d0a6bf57969ff4797e7cbbc47c31c19c033c226fa632",
+  "project_references": [
+    {
+      "file": "assets/illustrated/hero_classes.png",
+      "sha256": "5b5f576a8a34be3d815cb65c4d2609a525831b4020082475764f246cde4d0d2f"
+    },
+    {
+      "file": "assets/illustrated/chapter_1.png",
+      "sha256": "60274af31dad017cee7d1078e15ad13d0972aa6d8e095327498ff98a68bc876a"
+    }
+  ],
+  "process": "Three horizontal paintings cropped at the scene boundaries; Lanczos resampling to 720 × 240 RGB, WebP quality 88. Selection portraits are atlas regions of these same files.",
+  "assets": [
+    {
+      "file": "knight.webp",
+      "sheet_crop_xywh": [
+        0,
+        0,
+        1254,
+        417
+      ],
+      "portrait_xywh_in_asset": [
+        108,
+        4,
+        230,
+        126
+      ],
+      "sha256": "ab391da3dd7c57c2b74d24813139d7c0b9e8666f3a228a6643ad50bd4fdba8f4",
+      "depicts": "Close-range sword sweep"
+    },
+    {
+      "file": "mage.webp",
+      "sheet_crop_xywh": [
+        0,
+        419,
+        1254,
+        415
+      ],
+      "portrait_xywh_in_asset": [
+        108,
+        3,
+        260,
+        143
+      ],
+      "sha256": "7859899453d6e4239f6679f593c918b2a12fa69ded0bea4e11d7d22e6ca10b5d",
+      "depicts": "A staff orb bursts among clustered scarecrows"
+    },
+    {
+      "file": "archer.webp",
+      "sheet_crop_xywh": [
+        0,
+        837,
+        1254,
+        417
+      ],
+      "portrait_xywh_in_asset": [
+        64,
+        0,
+        230,
+        126
+      ],
+      "sha256": "ab062b5e370ede04e4119b294477d1fbe75a3ce990ebb99156b0aff2d146751c",
+      "depicts": "A single arrow passes two aligned scarecrows"
+    }
+  ],
+  "art_direction": "A gouache and etched-ink training yard painted as three separate action bands. The same golden retriever wears the existing knight, mage and archer outfits and practices on enemy straw targets. Warm daylight for the sword sweep, deep blue dusk for an orb explosion, sage woodland for a single piercing arrow. No captions or interfaces are baked into the illustrations."
+}

@@ -12,7 +12,6 @@ extends "res://ui/common/choice_card_menu.gd"
 const INPUT_DELAY: float = 0.35
 const CARD_SIZE: Vector2 = Vector2(168, 54)
 const CARD_GAP: float = 6.0
-const ICON_SCALE: int = 2
 
 var _ids: Array[StringName] = []
 var _title: PanelContainer
@@ -95,6 +94,8 @@ static func learned_count(id: StringName) -> int:
 static func badge_text_for(trick: TrickData) -> String:
 	if trick != null and trick.is_evolution:
 		return tr_static("UI_TRICK_EVOLVE")
+	if trick != null and learned_count(trick.id) == 0 and not AttackTechniques.pair_hints(trick.id, GameState.active_tricks).is_empty():
+		return tr_static("UI_TECH_PAIR")
 	return badge_text(trick.id if trick != null else &"")
 
 
@@ -128,8 +129,13 @@ func _make_card(trick: TrickData) -> Button:
 		var path := "res://assets/icons/tricks/%s.png" % trick.id
 		if ResourceLoader.exists(path):
 			icon_tex = load(path) as Texture2D
-	var icon := UiKit.texture_rect(icon_tex, ICON_SCALE)
+	var icon := UiKit.texture_rect(null)
+	icon.name = "CardIcon"
+	icon.texture = icon_tex
 	# 進化卡片的大圖示往上移,下面放「甲 + 乙」兩個原把戲的小圖示
+	if AttackTechniques.IDS.has(trick.id):
+		icon.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	icon.custom_minimum_size = Vector2(32, 32)
 	icon.position = Vector2(6, 3.0 if evolution else floorf((CARD_SIZE.y - 32) * 0.5))
 	icon.size = Vector2(32, 32)
 	card.add_child(icon)
@@ -145,7 +151,7 @@ func _make_card(trick: TrickData) -> Button:
 	name_label.position = Vector2(text_x, 4)
 	name_label.size = Vector2(text_w, 14)
 	card.add_child(name_label)
-	var desc := UiKit.wrapped_label(tr(trick.description), text_w, &"LabelSoft")
+	var desc := UiKit.wrapped_label(AttackTechniques.card_description(trick, GameState.active_tricks), text_w, &"LabelSoft")
 	desc.name = "Description"
 	desc.add_theme_font_size_override(&"font_size", 9)
 	desc.add_theme_constant_override(&"line_spacing", 0)

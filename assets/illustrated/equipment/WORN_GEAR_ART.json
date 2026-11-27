@@ -1,0 +1,407 @@
+{
+  "source_plates": [
+    {
+      "slot": "armor",
+      "method": "GPT Image, original transparent design",
+      "pixels": [
+        1536,
+        1024
+      ],
+      "sha256": "9cc9f9e89ed7820c51b7ada67ab656dbdc21835b24e039b3df227282e1fc6321",
+      "source_grid_x": [
+        0,
+        384,
+        768,
+        1141,
+        1536
+      ],
+      "source_grid_y": [
+        0,
+        337,
+        682,
+        1024
+      ]
+    },
+    {
+      "slot": "weapon",
+      "method": "GPT Image, original transparent design",
+      "pixels": [
+        1536,
+        1024
+      ],
+      "sha256": "871a56bccd4636a5ae0ca77682632ab21beadd93f2b0b6d260c9fcc3132481ca",
+      "source_grid_x": [
+        0,
+        380,
+        745,
+        1108,
+        1536
+      ],
+      "source_grid_y": [
+        0,
+        277,
+        631,
+        1024
+      ]
+    }
+  ],
+  "atlas": {
+    "file": "worn_gear.png",
+    "pixels": [
+      512,
+      768
+    ],
+    "sha256": "e3a271b06dc3c56684953b5cb4c58f2230cde1b340d339e0453962e8548ee25f",
+    "rectangles_xywh": [
+      [
+        [
+          3,
+          7,
+          122,
+          114
+        ],
+        [
+          131,
+          3,
+          122,
+          121
+        ],
+        [
+          259,
+          6,
+          122,
+          116
+        ],
+        [
+          387,
+          10,
+          122,
+          107
+        ]
+      ],
+      [
+        [
+          3,
+          135,
+          122,
+          114
+        ],
+        [
+          134,
+          131,
+          115,
+          122
+        ],
+        [
+          259,
+          131,
+          122,
+          122
+        ],
+        [
+          387,
+          136,
+          122,
+          112
+        ]
+      ],
+      [
+        [
+          3,
+          261,
+          122,
+          117
+        ],
+        [
+          131,
+          259,
+          121,
+          122
+        ],
+        [
+          259,
+          259,
+          122,
+          122
+        ],
+        [
+          387,
+          265,
+          122,
+          109
+        ]
+      ],
+      [
+        [
+          3,
+          426,
+          122,
+          43
+        ],
+        [
+          131,
+          424,
+          122,
+          47
+        ],
+        [
+          259,
+          422,
+          122,
+          51
+        ],
+        [
+          387,
+          418,
+          122,
+          60
+        ]
+      ],
+      [
+        [
+          23,
+          515,
+          82,
+          122
+        ],
+        [
+          143,
+          515,
+          98,
+          122
+        ],
+        [
+          266,
+          515,
+          107,
+          122
+        ],
+        [
+          398,
+          515,
+          100,
+          122
+        ]
+      ],
+      [
+        [
+          41,
+          643,
+          45,
+          122
+        ],
+        [
+          170,
+          643,
+          43,
+          122
+        ],
+        [
+          293,
+          643,
+          54,
+          122
+        ],
+        [
+          417,
+          643,
+          62,
+          122
+        ]
+      ]
+    ]
+  },
+  "design": "Weapon and armor use independently equipped levels. Common +1, +3 and +5 progress from simple bindings to engraving. Epic +1–5 shares the common +5 silhouette. Epic +6 adds a physical collar or layered lappet; +9 adds its crowning work. Plate, oakleaf mantle and celestial stole have distinct back and side trains. The high-tier sword has a gilded crimson full blade fitted between the existing hilt and tip; the staff has its own crystal crown; the bow adds a second finial only where the original lower nock is exposed. A separate cloth insignia on the shoulder records chapter rank at hero Lv4 and Lv8.",
+  "derivation": "Use the listed boundaries on each original; linearly remap alpha 12..248 to 0..255. Trim the alpha-64 box plus a 2-pixel border and fit within 122 x 122 using Lanczos. Center each piece in one 128-pixel atlas cell, armor then weapons.",
+  "rank": {
+    "source": "Original GPT Image plate",
+    "source_pixels": [
+      1774,
+      887
+    ],
+    "source_sha256": "520e657241ecc57fba4a40f52e956604d59d759f30474eb33efd1bc658711995",
+    "source_windows": [
+      [
+        230,
+        100,
+        690,
+        770
+      ],
+      [
+        1100,
+        35,
+        1564,
+        850
+      ]
+    ],
+    "atlas_file": "worn_rank.png",
+    "atlas_sha256": "78170d6689f53c227708d13baf1a542f91fbc485f40a3aef31b801c786e9cb5e",
+    "rectangles_xywh": [
+      [
+        21,
+        2,
+        53,
+        92
+      ],
+      [
+        122,
+        2,
+        43,
+        92
+      ]
+    ],
+    "grid_cell": 96
+  },
+  "cape": {
+    "source": "Original GPT Image plate",
+    "source_pixels": [
+      1536,
+      1024
+    ],
+    "source_sha256": "8670ddf77bab70420dc8b15a1f7b4f12b9e435af73cb68223255bd3f7657a7eb",
+    "source_windows": [
+      [
+        0,
+        0,
+        512,
+        475
+      ],
+      [
+        512,
+        0,
+        1018,
+        475
+      ],
+      [
+        1018,
+        0,
+        1536,
+        475
+      ],
+      [
+        0,
+        475,
+        512,
+        1024
+      ],
+      [
+        512,
+        475,
+        1018,
+        1024
+      ],
+      [
+        1018,
+        475,
+        1536,
+        1024
+      ]
+    ],
+    "atlas_file": "worn_cape.png",
+    "atlas_sha256": "37f39afb1048e7ce349eaa2884071b3684abe7771a3a015d6495bca19c4342e5",
+    "rectangles_xywh": [
+      [
+        2,
+        9,
+        140,
+        126
+      ],
+      [
+        146,
+        6,
+        140,
+        131
+      ],
+      [
+        290,
+        8,
+        140,
+        128
+      ],
+      [
+        4,
+        146,
+        135,
+        140
+      ],
+      [
+        155,
+        146,
+        121,
+        140
+      ],
+      [
+        294,
+        146,
+        131,
+        140
+      ]
+    ],
+    "grid_cell": 144
+  },
+  "blade": {
+    "source": "Original GPT Image plate",
+    "source_pixels": [
+      1774,
+      887
+    ],
+    "source_sha256": "a7410b6956773c687bbf4a26399afbf1b414c8a3387a265639e6544d99007b35",
+    "source_windows": [
+      [
+        119,
+        0,
+        395,
+        886
+      ],
+      [
+        520,
+        0,
+        818,
+        886
+      ],
+      [
+        908,
+        0,
+        1288,
+        886
+      ],
+      [
+        1322,
+        0,
+        1685,
+        886
+      ]
+    ],
+    "atlas_file": "worn_blade.png",
+    "atlas_sha256": "b008c343fcbf08b94a23756cd4f6466bcb1c3a56700eeb8190a701b9a683f1a9",
+    "rectangles_xywh": [
+      [
+        52,
+        2,
+        24,
+        124
+      ],
+      [
+        179,
+        2,
+        26,
+        124
+      ],
+      [
+        303,
+        2,
+        34,
+        124
+      ],
+      [
+        430,
+        2,
+        35,
+        124
+      ]
+    ],
+    "grid_cell": 128
+  },
+  "composition": "Capes draw behind the source hero; shoulder and rank draw on the upper body; fittings follow the hand or limb. All four packed textures use mipmapped linear minification at native gameplay sizes. Source motion, mirroring, footprint and physics stay with the game actor.",
+  "livery_derivation": "Rank, cape and blade versions remap alpha 12..248 to 0..255, detect the largest connected alpha-60 object inside each listed source window, trim a 2 px border and downsample with Lanczos into the listed cells. The two badge columns record one or two gold chevrons. Cape rows are side and back views of the three armor families."
+}

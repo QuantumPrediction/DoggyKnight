@@ -161,3 +161,7 @@ GPT Image 參照本作三套角色原畫，為各職業繪製正面與背面落�
 ### 湖畔圓桌終幕
 
 `assets/story/round_table_homecoming.webp` 是本作以 GPT Image 製作的終幕插畫。構圖參考本作既有的第六章夕陽繪本和標題美術。第六章使用 640×480 的遊戲版本，原稿與交付圖的指紋見 [六章驗證](validation/six-episode-campaign/README.md)。
+
+## 職業出招、工坊與戰技（2026-11-27）
+
+本作以 GPT Image 繪製三職業選角插圖、裝備櫥窗與貨幣徽章、戰鬥穿戴配件，以及連雷符、彗星印與迴風刃。遊戲使用原稿裁切後的透明圖集。職業插畫參考本作既有角色造型。原圖尺寸和 SHA-256 見[選角](../assets/illustrated/class_codex/art.json)、[工坊](../assets/illustrated/equipment/ATELIER_DISPLAY_ART.json)、[穿戴](../assets/illustrated/equipment/WORN_GEAR_ART.json)和[戰技](../assets/illustrated/techniques/art.json)。本次增補的繁中字形沿用上列 Noto CJK 授權。

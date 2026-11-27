@@ -69,6 +69,8 @@ func _physics_process(delta: float) -> void:
 		if hits == 0:
 			damage = host.projectile_impact_damage(multiplier, ultimate)
 		var at := enemy.global_position
+		var basic_contact := hits == 0 and not ultimate
+		var primary_id := enemy.get_instance_id()
 		_hit(host, enemy, damage if hits == 0 else maxi(1, roundi(damage * loadout.secondary_mult)))
 		if loadout.splash_radius > 0.0:
 			CombatFx.ring(host, at, 3.0, loadout.splash_radius, 0.24, loadout.accent, 1.5)
@@ -77,9 +79,9 @@ func _physics_process(delta: float) -> void:
 					break
 				if host._is_valid_target(other) and not hit_ids.has(other.get_instance_id()) and at.distance_to(other.global_position) <= loadout.splash_radius + GoldiePlayer._radius_of(other):
 					_hit(host, other, maxi(1, roundi(damage * loadout.secondary_mult)))
-			queue_free()
-			return
-		if hits >= loadout.max_hits:
+		if basic_contact:
+			host.abilities.primary_impact(host, at, primary_id, direction)
+		if loadout.splash_radius > 0.0 or hits >= loadout.max_hits:
 			queue_free()
 			return
 	global_position = to

@@ -1,0 +1,35 @@
+{
+	"skill-card": {
+		"chapter": 1,
+		"level": 1,
+		"tick": 2573,
+		"tricks": [
+			"starfall",
+			"shake"
+		]
+	},
+	"skill-lightning": {
+		"chapter": 1,
+		"level": 2,
+		"tick": 3314,
+		"tricks": [
+			"starfall",
+			"shake",
+			"arc_rune"
+		]
+	},
+	"skill-wind-star": {
+		"chapter": 1,
+		"level": 4,
+		"tick": 12201,
+		"tricks": [
+			"starfall",
+			"shake",
+			"arc_rune",
+			"starfall",
+			"gale_disc",
+			"gale_disc",
+			"gale_disc"
+		]
+	}
+}

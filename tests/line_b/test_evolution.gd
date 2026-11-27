@@ -89,9 +89,9 @@ func test_all_trick_files_have_text_icons_and_rules() -> void:
 
 func test_difficulty_pool_has_all_base_tricks_and_no_evolutions() -> void:
 	var d := load(DIFFICULTY) as DifficultyData
-	assert_eq(d.trick_pool, BASE_TRICKS)
+	assert_eq(d.trick_pool, BASE_TRICKS + AttackTechniques.IDS)
 	var deck := TrickDeck.new(d.trick_pool)
-	assert_eq(deck.size(), 12)
+	assert_eq(deck.size(), 15)
 	assert_eq(deck.evolution_ids().size(), 4)
 
 

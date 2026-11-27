@@ -10,6 +10,7 @@ const CHAPTER_BOSSES := [
 	["black_knight"], ["green_knight"], ["morgana"], ["kraken"], ["red_dragon", "white_dragon"], ["mordred"]
 ]
 
+var volleys_by_loadout: Dictionary = {}
 var journal: FileAccess
 var clears: Array[String] = []
 var bosses_seen: Array[String] = []
@@ -32,9 +33,19 @@ var verify_epilogue := false
 var epilogue_lines: Array[String] = []
 var last_epilogue_tap := -1000
 
+func _seed_added_node(node: Node) -> void:
+	super(node)
+	if node is TechniqueVolley:
+		var levels := (node as TechniqueVolley).ranks
+		var key := "%d%d%d" % [levels.x, levels.y, levels.z]
+		volleys_by_loadout[key] = int(volleys_by_loadout.get(key, 0)) + 1
+
+
 func _entry(kind: String, data := {}) -> void:
 	var row := {"type": kind, "tick": Engine.get_physics_frames()}
 	row.merge(data)
+	if kind == "end":
+		row["volley_counts_arc_star_gale"] = volleys_by_loadout
 	journal.store_line(JSON.stringify(row))
 	journal.flush()
 	if kind in ["attempt", "title_start", "credits", "end"]:
@@ -161,7 +172,11 @@ func _at_title() -> void:
 			failure_reason = "ending_returned_to_title_before_credits"
 			return
 		credits_opened = "from_title_button"
-		_click(title.credits_button)
+		var legacy := title.find_child("CreditsButton", true, false) as Button
+		if legacy == null:
+			failure_reason = "missing_legacy_credits_entry"
+			return
+		_click(legacy)
 		await _frames(30)
 		return
 	var expected := 1 + floori(clears.size() / 6.0)

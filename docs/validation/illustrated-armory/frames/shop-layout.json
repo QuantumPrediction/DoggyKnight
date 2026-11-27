@@ -1,0 +1,397 @@
+{
+	"checkpoints": [
+		{
+			"actions": [
+				6.0,
+				6.0,
+				0.0,
+				0.0
+			],
+			"actions_inside_safe": true,
+			"body_scroll": [
+				6.0,
+				120.0,
+				168.0,
+				150.0
+			],
+			"cabinet_rect": [
+				7.0,
+				121.0,
+				162.0,
+				63.0
+			],
+			"caption_clears_figure": true,
+			"caption_inside_cabinet": true,
+			"caption_rect": [
+				83.1399993896484,
+				123.0,
+				81.8600006103516,
+				59.0
+			],
+			"fully_visible_item_buttons": 3,
+			"name": "shop_01_common",
+			"root_inside_safe": true,
+			"scroll_height": 150.0,
+			"subject_rect": [
+				14.2900009155273,
+				123.205001831055,
+				67.2300033569336,
+				53.8649978637695
+			],
+			"wallet": [
+				6.0,
+				44.0,
+				168.0,
+				16.0
+			],
+			"window": [
+				360,
+				640
+			]
+		},
+		{
+			"actions": [
+				6.0,
+				230.0,
+				168.0,
+				40.0
+			],
+			"actions_inside_safe": true,
+			"body_scroll": [
+				6.0,
+				64.0,
+				168.0,
+				162.0
+			],
+			"cabinet_rect": [
+				6.0,
+				64.0,
+				164.0,
+				58.0
+			],
+			"caption_clears_figure": true,
+			"caption_inside_cabinet": true,
+			"caption_rect": [
+				83.0800018310547,
+				66.0,
+				82.9199981689453,
+				54.0
+			],
+			"fully_visible_item_buttons": 0,
+			"name": "shop_02_try_lv1",
+			"root_inside_safe": true,
+			"scroll_height": 162.0,
+			"subject_rect": [
+				13.3800001144409,
+				66.0299987792969,
+				68.0600051879883,
+				49.5900001525879
+			],
+			"wallet": [
+				6.0,
+				44.0,
+				168.0,
+				16.0
+			],
+			"window": [
+				360,
+				640
+			]
+		},
+		{
+			"actions": [
+				6.0,
+				230.0,
+				168.0,
+				40.0
+			],
+			"actions_inside_safe": true,
+			"body_scroll": [
+				6.0,
+				64.0,
+				168.0,
+				162.0
+			],
+			"cabinet_rect": [
+				6.0,
+				64.0,
+				164.0,
+				58.0
+			],
+			"caption_clears_figure": true,
+			"caption_inside_cabinet": true,
+			"caption_rect": [
+				83.0800018310547,
+				66.0,
+				82.9199981689453,
+				54.0
+			],
+			"fully_visible_item_buttons": 0,
+			"name": "shop_03_current",
+			"root_inside_safe": true,
+			"scroll_height": 162.0,
+			"subject_rect": [
+				13.3800001144409,
+				66.0299987792969,
+				68.0600051879883,
+				49.5900001525879
+			],
+			"wallet": [
+				6.0,
+				44.0,
+				168.0,
+				16.0
+			],
+			"window": [
+				360,
+				640
+			]
+		},
+		{
+			"actions": [
+				6.0,
+				230.0,
+				168.0,
+				40.0
+			],
+			"actions_inside_safe": true,
+			"body_scroll": [
+				6.0,
+				64.0,
+				168.0,
+				162.0
+			],
+			"cabinet_rect": [
+				6.0,
+				64.0,
+				164.0,
+				58.0
+			],
+			"caption_clears_figure": true,
+			"caption_inside_cabinet": true,
+			"caption_rect": [
+				83.0800018310547,
+				66.0,
+				82.9199981689453,
+				54.0
+			],
+			"fully_visible_item_buttons": 0,
+			"name": "shop_04_common_max",
+			"root_inside_safe": true,
+			"scroll_height": 162.0,
+			"subject_rect": [
+				13.3800001144409,
+				66.0299987792969,
+				68.0600051879883,
+				49.5900001525879
+			],
+			"wallet": [
+				6.0,
+				44.0,
+				168.0,
+				16.0
+			],
+			"window": [
+				360,
+				640
+			]
+		},
+		{
+			"actions": [
+				6.0,
+				230.0,
+				168.0,
+				40.0
+			],
+			"actions_inside_safe": true,
+			"body_scroll": [
+				6.0,
+				120.0,
+				168.0,
+				150.0
+			],
+			"cabinet_rect": [
+				7.0,
+				121.0,
+				162.0,
+				63.0
+			],
+			"caption_clears_figure": true,
+			"caption_inside_cabinet": true,
+			"caption_rect": [
+				83.1399993896484,
+				123.0,
+				81.8600006103516,
+				59.0
+			],
+			"fully_visible_item_buttons": 3,
+			"name": "shop_05_epic",
+			"root_inside_safe": true,
+			"scroll_height": 150.0,
+			"subject_rect": [
+				14.2900009155273,
+				123.205001831055,
+				67.2300033569336,
+				53.8649978637695
+			],
+			"wallet": [
+				6.0,
+				44.0,
+				168.0,
+				16.0
+			],
+			"window": [
+				360,
+				640
+			]
+		},
+		{
+			"actions": [
+				6.0,
+				230.0,
+				168.0,
+				40.0
+			],
+			"actions_inside_safe": true,
+			"body_scroll": [
+				6.0,
+				64.0,
+				168.0,
+				162.0
+			],
+			"cabinet_rect": [
+				6.0,
+				64.0,
+				164.0,
+				58.0
+			],
+			"caption_clears_figure": true,
+			"caption_inside_cabinet": true,
+			"caption_rect": [
+				83.0800018310547,
+				66.0,
+				82.9199981689453,
+				54.0
+			],
+			"fully_visible_item_buttons": 0,
+			"name": "shop_06_epic_max",
+			"root_inside_safe": true,
+			"scroll_height": 162.0,
+			"subject_rect": [
+				13.3800001144409,
+				66.0299987792969,
+				68.0600051879883,
+				49.5900001525879
+			],
+			"wallet": [
+				6.0,
+				44.0,
+				168.0,
+				16.0
+			],
+			"window": [
+				360,
+				640
+			]
+		},
+		{
+			"actions": [
+				6.0,
+				230.0,
+				168.0,
+				40.0
+			],
+			"actions_inside_safe": true,
+			"body_scroll": [
+				6.0,
+				120.0,
+				168.0,
+				150.0
+			],
+			"cabinet_rect": [
+				6.0,
+				120.0,
+				164.0,
+				58.0
+			],
+			"caption_clears_figure": true,
+			"caption_inside_cabinet": true,
+			"caption_rect": [
+				83.0800018310547,
+				122.0,
+				82.9199981689453,
+				54.0
+			],
+			"fully_visible_item_buttons": 0,
+			"name": "shop_07_staged_owned",
+			"root_inside_safe": true,
+			"scroll_height": 150.0,
+			"subject_rect": [
+				13.3800001144409,
+				122.029998779297,
+				68.0600051879883,
+				49.5900001525879
+			],
+			"wallet": [
+				6.0,
+				44.0,
+				168.0,
+				16.0
+			],
+			"window": [
+				360,
+				640
+			]
+		},
+		{
+			"actions": [
+				6.0,
+				293.0,
+				183.0,
+				69.0
+			],
+			"actions_inside_safe": true,
+			"body_scroll": [
+				6.0,
+				88.0,
+				183.0,
+				201.0
+			],
+			"cabinet_rect": [
+				6.0,
+				88.0,
+				179.0,
+				58.0
+			],
+			"caption_clears_figure": true,
+			"caption_inside_cabinet": true,
+			"caption_rect": [
+				90.129997253418,
+				90.0,
+				90.870002746582,
+				54.0
+			],
+			"fully_visible_item_buttons": 0,
+			"name": "shop_08_notched",
+			"root_inside_safe": true,
+			"scroll_height": 201.0,
+			"subject_rect": [
+				14.0550003051758,
+				90.0299987792969,
+				74.2850036621094,
+				49.5900001525879
+			],
+			"wallet": [
+				6.0,
+				68.0,
+				183.0,
+				16.0
+			],
+			"window": [
+				390,
+				844
+			]
+		}
+	],
+	"try_on_preserved_profile": true
+}

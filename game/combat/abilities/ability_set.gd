@@ -18,7 +18,7 @@ const EVOLUTION_SOURCES: Dictionary = {
 	&"meteor_pounce": [&"pounce", &"zoomies"],
 }
 const ABILITY_IDS: Array[StringName] = [&"shake", &"spin", &"bark", &"pounce", &"roll", &"play_dead", &"zoomies",
-		&"tornado_tail", &"lion_roar", &"high_five", &"meteor_pounce"]
+		&"tornado_tail", &"lion_roar", &"high_five", &"meteor_pounce", &"arc_rune", &"starfall", &"gale_disc"]
 
 var shake: ShakeAbility
 var spin: SpinAbility
@@ -31,6 +31,8 @@ var tornado: TornadoTailAbility
 var lion_roar: LionRoarAbility
 var high_five: HighFiveAbility
 var meteor: MeteorPounceAbility
+var techniques: Array[TrickAbility] = []
+var _technique_hits := 0
 var _all: Array[TrickAbility] = []
 
 
@@ -47,6 +49,12 @@ func _init(host: Object, tuning: AbilityTuning) -> void:
 	high_five = HighFiveAbility.new(host, tuning)
 	meteor = MeteorPounceAbility.new(host, tuning)
 	_all = [shake, spin, bark, pounce, roll, play_dead, zoomies, tornado, lion_roar, high_five, meteor]
+
+	for id in AttackTechniques.IDS:
+		var ability := TrickAbility.new(host, tuning)
+		ability.id = id
+		techniques.append(ability)
+		_all.append(ability)
 
 
 static func is_ability(trick_id: StringName) -> bool:
@@ -67,6 +75,7 @@ static func evolution_of(trick_id: StringName) -> StringName:
 
 ## 依照把戲清單重建。清單中不是能力的 id 會被略過;啟用中的進化會停用它的原把戲。
 func rebuild(tricks: Array) -> void:
+	_technique_hits = 0
 	for ability in _all:
 		ability.reset()
 	for trick_id: Variant in tricks:
@@ -139,6 +148,21 @@ func on_swing_landed() -> float:
 	for ability in _all:
 		mult *= ability.on_swing_landed()
 	return mult
+
+
+## A multi-target swing, a penetrating arrow, or a splashing bolt supplies one beat.
+func primary_impact(hero: GoldiePlayer, at: Vector2, primary_id: int, direction: Vector2) -> void:
+	var levels := Vector3i(techniques[0].stacks, techniques[1].stacks, techniques[2].stacks)
+	if levels == Vector3i.ZERO:
+		return
+	_technique_hits += 1
+	if _technique_hits < 3:
+		return
+	_technique_hits = 0
+	for ability in techniques:
+		if ability.is_active():
+			ability.triggers += 1
+	TechniqueVolley.launch(hero, at, primary_id, direction, levels)
 
 
 ## 場上有敵人倒下。

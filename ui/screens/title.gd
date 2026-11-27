@@ -63,7 +63,6 @@ var _class_endless: bool = false
 
 var continue_button: Button
 var new_game_button: Button
-var credits_button: Button
 var endless_button: Button
 var training_button: Button
 var normal_button: Button
@@ -197,11 +196,6 @@ func _ready() -> void:
 	training_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	training_button.pressed.connect(func() -> void: training_pressed.emit())
 	row.add_child(training_button)
-	credits_button = UiKit.button(tr("UI_CREDITS"), &"ButtonAlt", SMALL_BUTTON)
-	credits_button.name = "CreditsButton"
-	credits_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	credits_button.pressed.connect(func() -> void: credits_pressed.emit())
-	row.add_child(credits_button)
 
 	_version = UiKit.label(tr("UI_VERSION") % ProjectSettings.get_setting("application/config/version", "0.1.0"),
 			&"LabelLight", HORIZONTAL_ALIGNMENT_RIGHT)

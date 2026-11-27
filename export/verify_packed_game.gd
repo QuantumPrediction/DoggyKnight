@@ -78,6 +78,19 @@ func _check() -> void:
 			push_error("Missing motion atlas " + motion)
 			quit(1)
 			return
+	for asset: String in ["class_codex/knight.webp", "class_codex/mage.webp", "class_codex/archer.webp",
+			"equipment/atelier_cabinets.webp", "equipment/atelier_emblems.webp", "equipment/worn_gear.png",
+			"equipment/worn_blade.png", "equipment/worn_cape.png", "equipment/worn_rank.png"]:
+		if not load("res://assets/illustrated/" + asset) is Texture2D:
+			push_error("Missing class or workshop artwork: " + asset)
+			quit(1)
+			return
+	for technique: String in ["arc_rune", "starfall", "gale_disc"]:
+		var card: Resource = load("res://data/tricks/%s.tres" % technique)
+		if card == null or card.icon == null or card.max_level != 3:
+			push_error("Missing playable attack card: " + technique)
+			quit(1)
+			return
 	var figures := load("res://assets/fonts/QuillFigures.ttf") as Font
 	if figures == null or load("res://assets/fonts/StoryDisplay.tres") == null:
 		push_error("Missing combat figures or display typeface")

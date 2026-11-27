@@ -1,0 +1,66 @@
+{
+  "mage7": {
+    "seed": 7,
+    "class": "mage",
+    "build": "techniques",
+    "rooms_cleared": 36,
+    "all_room_attempts": 36,
+    "downs": 0,
+    "volley_total": 530,
+    "volleys_with_two_or_three_skills": 515,
+    "volleys_with_all_three": 476,
+    "restarted_save_passed": true,
+    "sha256": "fc85693c823f267e4de3e1e76f1e66b85ec87f9ad8533ca21d7bbafdeaed102f",
+    "earlier_pass_sha256": "564340e0e18416bc0b346f85cd6549e8f8b80e615ced4d3bc7681b92410bd41a",
+    "earlier_differences": [
+      {
+        "event": "credits",
+        "earlier_tick": 166691,
+        "release_tick": 166539,
+        "fields": [
+          "tick"
+        ]
+      },
+      {
+        "event": "end",
+        "earlier_tick": 166831,
+        "release_tick": 166679,
+        "fields": [
+          "tick"
+        ]
+      }
+    ]
+  },
+  "archer19": {
+    "seed": 19,
+    "class": "archer",
+    "build": "route",
+    "rooms_cleared": 36,
+    "all_room_attempts": 36,
+    "downs": 0,
+    "volley_total": 644,
+    "volleys_with_two_or_three_skills": 350,
+    "volleys_with_all_three": 209,
+    "restarted_save_passed": true,
+    "sha256": "68494e12edd05f62b34897cdf03f04745d9609076e87488023386642726bdce1",
+    "earlier_pass_sha256": "b5a227e2a053238d287ab50405df680c3fe8faef577e8eec235f337dda869b09",
+    "earlier_differences": [
+      {
+        "event": "credits",
+        "earlier_tick": 164387,
+        "release_tick": 164370,
+        "fields": [
+          "tick"
+        ]
+      },
+      {
+        "event": "end",
+        "earlier_tick": 164527,
+        "release_tick": 164510,
+        "fields": [
+          "tick"
+        ]
+      }
+    ]
+  }
+}

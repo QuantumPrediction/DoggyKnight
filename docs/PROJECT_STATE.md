@@ -2,6 +2,12 @@
 
 Updated: 2026-11-27 (Hong Kong). Version: **0.9.1 development source**.
 
+## Illustrated classes, forged equipment and attack combinations
+
+Branch `codex/illustrated-armory-combinations` builds on draft #35 at `b5887097e9e193e8198a814d739ff5a3a8fc2b68`. The three classes have illustrated attack previews. The optional opening challenge names the four extra enemy scarecrows in each of the first two rooms. The equipment shop opens directly, supports current/try-on/maximum views and shares its class equipment artwork with combat. Weapons and armor change separately with forging. Chapter levels 4 and 8 add personal insignia. The title credits button has been removed and the six-chapter finale still leads to the credits.
+
+Three three-rank attack cards add lightning, delayed stars and a moving blade to the normal upgrade deck. Each pair has a distinct combat effect. Native tests cover direct hits, splash, pierce, missed targets, secondary effects and UI geometry. The entire Godot suite passed 1,039/1,039. A mage prioritizing techniques and an archer prioritizing the original route each completed 36 rooms from a fresh profile, opened the credits and verified their completed save after restart. Neither run lost a life. Three normal-combat pictures and paired equipment images document the actual render. Public playtest version 10 is live. The browser compiled the engine and verified all game data. This session's cloud browser lacks WebGL 2. Target-player count remains zero. Physical mobile performance, accessibility in motion, retention and independent review remain open. Overall provisional assessment stays at 6–6.5/10. [Frames, preserved failures and runs](validation/illustrated-armory/README.md) · [Play](https://doggy-knight-playtest.quantumprediction.chatgpt.site/)
+
 ## Six playable episodes through the final credits
 
 The six chapters and their 36 levels now form one continuous campaign. Each of the first five boss results offers travel to the next chapter or a saved return to the title. The knight, mage or archer keeps their class and permanent rewards, with a fresh build per episode. Beating Mordred leads through the illustrated homecoming to the credits. Returning after a boss, during the next prologue or during credits retains the earned handoff without paying twice.
