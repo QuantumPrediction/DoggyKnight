@@ -214,6 +214,7 @@ func _result() -> void:
 		var revive := screen.get("revive_button") as Button
 		action = "revive" if revive != null and revive.is_visible_in_tree() and not revive.disabled else "retry"
 	var row := {"id": id, "won": won, "kills": r.kills, "damage": r.damage_taken, "combat_s": r.time_sec,
+			"landed_pairs": r.get("landed_pairs", {}),
 			"hero_level": r.hero_level, "vigor": GameState.vigor, "tricks": r.tricks, "route": GameState.run_route,
 			"chapter_final": r.is_final, "game_complete": r.game_complete, "bosses_seen": bosses_seen.duplicate(),
 			"bosses_defeated": bosses_defeated.duplicate(), "action": action, "snacks": GameState.snacks}

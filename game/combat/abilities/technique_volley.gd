@@ -64,7 +64,7 @@ func _physics_process(delta: float) -> void:
 		var mark := stars[i]
 		if not mark.struck and age >= mark.due:
 			mark.struck = true
-			_land(hero, mark.at, mark.echo)
+			mark.pair = _land(hero, mark.at, mark.echo)
 		if age >= float(mark.due) + STAR_FLASH:
 			stars.remove_at(i)
 	for i in range(arcs.size() - 1, -1, -1):
@@ -91,7 +91,21 @@ func _near(hero: GoldiePlayer, at: Vector2, radius: float, excluded: Array[int])
 	return targets
 
 
-func _chain(hero: GoldiePlayer, origin: Vector2, excluded: Array[int], hops: int) -> void:
+## A valid target can still block the hit. Observe HP around the original strike.
+func _hit(hero: GoldiePlayer, enemy: Node2D, multiplier: float) -> bool:
+	var body := enemy as EnemyBase
+	var before := body.hp if body != null else 0
+	hero.ability_hit(enemy, hero.ability_base_damage(multiplier), 0.0)
+	return is_instance_valid(body) and body.hp < before
+
+
+func _confirm(hero: GoldiePlayer, pair: StringName) -> StringName:
+	var counts := hero.abilities.landed_pairs
+	counts[pair] = counts.get(pair, 0) + 1
+	return pair
+
+
+func _chain(hero: GoldiePlayer, origin: Vector2, excluded: Array[int], hops: int, from_star := false) -> void:
 	for hop in hops:
 		var candidates := _near(hero, origin, 36.0 + 4.0 * (ranks.x - 1), excluded)
 		if candidates.is_empty():
@@ -99,17 +113,23 @@ func _chain(hero: GoldiePlayer, origin: Vector2, excluded: Array[int], hops: int
 		var enemy := candidates[0]
 		var at := enemy.global_position
 		excluded.append(enemy.get_instance_id())
-		arcs.append({"from": origin, "to": at, "until": age + ARC_LIFE})
+		var arc := {"from": origin, "to": at, "until": age + ARC_LIFE, "pair": &""}
+		arcs.append(arc)
 		var mult := (0.42 + 0.13 * (ranks.x - 1)) * (1.0 if hop == 0 else 0.75)
-		hero.ability_hit(enemy, hero.ability_base_damage(mult), 0.0)
+		if _hit(hero, enemy, mult):
+			if from_star:
+				arc.pair = _confirm(hero, &"arc_star")
+			elif hop == 1:
+				arc.pair = _confirm(hero, &"arc_gale")
 		origin = at
 
 
-func _land(hero: GoldiePlayer, at: Vector2, echo: bool) -> void:
+func _land(hero: GoldiePlayer, at: Vector2, echo: bool) -> StringName:
 	var radius := (18.0 + 3.0 * (ranks.y - 1)) * (0.75 if echo else 1.0)
 	var targets := _near(hero, at, radius, [])
 	var ids: Array[int] = []
 	var first_at := at
+	var damaged := false
 	for enemy in targets.slice(0, 2 if echo else 3):
 		if not hero._is_valid_target(enemy) or enemy.is_queued_for_deletion():
 			continue
@@ -117,9 +137,13 @@ func _land(hero: GoldiePlayer, at: Vector2, echo: bool) -> void:
 			first_at = enemy.global_position
 		ids.append(enemy.get_instance_id())
 		var mult := (0.65 + 0.16 * (ranks.y - 1)) * (0.55 if echo else 1.0)
-		hero.ability_hit(enemy, hero.ability_base_damage(mult), 0.0)
+		if _hit(hero, enemy, mult):
+			damaged = true
 	if not echo and ranks.x > 0 and not ids.is_empty():
-		_chain(hero, first_at, ids, 1)
+		_chain(hero, first_at, ids, 1, true)
+	if echo and damaged:
+		return _confirm(hero, &"gale_star")
+	return &""
 
 
 func _fly(hero: GoldiePlayer, distance: float) -> void:
@@ -157,15 +181,22 @@ func _draw() -> void:
 		var line := PackedVector2Array([a, kink, b])
 		draw_polyline(line, Color("3079ae"), 2.5, true)
 		draw_polyline(line, Color("c5f7ff"), 1.0, true)
-		draw_texture_rect(ARC, Rect2(b - Vector2(5, 5), Vector2(10, 10)), false)
+		_draw_impact(ARC, Rect2(b - Vector2(5, 5), Vector2(10, 10)), arc.pair)
 	for mark in stars:
 		var at := to_local(mark.at)
 		var left := clampf((float(mark.due) - age) / STAR_DELAY, 0.0, 1.0)
 		var size_px := (10.0 if mark.echo else 15.0) * (1.0 if not mark.struck else 1.25)
 		draw_set_transform(at + Vector2(-5.0, -16.0) * left)
-		draw_texture_rect(STAR, Rect2(Vector2.ONE * -size_px / 2.0, Vector2.ONE * size_px), false)
+		_draw_impact(STAR, Rect2(Vector2.ONE * -size_px / 2.0, Vector2.ONE * size_px), mark.get("pair", &""))
 		draw_set_transform(Vector2.ZERO)
 	if travel_left > 0.0:
 		draw_set_transform(to_local(blade_at), heading.angle() + age * 14.0)
 		draw_texture_rect(DISC, Rect2(-7, -7, 14, 14), false)
 		draw_set_transform(Vector2.ZERO)
+
+
+func _draw_impact(base: Texture2D, bounds: Rect2, pair: StringName) -> void:
+	if pair == &"":
+		draw_texture_rect(base, bounds, false)
+	else:
+		draw_texture_rect_region(AttackTechniques.MARKS, bounds, AttackTechniques.mark_region(pair))

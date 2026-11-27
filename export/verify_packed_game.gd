@@ -91,6 +91,11 @@ func _check() -> void:
 			push_error("Missing playable attack card: " + technique)
 			quit(1)
 			return
+	var marks := load("res://assets/illustrated/techniques/combination_marks.webp") as Texture2D
+	if marks == null or marks.get_size() != Vector2(288, 96) or tr("UI_LANDED_PAIRS") != "本關連攜":
+		push_error("Missing pair impact marks or room recap")
+		quit(1)
+		return
 	var figures := load("res://assets/fonts/QuillFigures.ttf") as Font
 	if figures == null or load("res://assets/fonts/StoryDisplay.tres") == null:
 		push_error("Missing combat figures or display typeface")

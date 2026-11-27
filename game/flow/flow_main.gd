@@ -885,6 +885,7 @@ func _build_result(victory: bool) -> Dictionary:
 	var level := chapter.get_level(_level_index)
 	var tricks: Array = []
 	tricks.append_array(progression.tricks_this_level)
+	var hero := _session.get_player() as GoldiePlayer if _session != null else null
 	var time_sec := _session.time_sec if _session != null else 0.0
 	var damage := _session.damage_taken if _session != null else 0
 	var goals: Array[Dictionary] = []
@@ -896,7 +897,7 @@ func _build_result(victory: bool) -> Dictionary:
 		new_best = _clear_record["new_best"]
 	else:
 		goals = StarRating.goals(level, false, time_sec, damage)
-	return {
+	var result := {
 		"equipment_reward": _clear_record.get("equipment_reward", {}),
 		"level_id": level.id,
 		"level_name": level.display_name,
@@ -929,6 +930,9 @@ func _build_result(victory: bool) -> Dictionary:
 		"next_chapter_unlocked": victory and chapter.is_last(_level_index) and _run_chapter < chapter_count(),
 		"game_complete": victory and chapter.is_last(_level_index) and is_final_chapter(_run_chapter),
 	}
+	if hero != null and hero.abilities != null and not hero.abilities.landed_pairs.is_empty():
+		result["landed_pairs"] = hero.abilities.landed_pairs.duplicate()
+	return result
 
 
 func _build_endless_result() -> Dictionary:

@@ -2,6 +2,14 @@
 
 Updated: 2026-11-27 (Hong Kong). Version: **0.9.1 development source**.
 
+## Confirmed combat combinations
+
+[Draft #37](https://github.com/QuantumPrediction/DoggyKnight/pull/37) is stacked on #36. Public implementation `7e097c6094aef82c36988ccdb8617d471f4153e9` and local tested snapshot `06b5d50a65e624444671720dd657fb009469ee0c` share tree `e1a83193f8d30d5ce236eca296d4690c5659afd7`. Web playtest version 11 is live, and its public file check passed.
+
+Branch `codex/technique-field-guide` starts at draft #36, `bc73d06d965cadd49f552ec6f53c50cc1a271629`. Successful extra lightning hops, star discharges and echo-star impacts now carry three distinct GPT Image marks within their original battle footprints. Story victory reports count each extra attack that actually removes enemy HP. They show the illustrated technique cards and keep the animated rating stars square. Ordinary hits, blocked hits and missed echoes have separate controls.
+
+The full suite passed 1,044/1,044 and the focused group passed 14/14. Fresh mage and archer profiles each cleared 36 rooms. They produced 152 and 48 confirmed combinations. Relative to #36, every room's combat result, action geometry and completed-save bytes matched. Only the credits and end ticks differed. Five 360×640 Linux frames were paired at the same physics ticks, including a pixel-identical ordinary hit. The initial stretched-star capture and two suite timeouts are retained in the evidence. Next, observe whether an unprompted player can recognize a combination during fighting and use the recap to choose the next upgrade. Target-player count is zero. Physical mobile results and independent quality review remain open. Provisional quality remains 6–6.5/10. [Battle frames and runs](validation/technique-confirmation/README.md) · [Web playtest](https://doggy-knight-playtest.quantumprediction.chatgpt.site/)
+
 ## Illustrated classes, forged equipment and attack combinations
 
 [Draft #36](https://github.com/QuantumPrediction/DoggyKnight/pull/36) and the tested implementation share tree `fa91807a082da3812be811ec70190633812a9715` (public implementation `ef073bec982e5f064994ac6c0ee170ea9cbba0a7`). Branch `codex/illustrated-armory-combinations` builds on draft #35 at `b5887097e9e193e8198a814d739ff5a3a8fc2b68`. The three classes have illustrated attack previews. The optional opening challenge names the four extra enemy scarecrows in each of the first two rooms. The equipment shop opens directly, supports current/try-on/maximum views and shares its class equipment artwork with combat. Weapons and armor change separately with forging. Chapter levels 4 and 8 add personal insignia. The title credits button has been removed and the six-chapter finale still leads to the credits.

@@ -1,0 +1,176 @@
+{
+  "ordinary": {
+    "chapter": 1,
+    "impact_xy_logical": [
+      53.0693778991699,
+      161.153656005859
+    ],
+    "player_xy": [
+      90.0,
+      199.242980957031
+    ],
+    "room": 2,
+    "tick": 3284,
+    "tricks": [
+      "starfall",
+      "shake",
+      "arc_rune"
+    ],
+    "control_png_sha256": "fd228703730f4c2ef96ad80c826afdbfddbb9fecb8c96f281b733b11b4b16cae",
+    "candidate_png_sha256": "fd228703730f4c2ef96ad80c826afdbfddbb9fecb8c96f281b733b11b4b16cae",
+    "frame": "ordinary.webp",
+    "webp_sha256": "2a7cfcc7be0d157d2d6b27af2aca9a7453e691f5b491f52f5914763b0aef64fa",
+    "control_file": null,
+    "control_file_sha256": null,
+    "changed_pixels": 0,
+    "difference_xyxy_exclusive": null
+  },
+  "arc_gale": {
+    "chapter": 1,
+    "impact_xy_logical": [
+      81.542236328125,
+      189.127639770508
+    ],
+    "player_xy": [
+      94.7879943847656,
+      149.334915161133
+    ],
+    "room": 4,
+    "tick": 13303,
+    "tricks": [
+      "starfall",
+      "shake",
+      "arc_rune",
+      "starfall",
+      "gale_disc",
+      "gale_disc",
+      "gale_disc",
+      "shake"
+    ],
+    "control_png_sha256": "bfc258dc2dec9296d561f7c6be5c94cf374da45422932484c40d3d2cd22a2719",
+    "candidate_png_sha256": "caddecc27a6fc2ee022958662708c9bc2eb5f2896ff9104a13da2bc83a7ca168",
+    "frame": "arc_gale.webp",
+    "webp_sha256": "c0f0f3931445ebd44ca0d30294dfa61473f0cf4fe76aa0f73a496ccc6d18af89",
+    "control_file": "arc_gale-control-patch.png",
+    "control_file_sha256": "7ef14a4a3c70b98a0d6c59e715fbbe02858d8a16a3612bbb0e6d79e3287fc179",
+    "changed_pixels": 190,
+    "difference_xyxy_exclusive": [
+      154,
+      369,
+      172,
+      387
+    ]
+  },
+  "arc_star": {
+    "chapter": 1,
+    "impact_xy_logical": [
+      59.5728454589844,
+      168.484390258789
+    ],
+    "player_xy": [
+      90.0,
+      199.242980957031
+    ],
+    "room": 2,
+    "tick": 3305,
+    "tricks": [
+      "starfall",
+      "shake",
+      "arc_rune"
+    ],
+    "control_png_sha256": "b9977361c7b5892c97a94248c5c16cf0e331fa41eed0fe1b2fc98f939b8259ca",
+    "candidate_png_sha256": "fd105d7b745b3962c7a63f77e2d1be53acfe454a184464d328de5b31af5d59bc",
+    "frame": "arc_star.webp",
+    "webp_sha256": "33d28b3fe53cc78ab7afd7a24f4318596a86c5970aa5247a798b95a96db7fbb0",
+    "control_file": "arc_star-control-patch.png",
+    "control_file_sha256": "850ec7e6a4d7eb88bce6ee9aa00e7ba9c847941cd6295017a4da42dd63dc4857",
+    "changed_pixels": 155,
+    "difference_xyxy_exclusive": [
+      110,
+      328,
+      128,
+      346
+    ]
+  },
+  "gale_star": {
+    "chapter": 1,
+    "impact_xy_logical": [
+      118.041915893555,
+      121.058715820312
+    ],
+    "player_xy": [
+      135.140167236328,
+      215.024612426758
+    ],
+    "room": 4,
+    "tick": 15275,
+    "tricks": [
+      "starfall",
+      "shake",
+      "arc_rune",
+      "starfall",
+      "gale_disc",
+      "gale_disc",
+      "gale_disc",
+      "shake"
+    ],
+    "control_png_sha256": "194fe2f42da65772d01a97d131e5ebca770e1e88a7d8b828f16e994aca952b34",
+    "candidate_png_sha256": "967b5000233e431b2b8f7a7c9d6f042d377c08e931b714bd519f8d2b7b2a2d63",
+    "frame": "gale_star.webp",
+    "webp_sha256": "b20aa99cebffc624fe57b1563680c15bcc6ee955d1097285ea186645a14581fa",
+    "control_file": "gale_star-control-patch.png",
+    "control_file_sha256": "ce421c832f4c9da5c269afb9aee9833588f563205a5c45d660e84c26e767ca7a",
+    "changed_pixels": 545,
+    "difference_xyxy_exclusive": [
+      209,
+      231,
+      248,
+      326
+    ]
+  },
+  "room-report": {
+    "chapter": 1,
+    "player_xy": [
+      128.0576171875,
+      232.123229980469
+    ],
+    "room": 4,
+    "room_counts": {
+      "arc_gale": 5,
+      "arc_star": 7,
+      "gale_star": 2
+    },
+    "tick": 15763,
+    "tricks": [
+      "starfall",
+      "shake",
+      "arc_rune",
+      "starfall",
+      "gale_disc",
+      "gale_disc",
+      "gale_disc",
+      "shake",
+      "shake",
+      "fetch"
+    ],
+    "control_png_sha256": "77c91e251db9a10c2fb7f80e136f7bdfc20dc82a2625bd567d2208d9aecd6d53",
+    "candidate_png_sha256": "3b84c9decaaaf67eb53c960d8cdd4d46fc9b688e3fba47072324037e1a51fcb4",
+    "frame": "room-report.webp",
+    "webp_sha256": "da121fac2afcd3106730fa3b54e10ea471feae661a383db3989730a0b9b04392",
+    "control_file": "room-report-control.webp",
+    "control_file_sha256": "c87773deba43147a5492f2cc5bf358f4515f6f1725620a8bbadfe4a299478376",
+    "changed_pixels": 24686,
+    "difference_xyxy_exclusive": [
+      26,
+      96,
+      334,
+      566
+    ]
+  },
+  "early_report": {
+    "png_sha256": "17e2d9aa96d4d4238073ad88b9ee2914abba3718a4c83535f3fa6c80af2b0569",
+    "frame": "early-stretched-stars.webp",
+    "details": "first candidate, photographed mid-count with stars vertically stretched",
+    "tick": 15691
+  }
+}
