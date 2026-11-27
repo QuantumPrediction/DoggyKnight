@@ -39,5 +39,12 @@
       "broken": 0,
       "engine_exit": "Runner passed; existing RID/ObjectDB/resource shutdown diagnostics persisted."
     }
-  ]
+  ],
+  "deployment": {
+    "id": "appgdep_6b0903c94a048191af7ffea94ab319fb",
+    "status": "succeeded",
+    "site_version_id": "appgprj_6b03ee7aea748191a780539f1025d835~appgver_661d82432b808191be515a566349ef9a",
+    "public_check": "https://doggy-knight-playtest.quantumprediction.chatgpt.site/?check=1",
+    "observed": "檔案檢查通過。引擎已編譯，六章遊戲資料完整。"
+  }
 }

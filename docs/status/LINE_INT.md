@@ -1,5 +1,7 @@
 # 整合進度　六章冒險
 
+[草稿 #35](https://github.com/QuantumPrediction/DoggyKnight/pull/35) · 網頁 v9 已公開上線。公開實作 `ed50d7dff44b9a414d3e88c0abe03e3d7f4919c8` 與本地受測提交共用 tree `f8a0c2b883a8eea7539913803c3933759e133498`。
+
 2026-11-27（香港）。從 #34 的 `de04fd387e36f946f28f0f1f6bc6bc6e60710564` 分出 `codex/six-episode-campaign`。六章原有 36 關的開場、營地、頭目和收尾已連成完整旅程。玩家可在章末出發或休息，下次開啟接在已領獎的位置。6-6 之後可看湖畔圓桌繪本和名單。第四至六章補上船上、火山口和影營的在地抉擇。
 
 法師 seed 7、弓手 seed 19 各從空存檔完成 36 關、12 營地、7 名頭目並重啟讀檔，兩路皆零倒下。#34 在相同直向條件分別卡在 4-6、2-6，新版 72 個前進操作及 12 個章末次要操作整塊均可點。首輪 1,014 項有四個舊預期／資料匯入不符，最終 1,014/1,014，0 broken。Web 資料及正式 PCK 已核對，Linux 原生另存 11 個 360×640 真實畫面。[直接試玩](https://doggy-knight-playtest.quantumprediction.chatgpt.site/) · [證據、失敗樣本與重跑](../validation/six-episode-campaign/README.md)
